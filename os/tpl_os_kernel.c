@@ -57,6 +57,9 @@
 #if SPINLOCK_COUNT > 0
 # include "tpl_as_spinlock_kernel.h"
 #endif
+#if (LEVEL_KERNEL_MONITORING >= 1) /* whith kernel monitoring */
+#include "../machines/cortex/tpl_fabric_definitions.h"
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -226,6 +229,9 @@ FUNC(int, OS_CODE) tpl_compare_entries(
   CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry
   TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_COMPARE_ENTRIES;
+	#endif		
   VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
   VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
   VAR(uint32, AUTOMATIC) first_tmp ;
@@ -243,6 +249,10 @@ FUNC(int, OS_CODE) tpl_compare_entries(
   second_key = (second_key & PRIORITY_MASK);
   second_key = second_key | second_tmp;
 
+ 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_COMPARE_ENTRIES;
+	#endif	 
+  
   return (first_key < second_key);
 }
 
@@ -260,6 +270,9 @@ FUNC(void, OS_CODE) tpl_bubble_up(
   VAR(uint32, AUTOMATIC)                        index
   TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_UP;
+	#endif	
   VAR(uint32, AUTOMATIC) father = index >> 1;
 
   while ((index > 1) &&
@@ -276,6 +289,9 @@ FUNC(void, OS_CODE) tpl_bubble_up(
     index = father;
     father >>= 1;
   }
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_UP;
+	#endif	
 }
 
 /*
@@ -292,6 +308,9 @@ FUNC(void, OS_CODE) tpl_bubble_down(
   VAR(uint32, AUTOMATIC)                        index
   TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+		reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_DOWN;
+	#endif	
   CONST(uint32, AUTOMATIC) size = heap[0].key;
   VAR(uint32, AUTOMATIC) child;
 
@@ -323,19 +342,25 @@ FUNC(void, OS_CODE) tpl_bubble_down(
       break;
     }
   }
+    #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+		reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_DOWN;
+	#endif
 }
 
 /*
  * @internal
  *
  * tpl_put_new_proc puts a new proc in a ready list. In a multicore kernel
- * it may be called from a core that does not own the ready list (for
+ * it may be called from a core that not own the ready list (for
  * a partitioned scheduler). So the core_id field of the proc descriptor
  * is used to get the corresponding ready list.
  */
 FUNC(void, OS_CODE) tpl_put_new_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_PUT_NEW_PROC;
+	#endif	
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
@@ -363,6 +388,9 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   );
 
   DOW_DO(printrl("put_new_proc");)
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_PUT_NEW_PROC;
+	#endif
 }
 
 /*
@@ -376,6 +404,9 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
 FUNC(void, OS_CODE) tpl_put_preempted_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_PUT_PREEMPTED_PROC;
+	#endif
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
@@ -400,6 +431,9 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   );
 
   DOW_DO(printrl("put_preempted_proc"));
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_PUT_PREEMPTED_PROC;
+	#endif
 }
 
 /**
@@ -428,6 +462,9 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
  */
 FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+		reg_OS_instru_kernel_functions = HW_FUNC_REMOVE_FRONT_PROC ;
+	#endif
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
@@ -457,6 +494,10 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
     TAIL_FOR_PRIO_ARG(tail_for_prio)
   );
 
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+		reg_OS_instru_kernel_functions = HW_FUNC_REMOVE_FRONT_PROC;
+	#endif
+  
   return proc;
 }
 
@@ -545,6 +586,9 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
 FUNC(void, OS_CODE) tpl_get_internal_resource(
   CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  reg_OS_instru_kernel_functions = HW_FUNC_GET_INTERNAL_RESOURCE;
+#endif
   GET_PROC_CORE_ID(task_id, core_id)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
@@ -558,6 +602,9 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
     tpl_dyn_proc_table[task_id]->priority =
       DYNAMIC_PRIO(rez->ceiling_priority, tail_for_prio);
   }
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  reg_OS_instru_kernel_functions = HW_FUNC_GET_INTERNAL_RESOURCE;
+#endif
 }
 
 /**
@@ -570,6 +617,9 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
 FUNC(void, OS_CODE) tpl_release_internal_resource(
     CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  reg_OS_instru_kernel_functions = HW_FUNC_RELEASE_INTERNAL_RESOURCE;
+#endif
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
     tpl_stat_proc_table[task_id]->internal_resource;
 
@@ -578,6 +628,9 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
     rez->taken = FALSE;
     tpl_dyn_proc_table[task_id]->priority = rez->owner_prev_priority;
   }
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  reg_OS_instru_kernel_functions = HW_FUNC_RELEASE_INTERNAL_RESOURCE;
+#endif
 }
 
 /**
@@ -587,6 +640,9 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
  */
 FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_PREEMPT;
+	#endif	
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
@@ -607,13 +663,15 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_PREEMPT;
+	#endif
 }
 
 /**
  * @internal
  *
- * The elected process becomes the running process, the running process is
- * preempted
+ * The elected task becomes the running task, the running proc is preempted
  *
  * @return  the pointer to the context of the task
  *          that was running before the elected task replace it
@@ -621,6 +679,9 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_RUN_ELECTED;
+	#endif
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -656,21 +717,6 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     tpl_tp_on_preempt(TPL_KERN_REF(kern).running_id);
   #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
-
-  #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
-  /* if the running process is an ISR2, unmask lower ISR2 interrupts */
-  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
-  {
-    tpl_unmask_isr2_priority(TPL_KERN_REF(kern).running_id);
-  }
-
-  /* if the elected process is an ISR2, mask lower ISR2 interrupts */
-  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
-  {
-    tpl_mask_isr2_priority(TPL_KERN_REF(kern).elected_id);
-  }
-  #endif /* WITH_ISR2_PRIORITY_MASKING */
-
   /* copy the elected proc in running slot of tpl_kern */
   TPL_KERN_REF(kern).running = TPL_KERN_REF(kern).elected;
   TPL_KERN_REF(kern).s_running = TPL_KERN_REF(kern).s_elected;
@@ -707,6 +753,10 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 
   DOW_DO(print_kern("after tpl_run_elected"));
 
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_RUN_ELECTED;
+	#endif
+  
   return old_context;
 }
 
@@ -717,6 +767,9 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
  */
 FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_START;
+	#endif
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   CONST(tpl_heap_entry, AUTOMATIC) proc =
@@ -748,7 +801,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
-    DOW_DO(printf("%s is a new proc\n", proc_name_table[proc.id]));
+    DOW_DO(printf("%s is a new proc\n",proc_name_table[proc.id]));
     tpl_init_proc(proc.id);
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
 #if NUMBER_OF_CORES > 1
@@ -758,6 +811,9 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 
   TPL_KERN_REF(kern).need_schedule = FALSE;
   DOW_DO(print_kern("after tpl_start"));
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_START;
+	#endif
 }
 
 /**
@@ -771,6 +827,9 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
  */
 FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_SCHEDULE_FROM_RUNNING;
+	#endif		
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -795,6 +854,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 
   TPL_KERN_REF(kern).need_switch = need_switch;
   DOW_DO(print_kern("after tpl_schedule_from_running"));
+  
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_SCHEDULE_FROM_RUNNING;
+	#endif		  
 }
 
 /**
@@ -808,6 +871,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
  */
 FUNC(void, OS_CODE) tpl_terminate(void)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_TERMINATE;
+	#endif	
+	
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -871,6 +938,9 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   /* copy it in old slot of tpl_kern */
 /*  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
   TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;*/
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_TERMINATE;
+	#endif
 }
 
 /**
@@ -883,6 +953,10 @@ FUNC(void, OS_CODE) tpl_terminate(void)
  */
 FUNC(void, OS_CODE) tpl_block(void)
 {
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_BLOCK;
+	#endif	
+	
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -912,6 +986,10 @@ FUNC(void, OS_CODE) tpl_block(void)
   /* Start the highest priority task */
   tpl_start(CORE_ID_OR_NOTHING(core_id));
   LOCAL_SWITCH_CONTEXT(core_id)
+  
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_BLOCK;
+	#endif	
 }
 
 /**
@@ -943,6 +1021,10 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_ACTIVATE_TASK;
+	#endif	
+	
   VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
     tpl_dyn_proc_table[task_id];
@@ -1008,6 +1090,10 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
     }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
+  
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_ACTIVATE_TASK;
+	#endif	  
   return result;
 }
 
@@ -1023,6 +1109,9 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
  */
 FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_RELEASE;
+	#endif	
   GET_PROC_CORE_ID(task_id, core_id)
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
   /*  set the state to READY  */
@@ -1031,6 +1120,9 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
   tpl_put_new_proc(task_id);
   /*  notify a scheduling needs to be done    */
   TPL_KERN(core_id).need_schedule = TRUE;
+ 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_RELEASE;
+	#endif	
 }
 
 /**
@@ -1045,6 +1137,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
   CONST(tpl_task_id, AUTOMATIC)     task_id,
   CONST(tpl_event_mask, AUTOMATIC)  incoming_event)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_SET_EVENT;
+	#endif	
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if EXTENDED_TASK_COUNT > 0
@@ -1096,6 +1191,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
   }
 #endif
 
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_SET_EVENT;
+	#endif	
+
   return result;
 }
 
@@ -1114,6 +1213,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
 FUNC(void, OS_CODE) tpl_init_proc(
     CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_INIT_PROC;
+	#endif
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
     tpl_dyn_proc_table[proc_id];
 
@@ -1122,6 +1224,9 @@ FUNC(void, OS_CODE) tpl_init_proc(
   /*  context init is machine dependant
       tpl_init_context is declared in tpl_machine_interface.h           */
   tpl_init_context(proc_id);
+	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_INIT_PROC;
+	#endif
 }
 
 /**
@@ -1131,6 +1236,9 @@ FUNC(void, OS_CODE) tpl_init_proc(
  */
 FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_INIT_OS;
+#endif
   GET_CURRENT_CORE_ID(core_id)
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   VAR(uint16, AUTOMATIC) i;
@@ -1171,7 +1279,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     if (tpl_task_app_mode[i] & app_mode_mask)
     {
 # if NUMBER_OF_CORES > 1
-      /* In multicore, we must check if the task belongs to the core */
+      // In multicore, we must check if the task belongs to the core
       if (tpl_stat_proc_table[i]->core_id == core_id)
 # endif
       {
@@ -1188,10 +1296,9 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   {
     if (tpl_alarm_app_mode[i] & app_mode_mask)
     {
-      auto_time_obj =
-        (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
+      auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
-      /* In multicore, we must check if the alarm belongs to the core */
+      // In multicore, we must check if the alarm belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
 # endif
       {
@@ -1212,7 +1319,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
       auto_time_obj =
         (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
-      /* In multicore, we must check if the schedule table belongs to the core */
+      // In multicore, we must check if the schedule table belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
 # endif
       {
@@ -1242,6 +1349,9 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
       }
     }
   }
+#endif
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_INIT_OS;
 #endif
 }
 

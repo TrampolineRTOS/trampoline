@@ -1,0 +1,2 @@
+build.py all
+pause

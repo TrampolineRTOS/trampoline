@@ -11,11 +11,23 @@ FUNC(int, OS_APPL_CODE) main(void)
 	return 0;
 }
 
+DeclareTask (T1);
+
 TASK(blink)
+{
+	ActivateTask(T1);
+	TerminateTask();
+}
+
+#define APP_Task_blink_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_T1_START_SEC_CODE
+#include "tpl_memmap.h"
+TASK(T1)
 {
 	GPIO->GPIO_OUT ^= 0x6; //toggle LED3 and 4.
 	TerminateTask();
 }
-#define APP_Task_blink_STOP_SEC_CODE
+#define APP_Task_T1_STOP_SEC_CODE
 #include "tpl_memmap.h"
-

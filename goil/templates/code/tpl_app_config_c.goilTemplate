@@ -1149,8 +1149,11 @@ CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COU
 end foreach
 %
 
-#if (LEVEL_KERNEL_MONITORING >3)
-	VAR(uint32, TYPEDEF) reg_OS_instru __attribute__((section(".FPGA.OsInstru")) = 0x00000000;
+#if (LEVEL_KERNEL_MONITORING >= 3)
+	VAR(uint32, TYPEDEF) reg_OS_instru_service __attribute__((section(".FPGA.OsInstru"))) = 0x00000000;
+#endif
+#if (LEVEL_KERNEL_MONITORING >= 4)
+	VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions __attribute__((section(".FPGA.OsInstru"))) = 0x00000000;
 #endif
 
 /* End of file tpl_app_config.c */

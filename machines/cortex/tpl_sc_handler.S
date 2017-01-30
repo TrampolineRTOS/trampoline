@@ -39,6 +39,8 @@
 .equ  NEED_SAVE, 2
 
 .equ  __ID_CALL_HANDLER, ID_CALL_HANDLER
+.equ  __ID_CALL_SERVICE, ID_CALL_SERVICE
+.equ  __ID_CALL_CONTEXT, ID_CALL_CONTEXT
 
 /*-----------------------------------------------------------------------------
  * the tpl_sc_handler uses tpl_kern
@@ -158,9 +160,11 @@ not_callable_by_isr1:
     /*-------------------------------------------------------------------------
      * 4 - inform the fabric we are entering the kernel
      */
-    ldr   r4,=AD_REG_OS_INSTRU
+	#if (LEVEL_KERNEL_MONITORING >= 4) 
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]
+	#endif
 
     /*-------------------------------------------------------------------------
      * 5 - Save the link register, in armv6m, the source register of a store
@@ -185,44 +189,71 @@ not_callable_by_isr1:
     ldr   r3,[r4,r3]
 
     /*-------------------------------------------------------------------------
-     * 8 - Service call
+     * 8 - inform the fabric we are calling a service
+     */
+	#if (LEVEL_KERNEL_MONITORING >= 4) 
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
+    movs  r5,#__ID_CALL_SERVICE
+    str   r5,[r4]
+	#endif	
+	
+    /*-------------------------------------------------------------------------
+     * 9 - Service call
      */
     blx   r3
 
+	 /*-------------------------------------------------------------------------
+     * 10 - inform the fabric we are leaving a service
+     */
+	#if (LEVEL_KERNEL_MONITORING >= 4) 
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
+    movs  r5,#__ID_CALL_SERVICE
+    str   r5,[r4]
+	#endif
+	
     /*-----------------------------------------------------------------------*
      * From here, r1, r2 and r3 are available as working register            *
      * r0 hold the result of the service and should not be changed           *
      *-----------------------------------------------------------------------*/
 
     /*-------------------------------------------------------------------------
-     * 9 - Copy back the result to the saved r0 on the process stack
+     * 11 - Copy back the result to the saved r0 on the process stack
      *     r0 is at the top of the process stack
      */
     mrs   r4,psp
     str   r0,[r4]
 
     /*-------------------------------------------------------------------------
-     * 10 - Check the context switch condition in tpl_kern
+     * 12 - Check the context switch condition in tpl_kern
      */
     ldr   r4,=tpl_kern
     ldrb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
     cmp   r5,#NO_NEED_SWITCH
     beq   tpl_sc_handler_no_context_switch
+	
+	/*-------------------------------------------------------------------------
+     * 13 - inform the fabric we are executing a context switch
+     */
+	#if (LEVEL_KERNEL_MONITORING >= 4) 
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
+    movs  r1,#__ID_CALL_CONTEXT
+    str   r1,[r4]
+	#endif
 
     /*-------------------------------------------------------------------------
-     * 11 - Prepare the call to tpl_run_elected by setting r0 to 0, aka no save
+     * 14 - Prepare the call to tpl_run_elected by setting r0 to 0, aka no save
      */
     movs  r0,#0
 
     /*-------------------------------------------------------------------------
-     * 12 - Check the save condition
+     * 15 - Check the save condition
      */
     movs  r4,#NEED_SAVE
     tst   r5,r4
     beq   tpl_sc_handler_no_save_running_context /* bit of NEED_SAVE set to 0 */
 
     /*-------------------------------------------------------------------------
-     * 13 - Save context
+     * 16 - Save context
      *      Load in r0 the pointer to the static descriptor of the running task
      */
     ldr   r0,=tpl_kern
@@ -230,21 +261,21 @@ not_callable_by_isr1:
     bl    tpl_save_context
 
     /*-------------------------------------------------------------------------
-     * 14 - Prepare the call to tpl_run_elected by setting r0 to 1
+     * 17 - Prepare the call to tpl_run_elected by setting r0 to 1
      */
     movs  r0,#1
 
 tpl_sc_handler_no_save_running_context:
 
     /*-------------------------------------------------------------------------
-     * 15 - Call tpl_run_elected.
+     * 18 - Call tpl_run_elected.
      *      The argument is a boolean which is true if the task is
      *      preempted. see stages 11 and 14 above.
      */
     bl    tpl_run_elected
 
     /*-------------------------------------------------------------------------
-     * 16 - Load context
+     * 19 - Load context
      *      Load in r0 the pointer to the context of the running task.
      *      It has been changed by tpl_run_elected
      */
@@ -252,37 +283,48 @@ tpl_sc_handler_no_save_running_context:
     ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
     bl    tpl_load_context
 
+	/*-------------------------------------------------------------------------
+     * 20 - inform the fabric we are finishing a context switch
+     */
+	#if (LEVEL_KERNEL_MONITORING >= 4) 
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
+    movs  r5,#__ID_CALL_CONTEXT
+    str   r5,[r4]
+	#endif	
+	
 tpl_sc_handler_no_context_switch:
 
 
     /*-------------------------------------------------------------------------
-     * 17 - Restore the link register from the kernel stack.
+     * 21 - Restore the link register from the kernel stack.
      *      Symetric of stages 4
      */
     ldr   r4,[sp,#KS_LR]
     mov   lr,r4
 
     /*-------------------------------------------------------------------------
-     * 18 - inform the fabric we are leaving the kernel
+     * 22 - inform the fabric we are leaving the kernel
      */
-    ldr   r4,=AD_REG_OS_INSTRU
+	#if (LEVEL_KERNEL_MONITORING >= 4) 
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]
+	#endif
 
     /*-------------------------------------------------------------------------
-     * 19 - Restore r4 and r5 from the kernel stack.
+     * 23 - Restore r4 and r5 from the kernel stack.
      *      Symetric of stage 3
      */
     ldr   r5,[sp,#KS_R5]
     ldr   r4,[sp,#KS_R4]
 
     /*-------------------------------------------------------------------------
-     * 20 - Deallocate frame on the MSP
+     * 24 - Deallocate frame on the MSP
      */
     add   sp,sp,#KS_FOOTPRINT
 
     /*-------------------------------------------------------------------------
-     * 20b - Enable interrupts. This can be done without checking it has been
+     * 24b - Enable interrupts. This can be done without checking it has been
      *       disabled in 1a because application level interrupt masking is
      *       done using the BASEPRI register.
      */
@@ -291,7 +333,7 @@ tpl_sc_handler_no_context_switch:
 tpl_sc_handler_invalid_service_id:
 
     /*-------------------------------------------------------------------------
-     * 21 - Return from the SVC
+     * 25 - Return from the SVC
      */
     bx    lr
 

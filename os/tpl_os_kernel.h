@@ -656,6 +656,10 @@ FUNC(void, OS_CODE) tpl_dispatch_context_switch(void);
 
 #endif /* NUMBER_OF_CORES > 1 */
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions;
+#endif  
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
