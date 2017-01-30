@@ -160,7 +160,7 @@ not_callable_by_isr1:
     /*-------------------------------------------------------------------------
      * 4 - inform the fabric we are entering the kernel
      */
-	#if (LEVEL_KERNEL_MONITORING >= 4) 
+	#if (LEVEL_KERNEL_MONITORING >= 2) 
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]
@@ -191,7 +191,7 @@ not_callable_by_isr1:
     /*-------------------------------------------------------------------------
      * 8 - inform the fabric we are calling a service
      */
-	#if (LEVEL_KERNEL_MONITORING >= 4) 
+	#if (LEVEL_KERNEL_MONITORING >= 2) 
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_SERVICE
     str   r5,[r4]
@@ -205,7 +205,7 @@ not_callable_by_isr1:
 	 /*-------------------------------------------------------------------------
      * 10 - inform the fabric we are leaving a service
      */
-	#if (LEVEL_KERNEL_MONITORING >= 4) 
+	#if (LEVEL_KERNEL_MONITORING >= 2) 
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_SERVICE
     str   r5,[r4]
@@ -234,7 +234,7 @@ not_callable_by_isr1:
 	/*-------------------------------------------------------------------------
      * 13 - inform the fabric we are executing a context switch
      */
-	#if (LEVEL_KERNEL_MONITORING >= 4) 
+	#if (LEVEL_KERNEL_MONITORING >= 2) 
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r1,#__ID_CALL_CONTEXT
     str   r1,[r4]
@@ -286,7 +286,7 @@ tpl_sc_handler_no_save_running_context:
 	/*-------------------------------------------------------------------------
      * 20 - inform the fabric we are finishing a context switch
      */
-	#if (LEVEL_KERNEL_MONITORING >= 4) 
+	#if (LEVEL_KERNEL_MONITORING >= 2) 
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_CONTEXT
     str   r5,[r4]
@@ -305,7 +305,7 @@ tpl_sc_handler_no_context_switch:
     /*-------------------------------------------------------------------------
      * 22 - inform the fabric we are leaving the kernel
      */
-	#if (LEVEL_KERNEL_MONITORING >= 4) 
+	#if (LEVEL_KERNEL_MONITORING >= 2) 
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]

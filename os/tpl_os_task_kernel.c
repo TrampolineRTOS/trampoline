@@ -44,6 +44,10 @@
 #include "tpl_os_mem_prot.h"
 #endif
 
+#if (LEVEL_KERNEL_MONITORING >= 1) /* whith kernel monitoring */ 
+#include "../machines/cortex/tpl_fabric_definitions.h" 
+#endif 
+
 extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 
 #define OS_START_SEC_CODE
@@ -55,6 +59,9 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+  reg_OS_instru_service = HW_FUNC_ACTIVATE_TASK_SERVICE; 
+#endif 
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
@@ -98,12 +105,18 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+  reg_OS_instru_service = HW_FUNC_ACTIVATE_TASK_SERVICE; 
+#endif   
   return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+  reg_OS_instru_service = HW_FUNC_TERMINATE_TASK_SERVICE; 
+#endif   
   GET_CURRENT_CORE_ID(core_id)
 
   /* init the error to no error */
@@ -144,6 +157,10 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+  reg_OS_instru_service = HW_FUNC_TERMINATE_TASK_SERVICE; 
+#endif  
+
   return result;
 }
 
@@ -151,6 +168,9 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+  reg_OS_instru_service = HW_FUNC_CHAIN_TASK_SERVICE; 
+#endif  
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(StatusType, AUTOMATIC)  result = E_OK;
@@ -231,12 +251,19 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
 
+ #if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+  reg_OS_instru_service = HW_FUNC_CHAIN_TASK_SERVICE; 
+#endif   
+
   return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_SCHEDULE_SERVICE; 
+#endif  
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -281,6 +308,10 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
 
+ #if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_SCHEDULE_SERVICE; 
+#endif   
+ 
   return result;
 }
 
@@ -288,6 +319,9 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_GET_TASK_ID_SERVICE; 
+#endif   
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -324,6 +358,10 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
 
   UNLOCK_KERNEL()
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_GET_TASK_ID_SERVICE; 
+#endif   
+ 
   return result;
 }
 
@@ -332,6 +370,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   CONST(tpl_task_id, AUTOMATIC)                        task_id,
   CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_GET_TASK_STATE_SERVICE; 
+#endif   
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -366,6 +407,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 
   UNLOCK_KERNEL()
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_GET_TASK_STATE_SERVICE; 
+#endif 
   return result;
 }
 
