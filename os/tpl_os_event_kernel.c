@@ -55,6 +55,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CONST(tpl_task_id, AUTOMATIC)       task_id,
   CONST(tpl_event_mask, AUTOMATIC)    event)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_SET_EVENT_SERVICE; 
+#endif 
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
@@ -94,7 +97,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
-
+  
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_SET_EVENT_SERVICE; 
+#endif 
   return result;
 }
 
@@ -105,6 +111,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
 FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_CLEAR_EVENT_SERVICE; 
+#endif 
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -133,7 +142,9 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
-
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_CLEAR_EVENT_SERVICE; 
+#endif
   return result;
 }
 
@@ -144,6 +155,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   CONST(tpl_task_id, AUTOMATIC)                       task_id,
   CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_GET_EVENT_SERVICE; 
+#endif
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -180,7 +194,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
-
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_GET_EVENT_SERVICE; 
+#endif
   return result;
 }
 
@@ -190,6 +206,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_WAIT_EVENT_SERVICE; 
+#endif
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -253,6 +272,10 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 
   UNLOCK_KERNEL()
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+   reg_OS_instru_service = HW_FUNC_WAIT_EVENT_SERVICE; 
+#endif  
+  
   return result;
 }
 
