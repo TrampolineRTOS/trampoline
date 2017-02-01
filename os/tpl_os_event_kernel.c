@@ -43,6 +43,10 @@
 #include "tpl_os_mem_prot.h"
 #endif
 
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */ 
+#include "../machines/cortex/tpl_fabric_definitions.h" 
+#endif 
+
 #include "tpl_os_event_kernel.h"
 
 #define OS_START_SEC_CODE
