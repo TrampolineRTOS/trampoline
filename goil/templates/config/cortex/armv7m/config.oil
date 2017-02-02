@@ -17,6 +17,10 @@ CPU armv7m {
     CFILE = "tpl_ctx_switch_under_it.S";
     CFILE = "tpl_interrupts.S";
   };
+  
+  GENERATED_FILES cortex_instrumented {
+    CFILE = "tpl_unique_service_ids.c";
+  };
 };
 
 

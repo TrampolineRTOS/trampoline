@@ -74,6 +74,9 @@ if OS::SYSTEM_CALL then
   write to PROJECT+"/tpl_dispatch_table.c":
     template tpl_dispatch_table_c in code
   end write
+  write to PROJECT+"/tpl_unique_service_ids.c":
+    template tpl_unique_service_ids_c in code
+  end write
   template tpl_invoque_s in code
 else
   !PROJECT %/tpl_os.c

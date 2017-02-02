@@ -62,6 +62,7 @@
 #include "tpl_as_memmap.h"
 
 .extern tpl_dispatch_table
+.extern tpl_unique_id_table
 
 #define OS_STOP_SEC_CONST
 #include "tpl_as_memmap.h"
@@ -160,7 +161,7 @@ not_callable_by_isr1:
     /*-------------------------------------------------------------------------
      * 4 - inform the fabric we are entering the kernel
      */
-	#if (LEVEL_KERNEL_MONITORING >= 2) 
+	#if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]
@@ -189,14 +190,25 @@ not_callable_by_isr1:
     ldr   r3,[r4,r3]
 
     /*-------------------------------------------------------------------------
+     * 7b - Get the unique identifier of the service to notify it to the fabric
+     */
+    ldr r4,=tpl_unique_id_table
+    ldr r4,[r4,r3]
+
+    /*
+     * *TODO* store r4 in the fabric at the loc dedicated to the service
+     * unique id
+     */
+
+    /*-------------------------------------------------------------------------
      * 8 - inform the fabric we are calling a service
      */
-	#if (LEVEL_KERNEL_MONITORING >= 2) 
+	#if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_SERVICE
     str   r5,[r4]
-	#endif	
-	
+	#endif
+
     /*-------------------------------------------------------------------------
      * 9 - Service call
      */
@@ -205,12 +217,12 @@ not_callable_by_isr1:
 	 /*-------------------------------------------------------------------------
      * 10 - inform the fabric we are leaving a service
      */
-	#if (LEVEL_KERNEL_MONITORING >= 2) 
+	#if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_SERVICE
     str   r5,[r4]
 	#endif
-	
+
     /*-----------------------------------------------------------------------*
      * From here, r1, r2 and r3 are available as working register            *
      * r0 hold the result of the service and should not be changed           *
@@ -230,11 +242,11 @@ not_callable_by_isr1:
     ldrb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
     cmp   r5,#NO_NEED_SWITCH
     beq   tpl_sc_handler_no_context_switch
-	
+
 	/*-------------------------------------------------------------------------
      * 13 - inform the fabric we are executing a context switch
      */
-	#if (LEVEL_KERNEL_MONITORING >= 2) 
+	#if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r1,#__ID_CALL_CONTEXT
     str   r1,[r4]
@@ -286,12 +298,12 @@ tpl_sc_handler_no_save_running_context:
 	/*-------------------------------------------------------------------------
      * 20 - inform the fabric we are finishing a context switch
      */
-	#if (LEVEL_KERNEL_MONITORING >= 2) 
+	#if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_CONTEXT
     str   r5,[r4]
-	#endif	
-	
+	#endif
+
 tpl_sc_handler_no_context_switch:
 
 
@@ -305,7 +317,7 @@ tpl_sc_handler_no_context_switch:
     /*-------------------------------------------------------------------------
      * 22 - inform the fabric we are leaving the kernel
      */
-	#if (LEVEL_KERNEL_MONITORING >= 2) 
+	#if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]
