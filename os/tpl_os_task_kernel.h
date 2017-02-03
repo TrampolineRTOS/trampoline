@@ -150,11 +150,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
 FUNC(tpl_status, OS_CODE) tpl_get_task_state_service(
   CONST(tpl_task_id, AUTOMATIC)                        task_id,
   CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state);
-
-
-#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */
-	extern VAR(uint32, TYPEDEF) reg_OS_instru_service;
-#endif  
   
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

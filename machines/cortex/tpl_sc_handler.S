@@ -41,6 +41,7 @@
 .equ  __ID_CALL_HANDLER, ID_CALL_HANDLER
 .equ  __ID_CALL_SERVICE, ID_CALL_SERVICE
 .equ  __ID_CALL_CONTEXT, ID_CALL_CONTEXT
+.equ  __NO_SERVICE, NO_SERVICE
 
 /*-----------------------------------------------------------------------------
  * the tpl_sc_handler uses tpl_kern
@@ -192,13 +193,12 @@ not_callable_by_isr1:
     /*-------------------------------------------------------------------------
      * 7b - Get the unique identifier of the service to notify it to the fabric
      */
+	#if (LEVEL_KERNEL_MONITORING >= 3)
     ldr r4,=tpl_unique_id_table
     ldr r4,[r4,r3]
-
-    /*
-     * *TODO* store r4 in the fabric at the loc dedicated to the service
-     * unique id
-     */
+	ldr r5,=AD_REG_OS_INSTRU_SERVICE
+	str r4,[r5]
+	#endif
 
     /*-------------------------------------------------------------------------
      * 8 - inform the fabric we are calling a service
@@ -221,6 +221,15 @@ not_callable_by_isr1:
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
     movs  r5,#__ID_CALL_SERVICE
     str   r5,[r4]
+	#endif
+	
+	/*-------------------------------------------------------------------------
+     * 10b - inform the fabric of any service are exectuting
+     */
+	#if (LEVEL_KERNEL_MONITORING >= 3)
+	movs  r4,#__NO_SERVICE
+	ldr r5,=AD_REG_OS_INSTRU_SERVICE
+	str r4,[r5]
 	#endif
 
     /*-----------------------------------------------------------------------*

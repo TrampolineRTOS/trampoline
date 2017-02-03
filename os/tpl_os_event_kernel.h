@@ -102,10 +102,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
     CONST(tpl_event_mask, AUTOMATIC) event);
 
-#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */
-	extern VAR(uint32, TYPEDEF) reg_OS_instru_service;
-#endif  
-
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
