@@ -40,6 +40,7 @@ CPU blink {
       ASSEMBLER = gnu_as;
       MEMORY_PROTECTION = FALSE;
     };
+    USERSERVICEHOOK = TRUE;
   };
   
   APPMODE std {};
