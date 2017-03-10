@@ -295,6 +295,15 @@ if "gcc" in compiler:
     ldflags += ['-L' + libgccPath, '-lgcc']
 %
 end if
+
+if TARGET == "posix" then
+%
+    #--- Add flags required to link the posix runtime
+ldflags += ['-lrt']
+ldflags += ['-lpthread']
+%
+end if
+
 %
 #----------------------------------------------------------------------
 #--- Build the source files list
