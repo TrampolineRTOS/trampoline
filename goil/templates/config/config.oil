@@ -180,6 +180,13 @@ IMPLEMENTATION trampoline_common {
     BOOLEAN PAINT_STACK = FALSE;
     BOOLEAN PAINT_REGISTERS = FALSE;
     BOOLEAN ISR2_PRIORITY_MASKING = FALSE;
+    /*
+     * On supported platforms (Cortex M only for now), USERSERVICEHOOK
+     * adds a call to a hook just before switching to the kernel.
+     * The UserServiceHook is called. The argument is the identifier of
+     * the service.
+     */
+    BOOLEAN USERSERVICEHOOK = FALSE;
     
     IDENTIFIER SCHEDULER = osek;
     BOOLEAN [

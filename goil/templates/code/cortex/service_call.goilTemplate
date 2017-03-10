@@ -13,7 +13,18 @@
      */
     mrs  r3,IPSR
     cmp  r3,#0
-    bne  % !api_func::NAME %_direct_call
+    bne  % !api_func::NAME %_direct_call%
+if OS::USERSERVICEHOOK then%
+    /*-------------------------------------------------------------------------
+     * Call the UserServiceHook with the service id as argument.
+     * The UserServiceHook is only called if we are in user mode
+     */
+    push {r0,lr}
+    movs r0,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+    bl   UserServiceHook
+    pop  {r0,lr}%
+end if
+%
     /*-------------------------------------------------------------------------
      * We are in thread mode so we set r3 to the identifier of the service
      * and we do a svc
