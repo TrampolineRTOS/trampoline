@@ -6,16 +6,40 @@
 FUNC(int, OS_APPL_CODE) main(void)
 {
   initBoard();
+  tpl_start_enforcement_timer();
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
 
 TASK(blink)
 {
-  ledToggle(BLUE);
+  STATIC VAR(uint32, AUTOMATIC) lastTimeValue = 0;
+
+  VAR(uint32, AUTOMATIC) timer = tpl_get_enforcement_timer();
+
+  if (timer - lastTimeValue > 200000) {
+    lastTimeValue = timer;
+    ledToggle(BLUE);
+  }
   TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_back_START_SEC_CODE
+#include "tpl_memmap.h"
+
+TASK(back)
+{
+  while(1)
+  {
+    VAR(uint32, AUTOMATIC) date = tpl_get_enforcement_timer();
+    tpl_wait_enforcement_timer(date, date+500000);
+    ledToggle(RED);
+  }
+}
+
+#define APP_Task_back_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
@@ -50,4 +74,3 @@ FUNC(void, OS_CODE) PostTaskHook()
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-
