@@ -44,7 +44,16 @@ FUNC(void, OS_APPL_CODE) tpl_wait_enforcement_timer(
   CONST(uint32, AUTOMATIC) startDate,
   CONST(uint32, AUTOMATIC) absoluteDeadline);
 
+/*
+ * Get the current value of the enforcement timers
+ */
 FUNC(uint32, OS_APPL_CODE) tpl_get_enforcement_timer(void);
+
+/*
+ * Set the current value of the enforcement timers
+ */
+FUNC(void, OS_APPL_CODE) tpl_set_enforcement_timer(
+  CONST(uint32, AUTOMATIC) time);
 
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"

@@ -92,5 +92,11 @@ FUNC(uint32, OS_APPL_CODE) tpl_get_enforcement_timer(void)
   return TIM_GetCounter(TIM5);
 }
 
+FUNC(void, OS_APPL_CODE) tpl_set_enforcement_timer(
+  CONST(uint32, AUTOMATIC) time)
+{
+  TIM_SetCounter(TIM5, time);
+}
+
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
