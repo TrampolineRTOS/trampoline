@@ -162,6 +162,8 @@ foreach proc in PROCESSES do %
   } > ram
 %
 end foreach
+  %idle_stack : { *(.Task_IDLE_TASKStack) } > ram
+  %
 %
   /*
    * os application data

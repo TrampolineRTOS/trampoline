@@ -3,4 +3,7 @@ build
 *_exe
 *.bin
 *.map
-*.py
+build.py
+lonely.c
+lonely/
+make.py

@@ -41,6 +41,10 @@ CPU test {
 
     APPMODE std {
     };
+    
+    COUNTER SystemCounter {
+        SOURCE = it_timer_1;
+    };
 
     TASK iamsolonely {
         PRIORITY = 5;
@@ -48,13 +52,26 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
         USEFLOAT = FALSE;
+        RESOURCE = res;
+        EVENT = ev;
     };
 
 	RESOURCE res {
 		RESOURCEPROPERTY = STANDARD;
 	};
+
+    EVENT ev { MASK = AUTO;};
     
-//    COUNTER SystemCounter {
-//        SOURCE = it_timer_1;
-//    };
+    ALARM al {
+     COUNTER = SystemCounter;
+     ACTION = ACTIVATETASK {
+       TASK = iamsolonely;
+     };
+     AUTOSTART = TRUE {
+      ALARMTIME = 10;
+      CYCLETIME = 10;
+      APPMODE = std;
+     };
+    };
+
 };
