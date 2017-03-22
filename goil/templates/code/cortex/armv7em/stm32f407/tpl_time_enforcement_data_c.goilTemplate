@@ -62,12 +62,12 @@ foreach task in TASKS do
     end foreach
     
     #---------------------------------------------------------------------------
-    # Generate the numbers for states
+    # Generate states related define / structs
 %
 /*==============================================================================
  * Number of states of task % !task::NAME%
  */
-#define NUMBER_OF_STATES_OF_TASK_% !task::NAME tab 60 ![stateMap length]
+#define NUMBER_OF_STATES_OF_TASK_% !task::NAME tab 50 ![stateMap length]
     foreach state (state_idx) in stateMap
     before %
 
@@ -75,9 +75,14 @@ foreach task in TASKS do
  * States of task % !task::NAME%
  */%
     do %
-#define TASK_% !task::NAME %_STATE_% !state::NAME tab 60 !state_idx
+#define TASK_% !task::NAME %_STATE_% !state::NAME tab 50 !state_idx
     end foreach
-    
+%
+
+/*------------------------------------------------------------------------------
+ * Initial state of task % !task::NAME%
+ */
+#define INITIAL_STATE_OF_TASK_% !task::NAME tab 50 %TASK_% !task::NAME %_STATE_% !nameOfInitialState    
     foreach state in stateMap 
     before %
 
@@ -85,14 +90,31 @@ foreach task in TASKS do
  * Transitions of task % !task::NAME%
  */%
     do
-      display state
-      let targetState := exists state::T_S::STATE default (nameOfInitialState) %
-CONST(tpl_te_transition, OS_CONST) tpl_te_transitions_of_% !task::NAME %_from_% !state::NAME %_to_% !targetState % = {
-    % !api_map[targetState] %,
-    TASK_% !task::NAME %_STATE_% !targetState %,
-    % !exists state::T_S::EFT default (0) %
-};%
+      foreach transition in  exists state::T default ( @() )
+      before
+%
+CONST(tpl_te_transition, OS_CONST) tpl_te_transitions_of_% !task::NAME %_for_% !state::NAME %[] = {
+%
+      do
+        let targetState := exists transition::VALUE_S::STATE default (nameOfInitialState)
+        display targetState
+%    {
+        % !api_map[transition::VALUE] %,
+        TASK_% !task::NAME %_STATE_% !targetState %,
+        % !exists transition::VALUE_S::EFT default (0) %
+    }%
+      between %,
+%
+      after %
+};
+%
+      end foreach
     end foreach
+    
+#    # Generate the table indexed by the state givins the transiti
+#    foreach state in stateMap
+#    before%
+#/*------------------------------------------------------------------------------
     
   end if  
 end foreach
