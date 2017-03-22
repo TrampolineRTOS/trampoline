@@ -110,7 +110,6 @@ CONST(tpl_te_transition, OS_CONST) tpl_te_transitions_of_% !task::NAME %_for_% !
 %
       do
         let targetState := exists transition::VALUE_S::STATE default (nameOfInitialState)
-        display targetState
 %    {
         % !api_map[transition::VALUE] %,
         TASK_% !task::NAME %_STATE_% !targetState %,
@@ -140,32 +139,33 @@ end foreach
 #  end loop
 #end foreach
 
-foreach task in TASKS do
+#foreach task in TASKS do
+#%
+#CONSTP2CONST(tpl_te_transition, OS_CONST, OS_APPL_CONST) tpl_transitions_of_task_% !task::NAME %[TE_STATE_COUNT] = {
+#%
+#  loop state from 0 to 9 do
+#%
+#  tpl_te_transitions_of_% !task::NAME %_from_state_% !state 
+#  between %,
+#%  
+#  end loop
+#%  
+#};
+#%
+#end foreach
+#%
+#
+#CONSTP2CONST(tpl_te_transition, OS_CONST, OS_APPL_CONST) tpl_te_models[TASK_COUNT] = {
+#%
+#foreach task in TASKS 
+#do
+#%  tpl_transitions_of_task_% !task::NAME 
+#between %
+#,%
+#end foreach
+#%
+#};
 %
-CONSTP2CONST(tpl_te_transition, OS_CONST, OS_APPL_CONST) tpl_transitions_of_task_% !task::NAME %[TE_STATE_COUNT] = {
-%
-  loop state from 0 to 9 do
-%
-  tpl_te_transitions_of_% !task::NAME %_from_state_% !state 
-  between %,
-%  
-  end loop
-%  
-};
-%
-end foreach
-%
-
-CONSTP2CONST(tpl_te_transition, OS_CONST, OS_APPL_CONST) tpl_te_models[TASK_COUNT] = {
-%
-foreach task in TASKS 
-do
-%  tpl_transitions_of_task_% !task::NAME 
-between %
-,%
-end foreach
-%
-};
 
 #define OS_STOP_SEC_CONST_32BIT
 #include "tpl_memmap.h"
