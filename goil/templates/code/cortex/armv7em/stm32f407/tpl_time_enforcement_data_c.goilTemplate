@@ -5,6 +5,7 @@ import "serviceid"
 %#include "tpl_app_define.h"
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
+#include "tpl_service_ids.h"
 #include "tpl_os_time_model.h"
 
 #define OS_START_SEC_VAR_NOINIT_32BIT
@@ -24,8 +25,6 @@ VAR(uint32, OS_VAR) tpl_time_enforcement_timers_init[TASK_COUNT];
 
 %
 let api_map := serviceid(APIUSED)
-
-display api_map
 
 #===============================================================================
 # Check the STATE of the TASK
@@ -82,17 +81,31 @@ foreach task in TASKS do
 /*------------------------------------------------------------------------------
  * Initial state of task % !task::NAME%
  */
-#define INITIAL_STATE_OF_TASK_% !task::NAME tab 50 %TASK_% !task::NAME %_STATE_% !nameOfInitialState    
+#define INITIAL_STATE_OF_TASK_% !task::NAME tab 50 %TASK_% !task::NAME %_STATE_% !nameOfInitialState
+
+
     foreach state in stateMap 
-    before %
+    do
+%
 
 /*------------------------------------------------------------------------------
- * Transitions of task % !task::NAME%
- */%
-    do
+ * Number of transitions for state  % !state::NAME %
+ */
+#define NUMBER_OF_TRANSITIONS_FROM_STATE_% !state::NAME %_OF_TASK_% !task::NAME tab 70 
+
+      if exists state::T then
+        ![state::T length]
+      else
+        !1
+      end if
+
       foreach transition in  exists state::T default ( @() )
       before
 %
+
+/*------------------------------------------------------------------------------
+ * Transitions from state % !state::NAME % of task % !task::NAME%
+ */
 CONST(tpl_te_transition, OS_CONST) tpl_te_transitions_of_% !task::NAME %_for_% !state::NAME %[] = {
 %
       do
