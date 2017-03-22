@@ -4,10 +4,10 @@
 #----------------------------------------------------------------------------*
 
 func serviceid (service_desc) id_list
-  let id_list := @()
+  let id_list := @[]
   foreach section in service_desc do
     foreach syscall in section::SYSCALL do
-      let id_list += section::ID_PREFIX + "ServiceId_" + syscall::NAME
+      let id_list[syscall::NAME] := section::ID_PREFIX + "ServiceId_" + syscall::NAME
     end foreach
   end foreach
 end func

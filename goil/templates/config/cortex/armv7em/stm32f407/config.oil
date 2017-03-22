@@ -3,6 +3,34 @@ IMPLEMENTATION stm32f407 {
   OS {
     BOOLEAN TIMEENFORCEMENT = FALSE;
   };
+  
+  TASK {
+    STRUCT {
+      ENUM [
+        ActivateTask {
+          IDENTIFIER TASK = AUTO;
+          IDENTIFIER STATE;
+          UINT32    EFT;
+        },
+        TerminateTask {
+          IDENTIFIER STATE;
+          UINT32    EFT;
+        },
+        ChainTask {
+          IDENTIFIER TASK = AUTO;
+          IDENTIFIER STATE;
+          UINT32    EFT;
+        },
+        SetEvent {
+          IDENTIFIER TASK = AUTO;
+          IDENTIFIER EVENT = AUTO;
+          IDENTIFIER STATE;
+          UINT32    EFT;
+        }
+      ] T [];
+      BOOLEAN INITIAL = FALSE;
+    } STATE [];
+  };
    
   DEVICE_KIND [] {
     STRUCT {

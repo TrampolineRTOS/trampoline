@@ -23,16 +23,87 @@ VAR(uint32, OS_VAR) tpl_time_enforcement_timers_init[TASK_COUNT];
 #define TE_STATE_COUNT  10
 
 %
-let api_list := serviceid(APIUSED)
+let api_map := serviceid(APIUSED)
 
-display api_list
+display api_map
 
+#===============================================================================
+# Check the STATE of the TASK
+#
 foreach task in TASKS do
-  loop state from 0 to 9 do
+
+  if exists task::STATE then  
+    let nameOfInitialState
+    #---------------------------------------------------------------------------
+    # Check exactly one initial state exists
+    let numberOfInitialState := 0
+    foreach state in task::STATE do
+      if exists state::INITIAL default (false) then
+        let numberOfInitialState += 1
+        let nameOfInitialState := state::NAME
+      end if
+    end foreach
+    if numberOfInitialState == 0 then
+      error task::STATE : "No INITIAL state defined"
+    elsif numberOfInitialState > 1 then 
+      error task::STATE : "More than one INITIAL state defined"
+    end if
+    #---------------------------------------------------------------------------
+    # Check target states exists
+    let stateMap := [task::STATE mapBy: "NAME"]
+    foreach state in stateMap do
+      foreach trans in exists state::T default ( @() ) do
+        if exists trans::STATE then
+          if not exists stateMap[trans::STATE] then
+            error trans::STATE : "Target STATE does not exist"
+          end if
+        end if
+      end foreach
+    end foreach
+    
+    #---------------------------------------------------------------------------
+    # Generate the numbers for states
 %
-extern CONSTP2CONST(tpl_te_transition, OS_CONST, OS_APPL_CONST) tpl_te_transitions_of_% !task::NAME %_from_state_% !state %;%
-  end loop
+/*==============================================================================
+ * Number of states of task % !task::NAME%
+ */
+#define NUMBER_OF_STATES_OF_TASK_% !task::NAME tab 60 ![stateMap length]
+    foreach state (state_idx) in stateMap
+    before %
+
+/*------------------------------------------------------------------------------
+ * States of task % !task::NAME%
+ */%
+    do %
+#define TASK_% !task::NAME %_STATE_% !state::NAME tab 60 !state_idx
+    end foreach
+    
+    foreach state in stateMap 
+    before %
+
+/*------------------------------------------------------------------------------
+ * Transitions of task % !task::NAME%
+ */%
+    do
+      display state
+      let targetState := exists state::T_S::STATE default (nameOfInitialState) %
+CONST(tpl_te_transition, OS_CONST) tpl_te_transitions_of_% !task::NAME %_from_% !state::NAME %_to_% !targetState % = {
+    % !api_map[targetState] %,
+    TASK_% !task::NAME %_STATE_% !targetState %,
+    % !exists state::T_S::EFT default (0) %
+};%
+    end foreach
+    
+  end if  
 end foreach
+
+
+#  foreach state in exists task::STATE default ( @() ) do
+#    let targetState := exists 
+#%
+#CONST(tpl_te_transition, OS_CONST) tpl_te_transitions_of_% !task::NAME %_from_% !state::NAME %_to_% !state %;%
+#  end loop
+#end foreach
 
 foreach task in TASKS do
 %
