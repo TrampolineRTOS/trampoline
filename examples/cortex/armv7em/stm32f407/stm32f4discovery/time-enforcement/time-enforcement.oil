@@ -23,8 +23,8 @@ CPU blink {
 
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
-      APP_SRC = "blink.c";
-      APP_NAME = "blink_exe";
+      APP_SRC = "time-enforcement.c";
+      APP_NAME = "time-enforcement_exe";
       CFLAGS  = "-O0";
       LDFLAGS = "-Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
@@ -49,22 +49,39 @@ CPU blink {
 
   TASK t_delay {
     PRIORITY = 1;
-    AUTOSTART = TRUE;
+    AUTOSTART = TRUE {
+      APPMODE = std;
+    };
     ACTIVATION = 1;
     SCHEDULE = FULL;
+
   };
 
   TASK t_nodelay {
     PRIORITY = 2;
-    AUTOSTART = TRUE;
+    AUTOSTART = TRUE {
+      APPMODE = std;
+    };
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  ALARM te_100ms {
+  ALARM alarm_t_delay_100ms {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = blink;
+      TASK = t_delay;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 100;
+      CYCLETIME = 100;
+    };
+  };
+
+  ALARM alarm_t_nodelay_100ms {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = t_nodelay;
     };
     AUTOSTART = TRUE {
       APPMODE = std;

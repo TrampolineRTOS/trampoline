@@ -1,5 +1,7 @@
 #include "tp.h"
 #include "tpl_os.h"
+#include "tpl_os_kernel.h" /* FIXME: provides definition of tpl_kern, see below */
+#include "tpl_os_time_model.h"
 
 #define APP_Task_t_delay_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -49,22 +51,28 @@ FUNC(void, OS_CODE) PreUserServiceHook(uint32 serviceID) {
     /*
      * Identify the transitions that has been taken
      */
-    tpl_te_model_state source_state = tpl_te_model_states[running];
-    tpl_te_transition** trans_function = tpl_te_models[running];
-    tpl_te_transition* outgoings = trans_function[source_state].transitions;
-    uint8 outgoings_count = trans_function[source_state].count;
-    uint8 cpt = 0;
-    while ((cpt < outgoings_count) && (outgoings[cpt].service_id != serviceID)) {
+    tpl_te_model_state source_state          = tpl_te_model_states[running];
+    tpl_te_outgoings* model                  = tpl_te_models[running];
+    tpl_te_transition* candidate_transitions = model[source_state].transitions;
+    uint8 candidate_count                    = model[source_state].count;
+    uint8 cpt                                = 0;
+
+    while 
+      (
+           (cpt < candidate_count) 
+        && (candidate_transitions[cpt].service_id != serviceID)
+      ) 
+    {
         cpt++;
     }
-    tpl_te_transition trans = outgoings[cpt];
+    tpl_te_transition* transition = &(candidate_transitions[cpt]);
    
     /* Wait for eft if the transistion has been fired early */
-    tpl_te_earliest_firing_time eft = trans.eft;
+    tpl_te_earliest_firing_time eft = transition->eft;
     tpl_te_wait_enforcement_timer(0, eft);
 
     /* Update current state */
-    tpl_te_states[running] = trans.target_state;
+    tpl_te_states[running] = transition->target_state;
 }
 
 FUNC(void, OS_CODE) PostUserServiceHook(uint32 serviceID) {
@@ -73,20 +81,10 @@ FUNC(void, OS_CODE) PostUserServiceHook(uint32 serviceID) {
 
 FUNC(void, OS_CODE) PreTaskHook()
 {
-  TaskType task_id = 0;
-  GetTaskID(&task_id);
-  if (task_id == blink) {
-    ledOn(ORANGE);
-  }
 }
 
 FUNC(void, OS_CODE) PostTaskHook()
 {
-  TaskType task_id = 0;
-  GetTaskID(&task_id);
-  if (task_id == blink) {
-    ledOff(ORANGE);
-  }
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
