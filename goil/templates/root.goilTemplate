@@ -1412,8 +1412,77 @@ end repeat
 template if exists root_check in check
 
 #------------------------------------------------------------------------------*
+# Build the list of API functions used by the application
 #
+
+let APIMAP := mapof APICONFIG by NAME
+let APIUSED := @()
+
+let APIUSED += APIMAP["os"]
+let APIUSED += APIMAP["interrupt"]
+
 #
+# Check and generate system calls
+#
+if [TRANSACTION length] > 0 then
+let APIUSED += APIMAP["stm"]
+end if
+if [TASKS length] > 0 then
+  let APIUSED += APIMAP["task"]
+end if
+if [RESOURCES length] > 0 | OS::USERESSCHEDULER then
+  let APIUSED += APIMAP["resource"]
+end if
+if [TASKS length] > 0  & [EVENTS length] > 0 then
+  let APIUSED += APIMAP["event"]
+end if
+if [ALARMS length] > 0 then
+  let APIUSED += APIMAP["alarm"]
+end if
+if [MESSAGES length] > 0 then
+  let APIUSED += APIMAP["message"]
+end if
+
+if exists SEMAPHORE then
+  if [SEMAPHORE length] > 0 then
+    let APIUSED += APIMAP["semaphore"]
+  end if
+end if
+
+# AUTOSAR
+if OS::SCALABILITYCLASS > 0 then
+  let APIUSED += APIMAP["counter"]
+  let APIUSED += APIMAP["scheduletables"]
+  let APIUSED += APIMAP["isrs"]
+end if
+if OS::SCALABILITYCLASS > 2 then
+  let APIUSED += APIMAP["applications"]
+end if
+if OS::SCALABILITYCLASS == 2 | OS::SCALABILITYCLASS == 4 then
+  let APIUSED += APIMAP["globaltime"]
+end if
+
+# Multicore
+if OS::NUMBER_OF_CORES > 1 then
+  let APIUSED += APIMAP["multicore"]
+  warning here: "Adding multicore"
+
+  if [SPINLOCK length] > 0 then
+    let APIUSED += APIMAP["spinlock"]
+  end if
+
+end if
+
+# IOC
+if ioc_queued_count > 0 then
+  let APIUSED += APIMAP["ioc_queued"]
+end if
+if ioc_unqueued_count > 0 then
+  let APIUSED += APIMAP["ioc_unqueued"]
+end if
+
+#------------------------------------------------------------------------------*
+
 %
 Goil run on % !TIMESTAMP%
 Generated files are:

@@ -1,5 +1,9 @@
 IMPLEMENTATION stm32f407 {
 
+  OS {
+    BOOLEAN TIMEENFORCEMENT = FALSE;
+  };
+   
   DEVICE_KIND [] {
     STRUCT {
       UINT32 OFFSET;
@@ -43,6 +47,10 @@ CPU stm32f407 {
     CFILE = "tpl_time_enforcement.c";
   };
 
+  GENERATED_FILES time_enforcement {
+    CFILE = "tpl_time_enforcement_data.c";
+  };
+  
   CORTEX stm32f407 {
     PRIO_BITS = 4;
     CLOCK = 168000000;

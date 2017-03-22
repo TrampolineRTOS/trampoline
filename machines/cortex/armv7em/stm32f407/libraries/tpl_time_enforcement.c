@@ -98,5 +98,17 @@ FUNC(void, OS_APPL_CODE) tpl_set_enforcement_timer(
   TIM_SetCounter(TIM5, time);
 }
 
+FUNC(void, OS_APPL_CODE) tpl_save_enforcement_timer(
+  CONST(tpl_proc_id, AUTOMATIC) task_id)
+{
+  tpl_time_enforcement_timers[task_id] = TIM_GetCounter(TIM5);
+}
+
+FUNC(void, OS_APPL_CODE) tpl_restore_enforcement_timer(
+  CONST(tpl_proc_id, AUTOMATIC) task_id)
+{
+  TIM_SetCounter(TIM5, tpl_time_enforcement_timers[task_id]);
+}
+
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"

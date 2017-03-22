@@ -48,6 +48,19 @@ ISR(isr_button)
   ledToggle(RED);
   ActivateTask(read_button);
 }
+
+ISR(isr_toto)
+{
+
+}
+ISR(isr_titi)
+{
+
+}
+ISR(isr_tata)
+{
+
+}
 #define APP_ISR_isr_button_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -61,4 +74,3 @@ FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-

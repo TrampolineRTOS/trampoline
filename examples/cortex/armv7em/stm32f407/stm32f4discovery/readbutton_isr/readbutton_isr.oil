@@ -73,6 +73,35 @@ CPU readbutton_isr {
   ISR isr_button {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = EXTI0_IRQ { PIN = PA0 { TRIGGER = RISING; PULL = NONE; }; };
+    SOURCE = EXTI0_IRQ {
+      PIN = PA0 {
+        TRIGGER = RISING;
+        PULL = NONE;
+      };
+    };
+  };
+
+  ISR isr_toto {
+    CATEGORY = 2;
+    PRIORITY = 2;
+    SOURCE = USART1_IRQ {
+      EVFLAG = TXE;
+    };
+  };
+
+  ISR isr_titi {
+    CATEGORY = 2;
+    PRIORITY = 3;
+    SOURCE = USART2_IRQ {
+      EVFLAG = RXNE;
+    };
+  };
+
+  ISR isr_tata {
+    CATEGORY = 2;
+    PRIORITY = 4;
+    SOURCE = USART3_IRQ {
+      EVFLAG = CTS;
+    };
   };
 };

@@ -42,6 +42,7 @@ CPU blink {
       MEMORY_PROTECTION = FALSE;
     };
     USERSERVICEHOOK = TRUE;
+    TIMEENFORCEMENT = TRUE;
   };
 
   APPMODE std {};

@@ -57,6 +57,9 @@
 #if SPINLOCK_COUNT > 0
 # include "tpl_as_spinlock_kernel.h"
 #endif
+#if WITH_TIMEENFORCEMENT == YES
+#include "tpl_time_enforcement.h"
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -648,6 +651,11 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     /* The current running task becomes READY */
     TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
 
+#if WITH_TIMEENFORCEMENT == YES
+    /* Save the current time enforcement timer */
+    tpl_save_enforcement_timer(TPL_KERN_REF(kern).running_id);
+#endif
+
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
@@ -675,6 +683,11 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   TPL_KERN_REF(kern).running = TPL_KERN_REF(kern).elected;
   TPL_KERN_REF(kern).s_running = TPL_KERN_REF(kern).s_elected;
   TPL_KERN_REF(kern).running_id = TPL_KERN_REF(kern).elected_id;
+
+  #if WITH_TIMEENFORCEMENT == YES
+      /* Retore the current time enforcement timer */
+      tpl_restore_enforcement_timer(TPL_KERN_REF(kern).running_id);
+  #endif
 
   DOW_DO(printf(
     "start %s, %d\n",
@@ -1119,6 +1132,11 @@ FUNC(void, OS_CODE) tpl_init_proc(
 
   /*  set the resources list to NULL                                    */
   dyn->resources = NULL;
+
+#if WITH_TIMEENFORCEMENT == YES
+  /*  Init the timer for time enforcement */
+  tpl_time_enforcement_timers[proc_id] = tpl_time_enforcement_timers_init[proc_id];
+#endif
   /*  context init is machine dependant
       tpl_init_context is declared in tpl_machine_interface.h           */
   tpl_init_context(proc_id);

@@ -49,3 +49,9 @@ end write
 write to PROJECT+"/tpl_cortex_definitions.h":
  template if exists tpl_cortex_definitions_h in code
 end write
+
+if OS::TIMEENFORCEMENT then
+  write to PROJECT+"/tpl_time_enforcement_data.c":
+    template if exists tpl_time_enforcement_data_c in code
+  end write
+end if

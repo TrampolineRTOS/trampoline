@@ -34,8 +34,10 @@ TASK(back)
   while(1)
   {
     VAR(uint32, AUTOMATIC) date = tpl_get_enforcement_timer();
-    tpl_wait_enforcement_timer(date, date+500000);
+    tpl_wait_enforcement_timer(date, date+5);
     ledToggle(RED);
+    TaskType myId;
+    GetTaskID(&myId);
   }
 }
 
@@ -51,7 +53,11 @@ FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 {
 }
 
-FUNC(void, OS_CODE) UserServiceHook(uint32 serviceID) {
+FUNC(void, OS_CODE) PreUserServiceHook(uint32 serviceID) {
+    ledToggle(GREEN);
+}
+
+FUNC(void, OS_CODE) PostUserServiceHook(uint32 serviceID) {
     ledToggle(GREEN);
 }
 

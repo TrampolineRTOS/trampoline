@@ -99,6 +99,7 @@ end if
 #define WITH_MODULES_INIT                NO
 #define WITH_INIT_BOARD                  % !yesNo(exists OS::INITBOARD default (false)) %
 #define WITH_ISR2_PRIORITY_MASKING       % !yesNo(exists OS::ISR2_PRIORITY_MASKING default(false)) %
+#define WITH_TIMEENFORCEMENT             % !yesNo(exists OS::TIMEENFORCEMENT default(false)) %
 
 /*=============================================================================
  * Defines related to the key part of a ready list entry.

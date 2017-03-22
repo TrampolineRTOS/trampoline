@@ -28,9 +28,13 @@
 
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
+#include "tpl_app_custom_types.h"
 
 #define API_START_SEC_CODE
 #include "tpl_memmap.h"
+
+extern VAR(uint32, OS_VAR) tpl_time_enforcement_timers_init[];
+extern VAR(uint32, OS_VAR) tpl_time_enforcement_timers[];
 
 /*
  * Start a stopwatch
@@ -54,6 +58,18 @@ FUNC(uint32, OS_APPL_CODE) tpl_get_enforcement_timer(void);
  */
 FUNC(void, OS_APPL_CODE) tpl_set_enforcement_timer(
   CONST(uint32, AUTOMATIC) time);
+
+/*
+ * Save the enforcement timer to a table indexed by the task id
+ */
+FUNC(void, OS_APPL_CODE) tpl_save_enforcement_timer(
+  CONST(tpl_proc_id, AUTOMATIC) task_id);
+
+/*
+ * Retore the enforcement timer to a table indexed from the task id
+ */
+FUNC(void, OS_APPL_CODE) tpl_restore_enforcement_timer(
+  CONST(tpl_proc_id, AUTOMATIC) task_id);
 
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"

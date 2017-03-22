@@ -498,7 +498,7 @@ class Make:
         print ("  Dependence: \"" + dep + "\"")
       s = "  Command: "
       for cmd in rule.mCommand:
-        s += " \"" + cmd + "\""
+        s +=  " " + cmd
       print (s)
       print ("  Title: \"" + rule.mTitle + "\"")
       print ("  Delete target on error: " + ("yes" if rule.mDeleteTargetOnError else "no"))
