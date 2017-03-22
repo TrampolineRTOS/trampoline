@@ -12,4 +12,9 @@ typedef struct {
   CONST(tpl_te_earliest_firing_time, TYPEDEF) eft;
 } tpl_te_transition;
 
+typedef struct {
+  CONST(uint8, TYPEDEF)                       count;
+  CONSTP2CONST(tpl_te_transition, TYPEDEF, OS_CONST)    transitions;
+} tpl_te_outgoings;
+
 #endif
