@@ -23,7 +23,7 @@ TASK(t_delay)
 #define APP_Task_t_nodelay_START_SEC_CODE
 #include "tpl_memmap.h"
 
-TASK(back)
+TASK(t_nodelay)
 {
   ledToggle(RED);
   TerminateTask();
@@ -51,28 +51,31 @@ FUNC(void, OS_CODE) PreUserServiceHook(uint32 serviceID) {
     /*
      * Identify the transitions that has been taken
      */
-    tpl_te_model_state source_state          = tpl_te_model_states[running];
-    tpl_te_outgoings* model                  = tpl_te_models[running];
-    tpl_te_transition* candidate_transitions = model[source_state].transitions;
-    uint8 candidate_count                    = model[source_state].count;
-    uint8 cpt                                = 0;
+    if (tpl_state_table[running] != NULL) {
 
-    while 
-      (
-           (cpt < candidate_count) 
-        && (candidate_transitions[cpt].service_id != serviceID)
-      ) 
-    {
-        cpt++;
-    }
-    tpl_te_transition* transition = &(candidate_transitions[cpt]);
+        tpl_te_model_state current_state   = tpl_te_current_state[running];
+        tpl_te_transition const * transition_set = tpl_state_table[running][current_state].transitions;
+        uint8 transition_count             = tpl_state_table[running][current_state].count;
+
+        uint8 cpt = 0;
+        while 
+            (
+             (cpt < transition_count) 
+             && (transition_set[cpt].service_id != serviceID)
+            ) 
+            {
+                cpt++;
+            }
+        
+        tpl_te_transition const * transition = &(transition_set[cpt]);
    
-    /* Wait for eft if the transistion has been fired early */
-    tpl_te_earliest_firing_time eft = transition->eft;
-    tpl_te_wait_enforcement_timer(0, eft);
+        /* Wait for eft if the transistion has been fired early */
+        tpl_te_earliest_firing_time eft = transition->eft;
+        tpl_wait_enforcement_timer(0, eft);
 
-    /* Update current state */
-    tpl_te_states[running] = transition->target_state;
+        /* Update current state */
+        tpl_te_current_state[running] = transition->target_state;
+    }
 }
 
 FUNC(void, OS_CODE) PostUserServiceHook(uint32 serviceID) {
