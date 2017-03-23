@@ -82,8 +82,10 @@ FUNC(void, OS_APPL_CODE) tpl_wait_enforcement_timer(
         offset = absoluteDeadline - initialCurrentDate;
       }
 
-      while ( (TIM_GetCounter(TIM5) + offset) <
-              (absoluteDeadline + offset) );
+      uint32 currentDate;
+      do {
+        currentDate = TIM_GetCounter(TIM5);
+      } while ( (currentDate + offset) < (absoluteDeadline + offset) );
     }
 }
 

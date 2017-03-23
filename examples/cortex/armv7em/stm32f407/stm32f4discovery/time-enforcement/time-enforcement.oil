@@ -25,7 +25,7 @@ CPU blink {
             TRAMPOLINE_BASE_PATH = "../../../../../..";
             APP_SRC = "time-enforcement.c";
             APP_NAME = "time-enforcement_exe";
-            CFLAGS  = "-O0";
+            CFLAGS  = "-O1";
             LDFLAGS = "-Map=blink.map";
             COMPILER = "arm-none-eabi-gcc";
             ASSEMBLER = "arm-none-eabi-as";
@@ -59,7 +59,7 @@ CPU blink {
             INITIAL = TRUE;
             T = TerminateTask {
                 STATE = s2;
-                EFT   = 100;
+                EFT   = 1000;
             };
         };
 
@@ -88,8 +88,8 @@ CPU blink {
         };
         AUTOSTART = TRUE {
             APPMODE = std;
-            ALARMTIME = 100;
-            CYCLETIME = 100;
+            ALARMTIME = 1;
+            CYCLETIME = 1;
         };
     };
 
@@ -100,8 +100,8 @@ CPU blink {
         };
         AUTOSTART = TRUE {
             APPMODE = std;
-            ALARMTIME = 100;
-            CYCLETIME = 100;
+            ALARMTIME = 1;
+            CYCLETIME = 1;
         };
     };
 };
