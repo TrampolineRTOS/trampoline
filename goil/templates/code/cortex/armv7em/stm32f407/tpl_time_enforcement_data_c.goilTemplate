@@ -56,6 +56,8 @@ VAR(uint32, OS_VAR) tpl_time_enforcement_timers_init[TASK_COUNT];
 %
 let api_map := serviceid(APIUSED)
 
+let initialStateForTask := @[]
+
 #===============================================================================
 # Check the STATE of the TASK
 #
@@ -70,6 +72,7 @@ foreach task in TASKS do
       if exists state::INITIAL default (false) then
         let numberOfInitialState += 1
         let nameOfInitialState := state::NAME
+        let initialStateForTask[task::NAME] := nameOfInitialState
       end if
     end foreach
     if numberOfInitialState == 0 then
@@ -205,5 +208,33 @@ end foreach
 
 %
 #define OS_STOP_SEC_CONST_32BIT
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+%
+foreach task in TASKS
+  before
+%
+/*------------------------------------------------------------------------------
+ * Current states of task. Initialized to the initial state
+ */
+VAR(tpl_te_model_state, OS_APPL_DATA) tpl_te_current_state[] = {
+%
+  do
+    if exists initialStateForTask[task::NAME] then
+      %    INITIAL_STATE_OF_TASK_% !task::NAME
+    else
+      %    0%
+    end if
+  between %,
+%
+  after
+%
+};
+%
+end foreach
+%
+#define OS_STOP_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
