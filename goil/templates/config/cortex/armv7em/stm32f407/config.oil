@@ -26,6 +26,11 @@ IMPLEMENTATION stm32f407 {
           IDENTIFIER EVENT = AUTO;
           IDENTIFIER STATE;
           UINT32    EFT;
+        },
+        WaitEvent {
+            IDENTIFIER TASK = AUTO;
+            IDENTIFIER EVENT = AUTO;
+            UINT32  EFT;
         }
       ] T [];
       BOOLEAN INITIAL = FALSE;
