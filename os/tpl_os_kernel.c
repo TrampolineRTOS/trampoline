@@ -880,10 +880,6 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
   tpl_tp_reset_watchdogs(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-
-  /* copy it in old slot of tpl_kern */
-/*  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
-  TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;*/
 }
 
 /**

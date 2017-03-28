@@ -111,12 +111,15 @@ FUNC(void, OS_CODE) tpl_set_tpwatchdog(tpl_time t)
     TIM_SetCounter(TIM2, t-1);
     TIM2->EGR = TIM_PSCReloadMode_Immediate;
     TIM_Cmd(TIM2, ENABLE);
+    TIM2_IRQ_ClearFlag();
     TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
 }
 
 FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
 {
     TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
+    TIM2_IRQ_ClearFlag();
+    TIM_Cmd(TIM2, DISABLE);
 }
 
 FUNC(void, OS_CODE) tpl_timing_protection_isr(void)

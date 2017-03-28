@@ -51,7 +51,9 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(t1)
 {
-    static uint8 instance_t1 = 0;
+    volatile static uint8 instance_t1 = 0;
+
+    ledToggle(RED);
 
     instance_t1++;
     switch (instance_t1)
@@ -176,6 +178,10 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
             {
                 ledOn(GREEN);
             }
+            break;
+        default :
+            ledToggle(ORANGE);
+            break;
     }
     return PRO_TERMINATETASKISR;
 }
