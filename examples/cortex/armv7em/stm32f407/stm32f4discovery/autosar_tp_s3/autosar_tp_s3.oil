@@ -1,5 +1,5 @@
 /**
- * @file autosar_tp_s2/autosar_tp_s2.oil
+ * @file autosar_tp_s3/autosar_tp_s3.oil
  *
  * @section desc File description
  *
@@ -34,7 +34,6 @@
 
 OIL_VERSION = "3.1" : "autosar_st_s1" ;
 
-
 IMPLEMENTATION trampoline {
 
     TASK {
@@ -54,7 +53,7 @@ CPU test {
         STATUS = EXTENDED;
         SYSTEM_CALL = TRUE;
         BUILD = TRUE {
-            APP_SRC = "autosar_tp_s2.c";
+            APP_SRC = "autosar_tp_s3.c";
             APP_SRC = "tpl_timing_protection.c";
             APP_NAME = "autosar_tp_s1_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
@@ -83,13 +82,15 @@ CPU test {
     APPMODE std {};
 
     TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std; };
-        PRIORITY = 2;
+        AUTOSTART = TRUE { 
+            APPMODE = std; 
+        };
+        PRIORITY = 3;
         ACTIVATION = 1;
         SCHEDULE = FULL;
         TIMING_PROTECTION = TRUE {
             EXECUTIONBUDGET = 2500; 
-            TIMEFRAME = 0;
+            TIMEFRAME = 1;
         };
         EVENT = t1_event1;
         STATE s1 {
@@ -102,7 +103,7 @@ CPU test {
         STATE s2 {
             T = WaitEvent {
                 STATE = s3;
-                EFT  = 0;
+                EFT = 0;
             };
         };
         STATE s3 {
@@ -114,68 +115,39 @@ CPU test {
         STATE s4 {
             T = TerminateTask {
                 STATE = s1;
-                EFT = 3500;
+                EFT = 3000;
             };
         };
     };
 
     TASK t2 {
-        AUTOSTART = FALSE;
-        PRIORITY = 3;
+        AUTOSTART = TRUE { 
+            APPMODE = std; 
+        };
+        PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = FULL;
+        STATE s1 {
+            INITIAL = TRUE;
+            T = TerminateTask {
+                STATE = s1;
+                EFT = 3000;
+            };
+        };
     };
-
+    
     TASK t3 {
         AUTOSTART = TRUE { 
             APPMODE = std; 
         };
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-        TIMING_PROTECTION = TRUE {
-            EXECUTIONBUDGET = 3000;
-            TIMEFRAME = 0;
-        };
-        EVENT = t3_event1;
-        STATE s1 {
-            INITIAL = TRUE;
-            T = WaitEvent {
-                STATE = s2;
-                EFT = 0;
-            };
-        };
-        STATE s2 {
-            T = TerminateTask {
-                STATE = s1;
-                EFT = 3500;
-            };
-        };
-    };
-
-    TASK t4 {
-        AUTOSTART = FALSE;
         PRIORITY = 1;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
 
-    SCHEDULETABLE sched1 {
-        COUNTER = SystemCounter;
-        AUTOSTART = RELATIVE { OFFSET = 1; APPMODE = std; };
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = TRUE;
-        LENGTH = 5;
-        EXPIRY_POINT exp1 {
-            OFFSET = 0;
-            ACTION = SETEVENT {
-                TASK = t1;
-                EVENT = t1_event1;
-            };
-        };
+    EVENT t1_event1 { 
+        MASK = AUTO;
     };
-    EVENT t1_event1{ MASK = AUTO;};
-    EVENT t3_event1{ MASK = AUTO;};
 };
 
-/* End of file autosar_tp_s2/autosar_tp_s2.oil */
+/* End of file autosar_tp_s3/autosar_tp_s3.oil */
