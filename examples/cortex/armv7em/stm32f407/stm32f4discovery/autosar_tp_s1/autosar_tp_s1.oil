@@ -57,7 +57,7 @@ CPU test {
             APP_SRC = "tpl_timing_protection.c";
             APP_NAME = "autosar_tp_s1_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
-            CFLAGS = "-O1";
+            CFLAGS = "-O0";
             LDFLAGS = "-Map=blink.map";
             COMPILER = "arm-none-eabi-gcc";
             ASSEMBLER = "arm-none-eabi-as";
@@ -76,16 +76,11 @@ CPU test {
         USERSERVICEHOOK = TRUE;
         TIMEENFORCEMENT = TRUE;
         SHUTDOWNHOOK = TRUE;
+        STARTUPHOOK = TRUE;
         PROTECTIONHOOK = TRUE;
     };
 
     APPMODE std {};
-
-    ISR isr_tpl_tp {
-        CATEGORY = 1;
-        PRIORITY = 2;
-        SOURCE = TIM2_IRQ;
-    };
 
     TASK t1 {
         AUTOSTART = FALSE;

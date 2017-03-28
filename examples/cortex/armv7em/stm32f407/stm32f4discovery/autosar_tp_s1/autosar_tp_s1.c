@@ -43,7 +43,7 @@
 FUNC(int, OS_APPL_CODE) main(void)
 {
     initBoard();
-    tpl_init_tp();
+/*    tpl_init_tp(); */
     tpl_start_enforcement_timer();
     StartOS(OSDEFAULTAPPMODE);
     return 0;
@@ -156,14 +156,14 @@ FUNC(void, OS_CODE) PostUserServiceHook(void *arg1, void *arg2, void *arg3, uint
 }
 
 FUNC(void, OS_CODE) ShutdownHook(StatusType error)
-{ 
-    ledOn(RED); 
+{
+    ledOn(RED);
 }
 
 FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
 {
     static uint8 instance_protection = 0;
-    
+
     instance_protection++;
     switch (instance_protection)
     {
@@ -171,6 +171,7 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
             {
                 ledOn(BLUE);
             }
+            break;
         case 2 :
             {
                 ledOn(GREEN);
@@ -178,6 +179,12 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
     }
     return PRO_TERMINATETASKISR;
 }
+
+FUNC(void, OS_CODE) StartupHook(void)
+{
+  tpl_init_tp();
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

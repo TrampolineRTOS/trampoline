@@ -83,6 +83,12 @@ end foreach
 %
 /* External handlers */
 %
+
+if OS::TIMINGPROTECTION then
+%extern FUNC(void, OS_CODE) tpl_primary_irq_handler_timing_protection(void);
+%
+end if
+
 loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   do
     let handlerIsEmpty := true
@@ -211,6 +217,9 @@ __attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it
               end if
             end if
           end foreach
+        elsif int::NAME == "TIM2_IRQ" & OS::TIMINGPROTECTION then
+          let handlerIsEmpty := false
+          %(tpl_it_handler)tpl_primary_irq_handler_timing_protection%
         else
           if int::EXCEPTION then
             let handlerIsEmpty := false

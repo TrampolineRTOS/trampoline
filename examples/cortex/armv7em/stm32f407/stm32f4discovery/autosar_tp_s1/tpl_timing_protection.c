@@ -40,6 +40,14 @@
 #include "tpl_memmap.h"
 TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
+#define OS_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -56,16 +64,18 @@ FUNC(void, OS_CODE) tpl_init_tp(void)
 
   /* Enable the TIM2 gloabal Interrupt */
   NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 15;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 
+  NVIC->IP[TIM2_IRQn] = 15 << 4;
+
   /* Time base configuration */
-  /* Prescaler so the counter count every milli */
+  /* Prescaler so the counter count every microsecond */
   TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1;
 
-  /* Time set to 0 ms */
+  /* Time set to 0 microseconds */
   TIM_TimeBaseStructure.TIM_Period = 0;
 
   TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -75,20 +85,33 @@ FUNC(void, OS_CODE) tpl_init_tp(void)
   TIM_SelectOnePulseMode(TIM2, TIM_OPMode_Single);
 }
 
-
 /*
  * Get the current value of the timing protection timer
+ *
+ * The value is in microseconds. It is computed from the tpl_time_counter variable
+ * which is incremented by the Systick handler and the current value of the Systick
+ * timer. The Systick time decrements from SystemCoreClock / 1000 - 1 to 0. So, its
+ * value in microseconds is equal to:
+ * ((SystemCoreClock / 1000)  - SYST_CVR - 1) / ((SystemCoreClock / 1000000) - 1)
+ *
+ *
  */
 FUNC(tpl_time, OS_CODE) tpl_get_tptimer(void)
 {
-    return TIM_GetCounter(TIM2);
+    CONST(uint32, AUTOMATIC) millisTickDivision = SystemCoreClock / 1000;
+    CONST(uint32, AUTOMATIC) microsTickDivision = millisTickDivision / 1000;
+    CONST(uint32, AUTOMATIC) upSysTickValue = millisTickDivision - SysTick->VAL - 1;
+    CONST(uint32, AUTOMATIC) microseconds = upSysTickValue / microsTickDivision;
+    return tpl_time_counter * 1000 + microseconds;
 }
 
 FUNC(void, OS_CODE) tpl_set_tpwatchdog(tpl_time t)
 {
-    TIM_TimeBaseStructure.TIM_Period = t-1;
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    TIM_SetAutoreload(TIM2, t-1);
+    TIM_SetCounter(TIM2, t-1);
+    TIM2->EGR = TIM_PSCReloadMode_Immediate;
     TIM_Cmd(TIM2, ENABLE);
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
 }
 
 FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
@@ -96,10 +119,13 @@ FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
     TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
 }
 
-ISR(isr_tpl_tp)
+FUNC(void, OS_CODE) tpl_timing_protection_isr(void)
 {
-    tpl_watchdog_expiration();
+  tpl_watchdog_expiration();
+  TIM2_IRQ_ClearFlag();
+  TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
 }
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

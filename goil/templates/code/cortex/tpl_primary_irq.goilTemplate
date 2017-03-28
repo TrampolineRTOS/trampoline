@@ -162,6 +162,108 @@ foreach irq in irqStageList
 %
 end foreach
 
+if OS::TIMINGPROTECTION then
+%
+/*=============================================================================
+ * IRQ Handler for IRQ tpl_primary_irq_handler_timing_protection with source
+ * vector TIM2_IRQ
+ ******************************************************************************/
+%
+  let handlerSource := "timing_protection"
+  let handlerIRQ := "tpl_timing_protection_isr"
+%
+.global tpl_primary_irq_handler_% !handlerSource %
+.type   tpl_primary_irq_handler_% !handlerSource %, \%function
+
+/*---------------------------------------------------------------------------*/
+tpl_primary_irq_handler_% !handlerSource %:
+
+    /*-----------------------------------------------------------------------*
+     * Once here the stack has been changed to the master stack.             *
+     * So SP is MSP, not PSP                                                 *
+     *-----------------------------------------------------------------------*/
+
+    /*-------------------------------------------------------------------------
+     * 1 - Save the LR on the stack
+     */
+    push {lr}
+
+    /*-------------------------------------------------------------------------
+     * 2 - Reset the tpl_kern variables
+     */
+    ldr  r0,=tpl_kern
+    movs r1,#NO_NEED_SWITCH_NOR_SCHEDULE
+    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
+    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
+
+    /*-------------------------------------------------------------------------
+     * 3 - Interrupt function call
+     */
+    bl   % !handlerIRQ %
+
+    /*-------------------------------------------------------------------------
+     * 4 - Check the context switch condition in tpl_kern
+     */
+    ldr  r1,=tpl_kern
+    ldrb r2,[r1,#TPL_KERN_OFFSET_NEED_SWITCH]
+    cmp  r2,#NO_NEED_SWITCH
+    beq  tpl_% !handlerSource %_no_context_switch
+
+    /*-------------------------------------------------------------------------
+     * 4b - Prepare the call to tpl_run_elected by setting r0 to 0, aka no save
+     */
+    movs r0,0
+    
+    /*-------------------------------------------------------------------------
+     * 4c - Check the save condition
+     */
+    movs r3,#NEED_SAVE
+    tst  r2,r3
+    beq  timing_protection_no_save_running_context
+    
+    /*-------------------------------------------------------------------------
+     * 5 - Save context
+     *     Load in r0 the pointer to the static descriptor of the running task
+     *     r1 already points to tpl_kern (from stage 4)
+     */
+    ldr  r0,[r1,#TPL_KERN_OFFSET_S_RUNNING]
+    bl   tpl_save_context_under_it
+
+    /*-------------------------------------------------------------------------
+     * 5b - Prepare the call to tpl_run_elected by setting r0 to 1, aka save
+     */
+    movs r0,#1
+
+timing_protection_no_save_running_context:
+
+    /*-------------------------------------------------------------------------
+     * 6 - Call tpl_run_elected.
+     *     The argument is a boolean which is true if the process is
+     *     preempted. Here it is true because in an interrupt handler
+     *     a process is inevitably preempted
+     */
+    bl   tpl_run_elected
+
+    /*-------------------------------------------------------------------------
+     * 7 - Load context
+     *     Load in r0 the pointer to the context of the running task.
+     *     It has been changed by tpl_run_elected
+     */
+    ldr  r0,=tpl_kern
+    ldr  r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
+    bl   tpl_load_context_under_it
+
+tpl_% !handlerSource %_no_context_switch:
+
+    /*-------------------------------------------------------------------------
+     * 8 - pop LR that was saved at stage 1 into PC and return from the handler
+     */
+    pop  {pc}
+
+/*---------------------------------------------------------------------------*/
+%
+end if
+
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
