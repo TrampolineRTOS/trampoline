@@ -107,8 +107,8 @@ CPU test {
         STATE s3 {
             T = TerminateTask {
                 STATE = s1;
-//                EFT = 3000;
-                EFT = 0;
+                EFT = 3000;
+//                EFT = 0;
             };
         };
     };
@@ -133,8 +133,8 @@ CPU test {
             INITIAL = TRUE;
             T = TerminateTask {
                 STATE = s1;
-                EFT = 0;
-//                EFT = 3000;
+//                EFT = 0;
+                EFT = 3000;
             };
         };
     };

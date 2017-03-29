@@ -49,13 +49,15 @@ FUNC(int, OS_APPL_CODE) main(void)
     return 0;
 }
 
+volatile uint8 instance_t1 = 0;
+
 TASK(t1)
 {
-    volatile static uint8 instance_t1 = 0;
 
-    ledToggle(RED);
+    ledToggle(ORANGE);
 
     instance_t1++;
+
     switch (instance_t1)
     {
         case 1 :
@@ -133,7 +135,7 @@ FUNC(void, OS_CODE) PreUserServiceHook(void *arg1, void *arg2, void *arg3, uint3
             uint8 transition_count                   = tpl_state_table[running][current_state].count;
 
             uint8 cpt = 0;
-            while( (cpt < transition_count) && (transition_set[cpt].service_id < serviceID) )
+            while( (cpt < transition_count) && (transition_set[cpt].service_id != serviceID) )
             {
                 cpt++;
             }
@@ -144,8 +146,9 @@ FUNC(void, OS_CODE) PreUserServiceHook(void *arg1, void *arg2, void *arg3, uint3
                 /* Wait for eft if the transistion has been fired early */
                 tpl_te_earliest_firing_time eft = transition->eft;
                 uint32 currentTime = tpl_get_enforcement_timer();
-                tpl_wait_enforcement_timer(currentTime, currentTime+eft);
-
+                if (currentTime < eft) {
+                  tpl_wait_enforcement_timer(currentTime, eft);
+                }
                 /* Update current state */
                 tpl_te_current_state[running] = transition->target_state;
             }
@@ -180,7 +183,6 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
             }
             break;
         default :
-            ledToggle(ORANGE);
             break;
     }
     return PRO_TERMINATETASKISR;

@@ -72,17 +72,19 @@ FUNC(void, OS_CODE) tpl_init_tp(void)
   NVIC->IP[TIM2_IRQn] = 15 << 4;
 
   /* Time base configuration */
+  TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
+
   /* Prescaler so the counter count every microsecond */
   TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1;
 
-  /* Time set to 0 microseconds */
-  TIM_TimeBaseStructure.TIM_Period = 0;
+  /* Time set to maximum  */
+  TIM_TimeBaseStructure.TIM_Period = 0xFFFFFFFF;
 
-  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
+  TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
   TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-  TIM_SelectOnePulseMode(TIM2, TIM_OPMode_Single);
+  TIM_SelectOnePulseMode(TIM2, TIM_OPMode_Repetitive);
 }
 
 /*
@@ -107,26 +109,48 @@ FUNC(tpl_time, OS_CODE) tpl_get_tptimer(void)
 
 FUNC(void, OS_CODE) tpl_set_tpwatchdog(tpl_time t)
 {
+    CONST(tpl_time, AUTOMATIC) delay = t - 1;
+
+    /* Load the timer with the delay */
+    TIM2->ARR = delay;
+    TIM2->CNT = 0;
+
+    /* Enable the timer */
+    TIM2->CR1 |= TIM_CR1_CEN;
+
+     /* Clear the Update Interrupt Flag */
+    TIM2->SR &= ~TIM_IT_Update;
+
+    /* Enable the interrupt */
+    TIM2->DIER |= TIM_IT_Update;
+
+   /* Generate and event to start it */
+/*    TIM2->EGR = TIM_PSCReloadMode_Immediate; */
+
+
+/*
     TIM_SetAutoreload(TIM2, t-1);
     TIM_SetCounter(TIM2, t-1);
     TIM2->EGR = TIM_PSCReloadMode_Immediate;
     TIM_Cmd(TIM2, ENABLE);
     TIM2_IRQ_ClearFlag();
     TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+ */
 }
 
 FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
 {
     TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
-    TIM2_IRQ_ClearFlag();
     TIM_Cmd(TIM2, DISABLE);
+    TIM2_IRQ_ClearFlag();
 }
 
 FUNC(void, OS_CODE) tpl_timing_protection_isr(void)
 {
-  tpl_watchdog_expiration();
-  TIM2_IRQ_ClearFlag();
+  TIM_Cmd(TIM2, DISABLE);
   TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
+  TIM2_IRQ_ClearFlag();
+  tpl_watchdog_expiration();
 }
 
 #define OS_STOP_SEC_CODE
