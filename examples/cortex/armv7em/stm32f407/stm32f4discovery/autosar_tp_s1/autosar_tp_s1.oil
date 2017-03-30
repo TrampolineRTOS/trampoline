@@ -122,7 +122,7 @@ CPU test {
 
     TASK t3 {
         AUTOSTART = FALSE;
-        PRIORITY = 3;
+        PRIORITY = 4;
         ACTIVATION = 1;
         SCHEDULE = FULL;
         TIMING_PROTECTION = TRUE {
