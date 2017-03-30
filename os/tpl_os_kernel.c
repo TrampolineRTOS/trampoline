@@ -1131,7 +1131,8 @@ FUNC(void, OS_CODE) tpl_init_proc(
 
 #if WITH_TIMEENFORCEMENT == YES
   /*  Init the timer for time enforcement */
-  tpl_time_enforcement_timers[proc_id] = tpl_time_enforcement_timers_init[proc_id];
+  tpl_time_enforcement_timers[proc_id] = 0;
+  /*  tpl_time_enforcement_timers[proc_id] = tpl_time_enforcement_timers_init[proc_id]; */
 #endif
   /*  context init is machine dependant
       tpl_init_context is declared in tpl_machine_interface.h           */

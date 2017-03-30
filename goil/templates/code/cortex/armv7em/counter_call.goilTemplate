@@ -65,14 +65,14 @@ foreach objCounter in counterForIRQ do
 FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
 {
 %
-  foreach obj in objCounter do
-  %  tpl_counter_tick(&% !obj %_counter_desc);
-%
-  end foreach
   if obj_KEY == "SysTick" then
     %  tpl_time_counter++;
 %
   end if
+  foreach obj in objCounter do
+  %  tpl_counter_tick(&% !obj %_counter_desc);
+%
+  end foreach
   if OS::NUMBER_OF_CORES == 1 then
 %
   if (tpl_kern.need_schedule == TRUE)
