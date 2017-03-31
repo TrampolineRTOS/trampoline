@@ -23,14 +23,14 @@ IMPLEMENTATION stm32f407 {
         },
         SetEvent {
           IDENTIFIER TASK = AUTO;
-          IDENTIFIER EVENT = AUTO;
+          IDENTIFIER EVENT[] = AUTO;
           IDENTIFIER STATE;
           UINT32    EFT;
         },
         WaitEvent {
-            IDENTIFIER TASK = AUTO;
-            IDENTIFIER EVENT = AUTO;
-            UINT32  EFT;
+          IDENTIFIER EVENT[] = AUTO;
+          IDENTIFIER STATE;
+          UINT32  EFT;
         }
       ] T [];
       BOOLEAN INITIAL = FALSE;

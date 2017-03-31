@@ -100,7 +100,7 @@ CPU test {
         STATE s2 {
             T = TerminateTask {
                 STATE = s1;
-                EFT = 20; /* 2 ms */
+                EFT = 2000; /* 2 ms */
             };
         };
     };
