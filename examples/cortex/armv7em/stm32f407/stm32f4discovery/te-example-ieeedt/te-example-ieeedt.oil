@@ -57,7 +57,7 @@ CPU test {
             APP_SRC = "tpl_timing_protection.c";
             APP_NAME = "autosar_tp_s1_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
-            CFLAGS = "-O0";
+            CFLAGS = "-O3";
             LDFLAGS = "-Map=blink.map";
             COMPILER = "arm-none-eabi-gcc";
             ASSEMBLER = "arm-none-eabi-as";
@@ -118,6 +118,20 @@ CPU test {
         TIMING_PROTECTION = TRUE {
             EXECUTIONBUDGET = 7000; /* 7 ms */
             TIMEFRAME = 1;
+        };
+        STATE s1 {
+            INITIAL = TRUE;
+            T = CancelAlarm {
+                STATE = s2;
+                EFT = 8000;
+            };
+        };
+        STATE s2 {
+            T = TerminateTask {
+                STATE = s1;
+                EFT = 0;
+//                EFT = 8000; /* 2 ms */
+            };
         };
     };
 

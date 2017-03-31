@@ -51,7 +51,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 FUNC(void, OS_APPL_CODE) waitMilliseconds(int milliseconds)
 {
     volatile int i;
-    for (i = 0; i < milliseconds*12000; i++);
+    for (i = 0; i < milliseconds*16800; i++);
 }
 
 DeclareEvent(e_t1_offset);
@@ -63,7 +63,7 @@ TASK(t1)
     WaitEvent(e_t1_offset);
 
     /* do some computations */
-    waitMilliseconds(6);
+    waitMilliseconds(8);
 
     TerminateTask();
 }
@@ -74,7 +74,7 @@ TASK(t1)
 #include "tpl_memmap.h"
 TASK(t2)
 {
-    SetRelAlarm(a_t2_timeout, 12, 0);
+    SetRelAlarm(a_t2_timeout, 17, 0);
 
     /* do some computations */
     waitMilliseconds(5);
@@ -109,6 +109,7 @@ FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 }
 
 FUNC(void, OS_CODE) PreUserServiceHook(void *arg1, void *arg2, void *arg3, uint32 serviceID) {
+//  ledOn(RED);
     /*
      * TODO: get proc_id through parameters
      * FIXME: not functionnal w/ memory protection activated
@@ -142,13 +143,15 @@ FUNC(void, OS_CODE) PreUserServiceHook(void *arg1, void *arg2, void *arg3, uint3
                 tpl_te_earliest_firing_time eft = transition->eft;
                 uint32 currentTime = tpl_get_enforcement_timer();
                 if (currentTime < eft) {
-                  tpl_wait_enforcement_timer(currentTime, eft);
+//     ledOff(RED);
+                 tpl_wait_enforcement_timer(currentTime, eft);
                 }
                 /* Update current state */
                 tpl_te_current_state[running] = transition->target_state;
             }
         }
     }
+//     ledOff(RED);
 }
 
 FUNC(void, OS_CODE) PostUserServiceHook(void *arg1, void *arg2, void *arg3, uint32 serviceID) {
@@ -167,6 +170,8 @@ FUNC(void, OS_CODE) ShutdownHook(StatusType error)
 
 FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
 {
+    ledOn(RED);
+/*
     static uint8 instance_protection = 0;
 
     instance_protection++;
@@ -174,7 +179,6 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
     {
         case 1 :
             {
-                ledOn(RED);
             }
             break;
         case 2 :
@@ -185,6 +189,7 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
         default :
             break;
     }
+ */
     return PRO_TERMINATETASKISR;
 }
 
