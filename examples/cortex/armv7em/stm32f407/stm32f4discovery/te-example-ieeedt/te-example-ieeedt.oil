@@ -78,6 +78,8 @@ CPU test {
         SHUTDOWNHOOK = TRUE;
         STARTUPHOOK = TRUE;
         PROTECTIONHOOK = TRUE;
+        PRETASKHOOK = TRUE;
+        POSTTASKHOOK = TRUE;
     };
 
     APPMODE std {};
@@ -100,7 +102,8 @@ CPU test {
         STATE s2 {
             T = TerminateTask {
                 STATE = s1;
-                EFT = 2000; /* 2 ms */
+                EFT = 0;
+//                EFT = 8000; /* 2 ms */
             };
         };
     };
@@ -114,12 +117,14 @@ CPU test {
         SCHEDULE = FULL;
         TIMING_PROTECTION = TRUE {
             EXECUTIONBUDGET = 7000; /* 7 ms */
-            TIMEFRAME = 0;
+            TIMEFRAME = 1;
         };
     };
 
     TASK t3 {
-        AUTOSTART = FALSE;
+        AUTOSTART = TRUE {
+            APPMODE = std;
+        };
         PRIORITY = 4;
         ACTIVATION = 1;
         SCHEDULE = FULL;

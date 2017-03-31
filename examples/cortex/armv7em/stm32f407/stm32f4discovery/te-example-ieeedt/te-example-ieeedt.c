@@ -1,5 +1,5 @@
 /**
- * @file te-example-ieeedt 
+ * @file te-example-ieeedt
  *
  * @section desc File description
  *
@@ -48,6 +48,12 @@ FUNC(int, OS_APPL_CODE) main(void)
     return 0;
 }
 
+FUNC(void, OS_APPL_CODE) waitMilliseconds(int milliseconds)
+{
+    volatile int i;
+    for (i = 0; i < milliseconds*12000; i++);
+}
+
 DeclareEvent(e_t1_offset);
 DeclareEvent(e_t2_timeout);
 DeclareAlarm(a_t2_timeout);
@@ -55,7 +61,10 @@ DeclareAlarm(a_t2_timeout);
 TASK(t1)
 {
     WaitEvent(e_t1_offset);
+
     /* do some computations */
+    waitMilliseconds(6);
+
     TerminateTask();
 }
 #define APP_Task_t1_STOP_SEC_CODE
@@ -66,7 +75,10 @@ TASK(t1)
 TASK(t2)
 {
     SetRelAlarm(a_t2_timeout, 12, 0);
+
     /* do some computations */
+    waitMilliseconds(5);
+
     CancelAlarm(a_t2_timeout);
     TerminateTask();
 }
@@ -78,7 +90,10 @@ TASK(t2)
 TASK(t3)
 {
     WaitEvent(e_t2_timeout);
+
     /* do some computation to recover t2 failure */
+    waitMilliseconds(2);
+
     TerminateTask();
 }
 #define APP_Task_t3_STOP_SEC_CODE
@@ -159,7 +174,7 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
     {
         case 1 :
             {
-                ledOn(BLUE);
+                ledOn(RED);
             }
             break;
         case 2 :
@@ -172,6 +187,25 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType Fatalerror)
     }
     return PRO_TERMINATETASKISR;
 }
+
+FUNC(void, OS_CODE) PreTaskHook(void)
+{
+  TaskType runningTask;
+  GetTaskID(&runningTask);
+  if      (runningTask == t1) ledOn(GREEN);
+  else if (runningTask == t2) ledOn(BLUE);
+  else if (runningTask == t3) ledOn(ORANGE);
+}
+
+FUNC(void, OS_CODE) PostTaskHook(void)
+{
+  TaskType runningTask;
+  GetTaskID(&runningTask);
+  if      (runningTask == t1) ledOff(GREEN);
+  else if (runningTask == t2) ledOff(BLUE);
+  else if (runningTask == t3) ledOff(ORANGE);
+}
+
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
