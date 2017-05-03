@@ -90,6 +90,7 @@ EMBUNIT_LIB="$SCRIPT_DIR/lib/libembUnit.a"
 # Trampoline relative paths
 #
 TPL_DIR="$(realpath $SCRIPT_DIR/..)"
+TPL_DIR="$SCRIPT_DIR/.."
 TPL_TEMPLATES_DIR="$TPL_DIR/goil/templates"
 TPL_GOILV2_TEMPLATES_DIR="$TPL_DIR/goilv2/templates"
 

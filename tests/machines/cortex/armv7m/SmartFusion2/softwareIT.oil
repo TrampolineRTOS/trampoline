@@ -1,5 +1,5 @@
 /**
- * @file arch.oil
+ * @file softwareIT.oil
  *
  * @section desc File description
  *
@@ -9,7 +9,7 @@
  *
  * Trampoline Test Suite
  *
- * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2017
  * Trampoline Test Suite is protected by the French intellectual property law.
  *
  * This program is free software; you can redistribute it and/or
@@ -34,47 +34,32 @@
  * $URL$
  */
 
-#include "../common/arch.oil"
-
-IMPLEMENTATION archPosix
+IMPLEMENTATION softITSmartFusion2
 {
-  TASK {
-    UINT32 STACKSIZE = 32768;
+  /* Can be modified in the test's oil file */
+  ISR
+  {
+    UINT32 [1, 2] CATEGORY = 1;
     UINT32 PRIORITY = 1;
   };
 
 };
 
-CPU archPosixDefault
+CPU softITSmartFusion2
 {
-  OS defaultOS
+  ISR softwareInterruptHandler0
   {
-    /* Build paths are from the test directory */
-    BUILD = TRUE
-    {
-      COMPILER = "gcc";
-      ASSEMBLER = "gcc";
-      LINKER = "gcc";
-      CFLAGS = "-Werror -Wall -pedantic";
-      CFLAGS = "-Wmissing-field-initializers";
-//      CFLAGS = "-Wno-unused-but-set-variable";
-      LDFLAGS = "-L../../lib -lembUnit";
-//      LDFLAGS = "-lrt";
-      LDFLAGS = "-lpthread";
-      SYSTEM = PYTHON;
-      LIBRARY = archConfig;
-    };
+    SOURCE = GPIO0_IRQn;
   };
-
-  /* Lib paths are from the "TRAMPOLINE/machines" directory */
-  LIBRARY archConfig
+  ISR softwareInterruptHandler1
   {
-    PATH = "../tests/machines/posix/";
-    CHEADER = "archTestConfig.h";
-    CFILE = "archTestConfig.c";
+    SOURCE = GPIO1_IRQn;
+  };
+  ISR softwareInterruptHandler2
+  {
+    SOURCE = GPIO2_IRQn;
   };
 };
-
 
 
 
