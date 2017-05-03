@@ -45,7 +45,8 @@
 #define HW_FUNC_SET_EVENT					BIT(19)
 #define HW_FUNC_INIT_PROC					BIT(20)
 #define HW_FUNC_INIT_OS						BIT(21)
-
+#define HW_FUNC_REMOVE_PROC					BIT(22)
+#define HW_FUNC_START_SCHEDULING			BIT(23)
 		
 
 #endif /* TPL_FABRIC_DEFINITIONS_H */

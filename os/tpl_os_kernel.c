@@ -512,6 +512,11 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
  */
 FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+	
+  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+		reg_OS_instru_kernel_functions = HW_FUNC_REMOVE_PROC;
+	#endif
+	
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
@@ -539,6 +544,11 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   READY_LIST(ready_list)[0].key = size;
 
   DOW_DO(printrl("tpl_remove_proc - after");)
+  
+    #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+		reg_OS_instru_kernel_functions = HW_FUNC_REMOVE_PROC;
+	#endif
+  
 }
 
 #endif /* WITH_OSAPPLICATION */
@@ -999,10 +1009,17 @@ FUNC(void, OS_CODE) tpl_block(void)
  */
 FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 {
+ 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_START_SCHEDULING;
+	#endif		
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
   tpl_start(CORE_ID_OR_NOTHING(core_id));
+  
+ 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+	reg_OS_instru_kernel_functions = HW_FUNC_START_SCHEDULING;
+	#endif	
 }
 
 /**
