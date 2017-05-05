@@ -19,3 +19,5 @@
 *.synctex.gz
 *.toc
 *.out
+
+*.bat

@@ -47,6 +47,9 @@
 #define HW_FUNC_INIT_OS						BIT(21)
 #define HW_FUNC_REMOVE_PROC					BIT(22)
 #define HW_FUNC_START_SCHEDULING			BIT(23)
-		
+
+/*tpl_os_action*/
+#define HW_FUNC_ACTION_ACTIVATE_TASK		BIT(24)
+#define HW_FUNC_ACTION_SETEVENT				BIT(25)		
 
 #endif /* TPL_FABRIC_DEFINITIONS_H */
