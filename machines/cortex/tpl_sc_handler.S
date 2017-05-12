@@ -41,6 +41,7 @@
 .equ  __ID_CALL_HANDLER, ID_CALL_HANDLER
 .equ  __ID_CALL_SERVICE, ID_CALL_SERVICE
 .equ  __ID_CALL_CONTEXT, ID_CALL_CONTEXT
+.equ  __ID_CALL_SAVE, ID_CALL_SAVE
 .equ  __NO_SERVICE, NO_SERVICE
 
 /*-----------------------------------------------------------------------------
@@ -277,6 +278,15 @@ not_callable_by_isr1:
     beq   tpl_sc_handler_no_save_running_context /* bit of NEED_SAVE set to 0 */
 
     /*-------------------------------------------------------------------------
+     * 15b - inform the fabric we are executing a save context
+     */
+    #if (LEVEL_KERNEL_MONITORING >= 2)
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
+    movs  r1,#__ID_CALL_CONTEXT
+    str   r1,[r4]
+    #endif	
+	
+    /*-------------------------------------------------------------------------
      * 16 - Save context
      *      Load in r0 the pointer to the static descriptor of the running task
      */
@@ -284,6 +294,15 @@ not_callable_by_isr1:
     ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
     bl    tpl_save_context
 
+    /*-------------------------------------------------------------------------
+     * 16b - inform the fabric we are finishinging a save context
+     */
+    #if (LEVEL_KERNEL_MONITORING >= 2)
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
+    movs  r5,#__ID_CALL_CONTEXT
+    str   r5,[r4]
+    #endif	
+	
     /*-------------------------------------------------------------------------
      * 17 - Prepare the call to tpl_run_elected by setting r0 to 1
      */
