@@ -1,9 +1,9 @@
 /**
- * @file ArchEmb.c
+ * @file softwareIT.oil
  *
  * @section desc File description
  *
- * Trampoline Test Suite : Machine dependant embUnit functions
+ * Trampoline Test Suite : Machine dependant oil configuration
  *
  * @section copyright Copyright
  *
@@ -28,52 +28,38 @@
  *
  * @section infos File informations
  *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
  */
 
-static int stdimpl_strcpy(char* out, const char* in)
+IMPLEMENTATION softITSmartFusion2
 {
-  int length = 0;
-  while(*out++=*in++) length++;
-  return length;
-}
-
-static void stdimpl_sprintf(char* out, const char* string, char** va_args)
-{
-  char current;
-
-  while(current = *string++)
+  /* Can be modified in the test's oil file */
+  ISR
   {
-    if(current != '%')
-    {
-      *out++ = current;
-    }
-    else
-    {
-      current = *string++;
-      switch(current)
-      {
-        case 's':
-          out += stdimpl_strcpy(out, *va_args);
-          va_args = (char **)((int*)va_args + 1);
-          break;
-        default :
-          out += stdimpl_strcpy(out, "<undef>");
-          break;
-      }
-    }
-  }
-  *out = '\0';
-}
+    UINT32 [1, 2] CATEGORY = 2;
+    UINT32 PRIORITY = 10;
+  };
 
-/*
- *  The outString is read by the gdb script at the end of the
- *  function (l.77)
- */
-void stdimpl_print(const char* string, ...)
+};
+
+CPU softITSmartFusion2
 {
-  char outString[50];
-  char **va_args = &string + 1;
-  stdimpl_sprintf(outString, string, va_args);
-  return;
-}
+  ISR softwareInterruptHandler0
+  {
+    SOURCE = GPIO0_IRQ;
+  };
+  ISR softwareInterruptHandler1
+  {
+    SOURCE = GPIO1_IRQ;
+  };
+  ISR softwareInterruptHandler2
+  {
+    SOURCE = GPIO2_IRQ;
+  };
+};
+
+
 

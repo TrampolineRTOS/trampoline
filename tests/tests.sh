@@ -89,6 +89,12 @@ EMBUNIT_LIB="$SCRIPT_DIR/lib/libembUnit.a"
 # -----------------------------------------------------------------------------
 # Trampoline relative paths
 #
+
+#realpath not available on MacOS
+# => http://stackoverflow.com/questions/3572030/bash-script-absolute-path-with-osx
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
 TPL_DIR="$(realpath $SCRIPT_DIR/..)"
 TPL_DIR="$SCRIPT_DIR/.."
 TPL_TEMPLATES_DIR="$TPL_DIR/goil/templates"

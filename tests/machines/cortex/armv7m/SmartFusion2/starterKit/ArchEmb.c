@@ -1,9 +1,9 @@
 /**
- * @file softwareIT.oil
+ * @file ArchEmb.c
  *
  * @section desc File description
  *
- * Trampoline Test Suite : Machine dependant oil configuration
+ * Trampoline Test Suite : Machine dependant embUnit functions
  *
  * @section copyright Copyright
  *
@@ -28,38 +28,52 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
-IMPLEMENTATION softITSmartFusion2
+static int stdimpl_strcpy(char* out, const char* in)
 {
-  /* Can be modified in the test's oil file */
-  ISR
-  {
-    UINT32 [1, 2] CATEGORY = 1;
-    UINT32 PRIORITY = 1;
-  };
+  int length = 0;
+  while(*out++=*in++) length++;
+  return length;
+}
 
-};
-
-CPU softITSmartFusion2
+static void stdimpl_sprintf(char* out, const char* string, const char** va_args)
 {
-  ISR softwareInterruptHandler0
-  {
-    SOURCE = GPIO0_IRQn;
-  };
-  ISR softwareInterruptHandler1
-  {
-    SOURCE = GPIO1_IRQn;
-  };
-  ISR softwareInterruptHandler2
-  {
-    SOURCE = GPIO2_IRQn;
-  };
-};
+  char current;
 
+  while(current = *string++)
+  {
+    if(current != '%')
+    {
+      *out++ = current;
+    }
+    else
+    {
+      current = *string++;
+      switch(current)
+      {
+        case 's':
+          out += stdimpl_strcpy(out, *va_args);
+          va_args = (const char **)((int*)va_args + 1);
+          break;
+        default :
+          out += stdimpl_strcpy(out, "<undef>");
+          break;
+      }
+    }
+  }
+  *out = '\0';
+}
 
+/*
+ *  The outString is read by the gdb script at the end of the
+ *  function (l.77)
+ */
+void stdimpl_print(const char* string, ...)
+{
+  char outString[50];
+  const char **va_args = &string + 1;
+  stdimpl_sprintf(outString, string, va_args);
+  return;
+}
 

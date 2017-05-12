@@ -30,7 +30,7 @@
  *
  */
 
-#include "../../../common/arch.oil"
+#include "../../../../common/arch.oil"
 
 IMPLEMENTATION archArmv7mSmartFusion2
 {
@@ -62,7 +62,9 @@ CPU archArmv7mSmartFusion2Cpu
       CFLAGS  = "-O0"; 
       CFLAGS  = "-DLEVEL_KERNEL_MONITORING=4";
       CFLAGS  = "-fdump-tree-cfg";
-      LDFLAGS = "-Map=blink.map -LC:/Microsemi/SoftConsole_v4.0/arm-none-eabi-gcc/arm-none-eabi/lib/armv7-m -LC:/Microsemi/SoftConsole_v4.0/arm-none-eabi-gcc/lib/gcc/arm-none-eabi/4.9.3/armv7-m";
+      //LDFLAGS = "-LC:/Microsemi/SoftConsole_v4.0/arm-none-eabi-gcc/arm-none-eabi/lib/armv7-m -LC:/Microsemi/SoftConsole_v4.0/arm-none-eabi-gcc/lib/gcc/arm-none-eabi/4.9.3/armv7-m";
+      LDFLAGS = "-Map=blink.map";
+      LDFLAGS = "-L../../lib -lembUnit"; //libemUnit
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
@@ -70,16 +72,14 @@ CPU archArmv7mSmartFusion2Cpu
       SYSTEM = PYTHON;
       LIBRARY = archConfig;
     };
-    USEVLE = TRUE;
     SYSTEM_CALL = TRUE;
     DEBUG = TRUE;
-    WITHORTI = TRUE {FILE = "trampoline.orti";};
   };
 
   /* Lib paths are from the "TRAMPOLINE/machines" directory */
   LIBRARY archConfig
   {
-    PATH = "../tests/machines/cortex/armv7m/SmartFusion2";
+    PATH = "../tests/machines/cortex/armv7m/SmartFusion2/starterKit";
     CHEADER = "archTestConfig.h";
     CFILE = "archTestConfig.c";
   };

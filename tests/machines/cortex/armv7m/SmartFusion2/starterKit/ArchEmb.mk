@@ -1,7 +1,10 @@
 CC = arm-none-eabi-gcc
+CFLAGS += -mcpu=cortex-m3
+CFLAGS += -mthumb
+CFLAGS += -mfloat-abi=soft
 CFLAGS += -DNO_STDIO_PRINTF
 AR = arm-none-eabi-ar
-ARFLAGS = -c
+ARFLAGS = -cr
 
 ifndef ARCH_CUSTOM_SOURCE
   $(error ARCH_CUSTOM_SOURCE is not set)
