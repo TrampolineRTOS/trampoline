@@ -77,11 +77,11 @@ More examples are coming.
 
 Updated to version 3.1.3 on october 18.
 
-* Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)
-* Linux 32 bits: [goil-linux-32.zip](http://trampoline.rts-software.org/bin/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](http://trampoline.rts-software.org/bin/goil-linux-64.zip)
-* Windows: [goil-windows.zip](http://trampoline.rts-software.org/bin/goil-windows.zip)
+* Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
+* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
+* Linux 32 bits: [goil-linux-32.zip](http://trampolinebin.rts-software.org/goil-linux-32.zip)
+* Linux 64 bits: [goil-linux-64.zip](http://trampolinebin.rts-software.org/goil-linux-64.zip)
+* Windows: [goil-windows.zip](http://trampolinebin.rts-software.org/goil-windows.zip)
 
 ## Useful links
 
@@ -89,7 +89,7 @@ Updated to version 3.1.3 on october 18.
 
 The OSEK-VDX portal is down since at least june because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
-* [OIL specification](http://trampoline.rts-software.org/bin/oil25.pdf)
-* [OS specification](http://trampoline.rts-software.org/bin/os223.pdf)
-* [COM specification](http://trampoline.rts-software.org/bin/OSEKCOM303.pdf)
-* [ORTI A](http://trampoline.rts-software.org/bin/orti-a-22.pdf) and [ORTI B](http://trampoline.rts-software.org/bin/orti-b-22.pdf) specifications
+* [OIL specification](http://trampolinebin.rts-software.org/oil25.pdf)
+* [OS specification](http://trampolinebin.rts-software.org/os223.pdf)
+* [COM specification](http://trampolinebin.rts-software.org/OSEKCOM303.pdf)
+* [ORTI A](http://trampolinebin.rts-software.org/orti-a-22.pdf) and [ORTI B](http://trampolinebin.rts-software.org/orti-b-22.pdf) specifications
