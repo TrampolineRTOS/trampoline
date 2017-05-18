@@ -116,13 +116,7 @@ store_regs:
   .global store_regs
 
   // enter crit zone
-  addi sp, sp, -4
-  sw a5, 0(sp)
-  csrr a5, mstatus
-  andi a5, a5, -2
-  csrw mstatus, a5
-  lw a5, 0(sp)
-  addi sp, sp, 4
+  csrrci s11, mstatus, 1
 
   sw  x3, 0x00(x2)  // gp
   sw  x4, 0x04(x2)  // tp
@@ -192,14 +186,7 @@ end_except:
   addi x2, x2, EXCEPTION_STACK_SIZE
 
   //exit crit zone
-  addi sp, sp, -4
-  sw a5, 0(sp)
-  csrr a5, mstatus
-  ori a5, a5, 1
-  csrw mstatus, a5
-  lw a5, 0(sp)
-  addi sp, sp, 4
-  
+  csrw mstatus, s11
   eret
 
   .global _init
