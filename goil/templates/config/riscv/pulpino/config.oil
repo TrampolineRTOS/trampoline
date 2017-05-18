@@ -112,6 +112,79 @@ CPU pulpino {
     CFILE = "tpl_machine_riscv.c";
   };
 
+  POSTCOMMAND all {
+    COMMAND rm_modelsimini {
+      MESSAGE = "Removing";
+      COMMAND = "rm";
+      INPUT = INTERMEDIATE {
+        SOURCE = "modelsim.ini";
+      };
+      PREOPTION = "-rf";
+    };
+    COMMAND ln_modelsimini {
+      MESSAGE = "Creating";
+      COMMAND = "ln";
+      INPUT = INTERMEDIATE {
+        SOURCE = "${PULPINO_PATH}vsim/modelsim.ini";
+      };
+      PREOPTION = "-s";
+      POSTOPTION = ".";
+    };
+
+    COMMAND rm_tcl {
+      MESSAGE = "Removing";
+      COMMAND = "rm";
+      INPUT = INTERMEDIATE {
+        SOURCE = "tcl_files";
+      };
+      PREOPTION = "-rf";
+    };
+    COMMAND ln_tcl {
+      MESSAGE = "Creating";
+      COMMAND = "ln";
+      INPUT = INTERMEDIATE {
+        SOURCE = "${PULPINO_PATH}vsim/tcl_files";
+      };
+      PREOPTION = "-s";
+      POSTOPTION = ".";
+    };
+
+    COMMAND rm_waves {
+      MESSAGE = "Removing";
+      COMMAND = "rm";
+      INPUT = INTERMEDIATE {
+        SOURCE = "waves";
+      };
+      PREOPTION = "-rf";
+    };
+    COMMAND ln_waves {
+      MESSAGE = "Creating";
+      COMMAND = "ln";
+      INPUT = INTERMEDIATE {
+        SOURCE = "${PULPINO_PATH}vsim/waves";
+      };
+      PREOPTION = "-s";
+      POSTOPTION = ".";
+    };
+
+    COMMAND rm_work {
+      MESSAGE = "Removing";
+      COMMAND = "rm";
+      INPUT = INTERMEDIATE {
+        SOURCE = "work";
+      };
+      PREOPTION = "-rf";
+    };
+    COMMAND ln_work {
+      MESSAGE = "Creating";
+      COMMAND = "ln";
+      INPUT = INTERMEDIATE {
+        SOURCE = "${PULPINO_PATH}vsim/work";
+      };
+      PREOPTION = "-s";
+      POSTOPTION = ".";
+    };
+  }; 
 };
 
 

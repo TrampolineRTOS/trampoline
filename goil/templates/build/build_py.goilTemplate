@@ -669,6 +669,15 @@ if make.errorCount() == 0:%
   end foreach
 end foreach%
 
+%
+if TARGET == "riscv/pulpino" then
+%
+PULPINO_PATH = os.environ.get('PULPINO_PATH','MUST_SET_PULPINO_PATH_ENV_VARIABLE')
+%
+end if
+%
+
+
 #----------------------------------------------------------------------
 #-- End of build.py
 #----------------------------------------------------------------------
