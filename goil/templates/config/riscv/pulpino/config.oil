@@ -113,77 +113,70 @@ CPU pulpino {
   };
 
   POSTCOMMAND all {
-    COMMAND rm_modelsimini {
+    COMMAND mkdir {
+      MESSAGE = "Creating";
+      COMMAND = "mkdir";
+      INPUT = INTERMEDIATE {
+        SOURCE = "slm_files vectors";
+      };
+      PREOPTION = "-p";
+    };
+
+    COMMAND rms {
       MESSAGE = "Removing";
       COMMAND = "rm";
       INPUT = INTERMEDIATE {
-        SOURCE = "modelsim.ini";
+        SOURCE = "modelsim.ini tcl_files waves work";
       };
       PREOPTION = "-rf";
     };
-    COMMAND ln_modelsimini {
+    COMMAND lns {
       MESSAGE = "Creating";
       COMMAND = "ln";
       INPUT = INTERMEDIATE {
-        SOURCE = "${PULPINO_PATH}vsim/modelsim.ini";
+        SOURCE = "${PULPINO_PATH}vsim/modelsim.ini ${PULPINO_PATH}vsim/tcl_files ${PULPINO_PATH}vsim/waves ${PULPINO_PATH}vsim/work";
       };
       PREOPTION = "-s";
       POSTOPTION = ".";
     };
 
-    COMMAND rm_tcl {
-      MESSAGE = "Removing";
-      COMMAND = "rm";
-      INPUT = INTERMEDIATE {
-        SOURCE = "tcl_files";
-      };
-      PREOPTION = "-rf";
-    };
-    COMMAND ln_tcl {
+    COMMAND s19 {
       MESSAGE = "Creating";
-      COMMAND = "ln";
-      INPUT = INTERMEDIATE {
-        SOURCE = "${PULPINO_PATH}vsim/tcl_files";
+      COMMAND = "riscv32-unknown-elf-objcopy";
+      INPUT = TARGET {
+        EXT = "";
       };
-      PREOPTION = "-s";
-      POSTOPTION = ".";
+      PREOPTION = "--srec-len 1 --output-target=srec";
+      POSTOPTION = "build.s19";
+    };
+    COMMAND s19toslm {
+      MESSAGE = "Entering";
+      COMMAND = "python";
+      PREOPTION = "${PULPINO_PATH}/sw/utils/s19toslm.py";
+      INPUT = INTERMEDIATE {
+        SOURCE = "build.s19";
+      };
+    };
+    COMMAND mv {
+      MESSAGE = "Creating";
+      COMMAND = "mv";
+      INPUT = INTERMEDIATE {
+        SOURCE = "flash_stim.slm l2_ram_cut0_hi.slm l2_ram_cut0_lo.slm l2_stim.slm spi_stim.txt tcdm_bank0.slm";
+      };
+      POSTOPTION = "slm_files/";
     };
 
-    COMMAND rm_waves {
-      MESSAGE = "Removing";
-      COMMAND = "rm";
-      INPUT = INTERMEDIATE {
-        SOURCE = "waves";
-      };
-      PREOPTION = "-rf";
-    };
-    COMMAND ln_waves {
+    COMMAND stim {
       MESSAGE = "Creating";
-      COMMAND = "ln";
+      COMMAND = "perl";
       INPUT = INTERMEDIATE {
-        SOURCE = "${PULPINO_PATH}vsim/waves";
+        SOURCE = "${PULPINO_PATH}/sw/utils/parse_s19.pl ./build.s19";
       };
-      PREOPTION = "-s";
-      POSTOPTION = ".";
+      PREOPTION = "-w";
+      POSTOPTION = "> ./vectors/stim.txt";
     };
 
-    COMMAND rm_work {
-      MESSAGE = "Removing";
-      COMMAND = "rm";
-      INPUT = INTERMEDIATE {
-        SOURCE = "work";
-      };
-      PREOPTION = "-rf";
-    };
-    COMMAND ln_work {
-      MESSAGE = "Creating";
-      COMMAND = "ln";
-      INPUT = INTERMEDIATE {
-        SOURCE = "${PULPINO_PATH}vsim/work";
-      };
-      PREOPTION = "-s";
-      POSTOPTION = ".";
-    };
+    
   }; 
 };
 
