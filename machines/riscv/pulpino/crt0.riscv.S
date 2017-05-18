@@ -13,7 +13,7 @@
 #define EXCEPTION_STACK_SIZE 96
 
     .extern tpl_sc_handler
-    .extern tpl_it_handler
+    .extern tpl_interruption_handler
     .extern idle_function
     
 /* ========================================================= [ entry ] === */
@@ -219,7 +219,7 @@ _fini:
   // until compiler supports IRQ routines
   .org 0x00
   .rept 32
-    j tpl_it_handler
+    j tpl_interruption_handler
   .endr
 
   // reset vector

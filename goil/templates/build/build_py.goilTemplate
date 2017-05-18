@@ -409,6 +409,14 @@ end foreach
 #--- Add generated files
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_app_config.c"))
 %
+if TARGET == "riscv/pulpino" then
+%
+cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_vectors.c"))
+cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_primary_irq.S"))
+%
+end if
+%
+%
 if OS::SYSTEM_CALL then
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_dispatch_table.c"))

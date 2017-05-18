@@ -1,4 +1,4 @@
-.global tpl_it_handler
+.global tpl_interruption_handler
 
 %#------------------------------------------------------------------------------*
 # Target specific initializations
@@ -105,7 +105,7 @@ end foreach
 .extern tpl_kern
 .extern tpl_it_vectors
 
-tpl_it_handler:
+tpl_interruption_handler:
   addi sp, sp, -EXCEPTION_STACK_SIZE
   sw ra, 0x5C(x2)
   jal store_regs
