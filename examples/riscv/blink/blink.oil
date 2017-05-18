@@ -14,24 +14,6 @@ IMPLEMENTATION trampoline {
 };
 
 CPU blink {
-  LIBRARY pulpino {
-    PATH = "riscv/libs/sys_lib/inc";
-    CFILE = "../src/exceptions.c";
-    CFILE = "../src/gpio.c";
-    CFILE = "../src/i2c.c";
-    CFILE = "../src/int.c";
-    CFILE = "../src/spi.c";
-    CFILE = "../src/timer.c";
-    CFILE = "../src/uart.c";
-    CFILE = "../src/utils.c";
-  };
-
-  LIBRARY string {
-    PATH = "riscv/libs/string_lib/inc";
-    CFILE = "../src/qprintf.c";
-  };
-
-
   OS config {
     STATUS = EXTENDED;
     
