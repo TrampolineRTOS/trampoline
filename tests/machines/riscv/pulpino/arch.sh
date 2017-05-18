@@ -52,7 +52,8 @@
 #   $1 : file to execute
 arch_execute()
 {
-  tcsh -c env\ PULP_CORE=riscv\ VSIM_DIR=${PULPINO_PATH}/vsim\ TB_TEST=""\ vsim\ -c\ -64\ -do\ 'source\ tcl_files/run.tcl\;\ run\ -a\;\ exit\;'
+  tcsh -c env\ PULP_CORE=riscv\ VSIM_DIR=${PULPINO_PATH}/vsim\ TB_TEST=""\ vsim\ -c\ -64\ -do\ 'source\ tcl_files/run.tcl\;\ run\ -a\;\ exit\;' > /dev/null
+  cat ./stdout/*
   exit $?
 }
 

@@ -12,6 +12,7 @@
 #include <utils.h>
 #include <int.h>
 #include <timer.h>
+#include <uart.h>
 
 #define EXCEPTION_STACK_SIZE 96
 #define F_CPU 25000000
@@ -181,6 +182,7 @@ void tpl_shutdown ()
     stop_timer();
     tpl_disable_interrupts();
     tpl_disable_os_interrupts();
+    uart_wait_tx_done();
     exit(0);
 }
 

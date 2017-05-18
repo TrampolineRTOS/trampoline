@@ -117,7 +117,7 @@ CPU pulpino {
       MESSAGE = "Creating";
       COMMAND = "mkdir";
       INPUT = INTERMEDIATE {
-        SOURCE = "slm_files vectors";
+        SOURCE = "slm_files vectors stdout";
       };
       PREOPTION = "-p";
     };
