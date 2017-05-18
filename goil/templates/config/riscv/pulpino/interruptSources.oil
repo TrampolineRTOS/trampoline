@@ -2,6 +2,9 @@
  * Interrupt sources
  */
 ENUM [
+  SIGTERM,
+  SIGUSR2,
+  SIGPIPE,
   I2C,
   UART,
   GPIO,

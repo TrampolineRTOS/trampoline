@@ -61,6 +61,10 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
  * Defines the entry point of the idle task
  */
 #define IDLE_ENTRY tpl_sleep
+
+void SIG_SIGTERM(void);
+void SIG_SIGPIPE(void);
+void SIG_SIGUSR2(void);
                                             
 #endif /* TPL_MACHINE_RISCV_GENERIC_H */
 

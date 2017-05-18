@@ -184,6 +184,15 @@ void tpl_shutdown ()
     exit(0);
 }
 
+// Software Interruptions
+__attribute__ ((weak))
+void SIG_SIGTERM (void){ for(;;); }	
+__attribute__ ((weak))
+void SIG_SIGUSR2 (void){ for(;;); }	
+__attribute__ ((weak))
+void SIG_SIGPIPE (void){ for(;;); }	
+
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

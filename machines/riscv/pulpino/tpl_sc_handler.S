@@ -1,12 +1,12 @@
-#include "tpl_service_ids.h"
 #include "tpl_asm_definitions.h"
 
     .global tpl_sc_handler
+    .global tpl_switch_context
     .extern tpl_dispatch_table
     .extern tpl_run_elected
     .extern tpl_kern
     .extern end_except
-
+    
 #define NO_NEED_SWITCH_NOR_SCHEDULE 0
 #define NO_NEED_SWITCH 0
 #define NEED_SWITCH 1
@@ -30,7 +30,7 @@ tpl_sc_handler:
     /* Stores return value in stack created at store_regs (0x14) */
     sw a0, 0x14(sp)
 
-switch_context:
+tpl_switch_context:
     /* Checks the context switch condition */
     la a5, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a5)

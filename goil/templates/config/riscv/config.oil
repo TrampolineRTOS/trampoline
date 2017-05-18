@@ -51,6 +51,34 @@ CPU riscv {
   BUILDOPTIONS riscv {
     COMMONFLAGS = "-nostartfiles";
   };
+
+  INTERRUPT SIGTERM {
+    VECT = 0;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "SIG_SIGTERM";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SIGUSR2 {
+    VECT = 1;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "SIG_SIGUSR2";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SIGPIPE {
+    VECT = 2;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "SIG_SIGPIPE";
+    };
+    ACK = TRUE;
+  };
+
 };
 
 
