@@ -22,7 +22,6 @@ foreach isr in ISR do
   let objForIRQ[key] += isr
 end foreach
 
-
 # Map COUNTER into objForIRQ
 foreach cnt in COUNTER do
   let key := cnt::SOURCE
@@ -33,106 +32,38 @@ foreach cnt in COUNTER do
   let objForIRQ[key] += cnt
 end foreach
 
-
-# Map ISR2s to an index for tpl_isr_stat_table
-let index := 0
-let mapOfISR2 := @[ ]
-foreach isr in ISRS2 do
-  let key := isr::SOURCE
-  if not exists mapOfISR2[key] then
-    let mapOfISR2[key] := @( )
-  end if
-  let isr::INDEX := index
-  let mapOfISR2[key] += isr
-  let index := index + 1
-end foreach
-
-#let mapOfISR := mapof ISR by SOURCE
-#let mapOfISRS2 := mapof ISRS2 by SOURCE
-#let mapOfCOUNTER := mapof COUNTER by SOURCE
-let setOfISRsource := [ISR setBy: "SOURCE"]
-let setOfISRS2source := [ISRS2 setBy: "SOURCE"]
-let setOfCOUNTERsource := [COUNTER setBy: "SOURCE"]
-
 let INTERRUPTMAP := mapof INTERRUPT by NAME
-
-let mapOfHandlers := @[ ]
-
-foreach irq in INTERRUPTMAP do
-  let key := irq::NAME
-  if [setOfISRsource contains: key] then
-    if not exists mapOfHandlers[key] then
-      let mapOfHandlers[key] := @( )
-    end if
-#    let mapOfHandlers[key] += mapOfISR[key]
-  end if
-  if [setOfISRS2source contains: key] then
-    if not exists mapOfHandlers[key] then
-      let mapOfHandlers[key] := @( )
-    end if
-#    let mapOfHandlers[key] += mapOfISRS2[key]
-  end if
-  if [setOfCOUNTERsource contains: key] then
-    if not exists mapOfHandlers[key] then
-      let mapOfHandlers[key] := @( )
-    end if
-#    let mapOfHandlers[key] += mapOfCOUNTER[key]
-  end if
-end foreach
 #------------------------------------------------------------------------------*
 
+foreach objList in objForIRQ do
+  let handlerAck := false
+  foreach obj in objList do
+    if INTERRUPTMAP[KEY]::ACK then
+      let handlerAck := true
+    end if
 %
-/* External handlers */
+extern FUNC(void, OS_CODE) ISR_% !obj::SOURCE %(void);
 %
+  end foreach
+  if handlerAck then
+%extern FUNC(void, OS_CODE) % !KEY %_ClearFlag(void);
+%
+  end if
+  after
+end foreach
+
 loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   do
-    let handlerIsEmpty := true
     foreach int in INTERRUPT do
       # Reach the declared interrupt in INTERRUPT 
       if ENTRY == int::VECT then
         if exists objForIRQ[int::NAME] then
-          let handlerIsEmpty := false
           foreach objList in objForIRQ do
             if KEY == int::NAME then
               # We have found the list of interrupts to call
-              # How many ISR do we have for this SOURCE ?
-              if [objList length] == 1 then
-                let obj := [objList first]
-                # check whether we have an ISR or a COUNTER
-                if obj::KIND == "ISR" then
-                  if obj::CATEGORY == 1 then
-                    %extern FUNC(void, OS_CODE) ISR_% !KEY %(void);
+              let irqName := INTERRUPTMAP[KEY]::VECTOR_TYPE_S::NAME
+              %extern FUNC(void, OS_CODE) % !irqName%(void);
 %
-                  else
-                    if obj::CATEGORY == 2 then
-                      %extern FUNC(void, OS_CODE) ISR_% !KEY %(void);
-%
-                    else
-                      %#error unknown CATEGORY % !obj::CATEGORY %
-%
-                    end if
-                  end if
-                else # this is a counter
-                  %extern FUNC(void, OS_CODE) ISR_% !KEY %(void);
-%
-                end if
-              else
-                # check if we have only ISR1
-                let onlyISR1 := true
-                foreach obj in objList do
-                  if ( (obj::KIND == "ISR" & obj::CATEGORY == 2) |
-                       (obj::KIND == "COUNTER") ) then
-                    let onlyISR1 := false
-                  end if
-                end foreach
-                if onlyISR1 == true then
-                  %extern FUNC(void, OS_CODE) ISR_% !KEY %(void);
-%
-                else
-                  %extern FUNC(void, OS_CODE) ISR_% !KEY %(void);
-%
-                end if
-              end if
             end if
           end foreach
         else
@@ -142,30 +73,22 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
               if int::VECTOR_TYPE_S::NAME != "NONE" then
                 %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(void);
 %
-#              else
-#                %(tpl_it_handler)tpl_null_it%
               end if
-#            else
-#              if int::VECTOR_TYPE == "REFERENCE" then
-#                %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(void);
-#%
-#              end if
             end if
           end if
         end if
       end if
     end foreach
-#    if handlerIsEmpty then
-#      %(tpl_it_handler)tpl_null_it%
-#    end if
 end loop
+
 %
+
 /* Interrupt table vector */
 %
 loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   before
 %
-__attribute__ ((section(".isr_vectors"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
 %
   do
     %  %#{ %
@@ -178,38 +101,7 @@ __attribute__ ((section(".isr_vectors"))) CONST(tpl_it_handler, AUTOMATIC) tpl_i
           foreach objList in objForIRQ do
             if KEY == int::NAME then
               # We have found the list of interrupts to call
-              # How many ISR do we have for this SOURCE ?
-              if [objList length] == 1 then
-                let obj := [objList first]
-                # check whether we have an ISR or a COUNTER
-                if obj::KIND == "ISR" then
-                  if obj::CATEGORY == 1 then
-                    %(tpl_it_handler)% !KEY %_Handler%
-                  else
-                    if obj::CATEGORY == 2 then
-                      %(tpl_it_handler)ISR_% !KEY
-                    else
-                      %#error unknown CATEGORY % !obj::CATEGORY
-                    end if
-                  end if
-                else # this is a counter
-                  %(tpl_it_handler)ISR_% !KEY
-                end if
-              else
-                # check if we have only ISR1
-                let onlyISR1 := true
-                foreach obj in objList do
-                  if ( (obj::KIND == "ISR" & obj::CATEGORY == 2) |
-                       (obj::KIND == "COUNTER") ) then
-                    let onlyISR1 := false
-                  end if
-                end foreach
-                if onlyISR1 == true then
-                  %(tpl_it_handler)% !KEY %_Handler%
-                else
-                  %(tpl_it_handler)ISR_% !KEY
-                end if
-              end if
+              %(tpl_it_handler) ISR_% !KEY
             end if
           end foreach
         else
@@ -243,6 +135,5 @@ __attribute__ ((section(".isr_vectors"))) CONST(tpl_it_handler, AUTOMATIC) tpl_i
 end loop
 %
 %
-
 
 # vim:ft=goil_templates

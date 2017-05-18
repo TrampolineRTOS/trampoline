@@ -21,6 +21,8 @@ extern struct RISCV_CONTEXT idle_task_context;
  */
 FUNC(void, OS_CODE) tpl_set_systick_timer();
 
+#define tpl_restore_cpu_priority()
+
 #endif /* TPL_MACHINE_H */
 
 /* End of file tpl_machine.h */

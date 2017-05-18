@@ -1,10 +1,12 @@
 IMPLEMENTATION riscv {
 
   TASK {
+    UINT32 STACKSIZE = 512;
     BOOLEAN USEFLOAT = FALSE;
   };
 
   ISR [] {
+    UINT32 STACKSIZE = 512;
     #include <interruptSources.oil>
   };
 
@@ -40,6 +42,7 @@ IMPLEMENTATION riscv {
       TRUE  { INT32 NUMBER; },
       FALSE
     ] SETPRIO = FALSE;
+    UINT32 [1,2] CATEGORY = 1;
   };
   
   INTERRUPT_COUNT {
@@ -55,8 +58,9 @@ CPU riscv {
   INTERRUPT SIGTERM {
     VECT = 0;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
-      NAME = "SIG_SIGTERM";
+    VECTOR_TYPE = HANDLER {
+      NAME = "SIGTERM_Handler";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -64,8 +68,9 @@ CPU riscv {
   INTERRUPT SIGUSR2 {
     VECT = 1;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
-      NAME = "SIG_SIGUSR2";
+    VECTOR_TYPE = HANDLER {
+      NAME = "SIGUSR2_Handler";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -73,12 +78,12 @@ CPU riscv {
   INTERRUPT SIGPIPE {
     VECT = 2;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
-      NAME = "SIG_SIGPIPE";
+    VECTOR_TYPE = HANDLER {
+      NAME = "SIGPIPE_Handler";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
-
 };
 
 

@@ -32,8 +32,6 @@
  * $URL$
  */
 
-#define _POSIX_SOURCE
-
 #include "tpl_app_define.h"
 
 #if WITH_AUTOSAR == YES

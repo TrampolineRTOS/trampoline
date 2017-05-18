@@ -186,11 +186,11 @@ void tpl_shutdown ()
 
 // Software Interruptions
 __attribute__ ((weak))
-void SIG_SIGTERM (void){ for(;;); }	
+void SIGTERM_Handler (void){ for(;;); }	
 __attribute__ ((weak))
-void SIG_SIGUSR2 (void){ for(;;); }	
+void SIGUSR2_Handler (void){ for(;;); }	
 __attribute__ ((weak))
-void SIG_SIGPIPE (void){ for(;;); }	
+void SIGPIPE_Handler (void){ for(;;); }	
 
 
 #define OS_STOP_SEC_CODE

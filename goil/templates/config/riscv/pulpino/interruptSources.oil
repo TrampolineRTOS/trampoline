@@ -1,7 +1,7 @@
 /*
  * Interrupt sources
  */
-ENUM [
+ENUM WITH_AUTO [
   SIGTERM,
   SIGUSR2,
   SIGPIPE,
@@ -17,4 +17,4 @@ ENUM [
   Reset,
   IllegalInstruction,
   ECALL
-] SOURCE;
+] SOURCE = TA_CMP;
