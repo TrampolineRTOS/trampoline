@@ -134,7 +134,7 @@ CPU pulpino {
       MESSAGE = "Creating";
       COMMAND = "ln";
       INPUT = INTERMEDIATE {
-        SOURCE = "${PULPINO_PATH}vsim/modelsim.ini ${PULPINO_PATH}vsim/tcl_files ${PULPINO_PATH}vsim/waves ${PULPINO_PATH}vsim/work";
+        SOURCE = "${PULPINO_PATH}/vsim/modelsim.ini ${PULPINO_PATH}/vsim/tcl_files ${PULPINO_PATH}/vsim/waves ${PULPINO_PATH}/vsim/work";
       };
       PREOPTION = "-s";
       POSTOPTION = ".";
