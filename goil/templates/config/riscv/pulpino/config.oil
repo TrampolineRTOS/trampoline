@@ -1,0 +1,101 @@
+CPU pulpino {
+
+  COUNTER SystemCounter {
+    SOURCE = TA_CMP;
+  };
+
+  INTERRUPT I2C {
+    VECT = 23;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_I2C";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT UART {
+    VECT = 24;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_UART";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT GPIO {
+    VECT = 25;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_GPIO";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SPIM0 {
+    VECT = 26;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_SPIM0";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SPIM1 {
+    VECT = 27;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_SPIM1";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TA_CMP {
+    VECT = 28;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_TA_CMP";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TA_OVF {
+    VECT = 29;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_TA_OVF";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TB_CMP {
+    VECT = 30;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_TB_CMP";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TB_OVF {
+    VECT = 31;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "ISR_TB_OVF";
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 32;
+  };
+
+  PLATFORM_FILES pulpino {
+    PATH = "riscv/pulpino";
+    CFILE = "crt0.riscv.S";
+    CFILE = "tpl_sc_handler.S";
+    CFILE = "tpl_machine_riscv.c";
+  };
+
+};
+
+

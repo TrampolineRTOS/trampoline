@@ -1,0 +1,56 @@
+IMPLEMENTATION riscv {
+
+  TASK {
+    BOOLEAN USEFLOAT = FALSE;
+  };
+
+  ISR [] {
+    #include <interruptSources.oil>
+  };
+
+  COUNTER [] {
+    #include <interruptSources.oil>
+  };
+  
+  INTERRUPT [] { 
+    UINT32 VECT;
+    BOOLEAN EXCEPTION = FALSE;
+    ENUM [
+      HANDLER {
+        STRING NAME;
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      REFERENCE {
+        STRING NAME;
+      }
+    ] VECTOR_TYPE;
+    BOOLEAN [
+      TRUE { 
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      FALSE
+    ] ACK = TRUE;
+    BOOLEAN [
+      TRUE  { INT32 NUMBER; },
+      FALSE
+    ] SETPRIO = FALSE;
+  };
+  
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};
+
+CPU riscv {
+  BUILDOPTIONS riscv {
+    COMMONFLAGS = "-nostartfiles";
+  };
+};
+
+
