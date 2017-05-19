@@ -10,7 +10,7 @@
 
 #include "pulpino.h"
      
-#define EXCEPTION_STACK_SIZE 96
+#define EXCEPTION_STACK_SIZE 144
 
     .extern tpl_sc_handler
     .extern tpl_interruption_handler
@@ -90,8 +90,11 @@ main_entry:
     
 /* =================================================== [ syscall handler] === */
 syscall_handler:
+  // enter crit zone
+  csrrci zero, mstatus, 1
+
   addi x2, x2, -EXCEPTION_STACK_SIZE
-  sw x1, 0x5C(x2)
+  sw x1, 0x8C(x2)
   jal x1, store_regs
   la x1, end_except
 
@@ -105,8 +108,11 @@ syscall_handler:
 /* ================================= [ illegal instruction handler] === */
 .global illegal_insn_handler
 illegal_insn_handler:
+  // enter crit zone
+  csrrci zero, mstatus, 1
+
   addi x2, x2, -EXCEPTION_STACK_SIZE
-  sw x1, 0x5C(x2)
+  sw x1, 0x8C(x2)
   jal x1, store_regs
   la x1, end_except
   jal x0, illegal_insn_handler_c
@@ -114,9 +120,6 @@ illegal_insn_handler:
 // saves all caller-saved registers (except return address)
 store_regs:
   .global store_regs
-
-  // enter crit zone
-  csrrci s11, mstatus, 1
 
   sw  x3, 0x00(x2)  // gp
   sw  x4, 0x04(x2)  // tp
@@ -147,11 +150,38 @@ store_regs:
   sw x28, 0x50(x2)  // lpstart[1]
   sw x29, 0x54(x2)  // lpend[1]
   sw x30, 0x58(x2)  // lpcount[1]
+
+  sw x8, 0x5c(x2)   // s0
+  sw x9, 0x60(x2)   // s1
+  sw x18, 0x64(x2)  // s2
+  sw x19, 0x68(x2)  // s3
+  sw x20, 0x6c(x2)  // s4
+  sw x21, 0x70(x2)  // s5
+  sw x22, 0x74(x2)  // s6
+  sw x23, 0x78(x2)  // s7
+  sw x24, 0x7c(x2)  // s8
+  sw x25, 0x80(x2)  // s9
+  sw x26, 0x84(x2)  // s10
+  sw x27, 0x88(x2)  // s11
+
   jalr x0, x1
 
 // load back registers from stack
 end_except:
   .global end_except
+
+  lw x27, 0x88(x2)  // s11
+  lw x26, 0x84(x2)  // s10
+  lw x25, 0x80(x2)  // s9
+  lw x24, 0x7c(x2)  // s8
+  lw x23, 0x78(x2)  // s7
+  lw x22, 0x74(x2)  // s6  
+  lw x21, 0x70(x2)  // s5
+  lw x20, 0x6c(x2)  // s4
+  lw x19, 0x68(x2)  // s3
+  lw x18, 0x64(x2)  // s2
+  lw x9, 0x60(x2)   // s1
+  lw x8, 0x5c(x2)   // s0
     
   lw x28, 0x50(x2)  // lpstart[1]
   lw x29, 0x54(x2)  // lpend[1]
@@ -182,11 +212,11 @@ end_except:
   lw x29, 0x38(x2)
   lw x30, 0x3c(x2)
   lw x31, 0x40(x2)
-  lw  x1, 0x5C(x2)
+  lw  x1, 0x8C(x2)
   addi x2, x2, EXCEPTION_STACK_SIZE
 
   //exit crit zone
-  csrw mstatus, s11
+  csrwi mstatus, 7 // b'111
   eret
 
   .global _init

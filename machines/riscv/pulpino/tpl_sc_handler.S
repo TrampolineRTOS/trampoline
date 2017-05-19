@@ -13,6 +13,12 @@
 #define NEED_SAVE 2
 
 tpl_sc_handler:
+    /* Creates stack */
+    addi sp, sp, -16
+    sw a5, 0(sp)
+    sw a6, 4(sp)
+    sw a7, 8(sp)
+	
     /* Reset tpl_kern variables */
     la a5, tpl_kern
     sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
@@ -27,8 +33,8 @@ tpl_sc_handler:
     /* Jumps to handler */
     jalr a5
 
-    /* Stores return value in stack created at store_regs (0x14) */
-    sw a0, 0x14(sp)
+    /* Stores return value in stack created at store_regs (0x14 + 0x10) */
+    sw a0, 0x24(sp)
 
 tpl_switch_context:
     /* Checks the context switch condition */
@@ -68,6 +74,11 @@ tpl_no_context_switch:
     /* Reloads working registers */
     la ra, end_except
 
+    lw a5, 0(sp)
+    lw a6, 4(sp)
+    lw a7, 8(sp)
+    addi sp, sp, 16
+
     /* Returns */
     ret
 
@@ -84,5 +95,5 @@ tpl_load_context:
     /* Reloads return address and stack pointer */
     lw sp, 0(a0)
     lw a6, 4(a0)
-    csrw mepc, a6    
+    csrw mepc, a6 
     ret 

@@ -20,37 +20,37 @@
 
 // 23: i2c
 __attribute__ ((weak))
-void ISR_I2C (void){ for(;;); }	
+FUNC(void, OS_CODE)ISR_I2C (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
 // 24: uart
 __attribute__ ((weak))
-void ISR_UART (void){ for(;;); }	
+FUNC(void, OS_CODE)ISR_UART (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
 // 25: gpio
 __attribute__ ((weak))
-void ISR_GPIO (void){ for(;;); }	
+FUNC(void, OS_CODE)ISR_GPIO (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
 // 26: spim end of transmission
 __attribute__ ((weak))
-void ISR_SPIM0 (void){ for(;;); }  
+FUNC(void, OS_CODE)ISR_SPIM0 (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }  
 
 // 27: spim R/T finished
 __attribute__ ((weak))
-void ISR_SPIM1 (void){ for(;;); }  
+FUNC(void, OS_CODE)ISR_SPIM1 (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }  
 
 // 28: timer A overflow
 __attribute__ ((weak))
-void ISR_TA_OVF (void){ for(;;); } 
+FUNC(void, OS_CODE)ISR_TA_OVF (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); } 
 
 // 29: timer A compare
 __attribute__ ((weak))
-void ISR_TA_CMP (void){ for(;;); } 
+FUNC(void, OS_CODE)ISR_TA_CMP (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); } 
 
 // 30: timer B overflow
 __attribute__ ((weak))
-void ISR_TB_OVF (void){ for(;;); } 
+FUNC(void, OS_CODE)ISR_TB_OVF (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); } 
 
 // 31: timer B compare
 __attribute__ ((weak))
-void ISR_TB_CMP (void){ for(;;); }
+FUNC(void, OS_CODE)ISR_TB_CMP (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }
 

@@ -28,6 +28,7 @@
 #ifndef __riscv__
 #include "spr-defs.h"
 #endif
+#include "tpl_compiler.h"
 
 /* Number of interrupt handlers - really depends on PIC width in OR1200*/
 #define MAX_INT_HANDLERS  32
@@ -43,12 +44,7 @@
  */
 static inline void int_disable(void) {
 #ifdef __riscv__
-  // read-modify-write
-  int mstatus;
-  asm volatile ("csrr %0, mstatus": "=r" (mstatus));
-  mstatus &= 0xFFFFFFFE;
-  asm volatile ("csrw mstatus, %0" : /* no output */ : "r" (mstatus));
-  asm("csrw 0x300, %0" : : "r" (0x0) );
+  asm("csrci mstatus, 1" : : );
 #else
   mtspr(SPR_SR, mfspr(SPR_SR) & (~SPR_SR_IEE));
 #endif
@@ -78,18 +74,18 @@ static inline void int_enable(void) {
 
 
 
-//declearing all interrupt handelrs
+//declearing all interrupt handlers
 //these functions can be redefined by users
 
-void ISR_I2C (void);	// 23: i2c
-void ISR_UART (void);	// 23: i2c
-void ISR_GPIO (void); 	// 25: gpio
-void ISR_SPIM0 (void);  // 26: spim end of transmission
-void ISR_SPIM1 (void);  // 27: spim R/T finished
-void ISR_TA_OVF (void); // 28: timer A overflow
-void ISR_TA_CMP (void); // 29: timer A compare
-void ISR_TB_OVF (void); // 30: timer B overflow
-void ISR_TB_CMP (void); // 31: timer B compare
+FUNC(void, OS_CODE)ISR_I2C (P2CONST(void, OS_APPL_DATA, AUTOMATIC));	// 23: i2c
+FUNC(void, OS_CODE)ISR_UART (P2CONST(void, OS_APPL_DATA, AUTOMATIC));	// 23: i2c
+FUNC(void, OS_CODE)ISR_GPIO (P2CONST(void, OS_APPL_DATA, AUTOMATIC)); 	// 25: gpio
+FUNC(void, OS_CODE)ISR_SPIM0 (P2CONST(void, OS_APPL_DATA, AUTOMATIC));  // 26: spim end of transmission
+FUNC(void, OS_CODE)ISR_SPIM1 (P2CONST(void, OS_APPL_DATA, AUTOMATIC));  // 27: spim R/T finished
+FUNC(void, OS_CODE)ISR_TA_OVF (P2CONST(void, OS_APPL_DATA, AUTOMATIC)); // 28: timer A overflow
+FUNC(void, OS_CODE)ISR_TA_CMP (P2CONST(void, OS_APPL_DATA, AUTOMATIC)); // 29: timer A compare
+FUNC(void, OS_CODE)ISR_TB_OVF (P2CONST(void, OS_APPL_DATA, AUTOMATIC)); // 30: timer B overflow
+FUNC(void, OS_CODE)ISR_TB_CMP (P2CONST(void, OS_APPL_DATA, AUTOMATIC)); // 31: timer B compare
 
 
 

@@ -62,9 +62,9 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
  */
 #define IDLE_ENTRY tpl_sleep
 
-void SIGTERM_Handler(void);
-void SIGPIPE_Handler(void);
-void SIGUSR2_Handler(void);
+FUNC(void, OS_CODE) SIGTERM_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+FUNC(void, OS_CODE) SIGPIPE_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+FUNC(void, OS_CODE) SIGUSR2_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
                                             
 #endif /* TPL_MACHINE_RISCV_GENERIC_H */
 

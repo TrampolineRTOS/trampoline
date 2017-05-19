@@ -14,7 +14,7 @@
 #include <timer.h>
 #include <uart.h>
 
-#define EXCEPTION_STACK_SIZE 96
+#define EXCEPTION_STACK_SIZE 144
 #define F_CPU 25000000
 
 extern void trampolineSystemCounter();
@@ -146,7 +146,7 @@ FUNC(void, OS_CODE) tpl_init_context(
       the_proc->stack.stack_size;
   int sp;
   uint32 *p;
-  for (sp = 0; sp < EXCEPTION_STACK_SIZE + 8; sp += 4) {
+  for (sp = 0; sp < EXCEPTION_STACK_SIZE + 24; sp += 4) {
       p = (uint32*) (core_context->sp);
       *p = 0;
       core_context->sp -= 4;
@@ -168,7 +168,7 @@ void tpl_init_machine()
     tpl_schedule_from_running();
     
     // Sets timer limit in order to get tick frequency of 1kHz
-    int tickFrequency = 1000;
+    int tickFrequency = 5000;
     TOCRA = F_CPU / tickFrequency;
     start_timer();
 
@@ -188,11 +188,11 @@ void tpl_shutdown ()
 
 // Software Interruptions
 __attribute__ ((weak))
-void SIGTERM_Handler (void){ for(;;); }	
+FUNC(void, OS_CODE) SIGTERM_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 __attribute__ ((weak))
-void SIGUSR2_Handler (void){ for(;;); }	
+FUNC(void, OS_CODE) SIGUSR2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 __attribute__ ((weak))
-void SIGPIPE_Handler (void){ for(;;); }	
+FUNC(void, OS_CODE) SIGPIPE_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
 
 #define OS_STOP_SEC_CODE

@@ -11,6 +11,7 @@ IMPLEMENTATION riscv {
   };
 
   COUNTER [] {
+    UINT32 [1, 2] CATEGORY = 1;
     #include <interruptSources.oil>
   };
   
