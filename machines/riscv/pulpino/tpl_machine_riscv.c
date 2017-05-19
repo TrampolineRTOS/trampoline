@@ -186,6 +186,12 @@ void tpl_shutdown ()
     exit(0);
 }
 
+void tpl_ack_irq() {
+    int mcause;
+    csrr(mcause, mcause);
+    ICP = 1 << mcause;
+}
+
 // Software Interruptions
 __attribute__ ((weak))
 FUNC(void, OS_CODE) SIGTERM_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
