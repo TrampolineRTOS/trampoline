@@ -32,11 +32,9 @@
  * $URL$
  */
 
-#include <signal.h>
-
-#define SOFT_IRQ0 SIGTERM
-#define SOFT_IRQ1 SIGUSR2
-#define SOFT_IRQ2 SIGPIPE
+#define SOFT_IRQ0 0
+#define SOFT_IRQ1 1
+#define SOFT_IRQ2 2
 
 #if ISR_COUNT > 0
 extern void sendSoftwareIt(uint32 to_core_id, uint32 channel);
