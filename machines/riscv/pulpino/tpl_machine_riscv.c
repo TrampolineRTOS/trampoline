@@ -143,14 +143,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   
   /* stack pointer */
   core_context->sp = ((uint32)the_proc->stack.stack_zone) +
-      the_proc->stack.stack_size;
-  int sp;
-  uint32 *p;
-  for (sp = 0; sp < EXCEPTION_STACK_SIZE + 24; sp += 4) {
-      p = (uint32*) (core_context->sp);
-      *p = 0;
-      core_context->sp -= 4;
-  }
+      the_proc->stack.stack_size - EXCEPTION_STACK_SIZE - 20;
   
   /* address of the instruction to execute when returning
      from the system call. */
@@ -161,12 +154,7 @@ void tpl_init_machine()
 {
     // Activates interruptions and timers
     tpl_enable_interrupts();
-    tpl_enable_os_interrupts();
-    tpl_enable_counters();
 
-    // Schedules
-    tpl_schedule_from_running();
-    
     // Sets timer limit in order to get tick frequency of 1kHz
     int tickFrequency = 5000;
     TOCRA = F_CPU / tickFrequency;
