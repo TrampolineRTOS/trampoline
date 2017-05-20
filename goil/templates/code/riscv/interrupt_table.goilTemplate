@@ -20,6 +20,7 @@ foreach isr in ISR do
   end if
   let isr::KIND := "ISR"
   let isr::ACK := INTERRUPTMAP[key]::ACK
+  let isr::VECT := INTERRUPTMAP[key]::VECT
   let objForIRQ[key] += isr
 end foreach
 
@@ -31,6 +32,7 @@ foreach cnt in COUNTER do
   end if
   let cnt::KIND := "COUNTER"
   let cnt::ACK := INTERRUPTMAP[key]::ACK
+  let cnt::VECT := INTERRUPTMAP[key]::VECT
   let objForIRQ[key] += cnt
 end foreach
 
@@ -80,12 +82,15 @@ foreach objList in objForIRQ do
 %
 FUNC(void, OS_CODE) % !objList_KEY %_ClearFlag(void)
 {
-    int mcause;
-    csrr(mcause, mcause);
     /* Clear pending register */
-    ICP = (1 << mcause);
+%
+  foreach obj in objList do
+%
+    ICP = (1 << % !obj::VECT %);
+%
+  end foreach
+%
 }
-
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
