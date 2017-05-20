@@ -16,10 +16,6 @@ CPU pulpino {
     CFILE = "../src/qprintf.c";
   };
 
-  COUNTER SystemCounter {
-    SOURCE = TA_CMP;
-  };
-
   INTERRUPT I2C {
     VECT = 23;
     EXCEPTION = TRUE;

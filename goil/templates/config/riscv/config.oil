@@ -1,12 +1,12 @@
 IMPLEMENTATION riscv {
 
   TASK {
-    UINT32 STACKSIZE = 512;
+    UINT32 STACKSIZE = 2048;
     BOOLEAN USEFLOAT = FALSE;
   };
 
   ISR [] {
-    UINT32 STACKSIZE = 512;
+    UINT32 STACKSIZE = 2048;
     #include <interruptSources.oil>
   };
 

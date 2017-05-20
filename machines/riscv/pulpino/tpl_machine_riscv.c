@@ -144,6 +144,12 @@ FUNC(void, OS_CODE) tpl_init_context(
   /* stack pointer */
   core_context->sp = ((uint32)the_proc->stack.stack_zone) +
       the_proc->stack.stack_size - EXCEPTION_STACK_SIZE - 24;
+
+  /* Dealing with initial return address */
+  int *p = core_context->sp + 28; //sp in end_except
+  *p = (IS_ROUTINE == the_proc->type) ?
+    (uint32)(CallTerminateISR2) :
+    (uint32)(CallTerminateTask) ;
   
   /* address of the instruction to execute when returning
      from the system call. */
