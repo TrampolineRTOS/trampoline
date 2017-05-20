@@ -19,8 +19,9 @@ CPU pulpino {
   INTERRUPT I2C {
     VECT = 23;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_I2C";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -28,8 +29,9 @@ CPU pulpino {
   INTERRUPT UART {
     VECT = 24;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_UART";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -37,8 +39,9 @@ CPU pulpino {
   INTERRUPT GPIO {
     VECT = 25;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_GPIO";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -46,8 +49,9 @@ CPU pulpino {
   INTERRUPT SPIM0 {
     VECT = 26;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_SPIM0";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -55,8 +59,9 @@ CPU pulpino {
   INTERRUPT SPIM1 {
     VECT = 27;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_SPIM1";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -64,8 +69,9 @@ CPU pulpino {
   INTERRUPT TA_CMP {
     VECT = 28;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_TA_CMP";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -73,8 +79,9 @@ CPU pulpino {
   INTERRUPT TA_OVF {
     VECT = 29;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_TA_OVF";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -82,8 +89,9 @@ CPU pulpino {
   INTERRUPT TB_CMP {
     VECT = 30;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_TB_CMP";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
@@ -91,8 +99,9 @@ CPU pulpino {
   INTERRUPT TB_OVF {
     VECT = 31;
     EXCEPTION = TRUE;
-    VECTOR_TYPE = REFERENCE {
+    VECTOR_TYPE = HANDLER {
       NAME = "ISR_TB_OVF";
+      TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };

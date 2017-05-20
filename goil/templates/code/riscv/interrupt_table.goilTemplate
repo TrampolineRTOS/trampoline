@@ -86,7 +86,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_ClearFlag(void)
 %
   foreach obj in objList do
 %
-    ICP = (1 << % !obj::VECT %);
+    ICP = (2 << % !obj::VECT %);
 %
   end foreach
 %
@@ -94,6 +94,25 @@ FUNC(void, OS_CODE) % !objList_KEY %_ClearFlag(void)
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
+   # ACK
+%  /* ACK */
+%
+  let ackDone := false
+  foreach obj in objList do
+    if not ackDone then
+      if obj::ACK then
+#        let ackDone := true
+        if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
+          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
+            it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
+%  %!objList_KEY%_ClearFlag();%
+          end template
+        else
+%  %!objList_KEY%_ClearFlag();%
+        end if        
+      end if
+    end if
+  end foreach
   # ISR1
 %  /* ISR1s */%
   foreach obj in objList do
@@ -153,26 +172,6 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
     if objCounter_KEY == objList_KEY then
       %  tpl_tick_% !objCounter_KEY %();
 %
-    end if
-  end foreach
-
-  # ACK
-%  /* ACK */
-%
-  let ackDone := false
-  foreach obj in objList do
-    if not ackDone then
-      if obj::ACK then
-#        let ackDone := true
-        if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
-          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
-            it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
-%  %!objList_KEY%_ClearFlag();%
-          end template
-        else
-%  %!objList_KEY%_ClearFlag();%
-        end if        
-      end if
     end if
   end foreach
 %

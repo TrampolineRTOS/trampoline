@@ -70,7 +70,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
   %  tpl_counter_tick(&% !obj %_counter_desc);
 %
   end foreach
-  if obj_KEY == "SysTick" then
+  if obj_KEY == "TA_CMP" then
     %  tpl_time_counter++;
 %
   end if

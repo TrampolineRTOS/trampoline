@@ -1,4 +1,6 @@
 .global ISR_% !handlerSource %
+.extern % !handlerIRQ %
+.extern % !handlerIRQ %_ClearFlag
 
 /*---------------------------------------------------------------------------*/
 ISR_% !handlerSource %:
@@ -14,6 +16,7 @@ ISR_% !handlerSource %:
      * 2 - Interrupt function call
      */
     jal % !handlerIRQ %
+    jal % !handlerSource %_ClearFlag
 
     /*-------------------------------------------------------------------------
      * 3 - Check the context switch condition in tpl_kern

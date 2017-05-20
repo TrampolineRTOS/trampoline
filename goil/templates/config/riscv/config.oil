@@ -57,7 +57,7 @@ CPU riscv {
   };
 
   INTERRUPT SIGTERM {
-    VECT = 0;
+    VECT = 20;
     EXCEPTION = TRUE;
     VECTOR_TYPE = HANDLER {
       NAME = "SIGTERM_Handler";
@@ -67,7 +67,7 @@ CPU riscv {
   };
 
   INTERRUPT SIGUSR2 {
-    VECT = 1;
+    VECT = 21;
     EXCEPTION = TRUE;
     VECTOR_TYPE = HANDLER {
       NAME = "SIGUSR2_Handler";
@@ -77,7 +77,7 @@ CPU riscv {
   };
 
   INTERRUPT SIGPIPE {
-    VECT = 2;
+    VECT = 22;
     EXCEPTION = TRUE;
     VECTOR_TYPE = HANDLER {
       NAME = "SIGPIPE_Handler";
