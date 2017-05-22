@@ -106,13 +106,13 @@ end foreach
 .extern tpl_it_vectors
 
 tpl_interruption_handler:
-  // enter crit zone
-  csrrci zero, mstatus, 1
+  /* Enter critical section */
+  csrci mstatus, 1
 
   addi sp, sp, -EXCEPTION_STACK_SIZE
   sw ra, 0x8C(x2)
   jal store_regs
-  la ra, end_except
+  la ra, end_interruption
 
   /* Creates stack */
   addi sp, sp, -16
@@ -120,13 +120,61 @@ tpl_interruption_handler:
   sw a6, 4(sp)
   sw a7, 8(sp)
 
+  /* Retrieves pointer to handler */
   la a5, tpl_it_vectors
   csrr a6, mcause
   slli a6, a6, 2
   add a5, a5, a6
   lw a5, -4(a5)
   jr a5
-  ret
+
+end_interruption:
+  lw x27, 0x88(x2)  // s11
+  lw x26, 0x84(x2)  // s10
+  lw x25, 0x80(x2)  // s9
+  lw x24, 0x7c(x2)  // s8
+  lw x23, 0x78(x2)  // s7
+  lw x22, 0x74(x2)  // s6  
+  lw x21, 0x70(x2)  // s5
+  lw x20, 0x6c(x2)  // s4
+  lw x19, 0x68(x2)  // s3
+  lw x18, 0x64(x2)  // s2
+  lw x9, 0x60(x2)   // s1
+  lw x8, 0x5c(x2)   // s0
+  
+  lw x28, 0x50(x2)  // lpstart[1]
+  lw x29, 0x54(x2)  // lpend[1]
+  lw x30, 0x58(x2)  // lpcount[1]
+  csrrw x0, 0x7B4, x28
+  csrrw x0, 0x7B5, x29
+  csrrw x0, 0x7B6, x30
+  lw x28, 0x44(x2)  // lpstart[0]
+  lw x29, 0x48(x2)  // lpend[0]
+  lw x30, 0x4C(x2)  // lpcount[0]
+  csrrw x0, 0x7B0, x28
+  csrrw x0, 0x7B1, x29
+  csrrw x0, 0x7B2, x30
+  lw  x3, 0x00(x2)
+  lw  x4, 0x04(x2)
+  lw  x5, 0x08(x2)
+  lw  x6, 0x0c(x2)
+  lw  x7, 0x10(x2)
+  lw x10, 0x14(x2)
+  lw x11, 0x18(x2)
+  lw x12, 0x1c(x2)
+  lw x13, 0x20(x2)
+  lw x14, 0x24(x2)
+  lw x15, 0x28(x2)
+  lw x16, 0x2c(x2)
+  lw x17, 0x30(x2)
+  lw x28, 0x34(x2)
+  lw x29, 0x38(x2)
+  lw x30, 0x3c(x2)
+  lw x31, 0x40(x2)
+  lw  x1, 0x8C(x2)
+  addi x2, x2, EXCEPTION_STACK_SIZE
+  csrsi mstatus, 1
+  eret
 
 %
 

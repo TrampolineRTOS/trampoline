@@ -1,6 +1,7 @@
 .global ISR_% !handlerSource %
 .extern % !handlerIRQ %
 .extern % !handlerIRQ %_ClearFlag
+.extern end_interruption
 
 /*---------------------------------------------------------------------------*/
 ISR_% !handlerSource %:
@@ -43,7 +44,7 @@ ISR_% !handlerSource %:
     li a0, 1
     jal tpl_run_elected
 
-    /*-------------------------------------------------------------------------
+    /*----------------------------------------------------------------------o---
      * 6 - Load context
      *     Load in a0 the pointer to the context of the running task.
      *     It has been changed by tpl_run_elected
@@ -52,4 +53,11 @@ ISR_% !handlerSource %:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
-    j   tpl_no_context_switch
+
+    la ra, end_except
+    lw a5, 12(sp)
+    lw a7, 8(sp)
+    lw a6, 4(sp)
+    lw a5, 0(sp)
+    addi sp, sp, 16
+    j end_interruption

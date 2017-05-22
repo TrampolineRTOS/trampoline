@@ -88,9 +88,6 @@ main_entry:
     
 /* =================================================== [ syscall handler] === */
 syscall_handler:
-        /* enter crit zone */
-        csrrci zero, mstatus, 1
-        
         addi x2, x2, -EXCEPTION_STACK_SIZE
         sw x1, 0x8C(x2)
         jal x1, store_regs
@@ -107,9 +104,6 @@ syscall_handler:
 /* ================================= [ illegal instruction handler] === */
 .global illegal_insn_handler
 illegal_insn_handler:
-        /* enter crit zone */
-        csrrci zero, mstatus, 1
-
         addi x2, x2, -EXCEPTION_STACK_SIZE
         sw x1, 0x8C(x2)
         jal x1, store_regs
@@ -213,11 +207,8 @@ end_except:
         lw x31, 0x40(x2)
         lw  x1, 0x8C(x2)
         addi x2, x2, EXCEPTION_STACK_SIZE
-
-        /* exit crit zone */
-        csrsi mstatus, 1
         eret
-        
+
         .global _init
         .global _fini
 _init:
