@@ -65,7 +65,7 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
 extern FUNC(void, OS_CODE) SIGTERM_Handler();
 extern FUNC(void, OS_CODE) SIGPIPE_Handler();
 extern FUNC(void, OS_CODE) SIGUSR2_Handler();
-                                            
+
 #endif /* TPL_MACHINE_RISCV_GENERIC_H */
 
 /* End of file tpl_machine_riscv_generic.h */

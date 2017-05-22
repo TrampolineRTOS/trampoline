@@ -20,9 +20,8 @@ extern struct RISCV_CONTEXT idle_task_context;
  * on the target) for alarms and schedule tables.
  */
 FUNC(void, OS_CODE) tpl_set_systick_timer();
-void tpl_ack_irq();
 
-#define tpl_restore_cpu_priority() tpl_ack_irq();
+#define tpl_restore_cpu_priority() 
 
 #endif /* TPL_MACHINE_H */
 

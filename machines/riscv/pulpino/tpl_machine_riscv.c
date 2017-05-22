@@ -19,6 +19,7 @@
 
 extern void trampolineSystemCounter();
 extern void switch_context();
+uint32 tpl_reentrancy_counter = 0;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -114,7 +115,7 @@ void tpl_disable_interrupts(void)
  */
 void tpl_enable_os_interrupts(void)
 {
-    int_enable();
+  IER |= 0x00FFFFF0;
 }
 
 /**
@@ -122,7 +123,7 @@ void tpl_enable_os_interrupts(void)
  */
 void tpl_disable_os_interrupts(void)
 {
-    int_disable();
+  IER &= 0xFF00000F;
 }
 
 /*
@@ -146,7 +147,7 @@ FUNC(void, OS_CODE) tpl_init_context(
       the_proc->stack.stack_size - EXCEPTION_STACK_SIZE - 24;
 
   /* Dealing with initial return address */
-  int *p = core_context->sp + 28; //sp in end_except
+  uint32 *p = (uint32*) (core_context->sp + 28); //sp in end_except
   *p = (IS_ROUTINE == the_proc->type) ?
     (uint32)(CallTerminateISR2) :
     (uint32)(CallTerminateTask) ;
@@ -178,12 +179,6 @@ void tpl_shutdown ()
     tpl_disable_os_interrupts();
     uart_wait_tx_done();
     exit(0);
-}
-
-void tpl_ack_irq() {
-    int mcause;
-    csrr(mcause, mcause);
-    ICP = 1 << mcause;
 }
 
 // Software Interruptions
