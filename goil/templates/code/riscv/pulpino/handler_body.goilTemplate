@@ -1,7 +1,5 @@
 .global ISR_% !handlerSource %
 .extern % !handlerIRQ %
-.extern % !handlerIRQ %_ClearFlag
-.extern end_interruption
 
 /*---------------------------------------------------------------------------*/
 ISR_% !handlerSource %:
@@ -17,7 +15,6 @@ ISR_% !handlerSource %:
      * 2 - Interrupt function call
      */
     jal % !handlerIRQ %
-    jal % !handlerSource %_ClearFlag
 
     /*-------------------------------------------------------------------------
      * 3 - Check the context switch condition in tpl_kern
@@ -33,7 +30,7 @@ ISR_% !handlerSource %:
      */
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
-    jal tpl_save_context
+    jal tpl_save_context_it
 
     /*-------------------------------------------------------------------------
      * 5 - Call tpl_run_elected.
@@ -52,5 +49,5 @@ ISR_% !handlerSource %:
     la  a0, tpl_kern
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
-    jal tpl_load_context
+    jal tpl_load_context_it
     j tpl_no_context_switch

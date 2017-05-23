@@ -129,7 +129,7 @@ tpl_no_context_switch:
   /* Checks whether to reenable interruptions in next eret */
   la a5, tpl_reentrancy_counter
   lw a5, 0(a5)
-  beqz a5, 1f
+  bnez a5, 1f
   csrsi 0x7c0, 1 //mestatus
 1:
   /* Reloads working registers */
@@ -140,6 +140,24 @@ tpl_no_context_switch:
   addi sp, sp, 16
         
   /* Returns */
+  ret
+
+tpl_save_context_it:
+  sw sp, 0(a0)
+  csrr a6, mepc
+  sw a6, 4(a0)
+  la a6, tpl_reentrancy_counter
+  lw a6, 0(a6)
+  sw a6, 20(a0)
+  ret
+
+tpl_load_context_it:
+  lw sp, 0(a0)
+  lw a6, 4(a0)
+  csrw mepc, a6
+  la a5, tpl_reentrancy_counter
+  lw a6, 20(a0)
+  sw a6, 0(a5)
   ret
 
 %

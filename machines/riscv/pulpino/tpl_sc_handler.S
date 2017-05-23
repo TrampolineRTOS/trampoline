@@ -85,7 +85,7 @@ tpl_sc_no_context_switch:
     lw a5, 0(a5)
     addi a5, a5, -1
     sw a5, 0(a6)
-    beqz a5, 1f
+    bnez a5, 1f
     csrsi 0x7c0, 1 //mestatus
 
 1:      

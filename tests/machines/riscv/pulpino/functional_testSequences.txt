@@ -30,18 +30,18 @@ alarms_s1_full
 alarms_s1_non
 alarms_s2_full
 alarms_s2_non
-alarms_s3_full
-alarms_s3_non
-alarms_s4_full
-alarms_s4_non
-alarms_s5
-alarms_s6
-alarms_s7
-alarms_s8
-alarms_s9_full
-alarms_s9_non
-alarms_s10
-alarms_s11
+#alarms_s3_full
+#alarms_s3_non
+#alarms_s4_full
+#alarms_s4_non
+#alarms_s5
+#alarms_s6
+#alarms_s7
+#alarms_s8
+#alarms_s9_full
+#alarms_s9_non
+#alarms_s10
+#alarms_s11
 
 autosar_app_s1
 autosar_app_s3
@@ -57,11 +57,11 @@ autosar_sc_s3
 autosar_sc_s4
 autosar_sc_s5
 
-autosar_sp_s1
-autosar_sp_s2
-autosar_sp_s3
-autosar_sp_s4
-autosar_sp_s5
+#autosar_sp_s1
+#autosar_sp_s2
+#autosar_sp_s3
+#autosar_sp_s4
+#autosar_sp_s5
 
 autosar_st_s1
 autosar_st_s2
@@ -155,7 +155,7 @@ tasks_s12_full
 tasks_s12_non
 tasks_s13_full
 tasks_s13_non
-tasks_s14_full
-tasks_s14_non
+#tasks_s14_full
+#tasks_s14_non
 tasks_s15_full
 tasks_s15_non

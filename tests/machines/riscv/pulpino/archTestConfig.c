@@ -54,30 +54,3 @@ void sendSoftwareIt(uint32 to_core_id, uint32 channel)
   ISP = 2 << channel;
 }
 #endif
-
-/*
- * @def pending_signals
- *
- * This function prints the pending signals. Useful to debug to check if an interrupts has occured or not.
- *
- 
-void pending_signals(void)
-{
-	sigset_t  sig_set;
-	
-	int pi = getpid ();
-	stdimpl_print("The pid is %d - ",pi);
-	
-	sigpending(&sig_set);
-	
-	stdimpl_print("Pending signals are %d ",(int)sig_set);
-	
-	if (sigismember ( &sig_set,SIGTERM) ) 
-		stdimpl_print("SIGTERM is pending \n");
-	
-	if (sigismember ( &sig_set,SIGUSR2) ) 
-		stdimpl_print("SIGUSR2 is pending \n");
-}
-*/
-
-/* End of file config.c */
