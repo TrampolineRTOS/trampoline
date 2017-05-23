@@ -33,9 +33,7 @@ tpl_sc_handler:
     lw a5, 0(a5)
     
     /* Jumps to handler */
-    //csrsi mstatus, 1
     jalr a5
-    csrci mstatus, 1
         
     /* Stores return value in stack created at store_regs (0x14 + 0x10) */
     sw a0, 0x24(sp)
@@ -74,13 +72,6 @@ tpl_sc_handler_no_save_running_context:
     /* Call tpl_run_elected */
     jal  tpl_run_elected
     
-    /* Adjusts reentrancy counter */
-    la a5, tpl_reentrancy_counter
-    mv a6, a5
-    lw a5, 0(a5)
-    addi a5, a5, -1
-    sw a5, 0(a6)
-    
     /* Load context */
     la  a0, tpl_kern
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
@@ -88,6 +79,16 @@ tpl_sc_handler_no_save_running_context:
     jal tpl_load_context
     
 tpl_sc_no_context_switch:
+    /* Checks whether to reenable interruptions in next eret */
+    la a5, tpl_reentrancy_counter
+    mv a6, a5
+    lw a5, 0(a5)
+    addi a5, a5, -1
+    sw a5, 0(a6)
+    beqz a5, 1f
+    csrsi 0x7c0, 1 //mestatus
+
+1:      
     /* Reloads working registers */
     la ra, end_except
     lw a7, 8(sp)

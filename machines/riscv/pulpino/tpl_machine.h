@@ -13,7 +13,7 @@ extern struct RISCV_CONTEXT idle_task_context;
  * The size of the stack of the idle task which is also the stack
  * used for machine startup
  */
-#define IDLE_STACK_SIZE  300
+#define IDLE_STACK_SIZE  2048
 
 /*
  * Configuration of systick timer (can be a generic timer if systick is not available
