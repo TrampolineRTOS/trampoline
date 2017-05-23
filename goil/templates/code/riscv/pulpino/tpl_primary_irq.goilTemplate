@@ -128,6 +128,17 @@ tpl_interruption_handler:
   lw a5, -4(a5)
   jr a5
 
+tpl_no_context_switch:
+  /* Reloads working registers */
+  la ra, end_interruption
+  lw a7, 8(sp)
+  lw a6, 4(sp)
+  lw a5, 0(sp)
+  addi sp, sp, 16
+        
+  /* Returns */
+  ret
+
 end_interruption:
   lw x27, 0x88(x2)  // s11
   lw x26, 0x84(x2)  // s10

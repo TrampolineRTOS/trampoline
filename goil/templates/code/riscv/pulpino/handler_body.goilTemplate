@@ -54,10 +54,9 @@ ISR_% !handlerSource %:
     lw  a0, 0(a0)
     jal tpl_load_context
 
-    la ra, end_except
-    lw a5, 12(sp)
+    la ra, end_interruption
     lw a7, 8(sp)
     lw a6, 4(sp)
     lw a5, 0(sp)
     addi sp, sp, 16
-    j end_interruption
+    ret

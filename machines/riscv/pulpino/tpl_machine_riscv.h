@@ -9,8 +9,11 @@
  * RISCV core registers
  */
 struct RISCV_CONTEXT {
-    uint32 sp;
-    uint32 mepc;
+  uint32 sp;
+  uint32 mepc1;
+  uint32 mepc2;
+  uint32 mepc3;
+  uint32 mepc4;
 };
 
 /**
