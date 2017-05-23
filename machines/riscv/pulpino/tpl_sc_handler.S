@@ -33,7 +33,9 @@ tpl_sc_handler:
     lw a5, 0(a5)
     
     /* Jumps to handler */
+    //csrsi mstatus, 1
     jalr a5
+    csrci mstatus, 1
         
     /* Stores return value in stack created at store_regs (0x14 + 0x10) */
     sw a0, 0x24(sp)
@@ -87,30 +89,15 @@ tpl_sc_handler_no_save_running_context:
     
 tpl_sc_no_context_switch:
     /* Reloads working registers */
+    la ra, end_except
     lw a7, 8(sp)
     lw a6, 4(sp)
     lw a5, 0(sp)
     addi sp, sp, 16
     
     /* Returns */
-    jal end_except
+    ret
 
-    la ra, tpl_reentrancy_counter
-    lw ra, 0(ra)
-    beqz ra, 1f //Last level
-
-    lw  x1, 0x8C(x2)
-    addi x2, x2, EXCEPTION_STACK_SIZE
-    csrr s10, mepc
-    jr s10
-
-1:  
-    lw  x1, 0x8C(x2)
-    addi x2, x2, EXCEPTION_STACK_SIZE
-    csrsi mstatus, 1
-    eret
-
-        
 tpl_save_context:
     .global tpl_save_context
     /* Saves return address and stack pointer */
