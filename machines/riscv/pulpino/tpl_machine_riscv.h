@@ -9,11 +9,12 @@
  * RISCV core registers
  */
 struct RISCV_CONTEXT {
-  uint32 sp;
-  uint32 mepc1;
-  uint32 mepc2;
-  uint32 mepc3;
-  uint32 mepc4;
+    uint32 sp;
+    uint32 mepc1;
+    uint32 mepc2;
+    uint32 mepc3;
+    uint32 mepc4;
+    uint32 reentrancy_counter;
 };
 
 /**
@@ -68,6 +69,8 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
 extern FUNC(void, OS_CODE) SIGTERM_Handler();
 extern FUNC(void, OS_CODE) SIGPIPE_Handler();
 extern FUNC(void, OS_CODE) SIGUSR2_Handler();
+
+extern uint32 tpl_reentrancy_counter;
 
 #endif /* TPL_MACHINE_RISCV_GENERIC_H */
 

@@ -20,6 +20,8 @@
 extern void trampolineSystemCounter();
 extern void switch_context();
 
+uint32 tpl_reentrancy_counter = 0;
+
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 /**
@@ -151,12 +153,14 @@ FUNC(void, OS_CODE) tpl_init_context(
     (uint32)(CallTerminateISR2) :
     (uint32)(CallTerminateTask) ;
 
+  core_context->reentrancy_counter = 1;
+
   /* address of the instruction to execute when returning
      from the system call. */
   core_context->mepc1 = (uint32) the_proc->entry;
-  core_context->mepc2 = 0xfdcbda98;
-  core_context->mepc3 = 0xdcbda987;
-  core_context->mepc4 = 0xcbda9876;
+  core_context->mepc2 = 0xFFFFFFFF;
+  core_context->mepc3 = 0xFFFFFFFF;
+  core_context->mepc4 = 0xFFFFFFFF;
 }
 
 void tpl_init_machine()
