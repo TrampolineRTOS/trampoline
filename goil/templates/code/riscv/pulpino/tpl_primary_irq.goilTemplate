@@ -139,18 +139,6 @@ tpl_no_context_switch:
   /* Returns */
   ret
 
-tpl_save_context_it:
-  sw sp, 0(a0)
-  csrr a6, mepc
-  sw a6, 4(a0)
-  ret
-
-tpl_load_context_it:
-  lw sp, 0(a0)
-  lw a6, 4(a0)
-  csrw mepc, a6
-  ret
-
 %
 
 foreach irq in irqStageList

@@ -160,10 +160,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 
   /* address of the instruction to execute when returning
      from the system call. */
-  core_context->mepc1 = (uint32) the_proc->entry;
-  core_context->mepc2 = 0xFFFFFFFF;
-  core_context->mepc3 = 0xFFFFFFFF;
-  core_context->mepc4 = 0xFFFFFFFF;
+  core_context->mepc = (uint32) the_proc->entry;
 }
 
 void tpl_init_machine()

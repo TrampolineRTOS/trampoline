@@ -112,40 +112,15 @@ tpl_save_context:
     .global tpl_save_context
     /* Saves return address and stack pointer */
     sw sp, 0(a0)
-
-    lw a6, 12(a0)
-    sw a6, 16(a0) //mepc3 -> mepc4
-    
-    lw a6, 8(a0)
-    sw a6, 12(a0) //mepc2 -> mepc3
-    
-    lw a6, 4(a0)
-    sw a6, 8(a0)  //mepc1 -> mepc2
-
     csrr a6, mepc
-    sw a6, 4(a0)  //mepc  -> mepc1
-
+    sw a6, 4(a0)
     ret
         
 tpl_load_context:
     .global tpl_load_context
     /* Reloads return address and stack pointer */
     lw sp, 0(a0)
-    
     lw a6, 4(a0)
-    csrw mepc, a6 //mepc1 -> mepc
-
-    lw a6, 8(a0)
-    sw a6, 4(a0)  //mepc2 -> mepc1
-
-    lw a6, 12(a0)
-    sw a6, 8(a0)  //mepc3 -> mepc2
-
-    lw a6, 16(a0)
-    sw a6, 12(a0) //mepc4 -> mepc3
-
-    li a6, -1     //End marker
-    sw a6, 16(a0) //-1    -> mepc4
-
+    csrw mepc, a6
     ret
         
