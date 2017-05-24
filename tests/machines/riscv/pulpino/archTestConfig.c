@@ -51,6 +51,6 @@
 /* TODO : Multicore - Get CoreID's ipid */
 void sendSoftwareIt(uint32 to_core_id, uint32 channel)
 {
-  ISP = 2 << channel;
+  ISP = IPR | (1 << channel);
 }
 #endif

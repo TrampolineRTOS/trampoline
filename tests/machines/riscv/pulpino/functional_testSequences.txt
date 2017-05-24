@@ -47,6 +47,19 @@ autosar_app_s1
 autosar_app_s3
 autosar_app_s4
 
+hook_s1_full
+hook_s1_non
+hook_s2_full
+hook_s2_non
+hook_s3_full
+hook_s3_non
+hook_s4_full
+hook_s4_non
+hook_s5_full
+hook_s5_non
+hook_s6_full
+hook_s6_non
+
 autosar_coreos_s1
 autosar_coreos_s2
 autosar_coreos_s3
@@ -105,19 +118,6 @@ events_s3
 events_s4
 events_s5
 events_s6
-
-hook_s1_full
-hook_s1_non
-hook_s2_full
-hook_s2_non
-hook_s3_full
-hook_s3_non
-hook_s4_full
-hook_s4_non
-hook_s5_full
-hook_s5_non
-hook_s6_full
-hook_s6_non
 
 interrupts_s1_full
 interrupts_s1_non

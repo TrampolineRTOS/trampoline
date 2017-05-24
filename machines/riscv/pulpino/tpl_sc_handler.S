@@ -21,11 +21,21 @@ tpl_sc_handler:
     sw a6, 4(sp)
     sw a7, 8(sp)
     
+    /* Adjusts reentrancy counter */
+    la a5, tpl_reentrancy_counter
+    mv a6, a5
+    lw a5, 0(a5)
+    addi a5, a5, 1
+    sw a5, 0(a6)
+    li a6, 1
+    bne a5, a6, 1f
+
     /* Reset tpl_kern variables */
     la a5, tpl_kern
     sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
     sb zero, TPL_KERN_OFFSET_NEED_SCHEDULE(a5)
-    
+
+1:      
     /* Gets function pointer to the service */
     la a5, tpl_dispatch_table
     slli a7, a7, 2
@@ -38,14 +48,17 @@ tpl_sc_handler:
     /* Stores return value in stack created at store_regs (0x14 + 0x10) */
     sw a0, 0x24(sp)
 
-tpl_switch_context:
-    /* Adjusts reentrancy counter */
+    /* No context switch if reentrant system call */
     la a5, tpl_reentrancy_counter
     mv a6, a5
     lw a5, 0(a5)
-    addi a5, a5, 1
+    addi a5, a5, -1
     sw a5, 0(a6)
+    seqz a5, a5
+    csrs 0x7c0, a5
+    beqz a5, tpl_sc_no_context_switch
 
+tpl_switch_context:
     /* Checks the context switch condition */
     la a5, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a5)
@@ -79,16 +92,6 @@ tpl_sc_handler_no_save_running_context:
     jal tpl_load_context
     
 tpl_sc_no_context_switch:
-    /* Checks whether to reenable interruptions in next eret */
-    la a5, tpl_reentrancy_counter
-    mv a6, a5
-    lw a5, 0(a5)
-    addi a5, a5, -1
-    sw a5, 0(a6)
-    bnez a5, 1f
-    csrsi 0x7c0, 1 //mestatus
-
-1:      
     /* Reloads working registers */
     la ra, end_except
     lw a7, 8(sp)
@@ -116,10 +119,6 @@ tpl_save_context:
     csrr a6, mepc
     sw a6, 4(a0)  //mepc  -> mepc1
 
-    la a6, tpl_reentrancy_counter
-    lw a6, 0(a6)
-    sw a6, 20(a0)
-    
     ret
         
 tpl_load_context:
@@ -142,9 +141,5 @@ tpl_load_context:
     li a6, -1     //End marker
     sw a6, 16(a0) //-1    -> mepc4
 
-    la a5, tpl_reentrancy_counter
-    lw a6, 20(a0)
-    sw a6, 0(a5)
-    
     ret
         

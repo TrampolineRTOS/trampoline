@@ -32,6 +32,7 @@
  * $URL$
  */
 
+/* The lower the number, the higher the priority */
 #define SOFT_IRQ0 20
 #define SOFT_IRQ1 21
 #define SOFT_IRQ2 22

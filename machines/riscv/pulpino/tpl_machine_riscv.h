@@ -14,7 +14,6 @@ struct RISCV_CONTEXT {
     uint32 mepc2;
     uint32 mepc3;
     uint32 mepc4;
-    uint32 reentrancy_counter;
 };
 
 /**

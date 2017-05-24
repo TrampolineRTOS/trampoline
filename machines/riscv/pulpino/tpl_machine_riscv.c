@@ -116,7 +116,7 @@ void tpl_disable_interrupts(void)
  */
 void tpl_enable_os_interrupts(void)
 {
-  IER |= 0x00FFFFF0;
+  int_enable();
 }
 
 /**
@@ -124,7 +124,7 @@ void tpl_enable_os_interrupts(void)
  */
 void tpl_disable_os_interrupts(void)
 {
-  IER &= 0xFF00000F;
+  int_disable();
 }
 
 /*
@@ -152,8 +152,6 @@ FUNC(void, OS_CODE) tpl_init_context(
   *p = (IS_ROUTINE == the_proc->type) ?
     (uint32)(CallTerminateISR2) :
     (uint32)(CallTerminateTask) ;
-
-  core_context->reentrancy_counter = 1;
 
   /* address of the instruction to execute when returning
      from the system call. */

@@ -104,7 +104,7 @@ syscall_handler:
 /* ================================= [ illegal instruction handler] === */
 .global illegal_insn_handler
 illegal_insn_handler:
-    csrci mstatus, 1
+    csrci 0x7c0, 1
     addi x2, x2, -EXCEPTION_STACK_SIZE
     sw x1, 0x8C(x2)
     jal x1, store_regs
