@@ -40,11 +40,11 @@
  * \return void
  *
  * By writing 1 to the ie (interruptenable) bit
- * interrupts are globally disable.
+ * interrupts are globally disabled.
  */
 static inline void int_disable(void) {
 #ifdef __riscv__
-  asm("csrci mstatus, 1" : : );
+  asm("csrci 0x7c0, 1" : : );
 #else
   mtspr(SPR_SR, mfspr(SPR_SR) & (~SPR_SR_IEE));
 #endif
@@ -62,11 +62,7 @@ static inline void int_disable(void) {
  */
 static inline void int_enable(void) {
 #ifdef __riscv__
-  // read-modify-write
-  int mstatus;
-  asm volatile ("csrr %0, mstatus": "=r" (mstatus));
-  mstatus |= 0x01;
-  asm volatile ("csrw mstatus, %0" : /* no output */ : "r" (mstatus));
+  asm("csrsi 0x7c0, 1" : : );
 #else
   mtspr(SPR_SR, mfspr(SPR_SR) | (SPR_SR_IEE));
 #endif

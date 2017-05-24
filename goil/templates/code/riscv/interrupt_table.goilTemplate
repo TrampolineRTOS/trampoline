@@ -33,6 +33,7 @@ foreach cnt in COUNTER do
   let cnt::KIND := "COUNTER"
   let cnt::ACK := INTERRUPTMAP[key]::ACK
   let cnt::VECT := INTERRUPTMAP[key]::VECT
+  let type := cnt::TYPE
   let objForIRQ[key] += cnt
 end foreach
 
@@ -43,13 +44,17 @@ let counterForIRQ := @[ ]
 # handlerSource, handlerName, handlerAck, generatePrimaryIrq
 foreach objList in objForIRQ do
   foreach obj in objList do
-    if obj::KIND == "COUNTER" then
-      let counterForIRQ[KEY] := @()
+    if (obj::KIND == "COUNTER") then
+      if (obj::TYPE != "SOFTWARE") then
+        let counterForIRQ[KEY] := @()
+      end if 
     end if
   end foreach
   foreach obj in objList do
-    if obj::KIND == "COUNTER" then
-      let  counterForIRQ[KEY] += obj::NAME
+    if (obj::KIND == "COUNTER") then
+      if (obj::TYPE != "SOFTWARE") then
+        let  counterForIRQ[KEY] += obj::NAME
+      end if
     end if
   end foreach
 end foreach
@@ -152,7 +157,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
   foreach objCounter in counterForIRQ do
     let objCounter_KEY := KEY
-    if objCounter_KEY == objList_KEY then
+    if (objCounter_KEY == objList_KEY) then
       %  tpl_tick_% !objCounter_KEY %();
 %
     end if

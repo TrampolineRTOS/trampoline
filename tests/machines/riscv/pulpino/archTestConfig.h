@@ -33,9 +33,9 @@
  */
 
 /* The lower the number, the higher the priority */
-#define SOFT_IRQ0 20
-#define SOFT_IRQ1 21
-#define SOFT_IRQ2 22
+#define SOFT_IRQ0 23
+#define SOFT_IRQ1 22
+#define SOFT_IRQ2 21
 
 #if ISR_COUNT > 0
 extern void sendSoftwareIt(uint32 to_core_id, uint32 channel);

@@ -13,6 +13,10 @@ IMPLEMENTATION riscv {
   COUNTER [] {
     UINT32 [1, 2] CATEGORY = 1;
     #include <counterSources.oil>
+    ENUM WITH_AUTO [
+         HARDWARE,
+         SOFTWARE
+         ] TYPE = HARDWARE;
   };
   
   INTERRUPT [] { 
@@ -57,8 +61,8 @@ CPU riscv {
   };
 
   INTERRUPT SIGTERM {
-    VECT = 20;
-    EXCEPTION = TRUE;
+    VECT = 22;
+    EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
       NAME = "SIGTERM_Handler";
       TEMPLATE = FALSE;
@@ -68,7 +72,7 @@ CPU riscv {
 
   INTERRUPT SIGUSR2 {
     VECT = 21;
-    EXCEPTION = TRUE;
+    EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
       NAME = "SIGUSR2_Handler";
       TEMPLATE = FALSE;
@@ -77,8 +81,8 @@ CPU riscv {
   };
 
   INTERRUPT SIGPIPE {
-    VECT = 22;
-    EXCEPTION = TRUE;
+    VECT = 20;
+    EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
       NAME = "SIGPIPE_Handler";
       TEMPLATE = FALSE;

@@ -21,6 +21,7 @@ extern void trampolineSystemCounter();
 extern void switch_context();
 
 uint32 tpl_reentrancy_counter = 0;
+uint32 tpl_leave_ie_untouched = 0;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -100,7 +101,8 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
  */
 void tpl_enable_interrupts(void)
 {
-    int_enable();
+  int_enable();
+  tpl_leave_ie_untouched = 0;
 }
 
 /**
@@ -108,7 +110,8 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-    int_disable();
+  int_disable();
+  tpl_leave_ie_untouched = 1;
 }
 
 /**
@@ -116,7 +119,8 @@ void tpl_disable_interrupts(void)
  */
 void tpl_enable_os_interrupts(void)
 {
-  int_enable();
+  IER |= 0x00FFFFFE;
+  tpl_leave_ie_untouched = 0;
 }
 
 /**
@@ -124,7 +128,8 @@ void tpl_enable_os_interrupts(void)
  */
 void tpl_disable_os_interrupts(void)
 {
-  int_disable();
+  IER &= 0xFF000001;
+  tpl_leave_ie_untouched = 1;
 }
 
 /*
