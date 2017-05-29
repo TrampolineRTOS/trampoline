@@ -237,11 +237,6 @@ flush_pipeline:
    ********************************************/
 invalid_service_id:  /* currently, if invalid service id is specified, we do nothing */
 swi_no_context_switch_exit:
-  /* manage reentrance of kernel */
-  ldr r3, =nested_kernel_entrance_counter
-  ldr r2, [r3]
-  sub r2, r2, #1
-  str r2, [r3]
 
 #if WITH_MEMORY_PROTECTION == YES
   /* in case we enter in trusted function, we must prepare
@@ -253,6 +248,12 @@ swi_no_context_switch_exit:
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
 swi_skip_kernel_exit:
+  /* manage reentrance of kernel */
+  ldr r3, =nested_kernel_entrance_counter
+  ldr r2, [r3]
+  sub r2, r2, #1
+  str r2, [r3]
+
   /* pops the kernel enter stack frame */
   ldmfd sp!, {r3}
   msr spsr, r3
