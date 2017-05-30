@@ -1,39 +1,49 @@
 .global ISR_% !handlerSource %
 .extern % !handlerIRQ %
+.extern tpl_leave_ie_untouched
 
 /*---------------------------------------------------------------------------*/
 ISR_% !handlerSource %:
 
     /*-------------------------------------------------------------------------
-     * 1 - Reset the tpl_kern variables
-     */
-    la a5, tpl_kern
-    sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
-    sb zero, TPL_KERN_OFFSET_NEED_SCHEDULE(a5)
-
-    /*-------------------------------------------------------------------------
-     * 2 - Interrupt function call
+     * 1 - Interrupt function call
      */
     jal % !handlerIRQ %
 
+    /* No context switch if reentrant interruption */
+    la a5, tpl_reentrancy_counter
+    mv a6, a5
+    lw a5, 0(a5)
+    addi a5, a5, -1
+    sw a5, 0(a6)
+        
+    la a6, tpl_leave_ie_untouched
+    lw a6, 0(a6)
+        
+    seqz a5, a5
+    not a6, a6
+    and a5, a5, a6
+    csrs 0x7c0, a5
+    beqz a5, 1f
+
     /*-------------------------------------------------------------------------
-     * 3 - Check the context switch condition in tpl_kern
+     * 2 - Check the context switch condition in tpl_kern
      */
     la a0, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a0)
     beq a6, zero, tpl_no_context_switch
 
     /*-------------------------------------------------------------------------
-     * 4 - Save context
+     * 3 - Save context
      *     Load in a0 the pointer to the static descriptor of the running task
-     *     a0 already points to tpl_kern (from stage 3)
+     *     a0 already points to tpl_kern (from stage 2)
      */
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_save_context
 
     /*-------------------------------------------------------------------------
-     * 5 - Call tpl_run_elected.
+     * 4 - Call tpl_run_elected.
      *     The argument is a boolean which is true if the process is
      *     preempted. Here it is true because in an interrupt handler
      *     a process is inevitably preempted
@@ -42,7 +52,7 @@ ISR_% !handlerSource %:
     jal tpl_run_elected
 
     /*----------------------------------------------------------------------o---
-     * 6 - Load context
+     * 5 - Load context
      *     Load in a0 the pointer to the context of the running task.
      *     It has been changed by tpl_run_elected
      */
@@ -50,4 +60,5 @@ ISR_% !handlerSource %:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
+1:
     j tpl_no_context_switch

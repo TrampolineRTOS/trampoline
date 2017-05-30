@@ -90,12 +90,9 @@ foreach objList in objForIRQ do
 FUNC(void, OS_CODE) % !objList_KEY %_ClearFlag(void)
 {
     /* Clear pending register */
-    if (tpl_leave_ie_untouched == 0) {
-% foreach obj in objList do %
-        ICP = (2 << % !obj::VECT %);
-% end foreach %
-    } 
+    ICP = (2 << % !objList[0]::VECT %);
 }       
+
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
@@ -145,30 +142,8 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
       do
       if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
-        let repeated_priority_found := false
-        let minPriority := 100000
-        foreach objList2 in objForIRQ do
-          foreach obj2 in objList2 do
-            if (obj2::KIND == "ISR" & obj2::CATEGORY == 2) then
-              if obj2::PRIORITY < minPriority then
-                let minPriority := obj2::PRIORITY
-              end if
-              if (obj::VECT != obj2::VECT) then
-                if obj::PRIORITY == obj2::PRIORITY then
-                  let repeated_priority_found := true
-                end if
-              end if
-            end if
-          end foreach
-        end foreach
-
-        if repeated_priority_found == true then
-%  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+%  tpl_central_interrupt_handler_2(% !([TASKS length] + indexISR2) %);
 %
-        else
-%  tpl_central_interrupt_handler(% !([TASKS length] + obj::PRIORITY - minPriority) %);
-%
-        end if
         let indexISR2 := indexISR2 + 1
       end if
     end foreach
@@ -192,7 +167,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   foreach obj in objList do
     if not ackDone then
       if obj::ACK then
-#        let ackDone := true
+        let ackDone := true
         if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
           template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
             it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
