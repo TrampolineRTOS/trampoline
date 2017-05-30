@@ -40,19 +40,24 @@ CPU stm32f303 {
     PRIO_BITS = 4;
     CLOCK = 72000000;
   };
-          
+
+  BUILDOPTIONS buildOptions {
+     COMMONFLAGS = "-DSTM32F334x8"; //processor def
+     COMMONFLAGS = "-DUSE_STDPERIPH_DRIVER";
+  };
+
   INTERRUPT_COUNT nb_it {
     IT_TABLE_SIZE = 90;
   };
   
-  INTERRUPT NMI				{SETPRIO = TRUE { NUMBER = -14; };};
+  INTERRUPT NMI			{SETPRIO = TRUE { NUMBER = -14; };};
   INTERRUPT MemManage		{SETPRIO = TRUE { NUMBER = -12; };}; 
   INTERRUPT BusFault		{SETPRIO = TRUE { NUMBER = -11; };};
-  INTERRUPT UsageFault		{SETPRIO = TRUE { NUMBER = -10; };};
-  INTERRUPT SVCall			{SETPRIO = TRUE { NUMBER = -5 ; };};
+  INTERRUPT UsageFault	{SETPRIO = TRUE { NUMBER = -10; };};
+  INTERRUPT SVCall		{SETPRIO = TRUE { NUMBER = -5 ; };};
   INTERRUPT DebugMonitor	{SETPRIO = TRUE { NUMBER = -4 ; };};
-  INTERRUPT PendSV			{SETPRIO = TRUE { NUMBER = -2 ; };};
-  INTERRUPT SysTick			{SETPRIO = TRUE { NUMBER = -1 ; };};
+  INTERRUPT PendSV		{SETPRIO = TRUE { NUMBER = -2 ; };};
+  INTERRUPT SysTick		{SETPRIO = TRUE { NUMBER = -1 ; };};
   
   INTERRUPT WWDG_IRQ {
     VECT = 16;

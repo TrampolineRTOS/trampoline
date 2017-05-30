@@ -16,8 +16,6 @@ IMPLEMENTATION trampoline {
 CPU blink {
   OS config {
     STATUS = EXTENDED;
-    PRETASKHOOK = TRUE;
-    POSTTASKHOOK = TRUE;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
     
@@ -25,7 +23,7 @@ CPU blink {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
       APP_NAME = "blink_exe";
-      CFLAGS  = "-O0 -DSTM32F334x8 -DUSE_STDPERIPH_DRIVER"; 
+      CFLAGS  = "";
       LDFLAGS = "-Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
@@ -58,8 +56,8 @@ CPU blink {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 250;
-      CYCLETIME = 250;
+      ALARMTIME = 1000;
+      CYCLETIME = 1000;
     };
   };
 };
