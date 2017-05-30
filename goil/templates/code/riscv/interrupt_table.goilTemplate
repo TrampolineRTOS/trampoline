@@ -1,7 +1,9 @@
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 #include <utils.h>
+
+extern uint32 tpl_leave_ie_untouched;
+
 %
 
 #------------------------------------------------------------------------------*
@@ -88,14 +90,12 @@ foreach objList in objForIRQ do
 FUNC(void, OS_CODE) % !objList_KEY %_ClearFlag(void)
 {
     /* Clear pending register */
-%
-  foreach obj in objList do
-%
-    ICP = (2 << % !obj::VECT %);
-%
-  end foreach
-%
-}
+    if (tpl_leave_ie_untouched == 0) {
+% foreach obj in objList do %
+        ICP = (2 << % !obj::VECT %);
+% end foreach %
+    } 
+}       
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
@@ -145,8 +145,30 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
       do
       if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
-%  tpl_fast_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+        let repeated_priority_found := false
+        let minPriority := 100000
+        foreach objList2 in objForIRQ do
+          foreach obj2 in objList2 do
+            if (obj2::KIND == "ISR" & obj2::CATEGORY == 2) then
+              if obj2::PRIORITY < minPriority then
+                let minPriority := obj2::PRIORITY
+              end if
+              if (obj::VECT != obj2::VECT) then
+                if obj::PRIORITY == obj2::PRIORITY then
+                  let repeated_priority_found := true
+                end if
+              end if
+            end if
+          end foreach
+        end foreach
+
+        if repeated_priority_found == true then
+%  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
 %
+        else
+%  tpl_central_interrupt_handler(% !([TASKS length] + obj::PRIORITY - minPriority) %);
+%
+        end if
         let indexISR2 := indexISR2 + 1
       end if
     end foreach
