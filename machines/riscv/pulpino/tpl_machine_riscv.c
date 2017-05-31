@@ -22,6 +22,7 @@ extern void switch_context();
 
 uint32 tpl_reentrancy_counter = 0;
 uint32 tpl_leave_ie_untouched = 0;
+uint8 TA_CMP = 28;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -189,11 +190,11 @@ void tpl_shutdown ()
 
 // Software Interruptions
 __attribute__ ((weak))
-FUNC(void, OS_CODE) SIGTERM_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
+FUNC(void, OS_CODE) SOFT_IRQ0_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 __attribute__ ((weak))
-FUNC(void, OS_CODE) SIGUSR2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
+FUNC(void, OS_CODE) SOFT_IRQ1_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 __attribute__ ((weak))
-FUNC(void, OS_CODE) SIGPIPE_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
+FUNC(void, OS_CODE) SOFT_IRQ2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
 
 #define OS_STOP_SEC_CODE

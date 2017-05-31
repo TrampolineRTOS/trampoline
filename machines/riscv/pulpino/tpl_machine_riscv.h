@@ -62,11 +62,16 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
  */
 #define IDLE_ENTRY tpl_sleep
 
-extern FUNC(void, OS_CODE) SIGTERM_Handler();
-extern FUNC(void, OS_CODE) SIGPIPE_Handler();
-extern FUNC(void, OS_CODE) SIGUSR2_Handler();
+extern FUNC(void, OS_CODE) SOFT_IRQ0_Handler();
+extern FUNC(void, OS_CODE) SOFT_IRQ1_Handler();
+extern FUNC(void, OS_CODE) SOFT_IRQ2_Handler();
 
 extern uint32 tpl_reentrancy_counter;
+
+extern uint8 SOFT_IRQ0;
+extern uint8 SOFT_IRQ1;
+extern uint8 SOFT_IRQ2;
+extern uint8 TA_CMP;
 
 #endif /* TPL_MACHINE_RISCV_GENERIC_H */
 

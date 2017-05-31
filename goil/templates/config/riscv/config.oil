@@ -20,7 +20,7 @@ IMPLEMENTATION riscv {
   };
   
   INTERRUPT [] { 
-    UINT32 VECT;
+    UINT32 VECT = 1024;
     BOOLEAN EXCEPTION = FALSE;
     ENUM [
       HANDLER {
@@ -60,31 +60,28 @@ CPU riscv {
     COMMONFLAGS = "-nostartfiles";
   };
 
-  INTERRUPT SIGTERM {
-    VECT = 22;
+  INTERRUPT SOFT_IRQ0 {
     EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
-      NAME = "SIGTERM_Handler";
+      NAME = "SOFT_IRQ0_Handler";
       TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
 
-  INTERRUPT SIGUSR2 {
-    VECT = 21;
+  INTERRUPT SOFT_IRQ1 {
     EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
-      NAME = "SIGUSR2_Handler";
+      NAME = "SOFT_IRQ0_Handler";
       TEMPLATE = FALSE;
     };
     ACK = TRUE;
   };
 
-  INTERRUPT SIGPIPE {
-    VECT = 20;
+  INTERRUPT SOFT_IRQ2 {
     EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
-      NAME = "SIGPIPE_Handler";
+      NAME = "SOFT_IRQ0_Handler";
       TEMPLATE = FALSE;
     };
     ACK = TRUE;

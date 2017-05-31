@@ -49,15 +49,15 @@ CPU softITPosix
 {
   ISR softwareInterruptHandler0
   {
-    SOURCE = SIGTERM;
+    SOURCE = SOFT_IRQ0;
   };
   ISR softwareInterruptHandler1
   {
-    SOURCE = SIGUSR2;
+    SOURCE = SOFT_IRQ1;
   };
   ISR softwareInterruptHandler2
   {
-    SOURCE = SIGPIPE;
+    SOURCE = SOFT_IRQ2;
   };
 };
 

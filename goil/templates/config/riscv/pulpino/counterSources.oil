@@ -2,9 +2,9 @@
  * Counter sources
  */
 ENUM WITH_AUTO [
-  SIGTERM,
-  SIGUSR2,
-  SIGPIPE,
+  SOFT_IRQ0,
+  SOFT_IRQ1,
+  SOFT_IRQ2,
   I2C,
   UART,
   GPIO,
