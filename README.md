@@ -29,6 +29,7 @@ Trampoline runs on the following plateforms :
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
+| STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303               |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
 
 Some examples have been added (check examples):
@@ -39,6 +40,8 @@ Some examples have been added (check examples):
   * **readButton_isr**. Same but the button triggers an ISR.
   * **alarms**. It is the same example than readButton_isr but we test the return value of SetRelAlarm for return parameters when in kernel (system call) mode.
   * **timer**. ISR2 trigered by timer TIM2.
+* Cortex M4 with µC stm32f303K8: `cortex/armv7em/stm32f303/Nucleo-32`. There are few differences from the `stm32f407` target, and examples should be easily imported.
+  * **blink**. Blinks a LED using an alarm and a task.
 * Cortex M4 with µC mk20dx256 : `cortex/armv7em/mk20dx256/teensy31`
   * **blink**. Blinks the Teensy 3.1 LED using an alarm and a task.
   * **startStopBlink**. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED.
