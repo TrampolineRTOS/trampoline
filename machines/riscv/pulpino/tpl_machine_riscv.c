@@ -170,12 +170,15 @@ void tpl_init_machine()
     tpl_enable_interrupts();
 
     // Sets timer limit in order to get tick frequency of 1kHz
-    int tickFrequency = 5000;
-    TOCRA = F_CPU / tickFrequency;
-    start_timer();
+    if (ALARM_COUNT > 0) {
+        int tickFrequency = 5000;
+        TOCRA = F_CPU / tickFrequency;
+        start_timer();
+        IER   |= 0xF0000000;
+    }
 
     // Enable interrupts and events
-    IER   |= 0xF0FFFFF0;
+    IER   |= 0x00FFFFF0;
     EER   |= 0x0000000F;
 }
 

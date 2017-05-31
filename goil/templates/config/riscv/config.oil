@@ -72,7 +72,7 @@ CPU riscv {
   INTERRUPT SOFT_IRQ1 {
     EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
-      NAME = "SOFT_IRQ0_Handler";
+      NAME = "SOFT_IRQ1_Handler";
       TEMPLATE = FALSE;
     };
     ACK = TRUE;
@@ -81,7 +81,7 @@ CPU riscv {
   INTERRUPT SOFT_IRQ2 {
     EXCEPTION = FALSE;
     VECTOR_TYPE = HANDLER {
-      NAME = "SOFT_IRQ0_Handler";
+      NAME = "SOFT_IRQ2_Handler";
       TEMPLATE = FALSE;
     };
     ACK = TRUE;
