@@ -38,7 +38,7 @@ CPU stm32f303 {
         
   CORTEX stm32f303 {
     PRIO_BITS = 4;
-    CLOCK = 72000000;
+    CLOCK = 64000000; // max freq with no external oscillator...
   };
 
   BUILDOPTIONS buildOptions {
