@@ -282,7 +282,7 @@ not_callable_by_isr1:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r1,#__ID_CALL_CONTEXT
+    movs  r1,#__ID_CALL_SAVE
     str   r1,[r4]
     #endif	
 	
@@ -299,7 +299,7 @@ not_callable_by_isr1:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_CONTEXT
+    movs  r5,#__ID_CALL_SAVE
     str   r5,[r4]
     #endif	
 	
