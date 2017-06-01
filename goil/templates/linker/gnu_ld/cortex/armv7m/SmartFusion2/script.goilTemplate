@@ -430,9 +430,9 @@ SECTIONS {
 SECTIONS
 {
   /* placing my named section at given address: */
-  .FPGA :
+  .FPGA : ALIGN(4)
   {
-    _siFpgaData = LOADADDR (.data);                                 
+    _siFpgaData = LOADADDR (.FPGA);                                 
     _sFpgaData = .;        /* create a global symbol at FPGA data start */
 
    *(.FPGA)
