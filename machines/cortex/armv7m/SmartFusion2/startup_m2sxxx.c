@@ -20,6 +20,14 @@ extern unsigned int _sdata;
 // End address for the .data section; defined in linker script
 extern unsigned int _edata;
 
+// Begin address for the initialisation values of the .FPGA section.
+// defined in linker script
+extern unsigned int _siFpgaData;
+// Begin address for the .FPGA section; defined in linker script
+extern unsigned int _sFpgaData;
+// End address for the .FPGA section; defined in linker script
+extern unsigned int _eFpgaData;
+
 // Clear the bss section
 inline void bss_init(unsigned int* section_begin, unsigned int* section_end);
 
@@ -149,6 +157,8 @@ void __attribute__((section(".after_vectors"))) system_init()
   // so we must be sure it is executed somewhere.
   // (for example librdimon)
   data_init(&_sidata, &_sdata, &_edata);
+  //init FPGA related vars
+  data_init(&_siFpgaData, &_sFpgaData, &_eFpgaData);
 
   // Call the CSMSIS system initialisation routine
   SystemInit();

@@ -432,10 +432,15 @@ SECTIONS
   /* placing my named section at given address: */
   .FPGA :
   {
+    _siFpgaData = LOADADDR (.data);                                 
+    _sFpgaData = .;        /* create a global symbol at FPGA data start */
+
    *(.FPGA)
    *(.FPGA.tplKern) 
    KEEP(*(.FPGA.OsInstru))
-  } > fabric
+
+   _eFpgaData = .;        /* create a global symbol at FPGA data end */
+  } >fabric AT>rom
  
   /* other placements follow here... */
 }
