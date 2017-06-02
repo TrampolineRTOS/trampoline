@@ -66,6 +66,8 @@ extern FUNC(void, OS_CODE) SOFT_IRQ0_Handler();
 extern FUNC(void, OS_CODE) SOFT_IRQ1_Handler();
 extern FUNC(void, OS_CODE) SOFT_IRQ2_Handler();
 
+CONST(uint32, AUTOMATIC) tpl_it_masks[];
+
 extern uint32 tpl_reentrancy_counter;
 
 extern uint8 SOFT_IRQ0;

@@ -110,7 +110,7 @@ sort sorted_isrs by PRIORITY >
 let prioVect := @[ ]
 foreach isr in sorted_isrs do
   let interrupt := INTERRUPTMAP[isr::SOURCE]
-  let prio := INDEX + 4
+  let prio := INDEX
   let prioVect[interrupt::NAME] := prio
 %uint8 % !isr::SOURCE % = % !prio %;
 % end foreach

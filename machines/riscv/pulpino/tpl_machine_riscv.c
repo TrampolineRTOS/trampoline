@@ -120,7 +120,7 @@ void tpl_disable_interrupts(void)
  */
 void tpl_enable_os_interrupts(void)
 {
-  IER |= 0x00FFFFFE;
+  int_enable();
   tpl_leave_ie_untouched = 0;
 }
 
@@ -129,7 +129,7 @@ void tpl_enable_os_interrupts(void)
  */
 void tpl_disable_os_interrupts(void)
 {
-  IER &= 0xFF000001;
+  int_disable();
   tpl_leave_ie_untouched = 1;
 }
 
@@ -174,12 +174,11 @@ void tpl_init_machine()
         int tickFrequency = 5000;
         TOCRA = F_CPU / tickFrequency;
         start_timer();
-        IER   |= 0xF0000000;
     }
 
     // Enable interrupts and events
-    IER   |= 0x00FFFFF0;
-    EER   |= 0x0000000F;
+    IER =  tpl_it_masks[0];
+    EER |= 0x0000000F;
 }
 
 void tpl_shutdown ()

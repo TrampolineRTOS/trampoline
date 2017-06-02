@@ -185,6 +185,64 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 }
 %
 end foreach
+
+# Get the maximum priority of used IRQs
+let max_irq_prio := @( )
+foreach isr in ISRS do
+  if exists max_irq_prio[isr::SOURCE] then
+    if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
+      let max_irq_prio[isr::SOURCE] := isr
+    end if
+  else
+    let max_irq_prio[isr::SOURCE] := isr
+  end if
+end foreach
+
+# Sort them by priority
+let sorted_isrs := @( )
+foreach isr in max_irq_prio do
+  let sorted_isrs += isr
+end foreach
+sort sorted_isrs by PRIORITY >
+
+let Vects := @[ ]
+foreach isr in sorted_isrs do
+  let interrupt := INTERRUPTMAP[isr::SOURCE]
+  let Vects[interrupt::NAME] := INDEX
+end foreach
+
+loop priority from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+CONST(uint32, AUTOMATIC) tpl_it_masks[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+  do
+
+  let currentMask := 0x00FFFFFF
+  if [ALARMS length] > 0 then
+    let currentMask := 0xF0FFFFFF
+  end if
+
+  if [max_irq_prio length] == 0 then
+!currentMask%,
+%
+  else
+  
+    foreach isr in ISRS2
+      do
+      let int := INTERRUPTMAP[isr::SOURCE]
+      if (priority > isr::PRIORITY) then
+        let currentMask := currentMask & ~(1 << Vects[int::NAME])
+      end if
+    end foreach
+    !currentMask%,
+%
+  end if
+  after
+%};
+%
+end loop
+
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
