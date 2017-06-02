@@ -57,11 +57,10 @@ tpl_sc_handler:
         
     la a6, tpl_leave_ie_untouched
     lw a6, 0(a6)
-        
     seqz a5, a5
     not a6, a6
-    and a5, a5, a6
-    csrs 0x7c0, a5
+    and a6, a5, a6
+    csrs 0x7c0, a6
     beqz a5, tpl_sc_no_context_switch
 
 tpl_switch_context:
