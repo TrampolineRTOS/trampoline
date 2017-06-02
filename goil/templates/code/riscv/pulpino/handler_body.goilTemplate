@@ -16,21 +16,14 @@ ISR_% !handlerSource %:
     lw a5, 0(a5)
     addi a5, a5, -1
     sw a5, 0(a6)
+    bnez a5, 1f
         
-    la a6, tpl_leave_ie_untouched
-    lw a6, 0(a6)
-    seqz a5, a5
-    not a6, a6
-    and a6, a5, a6
-    csrs 0x7c0, a6
-    beqz a5, 1f
-
     /*-------------------------------------------------------------------------
      * 2 - Check the context switch condition in tpl_kern
      */
     la a0, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a0)
-    beq a6, zero, tpl_no_context_switch
+    beq a6, zero,  1f
 
     /*-------------------------------------------------------------------------
      * 3 - Save context
@@ -60,4 +53,8 @@ ISR_% !handlerSource %:
     lw  a0, 0(a0)
     jal tpl_load_context
 1:
+    la a6, tpl_leave_ie_untouched
+    lw a6, 0(a6)
+    seqz a6, a6
+    csrs 0x7c0, a6
     j tpl_no_context_switch

@@ -54,15 +54,8 @@ tpl_sc_handler:
     lw a5, 0(a5)
     addi a5, a5, -1
     sw a5, 0(a6)
+    bnez a5, tpl_sc_no_context_switch
         
-    la a6, tpl_leave_ie_untouched
-    lw a6, 0(a6)
-    seqz a5, a5
-    not a6, a6
-    and a6, a5, a6
-    csrs 0x7c0, a6
-    beqz a5, tpl_sc_no_context_switch
-
 tpl_switch_context:
     /* Checks the context switch condition */
     la a5, tpl_kern
@@ -97,6 +90,12 @@ tpl_sc_handler_no_save_running_context:
     jal tpl_load_context
     
 tpl_sc_no_context_switch:
+    /* Reenables interruptions */
+    la a6, tpl_leave_ie_untouched
+    lw a6, 0(a6)
+    seqz a6, a6
+    csrs 0x7c0, a6
+
     /* Reloads working registers */
     la ra, end_except
     lw a7, 8(sp)
@@ -117,9 +116,15 @@ tpl_save_context:
         
 tpl_load_context:
     .global tpl_load_context
-    /* Reloads return address and stack pointer */
+    /* Reloads return address, interrupt mask, and stack pointer */
     lw sp, 0(a0)
+
+    li a5, 0x1a104000
+    lw a6, 8(a0)
+    sw a6, 0(a5) //IER
+    
     lw a6, 4(a0)
     csrw mepc, a6
+   
     ret
         

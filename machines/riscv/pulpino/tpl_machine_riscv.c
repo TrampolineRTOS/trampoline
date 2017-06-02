@@ -88,12 +88,10 @@ extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 FUNC(void, OS_CODE) tpl_get_task_lock (void)
 {
-  int_disable();
 }
 
 FUNC(void, OS_CODE) tpl_release_task_lock (void)
 {
-  int_enable();
 }
 
 /**
@@ -203,9 +201,9 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
     int cause = 0;
     for (; cause < 32; ++cause) {
         if (l_IPR % 2) break;
-        l_IPR >> 1;
+        l_IPR = l_IPR >> 1;
     }
-    ICP = 2 << cause;
+    ICP = 1 << cause;
 }
 
 #define OS_STOP_SEC_CODE
