@@ -86,15 +86,14 @@ extern FUNC(void, OS_CODE) CallTerminateTask(void);
  */
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
-/*
- * As kernel mode is non-interruptible, these function does nothing
- */
 FUNC(void, OS_CODE) tpl_get_task_lock (void)
 {
+  int_disable();
 }
 
 FUNC(void, OS_CODE) tpl_release_task_lock (void)
 {
+  int_enable();
 }
 
 /**
@@ -120,8 +119,7 @@ void tpl_disable_interrupts(void)
  */
 void tpl_enable_os_interrupts(void)
 {
-  int_enable();
-  tpl_leave_ie_untouched = 0;
+  tpl_enable_interrupts();
 }
 
 /**
@@ -129,8 +127,7 @@ void tpl_enable_os_interrupts(void)
  */
 void tpl_disable_os_interrupts(void)
 {
-  int_disable();
-  tpl_leave_ie_untouched = 1;
+  tpl_disable_interrupts();
 }
 
 /*
@@ -162,6 +159,9 @@ FUNC(void, OS_CODE) tpl_init_context(
   /* address of the instruction to execute when returning
      from the system call. */
   core_context->mepc = (uint32) the_proc->entry;
+
+  /* interrupt mask */
+  core_context->mask = tpl_it_masks[the_proc->base_priority];
 }
 
 void tpl_init_machine()
@@ -198,6 +198,15 @@ FUNC(void, OS_CODE) SOFT_IRQ1_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a)
 __attribute__ ((weak))
 FUNC(void, OS_CODE) SOFT_IRQ2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
+FUNC(void, OS_CODE) tpl_ack_irq(void) {
+    int l_IPR = IPR;
+    int cause = 0;
+    for (; cause < 32; ++cause) {
+        if (l_IPR % 2) break;
+        l_IPR >> 1;
+    }
+    ICP = 2 << cause;
+}
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

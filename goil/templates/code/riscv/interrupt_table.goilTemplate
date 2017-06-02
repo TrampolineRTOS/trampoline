@@ -168,7 +168,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   let ackDone := false
   foreach obj in objList do
     if not ackDone then
-      if obj::ACK then
+      if obj::ACK & obj::CATEGORY == 1 then
         let ackDone := true
         if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
           template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
@@ -231,8 +231,8 @@ CONST(uint32, AUTOMATIC) tpl_it_masks[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
     foreach isr in ISRS2
       do
       let int := INTERRUPTMAP[isr::SOURCE]
-      if (priority > isr::PRIORITY) then
-        let currentMask := currentMask & ~(1 << Vects[int::NAME])
+      if (priority >= isr::PRIORITY) then
+        let currentMask := currentMask & ~(2 << Vects[int::NAME])
       end if
     end foreach
     !currentMask%,

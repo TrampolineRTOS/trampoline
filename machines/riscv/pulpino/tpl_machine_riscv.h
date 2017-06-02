@@ -11,6 +11,7 @@
 struct RISCV_CONTEXT {
     uint32 sp;
     uint32 mepc;
+    uint32 mask;
 };
 
 /**
@@ -66,7 +67,7 @@ extern FUNC(void, OS_CODE) SOFT_IRQ0_Handler();
 extern FUNC(void, OS_CODE) SOFT_IRQ1_Handler();
 extern FUNC(void, OS_CODE) SOFT_IRQ2_Handler();
 
-CONST(uint32, AUTOMATIC) tpl_it_masks[];
+CONST(uint32, AUTOMATIC) tpl_it_masks[32];
 
 extern uint32 tpl_reentrancy_counter;
 
