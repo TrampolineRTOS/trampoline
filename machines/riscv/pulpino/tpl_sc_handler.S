@@ -110,8 +110,14 @@ tpl_save_context:
     .global tpl_save_context
     /* Saves return address and stack pointer */
     sw sp, 0(a0)
+
     csrr a6, mepc
     sw a6, 4(a0)
+
+    la a5, tpl_leave_ie_untouched
+    lw a5, 0(a5)
+    sw a5, 12(a0)
+    
     ret
         
 tpl_load_context:
@@ -119,12 +125,16 @@ tpl_load_context:
     /* Reloads return address, interrupt mask, and stack pointer */
     lw sp, 0(a0)
 
+    lw a6, 4(a0)
+    csrw mepc, a6
+
     li a5, 0x1a104000
     lw a6, 8(a0)
     sw a6, 0(a5) //IER
+
+    la a5, tpl_leave_ie_untouched
+    lw a6, 12(a0)
+    sw a6, 0(a5)
     
-    lw a6, 4(a0)
-    csrw mepc, a6
-   
     ret
         

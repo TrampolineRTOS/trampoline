@@ -160,6 +160,9 @@ FUNC(void, OS_CODE) tpl_init_context(
 
   /* interrupt mask */
   core_context->mask = tpl_it_masks[the_proc->base_priority];
+
+  /* interrupts enabled */
+  core_context->leave_ie_untouched = 0; //activated
 }
 
 void tpl_init_machine()
@@ -197,13 +200,10 @@ __attribute__ ((weak))
 FUNC(void, OS_CODE) SOFT_IRQ2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
 
 FUNC(void, OS_CODE) tpl_ack_irq(void) {
-    int l_IPR = IPR;
-    int cause = 0;
-    for (; cause < 32; ++cause) {
-        if (l_IPR % 2) break;
-        l_IPR = l_IPR >> 1;
-    }
-    ICP = 1 << cause;
+    GET_CURRENT_CORE_ID(core_id);
+    GET_TPL_KERN_FOR_CORE_ID(core_id, kern);
+
+    ICP = 2 << tpl_vector_from_isr2_id(TPL_KERN_REF(kern).running_id);
 }
 
 #define OS_STOP_SEC_CODE

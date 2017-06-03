@@ -205,45 +205,29 @@ foreach isr in max_irq_prio do
 end foreach
 sort sorted_isrs by PRIORITY >
 
-let Vects := @[ ]
+# Print them by order
+let prioVect := @[ ]
 foreach isr in sorted_isrs do
   let interrupt := INTERRUPTMAP[isr::SOURCE]
-  let Vects[interrupt::NAME] := INDEX
+  let prio := INDEX
+  let prioVect[interrupt::NAME] := prio
 end foreach
 
-loop priority from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
-  before
 %
-CONST(uint32, AUTOMATIC) tpl_it_masks[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+uint32 tpl_vector_from_isr2_id(uint32 id) {
+  switch (id) {
 %
-  do
+foreach isr in ISRS2
+do
 
-  let currentMask := 0x00FFFFFF
-  if [ALARMS length] > 0 then
-    let currentMask := 0xF0FFFFFF
-  end if
+  let int := INTERRUPTMAP[isr::SOURCE]
+%    case % !isr::NAME %_id : return % !prioVect[int::NAME] %;
+%
+end foreach
+%    default : return -1;
+  }
+}
 
-  if [max_irq_prio length] == 0 then
-!currentMask%,
-%
-  else
-  
-    foreach isr in ISRS2
-      do
-      let int := INTERRUPTMAP[isr::SOURCE]
-      if (priority >= isr::PRIORITY) then
-        let currentMask := currentMask & ~(2 << Vects[int::NAME])
-      end if
-    end foreach
-    !currentMask%,
-%
-  end if
-  after
-%};
-%
-end loop
-
-%
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 %
