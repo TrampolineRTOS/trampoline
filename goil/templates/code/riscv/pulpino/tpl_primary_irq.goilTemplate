@@ -62,6 +62,7 @@ let irqStageList := @( )
 foreach objList in objForIRQ do
   let anIrq::handlerSource := KEY
   let anIrq::handlerName := objList[0]::NAME
+  let anIrq::category := objList[0]::CATEGORY
   let anIrq::handlerAck := false
   let anIrq::generatePrimaryIrq := false
   foreach obj in objList do
@@ -118,21 +119,11 @@ tpl_interruption_handler:
   sw a6, 4(sp)
   sw a7, 8(sp)
 
-  /* Adjusts reentrancy counter */
-  la a5, tpl_reentrancy_counter
-  mv a6, a5
-  lw a5, 0(a5)
-  addi a5, a5, 1
-  sw a5, 0(a6)
-  li a6, 1
-  bne a5, a6, 1f
-
   /* Resets tpl_kern variables */
   la a5, tpl_kern
   sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
   sb zero, TPL_KERN_OFFSET_NEED_SCHEDULE(a5)
 
-1:
   /* Retrieves pointer to handler */
   la a5, tpl_it_vectors
   csrr a6, mcause
@@ -163,6 +154,7 @@ foreach irq in irqStageList
     let handlerSource := irq::handlerSource
     let handlerName := irq::handlerName
     let handlerIRQ := handlerSource."_Handler"
+    let category := irq::category
     if not irq::generatePrimaryIrq then
 %
 /*=============================================================================

@@ -10,20 +10,12 @@ ISR_% !handlerSource %:
      */
     jal % !handlerIRQ %
 
-    /* No context switch if reentrant interruption */
-    la a5, tpl_reentrancy_counter
-    mv a6, a5
-    lw a5, 0(a5)
-    addi a5, a5, -1
-    sw a5, 0(a6)
-    bnez a5, 1f
-        
     /*-------------------------------------------------------------------------
      * 2 - Check the context switch condition in tpl_kern
      */
     la a0, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a0)
-    beq a6, zero,  1f
+    beq a6, zero, 1f
 
     /*-------------------------------------------------------------------------
      * 3 - Save context
@@ -53,6 +45,24 @@ ISR_% !handlerSource %:
     lw  a0, 0(a0)
     jal tpl_load_context
 1:
+% if category == 2 then %
+/* deactivates at least current interruption */
+    /* set priority */
+    la  a0, tpl_kern
+    lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
+    lw  a0, 0(a0)
+    jal tpl_set_priority
+
+    csrr a5, mcause
+    li a6, 1
+    sll a5, a6, a5
+    not a5, a5
+    li a6, 0x1a104000
+    lw a7, 0(a6)
+    and a7, a7, a5
+    sw a7, 0(a6)
+
+% end if %
     la a6, tpl_leave_ie_untouched
     lw a6, 0(a6)
     seqz a6, a6

@@ -54,6 +54,7 @@ tpl_sc_handler:
     lw a5, 0(a5)
     addi a5, a5, -1
     sw a5, 0(a6)
+
     bnez a5, tpl_sc_no_context_switch
         
 tpl_switch_context:
@@ -88,12 +89,17 @@ tpl_sc_handler_no_save_running_context:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
+    jal tpl_set_priority
     
 tpl_sc_no_context_switch:
     /* Reenables interruptions */
+    la a5, tpl_reentrancy_counter
+    lw a5, 0(a5)
+    seqz a5, a5
     la a6, tpl_leave_ie_untouched
     lw a6, 0(a6)
     seqz a6, a6
+    and a6, a5, a6
     csrs 0x7c0, a6
 
     /* Reloads working registers */
@@ -128,13 +134,16 @@ tpl_load_context:
     lw a6, 4(a0)
     csrw mepc, a6
 
-    li a5, 0x1a104000
-    lw a6, 8(a0)
-    sw a6, 0(a5) //IER
-
     la a5, tpl_leave_ie_untouched
     lw a6, 12(a0)
     sw a6, 0(a5)
     
     ret
-        
+
+tpl_set_priority:
+    .global tpl_set_priority
+    li a5, 0x1a104000
+    lw a6, 8(a0)
+    sw a6, 0(a5) //IER
+    ret
+
