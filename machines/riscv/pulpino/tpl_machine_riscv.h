@@ -72,6 +72,10 @@ CONST(uint32, AUTOMATIC) tpl_it_masks[32];
 uint32 tpl_vector_from_isr2_id(uint32 id);
 extern uint32 tpl_reentrancy_counter;
 
+uint8 fifo_it_masks[32];
+void push_fifo_it_masks(void);
+uint32 pop_fifo_it_masks(void);
+
 extern uint8 SOFT_IRQ0;
 extern uint8 SOFT_IRQ1;
 extern uint8 SOFT_IRQ2;

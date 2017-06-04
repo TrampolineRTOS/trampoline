@@ -162,7 +162,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   core_context->mask = tpl_it_masks[the_proc->base_priority];
 
   /* interrupts enabled */
-  core_context->leave_ie_untouched = 0; //activated
+  core_context->leave_ie_untouched = 0;
 }
 
 void tpl_init_machine()
@@ -204,6 +204,27 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
     GET_TPL_KERN_FOR_CORE_ID(core_id, kern);
 
     ICP = 2 << tpl_vector_from_isr2_id(TPL_KERN_REF(kern).running_id);
+    tpl_leave_ie_untouched = pop_fifo_it_masks();
+}
+
+void push_fifo_it_masks(void) {
+    int i;
+    for (i = 31; i > 0; --i) {
+        fifo_it_masks[i] = fifo_it_masks[i-1];
+    }
+    int mestatus;
+    csrr(0x7c0, mestatus);
+    fifo_it_masks[0] = tpl_leave_ie_untouched;
+}
+
+uint32 pop_fifo_it_masks(void) {
+    uint32 mask = fifo_it_masks[0];
+    int i;
+    for (int i = 0; i < 31; ++i) {
+        fifo_it_masks[i] = fifo_it_masks[i+1];
+    }
+    fifo_it_masks[31] = 0;
+    return mask;
 }
 
 #define OS_STOP_SEC_CODE

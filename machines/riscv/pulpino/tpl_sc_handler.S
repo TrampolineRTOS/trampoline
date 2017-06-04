@@ -89,9 +89,7 @@ tpl_sc_handler_no_save_running_context:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
-    li a0, 0
-    jal tpl_set_priority
-        
+         
 tpl_sc_no_context_switch:
     /* Reenables interruptions */
     la a5, tpl_reentrancy_counter
@@ -134,6 +132,10 @@ tpl_load_context:
 
     lw a6, 4(a0)
     csrw mepc, a6
+
+    li a5, 0x1a104000
+    lw a6, 8(a0)
+    sw a6, 0(a5)
 
     la a5, tpl_leave_ie_untouched
     lw a6, 12(a0)

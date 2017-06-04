@@ -1,6 +1,7 @@
 .global ISR_% !handlerSource %
 .extern % !handlerIRQ %
 .extern tpl_leave_ie_untouched
+.extern push_fifo_it_masks
 
 /*---------------------------------------------------------------------------*/
 ISR_% !handlerSource %:
@@ -9,6 +10,14 @@ ISR_% !handlerSource %:
      * 1 - Interrupt function call
      */
     jal % !handlerIRQ %
+
+    /* No context switch if reentrant interruption */
+    la a5, tpl_reentrancy_counter
+    mv a6, a5
+    lw a5, 0(a5)
+    addi a5, a5, -1
+    sw a5, 0(a6)
+    bnez a5, 1f
 
     /*-------------------------------------------------------------------------
      * 2 - Check the context switch condition in tpl_kern
@@ -49,9 +58,14 @@ ISR_% !handlerSource %:
     /* set priority */
     li  a0, % !priority %
     jal tpl_set_priority
+    jal push_fifo_it_masks
 % end if %
+    la a5, tpl_reentrancy_counter
+    lw a5, 0(a5)
+    seqz a5, a5
     la a6, tpl_leave_ie_untouched
     lw a6, 0(a6)
     seqz a6, a6
+    and a6, a5, a6
     csrs 0x7c0, a6
     j tpl_no_context_switch
