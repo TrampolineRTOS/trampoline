@@ -20,7 +20,7 @@ tpl_sc_handler:
     sw a5, 0(sp)
     sw a6, 4(sp)
     sw a7, 8(sp)
-    
+
     /* Adjusts reentrancy counter */
     la a5, tpl_reentrancy_counter
     mv a6, a5
@@ -89,8 +89,9 @@ tpl_sc_handler_no_save_running_context:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
+    li a0, 0
     jal tpl_set_priority
-    
+        
 tpl_sc_no_context_switch:
     /* Reenables interruptions */
     la a5, tpl_reentrancy_counter
@@ -142,8 +143,11 @@ tpl_load_context:
 
 tpl_set_priority:
     .global tpl_set_priority
+
     li a5, 0x1a104000
-    lw a6, 8(a0)
+    la a6, tpl_it_masks
+    slli a7, a0, 2
+    add a6, a6, a7
+    lw a6, 0(a6)
     sw a6, 0(a5) //IER
     ret
-

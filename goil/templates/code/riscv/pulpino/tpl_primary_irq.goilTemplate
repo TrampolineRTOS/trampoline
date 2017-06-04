@@ -64,12 +64,21 @@ foreach objList in objForIRQ do
   let anIrq::handlerName := objList[0]::NAME
   let anIrq::category := objList[0]::CATEGORY
   let anIrq::handlerAck := false
+  let anIrq::priority := 0
   let anIrq::generatePrimaryIrq := false
   foreach obj in objList do
     let anIrq::handlerAck := INTERRUPTMAP[anIrq::handlerSource]::ACK
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then
         let generatePrimaryIrq := true
+      end if
+
+      if obj::CATEGORY == 2 then
+        foreach isr2 in ISRS2 do
+          if isr2::NAME == obj::NAME then
+             let anIrq::priority := isr2::PRIORITY
+          end if
+        end foreach
       end if
     end if
   end foreach
@@ -155,6 +164,7 @@ foreach irq in irqStageList
     let handlerName := irq::handlerName
     let handlerIRQ := handlerSource."_Handler"
     let category := irq::category
+    let priority := irq::priority
     if not irq::generatePrimaryIrq then
 %
 /*=============================================================================
