@@ -122,6 +122,9 @@ tpl_save_context:
     la a5, tpl_leave_ie_untouched
     lw a5, 0(a5)
     sw a5, 12(a0)
+
+    lw a5, 0x9c(sp)
+    sw a5, 16(a0) //ra
     
     ret
         
@@ -140,6 +143,9 @@ tpl_load_context:
     la a5, tpl_leave_ie_untouched
     lw a6, 12(a0)
     sw a6, 0(a5)
+
+    lw a5, 16(a0)
+    sw a5, 0x9c(sp) //ra
     
     ret
 

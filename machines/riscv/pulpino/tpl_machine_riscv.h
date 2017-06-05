@@ -13,6 +13,7 @@ struct RISCV_CONTEXT {
     uint32 mepc;
     uint32 mask;
     uint32 leave_ie_untouched;
+    uint32 ra;
 };
 
 /**
