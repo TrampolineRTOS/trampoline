@@ -29,6 +29,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/C_BoolCommandLineOption.h"
+#include "command_line_interface/C_StringCommandLineOption.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -43,6 +44,10 @@ extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_display_5F_help
 //---------------------------------------------------------------------------------------------------------------------*
 
 extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_display_5F_version ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern C_StringCommandLineOption gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

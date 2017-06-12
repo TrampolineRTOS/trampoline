@@ -478,12 +478,17 @@ class Make:
 
   #····················································································································*
 
-  def addRule (self, rule):
+  def addRule (self, rule, addDependencyFromBuildTool = True):
     if not isinstance (rule, Rule):
       print (BOLD_RED () + "*** Make.addRule: 'rule' argument is not an instance of Rule type ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
-    self.mRuleList.append (copy.deepcopy (rule))
+    duplicatedRules = copy.deepcopy (rule)
+    if addDependencyFromBuildTool and (len (duplicatedRules.mCommand) > 0) :
+      executable = find_executable (duplicatedRules.mCommand [0])
+      if executable != None:
+        duplicatedRules.mDependences.append (executable)
+    self.mRuleList.append (duplicatedRules)
 
   #····················································································································*
 
@@ -648,9 +653,9 @@ class Make:
   #--- Check primary file modification dates
     if not appendToJobList:
       targetDateModification = os.path.getmtime (absTarget)
-      for source in rule.mDependences:
-        sourceDateModification = os.path.getmtime (source)
-        if targetDateModification < sourceDateModification:
+      for depFile in rule.mDependences:
+        depFileModificationDate = os.path.getmtime (depFile)
+        if targetDateModification < depFileModificationDate:
           appendToJobList = True
           break
   #--- Check for secondary dependancy files

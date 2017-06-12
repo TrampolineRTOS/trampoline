@@ -81,6 +81,9 @@ bool isUnicodeSymbol (const utf32 inUnicodeCharacter) ;
 extern const utf32 UNICODE_REPLACEMENT_CHARACTER ;
 extern const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER ;
 
+//--- Returns true if unicode letter
+bool isRestrictedUnicodeLetter (const utf32 inUnicodeCharacter) ;
+
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   D E C O D E    H T M L    E N C O D I N G                                                                         *

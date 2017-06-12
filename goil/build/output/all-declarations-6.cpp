@@ -3115,12 +3115,12 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
   {
   routine_getAutosarVersion (outArgument_rootNode, var_autosarVersion_1992, var_autosarDescription_2041, inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 81)) ;
   }
-  const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_autosarVersion_1992.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_autosarVersion_1992.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_3) {
     TC_Array <C_FixItDescription> fixItArray4 ;
     inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 84)), GALGAS_string ("[TPS_ECUC_06005][TPS_ECUC_08053] : Missing AUTOSAR version"), fixItArray4  COMMA_SOURCE_FILE ("arxml_parser.galgas", 84)) ;
   }
-  GALGAS_stringlist var_autosarVlist_2349 = var_autosarVersion_1992.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (".") COMMA_SOURCE_FILE ("arxml_parser.galgas", 88)) ;
+  GALGAS_stringlist var_autosarVlist_2349 = var_autosarVersion_1992.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (".") COMMA_SOURCE_FILE ("arxml_parser.galgas", 88)) ;
   GALGAS_string var_versionFirst_2450 ;
   {
   var_autosarVlist_2349.setter_popFirst (var_versionFirst_2450, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 89)) ;
@@ -3141,7 +3141,7 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
   {
   var_application_1024.setter_setVersionDescription (var_autosarDescription_2041 COMMA_SOURCE_FILE ("arxml_parser.galgas", 96)) ;
   }
-  GALGAS_string var_autosarVersionNoDot_3034 = var_autosarVersion_1992.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("."), GALGAS_string ("-"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 105)) ;
+  GALGAS_string var_autosarVersionNoDot_3034 = var_autosarVersion_1992.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("."), GALGAS_string ("-"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 105)) ;
   GALGAS_string var_autosarMetaFile_3185 = GALGAS_string ("AUTOSAR_").add_operation (var_autosarVersionNoDot_3034, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 107)).add_operation (GALGAS_string (".xsd"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 107)) ;
   GALGAS_string var_filePath_3248 = function_templates_5F_directory (GALGAS_string ("arxmlMeta"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 108)).add_operation (var_autosarMetaFile_3185, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 108)) ;
   GALGAS_arxmlMetaClassMap var_classMap_3332 ;
@@ -4428,7 +4428,7 @@ typeComparisonResult GALGAS_arxmlElementValue::objectCompare (const GALGAS_arxml
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlElementValue::GALGAS_arxmlElementValue (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4444,7 +4444,7 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_default (LOCATION
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlElementValue::GALGAS_arxmlElementValue (const cPtr_arxmlElementValue * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlElementValue) ;
 }
 
@@ -5392,7 +5392,7 @@ typeComparisonResult GALGAS_arxmlMetaClass::objectCompare (const GALGAS_arxmlMet
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaClass::GALGAS_arxmlMetaClass (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5411,7 +5411,7 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_default (LOCATION_ARGS)
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaClass::GALGAS_arxmlMetaClass (const cPtr_arxmlMetaClass * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaClass) ;
 }
 
@@ -5872,7 +5872,7 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
   const cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   GALGAS_string var_svgString_2953 = GALGAS_string::makeEmptyString () ;
-  GALGAS_string var_classNameRepr_2986 = object->mProperty_name.mProperty_string ;
+  GALGAS_string var_classNameRepr_2986 = object->mProperty_name.getter_string (HERE) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("############################################################\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 116)) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("# ").add_operation (object->mProperty_name.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("# <").add_operation (object->mProperty_desc.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)).add_operation (GALGAS_string (">\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)) ;
@@ -5889,9 +5889,9 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
     "{\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 132)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 132)) ;
   cEnumerator_arxmlMetaElementList enumerator_3705 (object->mProperty_lElementLegacy, kENUMERATION_UP) ;
   while (enumerator_3705.hasCurrentObject ()) {
-    GALGAS_string var_elemTypeRepr_3737 = enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 136)).mProperty_string ;
-    GALGAS_string var_elemNameRepr_3791 = enumerator_3705.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 137)).mProperty_string ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 141)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    GALGAS_string var_elemTypeRepr_3737 = enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 136)).getter_string (HERE) ;
+    GALGAS_string var_elemNameRepr_3791 = enumerator_3705.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 137)).getter_string (HERE) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 141)).getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_1) {
       TC_Array <C_FixItDescription> fixItArray2 ;
       inCompiler->emitSemanticWarning (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 142)), GALGAS_string ("Missing element's type : ").add_operation (var_elemNameRepr_3791, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 142)), fixItArray2  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 142)) ;
@@ -5899,9 +5899,9 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
     GALGAS_arxmlMetaClass var_elemKey_4198 ;
     inArgument_classMap.method_searchKey (enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 146)), var_elemKey_4198, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 146)) ;
     var_svgString_2953.plusAssign_operation(GALGAS_string ("  @").add_operation (var_elemTypeRepr_3737, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 168)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 168)) ;
-    GALGAS_bool test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).mProperty_string.objectCompare (enumerator_3705.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).mProperty_string)) ;
+    GALGAS_bool test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).getter_string (HERE).objectCompare (enumerator_3705.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).getter_string (HERE))) ;
     if (kBoolTrue != test_3.boolEnum ()) {
-      test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 173)).mProperty_string.objectCompare (GALGAS_string ("1"))) ;
+      test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 173)).getter_string (HERE).objectCompare (GALGAS_string ("1"))) ;
     }
     const enumGalgasBool test_4 = test_3.boolEnum () ;
     if (kBoolTrue == test_4) {
@@ -5912,17 +5912,17 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
   }
   cEnumerator_arxmlMetaAttributeList enumerator_5338 (object->mProperty_lAttributeLegacy, kENUMERATION_UP) ;
   while (enumerator_5338.hasCurrentObject ()) {
-    GALGAS_string var_attrTypeRepr_5370 = enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 184)).mProperty_string ;
-    GALGAS_string var_attrNameRepr_5426 = enumerator_5338.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 185)).mProperty_string ;
-    const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 189)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    GALGAS_string var_attrTypeRepr_5370 = enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 184)).getter_string (HERE) ;
+    GALGAS_string var_attrNameRepr_5426 = enumerator_5338.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 185)).getter_string (HERE) ;
+    const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 189)).getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_5) {
     }
     GALGAS_arxmlMetaClass var_attrKey_5802 ;
     inArgument_classMap.method_searchKey (enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 193)), var_attrKey_5802, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 193)) ;
     var_svgString_2953.plusAssign_operation(GALGAS_string ("  @").add_operation (var_attrTypeRepr_5370, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)).add_operation (var_attrNameRepr_5426, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)) ;
-    GALGAS_bool test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 223)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+    GALGAS_bool test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 223)).getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())) ;
     if (kBoolTrue != test_6.boolEnum ()) {
-      test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 224)).mProperty_string.objectCompare (GALGAS_string ("optional"))) ;
+      test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 224)).getter_string (HERE).objectCompare (GALGAS_string ("optional"))) ;
     }
     const enumGalgasBool test_7 = test_6.boolEnum () ;
     if (kBoolTrue == test_7) {
@@ -6009,9 +6009,9 @@ static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inO
   GALGAS_bool var_exists_7172 = GALGAS_bool (false) ;
   cEnumerator_arxmlMetaElementList enumerator_7227 (object->mProperty_lElement, kENUMERATION_UP) ;
   while (enumerator_7227.hasCurrentObject ()) {
-    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).mProperty_string.objectCompare (inArgument_mElement.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).mProperty_string)) ;
+    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).getter_string (HERE).objectCompare (inArgument_mElement.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).getter_string (HERE))) ;
     if (kBoolTrue == test_0.boolEnum ()) {
-      test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).mProperty_string.objectCompare (inArgument_mElement.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).mProperty_string)) ;
+      test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).getter_string (HERE).objectCompare (inArgument_mElement.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).getter_string (HERE))) ;
     }
     const enumGalgasBool test_1 = test_0.boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -6098,9 +6098,9 @@ static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * i
   GALGAS_bool var_exists_7523 = GALGAS_bool (false) ;
   cEnumerator_arxmlMetaAttributeList enumerator_7584 (object->mProperty_lAttribute, kENUMERATION_UP) ;
   while (enumerator_7584.hasCurrentObject ()) {
-    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).mProperty_string.objectCompare (inArgument_mAttribute.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).mProperty_string)) ;
+    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).getter_string (HERE).objectCompare (inArgument_mAttribute.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).getter_string (HERE))) ;
     if (kBoolTrue == test_0.boolEnum ()) {
-      test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).mProperty_string.objectCompare (inArgument_mAttribute.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).mProperty_string)) ;
+      test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).getter_string (HERE).objectCompare (inArgument_mAttribute.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).getter_string (HERE))) ;
     }
     const enumGalgasBool test_1 = test_0.boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -6268,7 +6268,7 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasElement (const cPtr_arxmlMe
   bool bool_0 = var_found_7967.operator_not (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 275)).isValidAndTrue () ;
   if (enumerator_8035.hasCurrentObject () && bool_0) {
     while (enumerator_8035.hasCurrentObject () && bool_0) {
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_eleName.objectCompare (enumerator_8035.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 276)).mProperty_string)).boolEnum () ;
+      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_eleName.objectCompare (enumerator_8035.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 276)).getter_string (HERE))).boolEnum () ;
       if (kBoolTrue == test_1) {
         var_found_7967 = GALGAS_bool (true) ;
       }
@@ -6366,7 +6366,7 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasAttribute (const cPtr_arxml
   bool bool_0 = var_found_8251.operator_not (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 290)).isValidAndTrue () ;
   if (enumerator_8325.hasCurrentObject () && bool_0) {
     while (enumerator_8325.hasCurrentObject () && bool_0) {
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_attrName.objectCompare (enumerator_8325.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 291)).mProperty_string)).boolEnum () ;
+      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_attrName.objectCompare (enumerator_8325.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 291)).getter_string (HERE))).boolEnum () ;
       if (kBoolTrue == test_1) {
         var_found_8251 = GALGAS_bool (true) ;
       }
@@ -6448,7 +6448,7 @@ typeComparisonResult GALGAS_arxmlMetaElement::objectCompare (const GALGAS_arxmlM
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaElement::GALGAS_arxmlMetaElement (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6465,7 +6465,7 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_default (LOCATION_A
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaElement::GALGAS_arxmlMetaElement (const cPtr_arxmlMetaElement * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaElement) ;
 }
 
@@ -6710,7 +6710,7 @@ typeComparisonResult GALGAS_arxmlMetaAttribute::objectCompare (const GALGAS_arxm
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaAttribute::GALGAS_arxmlMetaAttribute (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6726,7 +6726,7 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_default (LOCATI
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaAttribute::GALGAS_arxmlMetaAttribute (const cPtr_arxmlMetaAttribute * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaAttribute) ;
 }
 
@@ -6948,13 +6948,13 @@ typeComparisonResult GALGAS_arxmlMetaSimpletype::objectCompare (const GALGAS_arx
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaSimpletype::GALGAS_arxmlMetaSimpletype (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaSimpletype::GALGAS_arxmlMetaSimpletype (const cPtr_arxmlMetaSimpletype * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaSimpletype) ;
 }
 
@@ -7189,7 +7189,7 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
   const cPtr_arxmlMetaSimpletype * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
   GALGAS_string var_svgString_9977 = GALGAS_string::makeEmptyString () ;
-  GALGAS_string var_typeNameRepr_10009 = object->mProperty_name.mProperty_string ;
+  GALGAS_string var_typeNameRepr_10009 = object->mProperty_name.getter_string (HERE) ;
   var_svgString_9977.plusAssign_operation(GALGAS_string ("############################################################\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 373)) ;
   var_svgString_9977.plusAssign_operation(GALGAS_string ("# ").add_operation (object->mProperty_name.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)) ;
   switch (object->mProperty_type.enumValue ()) {
@@ -7209,7 +7209,7 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
       var_svgString_9977.plusAssign_operation(GALGAS_string ("{\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 386)) ;
       cEnumerator_lstringlist enumerator_10673 (object->mProperty_values, kENUMERATION_UP) ;
       while (enumerator_10673.hasCurrentObject ()) {
-        GALGAS_string var_valueRepr_10706 = enumerator_10673.current_mValue (HERE).mProperty_string ;
+        GALGAS_string var_valueRepr_10706 = enumerator_10673.current_mValue (HERE).getter_string (HERE) ;
         var_svgString_9977.plusAssign_operation(GALGAS_string ("  case case").add_operation (var_valueRepr_10706, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 390)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 390)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 390)) ;
         enumerator_10673.gotoNextObject () ;
       }
@@ -7690,16 +7690,16 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 136)) ;
       var_fullType_3315 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 137)) ;
-      const enumGalgasBool test_1 = var_fullType_3315.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 139)).boolEnum () ;
+      const enumGalgasBool test_1 = var_fullType_3315.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 139)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_stringlist var_parsed_3478 = var_fullType_3315.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 140)) ;
+        GALGAS_stringlist var_parsed_3478 = var_fullType_3315.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 140)) ;
         GALGAS_string var_parsedString_3558 ;
         var_parsed_3478.method_first (var_parsedString_3558, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 142)) ;
         var_attributePrefix_3100.mProperty_string = var_parsedString_3558 ;
-        var_attributePrefix_3100.mProperty_location = var_fullType_3315.mProperty_location ;
+        var_attributePrefix_3100.mProperty_location = var_fullType_3315.getter_location (HERE) ;
         var_parsed_3478.method_last (var_parsedString_3558, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 145)) ;
         var_attributeType_2969.mProperty_string = var_parsedString_3558 ;
-        var_attributeType_2969.mProperty_location = var_fullType_3315.mProperty_location ;
+        var_attributeType_2969.mProperty_location = var_fullType_3315.getter_location (HERE) ;
       }else if (kBoolFalse == test_1) {
         var_attributeType_2969 = var_fullType_3315 ;
       }
@@ -7709,8 +7709,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 152)) ;
       var_attributeName_3012 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 153)) ;
-      var_attributeName_3012.mProperty_string = var_attributeName_3012.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 154)) ;
-      var_attributeName_3012.mProperty_string = var_attributeName_3012.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 155)) ;
+      var_attributeName_3012.mProperty_string = var_attributeName_3012.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 154)) ;
+      var_attributeName_3012.mProperty_string = var_attributeName_3012.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 155)) ;
     } break ;
     case 5: {
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 156)) ;
@@ -7723,7 +7723,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       break ;
     }
   }
-  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_attributeName_3012.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_attributeName_3012.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_2) {
     GALGAS_arxmlMetaAttribute var_newAttribute_4234 = GALGAS_arxmlMetaAttribute::constructor_new (var_attributeName_3012, var_attributeType_2969, var_attributePrefix_3100, var_attributeUse_3143  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 162)) ;
     {
@@ -7852,8 +7852,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 201)) ;
     var_className_5243 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 202)) ;
-    var_className_5243.mProperty_string = var_className_5243.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 203)) ;
-    var_className_5243.mProperty_string = var_className_5243.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 204)) ;
+    var_className_5243.mProperty_string = var_className_5243.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 203)) ;
+    var_className_5243.mProperty_string = var_className_5243.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 204)) ;
     GALGAS_lstring var_desc_5610 ;
     {
     routine_lstringhere (var_desc_5610, GALGAS_string::makeEmptyString (), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 205)) ;
@@ -7876,14 +7876,14 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
     GALGAS_lstring var_fullClassName_6318 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 222)) ;
     var_className_5243 = var_fullClassName_6318 ;
-    const enumGalgasBool test_1 = var_fullClassName_6318.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 225)).boolEnum () ;
+    const enumGalgasBool test_1 = var_fullClassName_6318.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 225)).boolEnum () ;
     if (kBoolTrue == test_1) {
-      GALGAS_stringlist var_parsed_6480 = var_fullClassName_6318.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 226)) ;
+      GALGAS_stringlist var_parsed_6480 = var_fullClassName_6318.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 226)) ;
       GALGAS_string var_parsedString_6583 ;
       var_parsed_6480.method_last (var_parsedString_6583, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 227)) ;
       var_className_5243.mProperty_string = var_parsedString_6583 ;
     }
-    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.mProperty_string.objectCompare (var_className_5243.mProperty_string)).boolEnum () ;
+    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.getter_string (HERE).objectCompare (var_className_5243.getter_string (HERE))).boolEnum () ;
     if (kBoolTrue == test_2) {
       {
       ioArgument_classGraph.setter_addEdge (var_className_5243, inArgument_parentClass COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 233)) ;
@@ -8162,15 +8162,15 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 314)) ;
       var_complexName_8487 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 315)) ;
-      var_complexName_8487.mProperty_string = var_complexName_8487.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 316)) ;
-      var_complexName_8487.mProperty_string = var_complexName_8487.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 317)) ;
+      var_complexName_8487.mProperty_string = var_complexName_8487.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 316)) ;
+      var_complexName_8487.mProperty_string = var_complexName_8487.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 317)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_complexName_8487.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_complexName_8487.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_1) {
     var_complexName_8487 = inArgument_parentClass ;
   }
@@ -8421,16 +8421,16 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 409)) ;
       var_fullType_11363 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 410)) ;
-      const enumGalgasBool test_1 = var_fullType_11363.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 412)).boolEnum () ;
+      const enumGalgasBool test_1 = var_fullType_11363.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 412)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_stringlist var_parsed_11526 = var_fullType_11363.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 413)) ;
+        GALGAS_stringlist var_parsed_11526 = var_fullType_11363.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 413)) ;
         GALGAS_string var_parsedString_11606 ;
         var_parsed_11526.method_first (var_parsedString_11606, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 415)) ;
         var_elementPrefix_11194.mProperty_string = var_parsedString_11606 ;
-        var_elementPrefix_11194.mProperty_location = var_fullType_11363.mProperty_location ;
+        var_elementPrefix_11194.mProperty_location = var_fullType_11363.getter_location (HERE) ;
         var_parsed_11526.method_last (var_parsedString_11606, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 418)) ;
         var_elementType_11028.mProperty_string = var_parsedString_11606 ;
-        var_elementType_11028.mProperty_location = var_fullType_11363.mProperty_location ;
+        var_elementType_11028.mProperty_location = var_fullType_11363.getter_location (HERE) ;
       }else if (kBoolFalse == test_1) {
         var_elementType_11028 = var_fullType_11363 ;
       }
@@ -8440,32 +8440,32 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 425)) ;
       var_elementName_11069 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 426)) ;
-      var_elementName_11069.mProperty_string = var_elementName_11069.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 427)) ;
-      var_elementName_11069.mProperty_string = var_elementName_11069.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 428)) ;
+      var_elementName_11069.mProperty_string = var_elementName_11069.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 427)) ;
+      var_elementName_11069.mProperty_string = var_elementName_11069.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 428)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_elementName_11069.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_elementName_11069.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_2) {
     TC_Array <C_FixItDescription> fixItArray3 ;
     inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 432)), GALGAS_string ("An xsd:element must have a name."), fixItArray3  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 432)) ;
   }
-  const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_elementMax_11150.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_elementMax_11150.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_4) {
     {
     routine_lstringhere (var_elementMax_11150, GALGAS_string ("unbounded"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 440)) ;
     }
   }
-  const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, var_elementMin_11109.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, var_elementMin_11109.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_5) {
     {
     routine_lstringhere (var_elementMin_11109, GALGAS_string ("0"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 443)) ;
     }
   }
-  const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_elementType_11028.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_elementType_11028.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_6) {
     var_elementType_11028 = var_elementName_11069 ;
   }else if (kBoolFalse == test_6) {
@@ -8820,8 +8820,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 568)) ;
     var_className_15746 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 569)) ;
-    var_className_15746.mProperty_string = var_className_15746.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 570)) ;
-    var_className_15746.mProperty_string = var_className_15746.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 571)) ;
+    var_className_15746.mProperty_string = var_className_15746.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 570)) ;
+    var_className_15746.mProperty_string = var_className_15746.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 571)) ;
     GALGAS_lstring var_desc_16113 ;
     {
     routine_lstringhere (var_desc_16113, GALGAS_string::makeEmptyString (), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 572)) ;
@@ -8844,14 +8844,14 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
     GALGAS_lstring var_fullClassName_16822 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 589)) ;
     var_className_15746 = var_fullClassName_16822 ;
-    const enumGalgasBool test_1 = var_fullClassName_16822.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 592)).boolEnum () ;
+    const enumGalgasBool test_1 = var_fullClassName_16822.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 592)).boolEnum () ;
     if (kBoolTrue == test_1) {
-      GALGAS_stringlist var_parsed_16984 = var_fullClassName_16822.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 593)) ;
+      GALGAS_stringlist var_parsed_16984 = var_fullClassName_16822.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 593)) ;
       GALGAS_string var_parsedString_17087 ;
       var_parsed_16984.method_last (var_parsedString_17087, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 594)) ;
       var_className_15746.mProperty_string = var_parsedString_17087 ;
     }
-    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.mProperty_string.objectCompare (var_className_15746.mProperty_string)).boolEnum () ;
+    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.getter_string (HERE).objectCompare (var_className_15746.getter_string (HERE))).boolEnum () ;
     if (kBoolTrue == test_2) {
       {
       ioArgument_classGraph.setter_addEdge (var_className_15746, inArgument_parentClass COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 600)) ;
@@ -9056,13 +9056,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
   inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 663)) ;
   var_baseType_18531 = inCompiler->synthetizedAttribute_tokenString () ;
   inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 664)) ;
-  GALGAS_bool test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:string").objectCompare (var_baseType_18531.mProperty_string)) ;
+  GALGAS_bool test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:string").objectCompare (var_baseType_18531.getter_string (HERE))) ;
   if (kBoolTrue != test_0.boolEnum ()) {
-    test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKEN").objectCompare (var_baseType_18531.mProperty_string)) ;
+    test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKEN").objectCompare (var_baseType_18531.getter_string (HERE))) ;
   }
   GALGAS_bool test_1 = test_0 ;
   if (kBoolTrue != test_1.boolEnum ()) {
-    test_1 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKENS").objectCompare (var_baseType_18531.mProperty_string)) ;
+    test_1 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKENS").objectCompare (var_baseType_18531.getter_string (HERE))) ;
   }
   const enumGalgasBool test_2 = test_1.boolEnum () ;
   if (kBoolTrue == test_2) {
@@ -9077,7 +9077,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
     callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_18799, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)) ;
     }
   }else if (kBoolFalse == test_2) {
-    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:unsignedInt").objectCompare (var_baseType_18531.mProperty_string)).boolEnum () ;
+    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:unsignedInt").objectCompare (var_baseType_18531.getter_string (HERE))).boolEnum () ;
     if (kBoolTrue == test_3) {
       {
       ioArgument_restriction.insulate (HERE) ;
@@ -9090,7 +9090,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
       callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_18943, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)) ;
       }
     }else if (kBoolFalse == test_3) {
-      const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:double").objectCompare (var_baseType_18531.mProperty_string)).boolEnum () ;
+      const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:double").objectCompare (var_baseType_18531.getter_string (HERE))).boolEnum () ;
       if (kBoolTrue == test_4) {
         {
         ioArgument_restriction.insulate (HERE) ;
@@ -9104,7 +9104,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
         }
       }else if (kBoolFalse == test_4) {
         TC_Array <C_FixItDescription> fixItArray5 ;
-        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), GALGAS_string ("Undefined/unimplemented base type ").add_operation (var_baseType_18531.mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), fixItArray5  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)) ;
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), GALGAS_string ("Undefined/unimplemented base type ").add_operation (var_baseType_18531.getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), fixItArray5  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)) ;
       }
     }
   }
@@ -9699,17 +9699,17 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 887)) ;
       var_typeName_25954 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 888)) ;
-      var_typeName_25954.mProperty_string = var_typeName_25954.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 889)) ;
-      var_typeName_25954.mProperty_string = var_typeName_25954.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 890)) ;
+      var_typeName_25954.mProperty_string = var_typeName_25954.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 889)) ;
+      var_typeName_25954.mProperty_string = var_typeName_25954.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 890)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  GALGAS_bool test_1 = GALGAS_bool (kIsEqual, inArgument_parentClass.mProperty_string.objectCompare (GALGAS_string ("root"))) ;
+  GALGAS_bool test_1 = GALGAS_bool (kIsEqual, inArgument_parentClass.getter_string (HERE).objectCompare (GALGAS_string ("root"))) ;
   if (kBoolTrue == test_1.boolEnum ()) {
-    test_1 = GALGAS_bool (kIsEqual, var_typeName_25954.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+    test_1 = GALGAS_bool (kIsEqual, var_typeName_25954.getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())) ;
   }
   const enumGalgasBool test_2 = test_1.boolEnum () ;
   if (kBoolTrue == test_2) {

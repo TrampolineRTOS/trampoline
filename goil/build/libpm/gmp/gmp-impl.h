@@ -44,9 +44,10 @@ see https://www.gnu.org/licenses/.  */
 #ifndef __GMP_IMPL_H__
 #define __GMP_IMPL_H__
 
-#if __clang_major__ > 3
+#if defined (__clang_major__) && (__clang_major__ > 3)
   #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
+
 #if defined (__GNUC__) && ! defined (__APPLE__)
   #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif

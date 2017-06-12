@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -20,13 +20,12 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <string.h>
-#include <stdio.h>
+#include "command_line_interface/C_StringListCommandLineOption.h"
+#include "utilities/C_PrologueEpilogue.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include "command_line_interface/C_StringListCommandLineOption.h"
-#include "utilities/C_PrologueEpilogue.h"
+#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -124,35 +123,34 @@ void C_StringListCommandLineOption::printUsageOfStringOptions (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_StringListCommandLineOption::printStringOptions (const uint32_t inDisplayLength) {
+void C_StringListCommandLineOption::printStringOptions (void) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
   while (p != NULL) {
-    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
-      co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) strlen ("=string") ;
-      if (p->mCommandString [0] != '\0') {
-        co << ", " ;
-        charCount += 2 ;
+      for (uint32_t i=0 ; i<2 ; i++) {
+        if (i != 0) {
+          co << " " ;
+        }
+        co.setForeColor (kBlueForeColor) ;
+        co.setTextAttribute (kBoldTextAttribute) ;
+        co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
+        co.setTextAttribute (kAllAttributesOff) ;
       }
+      co << " ...\n" ;
     }
     if (p->mCommandString [0] != '\0') {
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << "--" << p->mCommandString << "=string" ;
-      co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) (strlen (p->mCommandString) + strlen ("=string")) ;
+      for (uint32_t i=0 ; i<2 ; i++) {
+        if (i != 0) {
+          co << " " ;
+        }
+        co.setForeColor (kBlueForeColor) ;
+        co.setTextAttribute (kBoldTextAttribute) ;
+        co << "--" << p->mCommandString << "=string" ;
+        co.setTextAttribute (kAllAttributesOff) ;
+      }
+      co << " ...\n" ;
     }
-    if (charCount > inDisplayLength) {
-      co << "\n" ;
-      charCount = 0 ;
-    }
-    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
-      co << " " ;
-    }
+    co << "    " << p->mComment  << "\n" ;
     p = p->mNext ;
   }
 }

@@ -98,6 +98,7 @@ class cSharedMapRoot : public C_SharedObject {
                                                                               COMMA_LOCATION_ARGS) const ;
 
   protected : VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_string & inKey,
+                                                                          const bool inErrorOnUnknownKey,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
@@ -1198,8 +1199,9 @@ const cMapElement * AC_GALGAS_map::searchForReadingAttribute (const GALGAS_strin
 //---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement * cSharedMapRoot::searchForReadWriteAttribute (const GALGAS_string & inKey,
-                                                           C_Compiler * /* inCompiler */
-                                                           COMMA_UNUSED_LOCATION_ARGS) {
+                                                           const bool inErrorOnUnknownKey,
+                                                           C_Compiler * inCompiler
+                                                           COMMA_LOCATION_ARGS) {
   macroUniqueSharedObject (this) ;
   cMapElement * result = NULL ;
   if (inKey.isValid ()) {
@@ -1210,6 +1212,12 @@ cMapElement * cSharedMapRoot::searchForReadWriteAttribute (const GALGAS_string &
       result = (cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (result, cMapElement) ;
       macroUniqueSharedObject (result) ;
+    }else if (inErrorOnUnknownKey) {
+    //--- Build error message
+      C_String message ;
+      message << "cannot read attribute in map: the '" << key << "' key does not exist" ;
+    //--- Emit error message
+      inCompiler->onTheFlySemanticError (message COMMA_THERE) ;
     }
   }
   return result ;
@@ -1218,13 +1226,14 @@ cMapElement * cSharedMapRoot::searchForReadWriteAttribute (const GALGAS_string &
 //---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement * AC_GALGAS_map::searchForReadWriteAttribute (const GALGAS_string & inKey,
+                                                          const bool inErrorOnUnknownKey,
                                                           C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) {
   cMapElement * result = NULL ;
   if (isValid ()) {
     insulateCurrentAndOverridenMaps (THERE) ;
     if (NULL != mSharedMap) {
-      result = (cMapElement *) mSharedMap->searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+      result = (cMapElement *) mSharedMap->searchForReadWriteAttribute (inKey, inErrorOnUnknownKey, inCompiler COMMA_THERE) ;
     }
   }
   return result ;

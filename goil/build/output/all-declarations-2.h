@@ -415,9 +415,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_locationList ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_locationList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -674,10 +673,10 @@ class cMapElement_implementationObjectMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_impType mProperty_type ;
 
+  public : GALGAS_impType mProperty_type ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -879,10 +878,10 @@ class cMapElement_enumValues : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_implementationObjectMap mProperty_subAttributes ;
 
+  public : GALGAS_implementationObjectMap mProperty_subAttributes ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -1173,10 +1172,10 @@ class cMapElement_implementationMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_implementationObject mProperty_obj ;
 
+  public : GALGAS_implementationObject mProperty_obj ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -1673,6 +1672,8 @@ class C_Lexique_options_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
+//--- Unicode test functions
+
 //--- Indexing directory
   protected : virtual C_String indexingDirectory (void) const ;
 
@@ -1840,10 +1841,10 @@ class cMapElement_identifierMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_object_5F_t mProperty_value ;
 
+  public : GALGAS_object_5F_t mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -2165,9 +2166,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_identifierList ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_object_5F_t mProperty_item ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -2360,10 +2360,10 @@ class cMapElement_stringMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_string mProperty_value ;
 
+  public : GALGAS_string mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -2563,10 +2563,10 @@ class cMapElement_lstringMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_lstring mProperty_value ;
 
+  public : GALGAS_lstring mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -2787,11 +2787,12 @@ class cMapElement_prefix_5F_map : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_string mProperty_prefix ;
-  public : GALGAS_string mProperty_tag_5F_to_5F_rep ;
 
+  public : GALGAS_string mProperty_prefix ;
+
+  public : GALGAS_string mProperty_tag_5F_to_5F_rep ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3000,10 +3001,10 @@ class cMapElement_stringset_5F_map : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_stringset mProperty_ids ;
 
+  public : GALGAS_stringset mProperty_ids ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3194,9 +3195,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_ident_5F_list ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_obj_5F_name ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3397,10 +3397,10 @@ class cMapElement_ident_5F_list_5F_map : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_ident_5F_list mProperty_objs ;
 
+  public : GALGAS_ident_5F_list mProperty_objs ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4304,10 +4304,10 @@ void callExtensionMethod_verifyApplication (const class cPtr_implementationObjec
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_objectKind mProperty_objectsOfKind ;
 
+  public : GALGAS_objectKind mProperty_objectsOfKind ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4425,10 +4425,10 @@ void callExtensionMethod_verifyCrossReferences (const class cPtr_object_5F_t * i
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_objectAttributes mProperty_attributes ;
 
+  public : GALGAS_objectAttributes mProperty_attributes ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -7562,6 +7562,8 @@ class C_Lexique_arxml_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
+//--- Unicode test functions
+
 //--- Indexing directory
   protected : virtual C_String indexingDirectory (void) const ;
 
@@ -7724,10 +7726,10 @@ class cMapElement_arxmlAttributeMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_lstring mProperty_value ;
 
+  public : GALGAS_lstring mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -7998,9 +8000,8 @@ class cPtr_arxmlNode : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_arxmlNode mProperty_node ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -8428,9 +8429,8 @@ class cPtr_arxmlElementNode : public cPtr_arxmlNode {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_arxmlElementNode mProperty_node ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -8869,10 +8869,10 @@ class cMapElement_arxmlElementValueMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_arxmlElementValueList mProperty_values ;
 
+  public : GALGAS_arxmlElementValueList mProperty_values ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -9042,9 +9042,8 @@ class cPtr_arxmlElementValue : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_arxmlElementValue mProperty_value ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -9252,6 +9251,8 @@ class C_Lexique_arxmlmetaparser_5F_scanner : public C_Lexique {
 
 
 //--- Indexing keys
+
+//--- Unicode test functions
 
 //--- Indexing directory
   protected : virtual C_String indexingDirectory (void) const ;

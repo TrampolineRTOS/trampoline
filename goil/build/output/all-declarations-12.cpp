@@ -250,11 +250,11 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
       var_parameterValue_50587.mProperty_string = var_parameterValue_50587.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1495)).getter_lastPathComponent (SOURCE_FILE ("arxml_parser.galgas", 1495)) ;
       const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_parameterType_49879.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1497)).getter_rightSubString (GALGAS_uint ((uint32_t) 3U) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1497)).objectCompare (GALGAS_string ("REF"))).boolEnum () ;
       if (kBoolTrue == test_3) {
-        var_parameterType_49879.mProperty_string = var_parameterType_49879.mProperty_string.getter_leftSubString (var_parameterType_49879.mProperty_string.getter_length (SOURCE_FILE ("arxml_parser.galgas", 1499)).substract_operation (GALGAS_uint ((uint32_t) 3U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1499)) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1498)) ;
+        var_parameterType_49879.mProperty_string = var_parameterType_49879.getter_string (HERE).getter_leftSubString (var_parameterType_49879.getter_string (HERE).getter_length (SOURCE_FILE ("arxml_parser.galgas", 1499)).substract_operation (GALGAS_uint ((uint32_t) 3U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1499)) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1498)) ;
       }else if (kBoolFalse == test_3) {
         const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_parameterType_49879.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1500)).getter_rightSubString (GALGAS_uint ((uint32_t) 4U) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1500)).objectCompare (GALGAS_string ("REFS"))).boolEnum () ;
         if (kBoolTrue == test_4) {
-          var_parameterType_49879.mProperty_string = var_parameterType_49879.mProperty_string.getter_leftSubString (var_parameterType_49879.mProperty_string.getter_length (SOURCE_FILE ("arxml_parser.galgas", 1502)).substract_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1502)) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1501)) ;
+          var_parameterType_49879.mProperty_string = var_parameterType_49879.getter_string (HERE).getter_leftSubString (var_parameterType_49879.getter_string (HERE).getter_length (SOURCE_FILE ("arxml_parser.galgas", 1502)).substract_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1502)) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1501)) ;
         }else if (kBoolFalse == test_4) {
           TC_Array <C_FixItDescription> fixItArray5 ;
           inCompiler->emitSemanticError (var_parameterType_49879.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1504)), GALGAS_string ("An object reference must end with REF or REFS"), fixItArray5  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1504)) ;
@@ -370,18 +370,18 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
         }
         GALGAS_impBoolType var_boolType_55179 = temp_23 ;
         GALGAS_bool var_booleanValue_55225 ;
-        GALGAS_bool test_24 = GALGAS_bool (kIsEqual, var_parameterValue_50587.mProperty_string.getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1588)).objectCompare (GALGAS_string ("TRUE"))) ;
+        GALGAS_bool test_24 = GALGAS_bool (kIsEqual, var_parameterValue_50587.getter_string (HERE).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1588)).objectCompare (GALGAS_string ("TRUE"))) ;
         if (kBoolTrue != test_24.boolEnum ()) {
-          test_24 = GALGAS_bool (kIsEqual, var_parameterValue_50587.mProperty_string.objectCompare (GALGAS_string ("1"))) ;
+          test_24 = GALGAS_bool (kIsEqual, var_parameterValue_50587.getter_string (HERE).objectCompare (GALGAS_string ("1"))) ;
         }
         const enumGalgasBool test_25 = test_24.boolEnum () ;
         if (kBoolTrue == test_25) {
           var_subTypes_53173 = var_boolType_55179.getter_trueSubAttributes (SOURCE_FILE ("arxml_parser.galgas", 1590)) ;
           var_booleanValue_55225 = GALGAS_bool (true) ;
         }else if (kBoolFalse == test_25) {
-          GALGAS_bool test_26 = GALGAS_bool (kIsEqual, var_parameterValue_50587.mProperty_string.getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1592)).objectCompare (GALGAS_string ("FALSE"))) ;
+          GALGAS_bool test_26 = GALGAS_bool (kIsEqual, var_parameterValue_50587.getter_string (HERE).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1592)).objectCompare (GALGAS_string ("FALSE"))) ;
           if (kBoolTrue != test_26.boolEnum ()) {
-            test_26 = GALGAS_bool (kIsEqual, var_parameterValue_50587.mProperty_string.objectCompare (GALGAS_string ("0"))) ;
+            test_26 = GALGAS_bool (kIsEqual, var_parameterValue_50587.getter_string (HERE).objectCompare (GALGAS_string ("0"))) ;
           }
           const enumGalgasBool test_27 = test_26.boolEnum () ;
           if (kBoolTrue == test_27) {
@@ -422,7 +422,7 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
           }
           GALGAS_luint_36__34_ var_integerValue_56488 = GALGAS_luint_36__34_::constructor_new (var_parameterValue_50587.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1622)).getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1622)).getter_uint_36__34_ (SOURCE_FILE ("arxml_parser.galgas", 1622)), var_parameterValue_50587.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1623))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1621)) ;
           {
-          routine_displayOil (GALGAS_string (" = ").add_operation (var_integerValue_56488.mProperty_uint_36__34_.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1625)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1625)).add_operation (GALGAS_string (";"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1625)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1625)) ;
+          routine_displayOil (GALGAS_string (" = ").add_operation (var_integerValue_56488.getter_uint_36__34_ (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 1625)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1625)).add_operation (GALGAS_string (";"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1625)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1625)) ;
           }
           var_val_49732 = function_checkAndGetIntegerNumber (var_oil_5F_desc_50397, var_type_49944.getter_type (SOURCE_FILE ("arxml_parser.galgas", 1627)), var_integerValue_56488, var_sign_56460, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1627)) ;
         }else if (kBoolFalse == test_30) {
@@ -434,7 +434,7 @@ void routine_arxmlDefinitionParameter (const GALGAS_implementationObjectMap cons
             }
             GALGAS_ldouble var_floatValue_57073 = GALGAS_ldouble::constructor_new (var_parameterValue_50587.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1636)).getter_doubleNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1636)), var_parameterValue_50587.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1637))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1635)) ;
             {
-            routine_displayOil (GALGAS_string (" = ").add_operation (var_floatValue_57073.mProperty_double.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1639)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1639)).add_operation (GALGAS_string (";"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1639)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1639)) ;
+            routine_displayOil (GALGAS_string (" = ").add_operation (var_floatValue_57073.getter_double (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 1639)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1639)).add_operation (GALGAS_string (";"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1639)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1639)) ;
             }
             var_val_49732 = function_checkAndGetFloatNumber (var_oil_5F_desc_50397, var_type_49944.getter_type (SOURCE_FILE ("arxml_parser.galgas", 1641)), var_floatValue_57073, var_sign_57047, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1641)) ;
           }else if (kBoolFalse == test_31) {
@@ -563,10 +563,10 @@ void routine_testTypeError (GALGAS_dataType inArgument_type,
                             GALGAS_lstring inArgument_valueType,
                             C_Compiler * inCompiler
                             COMMA_UNUSED_LOCATION_ARGS) {
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, extensionGetter_arxmlType (inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1758)).objectCompare (inArgument_valueType.mProperty_string)).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, extensionGetter_arxmlType (inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1758)).objectCompare (inArgument_valueType.getter_string (HERE))).boolEnum () ;
   if (kBoolTrue == test_0) {
     TC_Array <C_FixItDescription> fixItArray1 ;
-    inCompiler->emitSemanticError (inArgument_valueType.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1759)), GALGAS_string ("Expected oil type ").add_operation (extensionGetter_oilType (inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)).add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)).add_operation (GALGAS_string (" Found "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)).add_operation (inArgument_valueType.mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1760)).add_operation (GALGAS_string (".\n"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1760)).add_operation (GALGAS_string (" Fix : Replace it with "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1760)).add_operation (extensionGetter_arxmlType (inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1761)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1761)), fixItArray1  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)) ;
+    inCompiler->emitSemanticError (inArgument_valueType.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1759)), GALGAS_string ("Expected oil type ").add_operation (extensionGetter_oilType (inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)).add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)).add_operation (GALGAS_string (" Found "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)).add_operation (inArgument_valueType.getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1760)).add_operation (GALGAS_string (".\n"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1760)).add_operation (GALGAS_string (" Fix : Replace it with "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1760)).add_operation (extensionGetter_arxmlType (inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1761)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1761)), fixItArray1  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1759)) ;
   }
 }
 
@@ -587,17 +587,17 @@ void routine_oilEquivalentName (GALGAS_lstring inArgument_parentPath,
   if (kBoolTrue == test_0) {
     inArgument_parentPath.mProperty_string = inArgument_parentPath.getter_string (SOURCE_FILE ("arxml_parser.galgas", 1771)).getter_stringByDeletingLastPathComponent (SOURCE_FILE ("arxml_parser.galgas", 1771)) ;
   }
-  GALGAS_lstring var_objectKind_62165 = GALGAS_lstring::constructor_new (inArgument_currentPath.mProperty_string.getter_lastPathComponent (SOURCE_FILE ("arxml_parser.galgas", 1774)), inArgument_currentPath.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1775))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1774)) ;
-  GALGAS_string var_lastParent_62458 = inArgument_parentPath.mProperty_string.getter_lastPathComponent (SOURCE_FILE ("arxml_parser.galgas", 1779)).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1779)) ;
+  GALGAS_lstring var_objectKind_62165 = GALGAS_lstring::constructor_new (inArgument_currentPath.getter_string (HERE).getter_lastPathComponent (SOURCE_FILE ("arxml_parser.galgas", 1774)), inArgument_currentPath.getter_location (SOURCE_FILE ("arxml_parser.galgas", 1775))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1774)) ;
+  GALGAS_string var_lastParent_62458 = inArgument_parentPath.getter_string (HERE).getter_lastPathComponent (SOURCE_FILE ("arxml_parser.galgas", 1779)).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1779)) ;
   const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_lastParent_62458.objectCompare (GALGAS_string ("OSOS"))).boolEnum () ;
   if (kBoolTrue == test_1) {
     var_lastParent_62458 = GALGAS_string ("OS") ;
   }
   GALGAS_uint var_lastParentLength_62702 = var_lastParent_62458.getter_length (SOURCE_FILE ("arxml_parser.galgas", 1787)) ;
-  const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_objectKind_62165.mProperty_string.getter_leftSubString (var_lastParentLength_62702 COMMA_SOURCE_FILE ("arxml_parser.galgas", 1788)).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1788)).objectCompare (var_lastParent_62458)).boolEnum () ;
+  const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_objectKind_62165.getter_string (HERE).getter_leftSubString (var_lastParentLength_62702 COMMA_SOURCE_FILE ("arxml_parser.galgas", 1788)).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1788)).objectCompare (var_lastParent_62458)).boolEnum () ;
   if (kBoolTrue == test_2) {
-    var_objectKind_62165.mProperty_string = var_objectKind_62165.mProperty_string.getter_subStringFromIndex (var_lastParentLength_62702 COMMA_SOURCE_FILE ("arxml_parser.galgas", 1790)) ;
-    var_objectKind_62165.mProperty_string = var_objectKind_62165.mProperty_string.getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1791)) ;
+    var_objectKind_62165.mProperty_string = var_objectKind_62165.getter_string (HERE).getter_subStringFromIndex (var_lastParentLength_62702 COMMA_SOURCE_FILE ("arxml_parser.galgas", 1790)) ;
+    var_objectKind_62165.mProperty_string = var_objectKind_62165.getter_string (HERE).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1791)) ;
     outArgument_outName = var_objectKind_62165 ;
   }else if (kBoolFalse == test_2) {
     TC_Array <C_FixItDescription> fixItArray3 ;
@@ -676,15 +676,15 @@ void routine_arxmlGetMultiplicity (GALGAS_arxmlElementValue inArgument_element,
     }
     const enumGalgasBool test_2 = test_1.boolEnum () ;
     if (kBoolTrue == test_2) {
-      outArgument_multiple = GALGAS_lbool::constructor_new (GALGAS_bool (true), var_smultiple_64795.mProperty_location  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1851)) ;
+      outArgument_multiple = GALGAS_lbool::constructor_new (GALGAS_bool (true), var_smultiple_64795.getter_location (HERE)  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1851)) ;
       {
       routine_displayOil (GALGAS_string ("[]"), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1852)) ;
       }
     }else if (kBoolFalse == test_2) {
-      outArgument_multiple = GALGAS_lbool::constructor_new (GALGAS_bool (false), var_smultiple_64795.mProperty_location  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1854)) ;
+      outArgument_multiple = GALGAS_lbool::constructor_new (GALGAS_bool (false), var_smultiple_64795.getter_location (HERE)  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1854)) ;
     }
   }else if (kBoolFalse == test_0) {
-    outArgument_multiple = GALGAS_lbool::constructor_new (GALGAS_bool (false), inArgument_objectName.mProperty_location  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1857)) ;
+    outArgument_multiple = GALGAS_lbool::constructor_new (GALGAS_bool (false), inArgument_objectName.getter_location (HERE)  COMMA_SOURCE_FILE ("arxml_parser.galgas", 1857)) ;
   }
 }
 
@@ -700,15 +700,15 @@ void routine_arxmlPopSign (GALGAS_lstring & ioArgument_value,
                            C_Compiler * inCompiler
                            COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_sign.drop () ; // Release 'out' argument
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, ioArgument_value.mProperty_string.getter_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1866)).objectCompare (GALGAS_char (TO_UNICODE (45)))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, ioArgument_value.getter_string (HERE).getter_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1866)).objectCompare (GALGAS_char (TO_UNICODE (45)))).boolEnum () ;
   if (kBoolTrue == test_0) {
     outArgument_sign = GALGAS_bool (true) ;
-    ioArgument_value.mProperty_string = ioArgument_value.mProperty_string.getter_subStringFromIndex (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1868)) ;
+    ioArgument_value.mProperty_string = ioArgument_value.getter_string (HERE).getter_subStringFromIndex (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1868)) ;
   }else if (kBoolFalse == test_0) {
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, ioArgument_value.mProperty_string.getter_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1869)).objectCompare (GALGAS_char (TO_UNICODE (43)))).boolEnum () ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, ioArgument_value.getter_string (HERE).getter_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1869)).objectCompare (GALGAS_char (TO_UNICODE (43)))).boolEnum () ;
     if (kBoolTrue == test_1) {
       outArgument_sign = GALGAS_bool (false) ;
-      ioArgument_value.mProperty_string = ioArgument_value.mProperty_string.getter_subStringFromIndex (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1871)) ;
+      ioArgument_value.mProperty_string = ioArgument_value.getter_string (HERE).getter_subStringFromIndex (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("arxml_parser.galgas", 1871)) ;
     }else if (kBoolFalse == test_1) {
       outArgument_sign = GALGAS_bool (false) ;
     }
@@ -940,7 +940,7 @@ static void extensionMethod_arxmlElementNode_getSubElementsFromName (const cPtr_
         }
       }
       GALGAS_arxmlElementNode var_currentElement_4296 = temp_1 ;
-      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_currentElement_4296.getter_name (SOURCE_FILE ("arxml_types.galgas", 198)).mProperty_string.objectCompare (constinArgument_nodeName)).boolEnum () ;
+      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_currentElement_4296.getter_name (SOURCE_FILE ("arxml_types.galgas", 198)).getter_string (HERE).objectCompare (constinArgument_nodeName)).boolEnum () ;
       if (kBoolTrue == test_2) {
         ioArgument_nodeList.addAssign_operation (var_currentElement_4296  COMMA_SOURCE_FILE ("arxml_types.galgas", 199)) ;
       }
@@ -1265,6 +1265,7 @@ void routine_fillLegacy (GALGAS_arxmlMetaClassMap & ioArgument_classMap,
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/F_verbose_output.h"
 #include "galgas2/cLexiqueIntrospection.h"
+#include "command_line_interface/C_builtin_CLI_Options.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1415,88 +1416,88 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
     returnCode = 1 ;
   }else{
   //--- Common lexique object
-    C_Compiler * commonLexique = NULL ;
-    macroMyNew (commonLexique, C_Compiler (NULL COMMA_HERE)) ;
+    C_Compiler * commonCompiler = NULL ;
+    macroMyNew (commonCompiler, C_Compiler (NULL COMMA_HERE)) ;
     try{
-      routine_before (commonLexique COMMA_HERE) ;
-      cLexiqueIntrospection::handleGetKeywordListOption (commonLexique) ;
+      routine_before (commonCompiler COMMA_HERE) ;
+      cLexiqueIntrospection::handleGetKeywordListOption (commonCompiler) ;
       const bool verboseOptionOn = verboseOutput () ;
       for (int32_t i=0 ; i<sourceFilesArray.count () ; i++) {
         const C_String fileExtension = sourceFilesArray (i COMMA_HERE).pathExtension () ;
         const GALGAS_string sfp = GALGAS_string (sourceFilesArray (i COMMA_HERE)) ;
-        const GALGAS_location location = commonLexique->here () ;
+        const GALGAS_location location = commonCompiler->here () ;
         const GALGAS_lstring sourceFilePath (sfp, location) ;
         int r = 0 ;
         if (fileExtension == "oil") {
           switch (executionMode ()) {
           case kExecutionModeNormal :
-            routine_programRule_5F__30_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            routine_programRule_5F__30_ (sourceFilePath, commonCompiler COMMA_HERE) ;
             break ;
           case kExecutionModeLexicalAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeSyntaxAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeIndexing :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeLatex :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           }
         }else if (fileExtension == "OIL") {
           switch (executionMode ()) {
           case kExecutionModeNormal :
-            routine_programRule_5F__31_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            routine_programRule_5F__31_ (sourceFilePath, commonCompiler COMMA_HERE) ;
             break ;
           case kExecutionModeLexicalAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeSyntaxAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeIndexing :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeLatex :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           }
         }else if (fileExtension == "goilTemplate") {
           switch (executionMode ()) {
           case kExecutionModeNormal :
-            routine_programRule_5F__32_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            routine_programRule_5F__32_ (sourceFilePath, commonCompiler COMMA_HERE) ;
             break ;
           case kExecutionModeLexicalAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeSyntaxAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeIndexing :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeLatex :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           }
         }else if (fileExtension == "arxml") {
           switch (executionMode ()) {
           case kExecutionModeNormal :
-            routine_programRule_5F__33_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            routine_programRule_5F__33_ (sourceFilePath, commonCompiler COMMA_HERE) ;
             break ;
           case kExecutionModeLexicalAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeSyntaxAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeIndexing :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           case kExecutionModeLatex :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            commonCompiler->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
             break ;
           }
         }else{
@@ -1519,7 +1520,11 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
         }
       }
     //--- Epilogue
-      routine_after (commonLexique COMMA_HERE) ;
+      routine_after (commonCompiler COMMA_HERE) ;
+    //--- Emit JSON issue file ?
+      if (gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file.mValue != "") {
+        commonCompiler->writeIssueJSONFile (gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file.mValue) ;
+      }
     //--- Display error and warnings count
       if (verboseOptionOn || (totalWarningCount () > 0) || (totalErrorCount () > 0)) {
         C_String message ;
@@ -1548,7 +1553,7 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
       printf ("**** Unknow exception ****\n") ;
       throw ;
     }
-    macroDetachSharedObject (commonLexique) ;
+    macroDetachSharedObject (commonCompiler) ;
   }
   return returnCode ;
 }

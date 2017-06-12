@@ -11,15 +11,25 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+@class PMDownloadFile ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+@protocol PMDownloadDelegate
+  - (void) downloadDidEnd: (PMDownloadFile *) inDownloader info: (NSUInteger) inInfo ;
+@end
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 @interface PMDownloadFile : NSObject
   #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_6
     <NSURLDownloadDelegate>
   #endif
 {
   @protected NSURL * mURL ;
-  @protected id mDelegate ;
+  @protected id <PMDownloadDelegate> mDelegate ;
+  @protected NSUInteger mDelegateInfo ;
   @protected NSURLDownload * mDownload ;
-  @protected SEL mDownloadDidEndSelector ;
   @protected NSButton * mCancelButton ;
   @protected NSTextField * mSubTitle ;
   @protected NSProgressIndicator * mProgressIndicator ;
@@ -33,8 +43,8 @@
 
 - (id) initWithURLString: (NSString *) inURLString
        destinationFileName: (NSString *) inDestinationFileName
-       downloadDelegate: (id) inDelegate
-       downloadDidEndSelector: (SEL) inDownloadDidEndSelector // - (void) downloadDidEnd: (PMDownloadFile *) inDownloader
+       downloadDelegate: (id <PMDownloadDelegate>) inDelegate
+       info : (NSUInteger) inInfo
        cancelButton: (NSButton *) inCancelButton
        subtitle: (NSTextField *) inSubtitle
        progressIndicator: (NSProgressIndicator *) inProgressIndicator
@@ -43,8 +53,8 @@
 - (id) initWithURLString: (NSString *) inURLString
        postDictionary: (NSDictionary *) inPOSTDictionary
        destinationFileName: (NSString *) inDestinationFileName
-       downloadDelegate: (id) inDelegate
-       downloadDidEndSelector: (SEL) inDownloadDidEndSelector // - (void) downloadDidEnd: (PMDownloadFile *) inDownloader
+       downloadDelegate: (id <PMDownloadDelegate>) inDelegate
+       info : (NSUInteger) inInfo
        cancelButton: (NSButton *) inCancelButton
        subtitle: (NSTextField *) inSubtitle
        progressIndicator: (NSProgressIndicator *) inProgressIndicator

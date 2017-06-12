@@ -225,9 +225,8 @@ class cPtr_gtlData : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlData mProperty_data ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -445,10 +444,10 @@ class cMapElement_gtlVarMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlData mProperty_value ;
 
+  public : GALGAS_gtlData mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -723,10 +722,10 @@ class cMapElement_gtlExpressionMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlExpression mProperty_expression ;
 
+  public : GALGAS_gtlExpression mProperty_expression ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -998,9 +997,8 @@ class cPtr_gtlInstruction : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlInstruction mProperty_instruction ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -1251,10 +1249,10 @@ class cMapElement_gtlTemplateMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlTemplate mProperty_aTemplate ;
 
+  public : GALGAS_gtlTemplate mProperty_aTemplate ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3411,6 +3409,8 @@ class C_Lexique_gtl_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
+//--- Unicode test functions
+
 //--- Indexing directory
   protected : virtual C_String indexingDirectory (void) const ;
 
@@ -4367,10 +4367,10 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlFunction mProperty_function ;
 
+  public : GALGAS_gtlFunction mProperty_function ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4438,10 +4438,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlFuncMap_2D_eleme
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlGetter mProperty_theGetter ;
 
+  public : GALGAS_gtlGetter mProperty_theGetter ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4506,10 +4506,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlGetterMap_2D_ele
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlSetter mProperty_theSetter ;
 
+  public : GALGAS_gtlSetter mProperty_theSetter ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4940,9 +4940,8 @@ void callExtensionMethod_deleteInContext (const class cPtr_gtlVarItem * inObject
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlVarItem mProperty_item ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -5199,9 +5198,8 @@ class cPtr_gtlExpression : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlExpression mProperty_expression ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -6712,9 +6710,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTypedArgumentLis
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_type mProperty_type ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -6775,9 +6772,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTypedArgumentLis
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_list_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlData mProperty_value ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -6838,9 +6834,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_list_2D_element ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -6904,11 +6899,12 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringset_2D_eleme
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_bool mProperty_typed ;
-  public : GALGAS_type mProperty_type ;
-  public : GALGAS_lstring mProperty_name ;
 
+  public : GALGAS_type mProperty_type ;
+
+  public : GALGAS_lstring mProperty_name ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -7165,10 +7161,10 @@ class cMapElement_gtlProcMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_gtlProcedure mProperty_procedure ;
 
+  public : GALGAS_gtlProcedure mProperty_procedure ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -11119,6 +11115,8 @@ class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
+//--- Unicode test functions
+
 //--- Indexing directory
   protected : virtual C_String indexingDirectory (void) const ;
 
@@ -12439,10 +12437,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlThenElsifStateme
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlExpression mProperty_condition ;
-  public : GALGAS_gtlInstructionList mProperty_instructionList ;
 
+  public : GALGAS_gtlInstructionList mProperty_instructionList ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -12826,10 +12824,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sortingKeyList ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_key ;
-  public : GALGAS_lsint mProperty_order ;
 
+  public : GALGAS_lsint mProperty_order ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -13743,9 +13741,8 @@ class cPtr_gtlBreakpoint : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_gtlBreakpoint mProperty_breakpoint ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -13809,10 +13806,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointList_2
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlInstructionListContextStack_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_uint mProperty_nextInstructionIndex ;
-  public : GALGAS_gtlInstructionList mProperty_instructionList ;
 
+  public : GALGAS_gtlInstructionList mProperty_instructionList ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;

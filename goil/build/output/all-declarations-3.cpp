@@ -189,7 +189,7 @@ void GALGAS_arxmlMetaClassMap::setter_setMTypeForKey (GALGAS_arxmlMetaClass inAt
                                                       GALGAS_string inKey,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) {
-  cCollectionElement * attributes = searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+  cCollectionElement * attributes = searchForReadWriteAttribute (inKey, true, inCompiler COMMA_THERE) ;
   cMapElement_arxmlMetaClassMap * p = (cMapElement_arxmlMetaClassMap *) attributes ;
   if (NULL != p) {
     macroValidSharedObject (p, cMapElement_arxmlMetaClassMap) ;
@@ -202,7 +202,7 @@ void GALGAS_arxmlMetaClassMap::setter_setMTypeForKey (GALGAS_arxmlMetaClass inAt
 cMapElement_arxmlMetaClassMap * GALGAS_arxmlMetaClassMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                              const GALGAS_string & inKey
                                                                                              COMMA_LOCATION_ARGS) {
-  cMapElement_arxmlMetaClassMap * result = (cMapElement_arxmlMetaClassMap *) searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+  cMapElement_arxmlMetaClassMap * result = (cMapElement_arxmlMetaClassMap *) searchForReadWriteAttribute (inKey, false, inCompiler COMMA_THERE) ;
   macroNullOrValidSharedObject (result, cMapElement_arxmlMetaClassMap) ;
   return result ;
 }
@@ -1650,7 +1650,7 @@ GALGAS_string extensionGetter_string (const GALGAS_arxmlMetaElementList & inObje
   const GALGAS_arxmlMetaElementList temp_0 = inObject ;
   cEnumerator_arxmlMetaElementList enumerator_8756 (temp_0, kENUMERATION_UP) ;
   while (enumerator_8756.hasCurrentObject ()) {
-    result_outString.plusAssign_operation(GALGAS_string ("\"").add_operation (enumerator_8756.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)) ;
+    result_outString.plusAssign_operation(GALGAS_string ("\"").add_operation (enumerator_8756.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 316)) ;
     if (enumerator_8756.hasNextObject ()) {
       result_outString.plusAssign_operation(GALGAS_string (" ; "), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 318)) ;
     }
@@ -1677,7 +1677,7 @@ GALGAS_string extensionGetter_string (const GALGAS_arxmlMetaAttributeList & inOb
   const GALGAS_arxmlMetaAttributeList temp_0 = inObject ;
   cEnumerator_arxmlMetaAttributeList enumerator_9143 (temp_0, kENUMERATION_UP) ;
   while (enumerator_9143.hasCurrentObject ()) {
-    result_outString.plusAssign_operation(GALGAS_string ("\"").add_operation (enumerator_9143.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)) ;
+    result_outString.plusAssign_operation(GALGAS_string ("\"").add_operation (enumerator_9143.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 338)) ;
     if (enumerator_9143.hasNextObject ()) {
       result_outString.plusAssign_operation(GALGAS_string (" ; "), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 340)) ;
     }
@@ -3576,7 +3576,7 @@ typeComparisonResult GALGAS_debuggerContext::objectCompare (const GALGAS_debugge
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_debuggerContext::GALGAS_debuggerContext (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3607,7 +3607,7 @@ GALGAS_debuggerContext GALGAS_debuggerContext::constructor_default (LOCATION_ARG
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_debuggerContext::GALGAS_debuggerContext (const cPtr_debuggerContext * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_debuggerContext) ;
 }
 
@@ -4401,13 +4401,13 @@ typeComparisonResult GALGAS_gtlData::objectCompare (const GALGAS_gtlData & inOpe
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlData::GALGAS_gtlData (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlData::GALGAS_gtlData (const cPtr_gtlData * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlData) ;
 }
 
@@ -4566,13 +4566,13 @@ typeComparisonResult GALGAS_gtlExpression::objectCompare (const GALGAS_gtlExpres
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpression::GALGAS_gtlExpression (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpression::GALGAS_gtlExpression (const cPtr_gtlExpression * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlExpression) ;
 }
 
@@ -4687,7 +4687,7 @@ typeComparisonResult GALGAS_gtlTemplate::objectCompare (const GALGAS_gtlTemplate
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlTemplate::GALGAS_gtlTemplate (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4701,7 +4701,7 @@ GALGAS_gtlTemplate GALGAS_gtlTemplate::constructor_default (LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlTemplate::GALGAS_gtlTemplate (const cPtr_gtlTemplate * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlTemplate) ;
 }
 
@@ -4961,7 +4961,7 @@ typeComparisonResult GALGAS_library::objectCompare (const GALGAS_library & inOpe
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_library::GALGAS_library (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4978,7 +4978,7 @@ GALGAS_library GALGAS_library::constructor_default (LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_library::GALGAS_library (const cPtr_library * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_library) ;
 }
 

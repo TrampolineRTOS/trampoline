@@ -261,6 +261,9 @@ utf32 scanner_function_toLower (C_Lexique & inLexique, const utf32 inCharacter) 
 
 utf32 scanner_function_toUpper (C_Lexique & inLexique, const utf32 inCharacter) ;
 
+void scanner_routine_negateBigInt (C_Lexique & inLexique,
+                                   C_BigInt & ioValue) ;
+
 //---------------------------------------------------------------------------------------------------------------------*
 
 #endif

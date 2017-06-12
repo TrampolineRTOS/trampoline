@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -20,13 +20,12 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <string.h>
-#include <stdio.h>
+#include "command_line_interface/C_StringCommandLineOption.h"
+#include "utilities/C_PrologueEpilogue.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include "command_line_interface/C_StringCommandLineOption.h"
-#include "utilities/C_PrologueEpilogue.h"
+#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -55,10 +54,9 @@ mDefaultValue (inDefaultValue) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_StringCommandLineOption::
-setStringOptionForCommandChar (const char * inCommandString,
-                               bool & outFound,
-                               bool & outCommandLineOptionStringIsValid) {
+void C_StringCommandLineOption::setStringOptionForCommandChar (const char * inCommandString,
+                                                               bool & outFound,
+                                                               bool & outCommandLineOptionStringIsValid) {
   outCommandLineOptionStringIsValid = (strlen (inCommandString) > 2) && (inCommandString [1] == '=') ;
   // printf ("[COMMAND STRING '%s', valid %d]\n", inCommandString, outCommandLineOptionStringIsValid) ;
   outFound = false ;
@@ -78,10 +76,9 @@ setStringOptionForCommandChar (const char * inCommandString,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_StringCommandLineOption::
-setStringOptionForCommandString (const char * inCommandString,
-                                 bool & outFound,
-                                 bool & outCommandLineOptionStringIsValid) {
+void C_StringCommandLineOption::setStringOptionForCommandString (const char * inCommandString,
+                                                                 bool & outFound,
+                                                                 bool & outCommandLineOptionStringIsValid) {
   const uint32_t optionLength = (uint32_t) (strlen (inCommandString) & UINT32_MAX) ;
   outCommandLineOptionStringIsValid = optionLength > 4 ;
 //--- Find '=' character
@@ -114,8 +111,7 @@ setStringOptionForCommandString (const char * inCommandString,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_StringCommandLineOption::
-printUsageOfStringOptions (void) {
+void C_StringCommandLineOption::printUsageOfStringOptions (void) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
     const char c = p->mCommandChar ;
@@ -132,36 +128,24 @@ printUsageOfStringOptions (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_StringCommandLineOption::printStringOptions (const uint32_t inDisplayLength) {
+void C_StringCommandLineOption::printStringOptions (void) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
-    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) strlen ("=string") ;
-      if (p->mCommandString [0] != '\0') {
-        co << ", " ;
-        charCount += 2 ;
-      }
+      co << "\n" ;
     }
     if (p->mCommandString [0] != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "--" << p->mCommandString << "=string" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) (strlen (p->mCommandString) + strlen ("=string")) ;
-    }
-    if (charCount > inDisplayLength) {
       co << "\n" ;
-      charCount = 0 ;
     }
-    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
-      co << " " ;
-    }
-    co << p->mComment  << " (default value: '"
+    co << "    " << p->mComment  << " (default value: '"
        << p->mDefaultValue
        << "')\n" ;
     p = p->mNext ;
@@ -196,7 +180,7 @@ void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_Strin
 //---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String & inDomainName,
-                                                       const C_String & inIdentifier) {
+                                                                  const C_String & inIdentifier) {
   utf32 result = TO_UNICODE (0) ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
@@ -211,7 +195,7 @@ utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_String & inDomainName,
-                                                       const C_String & inIdentifier) {
+                                                                     const C_String & inIdentifier) {
   C_String result ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
@@ -226,7 +210,7 @@ C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_Str
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String & inDomainName,
-                                                       const C_String & inIdentifier) {
+                                                                  const C_String & inIdentifier) {
   C_String result ;
   C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
