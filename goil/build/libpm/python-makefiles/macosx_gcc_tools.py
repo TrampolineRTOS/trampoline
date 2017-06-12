@@ -9,8 +9,9 @@ import generic_galgas_makefile
 
 #----------------------------------------------------------------------------------------------------------------------*
 
-def buildForMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, showCommands) :
+def buildForMacOSX (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs, showCommands) :
   gmf = generic_galgas_makefile.GenericGalgasMakefile ()
+  gmf.mJSONfilePath = jsonFilePath
   gmf.mDictionary = dictionary
   gmf.mExecutable = EXECUTABLE
   gmf.mGoal = GOAL
@@ -30,7 +31,7 @@ def buildForMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, showCommands)
   gmf.mAllCompilerOptions = default_build_options.allCompilerOptions (["-Wconversion"])
 #--- Options for release mode
   gmf.mCompilerReleaseOptions = default_build_options.compilerReleaseOptions (["-O2"])
-#--- Options for debug mode 
+#--- Options for debug mode
   gmf.mCompilerDebugOptions = default_build_options.compilerDebugOptions ([])
 #--- Options for C compiling (.c extension)
   gmf.m_C_CompilerOptions = default_build_options.C_CompilerOptions ([])

@@ -18,17 +18,17 @@
 - (id) initWithURLString: (NSString *) inURLString
        postDictionary: (NSDictionary *) inPOSTDictionary
        destinationFileName: (NSString *) inDestinationFileName
-       downloadDelegate: (id) inDelegate
-       downloadDidEndSelector: (SEL) inDownloadDidEndSelector
+       downloadDelegate: (id <PMDownloadDelegate>) inDelegate
+       info: (NSUInteger) inInfo
        cancelButton: (NSButton *) inCancelButton
        subtitle: (NSTextField *) inSubtitle
        progressIndicator: (NSProgressIndicator *) inProgressIndicator
        userInfo: (id) inUserInfo {
   self = [super init] ;
   if (self) {
-    mDownloadDidEndSelector = inDownloadDidEndSelector ;
     mURL = [NSURL URLWithString:inURLString] ;
     mDelegate = inDelegate ;
+    mDelegateInfo = inInfo ;
     mDestinationFileName = inDestinationFileName ;
     mUserInfo = inUserInfo ;
   //--- Subtitle
@@ -75,17 +75,17 @@
 
 - (id) initWithURLString: (NSString *) inURLString
        destinationFileName: (NSString *) inDestinationFileName
-       downloadDelegate: (id) inDelegate
-       downloadDidEndSelector: (SEL) inDownloadDidEndSelector
+       downloadDelegate: (id <PMDownloadDelegate>) inDelegate
+       info: (NSUInteger) inInfo
        cancelButton: (NSButton *) inCancelButton
        subtitle: (NSTextField *) inSubtitle
        progressIndicator: (NSProgressIndicator *) inProgressIndicator
        userInfo: (id) inUserInfo {
   self = [super init] ;
   if (self) {
-    mDownloadDidEndSelector = inDownloadDidEndSelector ;
     mURL = [NSURL URLWithString:inURLString] ;
     mDelegate = inDelegate ;
+    mDelegateInfo = inInfo ;
     mDestinationFileName = inDestinationFileName ;
     mUserInfo = inUserInfo ;
   //--- Subtitle
@@ -148,7 +148,7 @@
   [mCancelButton setAction:NULL] ;
   [mCancelButton setEnabled:NO] ;
 //  objc_msgSend (mDelegate, mDownloadDidEndSelector, self) ;
-  [mDelegate performSelector:@selector (mDownloadDidEndSelector:) withObject:self] ;
+  [mDelegate downloadDidEnd:self info:mDelegateInfo] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

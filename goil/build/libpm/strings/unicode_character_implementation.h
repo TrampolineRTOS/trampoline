@@ -295,9 +295,9 @@ uint32_t unicodeDecimalValue (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeASCIIHexDigit (const utf32 inUnicodeCharacter) {
   return
-     ((UNICODE_VALUE (inUnicodeCharacter) >= '0') && (UNICODE_VALUE (inUnicodeCharacter) <= '9'))
-  || ((UNICODE_VALUE (inUnicodeCharacter) >= 'A') && (UNICODE_VALUE (inUnicodeCharacter) <= 'F'))
-  || ((UNICODE_VALUE (inUnicodeCharacter) >= 'a') && (UNICODE_VALUE (inUnicodeCharacter) <= 'f'))
+    ((UNICODE_VALUE (inUnicodeCharacter) >= '0') && (UNICODE_VALUE (inUnicodeCharacter) <= '9')) ||
+    ((UNICODE_VALUE (inUnicodeCharacter) >= 'A') && (UNICODE_VALUE (inUnicodeCharacter) <= 'F')) ||
+    ((UNICODE_VALUE (inUnicodeCharacter) >= 'a') && (UNICODE_VALUE (inUnicodeCharacter) <= 'f'))
   ;
 }
 
@@ -638,3 +638,34 @@ int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequenc
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
+//  https://msdn.microsoft.com/en-us/library/565w213d.aspx (??)
+
+bool isRestrictedUnicodeLetter (const utf32 inUnicodeCharacter) {
+  const uint32_t codePoint = UNICODE_VALUE (inUnicodeCharacter) ;
+  bool ok = (0x41 <= codePoint) && (codePoint <= 0x5A) ;
+  if (!ok) {
+    ok = (0x61 <= codePoint) && (codePoint <= 0x7A) ;
+  }
+  if (!ok) {
+    ok = (0xC0 <= codePoint) && (codePoint <= 0xD6) ;
+  }
+  if (!ok) {
+    ok = (0xD8 <= codePoint) && (codePoint <= 0xF6) ;
+  }
+  if (!ok) {
+    ok = (0xF6 <= codePoint) && (codePoint <= 0x2B4) ;
+  }
+  if (!ok) {
+    ok = (0x38E <= codePoint) && (codePoint <= 0x3A1) ;
+  }
+  if (!ok) {
+    ok = (0x3A3 <= codePoint) && (codePoint <= 0x3F5) ;
+  }
+  if (!ok) {
+    ok = (0x3F7 <= codePoint) && (codePoint <= 0x481) ;
+  }
+  if (!ok) {
+    ok = (0x48A <= codePoint) && (codePoint <= 0x523) ;
+  }
+  return ok ;
+}

@@ -44,7 +44,7 @@ typeComparisonResult GALGAS_debugCommandInput::objectCompare (const GALGAS_debug
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_debugCommandInput::GALGAS_debugCommandInput (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -57,7 +57,7 @@ GALGAS_debugCommandInput GALGAS_debugCommandInput::constructor_default (LOCATION
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_debugCommandInput::GALGAS_debugCommandInput (const cPtr_debugCommandInput * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_debugCommandInput) ;
 }
 
@@ -207,7 +207,7 @@ typeComparisonResult GALGAS_gtlBreakpoint::objectCompare (const GALGAS_gtlBreakp
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlBreakpoint::GALGAS_gtlBreakpoint (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -222,7 +222,7 @@ GALGAS_gtlBreakpoint GALGAS_gtlBreakpoint::constructor_default (LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlBreakpoint::GALGAS_gtlBreakpoint (const cPtr_gtlBreakpoint * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlBreakpoint) ;
 }
 
@@ -5537,7 +5537,10 @@ C_String C_Lexique_gtl_5F_debugger_5F_scanner::getCurrentTokenString (const cTok
 //---------------------------------------------------------------------------------------------------------------------*
 
 
-
+//---------------------------------------------------------------------------------------------------------------------*
+//            Unicode test functions                                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+ 
 //---------------------------------------------------------------------------------------------------------------------*
 //               P A R S E    L E X I C A L    T O K E N                                                               *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -9712,7 +9715,10 @@ C_String C_Lexique_goil_5F_lexique::getCurrentTokenString (const cToken * inToke
 //---------------------------------------------------------------------------------------------------------------------*
 
 
-
+//---------------------------------------------------------------------------------------------------------------------*
+//            Unicode test functions                                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+ 
 //---------------------------------------------------------------------------------------------------------------------*
 //               P A R S E    L E X I C A L    T O K E N                                                               *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -13155,13 +13161,13 @@ typeComparisonResult GALGAS_attributeRange::objectCompare (const GALGAS_attribut
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_attributeRange::GALGAS_attributeRange (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_attributeRange::GALGAS_attributeRange (const cPtr_attributeRange * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_attributeRange) ;
 }
 

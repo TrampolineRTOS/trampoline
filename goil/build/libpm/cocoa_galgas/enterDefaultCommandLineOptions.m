@@ -116,6 +116,17 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
 
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"galgas_cli_options"
+    identifier:@"emit_issue_json_file"
+    commandChar:'\0'
+    commandString:@"emit-issue-json-file"
+    comment:@"Emit a JSON file that contains all compilation issues"
+    defaultValue:@""
+  ] ;
+  [ioStringOptionArray addObject:option] ;
+  
+
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"galgas_cli_options"
     identifier:@"mode"
     commandChar:'\0'
     commandString:@"mode"

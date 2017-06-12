@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -20,13 +20,12 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <string.h>
-#include <stdio.h>
+#include "command_line_interface/C_UIntCommandLineOption.h"
+#include "strings/C_String.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include "command_line_interface/C_UIntCommandLineOption.h"
-#include "strings/C_String.h"
+#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -141,36 +140,24 @@ void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_UIntCommandLineOption::printUIntOptions (const uint32_t inDisplayLength) {
+void C_UIntCommandLineOption::printUIntOptions (void) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
   while (p != NULL) {
-    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "-" << cStringWithCharacter (p->mCommandChar) << "=number" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) strlen ("=number") ;
-      if (p->mCommandString [0] != '\0') {
-        co << ", " ;
-        charCount += 2 ;
-      }
+      co << "\n" ;
     }
     if (p->mCommandString [0] != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "--" << p->mCommandString << "=number" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) (strlen (p->mCommandString) + strlen ("=number")) ;
-    }
-    if (charCount > inDisplayLength) {
       co << "\n" ;
-      charCount = 0 ;
     }
-    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
-      co << " " ;
-    }
-    co << p->mComment << " (default value: "
+    co << "    " << p->mComment << " (default value: "
        << cStringWithUnsigned (p->mDefaultValue)
        << ")\n" ;
     p = p->mNext ;

@@ -2289,7 +2289,7 @@ typeComparisonResult GALGAS_gtlContext::objectCompare (const GALGAS_gtlContext &
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlContext::GALGAS_gtlContext (void) :
-AC_GALGAS_class () {
+AC_GALGAS_class (false) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -2310,7 +2310,7 @@ GALGAS_gtlContext GALGAS_gtlContext::constructor_default (LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlContext::GALGAS_gtlContext (const cPtr_gtlContext * inSourcePtr) :
-AC_GALGAS_class (inSourcePtr) {
+AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlContext) ;
 }
 

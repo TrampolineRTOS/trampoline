@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2014, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2014, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -54,7 +54,7 @@ class C_StringListCommandLineOption : public C_CommandLineOption {
                                                             bool & outFound,
                                                             bool & outCommandLineOptionStringIsValid)  ;
   public : static void printUsageOfStringOptions (void) ;
-  public : static void printStringOptions (const uint32_t inDisplayLength) ;
+  public : static void printStringOptions (void) ;
 
   public : static void releaseStrings (void) ; // Called at the end of main routine
 

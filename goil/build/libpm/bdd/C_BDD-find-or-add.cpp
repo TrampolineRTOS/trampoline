@@ -29,12 +29,6 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <stddef.h>
-#include <string.h>
-#include <limits.h>
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 uint32_t C_BDD::getBDDnodeSize (void) {
   return (uint32_t) sizeof (cBDDnode) ;
 }
@@ -387,15 +381,17 @@ void C_BDD::markAndSweepUnusedNodes (void) {
   }
   // printf ("gCurrentNodeCount %u -> %u\n", gCurrentNodeCount, newNodeCount) ;
   const uint32_t previousNodeCount = gCurrentNodeCount ;
-  gCurrentNodeCount = newNodeCount ;
-  p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
-    const uint32_t previousValue = p->mBDDvalue ;
-    MF_Assert ((gNodeArray [previousValue >> 1].mAuxiliary) <= (previousValue >> 1), "(elseBranch [%lld] >> 1) <= nodeIndex [%lld]", (gNodeArray [previousValue >> 1].mAuxiliary), previousValue >> 1) ;
-    p->mBDDvalue = (gNodeArray [previousValue >> 1].mAuxiliary << 1) | (previousValue & 1) ;
-    // printf ("root %X -> %X\n", previousValue, p->mBDDvalue) ;
-   // MF_Assert (previousValue == p->mBDDvalue, "(previousValue [%lld] >> 1) == p->mBDDvalue [%lld]", previousValue, p->mBDDvalue) ;
-    p = p->mPtrToNextBDD ;
+  if (gNodeArraySize > 0) {
+    gCurrentNodeCount = newNodeCount ;
+    p = gBDDinstancesListRoot.mPtrToNextBDD ;
+    while (p != & gBDDinstancesListRoot) {
+      const uint32_t previousValue = p->mBDDvalue ;
+      MF_Assert ((gNodeArray [previousValue >> 1].mAuxiliary) <= (previousValue >> 1), "(elseBranch [%lld] >> 1) <= nodeIndex [%lld]", (gNodeArray [previousValue >> 1].mAuxiliary), previousValue >> 1) ;
+      p->mBDDvalue = (gNodeArray [previousValue >> 1].mAuxiliary << 1) | (previousValue & 1) ;
+      // printf ("root %X -> %X\n", previousValue, p->mBDDvalue) ;
+     // MF_Assert (previousValue == p->mBDDvalue, "(previousValue [%lld] >> 1) == p->mBDDvalue [%lld]", previousValue, p->mBDDvalue) ;
+      p = p->mPtrToNextBDD ;
+    }
   }
 //--- Check for node unicity
   /* for (uint32_t nodeIndex=1 ; nodeIndex<=gCurrentNodeCount ; nodeIndex++) {

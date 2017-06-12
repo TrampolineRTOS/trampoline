@@ -27,7 +27,6 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -185,7 +184,7 @@ void AC_OutputStream::appendUnicodeCharacter (const utf32 inUnicodeCharacter COM
 
 void AC_OutputStream::appendDouble (const double inValue) {
   char s [40] = "" ;
-  snprintf (s, 39, "%g", inValue) ;
+  snprintf (s, 40, "%g", inValue) ;
   genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 

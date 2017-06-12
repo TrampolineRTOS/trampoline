@@ -37,6 +37,10 @@
 #include "utilities/C_SharedObject.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
+
+class C_Compiler ;
+
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  Exception raised when maximum error count is reached                                                               *
 //                                                                                                                     *
@@ -147,61 +151,68 @@ int32_t maxWarningCount (void) ;
 
 int32_t totalWarningCount (void) ;
  
-void signalParsingError (const C_SourceTextInString & inSourceText,
+void signalParsingError (C_Compiler * inCompiler,
+                         const C_SourceTextInString & inSourceText,
                          const C_IssueWithFixIt & inIssue,
                          const C_String & inFoundTokenMessage,
                          const TC_UniqueArray <C_String> & inAcceptedTokenNames
                          COMMA_LOCATION_ARGS) ;
 
-void signalExtractError (const C_SourceTextInString & inSourceText,
+void signalExtractError (C_Compiler * inCompiler,
+                         const C_SourceTextInString & inSourceText,
                          const C_IssueWithFixIt & inIssue,
                          const TC_UniqueArray <C_String> & inExpectedClassesErrorStringsArray,
                          const C_String & inActualFoundClassErrorString
                          COMMA_LOCATION_ARGS) ;
 
-void signalCastError (const C_SourceTextInString & inSourceText,
+void signalCastError (C_Compiler * inCompiler,
+                      const C_SourceTextInString & inSourceText,
                       const C_IssueWithFixIt & inIssue,
                       const std::type_info * inBaseClass,
                       const bool inUseKindOfClass,
                       const C_String & inActualFoundClassErrorString
                       COMMA_LOCATION_ARGS) ;
 
-void signalLexicalWarning (const C_SourceTextInString & inSourceText,
+void signalLexicalWarning (C_Compiler * inCompiler,
+                           const C_SourceTextInString & inSourceText,
                            const C_IssueWithFixIt & inIssue,
                            const C_String & inLexicalWarningMessage
                            COMMA_LOCATION_ARGS) ;
 
-void signalLexicalError (const C_SourceTextInString & inSourceText,
+void signalLexicalError (C_Compiler * inCompiler,
+                         const C_SourceTextInString & inSourceText,
                          const C_IssueWithFixIt & inIssue,
                          const C_String & inLexicalErrorMessage
                          COMMA_LOCATION_ARGS) ;
 
-void signalSemanticWarning (const C_SourceTextInString & inSourceText,
+void signalSemanticWarning (C_Compiler * inCompiler,
+                            const C_SourceTextInString & inSourceText,
                             const C_IssueWithFixIt & inIssue,
                             const C_String & inWarningMessage
                             COMMA_LOCATION_ARGS) ;
 
-void signalSemanticError (const C_SourceTextInString & inSourceText,
+void signalSemanticError (C_Compiler * inCompiler,
+                          const C_SourceTextInString & inSourceText,
                           const C_IssueWithFixIt & inIssue,
                           const C_String & inErrorMessage
                           COMMA_LOCATION_ARGS) ;
 
-void signalRunTimeError (const C_String & inErrorMessage
+void signalRunTimeError (C_Compiler * inCompiler,
+                         const C_String & inErrorMessage
                          COMMA_LOCATION_ARGS) ;
 
-void signalRunTimeWarning (const C_String & inWarningMessage
+void signalRunTimeWarning (C_Compiler * inCompiler,
+                           const C_String & inWarningMessage
                            COMMA_LOCATION_ARGS) ;
 
-void fatalError (const C_String & inErrorMessage,
-                 const char * inSourceFile,
-                 const int inSourceLine) ;
-
-void ggs_printError (const C_SourceTextInString & inSourceText,
+void ggs_printError (C_Compiler * inCompiler,
+                     const C_SourceTextInString & inSourceText,
                      const C_IssueWithFixIt & inIssue,
                      const C_String & inMessage
                      COMMA_LOCATION_ARGS) ;
 
-void ggs_printWarning (const C_SourceTextInString & inSourceText,
+void ggs_printWarning (C_Compiler * inCompiler,
+                       const C_SourceTextInString & inSourceText,
                        const C_IssueWithFixIt & inIssue,
                        const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
@@ -212,6 +223,12 @@ void ggs_printFileCreationSuccess (const C_String & inMessage) ;
 
 void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void fatalError (const C_String & inErrorMessage,
+                 const char * inSourceFile,
+                 const int inSourceLine) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

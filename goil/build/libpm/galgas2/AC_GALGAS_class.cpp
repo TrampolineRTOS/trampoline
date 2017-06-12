@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2016 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2008, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -37,16 +37,18 @@ const C_galgas_type_descriptor * AC_GALGAS_class::dynamicTypeDescriptor (void) c
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-AC_GALGAS_class::AC_GALGAS_class (void) :
+AC_GALGAS_class::AC_GALGAS_class (const bool inIsShared) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (NULL),
+mIsShared (inIsShared) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-AC_GALGAS_class::AC_GALGAS_class (const acPtr_class * inPointer) :
+AC_GALGAS_class::AC_GALGAS_class (const acPtr_class * inPointer, const bool inIsShared) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (NULL),
+mIsShared (inIsShared) {
   macroAssignSharedObject (mObjectPtr, (acPtr_class *) inPointer) ;
 }
 
@@ -66,7 +68,8 @@ void AC_GALGAS_class::drop (void) {
 
 AC_GALGAS_class::AC_GALGAS_class (const AC_GALGAS_class & inSource) :
 AC_GALGAS_root (),
-mObjectPtr (NULL) {
+mObjectPtr (NULL),
+mIsShared (inSource.mIsShared) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
 }
 
@@ -95,7 +98,7 @@ void AC_GALGAS_class::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_class::insulate (LOCATION_ARGS) {
-  if (isValid () && !mObjectPtr->isUniquelyReferenced ()) {
+  if (!mIsShared && isValid () && !mObjectPtr->isUniquelyReferenced ()) {
     acPtr_class * p = mObjectPtr->duplicate (THERE) ;
     macroAssignSharedObject (mObjectPtr, p) ;
     macroDetachSharedObject (p) ;

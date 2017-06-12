@@ -8775,7 +8775,7 @@ void routine_getAutosarVersion (GALGAS_arxmlNode inArgument_rootNode,
       callExtensionMethod_getProperty ((const cPtr_arxmlElementNode *) enumerator_8817.current_node (HERE).ptr (), GALGAS_string ("ISSUED-BY"), var_issued_5F_by_8749, var_issued_5F_by_5F_found_8720, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 302)) ;
       GALGAS_bool test_7 = var_issued_5F_by_5F_found_8720 ;
       if (kBoolTrue == test_7.boolEnum ()) {
-        test_7 = GALGAS_bool (kIsEqual, var_issued_5F_by_8749.mProperty_string.objectCompare (GALGAS_string ("AUTOSAR"))) ;
+        test_7 = GALGAS_bool (kIsEqual, var_issued_5F_by_8749.getter_string (HERE).objectCompare (GALGAS_string ("AUTOSAR"))) ;
       }
       const enumGalgasBool test_8 = test_7.boolEnum () ;
       if (kBoolTrue == test_8) {
@@ -8877,22 +8877,22 @@ void routine_nodeToClassRes (GALGAS_arxmlElementNode inArgument_currentElement,
   callExtensionMethod_getSubElements ((const cPtr_arxmlElementNode *) inArgument_currentElement.ptr (), var_subElements_12002, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 390)) ;
   cEnumerator_arxmlElementList enumerator_12055 (var_subElements_12002, kENUMERATION_UP) ;
   while (enumerator_12055.hasCurrentObject ()) {
-    const enumGalgasBool test_0 = callExtensionGetter_hasElement ((const cPtr_arxmlMetaClass *) var_currentClass_11349.ptr (), enumerator_12055.current_node (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 392)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 392)).operator_not (SOURCE_FILE ("arxml_parser.galgas", 392)).boolEnum () ;
+    const enumGalgasBool test_0 = callExtensionGetter_hasElement ((const cPtr_arxmlMetaClass *) var_currentClass_11349.ptr (), enumerator_12055.current_node (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 392)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 392)).operator_not (SOURCE_FILE ("arxml_parser.galgas", 392)).boolEnum () ;
     if (kBoolTrue == test_0) {
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (enumerator_12055.current_node (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 393)).getter_location (SOURCE_FILE ("arxml_parser.galgas", 393)), GALGAS_string ("The element ").add_operation (enumerator_12055.current_node (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 393)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 393)).add_operation (GALGAS_string (" does not belong to the "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 393)).add_operation (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 395)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 394)).add_operation (GALGAS_string (" element.\n"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 395)).add_operation (GALGAS_string ("Possible elements are :\n"
+      inCompiler->emitSemanticError (enumerator_12055.current_node (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 393)).getter_location (SOURCE_FILE ("arxml_parser.galgas", 393)), GALGAS_string ("The element ").add_operation (enumerator_12055.current_node (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 393)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 393)).add_operation (GALGAS_string (" does not belong to the "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 393)).add_operation (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 395)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 394)).add_operation (GALGAS_string (" element.\n"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 395)).add_operation (GALGAS_string ("Possible elements are :\n"
         " "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 395)).add_operation (extensionGetter_string (var_currentClass_11349.getter_lElementLegacy (SOURCE_FILE ("arxml_parser.galgas", 396)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 396)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 396)), fixItArray1  COMMA_SOURCE_FILE ("arxml_parser.galgas", 393)) ;
     }
     enumerator_12055.gotoNextObject () ;
   }
-  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 402)).mProperty_string.objectCompare (GALGAS_string ("AUTOSAR"))).boolEnum () ;
+  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 402)).getter_string (HERE).objectCompare (GALGAS_string ("AUTOSAR"))).boolEnum () ;
   if (kBoolTrue == test_2) {
     cEnumerator_arxmlAttributeMap enumerator_12593 (inArgument_currentElement.getter_attributes (SOURCE_FILE ("arxml_parser.galgas", 403)), kENUMERATION_UP) ;
     while (enumerator_12593.hasCurrentObject ()) {
-      const enumGalgasBool test_3 = callExtensionGetter_hasAttribute ((const cPtr_arxmlMetaClass *) var_currentClass_11349.ptr (), enumerator_12593.current_lkey (HERE).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 404)).operator_not (SOURCE_FILE ("arxml_parser.galgas", 404)).boolEnum () ;
+      const enumGalgasBool test_3 = callExtensionGetter_hasAttribute ((const cPtr_arxmlMetaClass *) var_currentClass_11349.ptr (), enumerator_12593.current_lkey (HERE).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 404)).operator_not (SOURCE_FILE ("arxml_parser.galgas", 404)).boolEnum () ;
       if (kBoolTrue == test_3) {
         TC_Array <C_FixItDescription> fixItArray4 ;
-        inCompiler->emitSemanticError (enumerator_12593.current_lkey (HERE).getter_location (SOURCE_FILE ("arxml_parser.galgas", 405)), GALGAS_string ("The attribute ").add_operation (enumerator_12593.current_lkey (HERE).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)).add_operation (GALGAS_string (" does not belong to the "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)).add_operation (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 406)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)).add_operation (GALGAS_string (" element.\n"
+        inCompiler->emitSemanticError (enumerator_12593.current_lkey (HERE).getter_location (SOURCE_FILE ("arxml_parser.galgas", 405)), GALGAS_string ("The attribute ").add_operation (enumerator_12593.current_lkey (HERE).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)).add_operation (GALGAS_string (" does not belong to the "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)).add_operation (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 406)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)).add_operation (GALGAS_string (" element.\n"
           "Possible "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 406)).add_operation (GALGAS_string ("attributes are :\n"
           " "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 406)).add_operation (extensionGetter_string (var_currentClass_11349.getter_lAttributeLegacy (SOURCE_FILE ("arxml_parser.galgas", 407)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 407)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 407)), fixItArray4  COMMA_SOURCE_FILE ("arxml_parser.galgas", 405)) ;
       }
@@ -8902,42 +8902,42 @@ void routine_nodeToClassRes (GALGAS_arxmlElementNode inArgument_currentElement,
   cEnumerator_arxmlMetaElementList enumerator_13043 (var_currentClass_11349.getter_lElementLegacy (SOURCE_FILE ("arxml_parser.galgas", 413)), kENUMERATION_UP) ;
   while (enumerator_13043.hasCurrentObject ()) {
     GALGAS_arxmlElementList var_subElements_13080 = GALGAS_arxmlElementList::constructor_emptyList (SOURCE_FILE ("arxml_parser.galgas", 414)) ;
-    callExtensionMethod_getSubElementsFromName ((const cPtr_arxmlElementNode *) inArgument_currentElement.ptr (), enumerator_13043.current_lElement (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 416)).mProperty_string, var_subElements_13080, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 416)) ;
+    callExtensionMethod_getSubElementsFromName ((const cPtr_arxmlElementNode *) inArgument_currentElement.ptr (), enumerator_13043.current_lElement (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 416)).getter_string (HERE), var_subElements_13080, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 416)) ;
     GALGAS_uint var_minOccurs_13297 = GALGAS_uint ((uint32_t) 1U) ;
     GALGAS_uint var_maxOccurs_13321 = GALGAS_uint ((uint32_t) 1U) ;
-    GALGAS_bool test_5 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxml_parser.galgas", 423)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+    GALGAS_bool test_5 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxml_parser.galgas", 423)).getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())) ;
     if (kBoolTrue == test_5.boolEnum ()) {
-      test_5 = enumerator_13043.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxml_parser.galgas", 424)).mProperty_string.getter_isDecimalUnsignedNumber (SOURCE_FILE ("arxml_parser.galgas", 424)) ;
+      test_5 = enumerator_13043.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxml_parser.galgas", 424)).getter_string (HERE).getter_isDecimalUnsignedNumber (SOURCE_FILE ("arxml_parser.galgas", 424)) ;
     }
     const enumGalgasBool test_6 = test_5.boolEnum () ;
     if (kBoolTrue == test_6) {
-      var_minOccurs_13297 = enumerator_13043.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxml_parser.galgas", 425)).mProperty_string.getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 425)) ;
+      var_minOccurs_13297 = enumerator_13043.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxml_parser.galgas", 425)).getter_string (HERE).getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 425)) ;
     }
     const enumGalgasBool test_7 = GALGAS_bool (kIsStrictInf, var_subElements_13080.getter_length (SOURCE_FILE ("arxml_parser.galgas", 428)).objectCompare (var_minOccurs_13297)).boolEnum () ;
     if (kBoolTrue == test_7) {
       TC_Array <C_FixItDescription> fixItArray8 ;
-      inCompiler->emitSemanticError (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 429)).getter_location (SOURCE_FILE ("arxml_parser.galgas", 429)), GALGAS_string ("Missing element ").add_operation (enumerator_13043.current_lElement (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 429)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 429)).add_operation (GALGAS_string (". Minimum : "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 429)).add_operation (var_minOccurs_13297.getter_string (SOURCE_FILE ("arxml_parser.galgas", 430)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 430)).add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 430)).add_operation (GALGAS_string (" Found "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 430)).add_operation (var_subElements_13080.getter_length (SOURCE_FILE ("arxml_parser.galgas", 431)).getter_string (SOURCE_FILE ("arxml_parser.galgas", 431)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 431)), fixItArray8  COMMA_SOURCE_FILE ("arxml_parser.galgas", 429)) ;
+      inCompiler->emitSemanticError (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 429)).getter_location (SOURCE_FILE ("arxml_parser.galgas", 429)), GALGAS_string ("Missing element ").add_operation (enumerator_13043.current_lElement (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 429)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 429)).add_operation (GALGAS_string (". Minimum : "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 429)).add_operation (var_minOccurs_13297.getter_string (SOURCE_FILE ("arxml_parser.galgas", 430)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 430)).add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 430)).add_operation (GALGAS_string (" Found "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 430)).add_operation (var_subElements_13080.getter_length (SOURCE_FILE ("arxml_parser.galgas", 431)).getter_string (SOURCE_FILE ("arxml_parser.galgas", 431)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 431)), fixItArray8  COMMA_SOURCE_FILE ("arxml_parser.galgas", 429)) ;
     }
-    GALGAS_bool test_9 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 435)).mProperty_string.objectCompare (GALGAS_string ("unbounded"))) ;
+    GALGAS_bool test_9 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 435)).getter_string (HERE).objectCompare (GALGAS_string ("unbounded"))) ;
     if (kBoolTrue == test_9.boolEnum ()) {
-      test_9 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 436)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+      test_9 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 436)).getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())) ;
     }
     const enumGalgasBool test_10 = test_9.boolEnum () ;
     if (kBoolTrue == test_10) {
-      GALGAS_bool test_11 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 438)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+      GALGAS_bool test_11 = GALGAS_bool (kIsNotEqual, enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 438)).getter_string (HERE).objectCompare (GALGAS_string::makeEmptyString ())) ;
       if (kBoolTrue == test_11.boolEnum ()) {
-        test_11 = enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 439)).mProperty_string.getter_isDecimalUnsignedNumber (SOURCE_FILE ("arxml_parser.galgas", 439)) ;
+        test_11 = enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 439)).getter_string (HERE).getter_isDecimalUnsignedNumber (SOURCE_FILE ("arxml_parser.galgas", 439)) ;
       }
       const enumGalgasBool test_12 = test_11.boolEnum () ;
       if (kBoolTrue == test_12) {
-        var_maxOccurs_13321 = enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 440)).mProperty_string.getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 440)) ;
+        var_maxOccurs_13321 = enumerator_13043.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxml_parser.galgas", 440)).getter_string (HERE).getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 440)) ;
       }
       const enumGalgasBool test_13 = GALGAS_bool (kIsStrictSup, var_subElements_13080.getter_length (SOURCE_FILE ("arxml_parser.galgas", 443)).objectCompare (var_maxOccurs_13321)).boolEnum () ;
       if (kBoolTrue == test_13) {
         GALGAS_arxmlElementNode var_subElement_14334 ;
         var_subElements_13080.method_last (var_subElement_14334, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 445)) ;
         TC_Array <C_FixItDescription> fixItArray14 ;
-        inCompiler->emitSemanticError (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 446)).getter_location (SOURCE_FILE ("arxml_parser.galgas", 446)), GALGAS_string ("Too many node ").add_operation (enumerator_13043.current_lElement (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 446)).mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 446)).add_operation (GALGAS_string (". Minimum : "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 446)).add_operation (var_minOccurs_13297.getter_string (SOURCE_FILE ("arxml_parser.galgas", 447)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (GALGAS_string (" ; Maximum : "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (var_maxOccurs_13321.getter_string (SOURCE_FILE ("arxml_parser.galgas", 447)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (GALGAS_string (". Found "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (var_subElements_13080.getter_length (SOURCE_FILE ("arxml_parser.galgas", 448)).getter_string (SOURCE_FILE ("arxml_parser.galgas", 448)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 448)), fixItArray14  COMMA_SOURCE_FILE ("arxml_parser.galgas", 446)) ;
+        inCompiler->emitSemanticError (inArgument_currentElement.getter_name (SOURCE_FILE ("arxml_parser.galgas", 446)).getter_location (SOURCE_FILE ("arxml_parser.galgas", 446)), GALGAS_string ("Too many node ").add_operation (enumerator_13043.current_lElement (HERE).getter_name (SOURCE_FILE ("arxml_parser.galgas", 446)).getter_string (HERE), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 446)).add_operation (GALGAS_string (". Minimum : "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 446)).add_operation (var_minOccurs_13297.getter_string (SOURCE_FILE ("arxml_parser.galgas", 447)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (GALGAS_string (" ; Maximum : "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (var_maxOccurs_13321.getter_string (SOURCE_FILE ("arxml_parser.galgas", 447)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (GALGAS_string (". Found "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 447)).add_operation (var_subElements_13080.getter_length (SOURCE_FILE ("arxml_parser.galgas", 448)).getter_string (SOURCE_FILE ("arxml_parser.galgas", 448)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 448)), fixItArray14  COMMA_SOURCE_FILE ("arxml_parser.galgas", 446)) ;
       }
     }
     cEnumerator_arxmlElementList enumerator_14691 (var_subElements_13080, kENUMERATION_UP) ;
@@ -9394,7 +9394,7 @@ void routine_arxmlImplementationContainerNumber (GALGAS_lstring & outArgument_ob
       GALGAS_luint_36__34_ var_minVal_29030 = GALGAS_luint_36__34_::constructor_new (var_min_28230.getter_string (SOURCE_FILE ("arxml_parser.galgas", 856)).getter_decimalUnsigned_36__34_Number (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 856)), var_min_28230.getter_location (SOURCE_FILE ("arxml_parser.galgas", 857))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 855)) ;
       GALGAS_luint_36__34_ var_maxVal_29208 = GALGAS_luint_36__34_::constructor_new (var_max_28287.getter_string (SOURCE_FILE ("arxml_parser.galgas", 860)).getter_decimalUnsigned_36__34_Number (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 860)), var_max_28287.getter_location (SOURCE_FILE ("arxml_parser.galgas", 861))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 859)) ;
       {
-      routine_displayOil (GALGAS_string ("[").add_operation (var_minSignString_28353, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)).add_operation (var_minVal_29030.mProperty_uint_36__34_.getter_string (SOURCE_FILE ("arxml_parser.galgas", 863)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)).add_operation (GALGAS_string (" .. "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)).add_operation (var_maxSignString_28384, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 864)).add_operation (var_maxVal_29208.mProperty_uint_36__34_.getter_string (SOURCE_FILE ("arxml_parser.galgas", 864)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 864)).add_operation (GALGAS_string ("]"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 864)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)) ;
+      routine_displayOil (GALGAS_string ("[").add_operation (var_minSignString_28353, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)).add_operation (var_minVal_29030.getter_uint_36__34_ (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 863)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)).add_operation (GALGAS_string (" .. "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)).add_operation (var_maxSignString_28384, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 864)).add_operation (var_maxVal_29208.getter_uint_36__34_ (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 864)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 864)).add_operation (GALGAS_string ("]"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 864)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 863)) ;
       }
       var_start_28911 = function_checkAndGetIntegerNumber (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 865)), var_type_27689, var_minVal_29030, var_minSign_28529, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 865)) ;
       var_stop_28930 = function_checkAndGetIntegerNumber (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 866)), var_type_27689, var_maxVal_29208, var_maxSign_28568, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 866)) ;
@@ -9404,7 +9404,7 @@ void routine_arxmlImplementationContainerNumber (GALGAS_lstring & outArgument_ob
         GALGAS_ldouble var_minVal_29710 = GALGAS_ldouble::constructor_new (var_min_28230.getter_string (SOURCE_FILE ("arxml_parser.galgas", 869)).getter_doubleNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 869)), var_min_28230.getter_location (SOURCE_FILE ("arxml_parser.galgas", 870))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 868)) ;
         GALGAS_ldouble var_maxVal_29877 = GALGAS_ldouble::constructor_new (var_max_28287.getter_string (SOURCE_FILE ("arxml_parser.galgas", 873)).getter_doubleNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 873)), var_max_28287.getter_location (SOURCE_FILE ("arxml_parser.galgas", 874))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 872)) ;
         {
-        routine_displayOil (GALGAS_string ("[").add_operation (var_minVal_29710.mProperty_double.getter_string (SOURCE_FILE ("arxml_parser.galgas", 876)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)).add_operation (GALGAS_string (" .. "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)).add_operation (var_maxVal_29877.mProperty_double.getter_string (SOURCE_FILE ("arxml_parser.galgas", 876)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)).add_operation (GALGAS_string ("]"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)) ;
+        routine_displayOil (GALGAS_string ("[").add_operation (var_minVal_29710.getter_double (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 876)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)).add_operation (GALGAS_string (" .. "), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)).add_operation (var_maxVal_29877.getter_double (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 876)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)).add_operation (GALGAS_string ("]"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 876)) ;
         }
         var_start_28911 = function_checkAndGetFloatNumber (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 877)), var_type_27689, var_minVal_29710, var_minSign_28529, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 877)) ;
         var_stop_28930 = function_checkAndGetFloatNumber (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 878)), var_type_27689, var_maxVal_29877, var_maxSign_28568, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 878)) ;
@@ -9441,7 +9441,7 @@ void routine_arxmlImplementationContainerNumber (GALGAS_lstring & outArgument_ob
     if (kBoolTrue == test_11) {
       GALGAS_luint_36__34_ var_integerValue_30914 = GALGAS_luint_36__34_::constructor_new (var_value_30619.getter_string (SOURCE_FILE ("arxml_parser.galgas", 900)).getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 900)).getter_uint_36__34_ (SOURCE_FILE ("arxml_parser.galgas", 900)), var_value_30619.getter_location (SOURCE_FILE ("arxml_parser.galgas", 901))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 899)) ;
       {
-      routine_displayOil (GALGAS_string (" = ").add_operation (var_integerValue_30914.mProperty_uint_36__34_.getter_string (SOURCE_FILE ("arxml_parser.galgas", 902)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 902)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 902)) ;
+      routine_displayOil (GALGAS_string (" = ").add_operation (var_integerValue_30914.getter_uint_36__34_ (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 902)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 902)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 902)) ;
       }
       var_defaultValue_30550 = function_checkAndGetIntegerNumber (var_oil_5F_desc_27990, var_type_27689, var_integerValue_30914, var_sign_30736, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 903)) ;
     }else if (kBoolFalse == test_11) {
@@ -9449,7 +9449,7 @@ void routine_arxmlImplementationContainerNumber (GALGAS_lstring & outArgument_ob
       if (kBoolTrue == test_12) {
         GALGAS_ldouble var_floatValue_31389 = GALGAS_ldouble::constructor_new (var_value_30619.getter_string (SOURCE_FILE ("arxml_parser.galgas", 909)).getter_doubleNumber (inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 909)), var_value_30619.getter_location (SOURCE_FILE ("arxml_parser.galgas", 910))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 908)) ;
         {
-        routine_displayOil (GALGAS_string (" = ").add_operation (var_floatValue_31389.mProperty_double.getter_string (SOURCE_FILE ("arxml_parser.galgas", 911)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 911)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 911)) ;
+        routine_displayOil (GALGAS_string (" = ").add_operation (var_floatValue_31389.getter_double (HERE).getter_string (SOURCE_FILE ("arxml_parser.galgas", 911)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 911)), inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 911)) ;
         }
         var_defaultValue_30550 = function_checkAndGetFloatNumber (var_oil_5F_desc_27990, var_type_27689, var_floatValue_31389, var_sign_30736, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 912)) ;
       }else if (kBoolFalse == test_12) {
@@ -9581,17 +9581,17 @@ void routine_arxmlImplementationContainerBoolean (GALGAS_lstring & outArgument_o
   if (kBoolTrue == test_0) {
     GALGAS_lstring var_value_34719 = callExtensionGetter_getTextFromElement ((const cPtr_arxmlElementValue *) inArgument_parameter.ptr (), GALGAS_string ("DEFAULT-VALUE"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1014)) ;
     GALGAS_bool var_booleanValue_34792 ;
-    GALGAS_bool test_1 = GALGAS_bool (kIsEqual, var_value_34719.mProperty_string.getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1016)).objectCompare (GALGAS_string ("TRUE"))) ;
+    GALGAS_bool test_1 = GALGAS_bool (kIsEqual, var_value_34719.getter_string (HERE).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1016)).objectCompare (GALGAS_string ("TRUE"))) ;
     if (kBoolTrue != test_1.boolEnum ()) {
-      test_1 = GALGAS_bool (kIsEqual, var_value_34719.mProperty_string.objectCompare (GALGAS_string ("1"))) ;
+      test_1 = GALGAS_bool (kIsEqual, var_value_34719.getter_string (HERE).objectCompare (GALGAS_string ("1"))) ;
     }
     const enumGalgasBool test_2 = test_1.boolEnum () ;
     if (kBoolTrue == test_2) {
       var_booleanValue_34792 = GALGAS_bool (true) ;
     }else if (kBoolFalse == test_2) {
-      GALGAS_bool test_3 = GALGAS_bool (kIsEqual, var_value_34719.mProperty_string.getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1019)).objectCompare (GALGAS_string ("FALSE"))) ;
+      GALGAS_bool test_3 = GALGAS_bool (kIsEqual, var_value_34719.getter_string (HERE).getter_uppercaseString (SOURCE_FILE ("arxml_parser.galgas", 1019)).objectCompare (GALGAS_string ("FALSE"))) ;
       if (kBoolTrue != test_3.boolEnum ()) {
-        test_3 = GALGAS_bool (kIsEqual, var_value_34719.mProperty_string.objectCompare (GALGAS_string ("0"))) ;
+        test_3 = GALGAS_bool (kIsEqual, var_value_34719.getter_string (HERE).objectCompare (GALGAS_string ("0"))) ;
       }
       const enumGalgasBool test_4 = test_3.boolEnum () ;
       if (kBoolTrue == test_4) {

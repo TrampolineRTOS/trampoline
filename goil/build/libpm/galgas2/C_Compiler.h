@@ -31,6 +31,7 @@
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 #include "galgas2/C_IssueWithFixIt.h"
+#include "galgas2/cIssueDescriptor.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -71,6 +72,11 @@ class C_Compiler : public C_SharedObject {
 
 //--- Caller compiler (is NULL for top compiler)
   protected : C_Compiler * mCallerCompiler ;
+
+//--- Issue array
+  private : TC_UniqueArray <cIssueDescriptor> mIssueArray ;
+  public : void appendIssue (const cIssueDescriptor & inIssue) ;
+  public : void writeIssueJSONFile (const C_String & inFile) ;
 
 //--- Sent string 
   private : C_String mSentString ;
