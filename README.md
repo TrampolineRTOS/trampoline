@@ -29,6 +29,7 @@ Trampoline runs on the following plateforms :
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
+| STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303               |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
 
 Some examples have been added (check examples):
@@ -39,6 +40,8 @@ Some examples have been added (check examples):
   * **readButton_isr**. Same but the button triggers an ISR.
   * **alarms**. It is the same example than readButton_isr but we test the return value of SetRelAlarm for return parameters when in kernel (system call) mode.
   * **timer**. ISR2 trigered by timer TIM2.
+* Cortex M4 with µC stm32f303K8: `cortex/armv7em/stm32f303/Nucleo-32`. There are few differences from the `stm32f407` target, and examples should be easily imported.
+  * **blink**. Blinks a LED using an alarm and a task.
 * Cortex M4 with µC mk20dx256 : `cortex/armv7em/mk20dx256/teensy31`
   * **blink**. Blinks the Teensy 3.1 LED using an alarm and a task.
   * **startStopBlink**. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED.
@@ -77,19 +80,19 @@ More examples are coming.
 
 Updated to version 3.1.3 on october 18.
 
-* Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)
-* Linux 32 bits: [goil-linux-32.zip](http://trampoline.rts-software.org/bin/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](http://trampoline.rts-software.org/bin/goil-linux-64.zip)
-* Windows: [goil-windows.zip](http://trampoline.rts-software.org/bin/goil-windows.zip)
+* Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
+* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
+* Linux 32 bits: [goil-linux-32.zip](http://trampolinebin.rts-software.org/goil-linux-32.zip)
+* Linux 64 bits: [goil-linux-64.zip](http://trampolinebin.rts-software.org/goil-linux-64.zip)
+* Windows: [goil-windows.zip](http://trampolinebin.rts-software.org/goil-windows.zip)
 
 ## Useful links
 
 * [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various plateforms.
 
-The OSEK-VDX portal is down since at least june because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that was available for download:
+The OSEK-VDX portal is down since at least june because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
-* [OIL specification](http://trampoline.rts-software.org/bin/oil25.pdf)
-* [OS specification](http://trampoline.rts-software.org/bin/os223.pdf)
-* [COM specification](http://trampoline.rts-software.org/bin/OSEKCOM303.pdf)
-* [ORTI A](http://trampoline.rts-software.org/bin/orti-a-22.pdf) and [ORTI B](http://trampoline.rts-software.org/bin/orti-b-22.pdf) specifications
+* [OIL specification](http://trampolinebin.rts-software.org/oil25.pdf)
+* [OS specification](http://trampolinebin.rts-software.org/os223.pdf)
+* [COM specification](http://trampolinebin.rts-software.org/OSEKCOM303.pdf)
+* [ORTI A](http://trampolinebin.rts-software.org/orti-a-22.pdf) and [ORTI B](http://trampolinebin.rts-software.org/orti-b-22.pdf) specifications
