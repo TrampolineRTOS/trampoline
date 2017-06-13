@@ -2,11 +2,7 @@
 #include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
 #include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
 
-#define OS_START_SEC_VAR_32BIT
-#include "tpl_memmap.h"
-volatile VAR(uint32, OS_VAR) tpl_time_counter = 0;
-#define OS_STOP_SEC_VAR_32BIT
-#include "tpl_memmap.h"
+extern uint32 tpl_reentrancy_counter;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -70,27 +66,12 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
   %  tpl_counter_tick(&% !obj %_counter_desc);
 %
   end foreach
-  if obj_KEY == "TA_CMP" then
-    %  tpl_time_counter++;
 %
-  end if
-  if OS::NUMBER_OF_CORES == 1 then
-%
-  if (tpl_kern.need_schedule == TRUE)
+if (tpl_reentrancy_counter == 1 && tpl_kern.need_schedule == TRUE)
   {
     tpl_schedule_from_running();
     LOCAL_SWITCH_CONTEXT()
   }
-%
-  else
-%
-  GET_CURRENT_CORE_ID(core_id)
-  tpl_multi_schedule();
-  tpl_dispatch_context_switch();
-  LOCAL_SWITCH_CONTEXT()
-%
-  end if
-%
   return TRUE;
 }
 %

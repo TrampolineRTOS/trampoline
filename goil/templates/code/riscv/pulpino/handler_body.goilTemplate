@@ -44,7 +44,7 @@ ISR_% !handlerSource %:
     li a0, 1
     jal tpl_run_elected
 
-    /*----------------------------------------------------------------------o---
+    /*-------------------------------------------------------------------------
      * 5 - Load context
      *     Load in a0 the pointer to the context of the running task.
      *     It has been changed by tpl_run_elected
