@@ -31,6 +31,10 @@
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
 
+#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+#include "../machines/cortex/tpl_fabric_definitions.h"
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
