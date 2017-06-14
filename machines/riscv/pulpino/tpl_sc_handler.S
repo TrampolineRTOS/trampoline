@@ -8,6 +8,7 @@
     .extern tpl_kern
     .extern end_except
     .extern tpl_reentrancy_counter
+    .extern tpl_mestatus
             
 #define NO_NEED_SWITCH_NOR_SCHEDULE 0
 #define NO_NEED_SWITCH 0
@@ -22,11 +23,9 @@ tpl_sc_handler:
     sw a6, 4(sp)
     sw a7, 8(sp)
 
-    li a5, SYSCALL_COUNT_ISR1
-    bge a7, a5, 1f
+    /* Disable interruptions by default */
     csrci 0x7c0, 1
-1:  
-
+    
     /* Adjusts reentrancy counter */
     lw a5, tpl_reentrancy_counter
     addi a5, a5, 1
@@ -94,9 +93,15 @@ tpl_sc_handler_no_save_running_context:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
-         
-tpl_sc_no_context_switch:
 
+tpl_sc_no_context_switch:
+    /* Reenables interruptions */
+    lw a6, tpl_reentrancy_counter
+    bnez a6, 1f
+    lw a6, tpl_mestatus
+    csrw 0x7c0, a6
+1:
+    
     /* Reloads working registers */
     la ra, end_except
     lw a7, 8(sp)
@@ -115,7 +120,7 @@ tpl_save_context:
     csrr a6, mepc
     sw a6, 4(a0)
 
-    csrr a6, 0x7c0
+    lw a6, tpl_mestatus
     sw a6, 8(a0)
 
     lw a5, 0x9c(sp)
@@ -131,8 +136,9 @@ tpl_load_context:
     lw a6, 4(a0)
     csrw mepc, a6
 
+    la a5, tpl_mestatus
     lw a6, 8(a0)
-    csrw 0x7c0, a6
+    sw a6, 0(a5)
 
     li a5, 0x1a104000
     lw a6, 12(a0)

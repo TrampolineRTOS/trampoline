@@ -22,6 +22,7 @@ extern void switch_context();
 
 uint32 tpl_reentrancy_counter = 0;
 uint8 TA_CMP = 28;
+uint32 tpl_mestatus = 0x1;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -100,7 +101,8 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
  */
 void tpl_enable_interrupts(void)
 {
-  int_enable();
+    // Programates the activation of interruptions
+    tpl_mestatus = 1;
 }
 
 /**
@@ -108,7 +110,8 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-  int_disable();
+    tpl_mestatus = 0;
+    int_disable();
 }
 
 /**
@@ -160,14 +163,13 @@ FUNC(void, OS_CODE) tpl_init_context(
   core_context->mask = tpl_it_masks[the_proc->base_priority];
 
   /* interrupts enabled */
-  core_context->mestatus = 0x7;
-  asm volatile ("csrsi 0x7c0, 1");
+  core_context->mestatus = 0x1;
 }
 
 void tpl_init_machine()
 {
     // Activates interruptions and timers
-    tpl_enable_interrupts();
+    int_enable();
 
     // Sets timer limit in order to get tick frequency of 1kHz
     if (ALARM_COUNT > 0) {
@@ -208,8 +210,7 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
     GET_TPL_KERN_FOR_CORE_ID(core_id, kern);
 
     ICP = 2 << tpl_vector_from_isr2_id(TPL_KERN_REF(kern).running_id);
-    asm volatile ("csrsi 0x7c0, 1");
-    //IER = pop_fifo_it_masks();
+    IER = pop_fifo_it_masks();
 }
 
 void push_fifo_it_masks(void) {

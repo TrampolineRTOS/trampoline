@@ -67,7 +67,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
 %
   end foreach
 %
-if (tpl_reentrancy_counter == 1 && tpl_kern.need_schedule == TRUE)
+  if (tpl_reentrancy_counter == 1 && tpl_kern.need_schedule == TRUE)
   {
     tpl_schedule_from_running();
     LOCAL_SWITCH_CONTEXT()

@@ -2,6 +2,7 @@
 .extern % !handlerIRQ %
 .extern tpl_leave_ie_untouched
 .extern push_fifo_it_masks
+.extern tpl_mestatus
 
 /*---------------------------------------------------------------------------*/
 ISR_% !handlerSource %:
@@ -10,6 +11,9 @@ ISR_% !handlerSource %:
      * 1 - Interrupt function call
      */
     jal % !handlerIRQ %
+
+    /* Disable interruptions by default */
+    csrci 0x7c0, 1
 
     /* No context switch if reentrant interruption */
     la a5, tpl_reentrancy_counter
@@ -53,20 +57,18 @@ ISR_% !handlerSource %:
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_load_context
+
 1:
 % if category == 2 then %
     /* set priority */
     li  a0, % !priority %
     jal tpl_set_priority
     jal push_fifo_it_masks
-    lw a5, tpl_reentrancy_counter
-    bnez a5, 1f
-    csrsi 0x7c0, 1
-1:
-    j tpl_no_context_switch
-% else %
-    lw a5, tpl_reentrancy_counter
-    bnez a5, 1f
-1:
-    j tpl_no_context_switch
 % end if %
+    /* Reenables interruptions */
+    lw a6, tpl_reentrancy_counter
+    bnez a6, 1f
+    lw a6, tpl_mestatus
+    csrw 0x7c0, a6
+1:
+    j tpl_no_context_switch
