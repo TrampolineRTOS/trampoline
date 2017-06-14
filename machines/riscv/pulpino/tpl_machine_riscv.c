@@ -21,7 +21,6 @@ extern void trampolineSystemCounter();
 extern void switch_context();
 
 uint32 tpl_reentrancy_counter = 0;
-uint32 tpl_leave_ie_untouched = 0;
 uint8 TA_CMP = 28;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -88,10 +87,12 @@ extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 FUNC(void, OS_CODE) tpl_get_task_lock (void)
 {
+    tpl_disable_interrupts();
 }
 
 FUNC(void, OS_CODE) tpl_release_task_lock (void)
 {
+    tpl_enable_interrupts();
 }
 
 /**
@@ -100,7 +101,6 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
 void tpl_enable_interrupts(void)
 {
   int_enable();
-  tpl_leave_ie_untouched = 0;
 }
 
 /**
@@ -109,7 +109,6 @@ void tpl_enable_interrupts(void)
 void tpl_disable_interrupts(void)
 {
   int_disable();
-  tpl_leave_ie_untouched = 1;
 }
 
 /**
@@ -161,7 +160,8 @@ FUNC(void, OS_CODE) tpl_init_context(
   core_context->mask = tpl_it_masks[the_proc->base_priority];
 
   /* interrupts enabled */
-  core_context->leave_ie_untouched = 0;
+  core_context->mestatus = 0x7;
+  asm volatile ("csrsi 0x7c0, 1");
 }
 
 void tpl_init_machine()
@@ -176,6 +176,11 @@ void tpl_init_machine()
         start_timer();
     }
 
+    int i;
+    for (int i = 0; i < 32; ++i) {
+        fifo_it_masks[i] = tpl_it_masks[0];
+    }
+    
     // Enable interrupts and events
     IER =  tpl_it_masks[0];
     EER |= 0x0000000F;
@@ -203,7 +208,8 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
     GET_TPL_KERN_FOR_CORE_ID(core_id, kern);
 
     ICP = 2 << tpl_vector_from_isr2_id(TPL_KERN_REF(kern).running_id);
-    tpl_leave_ie_untouched = pop_fifo_it_masks();
+    asm volatile ("csrsi 0x7c0, 1");
+    //IER = pop_fifo_it_masks();
 }
 
 void push_fifo_it_masks(void) {
@@ -211,9 +217,7 @@ void push_fifo_it_masks(void) {
     for (i = 31; i > 0; --i) {
         fifo_it_masks[i] = fifo_it_masks[i-1];
     }
-    int mestatus;
-    csrr(0x7c0, mestatus);
-    fifo_it_masks[0] = tpl_leave_ie_untouched;
+    fifo_it_masks[0] = IER;
 }
 
 uint32 pop_fifo_it_masks(void) {

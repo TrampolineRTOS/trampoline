@@ -59,13 +59,14 @@ ISR_% !handlerSource %:
     li  a0, % !priority %
     jal tpl_set_priority
     jal push_fifo_it_masks
-% end if %
-    la a5, tpl_reentrancy_counter
-    lw a5, 0(a5)
-    seqz a5, a5
-    la a6, tpl_leave_ie_untouched
-    lw a6, 0(a6)
-    seqz a6, a6
-    and a6, a5, a6
-    csrs 0x7c0, a6
+    lw a5, tpl_reentrancy_counter
+    bnez a5, 1f
+    csrsi 0x7c0, 1
+1:
     j tpl_no_context_switch
+% else %
+    lw a5, tpl_reentrancy_counter
+    bnez a5, 1f
+1:
+    j tpl_no_context_switch
+% end if %

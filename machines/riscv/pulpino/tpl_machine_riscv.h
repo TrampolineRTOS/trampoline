@@ -11,8 +11,8 @@
 struct RISCV_CONTEXT {
     uint32 sp;
     uint32 mepc;
+    uint32 mestatus;
     uint32 mask;
-    uint32 leave_ie_untouched;
     uint32 ra;
 };
 
@@ -73,7 +73,7 @@ CONST(uint32, AUTOMATIC) tpl_it_masks[32];
 uint32 tpl_vector_from_isr2_id(uint32 id);
 extern uint32 tpl_reentrancy_counter;
 
-uint8 fifo_it_masks[32];
+uint32 fifo_it_masks[32];
 void push_fifo_it_masks(void);
 uint32 pop_fifo_it_masks(void);
 

@@ -1,4 +1,5 @@
 #include "tpl_asm_definitions.h"
+#include "tpl_service_ids.h"    
         
     .global tpl_sc_handler
     .global tpl_switch_context
@@ -21,11 +22,15 @@ tpl_sc_handler:
     sw a6, 4(sp)
     sw a7, 8(sp)
 
+    li a5, SYSCALL_COUNT_ISR1
+    bge a7, a5, 1f
+    csrci 0x7c0, 1
+1:  
+
     /* Adjusts reentrancy counter */
-    la a5, tpl_reentrancy_counter
-    mv a6, a5
-    lw a5, 0(a5)
+    lw a5, tpl_reentrancy_counter
     addi a5, a5, 1
+    la a6, tpl_reentrancy_counter
     sw a5, 0(a6)
     li a6, 1
     bne a5, a6, 1f
@@ -34,7 +39,7 @@ tpl_sc_handler:
     la a5, tpl_kern
     sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
     sb zero, TPL_KERN_OFFSET_NEED_SCHEDULE(a5)
-
+    
 1:      
     /* Gets function pointer to the service */
     la a5, tpl_dispatch_table
@@ -44,7 +49,7 @@ tpl_sc_handler:
     
     /* Jumps to handler */
     jalr a5
-        
+
     /* Stores return value in stack created at store_regs (0x14 + 0x10) */
     sw a0, 0x24(sp)
 
@@ -91,15 +96,6 @@ tpl_sc_handler_no_save_running_context:
     jal tpl_load_context
          
 tpl_sc_no_context_switch:
-    /* Reenables interruptions */
-    la a5, tpl_reentrancy_counter
-    lw a5, 0(a5)
-    seqz a5, a5
-    la a6, tpl_leave_ie_untouched
-    lw a6, 0(a6)
-    seqz a6, a6
-    and a6, a5, a6
-    csrs 0x7c0, a6
 
     /* Reloads working registers */
     la ra, end_except
@@ -119,9 +115,8 @@ tpl_save_context:
     csrr a6, mepc
     sw a6, 4(a0)
 
-    la a5, tpl_leave_ie_untouched
-    lw a5, 0(a5)
-    sw a5, 12(a0)
+    csrr a6, 0x7c0
+    sw a6, 8(a0)
 
     lw a5, 0x9c(sp)
     sw a5, 16(a0) //ra
@@ -136,14 +131,13 @@ tpl_load_context:
     lw a6, 4(a0)
     csrw mepc, a6
 
-    li a5, 0x1a104000
     lw a6, 8(a0)
-    sw a6, 0(a5)
+    csrw 0x7c0, a6
 
-    la a5, tpl_leave_ie_untouched
+    li a5, 0x1a104000
     lw a6, 12(a0)
     sw a6, 0(a5)
-
+    
     lw a5, 16(a0)
     sw a5, 0x9c(sp) //ra
     
