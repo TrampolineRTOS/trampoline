@@ -84,20 +84,20 @@ CPU test {
     };
     AUTOSTART = FALSE;
   };
-  ALARM Alarm_IncrementCounter{
-    COUNTER = Software_Counter;
-    ACTION = INCREMENTCOUNTER {
-      COUNTER = Hardware_Counter;
-    };
-    AUTOSTART = FALSE;
-  };
+/**  ALARM Alarm_IncrementCounter{
+*    COUNTER = Software_Counter;
+*    ACTION = INCREMENTCOUNTER {
+*      COUNTER = Hardware_Counter;
+*    };
+*    AUTOSTART = FALSE;
+*  };*/
   APPLICATION app {
     TASK = t1;
     TASK = t2;
     COUNTER = Software_Counter;
     COUNTER = Hardware_Counter;
     ALARM = Alarm_SetEvent_basictask;
-    ALARM = Alarm_IncrementCounter;
+    /*ALARM = Alarm_IncrementCounter;*/
   };
   EVENT Event1 {
     MASK = AUTO;
