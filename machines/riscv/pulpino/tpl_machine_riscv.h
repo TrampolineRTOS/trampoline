@@ -64,18 +64,42 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
  */
 #define IDLE_ENTRY tpl_sleep
 
+/** 
+ * Software interruption handlers 
+ * TODO: GOIL !
+ */
 extern FUNC(void, OS_CODE) SOFT_IRQ0_Handler();
 extern FUNC(void, OS_CODE) SOFT_IRQ1_Handler();
 extern FUNC(void, OS_CODE) SOFT_IRQ2_Handler();
 
-CONST(uint32, AUTOMATIC) tpl_it_masks[32];
-uint32 tpl_vector_from_isr2_id(uint32 id);
+/** 
+ * Kernel reentrance counter 
+ */
 extern uint32 tpl_reentrancy_counter;
 
-uint32 fifo_it_masks[32];
-void push_fifo_it_masks(void);
-uint32 pop_fifo_it_masks(void);
+/** 
+ * Interruption masks to each priority level 
+ */
+CONST(uint32, AUTOMATIC) tpl_priority_interruption_masks[32];
 
+
+/** 
+ * Get interruption line from each ISR2 ID
+ */
+uint32 tpl_vector_from_isr2_id(uint32 id);
+
+/** 
+ * FIFO of kernel priority levels
+ */
+#define IT_MASKS_FIFO_LENGTH 32
+uint32 fifo_interruption_masks[IT_MASKS_FIFO_LENGTH];
+void push_interruption_mask(void);
+uint32 pop_interruption_mask(void);
+
+/** 
+ * Vectors of each interruption
+ * TODO: GOIL !
+ */
 extern uint8 SOFT_IRQ0;
 extern uint8 SOFT_IRQ1;
 extern uint8 SOFT_IRQ2;

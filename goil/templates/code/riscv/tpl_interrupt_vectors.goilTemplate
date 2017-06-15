@@ -290,7 +290,7 @@ end loop
 loop priority from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   before
 %
-CONST(uint32, AUTOMATIC) tpl_it_masks[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+CONST(uint32, AUTOMATIC) tpl_priority_interruption_masks[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
 %
   do
 

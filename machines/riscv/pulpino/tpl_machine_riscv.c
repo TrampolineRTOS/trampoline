@@ -21,8 +21,9 @@ extern void trampolineSystemCounter();
 extern void switch_context();
 
 uint32 tpl_reentrancy_counter = 0;
-uint8 TA_CMP = 28;
 uint32 tpl_mestatus = 0x1;
+uint8 fifo_position = 0;
+uint8 TA_CMP = 28;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -177,11 +178,11 @@ void tpl_init_machine()
 
     int i;
     for (int i = 0; i < 32; ++i) {
-        fifo_it_masks[i] = tpl_it_masks[0];
+        fifo_interruption_masks[i] = tpl_priority_interruption_masks[0];
     }
     
     // Enable interrupts and events
-    IER =  tpl_it_masks[0];
+    IER =  tpl_priority_interruption_masks[0];
     EER |= 0x0000000F;
 }
 
@@ -207,25 +208,17 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
     GET_TPL_KERN_FOR_CORE_ID(core_id, kern);
 
     ICP = 2 << tpl_vector_from_isr2_id(TPL_KERN_REF(kern).running_id);
-    IER = pop_fifo_it_masks();
+    IER = pop_interruption_mask();
 }
 
-void push_fifo_it_masks(void) {
-    int i;
-    for (i = 31; i > 0; --i) {
-        fifo_it_masks[i] = fifo_it_masks[i-1];
-    }
-    fifo_it_masks[0] = IER;
+void push_interruption_mask(void) {
+    fifo_interruption_masks[fifo_position] = IER;
+    fifo_position = (fifo_position + 1) % IT_MASKS_FIFO_LENGTH;
 }
 
-uint32 pop_fifo_it_masks(void) {
-    uint32 mask = fifo_it_masks[0];
-    int i;
-    for (int i = 0; i < 31; ++i) {
-        fifo_it_masks[i] = fifo_it_masks[i+1];
-    }
-    fifo_it_masks[31] = 0;
-    return mask;
+uint32 pop_interruption_mask(void) {
+    uint32 mask = fifo_interruption_masks[fifo_position];
+    fifo_position = (fifo_position - 1) % IT_MASKS_FIFO_LENGTH;
 }
 
 #define OS_STOP_SEC_CODE

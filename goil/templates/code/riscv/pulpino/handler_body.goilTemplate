@@ -1,7 +1,6 @@
 .global ISR_% !handlerSource %
 .extern % !handlerIRQ %
-.extern tpl_leave_ie_untouched
-.extern push_fifo_it_masks
+.extern push_interruption_mask
 .extern tpl_mestatus
 
 /*---------------------------------------------------------------------------*/
@@ -78,7 +77,7 @@ ISR_% !handlerSource %:
 
 % if category == 2 then %
     /* set priority */
-    jal push_fifo_it_masks
+    jal push_interruption_mask
     li  a0, % !priority %
     jal tpl_set_priority
 % end if %

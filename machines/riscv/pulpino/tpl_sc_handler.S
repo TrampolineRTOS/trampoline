@@ -143,7 +143,7 @@ tpl_set_priority:
     .global tpl_set_priority
 
     li a5, 0x1a104000
-    la a6, tpl_it_masks
+    la a6, tpl_priority_interruption_masks
     slli a7, a0, 2
     add a6, a6, a7
     lw a6, 0(a6)

@@ -21,6 +21,10 @@ extern struct RISCV_CONTEXT idle_task_context;
  */
 FUNC(void, OS_CODE) tpl_set_systick_timer();
 
+/*
+ * Restores CPU priority level after an ISR2.
+ */
+FUNC(void, OS_CODE) tpl_ack_irq(void);
 #define tpl_restore_cpu_priority() tpl_ack_irq()
 
 #endif /* TPL_MACHINE_H */
