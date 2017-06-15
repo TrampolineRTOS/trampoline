@@ -60,7 +60,7 @@ arch_execute()
 arch_execute_fpga()
 {
   scp slm_files/spi_stim.txt $FPGA_HOSTNAME:/root/$1.spi
-  ssh -t $FPGA_HOSTNAME /root/spiload --timeout=2 /root/$1.spi > $1.out
+  ssh -t $FPGA_HOSTNAME /root/spiload --timeout=1 /root/$1.spi > $1.out
   cat $1.out | grep PULPino | tr -d '\r' | cut -d' ' -f 2-
 }
 

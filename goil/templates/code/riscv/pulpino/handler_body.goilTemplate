@@ -86,5 +86,12 @@ ISR_% !handlerSource %:
     bnez a6, 1f
     lw a6, tpl_mestatus
     csrw 0x7c0, a6
+
+    /* Trigger pending interruptions */
+    li a5, 0x1a104000
+    lw a6, nextISP
+    sw a6, 8(a5) //ISP
+    la a5, nextISP
+    sw zero, 0(a5)
 1:
     j tpl_no_context_switch

@@ -47,10 +47,18 @@
 #include <pulpino.h>
 #include <event.h>
 
+extern uint32 tpl_reentrancy_counter;
+extern uint32 nextISP;
+
 #if ISR_COUNT > 0
 /* TODO : Multicore - Get CoreID's ipid */
 void sendSoftwareIt(uint32 to_core_id, uint32 channel)
 {
-  ISP = 2 << channel;
+    if (tpl_reentrancy_counter == 0) {
+        ISP = 2 << channel;
+    } else {
+        // Programmes interruptions to the next time we leave kernel mode
+        nextISP |= 2 << channel;
+    }
 }
 #endif

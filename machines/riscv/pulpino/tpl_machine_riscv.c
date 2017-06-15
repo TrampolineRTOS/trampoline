@@ -169,6 +169,8 @@ void tpl_init_machine()
     // Activates interruptions and timers
     int_enable();
 
+    nextISP = 0;
+
     // Sets timer limit in order to get tick frequency of 1kHz
     if (ALARM_COUNT > 0) {
         int tickFrequency = 5000;

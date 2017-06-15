@@ -38,8 +38,8 @@ alarms_s5
 alarms_s6
 alarms_s7
 alarms_s8
-#alarms_s9_full
-#alarms_s9_non
+alarms_s9_full
+alarms_s9_non
 #alarms_s10
 alarms_s11
 

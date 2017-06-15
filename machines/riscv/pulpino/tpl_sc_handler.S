@@ -9,6 +9,7 @@
     .extern end_except
     .extern tpl_reentrancy_counter
     .extern tpl_mestatus
+    .extern nextISP
             
 #define NO_NEED_SWITCH_NOR_SCHEDULE 0
 #define NO_NEED_SWITCH 0
@@ -94,6 +95,14 @@ tpl_sc_no_context_switch:
     bnez a5, 1f
     lw a6, tpl_mestatus
     csrw 0x7c0, a6
+
+    /* Trigger pending interruptions */
+    li a5, 0x1a104000
+    lw a6, nextISP
+    sw a6, 8(a5) //ISP
+    la a5, nextISP
+    sw zero, 0(a5)
+
 1:
     
     /* Reloads working registers */

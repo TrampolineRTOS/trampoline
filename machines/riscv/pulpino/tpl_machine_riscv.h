@@ -96,6 +96,8 @@ uint32 stack_interruption_masks[IT_MASKS_STACK_LENGTH];
 void push_interruption_mask(void);
 uint32 pop_interruption_mask(void);
 
+uint32 nextISP;
+
 /** 
  * Vectors of each interruption
  * TODO: GOIL !
