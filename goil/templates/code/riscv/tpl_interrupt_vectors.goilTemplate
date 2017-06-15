@@ -104,7 +104,7 @@ let sorted_isrs := @( )
 foreach isr in max_irq_prio do
   let sorted_isrs += isr
 end foreach
-sort sorted_isrs by PRIORITY >
+sort sorted_isrs by PRIORITY <
 
 # Print them by order
 let prioVect := @[ ]

@@ -118,7 +118,7 @@ tpl_save_context:
     sw a6, 8(a0)
 
     lw a5, 0x9c(sp)
-    sw a5, 16(a0) //ra
+    sw a5, 12(a0) //ra
     
     ret
         
@@ -134,11 +134,7 @@ tpl_load_context:
     lw a6, 8(a0)
     sw a6, 0(a5)
 
-    li a5, 0x1a104000
-    lw a6, 12(a0)
-    sw a6, 0(a5)
-    
-    lw a5, 16(a0)
+    lw a5, 12(a0)
     sw a5, 0x9c(sp) //ra
     
     ret

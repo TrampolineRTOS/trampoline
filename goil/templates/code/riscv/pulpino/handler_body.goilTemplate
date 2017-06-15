@@ -78,9 +78,9 @@ ISR_% !handlerSource %:
 
 % if category == 2 then %
     /* set priority */
+    jal push_fifo_it_masks
     li  a0, % !priority %
     jal tpl_set_priority
-    jal push_fifo_it_masks
 % end if %
     /* Reenables interruptions */
     lw a6, tpl_reentrancy_counter

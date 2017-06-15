@@ -110,8 +110,8 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
+    // Programates the deactivation of interruptions
     tpl_mestatus = 0;
-    int_disable();
 }
 
 /**
@@ -158,9 +158,6 @@ FUNC(void, OS_CODE) tpl_init_context(
   /* address of the instruction to execute when returning
      from the system call. */
   core_context->mepc = (uint32) the_proc->entry;
-
-  /* interrupt mask */
-  core_context->mask = tpl_it_masks[the_proc->base_priority];
 
   /* interrupts enabled */
   core_context->mestatus = 0x1;
