@@ -1,7 +1,0 @@
-set(SOURCE_FILES pulpino/crt0.riscv.S pulpino/tpl_sc_handler.S pulpino/tpl_machine_riscv.c)
-enable_language(ASM)
-set_property(SOURCE tpl_sc_handler.S PROPERTY LANGUAGE C)
-add_library(riscv "${SOURCE_FILES}")
-target_include_directories(riscv PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(riscv string)
-target_link_libraries(riscv sys)

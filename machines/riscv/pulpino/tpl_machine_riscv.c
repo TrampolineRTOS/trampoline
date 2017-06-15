@@ -209,6 +209,9 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
 
     ICP = 2 << tpl_vector_from_isr2_id(TPL_KERN_REF(kern).running_id);
     IER = pop_interruption_mask();
+
+    /* Interruptions are reenabled at the end of an ISR2 */
+    tpl_enable_interrupts();
 }
 
 void push_interruption_mask(void) {
@@ -217,8 +220,9 @@ void push_interruption_mask(void) {
 }
 
 uint32 pop_interruption_mask(void) {
-    uint32 mask = fifo_interruption_masks[fifo_position];
     fifo_position = (fifo_position - 1) % IT_MASKS_FIFO_LENGTH;
+    uint32 mask = fifo_interruption_masks[fifo_position];
+    return mask;
 }
 
 #define OS_STOP_SEC_CODE
