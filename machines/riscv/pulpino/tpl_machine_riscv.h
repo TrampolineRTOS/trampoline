@@ -89,10 +89,10 @@ CONST(uint32, AUTOMATIC) tpl_priority_interruption_masks[32];
 uint32 tpl_vector_from_isr2_id(uint32 id);
 
 /** 
- * FIFO of kernel priority levels
+ * Stack of kernel priority levels
  */
-#define IT_MASKS_FIFO_LENGTH 32
-uint32 fifo_interruption_masks[IT_MASKS_FIFO_LENGTH];
+#define IT_MASKS_STACK_LENGTH 32
+uint32 stack_interruption_masks[IT_MASKS_STACK_LENGTH];
 void push_interruption_mask(void);
 uint32 pop_interruption_mask(void);
 

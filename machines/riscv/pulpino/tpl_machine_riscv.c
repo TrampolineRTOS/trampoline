@@ -22,7 +22,7 @@ extern void switch_context();
 
 uint32 tpl_reentrancy_counter = 0;
 uint32 tpl_mestatus = 0x1;
-uint8 fifo_position = 0;
+uint8 stack_position = 0;
 uint8 TA_CMP = 28;
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -178,7 +178,7 @@ void tpl_init_machine()
 
     int i;
     for (int i = 0; i < 32; ++i) {
-        fifo_interruption_masks[i] = tpl_priority_interruption_masks[0];
+        stack_interruption_masks[i] = tpl_priority_interruption_masks[0];
     }
     
     // Enable interrupts and events
@@ -215,13 +215,13 @@ FUNC(void, OS_CODE) tpl_ack_irq(void) {
 }
 
 void push_interruption_mask(void) {
-    fifo_interruption_masks[fifo_position] = IER;
-    fifo_position = (fifo_position + 1) % IT_MASKS_FIFO_LENGTH;
+    stack_interruption_masks[stack_position] = IER;
+    stack_position = (stack_position + 1) % IT_MASKS_STACK_LENGTH;
 }
 
 uint32 pop_interruption_mask(void) {
-    fifo_position = (fifo_position - 1) % IT_MASKS_FIFO_LENGTH;
-    uint32 mask = fifo_interruption_masks[fifo_position];
+    stack_position = (stack_position - 1) % IT_MASKS_STACK_LENGTH;
+    uint32 mask = stack_interruption_masks[stack_position];
     return mask;
 }
 
