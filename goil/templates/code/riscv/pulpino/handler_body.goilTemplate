@@ -12,40 +12,47 @@ ISR_% !handlerSource %:
      */
     jal % !handlerIRQ %
 
-    /* Disable interruptions by default */
-    csrci 0x7c0, 1
-
     /* No context switch if reentrant interruption */
-    la a5, tpl_reentrancy_counter
-    mv a6, a5
-    lw a5, 0(a5)
-    addi a5, a5, -1
-    sw a5, 0(a6)
-    bnez a5, 1f
+    lw a5, tpl_reentrancy_counter
+    li a6, 1
+    bne a5, a6, 1f
 
     /*-------------------------------------------------------------------------
      * 2 - Check the context switch condition in tpl_kern
      */
     la a0, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a0)
-    beq a6, zero, 1f
+    beqz a6, 1f
 
     /*-------------------------------------------------------------------------
      * 3 - Save context
      *     Load in a0 the pointer to the static descriptor of the running task
      *     a0 already points to tpl_kern (from stage 2)
      */
+
+    /* Prepare the call to tpl_run_elected by setting a0 to 0, aka no save */
+    li a0, 0
+
+    /* Check the save condition */
+    li a5, NEED_SAVE
+    and a5, a5, a6
+    beqz a5, 2f
+    
+    /* Save context */
+    la  a0, tpl_kern
     lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
     lw  a0, 0(a0)
     jal tpl_save_context
+        
+    /* Prepare the call to tpl_run_elected by setting a0 to 1 */
+    li a0, 1
 
     /*-------------------------------------------------------------------------
      * 4 - Call tpl_run_elected.
      *     The argument is a boolean which is true if the process is
-     *     preempted. Here it is true because in an interrupt handler
-     *     a process is inevitably preempted
+     *     preempted. 
      */
-    li a0, 1
+2:
     jal tpl_run_elected
 
     /*-------------------------------------------------------------------------
@@ -58,7 +65,17 @@ ISR_% !handlerSource %:
     lw  a0, 0(a0)
     jal tpl_load_context
 
+    /* Reset tpl_need_switch variable */
+    la a5, tpl_kern
+    sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
+
 1:
+    /* Adjusts reentrancy counter */
+    lw a5, tpl_reentrancy_counter
+    addi a5, a5, -1
+    la a6, tpl_reentrancy_counter
+    sw a5, 0(a6)
+
 % if category == 2 then %
     /* set priority */
     li  a0, % !priority %

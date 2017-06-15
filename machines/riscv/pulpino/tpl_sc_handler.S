@@ -23,23 +23,12 @@ tpl_sc_handler:
     sw a6, 4(sp)
     sw a7, 8(sp)
 
-    /* Disable interruptions by default */
-    csrci 0x7c0, 1
-    
     /* Adjusts reentrancy counter */
     lw a5, tpl_reentrancy_counter
     addi a5, a5, 1
     la a6, tpl_reentrancy_counter
     sw a5, 0(a6)
-    li a6, 1
-    bne a5, a6, 1f
 
-    /* Reset tpl_kern variables */
-    la a5, tpl_kern
-    sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
-    sb zero, TPL_KERN_OFFSET_NEED_SCHEDULE(a5)
-    
-1:      
     /* Gets function pointer to the service */
     la a5, tpl_dispatch_table
     slli a7, a7, 2
@@ -53,19 +42,15 @@ tpl_sc_handler:
     sw a0, 0x24(sp)
 
     /* No context switch if reentrant system call */
-    la a5, tpl_reentrancy_counter
-    mv a6, a5
-    lw a5, 0(a5)
-    addi a5, a5, -1
-    sw a5, 0(a6)
-
-    bnez a5, tpl_sc_no_context_switch
+    lw a5, tpl_reentrancy_counter
+    li a6, 1
+    bne a5, a6, tpl_sc_no_context_switch
         
 tpl_switch_context:
     /* Checks the context switch condition */
     la a5, tpl_kern
     lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a5)
-    beq a6, zero, tpl_sc_no_context_switch
+    beqz a6, tpl_sc_no_context_switch
     
     /* Prepare the call to tpl_run_elected by setting a0 to 0, aka no save */
     li a0, 0
@@ -73,7 +58,7 @@ tpl_switch_context:
     /* Check the save condition */
     li a5, NEED_SAVE
     and a5, a5, a6
-    beq a5, zero, tpl_sc_handler_no_save_running_context
+    beqz a5, tpl_sc_handler_no_save_running_context
     
     /* Save context */
     la  a0, tpl_kern
@@ -94,10 +79,19 @@ tpl_sc_handler_no_save_running_context:
     lw  a0, 0(a0)
     jal tpl_load_context
 
+    /* Reset tpl_need_switch variable */
+    la a5, tpl_kern
+    sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
+
 tpl_sc_no_context_switch:
+    /* Adjusts reentrancy counter */
+    lw a5, tpl_reentrancy_counter
+    addi a5, a5, -1
+    la a6, tpl_reentrancy_counter
+    sw a5, 0(a6)
+
     /* Reenables interruptions */
-    lw a6, tpl_reentrancy_counter
-    bnez a6, 1f
+    bnez a5, 1f
     lw a6, tpl_mestatus
     csrw 0x7c0, a6
 1:

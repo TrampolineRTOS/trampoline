@@ -129,20 +129,11 @@ tpl_interruption_handler:
   sw a7, 8(sp)
 
   /* Adjusts reentrancy counter */
-  la a5, tpl_reentrancy_counter
-  mv a6, a5
-  lw a5, 0(a5)
+  lw a5, tpl_reentrancy_counter
   addi a5, a5, 1
+  la a6, tpl_reentrancy_counter
   sw a5, 0(a6)
-  li a6, 1
-  bne a5, a6, 1f
 
-  /* Resets tpl_kern variables */
-  la a5, tpl_kern
-  sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
-  sb zero, TPL_KERN_OFFSET_NEED_SCHEDULE(a5)
-
-1:
   /* Retrieves pointer to handler */
   la a5, tpl_it_vectors
   csrr a6, mcause
