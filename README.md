@@ -3,11 +3,13 @@
 Trampoline is a static RTOS for small embedded systems.
 Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 
-5 platforms are supported by now :
+6 platforms are supported by now :
 
 * cortex
   * Cortex-M (M0+, M3 and M4 for now) instruction set
   * Cortex-A (A7) instruction set. This port is under heavy development.
+* riscv
+  * PULPino microprocessor with 32bits RISC-V instruction set.
 * ppc: PowerPC 32bits instruction set
 * posix: virtual platform for POSIX systems (tested on Linux and OS X)
 * avr: AVR 8 bits microcontrollers
@@ -17,7 +19,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 
 And we welcome external contributors to extend this list.
 
-Trampoline runs on the following plateforms :
+Trampoline runs on the following platforms :
 
 | MCU                          | Architecture       | Cores | Evaluation Board                  |
 |------------------------------|--------------------|:-----:|-----------------------------------|
@@ -28,6 +30,7 @@ Trampoline runs on the following plateforms :
 | NXP LPC2294                  | ARM7               | 1     | Olimex LPC-L2294-1MB              |
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
+| PULPino                      | RISC-V             | 1     | ZedBoard                          |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
 
@@ -68,6 +71,8 @@ Some examples have been added (check examples):
   * **blink_2c_opticks**. Same as the two cores blink example but optimizes ticks.
   * **button_2c**. Waits for a button input to light a led. Switch it off using Timing Protection watchdog. Multicore example.
   * **spinlocks**. Producer/Consumer example.
+* PULPino : `riscv/pulpino`
+  * **blink**. Has two tasks who alternate outputting on UART interface.
 * virt-v7 :
   * **firmware**. Builds a firmware that can be used as a guest on XVisor.
 
@@ -75,7 +80,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 3.1.3 on october 18.
+Updated to version 3.1.3 on October 18.
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
@@ -85,7 +90,7 @@ Updated to version 3.1.3 on october 18.
 
 ## Useful links
 
-* [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various plateforms.
+* [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various platforms.
 
 The OSEK-VDX portal is down since at least june because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
