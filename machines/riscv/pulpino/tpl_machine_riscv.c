@@ -102,8 +102,8 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
  */
 void tpl_enable_interrupts(void)
 {
-    // Programates the activation of interruptions
-    tpl_mestatus = 1;
+  // Programates the activation of interruptions
+  tpl_mestatus = 1;
 }
 
 /**
@@ -144,9 +144,6 @@ FUNC(void, OS_CODE) tpl_init_context(
   the_proc = tpl_stat_proc_table[proc_id];
   core_context = the_proc->context;
 
-  /* wake up core */
-  ESP = 0x1;
-  
   /* stack pointer */
   core_context->sp = ((uint32)the_proc->stack.stack_zone) +
       the_proc->stack.stack_size - EXCEPTION_STACK_SIZE - 16;
@@ -162,6 +159,9 @@ FUNC(void, OS_CODE) tpl_init_context(
 
   /* interrupts enabled */
   core_context->mestatus = 0x1;
+
+  /* Core not sleeping */
+  SCR = 0x0;
 }
 
 void tpl_init_machine()
@@ -169,14 +169,15 @@ void tpl_init_machine()
     // Activates interruptions and timers
     int_enable();
 
+    // Initialize next pending interruptions
     nextISP = 0;
 
     // Sets timer limit in order to get tick frequency of 1kHz
-    if (ALARM_COUNT > 0) {
-        int tickFrequency = 1000;
-        TOCRA = F_CPU / tickFrequency;
-        start_timer();
-    }
+#if ALARM_COUNT > 0
+    int tickFrequency = 1000;
+    TOCRA = F_CPU / tickFrequency;
+    start_timer();
+#endif
 
     int i;
     for (int i = 0; i < 32; ++i) {

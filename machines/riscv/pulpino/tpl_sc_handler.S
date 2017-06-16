@@ -85,6 +85,11 @@ tpl_sc_handler_no_save_running_context:
     sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
 
 tpl_sc_no_context_switch:
+    /* Wakes up core in reentrant kernel calls by triggering dummy event */
+    li a5, 0x1a104018 //ESP
+    li a6, 1
+    sw a6, 0(a5)
+
     /* Adjusts reentrancy counter */
     lw a5, tpl_reentrancy_counter
     addi a5, a5, -1
@@ -95,6 +100,11 @@ tpl_sc_no_context_switch:
     bnez a5, 1f
     lw a6, tpl_mestatus
     csrw 0x7c0, a6
+
+    /* Clears up dummy event */
+    li a5, 0x1a10401C //ECP
+    li a6, 1
+    sw a6, 0(a5)
 
     /* Trigger pending interruptions */
     li a5, 0x1a104000
