@@ -91,7 +91,7 @@ CPU test {
  
   COUNTER Counter1 {
     MAXALLOWEDVALUE = 16;
-    TICKSPERBASE = 10;
+    TICKSPERBASE = 100;
     MINCYCLE = 1;
   };
  

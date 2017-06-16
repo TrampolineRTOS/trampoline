@@ -173,7 +173,7 @@ void tpl_init_machine()
 
     // Sets timer limit in order to get tick frequency of 1kHz
     if (ALARM_COUNT > 0) {
-        int tickFrequency = 5000;
+        int tickFrequency = 1000;
         TOCRA = F_CPU / tickFrequency;
         start_timer();
     }

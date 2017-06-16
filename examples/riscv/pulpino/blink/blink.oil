@@ -18,7 +18,7 @@ CPU blink {
     STATUS = EXTENDED;
     
   BUILD = TRUE {
-      TRAMPOLINE_BASE_PATH = "../../..";
+      TRAMPOLINE_BASE_PATH = "../../../..";
       APP_SRC = "blink.c";
       APP_NAME = "blink_exe";
       CFLAGS  = "-O3";

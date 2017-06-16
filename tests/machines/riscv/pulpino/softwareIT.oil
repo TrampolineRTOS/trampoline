@@ -34,7 +34,7 @@
  * $URL$
  */
 
-IMPLEMENTATION softITPosix
+IMPLEMENTATION softITPULP
 {
   /* Can be modified in the test's oil file */
   ISR
@@ -45,7 +45,7 @@ IMPLEMENTATION softITPosix
 
 };
 
-CPU softITPosix
+CPU softITPULP
 {
   ISR softwareInterruptHandler0
   {

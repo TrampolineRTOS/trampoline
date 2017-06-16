@@ -36,7 +36,7 @@
 
 #include "../../common/arch.oil"
 
-IMPLEMENTATION archPosix
+IMPLEMENTATION archPULP
 {
   TASK {
     UINT32 STACKSIZE = 2048;
@@ -45,7 +45,7 @@ IMPLEMENTATION archPosix
 
 };
 
-CPU archPosixDefault
+CPU archPULPDefault
 {
   OS defaultOS
   {
@@ -83,7 +83,3 @@ CPU archPosixDefault
     CFILE = "archTestConfig.c";
   };
 };
-
-
-
-
