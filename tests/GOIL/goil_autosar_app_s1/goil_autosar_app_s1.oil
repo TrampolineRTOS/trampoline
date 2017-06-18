@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "goil_autosar_app_s1" ;
+OIL_VERSION = "3.1" : "goil_autosar_app_s1" ;
 
 IMPLEMENTATION trampoline {
 
@@ -50,8 +50,10 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-        TRAMPOLINE_BASE_PATH = "../../..";
+	BUILD = TRUE {
+          TRAMPOLINE_BASE_PATH = "../../..";
 	};
+    };
 
     APPMODE std {};
 
