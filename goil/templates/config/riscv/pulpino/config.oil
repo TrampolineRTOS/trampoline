@@ -11,6 +11,11 @@ CPU pulpino {
     CFILE = "../src/utils.c";
   };
 
+  GENERATED_FILES pulpino {
+    CFILE = "tpl_vectors.c";
+    CFILE = "tpl_primary_irq.S";
+  };
+
   LIBRARY string {
     PATH = "riscv/libs/string_lib/inc";
     CFILE = "../src/qprintf.c";

@@ -409,14 +409,6 @@ end foreach
 #--- Add generated files
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_app_config.c"))
 %
-if TARGET == "riscv/pulpino" then
-%
-cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_vectors.c"))
-cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_primary_irq.S"))
-%
-end if
-%
-%
 if OS::SYSTEM_CALL then
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_dispatch_table.c"))
@@ -668,15 +660,6 @@ if make.errorCount() == 0:%
       print("Command '% !cmd::COMMAND %' not in PATH")%
   end foreach
 end foreach%
-
-%
-if TARGET == "riscv/pulpino" then
-%
-PULPINO_PATH = os.environ.get('PULPINO_PATH','MUST_SET_PULPINO_PATH_ENV_VARIABLE')
-%
-end if
-%
-
 
 #----------------------------------------------------------------------
 #-- End of build.py
