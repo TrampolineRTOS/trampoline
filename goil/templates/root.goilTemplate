@@ -851,7 +851,7 @@ end foreach
 # and are checked to detect if it uses more than one bit or no bit
 # at all.
 #
-#foreach sel_event (sel_INDEX) in USEREVENTS do
+foreach sel_event (sel_INDEX) in USEREVENTS do
 
   #
   # a MASK with 0 is an error
@@ -867,9 +867,28 @@ end foreach
   # Having 2 mask with common bits is an error if the events are
   # used by the same task
   #
-  # Check transfered to configCheck.goilTemplate
-
-#end foreach
+  foreach event in USEREVENTS do
+    if sel_INDEX != INDEX then
+      if (sel_event::MASK & event::MASK) != 0 then
+        let in_conflict := false
+        let sel_tasks := tasks_for_event[sel_event::NAME]
+        let tasks := tasks_for_event[event::NAME]
+        foreach sel_task in sel_tasks::task_list do
+          foreach task in tasks::task_list do
+            if sel_task == task then
+              let in_conflict := true
+            end if
+          end foreach
+        end foreach
+        if in_conflict then
+          error sel_event::MASK : "event "+sel_event::NAME+" MASK conflicts"
+          error event::MASK : "with MASK of event "+event::NAME
+        end if
+      end if
+    end if
+  end foreach
+  
+end foreach
 
 #
 # Build the mask_for_task map to compute the bits occupied
@@ -1088,30 +1107,6 @@ end foreach
 # Compute the SCHEDULETABLES
 #
 
-#if AUTOSAR then
-#  foreach st in SCHEDULETABLE do
-#    if not exists st::COUNTER then
-#      error st::NAME : "OS409 - COUNTER is not defined in " + st::NAME
-#    else
-#      if st::EXPIRE_POINT == @() then
-#        error st::NAME : "OS401 - no EXPIRY_POINT found for SCHEDULETABLE " + st::NAME
-#      else
-#        foreach ep in st::EXPIRY_POINT do
-#          if ep::ACTIONS == @() then
-#            error ep : "OS407 - no ACTION found for EXPIRY_POINT " + ep
-#          elsif ep::OFFSET == @() then
-#            error ep : "OS404 - OFFSET is missing for EXPIRY_POINT " + ep
-#          elsif ep::OFFSET < st::COUNTER::MINCYCLE & ep::OFFSET != 0 then
-#            error st::NAME : "OS443 - OFFSET of EXPIRY_POINT " + ep + " is lower than MINCYCLE of the driving counter and not equal to 0"
-#          elsif ep::OFFSET > st::COUNTER::MAXALLOWEDVALUE then
-#            error st::NAME : "OS443 - OFFSET of EXPIRY_POINT " + ep + " is greater than MAXALLOWEDVALUE of the driving COUNTER"
-#          end if
-#        end foreach
-#      end if
-#    end if
-#  end foreach
-#end if
-
 let SCHEDULETABLES := SCHEDULETABLE
 
 #------------------------------------------------------------------------------*
@@ -1153,7 +1148,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       end if
     end foreach
 
-    display app::TASK
+#    display app::TASK
 #    display app::ISR
 #    display process_of_app
     let app::PROCESS := process_of_app
