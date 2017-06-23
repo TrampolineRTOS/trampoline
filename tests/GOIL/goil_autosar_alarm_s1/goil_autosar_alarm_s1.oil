@@ -84,13 +84,13 @@ CPU test {
     };
     AUTOSTART = FALSE;
   };
-/**  ALARM Alarm_IncrementCounter{
-*    COUNTER = Software_Counter;
-*    ACTION = INCREMENTCOUNTER {
-*      COUNTER = Hardware_Counter;
-*    };
-*    AUTOSTART = FALSE;
-*  };*/
+  ALARM Alarm_IncrementCounter{
+    COUNTER = Software_Counter;
+    ACTION = INCREMENTCOUNTER {
+      COUNTER = Hardware_Counter;
+    };
+    AUTOSTART = FALSE;
+  };
   APPLICATION app {
     TASK = t1;
     TASK = t2;
