@@ -89,6 +89,8 @@ foreach sel_event (sel_INDEX) in EVENT do
     end if
   end foreach
   
+  let tasks_for_event := mapof EVENT by NAME
+  
   #User events only
   if typeof sel_event::MASK == @int then
   
@@ -98,6 +100,7 @@ foreach sel_event (sel_INDEX) in EVENT do
     end if
     
     # L.864 root.goilTemplate
+    #Test case 41
     let more_than_one_bit := false
     loop bit from 0 to 63 do
       let mask := 1 << bit
@@ -107,30 +110,8 @@ foreach sel_event (sel_INDEX) in EVENT do
       end if
     end loop
     if more_than_one_bit then
-      warning sel_event::MASK : "Event " + event::NAME + " uses more than one bit"
+      warning sel_event::MASK : "Event " + sel_event::NAME + " uses more than one bit"
     end if
-    
-    # L.870 root.goilTemplate
-    foreach event in EVENT do
-      if typeof event::MASK == @int then
-        if (sel_event::MASK & event::MASK) != 0 then
-          let in_conflict := false
-          let sel_tasks := tasks_for_event[sel_event::NAME]
-          let tasks := tasks_for_event[event::NAME]
-          foreach sel_task in sel_tasks::task_list do
-            foreach task in tasks::task_list do
-              if sel_task == task then
-                let in_conflict := true
-              end if
-            end foreach
-          end foreach
-          if in_conflict then
-            error sel_event::MASK : "event " + sel_event::NAME + " MASK conflicts"
-            error event::MASK : " with MASK of event " + event::NAME
-          end if
-        end if
-      end if
-    end foreach
     
   end if
 end foreach
@@ -162,11 +143,13 @@ foreach alarm in ALARM do
     end if
   end if
   if exists alarm::ACTION then
+    #Test cases 5, 7
     if alarm::ACTION == "INCREMENTCOUNTER" then
-      if COUNTER[alarm::ACTION_S::COUNTER]::TYPE != "SOFTWARE" then
-        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter (" + alarm::ACTION_S::TASK + " is a basic task)"
+      if counterMap[alarm::ACTION_S::COUNTER]::TYPE != "SOFTWARE" then
+        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter (" + alarm::ACTION_S::COUNTER + " is not a software counter)"
       end if
     elsif alarm::ACTION == "SETEVENT" then
+      #Test case 3
       if not exists TASK[alarm::ACTION_S::TASK]::EVENT then
         error alarm::ACTION_S::TASK : "An alarm can't set an Event to a basic task (Task " + alarm::ACTION_S::TASK + " is a basic task)"
       end if
@@ -208,6 +191,7 @@ foreach app in APPLICATION do
   let isr_map := mapof ISRS2 by NAME
   
   # L.1144 root.goilTemplate
+  #Test case 43
   if not exists app::TASK & isr_map == @[] then
     error app::NAME : "OS445 - An application should have at least one Task OR ISR2"
   end if
@@ -222,25 +206,87 @@ if AUTOSAR then
       end if
     end foreach
 
-#    if not exists st::COUNTER then
-#      error st::NAME : "OS409 - COUNTER is not defined in " + st::NAME
-#    else
-#      if st::EXPIRY_POINT == @() then
-#        error st::NAME : "OS401 - no EXPIRY_POINT found for SCHEDULETABLE " + st::NAME
-#      else
-#        foreach ep in st::EXPIRY_POINT do
-#          if ep::ACTIONS == @() then
-#            error ep : "OS407 - no ACTION found for EXPIRY_POINT " + ep
-#          elsif not exists ep::OFFSET then
-#            error ep : "OS404 - OFFSET is missing for EXPIRY_POINT " + ep
-#          elsif ep::OFFSET < st::COUNTER::MINCYCLE & ep::OFFSET != 0 then
-#            error st::NAME : "OS443 - OFFSET of EXPIRY_POINT " + ep + " is lower than MINCYCLE of the driving counter and not equal to 0"
-#          elsif ep::OFFSET > st::COUNTER::MAXALLOWEDVALUE then
-#            error st::NAME : "OS443 - OFFSET of EXPIRY_POINT " + ep + " is greater than MAXALLOWEDVALUE of the driving COUNTER"
-#          end if
-#        end foreach
-#      end if
-#    end if
+    if not exists st::COUNTER then
+      #Test case 47
+      error st::NAME : "OS409 - COUNTER is not defined in " + st::NAME
+    else
+      let counter_map := mapof COUNTER by NAME
+      let st_counter := counter_map[st::COUNTER]
+      if not exists st::EXPIRY_POINT then
+        #Test case 42
+        error st::NAME : "OS401 - no EXPIRY_POINT found for SCHEDULETABLE " + st::NAME
+      else
+      
+        foreach ep in st::EXPIRY_POINT do
+          if not exists ep::ACTION then
+            #Test case 44
+            error ep : "OS407 - no ACTION found for EXPIRY_POINT " + ep::NAME
+          elsif not exists ep::OFFSET then
+            #Test case 50
+            error ep : "OS404 - OFFSET is missing for EXPIRY_POINT " + ep::NAME
+          end if
+          
+          #Test cases 57, 59
+          foreach eps in st::EXPIRY_POINT do
+            if ep::NAME != eps::NAME then
+              if ep::OFFSET > eps::OFFSET then
+                if ep::OFFSET - eps::OFFSET < st_counter::MINCYCLE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::name + " and " + eps::NAME + " is lower than MINCYCLE of the driving counter"
+                elsif ep::OFFSET - eps::OFFSET > st_counter::MAXALLOWEDVALUE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::NAME + " and " + eps::NAME + " is greater than MAXALLOWEDVALUE of the driving counter"
+                end if
+              else
+                if eps::OFFSET - ep::OFFSET < st_counter::MINCYCLE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::NAME + " and " + eps::NAME + " is lower than MINCYCLE of the driving counter"
+                elsif eps::OFFSET - ep::OFFSET > st_counter::MAXALLOWEDVALUE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::NAME + " and " + eps::NAME + " is greater than MAXALLOWEDVALUE of the driving counter"
+                end if
+              end if
+            end if
+          end foreach
+          
+          #Test case 33
+          foreach action in ep::ACTION do
+            if action::VALUE == "SETEVENT" then
+              let task_map := mapof TASK by NAME
+              let target := task_map[action::VALUE_S::TASK]
+              if not exists target::EVENT then
+                error st::NAME : "Error : An action can't set an Event to a basic task (Task " + action::VALUE_S::TASK + " is a basic task)."
+              end if
+            end if
+          end foreach
+        end foreach
+        
+        let lep_off := st::EXPIRY_POINT
+        sort lep_off by OFFSET <
+        let first_ep := [lep_off first]
+        let last_ep := [lep_off last]
+        #Test cases 54, 56
+        if first_ep::OFFSET < st_counter::MINCYCLE then
+          error st::NAME : "OS443 - OFFSET of first EXPIRY_POINT is lower than MINCYCLE of the driving counter and not equal to 0"
+        elsif first_ep::OFFSET > st_counter::MAXALLOWEDVALUE then
+          error st::NAME : "OS443 - OFFSET of first EXPIRY_POINT is greater than MAXALLOWEDVALUE of the driving COUNTER"
+        end if
+      end if
+      
+      #Test case 67
+      if st::AUTOSTART == "ABSOLUTE" then
+        if st::AUTOSTART_S::START > st_counter::MAXALLOWEDVALUE then
+          error st::NAME : "OS349 - " + st::NAME + " autostart's offset is greater than MAXALLOWEDVALUE of the driving counter."
+        end if
+      #Test cases 68, 70
+      elsif st::AUTOSTART == "RELATIVE" then
+        let eps := st::EXPIRY_POINT
+        sort eps by OFFSET <
+        let first_ep := [eps first]
+        if st::AUTOSTART_S::OFFSET == 0 then
+          error st::NAME : "OS332 - " + st::NAME + " autostart's offset is equal to 0"
+        elsif st::AUTOSTART_S::OFFSET > (st_counter::MAXALLOWEDVALUE - first_ep::OFFSET) then
+          error st::NAME : "OS276 - " + st::NAME + " autostart's offset is greater than MAXALLOWEDVALUE of the driving counter minus the Initial Offset"
+        end if
+      end if
+      
+    end if
   end foreach
 end if
 
