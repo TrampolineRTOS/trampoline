@@ -298,9 +298,18 @@ end if
 
 if TARGET == "posix" then
 %
-    #--- Add flags required to link the posix runtime
-ldflags += ['-lrt']
-ldflags += ['-lpthread']
+uname = os.uname()
+isLinux = False
+if hasattr(uname, 'sysname'): #Python 3.xx
+	if uname.sysname == 'Linux':
+		isLinux = True
+else: #Python 2.xx
+	if uname[0] == 'Linux':
+		isLinux = True
+if isLinux:
+	#--- Add flags required to link the posix runtime
+	ldflags += ['-lrt']
+	ldflags += ['-lpthread']
 %
 end if
 
