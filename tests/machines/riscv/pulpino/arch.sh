@@ -52,6 +52,11 @@
 #   $1 : file to execute
 arch_execute()
 {
+  if [ -z "${PULPINO_PATH}" ]; then
+    echo "PULPINO_PATH is not set"
+    exit 1
+  fi
+
   tcsh -c env\ PULP_CORE=riscv\ VSIM_DIR=${PULPINO_PATH}/vsim\ TB_TEST=""\ vsim\ -c\ -64\ -do\ 'source\ tcl_files/run.tcl\;\ run\ -a\;\ exit\;' > /dev/null
   cat ./stdout/*
   exit $?
