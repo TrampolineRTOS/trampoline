@@ -1,0 +1,235 @@
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+#include <utils.h>
+
+extern uint32 tpl_leave_ie_untouched;
+
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+let objForIRQ := @[]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @()
+  end if
+  let isr::KIND := "ISR"
+  let isr::ACK := INTERRUPTMAP[key]::ACK
+  let isr::VECT := INTERRUPTMAP[key]::VECT
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @()
+  end if
+  let cnt::KIND := "COUNTER"
+  let cnt::ACK := INTERRUPTMAP[key]::ACK
+  let cnt::VECT := INTERRUPTMAP[key]::VECT
+  let type := cnt::TYPE
+  let objForIRQ[key] += cnt
+end foreach
+
+# Build the list of counters to call
+let counterForIRQ := @[ ]
+
+# Build a list of virtual objects (counters) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
+foreach objList in objForIRQ do
+  foreach obj in objList do
+    if (obj::KIND == "COUNTER") then
+      if (obj::TYPE != "SOFTWARE") then
+        let counterForIRQ[KEY] := @()
+      end if 
+    end if
+  end foreach
+  foreach obj in objList do
+    if (obj::KIND == "COUNTER") then
+      if (obj::TYPE != "SOFTWARE") then
+        let  counterForIRQ[KEY] += obj::NAME
+      end if
+    end if
+  end foreach
+end foreach
+
+#------------------------------------------------------------------------------*
+
+let thereAreISR1 := false
+foreach objList in objForIRQ do
+  let objList_KEY := KEY
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 #& not thereAreISR1
+      then
+#        let thereAreISR1 := true
+%extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
+%
+      end if
+    end if
+  end foreach
+end foreach
+
+#
+# Build a map for interrupt sources
+#
+let it_map := [INTERRUPT mapBy: "NAME"]
+
+let indexISR2 := 0
+foreach objList in objForIRQ do
+  let objList_KEY := KEY
+%
+extern uint8 % !objList[0]::SOURCE %;
+
+FUNC(void, OS_CODE) % !objList_KEY %_ClearFlag(void)
+{
+    /* Clear pending register */
+    ICP = (2 << % !objList[0]::SOURCE %);
+}       
+
+FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
+{
+%
+  # ISR1
+%
+  /* ISR1s */
+%
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 then
+        if exists it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME then
+          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
+            it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME or%
+  %!obj::NAME %_function();%
+          end template
+        else%
+  %!obj::NAME %_function();%
+        end if
+      end if
+    end if
+  end foreach
+
+  # ISR2 and COUNTER
+  # Test for ISR2
+%
+  /* ISR2s */
+%
+  let thereAreISR2forThisObjList := false
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 2 then
+        let thereAreISR2forThisObjList := true
+      end if
+    end if
+  end foreach
+
+  if thereAreISR2forThisObjList then
+    foreach obj in objList
+      before
+%  GET_CURRENT_CORE_ID(core_id)
+
+#if WITH_STACK_MONITORING == YES
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
+
+%
+      do
+      if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
+%  tpl_central_interrupt_handler_2((void*)% !obj::NAME %_id);
+%
+        let indexISR2 := indexISR2 + 1
+      end if
+    end foreach
+  end if
+
+  # COUNTER
+%  /* COUNTERs */
+%
+  foreach objCounter in counterForIRQ do
+    let objCounter_KEY := KEY
+    if (objCounter_KEY == objList_KEY) then
+      %  tpl_tick_% !objCounter_KEY %();
+%
+    end if
+  end foreach
+  # ACK
+%
+  /* ACK */
+%
+  let ackDone := false
+  foreach obj in objList do
+    if not ackDone then
+      if obj::ACK then
+        let ackDone := true
+        if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
+          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
+            it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
+%  %!objList_KEY%_ClearFlag();%
+          end template
+        else
+%  %!objList_KEY%_ClearFlag();%
+        end if        
+      end if
+    end if
+  end foreach
+%
+}
+%
+end foreach
+
+# Get the maximum priority of used IRQs
+let max_irq_prio := @( )
+foreach isr in ISRS do
+  if exists max_irq_prio[isr::SOURCE] then
+    if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
+      let max_irq_prio[isr::SOURCE] := isr
+    end if
+  else
+    let max_irq_prio[isr::SOURCE] := isr
+  end if
+end foreach
+
+# Sort them by priority
+let sorted_isrs := @( )
+foreach isr in max_irq_prio do
+  let sorted_isrs += isr
+end foreach
+sort sorted_isrs by PRIORITY <
+
+# Print them by order
+let prioVect := @[ ]
+foreach isr in sorted_isrs do
+  let interrupt := INTERRUPTMAP[isr::SOURCE]
+  let prio := INDEX
+  let prioVect[interrupt::NAME] := prio
+end foreach
+
+%
+uint32 tpl_vector_from_isr2_id(uint32 id) {
+  switch (id) {
+%
+foreach isr in ISRS2
+do
+
+  let int := INTERRUPTMAP[isr::SOURCE]
+%    case % !isr::NAME %_id : return % !prioVect[int::NAME] %;
+%
+end foreach
+%    default : return -1;
+  }
+}
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+# vim:ft=goil_templates

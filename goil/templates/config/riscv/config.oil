@@ -1,0 +1,91 @@
+IMPLEMENTATION riscv {
+
+  TASK {
+    UINT32 STACKSIZE = 2048;
+    BOOLEAN USEFLOAT = FALSE;
+  };
+
+  ISR [] {
+    UINT32 STACKSIZE = 2048;
+    #include <interruptSources.oil>
+  };
+
+  COUNTER [] {
+    UINT32 [1, 2] CATEGORY = 1;
+    #include <counterSources.oil>
+    ENUM WITH_AUTO [
+         HARDWARE,
+         SOFTWARE
+         ] TYPE = HARDWARE;
+  };
+  
+  INTERRUPT [] { 
+    UINT32 VECT = 1024;
+    BOOLEAN EXCEPTION = FALSE;
+    ENUM [
+      HANDLER {
+        STRING NAME;
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      REFERENCE {
+        STRING NAME;
+      }
+    ] VECTOR_TYPE;
+    BOOLEAN [
+      TRUE { 
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      FALSE
+    ] ACK = TRUE;
+    BOOLEAN [
+      TRUE  { INT32 NUMBER; },
+      FALSE
+    ] SETPRIO = FALSE;
+    UINT32 [1,2] CATEGORY = 1;
+  };
+  
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};
+
+CPU riscv {
+  BUILDOPTIONS riscv {
+    COMMONFLAGS = "-nostartfiles";
+  };
+
+  INTERRUPT SOFT_IRQ0 {
+    EXCEPTION = FALSE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SOFT_IRQ0_Handler";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SOFT_IRQ1 {
+    EXCEPTION = FALSE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SOFT_IRQ1_Handler";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SOFT_IRQ2 {
+    EXCEPTION = FALSE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SOFT_IRQ2_Handler";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+};
+
+
