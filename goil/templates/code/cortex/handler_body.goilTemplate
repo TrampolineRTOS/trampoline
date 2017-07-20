@@ -14,13 +14,13 @@ tpl_primary_irq_handler_% !handlerSource %:
      */
     push {lr}
 
-    /*-------------------------------------------------------------------------
-     * 2 - Reset the tpl_kern variables
-     */
-    ldr  r0,=tpl_kern
-    movs r1,#NO_NEED_SWITCH_NOR_SCHEDULE
-    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
-    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
+//    /*-------------------------------------------------------------------------
+//     * 2 - Reset the tpl_kern variables
+//     */
+//    ldr  r0,=tpl_kern
+//    movs r1,#NO_NEED_SWITCH_NOR_SCHEDULE
+//    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
+//    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
 
     /*-------------------------------------------------------------------------
      * 3 - Interrupt function call
@@ -62,6 +62,14 @@ tpl_primary_irq_handler_% !handlerSource %:
     bl   tpl_load_context_under_it
 
 tpl_% !handlerSource %_no_context_switch:
+
+    /*-------------------------------------------------------------------------
+     * 2 - Reset the tpl_kern variables
+     */
+    ldr  r0,=tpl_kern
+    movs r1,#NO_NEED_SWITCH_NOR_SCHEDULE
+    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
+    strb r1,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
 
     /*-------------------------------------------------------------------------
      * 8 - pop LR that was saved at stage 1 into PC and return from the handler

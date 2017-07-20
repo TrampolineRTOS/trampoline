@@ -177,14 +177,6 @@ not_callable_by_isr1:
     str   r4,[sp,#KS_LR]
 
     /*-------------------------------------------------------------------------
-     * 6 - Reset the tpl_kern variables
-     */
-    ldr   r4,=tpl_kern
-    movs  r5,#NO_NEED_SWITCH_NOR_SCHEDULE
-    strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
-    strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SCHEDULE]
-
-    /*-------------------------------------------------------------------------
      * 7 - Get the function pointer to the service
      */
     #if (LEVEL_KERNEL_MONITORING >= 3)
@@ -337,6 +329,13 @@ tpl_sc_handler_no_save_running_context:
 
 tpl_sc_handler_no_context_switch:
 
+    /*-------------------------------------------------------------------------
+     * 6 - Reset the tpl_kern variables
+     */
+    ldr   r4,=tpl_kern
+    movs  r5,#NO_NEED_SWITCH_NOR_SCHEDULE
+    strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
+    strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SCHEDULE]
 
     /*-------------------------------------------------------------------------
      * 21 - Restore the link register from the kernel stack.
