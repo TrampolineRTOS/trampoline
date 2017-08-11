@@ -125,8 +125,6 @@ tpl_interruption_handler:
   sw a7, 12(sp)
   sw ra, 16(sp)
 
-  jal store_regs
-
   /* Adjusts reentrancy counter */
   lw a5, tpl_reentrancy_counter
   addi a5, a5, 1
@@ -149,8 +147,6 @@ tpl_no_context_switch:
   lw a5, 4(sp)
   lw a0, 0(sp)
   addi sp, sp, 32
-
-  jal end_except
 
   /* Returns */
   eret
