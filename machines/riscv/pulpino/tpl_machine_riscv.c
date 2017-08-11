@@ -14,7 +14,7 @@
 #include <timer.h>
 #include <uart.h>
 
-#define EXCEPTION_STACK_SIZE 144
+#define EXCEPTION_STACK_SIZE 128
 #define F_CPU 25000000
 
 extern void trampolineSystemCounter();
@@ -140,7 +140,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 {
   struct RISCV_CONTEXT *core_context;
   const tpl_proc_static *the_proc;
-  
+
   the_proc = tpl_stat_proc_table[proc_id];
   core_context = the_proc->context;
 
@@ -183,7 +183,7 @@ void tpl_init_machine()
     for (int i = 0; i < 32; ++i) {
         stack_interruption_masks[i] = tpl_priority_interruption_masks[0];
     }
-    
+
     // Enable interrupts and events
     IER =  tpl_priority_interruption_masks[0];
     EER |= 0x0000000F;
@@ -200,11 +200,11 @@ void tpl_shutdown ()
 
 // Software Interruptions
 __attribute__ ((weak))
-FUNC(void, OS_CODE) SOFT_IRQ0_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
+FUNC(void, OS_CODE) SOFT_IRQ0_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }
 __attribute__ ((weak))
-FUNC(void, OS_CODE) SOFT_IRQ1_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
+FUNC(void, OS_CODE) SOFT_IRQ1_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }
 __attribute__ ((weak))
-FUNC(void, OS_CODE) SOFT_IRQ2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }	
+FUNC(void, OS_CODE) SOFT_IRQ2_Handler (P2CONST(void, OS_APPL_DATA, AUTOMATIC) a){ for(;;); }
 
 FUNC(void, OS_CODE) tpl_ack_irq(void) {
     GET_CURRENT_CORE_ID(core_id);

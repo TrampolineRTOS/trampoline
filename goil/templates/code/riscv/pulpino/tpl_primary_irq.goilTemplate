@@ -82,7 +82,7 @@ foreach objList in objForIRQ do
       end if
     end if
   end foreach
-  let irqStageList += anIrq 
+  let irqStageList += anIrq
 end foreach
 
 #------------------------------------------------------------------------------*
@@ -110,23 +110,22 @@ end foreach
 #define NO_NEED_SWITCH 0
 #define NEED_SWITCH 1
 #define NEED_SAVE 2
-#define EXCEPTION_STACK_SIZE 144
+#define EXCEPTION_STACK_SIZE 128
 
 .extern tpl_kern
 .extern tpl_it_vectors
 .extern tpl_reentrancy_counter
 
 tpl_interruption_handler:
-  addi sp, sp, -EXCEPTION_STACK_SIZE
-  sw x1, 0x8C(x2)
-  jal x1, store_regs
-  la x1, end_except
-
   /* Creates stack */
-  addi sp, sp, -16
-  sw a5, 0(sp)
-  sw a6, 4(sp)
-  sw a7, 8(sp)
+  addi sp, sp, -32
+  sw a0, 0(sp)
+  sw a5, 4(sp)
+  sw a6, 8(sp)
+  sw a7, 12(sp)
+  sw ra, 16(sp)
+
+  jal store_regs
 
   /* Adjusts reentrancy counter */
   lw a5, tpl_reentrancy_counter
@@ -144,14 +143,17 @@ tpl_interruption_handler:
 
 tpl_no_context_switch:
   /* Reloads working registers */
-  la ra, end_except
-  lw a7, 8(sp)
-  lw a6, 4(sp)
-  lw a5, 0(sp)
-  addi sp, sp, 16
-        
+  lw ra, 16(sp)
+  lw a7, 12(sp)
+  lw a6, 8(sp)
+  lw a5, 4(sp)
+  lw a0, 0(sp)
+  addi sp, sp, 32
+
+  jal end_except
+
   /* Returns */
-  ret
+  eret
 
 %
 
@@ -182,4 +184,3 @@ end foreach
 %
 
 /* End of file tpl_second_stage_irq.% !EXTENSIONSECONDSTAGE % */
-
