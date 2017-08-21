@@ -15,7 +15,6 @@
 #define NO_NEED_SWITCH 0
 #define NEED_SWITCH 1
 #define NEED_SAVE 2
-#define EXCEPTION_STACK_SIZE 128
 
 tpl_sc_handler:
     /* Creates stack */
@@ -136,101 +135,100 @@ tpl_save_context:
     .global tpl_save_context
     /* Saves return address and stack pointer */
 
+    sw  sp, 0x00(a0)
+
     csrr a6, mepc
-    sw a6, 4(a0)
+    sw a6, 0x04(a0)
 
     lw a6, tpl_mestatus
-    sw a6, 8(a0)
+    sw a6, 0x08(a0)
 
     lw a5, 16(sp)
-    sw a5, 12(a0) //ra
+    sw a5, 0x0C(a0) //ra
 
     // Saves pile
-    addi sp, sp, -EXCEPTION_STACK_SIZE
-    sw  sp, 0(a0)
-    sw  x3, 0x00(sp)  // gp
-    sw  x4, 0x04(sp)  // tp
-    sw  x5, 0x08(sp)  // t0
-    sw  x6, 0x0c(sp)  // t1
-    sw  x7, 0x10(sp)  // t2
-    sw x11, 0x14(sp)  // a1
-    sw x12, 0x18(sp)  // a2
-    sw x13, 0x1C(sp)  // a3
-    sw x14, 0x20(sp)  // a4
-    sw x28, 0x24(sp)  // t3
-    sw x29, 0x28(sp)  // t4
-    sw x30, 0x2c(sp)  // t5
-    sw x31, 0x30(sp)  // t6
+    sw  x3, 0x10(a0)  // gp
+    sw  x4, 0x14(a0)  // tp
+    sw  x5, 0x18(a0)  // t0
+    sw  x6, 0x1C(a0)  // t1
+    sw  x7, 0x20(a0)  // t2
+    sw x11, 0x24(a0)  // a1
+    sw x12, 0x28(a0)  // a2
+    sw x13, 0x2C(a0)  // a3
+    sw x14, 0x30(a0)  // a4
+    sw x28, 0x34(a0)  // t3
+    sw x29, 0x38(a0)  // t4
+    sw x30, 0x3C(a0)  // t5
+    sw x31, 0x40(a0)  // t6
     csrr x28, 0x7B0
     csrr x29, 0x7B1
     csrr x30, 0x7B2
-    sw x28, 0x34(sp)  // lpstart[0]
-    sw x29, 0x38(sp)  // lpend[0]
-    sw x30, 0x3C(sp)  // lpcount[0]
+    sw x28, 0x44(a0)  // lpstart[0]
+    sw x29, 0x48(a0)  // lpend[0]
+    sw x30, 0x4C(a0)  // lpcount[0]
     csrr x28, 0x7B4
     csrr x29, 0x7B5
     csrr x30, 0x7B6
-    sw x28, 0x40(sp)  // lpstart[1]
-    sw x29, 0x44(sp)  // lpend[1]
-    sw x30, 0x48(sp)  // lpcount[1]
-    sw x8, 0x4C(sp)   // s0
-    sw x9, 0x50(sp)   // s1
-    sw x18, 0x54(sp)  // s2
-    sw x19, 0x58(sp)  // s3
-    sw x20, 0x5C(sp)  // s4
-    sw x21, 0x60(sp)  // s5
-    sw x22, 0x64(sp)  // s6
-    sw x23, 0x68(sp)  // s7
-    sw x24, 0x6C(sp)  // s8
-    sw x25, 0x70(sp)  // s9
-    sw x26, 0x74(sp)  // s10
-    sw x27, 0x78(sp)  // s11
+    sw x28, 0x50(a0)  // lpstart[1]
+    sw x29, 0x54(a0)  // lpend[1]
+    sw x30, 0x58(a0)  // lpcount[1]
+    sw x8, 0x5C(a0)   // s0
+    sw x9, 0x60(a0)   // s1
+    sw x18, 0x64(a0)  // s2
+    sw x19, 0x68(a0)  // s3
+    sw x20, 0x6C(a0)  // s4
+    sw x21, 0x70(a0)  // s5
+    sw x22, 0x74(a0)  // s6
+    sw x23, 0x78(a0)  // s7
+    sw x24, 0x7C(a0)  // s8
+    sw x25, 0x80(a0)  // s9
+    sw x26, 0x84(a0)  // s10
+    sw x27, 0x88(a0)  // s11
 
     ret
 
 tpl_load_context:
     .global tpl_load_context
     /* Reloads return address, interrupt mask, and stack pointer */
-    lw sp, 0(a0)
-
-    lw x27, 0x78(x2)  // s11
-    lw x26, 0x74(x2)  // s10
-    lw x25, 0x70(x2)  // s9
-    lw x24, 0x6C(x2)  // s8
-    lw x23, 0x68(x2)  // s7
-    lw x22, 0x64(x2)  // s6
-    lw x21, 0x60(x2)  // s5
-    lw x20, 0x5C(x2)  // s4
-    lw x19, 0x58(x2)  // s3
-    lw x18, 0x54(x2)  // s2
-    lw x9,  0x50(x2)  // s1
-    lw x8,  0x4c(x2)  // s0
-    lw x28, 0x40(x2)  // lpstart[1]
-    lw x29, 0x44(x2)  // lpend[1]
-    lw x30, 0x48(x2)  // lpcount[1]
+    lw x27, 0x88(a0)  // s11
+    lw x26, 0x84(a0)  // s10
+    lw x25, 0x80(a0)  // s9
+    lw x24, 0x7C(a0)  // s8
+    lw x23, 0x78(a0)  // s7
+    lw x22, 0x74(a0)  // s6
+    lw x21, 0x70(a0)  // s5
+    lw x20, 0x6C(a0)  // s4
+    lw x19, 0x68(a0)  // s3
+    lw x18, 0x64(a0)  // s2
+    lw x9,  0x60(a0)  // s1
+    lw x8,  0x5C(a0)  // s0
+    lw x28, 0x50(a0)  // lpstart[1]
+    lw x29, 0x54(a0)  // lpend[1]
+    lw x30, 0x58(a0)  // lpcount[1]
     csrrw x0, 0x7B4, x28
     csrrw x0, 0x7B5, x29
     csrrw x0, 0x7B6, x30
-    lw x28, 0x34(x2)  // lpstart[0]
-    lw x29, 0x38(x2)  // lpend[0]
-    lw x30, 0x3C(x2)  // lpcount[0]
+    lw x28, 0x44(a0)  // lpstart[0]
+    lw x29, 0x48(a0)  // lpend[0]
+    lw x30, 0x4C(a0)  // lpcount[0]
     csrrw x0, 0x7B0, x28
     csrrw x0, 0x7B1, x29
     csrrw x0, 0x7B2, x30
-    lw  x3, 0x00(x2)
-    lw  x4, 0x04(x2)
-    lw  x5, 0x08(x2)
-    lw  x6, 0x0c(x2)
-    lw  x7, 0x10(x2)
-    lw x11, 0x14(x2)
-    lw x12, 0x18(x2)
-    lw x13, 0x1C(x2)
-    lw x14, 0x20(x2)
-    lw x28, 0x24(x2)
-    lw x29, 0x28(x2)
-    lw x30, 0x2C(x2)
-    lw x31, 0x30(x2)
-    addi sp, sp, EXCEPTION_STACK_SIZE
+    lw x31, 0x40(a0)
+    lw x30, 0x3C(a0)
+    lw x29, 0x38(a0)
+    lw x28, 0x34(a0)
+    lw x14, 0x30(a0)
+    lw x13, 0x2C(a0)
+    lw x12, 0x28(a0)
+    lw x11, 0x24(a0)
+    lw  x7, 0x20(a0)
+    lw  x6, 0x1C(a0)
+    lw  x5, 0x18(a0)
+    lw  x4, 0x14(a0)
+    lw  x3, 0x10(a0)
+
+    lw sp, 0(a0)
 
     lw a6, 4(a0)
     csrw mepc, a6
