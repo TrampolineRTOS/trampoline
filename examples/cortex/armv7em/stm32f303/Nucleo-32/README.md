@@ -1,7 +1,7 @@
 # Bunch of running examples for Cortex-M4
 
 This directory provides a set of examples ready for use on a 
-stm32f303 Nucleo-32 board from ST-microelectronics.
+[stm32f303 Nucleo-32 board from ST-microelectronics](https://os.mbed.com/platforms/ST-Nucleo-F303K8/).
 
 The stm32f303 Nucleo-32 board is equiped with a st-link/v2 embedded debug tool interface.
 
@@ -48,7 +48,7 @@ cd examples/cortex/armv7em/stm32f303/Nucleo-32/blink
 2 - Generate all source files from a configuration with the command :
 
 ```sh
-goil --target=cortex/armv7em/stm32f303/Nucleo-32 -v --templates=../../../../../../goil/templates/ blink.oil
+goil --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
 ```
 
 3 - Compile

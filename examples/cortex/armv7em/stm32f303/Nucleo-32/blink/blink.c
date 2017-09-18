@@ -6,6 +6,7 @@
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"
 
+//init PB.3 as output (LED 1 on pin 13).
 void initUserLed()
 {
   GPIO_InitTypeDef  GPIO_InitStructure;
