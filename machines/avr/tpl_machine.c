@@ -42,7 +42,7 @@ void tpl_shutdown(void)
 {
 	/* remove ITs */
 	/* TODO: update to set idle mode.*/
-	while (1); 
+	while (1);
 }
 
 #define AVR_PUSH(val) {*sp=(u8)(val); sp--;}
@@ -74,7 +74,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 #elif !defined(__AVR_2_BYTE_PC__)
 	#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 16 bits.".
 #endif
-	
+
 	/* put the Task entry point on the stack */
 	tmp = (u16)static_desc->entry;
 	AVR_PUSH((tmp) & 0xFF)
@@ -87,7 +87,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 //	AVR_PUSH(0) //push GPR r16
 //	AVR_PUSH(0x80) //push SREG (enable interrupts)
 //	/* put GPR on the stack. r2 to r17 (except r16), r28,r29 => 17 regs*/
-//    for (a=0;a<17;a++) 
+//    for (a=0;a<17;a++)
 //	{
 //		AVR_PUSH(0);
 //	}
@@ -98,7 +98,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 	//push r28/29, r8 to 17 (12 regs)
 	for (a=0;a<12;a++) AVR_PUSH(0);
 
-	
+
 	/* save the stack pointer */
 	*(static_desc->context) = (u16)(sp);
 }
@@ -114,7 +114,7 @@ void tpl_release_task_lock(void)
 }
 
 /*
- * tpl_init_machine 
+ * tpl_init_machine
  */
 extern void tpl_init_board();
 void tpl_init_machine(void)
@@ -130,6 +130,16 @@ void tpl_enable_interrupts(void)
 }
 
 void tpl_disable_interrupts(void)
+{
+	cli();
+}
+
+void tpl_enable_os_interrupts(void)
+{
+	sei();
+}
+
+void tpl_disable_os_interrupts(void)
 {
 	cli();
 }
