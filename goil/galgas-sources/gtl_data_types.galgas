@@ -2981,9 +2981,15 @@ override getter @gtlSet eqOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlSet gtOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
-    result = @gtlBool.new {
-      !where !emptylstring() !value > [right as @gtlSet value]
-    }
+    if [right as @gtlSet value] == value then
+      result = @gtlBool.new { !where !emptylstring() !false }
+    else
+      @bool included = true
+      for (val) in [right as @gtlSet value] while included do
+        if not [value hasKey !val] then included = false end
+      end
+      result = @gtlBool.new { !where !emptylstring() !included }
+    end
   else
     error right : "set expected" : result
   end
@@ -2991,9 +2997,11 @@ override getter @gtlSet gtOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlSet geOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
-    result = @gtlBool.new {
-      !where !emptylstring() !value >= [right as @gtlSet value]
-    }
+    @bool included = true
+    for (val) in [right as @gtlSet value] while included do
+      if not [value hasKey !val] then included = false end
+    end
+    result = @gtlBool.new { !where !emptylstring() !included }
   else
     error right : "set expected" : result
   end
@@ -3001,9 +3009,15 @@ override getter @gtlSet geOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlSet ltOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
-    result = @gtlBool.new {
-      !where !emptylstring() !value < [right as @gtlSet value]
-    }
+    if [right as @gtlSet value] == value then
+      result = @gtlBool.new { !where !emptylstring() !false }
+    else
+      @bool included = true
+      for (val) in value while included do
+        if not [[right as @gtlSet value] hasKey !val] then included = false end
+      end
+      result = @gtlBool.new { !where !emptylstring() !included }
+    end
   else
     error right : "set expected" : result
   end
@@ -3011,9 +3025,11 @@ override getter @gtlSet ltOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlSet leOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
-    result = @gtlBool.new {
-      !where !emptylstring() !value <= [right as @gtlSet value]
-    }
+    @bool included = true
+    for (val) in value while included do
+      if not [[right as @gtlSet value] hasKey !val] then included = false end
+    end
+    result = @gtlBool.new { !where !emptylstring() !included }
   else
     error right : "set expected" : result
   end

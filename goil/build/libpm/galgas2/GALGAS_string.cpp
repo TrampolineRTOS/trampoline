@@ -535,6 +535,19 @@ GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS)
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+GALGAS_uint GALGAS_string::getter_utf_38_Length (UNUSED_LOCATION_ARGS) const {
+  GALGAS_uint result ;
+  if (isValid ()) {
+    C_Data data ;
+    data.appendString (mString) ;
+    result = GALGAS_uint ((uint32_t) data.length ()) ;
+  }
+  return result ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS_string GALGAS_string::getter_utf_38_RepresentationWithoutDelimiters (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {

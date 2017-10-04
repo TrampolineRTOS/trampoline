@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.1.8    Updated to GalGas 3.3.7
 # 3.1.7    Updated to GTL 3.0.12. Added a user template directory
 # 3.1.6    Updated to GTL 3.0.11. Expression data type, where list getter and
 #          where map getter. Added elementAtIndex list getter
@@ -57,7 +58,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:7) -> "goil" {
+project (3:1:8) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

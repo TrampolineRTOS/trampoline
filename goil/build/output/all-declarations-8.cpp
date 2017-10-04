@@ -6333,7 +6333,7 @@ C_galgas_function_descriptor functionDescriptor_pathWithExtension ("pathWithExte
 GALGAS_library function_emptyLib (C_Compiler * /* inCompiler */
                                   COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_library result_result ; // Returned variable
-  result_result = GALGAS_library::constructor_new (GALGAS_gtlFuncMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 325)), GALGAS_gtlGetterMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 325)), GALGAS_gtlSetterMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 325)), GALGAS_gtlTemplateMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 325)), GALGAS_stringset::constructor_emptySet (SOURCE_FILE ("gtl_types.galgas", 325))  COMMA_SOURCE_FILE ("gtl_types.galgas", 325)) ;
+  result_result = GALGAS_library::constructor_new (GALGAS_gtlFuncMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 323)), GALGAS_gtlGetterMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 323)), GALGAS_gtlSetterMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 323)), GALGAS_gtlTemplateMap::constructor_emptyMap (SOURCE_FILE ("gtl_types.galgas", 323)), GALGAS_stringset::constructor_emptySet (SOURCE_FILE ("gtl_types.galgas", 323))  COMMA_SOURCE_FILE ("gtl_types.galgas", 323)) ;
 //---
   return result_result ;
 }

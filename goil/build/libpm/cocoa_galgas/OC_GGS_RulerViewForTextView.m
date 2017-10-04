@@ -81,7 +81,8 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
     nil
   ] ;
 //-------- Note: ruler view and text view are both flipped
-  OC_GGS_TextView * textView = self.scrollView.documentView ;
+  NSScrollView * __strong scrollView = self.scrollView ;
+  OC_GGS_TextView * textView = scrollView.documentView ;
   NSLayoutManager * lm = textView.layoutManager ;
   NSTextContainer * textContainer = textView.textContainer ;
   const NSRange selectedRange = textView.selectedRange ;
@@ -92,7 +93,7 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
   [lm ensureLayoutForTextContainer:textContainer] ;
 //-------- Find the characters that are currently visible
   const NSRange visibleGlyphRange = [lm
-    glyphRangeForBoundingRect:self.scrollView.contentView.bounds
+    glyphRangeForBoundingRect:scrollView.contentView.bounds
     inTextContainer:textContainer
   ] ;
   const NSRange visibleRange = [lm characterRangeForGlyphRange:visibleGlyphRange actualGlyphRange:NULL] ;

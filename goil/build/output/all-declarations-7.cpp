@@ -3142,72 +3142,72 @@ static GALGAS_lstring extensionGetter_gtlContext_fullTemplateFileName (const cPt
   GALGAS_string var_prefixedTemplatePath_2699 ;
   GALGAS_string var_hierarchicalPath_2726 ;
   GALGAS_string var_rootPath_2745 ;
-  var_prefixedTemplatePath_2699 = extensionGetter_stringByAppendingPath (object->mProperty_userTemplateDirectory, var_fullPref_2617.getter_string (SOURCE_FILE ("gtl_types.galgas", 123)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 123)) ;
+  var_prefixedTemplatePath_2699 = extensionGetter_stringByAppendingPath (object->mProperty_userTemplateDirectory, var_fullPref_2617.getter_string (SOURCE_FILE ("gtl_types.galgas", 121)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 121)) ;
   var_hierarchicalPath_2726 = object->mProperty_path ;
-  var_rootPath_2745 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 127)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 127)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 125)) ;
-  if (var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 130)).isValid ()) {
-    uint32_t variant_3078 = var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 130)).uintValue () ;
-    bool loop_3078 = true ;
-    while (loop_3078) {
-        GALGAS_string var_fullPath_3129 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, var_hierarchicalPath_2726, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 133)), inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 134)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 133)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 131)) ;
-        const enumGalgasBool test_2 = var_fullPath_3129.getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 138)).boolEnum () ;
+  var_rootPath_2745 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 125)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 125)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 123)) ;
+  if (var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 128)).isValid ()) {
+    uint32_t variant_3042 = var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 128)).uintValue () ;
+    bool loop_3042 = true ;
+    while (loop_3042) {
+        GALGAS_string var_fullPath_3093 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, var_hierarchicalPath_2726, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 131)), inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 132)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 131)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 129)) ;
+        const enumGalgasBool test_2 = var_fullPath_3093.getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 136)).boolEnum () ;
         if (kBoolTrue == test_2) {
-          var_rootPath_2745 = var_fullPath_3129 ;
+          var_rootPath_2745 = var_fullPath_3093 ;
           var_found_2660 = GALGAS_bool (true) ;
         }
-      GALGAS_bool test_3 = var_found_2660.operator_not (SOURCE_FILE ("gtl_types.galgas", 145)) ;
+      GALGAS_bool test_3 = var_found_2660.operator_not (SOURCE_FILE ("gtl_types.galgas", 143)) ;
       if (kBoolTrue == test_3.boolEnum ()) {
-        test_3 = GALGAS_bool (kIsStrictSup, var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 145)).objectCompare (GALGAS_uint ((uint32_t) 0U))) ;
+        test_3 = GALGAS_bool (kIsStrictSup, var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 143)).objectCompare (GALGAS_uint ((uint32_t) 0U))) ;
       }
-      loop_3078 = test_3.isValid () ;
-      if (loop_3078) {
-        loop_3078 = test_3.boolValue () ;
+      loop_3042 = test_3.isValid () ;
+      if (loop_3042) {
+        loop_3042 = test_3.boolValue () ;
       }
-      if (loop_3078 && (0 == variant_3078)) {
-        loop_3078 = false ;
-        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_types.galgas", 130)) ;
+      if (loop_3042 && (0 == variant_3042)) {
+        loop_3042 = false ;
+        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_types.galgas", 128)) ;
       }
-      if (loop_3078) {
-        variant_3078 -- ;
-        var_hierarchicalPath_2726 = var_hierarchicalPath_2726.getter_stringByDeletingLastPathComponent (SOURCE_FILE ("gtl_types.galgas", 146)) ;
+      if (loop_3042) {
+        variant_3042 -- ;
+        var_hierarchicalPath_2726 = var_hierarchicalPath_2726.getter_stringByDeletingLastPathComponent (SOURCE_FILE ("gtl_types.galgas", 144)) ;
       }
     }
   }
-  const enumGalgasBool test_4 = var_found_2660.operator_not (SOURCE_FILE ("gtl_types.galgas", 149)).boolEnum () ;
+  const enumGalgasBool test_4 = var_found_2660.operator_not (SOURCE_FILE ("gtl_types.galgas", 147)).boolEnum () ;
   if (kBoolTrue == test_4) {
-    var_prefixedTemplatePath_2699 = extensionGetter_stringByAppendingPath (object->mProperty_templateDirectory, var_fullPref_2617.getter_string (SOURCE_FILE ("gtl_types.galgas", 154)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 154)) ;
+    var_prefixedTemplatePath_2699 = extensionGetter_stringByAppendingPath (object->mProperty_templateDirectory, var_fullPref_2617.getter_string (SOURCE_FILE ("gtl_types.galgas", 152)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 152)) ;
     var_hierarchicalPath_2726 = object->mProperty_path ;
-    var_rootPath_2745 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 158)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 158)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 156)) ;
-    if (var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 162)).isValid ()) {
-      uint32_t variant_3961 = var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 162)).uintValue () ;
-      bool loop_3961 = true ;
-      while (loop_3961) {
-          GALGAS_string var_fullPath_4014 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, var_hierarchicalPath_2726, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 165)), inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 166)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 165)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 163)) ;
-          const enumGalgasBool test_5 = var_fullPath_4014.getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 170)).boolEnum () ;
+    var_rootPath_2745 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 156)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 156)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 154)) ;
+    if (var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 160)).isValid ()) {
+      uint32_t variant_3923 = var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 160)).uintValue () ;
+      bool loop_3923 = true ;
+      while (loop_3923) {
+          GALGAS_string var_fullPath_3976 = function_pathWithExtension (inArgument_context, extensionGetter_stringByAppendingPath (extensionGetter_stringByAppendingPath (var_prefixedTemplatePath_2699, var_hierarchicalPath_2726, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 163)), inArgument_simpleName.getter_string (SOURCE_FILE ("gtl_types.galgas", 164)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 163)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 161)) ;
+          const enumGalgasBool test_5 = var_fullPath_3976.getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 168)).boolEnum () ;
           if (kBoolTrue == test_5) {
-            var_rootPath_2745 = var_fullPath_4014 ;
+            var_rootPath_2745 = var_fullPath_3976 ;
             var_found_2660 = GALGAS_bool (true) ;
           }
-        GALGAS_bool test_6 = var_found_2660.operator_not (SOURCE_FILE ("gtl_types.galgas", 177)) ;
+        GALGAS_bool test_6 = var_found_2660.operator_not (SOURCE_FILE ("gtl_types.galgas", 175)) ;
         if (kBoolTrue == test_6.boolEnum ()) {
-          test_6 = GALGAS_bool (kIsStrictSup, var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 177)).objectCompare (GALGAS_uint ((uint32_t) 0U))) ;
+          test_6 = GALGAS_bool (kIsStrictSup, var_hierarchicalPath_2726.getter_length (SOURCE_FILE ("gtl_types.galgas", 175)).objectCompare (GALGAS_uint ((uint32_t) 0U))) ;
         }
-        loop_3961 = test_6.isValid () ;
-        if (loop_3961) {
-          loop_3961 = test_6.boolValue () ;
+        loop_3923 = test_6.isValid () ;
+        if (loop_3923) {
+          loop_3923 = test_6.boolValue () ;
         }
-        if (loop_3961 && (0 == variant_3961)) {
-          loop_3961 = false ;
-          inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_types.galgas", 162)) ;
+        if (loop_3923 && (0 == variant_3923)) {
+          loop_3923 = false ;
+          inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_types.galgas", 160)) ;
         }
-        if (loop_3961) {
-          variant_3961 -- ;
-          var_hierarchicalPath_2726 = var_hierarchicalPath_2726.getter_stringByDeletingLastPathComponent (SOURCE_FILE ("gtl_types.galgas", 178)) ;
+        if (loop_3923) {
+          variant_3923 -- ;
+          var_hierarchicalPath_2726 = var_hierarchicalPath_2726.getter_stringByDeletingLastPathComponent (SOURCE_FILE ("gtl_types.galgas", 176)) ;
         }
       }
     }
   }
-  result_fullName = GALGAS_lstring::constructor_new (var_rootPath_2745, inArgument_simpleName.getter_location (SOURCE_FILE ("gtl_types.galgas", 184))  COMMA_SOURCE_FILE ("gtl_types.galgas", 182)) ;
+  result_fullName = GALGAS_lstring::constructor_new (var_rootPath_2745, inArgument_simpleName.getter_location (SOURCE_FILE ("gtl_types.galgas", 182))  COMMA_SOURCE_FILE ("gtl_types.galgas", 180)) ;
 //---
   return result_fullName ;
 }

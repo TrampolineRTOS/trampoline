@@ -385,13 +385,13 @@ GALGAS_string extensionGetter_stringByAppendingPath (const GALGAS_string & inObj
     result_result = constinArgument_pathToAppend ;
   }else if (kBoolFalse == test_1) {
     const GALGAS_string temp_2 = inObject ;
-    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, temp_2.getter_lastCharacter (inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 195)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
+    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, temp_2.getter_lastCharacter (inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 193)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
     if (kBoolTrue == test_3) {
       const GALGAS_string temp_4 = inObject ;
-      result_result = temp_4.add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 196)) ;
+      result_result = temp_4.add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 194)) ;
     }else if (kBoolFalse == test_3) {
       const GALGAS_string temp_5 = inObject ;
-      result_result = temp_5.add_operation (GALGAS_char (TO_UNICODE (47)).getter_string (SOURCE_FILE ("gtl_types.galgas", 198)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 198)).add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 198)) ;
+      result_result = temp_5.add_operation (GALGAS_char (TO_UNICODE (47)).getter_string (SOURCE_FILE ("gtl_types.galgas", 196)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 196)).add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 196)) ;
     }
   }
 //---
@@ -711,14 +711,14 @@ void extensionSetter_replaceOrCreate (GALGAS_gtlVarMap & ioObject,
                                       C_Compiler * inCompiler
                                       COMMA_UNUSED_LOCATION_ARGS) {
   const GALGAS_gtlVarMap temp_0 = ioObject ;
-  const enumGalgasBool test_1 = temp_0.getter_hasKey (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 227)) COMMA_SOURCE_FILE ("gtl_types.galgas", 227)).boolEnum () ;
+  const enumGalgasBool test_1 = temp_0.getter_hasKey (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 225)) COMMA_SOURCE_FILE ("gtl_types.galgas", 225)).boolEnum () ;
   if (kBoolTrue == test_1) {
     {
-    ioObject.setter_setValueForKey (constinArgument_data, constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 228)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 228)) ;
+    ioObject.setter_setValueForKey (constinArgument_data, constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 226)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 226)) ;
     }
   }else if (kBoolFalse == test_1) {
     {
-    ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 230)) ;
+    ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 228)) ;
     }
   }
 }
@@ -737,15 +737,15 @@ void extensionSetter_replaceOrCreateAtLevel (GALGAS_gtlVarMap & ioObject,
                                              C_Compiler * inCompiler
                                              COMMA_UNUSED_LOCATION_ARGS) {
   const GALGAS_gtlVarMap temp_0 = ioObject ;
-  const enumGalgasBool test_1 = temp_0.getter_hasKeyAtLevel (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 239)), constinArgument_level COMMA_SOURCE_FILE ("gtl_types.galgas", 239)).boolEnum () ;
+  const enumGalgasBool test_1 = temp_0.getter_hasKeyAtLevel (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 237)), constinArgument_level COMMA_SOURCE_FILE ("gtl_types.galgas", 237)).boolEnum () ;
   if (kBoolTrue == test_1) {
     {
-    GALGAS_gtlData joker_6210 ; // Joker input parameter
-    ioObject.setter_del (constinArgument_key, joker_6210, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 240)) ;
+    GALGAS_gtlData joker_6170 ; // Joker input parameter
+    ioObject.setter_del (constinArgument_key, joker_6170, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 238)) ;
     }
   }
   {
-  ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 242)) ;
+  ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 240)) ;
   }
 }
 
@@ -1676,30 +1676,30 @@ void extensionSetter_getTemplate (GALGAS_gtlTemplateMap & ioObject,
   outArgument_found.drop () ; // Release 'out' argument
   outArgument_result.drop () ; // Release 'out' argument
   const GALGAS_gtlTemplateMap temp_0 = ioObject ;
-  const enumGalgasBool test_1 = temp_0.getter_hasKey (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 288)) COMMA_SOURCE_FILE ("gtl_types.galgas", 288)).boolEnum () ;
+  const enumGalgasBool test_1 = temp_0.getter_hasKey (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 286)) COMMA_SOURCE_FILE ("gtl_types.galgas", 286)).boolEnum () ;
   if (kBoolTrue == test_1) {
     outArgument_found = GALGAS_bool (true) ;
     const GALGAS_gtlTemplateMap temp_2 = ioObject ;
-    temp_2.method_get (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 290)) ;
+    temp_2.method_get (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 288)) ;
   }else if (kBoolFalse == test_1) {
-    const enumGalgasBool test_3 = inArgument_path.getter_string (HERE).getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 292)).boolEnum () ;
+    const enumGalgasBool test_3 = inArgument_path.getter_string (HERE).getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 290)).boolEnum () ;
     if (kBoolTrue == test_3) {
       outArgument_found = GALGAS_bool (true) ;
-      GALGAS_gtlInstructionList var_program_7947 ;
-      var_program_7947.drop () ;
-      cGrammar_gtl_5F_grammar::_performSourceFileParsing_ (inCompiler, inArgument_path, constinArgument_context, ioArgument_lib, var_program_7947  COMMA_SOURCE_FILE ("gtl_types.galgas", 294)) ;
-      outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 298)), var_program_7947  COMMA_SOURCE_FILE ("gtl_types.galgas", 298)) ;
+      GALGAS_gtlInstructionList var_program_7907 ;
+      var_program_7907.drop () ;
+      cGrammar_gtl_5F_grammar::_performSourceFileParsing_ (inCompiler, inArgument_path, constinArgument_context, ioArgument_lib, var_program_7907  COMMA_SOURCE_FILE ("gtl_types.galgas", 292)) ;
+      outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 296)), var_program_7907  COMMA_SOURCE_FILE ("gtl_types.galgas", 296)) ;
       {
-      ioObject.setter_put (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 299)) ;
+      ioObject.setter_put (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 297)) ;
       }
     }else if (kBoolFalse == test_3) {
       outArgument_found = GALGAS_bool (false) ;
       const enumGalgasBool test_4 = inArgument_ifExists.boolEnum () ;
       if (kBoolTrue == test_4) {
-        outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 303)), GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_types.galgas", 303))  COMMA_SOURCE_FILE ("gtl_types.galgas", 303)) ;
+        outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 301)), GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_types.galgas", 301))  COMMA_SOURCE_FILE ("gtl_types.galgas", 301)) ;
       }else if (kBoolFalse == test_4) {
         TC_Array <C_FixItDescription> fixItArray5 ;
-        inCompiler->emitSemanticError (inArgument_path.getter_location (SOURCE_FILE ("gtl_types.galgas", 305)), GALGAS_string ("template file not found at \"").add_operation (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 305)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 305)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 305)), fixItArray5  COMMA_SOURCE_FILE ("gtl_types.galgas", 305)) ;
+        inCompiler->emitSemanticError (inArgument_path.getter_location (SOURCE_FILE ("gtl_types.galgas", 303)), GALGAS_string ("template file not found at \"").add_operation (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 303)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 303)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 303)), fixItArray5  COMMA_SOURCE_FILE ("gtl_types.galgas", 303)) ;
         outArgument_result.drop () ; // Release error dropped variable
       }
     }
