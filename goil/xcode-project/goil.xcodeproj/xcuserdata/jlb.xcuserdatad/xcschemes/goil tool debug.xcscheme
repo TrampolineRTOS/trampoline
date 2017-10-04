@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3C102B71C593D98D96093FDE"
+               BlueprintIdentifier = "0D927DCD0980F86024E5208B"
                BuildableName = "goil-debug"
                BlueprintName = "goil tool debug"
                ReferencedContainer = "container:goil.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3C102B71C593D98D96093FDE"
+            BlueprintIdentifier = "0D927DCD0980F86024E5208B"
             BuildableName = "goil-debug"
             BlueprintName = "goil tool debug"
             ReferencedContainer = "container:goil.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3C102B71C593D98D96093FDE"
+            BlueprintIdentifier = "0D927DCD0980F86024E5208B"
             BuildableName = "goil-debug"
             BlueprintName = "goil tool debug"
             ReferencedContainer = "container:goil.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3C102B71C593D98D96093FDE"
+            BlueprintIdentifier = "0D927DCD0980F86024E5208B"
             BuildableName = "goil-debug"
             BlueprintName = "goil tool debug"
             ReferencedContainer = "container:goil.xcodeproj">
