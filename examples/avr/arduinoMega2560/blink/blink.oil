@@ -29,12 +29,13 @@ CPU test {
       COMPILER = "avr-gcc";
       LINKER = "avr-gcc";
       ASSEMBLER = "avr-gcc";
+      COPIER = "avr-objcopy";
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;
   };
 
-  APPMODE std {};
+  APPMODE stdAppmode {};
   
   ALARM periodicAl {
     COUNTER= SystemCounter;
@@ -44,14 +45,13 @@ CPU test {
     AUTOSTART = TRUE {
       ALARMTIME = 1000; //activated each 1024 ms
       CYCLETIME = 1000; //activated each 1024 ms
-      APPMODE = std;
+      APPMODE = stdAppmode;
     };
   };
 
   TASK periodicTask {
     PRIORITY = 20;
     AUTOSTART = FALSE;
-    //AUTOSTART = TRUE {APPMODE=std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
     STACKSIZE = 256;

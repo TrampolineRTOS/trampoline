@@ -52,7 +52,6 @@ CPU test {
   TASK periodicTask {
     PRIORITY = 20;
     AUTOSTART = FALSE;
-    //AUTOSTART = TRUE {APPMODE=std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
     STACKSIZE = 256;
