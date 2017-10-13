@@ -14,6 +14,15 @@ CPU avrArduino {
 
 CPU arduino {
 
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+  };
+
   POSTCOMMAND flash {
     COMMAND flash {
       MESSAGE = "Flashing";

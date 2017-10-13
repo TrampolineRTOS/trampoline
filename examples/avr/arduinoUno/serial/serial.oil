@@ -1,17 +1,10 @@
 /* Running the following example:
  * just call goil a first time using the command line:
- * goil --target=avr/arduino --templates=../../../../goil/templates/ serial.oil
- * you may have to update ARDUINO section (l.20) for your configuration.
+ * goil --target=avr/arduino/uno --templates=../../../../goil/templates/ serial.oil
+ * you may have to update ARDUINO section (l.13) for your configuration.
  *
- * Then a Makefile is generated. Just type:
- * make -s
- * To clean the project, call:
- * make clean
- * It will remove all generated files, except the Makefile.
- * to flash to the Arduino:
- * make -s flash
- * It will use the PORT defined in the ARDUINO part.
  */
+
 OIL_VERSION = "2.5" : "test" ;
 
 CPU test {    
@@ -19,7 +12,6 @@ CPU test {
     STATUS = STANDARD;
     ARDUINO = TRUE {
       SERIAL = TRUE; //use the serial interface 
-      PORT = "/dev/tty.usbmodem1411"; //serial port (flash)
     };
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../..";

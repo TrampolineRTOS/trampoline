@@ -22,20 +22,15 @@ The commands builds the binary file (both the `.elf` and `.hex` files).
 
 #flash
 
-***DEPRECATED***
+Use the `avrdude` utility, that comes with Arduino.
 
-The serial device name should be defined in the oil file (`CPU -> OS -> ARDUINO section`). For example:
+```sh
+avrdude -c wiring -p m2560 -D -P /dev/ttyACM0 -U flash:w:trampuinoSerial.hex
+```
 
-`      PORT = "/dev/tty.usbmodem1411";`
+where:
 
-$make -s flash
-
-or using `avrdude` directly:
-
-`$avrdude -c arduino -p m328p -P /dev/tty.usbmodem1421 -U flash:w:AVRTrampolineBin.hex`
-
-In this example:
-  * `-p m328p` is for the ATMega328p
-  * `-c avrispmkII` is the (ISP programmer on the Arduino Uno) on the USB interface. 
+  * `-p m2560 ` is for the ATMega2560p
+  * `-c wiring ` is the (ISP programmer on the Arduino Mega) on the USB interface. 
     Type 'avrdude -c toto' to get the full programer list
-  * `-P` the device name used in the Arduino User Interface.
+  * `-P` the device name used in the Arduino User Interface (COMmunication port)
