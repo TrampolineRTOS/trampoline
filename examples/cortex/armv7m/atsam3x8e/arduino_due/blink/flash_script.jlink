@@ -1,0 +1,3 @@
+r
+h
+loadbin blink_exe.elf.bin , 0x00080000

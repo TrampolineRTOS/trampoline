@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="core" InternalType="">
+  <Plugins>
+    <Plugin Name="CMakePlugin">
+      <![CDATA[[{
+  "name": "Debug",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }]]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="cores">
+    <VirtualDirectory Name="arduino">
+      <VirtualDirectory Name="arch_arm">
+        <File Name="../../cores/arduino/arch_arm/CoreHardwareSerial.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/CorePrint.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/CoreRingBuffer.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/CoreRingBuffer.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/CoreStream.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/CoreString.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/core_abi.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/core_character.h"/>
+        <File Name="../../cores/arduino/arch_arm/core_hooks.c"/>
+        <File Name="../../cores/arduino/arch_arm/core_itoa.c"/>
+        <File Name="../../cores/arduino/arch_arm/core_itoa.h"/>
+        <File Name="../../cores/arduino/arch_arm/core_main.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/core_shift.c"/>
+        <File Name="../../cores/arduino/arch_arm/core_shift.h"/>
+        <File Name="../../cores/arduino/arch_arm/CoreIPAddress.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/core_cortex_vectors.c"/>
+        <File Name="../../cores/arduino/arch_arm/core_cortex_vectors.h"/>
+        <File Name="../../cores/arduino/arch_arm/core_hooks.h"/>
+        <File Name="../../cores/arduino/arch_arm/core_init.h"/>
+        <File Name="../../cores/arduino/arch_arm/CorePrint.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/CorePrintable.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/CoreStream.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/CoreString.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/IPAddress.hpp"/>
+        <File Name="../../cores/arduino/arch_arm/IPAddress.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/core_math.cpp"/>
+        <File Name="../../cores/arduino/arch_arm/core_math.hpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="arch_common">
+        <File Name="../../cores/arduino/arch_common/core_binary.h"/>
+        <File Name="../../cores/arduino/arch_common/core_constants.h"/>
+        <File Name="../../cores/arduino/arch_common/core_new.cpp"/>
+        <File Name="../../cores/arduino/arch_common/Client.hpp"/>
+        <File Name="../../cores/arduino/arch_common/Server.hpp"/>
+        <File Name="../../cores/arduino/arch_common/core_new.hpp"/>
+        <File Name="../../cores/arduino/arch_common/Udp.hpp"/>
+        <File Name="../../cores/arduino/arch_common/core_reset.h"/>
+        <File Name="../../cores/arduino/arch_common/core_watchdog.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="avr_compat">
+        <File Name="../../cores/arduino/avr_compat/core_dtostrf.c"/>
+        <File Name="../../cores/arduino/avr_compat/core_dtostrf.h"/>
+        <File Name="../../cores/arduino/avr_compat/core_interrupt.h"/>
+        <File Name="../../cores/arduino/avr_compat/core_pgmspace.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="port_sam">
+        <File Name="../../cores/arduino/port_sam/Arduino.h"/>
+        <File Name="../../cores/arduino/port_sam/CoreSPI.cpp"/>
+        <File Name="../../cores/arduino/port_sam/CoreWire.cpp"/>
+        <File Name="../../cores/arduino/port_sam/CoreWire.hpp"/>
+        <File Name="../../cores/arduino/port_sam/core_analog.c"/>
+        <File Name="../../cores/arduino/port_sam/core_analog.h"/>
+        <File Name="../../cores/arduino/port_sam/core_delay.c"/>
+        <File Name="../../cores/arduino/port_sam/core_delay.h"/>
+        <File Name="../../cores/arduino/port_sam/core_digital.c"/>
+        <File Name="../../cores/arduino/port_sam/core_digital.h"/>
+        <File Name="../../cores/arduino/port_sam/core_interrupts.c"/>
+        <File Name="../../cores/arduino/port_sam/core_interrupts.h"/>
+        <File Name="../../cores/arduino/port_sam/core_pulse.cpp"/>
+        <File Name="../../cores/arduino/port_sam/core_private.c"/>
+        <File Name="../../cores/arduino/port_sam/CoreSerial.cpp"/>
+        <File Name="../../cores/arduino/port_sam/core_private.h"/>
+        <File Name="../../cores/arduino/port_sam/core_variant.h"/>
+        <File Name="../../cores/arduino/port_sam/core_init.c"/>
+        <File Name="../../cores/arduino/port_sam/CoreSerial.hpp"/>
+        <File Name="../../cores/arduino/port_sam/CoreSPI.hpp"/>
+        <File Name="../../cores/arduino/port_sam/core_pulse.hpp"/>
+        <File Name="../../cores/arduino/port_sam/core_tone.cpp"/>
+        <File Name="../../cores/arduino/port_sam/core_tone.hpp"/>
+        <File Name="../../cores/arduino/port_sam/core_reset.c"/>
+        <File Name="../../cores/arduino/port_sam/core_watchdog.c"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Dynamic Library">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="Cross GCC ( arm-none-eabi )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g" C_Options="-g" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(ProjectPath)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand>make DEBUG=1 clean all</RebuildCommand>
+        <CleanCommand>make DEBUG=1 clean</CleanCommand>
+        <BuildCommand>make DEBUG=1 all</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory>$(ProjectPath)</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="Cross GCC ( arm-none-eabi )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-O2" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/variants/atmel_sam4e_xplained_pro" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand>make DEBUG=0 clean all</RebuildCommand>
+        <CleanCommand>make DEBUG=0 clean</CleanCommand>
+        <BuildCommand>make DEBUG=0 all</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory>$(WorkspacePath)/variants/atmel_sam4e_xplained_pro</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>
