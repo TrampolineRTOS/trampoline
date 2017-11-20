@@ -645,18 +645,6 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
       proc_name_table[TPL_KERN_REF(kern).running_id])
     );
 
-    /*
-     * If the running process is an ISR2 and ISR2 priority masking is enabled
-     * tpl_unmask_isr2_priority is called for the preempted ISR2 so that
-     * lowest priority ISR2 interrupts are unmasked
-     */
-    #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
-    if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
-    {
-      tpl_unmask_isr2_priority(TPL_KERN_REF(kern).running_id);
-    }
-    #endif /* WITH_ISR2_PRIORITY_MASKING */
-
     /* The current running task becomes READY */
     TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
 
@@ -669,12 +657,24 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
 
+  #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
+  /*
+   * If the running process is an ISR2 and ISR2 priority masking is enabled
+   * tpl_unmask_isr2_priority is called for the preempted or terminated ISR2
+   * so that lowest priority ISR2 interrupts are unmasked. When OS starts,
+   * s_running is NULL, so it is check to prevent NULL dereference.
+   */
+  if (TPL_KERN_REF(kern).s_running       != NULL        &&
+      TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
+  {
+    tpl_unmask_isr2_priority(TPL_KERN_REF(kern).running_id);
+  }
+
   /*
    * If the elected process is an ISR2 and ISR2 priority masking is enabled
    * tpl_mask_isr2_priority is called for the started ISR2 so that lowest
    * priority ISR2 interrupts are masked
    */
-  #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
   if (TPL_KERN_REF(kern).s_elected->type == IS_ROUTINE)
   {
     tpl_mask_isr2_priority(TPL_KERN_REF(kern).elected_id);
