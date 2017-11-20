@@ -665,7 +665,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   }
 
   /* if the elected process is an ISR2, mask lower ISR2 interrupts */
-  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
+  if (TPL_KERN_REF(kern).s_elected->type == IS_ROUTINE)
   {
     tpl_mask_isr2_priority(TPL_KERN_REF(kern).elected_id);
   }
