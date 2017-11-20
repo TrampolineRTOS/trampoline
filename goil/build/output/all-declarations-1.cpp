@@ -9845,6 +9845,21 @@ bool C_Lexique_goil_5F_lexique::parseLexicalToken (void) {
         }else{
           lexicalError (gLexicalMessage_goil_5F_lexique_unterminatedLitteralString COMMA_LINE_AND_SOURCE_FILE) ;
         }
+      }else if (testForInputUTF32Char (TO_UNICODE ('\''))) {
+        do {
+          if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('&')) || testForInputUTF32CharRange (TO_UNICODE ('('), TO_UNICODE (65533))) {
+            ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_a_5F_string, previousChar ()) ;
+          }else{
+            mLoop = false ;
+          }
+        }while (mLoop) ;
+        mLoop = true ;
+        if (testForInputUTF32Char (TO_UNICODE ('\''))) {
+          token.mTokenCode = kToken_string ;
+          enterToken (token) ;
+        }else{
+          lexicalError (gLexicalMessage_goil_5F_lexique_unterminatedLitteralString COMMA_LINE_AND_SOURCE_FILE) ;
+        }
       }else if (testForInputUTF32Char (TO_UNICODE ('<'))) {
         do {
           if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('=')) || testForInputUTF32CharRange (TO_UNICODE ('\?'), TO_UNICODE (65533))) {
