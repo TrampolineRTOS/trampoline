@@ -5,7 +5,7 @@ This directory shows some examples for 8 bits AVR targets, including some Arduin
 For all these examples, the Gcc cross-compiler is required.
 
 ##avr-gcc cross-compiler
-**Linux** (Debian/Ubuntu) -> `sudo apt-get install avr-lic gcc-avr avrdude`
+**Linux** (Debian/Ubuntu) -> `sudo apt-get install avr-libc gcc-avr avrdude`
 
 **MacOSX**  -> AVR CrossPack ([http://www.obdev.at/products/crosspack/download.html]())
 

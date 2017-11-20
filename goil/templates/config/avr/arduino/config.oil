@@ -54,13 +54,11 @@ IMPLEMENTATION Trampoline {
   OS {
         BOOLEAN [
           TRUE {
-            //port to flash Arduino => marche pas!
-            STRING PORT = "/dev/ttyUSB0";
-            
             //BOOLEAN SPI = FALSE;
             //BOOLEAN I2C = FALSE;
             //BOOLEAN SERVO = FALSE;
             BOOLEAN SERIAL = FALSE;
+            //BOOLEAN PWM = TRUE;
             //BOOLEAN NRF24 = FALSE;
             //BOOLEAN TINYRTC = FALSE;
             //BOOLEAN TIME = FALSE;
