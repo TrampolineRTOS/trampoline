@@ -102,10 +102,10 @@ make = makefile.Make(goal)
 #----------------------------------------------------------------------
 #--- Various variables used after
 #----------------------------------------------------------------------
-compiler = "% !OS::BUILD_S::COMPILER %"
-cppCompiler = "% !OS::BUILD_S::CPPCOMPILER %"
-linker = "% !OS::BUILD_S::LINKER %"
-assembler = "% !OS::BUILD_S::ASSEMBLER %"
+compiler = r"% !OS::BUILD_S::COMPILER %"
+cppCompiler = r"% !OS::BUILD_S::CPPCOMPILER %"
+linker = r"% !OS::BUILD_S::LINKER %"
+assembler = r"% !OS::BUILD_S::ASSEMBLER %"
 autosar = % ! TrueFalse(AUTOSAR) %
 autosar_sc = % !OS::SCALABILITYCLASS %
 autosar_osapplications = % !TrueFalse(OS::SCALABILITYCLASS == 3 | OS::SCALABILITYCLASS == 4) %
@@ -291,8 +291,8 @@ if "gcc" in compiler:
     libcPath = os.path.dirname(procLibc.stdout.readline().strip())
     libgccPath = os.path.dirname(procLibgcc.stdout.readline().strip())
     #--- Add both to linker flags
-    ldflags += ['-L' + libcPath, '-lc']
-    ldflags += ['-L' + libgccPath, '-lgcc']
+    ldflags += ['-L' + str(libcPath), '-lc']
+    ldflags += ['-L' + str(libgccPath), '-lgcc']
 %
 end if
 
@@ -565,7 +565,7 @@ if True:%
 #    end if
     if    command::TYPE == "COPIER" then %
   postCommand = makefile.PostCommand("Generating binary % !outFile % from % !inFile %")
-  postCommand.mCommand.append("% !OS::BUILD_S::COPIER %")%
+  postCommand.mCommand.append(r"% !OS::BUILD_S::COPIER %")%
     elsif command::TYPE == "COMPILER" then
     elsif command::TYPE == "ASSEMBLER" then
     elsif command::TYPE == "LINKER" then
