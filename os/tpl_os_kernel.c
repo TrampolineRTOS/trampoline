@@ -657,6 +657,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
 
+  /* TODO first time it runs at start, s_running is NULL */
   #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
   /* if the running process is an ISR2, unmask lower ISR2 interrupts */
   if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
@@ -917,7 +918,9 @@ FUNC(void, OS_CODE) tpl_block(void)
 /**
  * @internal
  *
- * TODO: document this
+ * tpl_start_scheduling is called from tpl_start_os_service after AUTOSTART tasks have
+ * been put in the ready list. It sets nedd_switch to NEED_SWITCH (so no context save
+ * since there is no running task at that time and starts the highest priority task.
  */
 FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 {
