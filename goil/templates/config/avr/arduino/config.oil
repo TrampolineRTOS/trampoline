@@ -1,21 +1,16 @@
 CPU avrArduino {
 
-  PLATFORM_FILES arduinoBase {
-    PATH = "avr/arduino";
-    CPPFILE = "main.cpp";
-  };
-
   BUILDOPTIONS buildOptionsForArduino {
     PRELDFLAGS = "-lm"; //math lib requied
     PREASFLAGS = "-x assembler-with-cpp";
     COMMONFLAGS = "-Wno-unused-but-set-variable";
   };
   
-  PLATFORM_FILES arduinoBaseSerial {
-    PATH = "avr/arduino/hardware/cores/arduino";
+  PLATFORM_FILES arduinoBase {
+    PATH = "avr/arduino/cores/arduino";
     CPPFILE = "HardwareSerial0.cpp";
     CPPFILE = "HardwareSerial.cpp";
-    CPPFILE = "HID.cpp";
+    CPPFILE = "CDC.cpp";
     CPPFILE = "IPAddress.cpp";
     CPPFILE = "new.cpp";
     CPPFILE = "Print.cpp";
@@ -24,10 +19,12 @@ CPU avrArduino {
     CPPFILE = "USBCore.cpp";
     CPPFILE = "WMath.cpp";
     CPPFILE = "WString.cpp";
+    CPPFILE = "abi.cpp";
+    CPPFILE = "main.cpp";
     CFILE = "wiring_digital.c";
     CFILE = "wiring.c";
-    CPPFILE = "abi.cpp";
     CFILE = "hooks.c";
+
   };
   
 };

@@ -1,7 +1,7 @@
 CPU avrArduino {
 
   PLATFORM_FILES arduinoUno {
-    PATH = "avr/arduino/hardware/variants/standard";
+    PATH = "avr/arduino/variants/standard";
   };
   
   BUILDOPTIONS buildOptionsForArduino {
