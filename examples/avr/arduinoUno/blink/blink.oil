@@ -10,9 +10,6 @@ OIL_VERSION = "2.5" : "test" ;
 CPU test {    
   OS config {
     STATUS = STANDARD;
-    ARDUINO = TRUE {
-      SERIAL = TRUE;	//use the serial interface 
-    };
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_NAME = "trampuinoBlink";
