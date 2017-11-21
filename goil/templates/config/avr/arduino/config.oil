@@ -29,7 +29,7 @@ CPU avrArduino {
   };
   
   LIBRARY serial {
-    PATH = "avr/arduino/cores/arduino";
+    PATH    = "avr/arduino/cores/arduino";
     CPPFILE = "Print.cpp";            //Stream inherits from Print
     CPPFILE = "Stream.cpp";           //HardwareSerial inherits from Stream
     CPPFILE = "HardwareSerial0.cpp";
@@ -37,6 +37,26 @@ CPU avrArduino {
     CPPFILE = "HardwareSerial2.cpp";
     CPPFILE = "HardwareSerial3.cpp";
     CPPFILE = "HardwareSerial.cpp";
+  };
+  
+  LIBRARY spi {
+    PATH    = "avr/arduino/libraries/SPI/src";
+    CPPFILE = "SPI.cpp";
+  };
+  
+  LIBRARY i2c {
+    PATH    = "avr/arduino/libraries/Wire/src";
+    CPPFILE = "Wire.cpp";
+    CFILE   = "utility/twi.c";
+  };
+
+  LIBRARY eeprom {
+    PATH    = "avr/arduino/libraries/EEPROM/src"; //only .h files.
+  };
+  
+  LIBRARY softwareSerial {
+    PATH    = "avr/arduino/libraries/SoftwareSerial/src";
+    CPPFILE = "SoftwareSerial.cpp";
   };
   
   // not used (at this date):
