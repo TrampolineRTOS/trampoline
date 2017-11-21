@@ -1,0 +1,3 @@
+[submodule "machines/avr/arduino"]
+	path = machines/avr/arduino
+	url = https://github.com/TrampolineRTOS/ArduinoCore-avr.git
