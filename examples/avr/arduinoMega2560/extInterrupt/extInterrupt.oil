@@ -1,6 +1,6 @@
 /* Running the following example:
  * just call goil a first time using the command line:
- * goil --target=avr/arduino/mega --templates=../../../../goil/templates/ extInterrupt.oil
+ * goil --target=avr/arduino/uno --templates=../../../../goil/templates/ extInterrupt.oil
  * you may have to update ARDUINO section (l.13) for your configuration.
  *
  */
@@ -20,11 +20,10 @@ CPU test {
       ASSEMBLER = "avr-gcc";
       COPIER = "avr-objcopy";
       SYSTEM = PYTHON;
-
-	  LIBRARY=serial;
+	
+      LIBRARY = serial;
 
     };
-    SYSTEM_CALL = TRUE;
   };
 
   APPMODE stdAppmode {};
@@ -49,18 +48,25 @@ CPU test {
     STACKSIZE = 256;
   };
 
-
+  // ISR pins for the Mega are: 2, 3, 18, 19, 20, 21
+  
   ISR ISRButtonSlow {
-      CATEGORY = 2;
-      PRIORITY = 20;
-      STACKSIZE = 256;
-      SOURCE = "INT0_vect"; //PIN 21 on Arduino Mega2560 (PORTD.0)
+    CATEGORY = 2;
+    PRIORITY = 20;
+    STACKSIZE = 256;
+    SOURCE = PIN19 {
+      MODE = RISING; //same mode as in attachInterrupt Arduino function.
+	  PULL = UP;
+    };
   };
 
   ISR ISRButtonFast {
-      CATEGORY = 2;
-      PRIORITY = 20;
-      STACKSIZE = 256;
-      SOURCE = "INT1_vect"; //PIN 20 on Arduino Mega2560 (PORTD.1)
+    CATEGORY = 2;
+    PRIORITY = 20;
+    STACKSIZE = 256;
+    SOURCE = PIN20 {
+      MODE = RISING; //same mode as in attachInterrupt Arduino function.
+      PULL = UP;
+    };
   };
 };
