@@ -20,6 +20,10 @@ CPU avrArduino {
     CPPFILE = "new.cpp";           // some C++ stuff.
   };
 
+  GENERATED_FILES avrArduinoGenerated {
+    CFILE = "tpl_interrupts.c";
+  };
+
   LIBRARY advancedIO {
     PATH    = "avr/arduino/cores/arduino";
     CPPFILE = "Tone.cpp";        // tone, noTone
@@ -65,28 +69,11 @@ CPU avrArduino {
   // USBCore.cpp
 };
 
-/*
- * This configuration file adds a SOURCE attribute to ISR and COUNTER
- * It also define a new object type: INTERRUPT
- */
-IMPLEMENTATION avr_interrupt {
-  TASK [] {
-    UINT32 STACKSIZE = 128;
-  };
-  ISR [] {
-    UINT32 STACKSIZE = 128;
-    STRING SOURCE;
-  };
-  COUNTER [] {
-    STRING SOURCE;
-  };
-};
-
 CPU arduino {
   COUNTER SystemCounter {
     TICKSPERBASE = 1;
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
-    SOURCE = "TIMER0_OVF_vect";
+    SOURCE = TIMER0_OVF ;
   };
 }; 
