@@ -10,6 +10,9 @@ FUNC(void, OS_CODE) tpl_avr_ISR2_handler(CONST(uint16, AUTOMATIC) id);
 %
 
 foreach isr in ISR do
+  if isr::CATEGORY == 1 then # ISR 1
+    %void % !isr::NAME %_function();\n%
+  end if
 %
 FUNC(void, OS_CODE) % !isr::SOURCE %_Handler(void)
 {
