@@ -83,7 +83,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 3.1.3 on October 18.
+Updated to version 3.1.9 on 2017, November 28.
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
