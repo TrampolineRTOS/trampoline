@@ -3,7 +3,7 @@ AVR sample projects Arduino Uno boards (ATMega328P)
 ***Be sure that Arduino related libraries are installed: see [README.md](../README.md) in parent folder***
 
 
-#first run
+# first run
 In the first run, the `goil` compiler will generate:
 
 * a python build script `make.py` (to build everything)
@@ -14,7 +14,7 @@ If `file.oil` is the main `oil` file, and `TRAMPOLINE_ROOT` is the path to the r
 `$goil --target=avr/arduino/uno --templates=$TRAMPOLINE_ROOT/goil/templates/ file.oil`
 
 
-#Build
+# Build
 The commands builds the binary file (both the `.elf` and `.hex` files).
 
 `$./make.py`
@@ -23,7 +23,7 @@ The commands builds the binary file (both the `.elf` and `.hex` files).
 
 in case of problem, you may need to run `./make.py -j 1` to have the full compilation line.
 
-#flash
+# flash
 
 The avrdude port should be set as en environmemnt variable. Then, the build script can call avrdude to flash the Arduino:
 

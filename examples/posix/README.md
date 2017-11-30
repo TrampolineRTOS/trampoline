@@ -1,4 +1,4 @@
-#Trampoline examples for Posix Targets
+# Trampoline examples for Posix Targets
 
 This directory shows some examples for the POSIX target. The Posix target run Trampoline inside a Unix process. 
 
@@ -6,7 +6,7 @@ To simulate the environment, another process runs ViPER (Virtual Processor Emula
 
 More information is available on this (not really up-to-date) [publication](http://trampoline.rts-software.org/IMG/pdf/trampoline.pdf) at 11th International Conference on Emerging Technologies and Factory Automation (ETFA'06) (in particular, see section 6.2 and figure 4)
 
-##Building ViPER
+## Building ViPER
 on UNIX shell:
 
     $ cd viper
@@ -17,7 +17,7 @@ It is recommended to get the path to ViPER in the environment variables, and def
 
     $ export VIPER_PATH=PATH_TO_TRAMPOLINE/viper
 
-##Run example
+## Run example
 Examples are easy to run:
 The first time, goil should be called directly. It will generate the appropriate Makefile:
 

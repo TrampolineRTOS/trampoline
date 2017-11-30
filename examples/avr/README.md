@@ -1,10 +1,10 @@
-#Trampoline examples for AVR8 Targets
+# Trampoline examples for AVR8 Targets
 
 This directory shows some examples for 8 bits AVR targets, including some Arduino boards.
 For all these examples, the Gcc cross-compiler is required.
 
 # Installation 
-##avr-gcc cross-compiler
+## avr-gcc cross-compiler
 **Linux** (Debian/Ubuntu) -> `sudo apt-get install avr-libc gcc-avr avrdude`
 
 **MacOSX**  -> [AVR CrossPack](http://www.obdev.at/products/crosspack/download.html)
@@ -24,7 +24,7 @@ git submodule update machines/avr/arduino
 
 It gets the trampoline patched version of ArduinoCore-avr from [GitHub](https://github.com/TrampolineRTOS/ArduinoCore-avr.git).
 
-##Compilation
+## Compilation
 The build script is written in Python (2.7 and 3.x) and works for Windows, Mac and Linux. The build script (make.py) is generated from goil the first time goil is called.
 
 See examples, for the correct first call to goil (in runGoil.bat for Windows).
