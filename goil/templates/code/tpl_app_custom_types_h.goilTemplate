@@ -35,6 +35,12 @@ typedef uint% ! KEY_SIZE * 8 % tpl_heap_key;
 typedef uint% ! [RANK_MASK numberOfBytes] * 8% tpl_rank_count;
 
 /**
+ * tpl_index is used to store the index in the FIFO implementation
+ * of the ready list.
+ */
+typedef uint% ! [[PROCESSES length] numberOfBytes] * 8 % tpl_index;
+
+/**
  * tpl_proc_id is used for task and isrs identifiers.
  *
  * @warning This data type must be signed

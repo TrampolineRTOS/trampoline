@@ -288,6 +288,19 @@ typedef struct {
   VAR(tpl_proc_id, TYPEDEF)   id;
 } tpl_heap_entry;
 
+/**
+ * @typedef tpl_proc_list
+ *
+ * This type implement a FIFO list of tpl_proc
+ */
+
+typedef struct {
+  VAR(tpl_index, TYPEDEF) front_index;
+  VAR(tpl_index, TYPEDEF) actual_size;
+  VAR(tpl_index, TYPEDEF) full_size;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR) list[];
+} tpl_proc_list;
+
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
