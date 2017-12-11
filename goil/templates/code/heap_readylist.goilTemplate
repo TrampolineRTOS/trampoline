@@ -29,9 +29,28 @@ if OS::NUMBER_OF_CORES == 1 then
 VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[% !READY_LIST_SIZE + 1 %];
 VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[% !NUMBER_OF_PRIORITIES + 1%] = {
 %
-loop i from 0 to NUMBER_OF_PRIORITIES - 1
+loop i from 1 to NUMBER_OF_PRIORITIES
 do
 %  0%
+between %,
+%
+end loop
+%
+};
+%
+
+loop i from 0 to NUMBER_OF_PRIORITIES - 1
+do
+%VAR(tpl_proc*, OS_VAR) tpl_ready_list_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
+%
+end loop
+
+%
+VAR(tpl_proc_list, OS_VAR) tpl_rd_list[] = {
+%
+loop i from 0 to NUMBER_OF_PRIORITIES - 1
+do
+% {.full_size = % !NUMBER_OF_JOBS_PER_PRIO[i]%, .array = tpl_ready_list_% !i %}%
 between %,
 %
 end loop

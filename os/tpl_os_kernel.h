@@ -298,7 +298,7 @@ typedef struct {
   VAR(tpl_index, TYPEDEF) front_index;
   VAR(tpl_index, TYPEDEF) actual_size;
   VAR(tpl_index, TYPEDEF) full_size;
-  P2VAR(tpl_proc, TYPEDEF, OS_VAR) list[];
+  P2VAR(tpl_proc*, TYPEDEF, OS_VAR) array;
 } tpl_proc_list;
 
 

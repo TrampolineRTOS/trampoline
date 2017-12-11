@@ -624,21 +624,26 @@ end foreach
 
 #------------------------------------------------------------------------------*
 # Pack the priorities
-#
+# Compute the number of jobs per prio
+
 sort PRIORITIZED by PRIORITY <
 
 #display PRIORITIZED
 
 let PRIO2 := @()
+let NUMBER_OF_JOBS_PER_PRIO := @()
+let NUMBER_OF_JOBS_PER_PRIO += 1
 let priority := 0
 let previous_prio := 0
 foreach obj in PRIORITIZED do
   if obj::PRIORITY > previous_prio then
     let priority := priority + 1
     let previous_prio := obj::PRIORITY
+    let NUMBER_OF_JOBS_PER_PRIO += 0
   end if
   let obj::PRIORITY := priority
   let PRIO2 += obj
+  let NUMBER_OF_JOBS_PER_PRIO[priority] += 1
 end foreach
 
 # compute the size of the ready list
@@ -678,6 +683,7 @@ end if
 #
 let READY_LIST_SIZE := READY_LIST_SIZE + 1
 let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
+
 
 #display MAX_JOBS_AMONG_PRIORITIES
 #display NUMBER_OF_PRIORITIES
