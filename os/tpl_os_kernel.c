@@ -270,86 +270,63 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
   return INVALID_PROC_ID;
 }
 
-
-
 #if WITH_OSAPPLICATION == YES
 
 /**
  * @internal
- *
  * tpl_remove_proc removes all the process instances in the ready queue
  */
 FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
+  VAR(uint16, AUTOMATIC) i, j;
+  tpl_priority index;
 
-  VAR(uint32, AUTOMATIC) index;
-  VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
-
-  DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
-  DOW_DO(printrl("tpl_remove_proc - before");)
-
-
-  for (index = 1; index <= size; index++)
+  for (index = 0; index < READY_LIST(ready_list).size; index++)
   {
-    if (READY_LIST(ready_list)[index].id == proc_id)
+    tpl_proc_list *proc_list = READY_LIST(ready_list).array[index];
+    tpl_index r = proc_list->front_index;
+    tpl_index full_size = proc_list->full_size;
+    for (i = 0; i < proc_list->actual_size; i++)
     {
-      READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size--];
-      tpl_bubble_down(
-        READY_LIST(ready_list),
-        index
-        TAIL_FOR_PRIO_ARG(tail_for_prio)
-      );
+      if (proc_list->array[r + i % full_size] == proc_id)
+      {
+        proc_list->actual_size--;
+        for (j = 0; j < proc_list->actual_size - i; j++)
+          proc_list->array[r + i + j % full_size] = proc_list->array[r + i + j + 1 % full_size];
+      }
     }
   }
-
-  READY_LIST(ready_list)[0].key = size;
-
-  DOW_DO(printrl("tpl_remove_proc - after");)
 }
 
 #endif /* WITH_OSAPPLICATION */
 
 /**
  * @internal
- *
  * tpl_current_os_state returns the current state of the OS.
- *
  * @see #tpl_os_state
  */
-FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
-  CORE_ID_OR_VOID(core_id))
+FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id))
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
-
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID) {
+  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID)
     state = OS_INIT;
-  }
   else if (TPL_KERN_REF(kern).running_id >= (TASK_COUNT + ISR_COUNT))
-  {
     state = OS_IDLE;
-  }
   else if (TPL_KERN_REF(kern).running_id < TASK_COUNT)
-  {
     state = OS_TASK;
-  }
-  else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT) )
-  {
+  else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT))
     state = OS_ISR2;
-  }
 
   return state;
 }
 
 /**
  * @internal
- *
  * Get an internal resource
- *
  * @param task task from which internal resource is got
  */
 FUNC(void, OS_CODE) tpl_get_internal_resource(
