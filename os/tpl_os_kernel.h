@@ -285,7 +285,7 @@ typedef struct {
   VAR(tpl_index, TYPEDEF) front_index;
   VAR(tpl_index, TYPEDEF) actual_size;
   VAR(tpl_index, TYPEDEF) full_size;
-  P2VAR(tpl_proc*, TYPEDEF, OS_VAR) array;
+  P2VAR(tpl_proc_id, TYPEDEF, OS_VAR) array;
 } tpl_proc_list;
 
 
@@ -537,7 +537,7 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id);
  *
  * Get the highest priority READY process from the queue
  */
-FUNC(tpl_proc*, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
+FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
 
 /**
  * @internal

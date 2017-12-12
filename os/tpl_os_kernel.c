@@ -160,31 +160,6 @@ VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
 
 extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
 
-/*
- * MISRA RULE 13 VIOLATION: this function is only used for debug purpose,
- * so production release is not impacted by MISRA rules violated
- * in this function
- */
-FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
-{
-#if NUMBER_OF_CORES > 1
-  /* TODO */
-#else
-  uint32 i;
-  printf("ready list %s [%d]", msg, tpl_ready_list[0].key);
-  for (i = 1; i <= tpl_ready_list[0].key; i++)
-  {
-    printf(" {%d/%d,%s[%d](%d)}",
-           (int)(tpl_ready_list[i].key >> PRIORITY_SHIFT),
-           (int)(tpl_ready_list[i].key & RANK_MASK),
-           proc_name_table[tpl_ready_list[i].id],
-           (int)tpl_ready_list[i].id,
-           tpl_ready_list[i].key);
-  }
-  printf("\n");
-#endif
-}
-
 FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 {
 #if NUMBER_OF_CORES > 1

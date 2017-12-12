@@ -29,7 +29,7 @@ if OS::NUMBER_OF_CORES == 1 then
 
 loop i from 0 to NUMBER_OF_PRIORITIES - 1
 do
-%VAR(tpl_proc*, OS_VAR) tpl_ready_list_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
+%VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
 %
 end loop
 %
