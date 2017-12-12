@@ -180,14 +180,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
                    proc_name_table[TPL_KERN_REF(kern).running_id],
                    TPL_KERN_REF(kern).running->priority));
 
-      if (ACTUAL_PRIO(TPL_KERN_REF(kern).running->priority) <
-          res->ceiling_priority)
+      if (TPL_KERN_REF(kern).running->priority < res->ceiling_priority)
       {
         /*  set the task priority at the ceiling priority of the resource
             if the ceiling priority is greater than the current priority of
             the task  */
-        TPL_KERN_REF(kern).running->priority =
-          DYNAMIC_PRIO(res->ceiling_priority, tail_for_prio);
+        TPL_KERN_REF(kern).running->priority = res->ceiling_priority;
         TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
         TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
       }

@@ -33,7 +33,7 @@ do
 %
 end loop
 %
-VAR(tpl_list, OS_VAR) tpl_ready_list[] = {
+VAR(tpl_list, OS_VAR) tpl_ready_list = {
   %!NUMBER_OF_PRIORITIES%,
   {
 %

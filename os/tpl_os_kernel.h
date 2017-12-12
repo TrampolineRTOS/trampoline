@@ -295,7 +295,7 @@ typedef struct {
  */
 typedef struct {
   VAR(tpl_priority, TYPEDEF) size;
-  P2VAR(tpl_proc_list, TYPEDEF, OS_VAR) array;
+  VAR(tpl_proc_list, TYPEDEF) array[];
 } tpl_list;
 
 
@@ -442,7 +442,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-extern CONSTP2VAR(tpl_list, OS_CONST, OS_VAR) tpl_ready_list[];
+extern CONSTP2VAR(tpl_list, OS_CONST, OS_VAR) tpl_ready_list;
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -450,7 +450,7 @@ extern CONSTP2VAR(tpl_list, OS_CONST, OS_VAR) tpl_ready_list[];
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-extern VAR(tpl_list, OS_VAR) tpl_ready_list[];
+extern VAR(tpl_list, OS_VAR) tpl_ready_list;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
