@@ -643,7 +643,11 @@ foreach obj in PRIORITIZED do
   end if
   let obj::PRIORITY := priority
   let PRIO2 += obj
-  let NUMBER_OF_JOBS_PER_PRIO[priority] += 1
+  if obj::KIND == "Task" then
+    let NUMBER_OF_JOBS_PER_PRIO[priority] += obj::ACTIVATION
+  else
+    let NUMBER_OF_JOBS_PER_PRIO[priority] += 1
+  end if
 end foreach
 
 # compute the size of the ready list
@@ -1353,7 +1357,7 @@ end foreach
 # the maximum rank is computed from the READYLIST data structure.
 #
 
-#display MAX_JOBS_AMONG_PRIORITIES
+display MAX_JOBS_AMONG_PRIORITIES
 
 let PRIORITY_SHIFT := [MAX_JOBS_AMONG_PRIORITIES numberOfBits]
 let RANK_MASK := (1 << PRIORITY_SHIFT) - 1
