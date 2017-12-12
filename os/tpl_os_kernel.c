@@ -480,7 +480,6 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(t
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running->priority)
   );
-  DOW_DO(printrl("tpl_run_elected - after"));
 
   /* the elected task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
