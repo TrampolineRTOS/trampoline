@@ -631,10 +631,10 @@ sort PRIORITIZED by PRIORITY <
 #display PRIORITIZED
 
 let PRIO2 := @()
-let NUMBER_OF_JOBS_PER_PRIO := @()
-let NUMBER_OF_JOBS_PER_PRIO += 1
 let priority := 0
 let previous_prio := 0
+let NUMBER_OF_JOBS_PER_PRIO := @()
+let NUMBER_OF_JOBS_PER_PRIO += 1
 foreach obj in PRIORITIZED do
   if obj::PRIORITY > previous_prio then
     let priority := priority + 1
@@ -1357,7 +1357,7 @@ end foreach
 # the maximum rank is computed from the READYLIST data structure.
 #
 
-display MAX_JOBS_AMONG_PRIORITIES
+#display MAX_JOBS_AMONG_PRIORITIES
 
 let PRIORITY_SHIFT := [MAX_JOBS_AMONG_PRIORITIES numberOfBits]
 let RANK_MASK := (1 << PRIORITY_SHIFT) - 1

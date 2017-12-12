@@ -278,22 +278,9 @@ typedef struct
 } tpl_kern_state;
 
 /**
- * @typedef tpl_heap_entry
- *
- * This type gather a key used to sort the heap and the identifier of
- * the process
- */
-typedef struct {
-  VAR(tpl_priority, TYPEDEF)  key;
-  VAR(tpl_proc_id, TYPEDEF)   id;
-} tpl_heap_entry;
-
-/**
  * @typedef tpl_proc_list
- *
- * This type implement a FIFO list of tpl_proc
+ * This type implements a FIFO list of tpl_proc
  */
-
 typedef struct {
   VAR(tpl_index, TYPEDEF) front_index;
   VAR(tpl_index, TYPEDEF) actual_size;
@@ -448,7 +435,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-extern CONSTP2VAR(tpl_heap_entry, OS_CONST, OS_VAR) tpl_ready_list[];
+extern CONSTP2VAR(tpl_proc_list, OS_CONST, OS_VAR) tpl_ready_list[];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -456,28 +443,16 @@ extern CONSTP2VAR(tpl_heap_entry, OS_CONST, OS_VAR) tpl_ready_list[];
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
+extern VAR(tpl_proc_list, OS_VAR) tpl_ready_list[];
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #endif
 
-/**
- * @internal
- *
- * In monocore implementation, tpl_tail_for_prio is a variable that stores
- * the last rank used to store a proc.
- *
- * In multicore implementation, tpl_tail_for_prio is an array of such
- * a variable.
- */
 #if NUMBER_OF_CORES > 1
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-
-extern CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR)
-  tpl_tail_for_prio[NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -486,8 +461,6 @@ extern CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR)
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
-extern VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -564,7 +537,7 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id);
  *
  * Get the highest priority READY process from the queue
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
+FUNC(tpl_proc*, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
 
 /**
  * @internal

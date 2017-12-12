@@ -183,7 +183,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
       if (ACTUAL_PRIO(TPL_KERN_REF(kern).running->priority) <
           res->ceiling_priority)
       {
-        GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
         /*  set the task priority at the ceiling priority of the resource
             if the ceiling priority is greater than the current priority of
             the task  */

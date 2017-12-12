@@ -52,14 +52,8 @@
  * with the ready list belonging to core core_id
  */
 #define GET_CORE_READY_LIST(a_core_id, a_ready_list) \
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) a_ready_list = tpl_ready_list[a_core_id];
-/*
- * GET_TAIL_FOR_PRIO initializes the constant tail_for_prio
- * with the rank table of core core_id
- */
-#define GET_TAIL_FOR_PRIO(a_core_id, a_tail_for_prio) \
-  CONSTP2VAR(tpl_rank_count, AUTOMATIC, OS_VAR) a_tail_for_prio = \
-    tpl_tail_for_prio[a_core_id];
+  CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) a_ready_list = tpl_ready_list[a_core_id];
+
 /*
  * CORE_ID_OR_VOID is defined as CONST(uint16, AUTOMATIC) core_id in multicore
  * kernel. it is used as an argument to the tpl_current_os_state function
@@ -97,23 +91,6 @@
  * READY_LIST expands to the ready_list constant
  */
 #define READY_LIST(a_ready_list)  a_ready_list
-/*
- * TAIL_FOR_PRIO expands to the tail_for_prio constant
- */
-#define TAIL_FOR_PRIO(a_tail_for_prio)     a_tail_for_prio
-/*
- * TAIL_FOR_PRIO_ARG_DECL expands to the declaration of a tail_for_prio
- * table argument. It is used in multicore as additional argument to the
- * tpl_compare_entries function.
- */
-#define TAIL_FOR_PRIO_ARG_DECL(a_tail_for_prio) \
-  , CONSTP2CONST(tpl_rank_count, AUTOMATIC, OS_VAR) a_tail_for_prio
-/*
- * TAIL_FOR_PRIO_ARG is in multicore the corresponding additional argument
- * passed to the tpl_compare_entries function.
- */
-#define TAIL_FOR_PRIO_ARG(a_tail_for_prio) \
-  , a_tail_for_prio
 
 /*
  * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.
@@ -129,7 +106,6 @@
 #define GET_PROC_CORE_ID(a_proc_id, a_core_id)
 #define GET_CURRENT_CORE_ID(a_core_id)
 #define GET_CORE_READY_LIST(a_core_id, a_ready_list)
-#define GET_TAIL_FOR_PRIO(a_core_id, a_tail_for_prio)
 
 /*
  * CORE_ID_OR_VOID is defined as void in monocore kernel since
@@ -153,9 +129,6 @@
   tpl_kern
 
 #define READY_LIST(a_ready_list) tpl_ready_list
-#define TAIL_FOR_PRIO(a_tail_for_prio)  tpl_tail_for_prio
-#define TAIL_FOR_PRIO_ARG_DECL(a_tail_for_prio)
-#define TAIL_FOR_PRIO_ARG(a_tail_for_prio)
 
 /*
  * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.
@@ -163,24 +136,6 @@
  */
 #define GET_LOCK_CNT_FOR_CORE(a_lock_cnt, a_core_id)  a_lock_cnt
 #endif
-
-/**
- * @internal
- *
- * Macro to compute a dynamic priority
- */
-#define DYNAMIC_PRIO(a_prio, a_tail_for_prio)                \
-  (((a_prio) << PRIORITY_SHIFT) |                            \
-   (--TAIL_FOR_PRIO(a_tail_for_prio)[a_prio] & RANK_MASK))
-
-/**
- * @internal
- *
- * Macro to compute the actual priority
- */
-#define ACTUAL_PRIO(prio) \
-  (prio >> PRIORITY_SHIFT)
-
 
 #endif
 /* TPL_OS_MULTICORE_MACROS_H */
