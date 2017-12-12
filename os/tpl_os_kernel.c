@@ -329,36 +329,29 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id))
  * Get an internal resource
  * @param task task from which internal resource is got
  */
-FUNC(void, OS_CODE) tpl_get_internal_resource(
-  CONST(tpl_proc_id, AUTOMATIC) task_id)
+FUNC(void, OS_CODE) tpl_get_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
   GET_PROC_CORE_ID(task_id, core_id)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
+  tpl_stat_proc_table[task_id]->internal_resource;
 
   if ((NULL != rez) && (FALSE == rez->taken))
   {
     rez->taken = TRUE;
     rez->owner_prev_priority = tpl_dyn_proc_table[task_id]->priority;
-    tpl_dyn_proc_table[task_id]->priority =
-      DYNAMIC_PRIO(rez->ceiling_priority, tail_for_prio);
+    tpl_dyn_proc_table[task_id]->priority = rez->ceiling_priority;
   }
 }
 
 /**
  * @internal
- *
  * Release an internal resource
- *
  * @param task task from which internal resource is released
  */
-FUNC(void, OS_CODE) tpl_release_internal_resource(
-    CONST(tpl_proc_id, AUTOMATIC) task_id)
+FUNC(void, OS_CODE) tpl_release_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
+  tpl_stat_proc_table[task_id]->internal_resource;
 
   if ((NULL != rez) && (TRUE == rez->taken))
   {
@@ -369,7 +362,6 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
 
 /**
  * @internal
- *
  * Preempt the running process.
  */
 FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
@@ -387,10 +379,8 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
      * is not notified.
      */
     DOW_DO(print_kern("inside tpl_preempt"));
-
     /* The current elected task becomes READY */
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
-
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
@@ -405,8 +395,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
  * @return  the pointer to the context of the task
  *          that was running before the elected task replace it
  */
-FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
-  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
+FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
@@ -427,13 +416,10 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
     TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
 
-    DOW_DO(printf(
-      "tpl_run_elected preempt %s\n",
-      proc_name_table[TPL_KERN_REF(kern).running_id])
-    );
+    DOW_DO(printf("tpl_run_elected: preempt %s\n", proc_name_table[TPL_KERN_REF(kern).running_id]));
 
     /* The current running task becomes READY */
-    TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
+    TPL_KERN_REF(kern).running->state = (tpl_proc_state) READY;
 
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -509,7 +495,6 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 
 /**
  * @internal
- *
  * Start the highest priority READY process
  */
 FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
