@@ -52,7 +52,7 @@
  * with the ready list belonging to core core_id
  */
 #define GET_CORE_READY_LIST(a_core_id, a_ready_list) \
-  CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) a_ready_list = tpl_ready_list[a_core_id];
+  CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) a_ready_list = tpl_ready_list[a_core_id];
 
 /*
  * CORE_ID_OR_VOID is defined as CONST(uint16, AUTOMATIC) core_id in multicore
