@@ -727,11 +727,9 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
-  VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
-    tpl_dyn_proc_table[task_id];
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
-    tpl_stat_proc_table[task_id];
+  VAR(tpl_status, AUTOMATIC) result = E_OS_LIMIT;
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)task = tpl_dyn_proc_table[task_id];
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task = tpl_stat_proc_table[task_id];
 
   DOW_DO(printf("tpl_activate_task %s[%d](%d)\n",
     proc_name_table[task_id],
