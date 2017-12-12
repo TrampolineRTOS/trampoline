@@ -230,10 +230,18 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
  * tpl_front_proc returns the proc_id of the highest priority proc in the
  * ready list on the current core
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
+FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
-  return (READY_LIST(ready_list)[1]);
+  tpl_priority priority = READY_LIST(ready_list).size;
+  while (priority > 0)
+  {
+    piority--;
+    tpl_proc_list *proc_list = READY_LIST(ready_list).array[priority];
+    if (proc_list->actual_size > 0)
+      return proc_list->array[proc_list->front_index];
+  }
+  return INVALID_PROC_ID;
 }
 
 /*
