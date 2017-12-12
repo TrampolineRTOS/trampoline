@@ -246,42 +246,28 @@ FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 
 /*
  * @internal
- *
  * tpl_remove_front_proc removes the highest priority proc from the
- * ready list on the specified core and returns the heap_entry
+ * ready list on the specified core and returns proc_id
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
+FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
+  tpl_priority priority = READY_LIST(ready_list).size;
+  while (priority > 0)
+  {
+    piority--;
+    tpl_proc_list *proc_list = READY_LIST(ready_list).array[priority];
+    if (proc_list->actual_size > 0)
+    {
+      tpl_index front_index = proc_list->front_index;
+      tpl_index full_size = proc_list->full_size;
 
-  /*
-   * Get the current size and update it (since the front element will be
-   * removed)
-   */
-  CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
-  VAR(uint32, AUTOMATIC) index = 1;
-
-  /*
-   * Get the proc_id of the front proc
-   */
-  VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
-
-  /*
-   * Put the last element in front
-   */
-  READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size];
-
-  /*
-   * bubble down to the right place
-   */
-  tpl_bubble_down(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  return proc;
+      proc_list->front_index = front_index + 1 % full_size;
+      proc_list->actual_size--;
+      return proc_list->array[front_index];
+    }
+  }
+  return INVALID_PROC_ID;
 }
 
 
