@@ -693,7 +693,7 @@ let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
 #display NUMBER_OF_PRIORITIES
 #display READY_LIST_SIZE
 #
-#display PRIO2
+display PRIO2
 
 #let MAXPRIORITY := priority + 1
 
@@ -751,7 +751,7 @@ foreach isr in PRIO2 do
       # if internal rescheduler or rescheduler is used, increase the ISR2
       # priority by one
       if OS::USERESSCHEDULER | OS::HASNONPREEMPTABLETASK then
-        let isr::PRIORITY := isr::PRIORITY + 1
+        let isr::PRIORITY := isr::PRIORITY
       end if
       let ISRS2 += isr
     end if
