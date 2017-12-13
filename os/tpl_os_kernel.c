@@ -164,7 +164,7 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 #if NUMBER_OF_CORES > 1
   /* TODO */
 #else
-  printf("KERN %s running : %s[%ld](%d), elected : %s[%ld](%d)\n",
+  printf("KERN %s running : %s[%ld](%d), elected : %s[%ld](%d)\r\n",
     msg,
     (tpl_kern.running_id == INVALID_TASK) ? "NONE" : proc_name_table[tpl_kern.running_id],
     tpl_kern.running_id,
@@ -190,7 +190,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   CONST(tpl_priority, AUTOMATIC) priority = tpl_stat_proc_table[proc_id]->base_priority;
   
   /* Add the new entry in the ready list */
-  DOW_DO(printf("put_new_proc: %s with priority %d\n",proc_name_table[proc_id], priority);)
+  DOW_DO(printf("put_new_proc: %s with priority %d\r\n",proc_name_table[proc_id], priority);)
   tpl_proc_list *proc_list = &READY_LIST(ready_list).array[priority];
 
   tpl_index front_index = proc_list->front_index;
@@ -214,7 +214,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   CONST(tpl_priority, AUTOMATIC) dyn_priority = tpl_dyn_proc_table[proc_id]->priority;
 
   /* Add the new entry in the ready list */
-  DOW_DO(printf("put_preempted_proc: %s with priority %d\n",proc_name_table[proc_id], dyn_priority));
+  DOW_DO(printf("put_preempted_proc: %s with priority %d\r\n",proc_name_table[proc_id], dyn_priority));
   tpl_proc_list *proc_list = &READY_LIST(ready_list).array[dyn_priority];
 
   tpl_index front_index = proc_list->front_index;
@@ -394,7 +394,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
      * called, the trace is not done and the timing protection
      * is not notified.
      */
-    DOW_DO(print_kern("inside tpl_preempt"));
+    DOW_DO(print_kern("inside tpl_preempt\r\n"));
     /* The current elected task becomes READY */
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
     /* And put in the ready list */
@@ -419,7 +419,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(t
   CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
     save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
 
-  DOW_DO(print_kern("before tpl_run_elected"));
+  DOW_DO(print_kern("before tpl_run_elected\r\n"));
 
   if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
   {
@@ -432,7 +432,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(t
     TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
     TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
 
-    DOW_DO(printf("tpl_run_elected: preempt %s\n", proc_name_table[TPL_KERN_REF(kern).running_id]));
+    DOW_DO(printf("tpl_run_elected: preempt %s\r\n", proc_name_table[TPL_KERN_REF(kern).running_id]));
 
     /* The current running task becomes READY */
     TPL_KERN_REF(kern).running->state = (tpl_proc_state) READY;
@@ -476,7 +476,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(t
   TPL_KERN_REF(kern).running_id = TPL_KERN_REF(kern).elected_id;
 
   DOW_DO(printf(
-    "start %s, %d\n",
+    "start %s, %d\r\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running->priority)
   );
@@ -503,7 +503,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(t
    */
   CALL_PRE_TASK_HOOK()
 
-  DOW_DO(print_kern("after tpl_run_elected"));
+  DOW_DO(print_kern("after tpl_run_elected\r\n"));
 
   return old_context;
 }
@@ -532,7 +532,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   }
 #endif
 
-  DOW_DO(print_kern("before tpl_start"));
+  DOW_DO(print_kern("before tpl_start\r\n"));
 
   TPL_KERN_REF(kern).elected_id = (uint32) proc_id;
   TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc_id];
@@ -544,7 +544,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
-    DOW_DO(printf("%s is a new proc\n", proc_name_table[proc_id]));
+    DOW_DO(printf("%s is a new proc\r\n", proc_name_table[proc_id]));
     tpl_init_proc(proc_id);
 #if NUMBER_OF_CORES > 1
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
@@ -552,7 +552,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   }
 
   TPL_KERN_REF(kern).need_schedule = FALSE;
-  DOW_DO(print_kern("after tpl_start"));
+  DOW_DO(print_kern("after tpl_start\r\n"));
 }
 
 /**
@@ -571,7 +571,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
-  DOW_DO(print_kern("BEFORE: tpl_schedule_from_running"));
+  DOW_DO(print_kern("BEFORE: tpl_schedule_from_running\r\n"));
 
   #if WITH_STACK_MONITORING == YES
     tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
@@ -586,7 +586,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
     tpl_start(CORE_ID_OR_NOTHING(core_id));
   }
   TPL_KERN_REF(kern).need_switch = need_switch;
-  DOW_DO(print_kern("AFTER: tpl_schedule_from_running"));
+  DOW_DO(print_kern("AFTER: tpl_schedule_from_running\r\n"));
 }
 
 /**
@@ -607,7 +607,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_STACK_MONITORING */
 
-  DOW_DO(printf("tpl_terminate %s[%ld]\n",
+  DOW_DO(printf("tpl_terminate %s[%ld]\r\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running_id));
 
@@ -678,7 +678,7 @@ FUNC(void, OS_CODE) tpl_block(void)
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  DOW_DO(printf("tpl_block %s[%ld]\n",
+  DOW_DO(printf("tpl_block %s[%ld]\r\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running_id));
 
@@ -741,7 +741,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)task = tpl_dyn_proc_table[task_id];
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task = tpl_stat_proc_table[task_id];
 
-  DOW_DO(printf("tpl_activate_task %s[%d](%d)\n",
+  DOW_DO(printf("tpl_activate_task %s[%d](%d)\r\n",
     proc_name_table[task_id],
     task_id,
     task->priority
