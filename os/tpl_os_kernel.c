@@ -188,9 +188,13 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   GET_CORE_READY_LIST(core_id, ready_list)
 
   CONST(tpl_priority, AUTOMATIC) priority = tpl_stat_proc_table[proc_id]->base_priority;
+
+  if (READY_LIST(ready_list).highest_priority < priority)
+    READY_LIST(ready_list).highest_priority = priority;
   
   /* Add the new entry in the ready list */
   DOW_DO(printf("put_new_proc: %s with priority %d\r\n",proc_name_table[proc_id], priority);)
+  
   tpl_proc_list *proc_list = &READY_LIST(ready_list).array[priority];
 
   tpl_index front_index = proc_list->front_index;
@@ -213,6 +217,9 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
 
   CONST(tpl_priority, AUTOMATIC) dyn_priority = tpl_dyn_proc_table[proc_id]->priority;
 
+  if (READY_LIST(ready_list).highest_priority < dyn_priority)
+    READY_LIST(ready_list).highest_priority = dyn_priority;
+
   /* Add the new entry in the ready list */
   DOW_DO(printf("put_preempted_proc: %s with priority %d\r\n",proc_name_table[proc_id], dyn_priority));
   tpl_proc_list *proc_list = &READY_LIST(ready_list).array[dyn_priority];
@@ -233,7 +240,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
 FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
-  tpl_priority priority = READY_LIST(ready_list).size;
+  tpl_priority priority = READY_LIST(ready_list).highest_priority;
   while (priority > 0)
   {
     priority--;
@@ -244,16 +251,21 @@ FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
   return INVALID_PROC_ID;
 }
 
+/*
+ * @internal
+ * tpl_front_prio returns the highest priority in the
+ * ready list on the current core
+ */
 FUNC(tpl_priority, OS_CODE) tpl_front_prio(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
-  tpl_priority priority = READY_LIST(ready_list).size;
-  while (priority > 0)
+  tpl_priority priority = READY_LIST(ready_list).highest_priority;
+  while (priority >= 0)
   {
-    priority--;
     tpl_proc_list *proc_list = &READY_LIST(ready_list).array[priority];
     if (proc_list->actual_size > 0)
       return priority;
+    priority--;
   }
   return 0;
 }
@@ -266,22 +278,24 @@ FUNC(tpl_priority, OS_CODE) tpl_front_prio(CORE_ID_OR_VOID(core_id))
 FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
-  tpl_priority priority = READY_LIST(ready_list).size;
-  while (priority > 0)
-  {
-    priority--;
-    tpl_proc_list *proc_list = &READY_LIST(ready_list).array[priority];
-    if (proc_list->actual_size > 0)
-    {
-      tpl_index front_index = proc_list->front_index;
-      tpl_index full_size = proc_list->full_size;
+  tpl_priority priority = READY_LIST(ready_list).highest_priority;
 
-      proc_list->front_index = front_index + 1 % full_size;
-      proc_list->actual_size--;
-      tpl_proc_id proc_id = proc_list->array[front_index];
-      tpl_dyn_proc_table[proc_id]->priority = priority;
-      return proc_id;
-    }
+  tpl_proc_list *proc_list = &READY_LIST(ready_list).array[priority];
+
+  if (proc_list->actual_size > 0)
+  {
+    tpl_index front_index = proc_list->front_index;
+    tpl_index full_size = proc_list->full_size;
+
+    proc_list->front_index = front_index + 1 % full_size;
+    proc_list->actual_size--;
+    tpl_proc_id proc_id = proc_list->array[front_index];
+    tpl_dyn_proc_table[proc_id]->priority = priority;
+
+    if (proc_list->actual_size == 0)
+      READY_LIST(ready_list).highest_priority = tpl_front_prio(CORE_ID_OR_NOTHING(core_id));
+
+    return proc_id;
   }
   return INVALID_PROC_ID;
 }
@@ -297,9 +311,9 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   VAR(uint16, AUTOMATIC) i, j;
-  tpl_priority index;
+  tpl_priority index = READY_LIST(ready_list).highest_priority;
 
-  for (index = 0; index < READY_LIST(ready_list).size; index++)
+  for (index; index >= 0; index--)
   {
     tpl_proc_list *proc_list = READY_LIST(ready_list).array[index];
     tpl_index r = proc_list->front_index;
@@ -313,6 +327,8 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
           proc_list->array[r + i + j % full_size] = proc_list->array[r + i + j + 1 % full_size];
       }
     }
+    if (proc_list->actual_size == 0)
+      READY_LIST(ready_list).highest_priority--;
   }
 }
 
@@ -577,7 +593,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
     tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   #endif /* WITH_STACK_MONITORING */
 
-  if (tpl_front_prio(CORE_ID_OR_NOTHING(core_id)) > (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
+  if (READY_LIST(ready_list).highest_priority > (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
   {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));

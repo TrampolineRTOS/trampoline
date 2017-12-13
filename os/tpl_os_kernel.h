@@ -291,10 +291,10 @@ typedef struct {
 /**
  * @typedef tpl_list
  * This type implements the ready list. It is necessary since
- * the ready list in an array whose size has to be known.
+ * the ready list is a list whose size has to be known.
  */
 typedef struct {
-  VAR(tpl_priority, TYPEDEF) size;
+  VAR(tpl_priority, TYPEDEF) highest_priority;
   VAR(tpl_proc_list, TYPEDEF) array[];
 } tpl_list;
 
