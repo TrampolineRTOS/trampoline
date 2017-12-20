@@ -693,7 +693,7 @@ let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
 #display NUMBER_OF_PRIORITIES
 #display READY_LIST_SIZE
 #
-display PRIO2
+#display PRIO2
 
 #let MAXPRIORITY := priority + 1
 
@@ -750,13 +750,19 @@ foreach isr in PRIO2 do
     if isr::CATEGORY == 2 then
       # if internal rescheduler or rescheduler is used, increase the ISR2
       # priority by one
-      if OS::USERESSCHEDULER | OS::HASNONPREEMPTABLETASK then
-        let isr::PRIORITY := isr::PRIORITY
+      if (OS::USERESSCHEDULER | OS::HASNONPREEMPTABLETASK) & (not highest_priority_task_uses_resource) then
+        let isr::PRIORITY := isr::PRIORITY + 1
       end if
       let ISRS2 += isr
     end if
   end if
 end foreach
+
+#------------------------------------------------------------------------------*
+# If needed, add the resscheduler or internal resscheduler to NUMBER_OF_JOBS_PER_PRIO
+if (OS::USERESSCHEDULER | OS::HASNONPREEMPTABLETASK) & (not highest_priority_task_uses_resource) then
+  [!NUMBER_OF_JOBS_PER_PRIO insert: OS::RESSCHEDULERPRIORITY, 1]
+end if
 
 #------------------------------------------------------------------------------*
 # compute the list of PROCESSES, TASKS
