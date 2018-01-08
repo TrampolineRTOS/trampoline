@@ -498,8 +498,8 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 
 if [APPLICATION length] > 0 then
-  let task_map := mapof TASKS by NAME
-  let isr_map := mapof ISRS2 by NAME
+  let task_map := mapof TASK by NAME
+  let isr_map := mapof ISR by NAME
   foreach app in APPLICATION do
     let core := [exists app::CORE default (0) string]
     foreach task_name in exists app::TASK default ( @() ) do
@@ -593,14 +593,16 @@ end loop
 # Multiply the priority by 2 to add room for the ressources
 #
 
+let ISRS := @()
+
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  let ISRS := @()
+ let ISRS_temp := @()
   foreach isr in CORES[[core_id string]]::ISRS do
     let isr::PRIORITY := 2 * isr::PRIORITY + CORES[[core_id string]]::task_max_priority + 1
     let isr::KIND := "ISR"
-    let ISRS += isr
+    let ISRS_temp += isr
   end foreach
-  let CORES[[core_id string]]::ISRS := ISRS
+  let CORES[[core_id string]]::ISRS := ISRS_temp
 end loop
 
 #------------------------------------------------------------------------------*
