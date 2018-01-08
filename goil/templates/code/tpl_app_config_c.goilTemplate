@@ -312,27 +312,6 @@ foreach resource in REGULARRESOURCES
     template resource_descriptor
 end foreach
 
-
-if OS::HASNONPREEMPTABLETASK then
-%
-/**
- * INTERNAL_RES_SCHEDULER is an internal resource with the higher task
- * priority in the application. A task is non preemptable when
- * INTERNAL_RES_SCHEDULER is set as internal resource.
- */
-%
-loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-%
-VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER_% !core_id % = {
-    RES_SCHEDULER_PRIORITY_% ! core_id %,
-    0,
-    FALSE
-};
-
-%
-end loop
-end if
-
 if OS::USERESSCHEDULER then
 %
 /**
@@ -448,15 +427,34 @@ tpl_resource_table[NUMBER_OF_CORES] = {
 end if
 
 #------------------------------------------------------------------------------
-
-foreach resource in INTERNALRESOURCES
-  before
 %
 /*=============================================================================
  * Definition and initialization of internal Resource related structures
  */
 %
-  do
+
+if OS::HASNONPREEMPTABLETASK then
+%
+/**
+ * INTERNAL_RES_SCHEDULER is an internal resource with the higher task
+ * priority in the application. A task is non preemptable when
+ * INTERNAL_RES_SCHEDULER is set as internal resource.
+ */
+%
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER_% !core_id % = {
+    RES_SCHEDULER_PRIORITY_% ! core_id %,
+    0,
+    FALSE
+};
+
+%
+end loop
+end if
+
+foreach resource in INTERNALRESOURCES
+do
     template internal_resource_descriptor
 end foreach
 
