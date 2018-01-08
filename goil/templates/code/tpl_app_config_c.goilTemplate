@@ -1123,7 +1123,7 @@ CONSTP2CONST(tpl_ioc_unqueued_mo, OS_CONST, OS_CONST) tpl_ioc_unqueued_table[% !
 
 template if exists custom_app_config_c
 
-template heap_readylist
+template readylist
 
 template tpl_kern
 
