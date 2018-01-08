@@ -231,13 +231,14 @@ end if
 /*-----------------------------------------------------------------------------
  * Priority of RES_SCHEDULER
  */
-#define RES_SCHEDULER_PRIORITY % !CORES["0"]::RESSCHEDULERPRIORITY %
+
 %
-if OS::NUMBER_OF_CORES > 1 then
 loop id from 0 to OS::NUMBER_OF_CORES - 1 do
 %#define RES_SCHEDULER_PRIORITY_% !id %  % !CORES[[id string]]::RESSCHEDULERPRIORITY %
 %
 end loop
+
+if OS::NUMBER_OF_CORES > 1 then
 %
 /*-----------------------------------------------------------------------------
  * Core identifiers

@@ -135,19 +135,6 @@ extern CONST(tpl_appmode_mask, OS_CONST)
 
 #endif
 
-/**
- * INTERNAL_RES_SCHEDULER is an internal resource with the higher task
- * priority in the application. A task is non preemptable when
- * INTERNAL_RES_SCHEDULER is set as internal resource.
- */
-VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
-    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the
-                                 maximum priority of the tasks of the
-                                 application */
-    0,
-    FALSE
-};
-
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 

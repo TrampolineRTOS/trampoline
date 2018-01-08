@@ -503,8 +503,10 @@ if [APPLICATION length] > 0 then
   foreach app in APPLICATION do
     let core := [exists app::CORE default (0) string]
     foreach task_name in exists app::TASK default ( @() ) do
-    let CORES[core]::TASKS += task_map[task_name::VALUE]
-  end foreach
+      let task := task_map[task_name::VALUE]
+      let task::CORE := core
+      let CORES[core]::TASKS += task
+    end foreach
     foreach isr_name in exists app::ISR default ( @() ) do
       if exists isr_map[isr_name::VALUE] then
         let CORES[core]::ISRS += isr_map[isr_name::VALUE]
@@ -512,7 +514,10 @@ if [APPLICATION length] > 0 then
     end foreach
   end foreach
 else
-  let CORES["0"]::TASKS := TASK
+  foreach task in TASK do
+    let task::CORE := "0"
+    let CORES["0"]::TASKS += task
+  end foreach
   let CORES["0"]::ISRS := ISR
 end if
 
