@@ -330,7 +330,7 @@ VAR(tpl_resource, OS_VAR) res_sched_core% !core_id %_rez_desc = {%
     else %
 VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {%
     end if%
-  RES_SCHEDULER_PRIORITY,   /*  ceiling priority                            */
+  RES_SCHEDULER_PRIORITY_% !core_id %,   /*  ceiling priority                            */
   0,                        /*  owner_prev_priority                         */
   INVALID_PROC_ID,          /*  owner                                       */
 #if WITH_OSAPPLICATION == YES

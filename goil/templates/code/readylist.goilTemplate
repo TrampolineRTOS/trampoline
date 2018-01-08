@@ -41,11 +41,11 @@ end loop
 ####
 
 else
-%
-/**
+%/**
  * @internal
  * A tpl_ready_list is used for each core.
  */
+
 %
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1
@@ -70,6 +70,7 @@ end loop
 %
   }
 };
+
 %
 end loop
 
