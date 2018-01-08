@@ -9,11 +9,12 @@
 # In multicore implementation, tpl_ready_list is indexed
 # by the core identifier.
 
-###### MONOCORE
+#### --------
+#### MONOCORE
+####
+
 if OS::NUMBER_OF_CORES == 1 then
-
 let NUMBER_OF_JOBS_PER_PRIO := CORES["0"]::NUMBER_OF_JOBS_PER_PRIO
-
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
 %VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
@@ -35,7 +36,10 @@ end loop
 };
 %
 
-###### MULTICORE
+#### --------
+#### MULTICORE
+####
+
 else
 %
 /**
@@ -46,8 +50,27 @@ else
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1
 do
+let NUMBER_OF_JOBS_PER_PRIO := CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO
+loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
+do
+%VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !core_id %_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
 %
-VAR(tpl_list, OS_VAR) tpl_ready_list_% !core_id %[% !READY_LIST_SIZE + 1 %];%
+end loop
+%
+VAR(tpl_list, OS_VAR) tpl_ready_list_% !core_id % = {
+  0,
+  {
+%
+loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
+do
+%    {.full_size = % !NUMBER_OF_JOBS_PER_PRIO[i]%, .array = tpl_ready_list_% !core_id %_% !i %}%
+between %,
+%
+end loop
+%
+  }
+};
+%
 end loop
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1
@@ -65,19 +88,6 @@ after %
 end loop
 end if
 
-###### MISCELLANEOUS
-foreach core in CORES do
-  let core_id := ""
-  if [CORES length] > 1 then
-    let core_id := "_core"+KEY
-  end if
-  # compute the size of the heap
-  let heap_size := 1 # for the idle task
-  let heap_size := heap_size + [core::ISRS length] # for the ISRs
-  foreach task in core::TASKS do
-    let heap_size := heap_size + task::ACTIVATION
-  end foreach
-end foreach
 %
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
