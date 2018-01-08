@@ -235,7 +235,7 @@ end if
 %
 if OS::NUMBER_OF_CORES > 1 then
 loop id from 0 to OS::NUMBER_OF_CORES - 1 do
-% #define RES_SCHEDULER_PRIORITY_ % !id %  % !CORES[[id string]]::RESSCHEDULERPRIORITY %
+%#define RES_SCHEDULER_PRIORITY_% !id %  % !CORES[[id string]]::RESSCHEDULERPRIORITY %
 %
 end loop
 %
