@@ -687,42 +687,50 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   sort CORES[[core_id string]]::PRIORITIZED by PRIORITY <
 
   let PRIORITIZED := @()
+  let NUMBER_OF_JOBS_PER_PRIO := @()
   let priority := 0
   let previous_prio := 0
-  let CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO := @()
   # Add the priority of the idle task
-  let CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO += 1
+  let NUMBER_OF_JOBS_PER_PRIO += 1
 
   foreach obj in CORES[[core_id string]]::PRIORITIZED do
     if obj::PRIORITY > previous_prio then
       let priority := priority + 1
       let previous_prio := obj::PRIORITY
-      let CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO += 0
+      let NUMBER_OF_JOBS_PER_PRIO += 0
     end if
     let obj::PRIORITY := priority
     let PRIORITIZED += obj
     if obj::KIND == "Task" then
-      let CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO += obj::ACTIVATION
+      let NUMBER_OF_JOBS_PER_PRIO[priority] += obj::ACTIVATION
     else
-      let CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO += 1
+      let NUMBER_OF_JOBS_PER_PRIO[priority] += 1
     end if
   end foreach
   let CORES[[core_id string]]::PRIORITIZED := PRIORITIZED
+  let CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO := NUMBER_OF_JOBS_PER_PRIO
 end loop
 
 #------------------------------------------------------------------------------*
+# Compute the key size
 # FOR EACH CORE
 # Compute the maximum number of jobs among the priority levels
-# Compute the maximum number of jobs
+# Compute the number of priorities
+#
 
 let MAX_JOBS_AMONG_PRIORITIES := 0
+let NUMBER_OF_PRIORITIES := 0
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   foreach k in CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO do
+    let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
     if k > MAX_JOBS_AMONG_PRIORITIES then
       let MAX_JOBS_AMONG_PRIORITIES := k
     end if
   end foreach
 end loop
+
+let KEY_SIZE := [(1 << ([NUMBER_OF_PRIORITIES numberOfBits] +
+                [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBytes]
 
 #------------------------------------------------------------------------------*
 # Compute the lists of basic and extended tasks, the list of RESOURCES

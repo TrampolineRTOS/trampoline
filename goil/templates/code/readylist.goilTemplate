@@ -5,27 +5,14 @@
 #include "tpl_memmap.h"
 
 %
-#
-# compute the size of the key in each element of the ready list
-# the key is the concatenation of the priority and the rank
-# the maximum priority is already computed in MAXPRIORITY
-# the maximum rank is computed from the READYLIST data structure.
-#
-#display READYLIST
-#display MAX_RANK
-#display KEY_SIZE
-#display PRIORITY_MASK
-#display RANK_MASK
-#display PRIORITY_SHIFT
-
-# NUMBER_OF_PRIORITIES does not take into account the idle task (PRIORITY = 0)
-# so the actual number of priority levels is NUMBER_OF_PRIORITIES + 1
 
 # In multicore implementation, tpl_ready_list is indexed
 # by the core identifier.
 
 ###### MONOCORE
 if OS::NUMBER_OF_CORES == 1 then
+
+let NUMBER_OF_JOBS_PER_PRIO := CORES["0"]::NUMBER_OF_JOBS_PER_PRIO
 
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do

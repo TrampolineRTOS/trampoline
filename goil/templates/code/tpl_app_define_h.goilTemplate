@@ -110,9 +110,6 @@ end if
  *   right with the rank set to 0;
  * - RANK_MASK is the mask to get only the rank.
  */
-#define PRIORITY_SHIFT                   % !PRIORITY_SHIFT %
-#define PRIORITY_MASK                    % !PRIORITY_MASK  %
-#define RANK_MASK                        % !RANK_MASK %
 
 /*=============================================================================
  * Number of objects used by the application
@@ -234,7 +231,7 @@ end if
 /*-----------------------------------------------------------------------------
  * Priority of RES_SCHEDULER
  */
-#define RES_SCHEDULER_PRIORITY % !OS::RESSCHEDULERPRIORITY %
+#define RES_SCHEDULER_PRIORITY % !CORES["0"]::RESSCHEDULERPRIORITY %
 %
 if OS::NUMBER_OF_CORES > 1 then
 %
