@@ -640,11 +640,11 @@ foreach resource in RESOURCE do
       end if
     end foreach
   end loop
-    let resource::PRIORITY := resource_priority + 1
-    let RESOURCES += resource
-    if exists resource::CORE then
-      let CORES[resource::CORE]::RESOURCES += resource
-    end if
+  let resource::PRIORITY := resource_priority + 1
+  let RESOURCES += resource
+  if exists resource::CORE then
+    let CORES[resource::CORE]::RESOURCES += resource
+  end if
 end foreach
 
 #------------------------------------------------------------------------------*

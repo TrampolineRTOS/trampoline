@@ -50,9 +50,3 @@ CPU posix {
   };
 
 };
-
-CPU osek_defaultObjects {
-  COUNTER SystemCounter {
-  } : "Predefined System Counter";
-};
-
