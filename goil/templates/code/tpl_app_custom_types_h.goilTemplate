@@ -50,7 +50,7 @@ typedef uint% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask
  *
  * @warning This type must be signed.
  */
-typedef sint% !8*KEY_SIZE % tpl_priority;
+typedef uint% ! [MAX_NUMBER_OF_PRIORITIES numberOfBytes] * 8 % tpl_priority;
 
 /**
  * tpl_activate_counter is used to count

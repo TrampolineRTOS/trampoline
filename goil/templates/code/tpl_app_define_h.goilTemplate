@@ -122,7 +122,7 @@ if OS::NUMBER_OF_CORES == 1 then
 %/*-----------------------------------------------------------------------------
  * Number of priority levels
  */
-#define PRIO_LEVEL_COUNT       % !NUMBER_OF_PRIORITIES %
+#define PRIO_LEVEL_COUNT       % !MAX_NUMBER_OF_PRIORITIES %
 %
 end if
 %

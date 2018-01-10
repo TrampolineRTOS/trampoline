@@ -703,26 +703,6 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 
 #------------------------------------------------------------------------------*
-# Compute the key size
-# FOR EACH CORE
-# Compute the maximum number of jobs among the priority levels
-# Compute the number of priorities
-
-let MAX_JOBS_AMONG_PRIORITIES := 0
-let NUMBER_OF_PRIORITIES := 0
-loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  foreach k in CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO do
-    let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
-    if k > MAX_JOBS_AMONG_PRIORITIES then
-      let MAX_JOBS_AMONG_PRIORITIES := k
-    end if
-  end foreach
-end loop
-
-let KEY_SIZE := [(1 << ([NUMBER_OF_PRIORITIES numberOfBits] +
-                [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBytes]
-
-#------------------------------------------------------------------------------*
 # Compute the lists of basic and extended tasks, the list of RESOURCES
 # and the RES_SCHEDULER priority for each core
 #
@@ -800,6 +780,25 @@ end loop
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   if (OS::USERESSCHEDULER | CORES[[core_id string]]::HASNONPREEMPTABLETASK) & (not CORES[[core_id string]]::highest_priority_task_uses_resource) then
   [!CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO insert: CORES[[core_id string]]::RESSCHEDULERPRIORITY, 1]
+  end if
+end loop
+
+#------------------------------------------------------------------------------*
+# FOR EACH CORE
+# Compute the maximum number of jobs among the priority levels
+# Compute the maximum number of priorities amongs cores
+
+let MAX_JOBS_AMONG_PRIORITIES := 0
+let MAX_NUMBER_OF_PRIORITIES := 0
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let NUMBER_OF_JOBS_PER_PRIO := CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO
+  foreach n in NUMBER_OF_JOBS_PER_PRIO do
+    if n > MAX_JOBS_AMONG_PRIORITIES then
+      let MAX_JOBS_AMONG_PRIORITIES := n
+    end if
+  end foreach
+  if [NUMBER_OF_JOBS_PER_PRIO length] > MAX_NUMBER_OF_PRIORITIES then
+    let MAX_NUMBER_OF_PRIORITIES := [NUMBER_OF_JOBS_PER_PRIO length]
   end if
 end loop
 
