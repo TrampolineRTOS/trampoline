@@ -75,8 +75,7 @@ end loop
 end loop
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1
-before %
-CONSTP2VAR(tpl_list, OS_CONST, OS_VAR) tpl_ready_list[% ! OS::NUMBER_OF_CORES %] =
+before %CONSTP2VAR(tpl_list, OS_CONST, OS_VAR) tpl_ready_list[% ! OS::NUMBER_OF_CORES %] =
 {
 %
 do
