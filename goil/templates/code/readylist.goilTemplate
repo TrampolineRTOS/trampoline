@@ -21,19 +21,19 @@ do
 %
 end loop
 %
-VAR(tpl_list, OS_VAR) tpl_ready_list = {
-  0,
-  {
+VAR(tpl_proc_list, OS_VAR) tpl_ready_list_[% ![NUMBER_OF_JOBS_PER_PRIO length] %] =
+{
 %
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
-%    {0 /* front_index */, 0 /* actual_size */, % !NUMBER_OF_JOBS_PER_PRIO[i]% /* full_size */, tpl_ready_list_% !i %}%
+%  {0 /* front_index */, 0 /* actual_size */, % !NUMBER_OF_JOBS_PER_PRIO[i]% /* full_size */, tpl_ready_list_% !i %}%
 between %,
 %
 end loop
 %
-  }
 };
+
+VAR(tpl_list, OS_VAR) tpl_ready_list = {0, tpl_ready_list_};
 %
 
 #### --------
@@ -53,23 +53,23 @@ do
 let NUMBER_OF_JOBS_PER_PRIO := CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
-%VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !core_id %_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
+%VAR(tpl_proc_id, OS_VAR) tpl_ready_list__% !core_id %_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
 %
 end loop
 %
-VAR(tpl_list, OS_VAR) tpl_ready_list_% !core_id % = {
-  0,
-  {
+VAR(tpl_proc_list, OS_VAR) tpl_ready_list__% !core_id %[% ![NUMBER_OF_JOBS_PER_PRIO length] %] =
+{
 %
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
-%    {0 /* front_index */, 0 /* actual_size */, % !NUMBER_OF_JOBS_PER_PRIO[i]% /* full_size */, tpl_ready_list_% !core_id %_% !i %}%
+%  {0 /* front_index */, 0 /* actual_size */, % !NUMBER_OF_JOBS_PER_PRIO[i]% /* full_size */, tpl_ready_list__% !core_id %_% !i %}%
 between %,
 %
 end loop
 %
-  }
 };
+
+VAR(tpl_list, OS_VAR) tpl_ready_list_% !core_id % = {0, tpl_ready_list__% !core_id %};
 
 %
 end loop

@@ -295,7 +295,7 @@ typedef struct {
  */
 typedef struct {
   VAR(tpl_priority, TYPEDEF) highest_priority;
-  VAR(tpl_proc_list, TYPEDEF) array[];
+  P2VAR(tpl_proc_list, TYPEDEF, OS_VAR) array;
 } tpl_list;
 
 
