@@ -652,7 +652,6 @@ end foreach
 # Compute a list of priority objects (ISR category 2, Tasks and resources)
 # PRIORITY is made dense
 # to compute the ready list attributes
-#
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let CORES[[core_id string]]::PRIORITIZED := @()
@@ -703,14 +702,12 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 
 #------------------------------------------------------------------------------*
-# Compute the lists of basic and extended tasks, the list of RESOURCES
+# Compute the lists of basic and extended tasks
 # and the RES_SCHEDULER priority for each core
-#
 
 let BASICTASKS := @()
 let EXTENDEDTASKS := @()
 let TASKS := @()
-let RESOURCES := @()
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let CORES[[core_id string]]::highest_priority_task_uses_resource := false
@@ -727,16 +724,18 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
       let CORES[[core_id string]]::RESSCHEDULERPRIORITY := obj::PRIORITY
       let CORES[[core_id string]]::highest_priority_task_uses_resource := exists obj::RESOURCE
     end if
-  elsif obj::KIND == "Resource" then
-    let RESOURCES += obj
   end if
   end foreach
   let CORES[[core_id string]]::RESSCHEDULERPRIORITY := CORES[[core_id string]]::RESSCHEDULERPRIORITY + 1
+  if (OS::USERESSCHEDULER | CORES[[core_id string]]::HASNONPREEMPTABLETASK) & (not CORES[[core_id string]]::highest_priority_task_uses_resource) then
+    let CORES[[core_id string]]::INSERT_RESSCHEDULERPRIORITY := true
+  else
+    let CORES[[core_id string]]::INSERT_RESSCHEDULERPRIORITY := false
+  end if
 end loop
 
 #------------------------------------------------------------------------------*
 # Check no extended task as an ACTIVATION attribute greater than 1
-#
 
 foreach task in EXTENDEDTASKS do
   if task::ACTIVATION > 1 then
@@ -746,7 +745,6 @@ end foreach
 
 #------------------------------------------------------------------------------*
 # Compute the lists of ISR1 and ISR2
-#
 
 let ISRS1 := @()
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
@@ -763,7 +761,7 @@ foreach isr in CORES[[core_id string]]::PRIORITIZED do
     if isr::CATEGORY == 2 then
       # If internal rescheduler or rescheduler is used and if the highest priority task doesn't have any ressources,
       # increase the ISR2 priority by one.
-      if (OS::USERESSCHEDULER | CORES[[core_id string]]::HASNONPREEMPTABLETASK) & (not CORES[[core_id string]]::highest_priority_task_uses_resource) then
+      if CORES[[core_id string]]::INSERT_RESSCHEDULERPRIORITY then
         let isr::PRIORITY := isr::PRIORITY + 1
       end if
       let ISRS2 += isr
@@ -774,11 +772,31 @@ end foreach
 end loop
 
 #------------------------------------------------------------------------------*
+# Compute the lists of Resources
+# If the resource has a priority > RESSCHEDULERPRIORITY, it may be neccesary to
+# increase it's priority by one, as with ISR's.
+
+let RESOURCES := @()
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  foreach resource in CORES[[core_id string]]::PRIORITIZED do
+    if resource::KIND == "Resource" then
+      if CORES[[core_id string]]::INSERT_RESSCHEDULERPRIORITY then
+        if resource::PRIORITY > CORES[[core_id string]]::RESSCHEDULERPRIORITY then
+          let resource::PRIORITY := resource::PRIORITY + 1
+        end if
+      end if
+      let RESOURCES += resource
+    end if
+  end foreach
+end loop
+
+#------------------------------------------------------------------------------*
 # FOR EACH CORE
 # If needed, add the resscheduler or internal resscheduler to NUMBER_OF_JOBS_PER_PRIO
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  if (OS::USERESSCHEDULER | CORES[[core_id string]]::HASNONPREEMPTABLETASK) & (not CORES[[core_id string]]::highest_priority_task_uses_resource) then
+  if CORES[[core_id string]]::INSERT_RESSCHEDULERPRIORITY then
   [!CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO insert: CORES[[core_id string]]::RESSCHEDULERPRIORITY, 1]
   end if
 end loop
@@ -804,7 +822,6 @@ end loop
 
 #------------------------------------------------------------------------------*
 # compute the list of PROCESSES, TASKS
-#
 
 let PROCESSES := @()
 let TASKS := @()
@@ -823,7 +840,6 @@ end foreach
 
 #------------------------------------------------------------------------------*
 # Build a map giving the CORE for a process name
-#
 
 let CORE_FOR_PROCESS := @[]
 if OS::NUMBER_OF_CORES > 1 then
