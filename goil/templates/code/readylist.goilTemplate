@@ -15,6 +15,10 @@
 
 if OS::NUMBER_OF_CORES == 1 then
 let NUMBER_OF_JOBS_PER_PRIO := CORES["0"]::NUMBER_OF_JOBS_PER_PRIO
+
+%VAR(tpl_priority, OS_VAR) tpl_heap_[% ![NUMBER_OF_JOBS_PER_PRIO length] %];
+%
+
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
 %VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
@@ -26,14 +30,14 @@ VAR(tpl_proc_list, OS_VAR) tpl_ready_list_[% ![NUMBER_OF_JOBS_PER_PRIO length] %
 %
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
-%  {0 /* front_index */, 0 /* actual_size */, % !NUMBER_OF_JOBS_PER_PRIO[i]% /* full_size */, tpl_ready_list_% !i %}%
+%  {0, 0, % !NUMBER_OF_JOBS_PER_PRIO[i]%, tpl_ready_list_% !i %}%
 between %,
 %
 end loop
 %
 };
 
-VAR(tpl_list, OS_VAR) tpl_ready_list = {0, tpl_ready_list_};
+VAR(tpl_list, OS_VAR) tpl_ready_list = {tpl_ready_list_, tpl_heap_, -1};
 %
 
 #### --------
@@ -51,6 +55,10 @@ else
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1
 do
 let NUMBER_OF_JOBS_PER_PRIO := CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO
+
+%VAR(tpl_priority, OS_VAR) tpl_heap_% !core_id %[% ![NUMBER_OF_JOBS_PER_PRIO length] %];
+%
+
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
 %VAR(tpl_proc_id, OS_VAR) tpl_ready_list__% !core_id %_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
@@ -62,14 +70,14 @@ VAR(tpl_proc_list, OS_VAR) tpl_ready_list__% !core_id %[% ![NUMBER_OF_JOBS_PER_P
 %
 loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
 do
-%  {0 /* front_index */, 0 /* actual_size */, % !NUMBER_OF_JOBS_PER_PRIO[i]% /* full_size */, tpl_ready_list__% !core_id %_% !i %}%
+%  {0, 0, % !NUMBER_OF_JOBS_PER_PRIO[i]%, tpl_ready_list__% !core_id %_% !i %}%
 between %,
 %
 end loop
 %
 };
 
-VAR(tpl_list, OS_VAR) tpl_ready_list_% !core_id % = {0, tpl_ready_list__% !core_id %};
+VAR(tpl_list, OS_VAR) tpl_ready_list_% !core_id % = {tpl_ready_list__% !core_id %, tpl_heap_% !core_id %, -1};
 
 %
 end loop

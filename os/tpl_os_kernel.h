@@ -284,18 +284,18 @@ typedef struct
 typedef struct {
   VAR(tpl_index, TYPEDEF) front_index;
   VAR(tpl_index, TYPEDEF) actual_size;
-  VAR(tpl_index, TYPEDEF) full_size;
+  CONST(tpl_index, TYPEDEF) full_size;
   P2VAR(tpl_proc_id, TYPEDEF, OS_VAR) array;
 } tpl_proc_list;
 
 /**
  * @typedef tpl_list
- * This type implements the ready list. It is necessary since
- * the ready list is a list whose size has to be known.
+ * This type implements the ready list. 
  */
 typedef struct {
-  VAR(tpl_priority, TYPEDEF) highest_priority;
   P2VAR(tpl_proc_list, TYPEDEF, OS_VAR) array;
+  P2VAR(tpl_priority, TYPEDEF, OS_VAR) heap;
+  VAR(tpl_priority, TYPEDEF) heap_index;
 } tpl_list;
 
 
