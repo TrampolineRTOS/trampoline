@@ -338,12 +338,14 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
-  VAR(tpl_priority, AUTOMATIC) index = READY_LIST(ready_list).heap[0];
+  VAR(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).heap[0];
   VAR(uint32, AUTOMATIC) i, j;
 
-  for (; index >= 0; index--)
+  /* The heap is erased here and recreated in the "for" loop */
+  READY_LIST(ready_list).heap_index = -1;
+  for (; priority >= 0; priority--)
   {
-    CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[index];
+    CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
     VAR(tpl_index, AUTOMATIC) r = proc_list->front_index;
     CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
     CONST(tpl_index, AUTOMATIC) actual_size = proc_list->actual_size;
@@ -357,10 +359,10 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
           proc_list->array[(r + i + j) % full_size] = proc_list->array[(r + i + j + 1) % full_size];
       }
     }
-    /* Down-heap operation if the proc_list is empty and wasn't before */
-    if (actual_size > 0 && proc_list->actual_size == 0)
+    /* Up-heap operation if the proc_list is not empty */
+    if (proc_list->actual_size > 0)
     {
-      tpl_down_heap(&READY_LIST(ready_list), 0);
+      tpl_up_heap(&READY_LIST(ready_list), priority);
     }
   }
 }
