@@ -166,6 +166,64 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 
 /*
  * @internal
+ * tpl_up_heap inserts the priority in the ready list's heap
+ * of the given core
+ */
+FUNC(void, OS_CODE) tpl_up_heap(CORE_ID_OR_VOID(core_id), CONST(tpl_priority, AUTOMATIC) priority)
+{
+  GET_CORE_READY_LIST(core_id, ready_list)
+
+  P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = READY_LIST(ready_list).heap;
+  CONST(tpl_priority, AUTOMATIC) heap_index = ++READY_LIST(ready_list).heap_index;
+  VAR(uint32, AUTOMATIC) i = heap_index, j;
+  
+  heap[heap_index] = priority;
+  while (i > 0 && (j = (i - 1)/2) >= 0)
+  {
+    if (heap[i] > heap[j])
+    {
+      int value = heap[i];
+      heap[i] = heap[j];
+      heap[j] = value;
+      i = j;
+    }
+    else
+      break;
+  }
+}
+
+/*
+ * @internal
+ * tpl_down_heap removes the given index in the ready list's heap
+ * of the given core
+ */
+FUNC(void, OS_CODE) tpl_down_heap(CORE_ID_OR_VOID(core_id), CONST(tpl_priority, AUTOMATIC) index)
+{
+  GET_CORE_READY_LIST(core_id, ready_list)
+
+  P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = READY_LIST(ready_list).heap;
+  CONST(tpl_priority, AUTOMATIC) heap_index = READY_LIST(ready_list).heap_index;
+  VAR(uint32, AUTOMATIC) i = index, j;
+
+  heap[index] = heap[heap_index];
+  while (2*(i + 1) <= heap_index)
+  {
+    j = heap[2*i + 1] > heap[2*(i + 1)] || 2*(i + 1) == heap_index ? 2*i + 1 : 2*(i + 1);
+    if (heap[i] < heap[j])
+    {
+      int value = heap[i];
+      heap[i] = heap[j];
+      heap[j] = value;
+      i = j;
+    }
+    else
+      break;
+  }
+  READY_LIST(ready_list).heap_index--;
+}
+
+/*
+ * @internal
  * tpl_put_new_proc puts a new proc in a ready list. In a multicore kernel,
  * the ready list is the proc's core ready list.
  */
@@ -181,13 +239,13 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   CONST(tpl_index, AUTOMATIC) actual_size = proc_list->actual_size;
   CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
-  /* Update the highest priority */
-  if (READY_LIST(ready_list).highest_priority < priority)
+  /* Up-heap operation if it is a new priority */
+  if (proc_list->actual_size == 0)
   {
-    READY_LIST(ready_list).highest_priority = priority;
+    tpl_up_heap(CORE_ID_OR_NOTHING(core_id), priority);
   }
   
-  /* Add the new entry at the end of the ready list */
+  /* Add the new entry at the end of the proc list */
   DOW_DO(printf("put_new_proc: %s with priority %d\r\n",proc_name_table[proc_id], priority);)
 
   proc_list->array[(front_index + actual_size) % full_size] = proc_id;
@@ -199,6 +257,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
  * tpl_put_preempted_proc puts a preempted proc in a ready list.
  * In a multicore kernel, the ready list is the proc's core ready list.
  */
+
 FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
@@ -210,13 +269,13 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   CONST(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
   CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
-  /* Update the highest priority */
-  if (READY_LIST(ready_list).highest_priority < dyn_priority)
+  /* Up-heap operation if it is a new priority */
+  if (proc_list->actual_size == 0)
   {
-    READY_LIST(ready_list).highest_priority = dyn_priority;
+    tpl_up_heap(CORE_ID_OR_NOTHING(core_id), dyn_priority);
   }
 
-  /* Add the new entry at the front of the ready list */
+  /* Add the new entry at the front of the proc list */
   DOW_DO(printf("put_preempted_proc: %s with priority %d\r\n",proc_name_table[proc_id], dyn_priority));
 
   proc_list->array[(front_index + full_size - 1) % full_size] = proc_id;
@@ -233,7 +292,7 @@ FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
 
-  CONST(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).highest_priority;
+  CONST(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).heap[0];
   CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
 
   if (proc_list->actual_size > 0)
@@ -245,34 +304,13 @@ FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 
 /*
  * @internal
- * tpl_front_prio returns the highest priority in the
- * ready list of the given core
- */
-FUNC(tpl_priority, OS_CODE) tpl_front_prio(CORE_ID_OR_VOID(core_id))
-{
-  GET_CORE_READY_LIST(core_id, ready_list)
-
-  VAR(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).highest_priority;
-  while (priority >= 0)
-  {
-    CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
-    if (proc_list->actual_size > 0)
-    {
-      return priority;
-    }
-    priority--;
-  }
-  return 0;
-}
-
-/*
- * @internal
  * tpl_remove_front_proc removes the highest priority proc from the
  * ready list of the specified core and returns proc_id
  */
 FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
+
   P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = READY_LIST(ready_list).heap;
   CONST(tpl_priority, AUTOMATIC) priority = heap[0];
   CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
@@ -286,28 +324,11 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
     proc_list->front_index = (front_index + 1) % full_size;
     proc_list->actual_size--;
 
-    /* Down-heap operation */
+    /* Down-heap operation if the proc_list is empty*/
     if (proc_list->actual_size == 0)
     {
-      CONST(tpl_priority, AUTOMATIC) heap_index = READY_LIST(ready_list).heap_index;
-      VAR(uint32, AUTOMATIC) i = 0, j;
-
-      heap[0] = heap[heap_index];
-      while (2*(i + 1) <= heap_index)
-      {
-        j = heap[2*i + 1] > heap[2*(i + 1)] || 2*(i + 1) == heap_index ? 2*i + 1 : 2*(i + 1);
-        if (heap[i] < heap[j])
-        {
-          int value = heap[i];
-          heap[i] = heap[j];
-          heap[j] = value;
-          i = j;
-        }
-        else
-          break;
-      }
-      READY_LIST(ready_list).heap_index--;
-    }  
+      tpl_down_heap(CORE_ID_OR_NOTHING(core_id), 0);
+    }
     return proc_list->array[front_index];
   }
   return INVALID_PROC_ID;
@@ -323,7 +344,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
-  VAR(tpl_priority, AUTOMATIC) index = READY_LIST(ready_list).highest_priority;
+  VAR(tpl_priority, AUTOMATIC) index = READY_LIST(ready_list).heap[0];
   VAR(uint32, AUTOMATIC) i, j;
 
   for (; index >= 0; index--)
@@ -331,8 +352,9 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
     CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[index];
     VAR(tpl_index, AUTOMATIC) r = proc_list->front_index;
     CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
+    CONST(tpl_index, AUTOMATIC) actual_size = proc_list->actual_size;
 
-    for (i = 0; i < proc_list->actual_size; i++)
+    for (i = 0; i < actual_size; i++)
     {
       if (proc_list->array[(r + i) % full_size] == proc_id)
       {
@@ -341,8 +363,10 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
           proc_list->array[(r + i + j) % full_size] = proc_list->array[(r + i + j + 1) % full_size];
       }
     }
-    if (proc_list->actual_size == 0)
-      READY_LIST(ready_list).highest_priority--;
+    if (actual_size > 0 && proc_list->actual_size == 0)
+    {
+      tpl_down_heap(CORE_ID_OR_NOTHING(core_id), index);
+    }
   }
 }
 
