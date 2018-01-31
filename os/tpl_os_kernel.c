@@ -197,9 +197,9 @@ FUNC(void, OS_CODE) tpl_heap_remove(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) read
 {
   P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = ready_list->heap;
   CONST(tpl_priority, AUTOMATIC) heap_index = ready_list->heap[0];
-  VAR(uint32, AUTOMATIC) i = index, j;
+  VAR(uint32, AUTOMATIC) i = 0, j;
 
-  heap[index] = heap[heap_index];
+  heap[0] = heap[heap_index];
   while (2*i + 1 <= heap_index)
   {
     j = heap[2*i] > heap[2*i + 1] || 2*i + 1 == heap_index ? 2*i : 2*i + 1;
@@ -236,7 +236,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   /* Up-heap operation if it is a new priority */
   if (proc_list->actual_size == 0)
   {
-    tpl_heap_insert(READY_LIST(ready_list), priority);
+    tpl_heap_insert(&READY_LIST(ready_list), priority);
   }
   
   /* Add the new entry at the end of the proc list */
