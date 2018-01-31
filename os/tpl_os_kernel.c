@@ -197,9 +197,9 @@ FUNC(void, OS_CODE) tpl_heap_remove(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) read
 {
   P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = ready_list->heap;
   CONST(tpl_priority, AUTOMATIC) heap_index = ready_list->heap[0];
-  VAR(uint32, AUTOMATIC) i = 0, j;
+  VAR(uint32, AUTOMATIC) i = 1, j;
 
-  heap[0] = heap[heap_index];
+  heap[1] = heap[heap_index];
   while (2*i + 1 <= heap_index)
   {
     j = heap[2*i] > heap[2*i + 1] || 2*i + 1 == heap_index ? 2*i : 2*i + 1;
