@@ -342,7 +342,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   VAR(uint32, AUTOMATIC) i, j;
 
   /* The heap is erased here and recreated in the "for" loop */
-  READY_LIST(ready_list).heap_index = -1;
+  READY_LIST(ready_list).heap[0]= 0;
   for (; priority >= 0; priority--)
   {
     CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
