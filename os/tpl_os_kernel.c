@@ -166,16 +166,16 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 
 /*
  * @internal
- * tpl_up_heap inserts the priority in the given ready list
+ * tpl_heap_insert inserts the priority in the given ready list
  */
-FUNC(void, OS_CODE) tpl_up_heap(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_list, CONST(tpl_priority, AUTOMATIC) priority)
+FUNC(void, OS_CODE) tpl_heap_insert(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_list, CONST(tpl_priority, AUTOMATIC) priority)
 {
   P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = ready_list->heap;
-  CONST(tpl_priority, AUTOMATIC) heap_index = ++ready_list->heap_index;
+  CONST(tpl_priority, AUTOMATIC) heap_index = ++ready_list->heap[0];
   VAR(uint32, AUTOMATIC) i = heap_index, j;
   
   heap[heap_index] = priority;
-  while (i > 0 && (j = (i - 1)/2) >= 0)
+  while (i > 1 && (j = i/2) >= 1)
   {
     if (heap[i] > heap[j])
     {
@@ -191,18 +191,18 @@ FUNC(void, OS_CODE) tpl_up_heap(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_li
 
 /*
  * @internal
- * tpl_down_heap removes the given index in the given ready list
+ * tpl_heap_remove removes the given index in the given ready list
  */
-FUNC(void, OS_CODE) tpl_down_heap(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_list, CONST(tpl_priority, AUTOMATIC) index)
+FUNC(void, OS_CODE) tpl_heap_remove(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_list)
 {
   P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = ready_list->heap;
-  CONST(tpl_priority, AUTOMATIC) heap_index = ready_list->heap_index;
+  CONST(tpl_priority, AUTOMATIC) heap_index = ready_list->heap[0];
   VAR(uint32, AUTOMATIC) i = index, j;
 
   heap[index] = heap[heap_index];
-  while (2*(i + 1) <= heap_index)
+  while (2*i + 1 <= heap_index)
   {
-    j = heap[2*i + 1] > heap[2*(i + 1)] || 2*(i + 1) == heap_index ? 2*i + 1 : 2*(i + 1);
+    j = heap[2*i] > heap[2*i + 1] || 2*i + 1 == heap_index ? 2*i : 2*i + 1;
     if (heap[i] < heap[j])
     {
       int value = heap[i];
@@ -213,7 +213,7 @@ FUNC(void, OS_CODE) tpl_down_heap(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_
     else
       break;
   }
-  READY_LIST(ready_list).heap_index--;
+  READY_LIST(ready_list).heap[0]--;
 }
 
 /*
@@ -236,7 +236,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   /* Up-heap operation if it is a new priority */
   if (proc_list->actual_size == 0)
   {
-    tpl_up_heap(&READY_LIST(ready_list), priority);
+    tpl_heap_insert(READY_LIST(ready_list), priority);
   }
   
   /* Add the new entry at the end of the proc list */
@@ -266,14 +266,14 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   /* Up-heap operation if it is a new priority */
   if (proc_list->actual_size == 0)
   {
-    tpl_up_heap(&READY_LIST(ready_list), dyn_priority);
+    tpl_heap_insert(&READY_LIST(ready_list), dyn_priority);
   }
 
   /* Add the new entry at the front of the proc list */
   DOW_DO(printf("put_preempted_proc: %s with priority %d\r\n",proc_name_table[proc_id], dyn_priority));
 
-  proc_list->array[(front_index + full_size - 1) % full_size] = proc_id;
-  proc_list->front_index = (front_index + full_size - 1) % full_size;
+  proc_list->array[front_index == 0 ? full_size - 1 : front_index - 1] = proc_id;
+  proc_list->front_index = front_index == 0 ? full_size - 1 : front_index - 1;
   proc_list->actual_size++;
 }
 
@@ -286,7 +286,7 @@ FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
 
-  CONST(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).heap[0];
+  CONST(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).heap[1];
   CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
 
   if (proc_list->actual_size > 0)
@@ -306,7 +306,7 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
   GET_CORE_READY_LIST(core_id, ready_list)
 
   P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = READY_LIST(ready_list).heap;
-  CONST(tpl_priority, AUTOMATIC) priority = heap[0];
+  CONST(tpl_priority, AUTOMATIC) priority = heap[1];
   CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
 
   if (proc_list->actual_size > 0)
@@ -315,13 +315,13 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
     CONST(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
     CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
-    proc_list->front_index = (front_index + 1) % full_size;
+    proc_list->front_index = front_index == full_size - 1 ? 0 : front_index + 1;
     proc_list->actual_size--;
 
     /* Down-heap operation if the proc_list is empty*/
     if (proc_list->actual_size == 0)
     {
-      tpl_down_heap(&READY_LIST(ready_list), 0);
+      tpl_heap_remove(&READY_LIST(ready_list));
     }
     return proc_list->array[front_index];
   }
@@ -338,7 +338,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
-  VAR(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).heap[0];
+  VAR(tpl_priority, AUTOMATIC) priority = READY_LIST(ready_list).heap[1];
   VAR(uint32, AUTOMATIC) i, j;
 
   /* The heap is erased here and recreated in the "for" loop */
@@ -362,7 +362,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
     /* Up-heap operation if the proc_list is not empty */
     if (proc_list->actual_size > 0)
     {
-      tpl_up_heap(&READY_LIST(ready_list), priority);
+      tpl_heap_insert(&READY_LIST(ready_list), priority);
     }
   }
 }
@@ -628,7 +628,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
     tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   #endif /* WITH_STACK_MONITORING */
 
-  if (READY_LIST(ready_list).heap[0] > (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
+  if (READY_LIST(ready_list).heap[1] > (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
   {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));

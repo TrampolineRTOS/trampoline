@@ -295,7 +295,6 @@ typedef struct {
 typedef struct {
   P2VAR(tpl_proc_list, TYPEDEF, OS_VAR) array;
   P2VAR(tpl_priority, TYPEDEF, OS_VAR) heap;
-  VAR(tpl_priority, TYPEDEF) heap_index;
 } tpl_list;
 
 
