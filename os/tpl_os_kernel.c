@@ -229,7 +229,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   CONST(tpl_priority, AUTOMATIC) priority = tpl_stat_proc_table[proc_id]->base_priority;
   
   CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[priority];
-  CONST(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
+  VAR(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
   CONST(tpl_index, AUTOMATIC) actual_size = proc_list->actual_size;
   CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
@@ -263,7 +263,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   CONST(tpl_priority, AUTOMATIC) dyn_priority = tpl_dyn_proc_table[proc_id]->priority;
 
   CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(ready_list).array[dyn_priority];
-  CONST(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
+  VAR(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
   CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
   /* Up-heap operation if it is a new priority */

@@ -27,7 +27,7 @@
  * tpl_index is used to store the index in the FIFO implementation
  * of the ready list.
  */
-#typedef uint% ! [MAX_JOBS_AMONG_PRIORITIES numberOfBytes] * 8 % tpl_index;
+//typedef uint% ! [MAX_JOBS_AMONG_PRIORITIES numberOfBytes] * 8 % tpl_index;
 typedef uint32 tpl_index;
 
 /**
