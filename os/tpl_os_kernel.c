@@ -242,7 +242,10 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   /* Add the new entry at the end of the proc list */
   DOW_DO(printf("put_new_proc: %s with priority %d\r\n",proc_name_table[proc_id], priority);)
 
-  proc_list->array[(front_index + actual_size) % full_size] = proc_id;
+  front_index = front_index + actual_size;
+  if (front_index >= full_size)
+    front_index = front_index - full_size;
+  proc_list->array[front_index] = proc_id;
   proc_list->actual_size++;
 }
 
@@ -272,8 +275,9 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   /* Add the new entry at the front of the proc list */
   DOW_DO(printf("put_preempted_proc: %s with priority %d\r\n",proc_name_table[proc_id], dyn_priority));
 
-  proc_list->array[front_index == 0 ? full_size - 1 : front_index - 1] = proc_id;
-  proc_list->front_index = front_index == 0 ? full_size - 1 : front_index - 1;
+  front_index = front_index == 0 ? full_size - 1 : front_index - 1;
+  proc_list->array[front_index] = proc_id;
+  proc_list->front_index = front_index;
   proc_list->actual_size++;
 }
 
