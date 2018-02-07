@@ -1,4 +1,8 @@
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_START_SEC_DATA
+#else
 #define OS_START_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"
 /*-----------------------------------------------------------------------------
  * Resource descriptor of internal resource % !resource::NAME %
@@ -21,5 +25,9 @@ VAR(tpl_internal_resource, OS_VAR) % !resource::NAME %_rez_desc = {
   /* owner previous priority          */  0,
   /* true if the resource is taken    */  FALSE
 };
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_STOP_SEC_DATA
+#else
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"

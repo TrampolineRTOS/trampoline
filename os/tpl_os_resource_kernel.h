@@ -33,6 +33,12 @@
 #include "tpl_as_app_kernel.h"
 #endif /* WITH_OSAPPLICATION */
 
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with kernel dynamic monitoring */
+#define ALIGNED		 __attribute__((aligned (4)))
+#else
+#define ALIGNED
+#endif
+
 /**
  * @struct TPL_RESOURCE
  *
@@ -40,15 +46,15 @@
  */
 struct TPL_RESOURCE {
   CONST(tpl_priority, TYPEDEF)
-    ceiling_priority;       /**<  Ceiling priority as computed at system
+    ceiling_priority ALIGNED;       /**<  Ceiling priority as computed at system
                                   generation time.                            */
   VAR(tpl_priority, TYPEDEF)
-    owner_prev_priority;    /**<  Priority of the owner before accessing to
+    owner_prev_priority ALIGNED;    /**<  Priority of the owner before accessing to
                                   the resource. This field is used to restore
                                   the priority of the task when the resource
                                   is released                                 */
   VAR(tpl_proc_id, TYPEDEF)
-    owner;                  /**<  Id of the owner of the resource or -1
+    owner ALIGNED;                  /**<  Id of the owner of the resource or -1
                                   if the resource is not owned                */
 #if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
@@ -56,7 +62,7 @@ struct TPL_RESOURCE {
                                   resource.                                   */
 #endif
   struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
-    next_res;               /**< Pointer to the next resource used to link
+    next_res ALIGNED;               /**< Pointer to the next resource used to link
                                  them together when a task get more than one
                                  resource                                     */
 };

@@ -323,7 +323,11 @@ if OS::USERESSCHEDULER then
 %
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_START_SEC_DATA
+#else
 #define OS_START_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"%
     if OS::NUMBER_OF_CORES > 1 then%
 VAR(tpl_resource, OS_VAR) res_sched_core% !core_id %_rez_desc = {%
@@ -338,7 +342,11 @@ VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {%
 #endif
   NULL                      /*  next_res                                    */
 };
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_STOP_SEC_DATA
+#else
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"
 %
   end loop
@@ -351,6 +359,7 @@ end if
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   if [REGULARRESOURCES length] > 0 | OS::USERESSCHEDULER then
 %
+
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)%
@@ -401,7 +410,6 @@ tpl_resource_table[RESOURCE_COUNT] = {%
     end if
 %
 };
-
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %

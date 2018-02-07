@@ -22,6 +22,7 @@
 #include "tpl_os_interrupt_kernel.h"
 #include "tpl_os_hooks.h"
 #include "tpl_compiler.h"
+#include "drivers/mss_watchdog/mss_watchdog.h"
 #include "m2sxxx.h"
 
 extern void tpl_primary_syscall_handler(void);
@@ -30,7 +31,8 @@ extern void tpl_primary_syscall_handler(void);
  * Exception handlers.
  ******************************************************************************/
 FUNC(void, OS_CODE)NMI_Handler(void)
-{
+{	
+	MSS_WD_clear_timeout_irq();
 	CALL_PANIC_HOOK(PANIC_NMI);
 	__ASM volatile("BKPT #01");
 	while (1);
