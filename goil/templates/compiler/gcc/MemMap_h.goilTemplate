@@ -200,6 +200,33 @@ end foreach
   #endif
 #endif
 
+/*============================================================================
+ * FPGA Mapping
+ */
+#ifdef FPGA_START_SEC_DATA
+  #undef FPGA_START_SEC_DATA
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .FPGA section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".FPGA.tplKern")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+
+#ifdef FPGA_STOP_SEC_DATA
+  #undef FPGA_STOP_SEC_DATA
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section .FPGA started"
+  #endif
+#endif
+
 /*=============================================================================
  * Application objects (Tasks and ISRs) Memory mapping
  */

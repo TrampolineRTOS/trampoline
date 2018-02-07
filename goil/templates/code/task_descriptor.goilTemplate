@@ -169,8 +169,11 @@ end if
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_START_SEC_DATA
+#else
 #define OS_START_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"
 /*
  * Dynamic descriptor of task % !task::NAME %
@@ -198,6 +201,12 @@ else
 end if 
 %
 };
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_STOP_SEC_DATA
+#include "tpl_memmap.h"
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+#endif
 %
 if exists task::EVENT then
 %

@@ -39,6 +39,12 @@
 #include "tpl_as_trusted_fct_kernel.h"
 #endif /* WITH_OSAPPLICATION */
 
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with kernel dynamic monitoring */
+#define ALIGNED		 __attribute__((aligned (4)))
+#else
+#define ALIGNED
+#endif
+
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore.h"
 #endif
@@ -144,15 +150,15 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_proc_function)(void);
  */
 typedef struct {
   CONST(tpl_priority, TYPEDEF)
-    ceiling_priority;     /**<  Ceiling priority as computed at system
+    ceiling_priority ALIGNED;     /**<  Ceiling priority as computed at system
                                 generation time                               */
   VAR(tpl_priority, TYPEDEF)
-    owner_prev_priority;  /**<  Priority of the owner prior to the access
+    owner_prev_priority ALIGNED;  /**<  Priority of the owner prior to the access
                                 to the resource. This field is used to
                                 restore the priority of the task when the
                                 resource is released                          */
   VAR(tpl_bool, TYPEDEF)
-    taken;                /**<  Flag to tell if the internal resource
+    taken ALIGNED;                /**<  Flag to tell if the internal resource
                                 is taken or not                               */
 } tpl_internal_resource;
 
@@ -220,17 +226,17 @@ typedef struct TPL_PROC_STATIC tpl_proc_static;
  */
 struct TPL_PROC {
   struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
-    resources;          /**< head of the ressources held          */
+    resources ALIGNED;          /**< head of the ressources held          */
 #if WITH_OSAPPLICATION == YES
   VAR(tpl_trusted_count, TYPEDEF)
     trusted_counter;    /**<  if > 0 the process is trusted       */
 #endif /* WITH_OSAPPLICATION */
   VAR(tpl_activate_counter, TYPEDEF)
-    activate_count;     /**< current activate count               */
+    activate_count ALIGNED;     /**< current activate count               */
   VAR(tpl_priority, TYPEDEF)
-    priority;           /**< current priority                     */
+    priority ALIGNED;           /**< current priority                     */
   VAR(tpl_proc_state, TYPEDEF)
-    state;              /**< state (READY, RUNNING, ...)*/
+    state ALIGNED;              /**< state (READY, RUNNING, ...)*/
 };
 
 /**
@@ -261,7 +267,7 @@ typedef struct
  * should be saved.
  */
   VAR(uint8, TYPEDEF)                         need_switch;
-#if (LEVEL_KERNEL_MONITORING >= 1) /* whith kernel monitoring */
+#if (LEVEL_KERNEL_MONITORING >= 1) /* with kernel monitoring */
   VAR(uint8, TYPEDEF)                         no_use1;
   VAR(uint8, TYPEDEF)                         no_use2;
   VAR(uint8, TYPEDEF)                         no_use3;
@@ -271,7 +277,7 @@ typedef struct
  * Boolean used to notify a rescheduling should be done
  */
   VAR(tpl_bool, TYPEDEF)                      need_schedule;
-#if (LEVEL_KERNEL_MONITORING >= 1) /* whith kernel monitoring */
+#if (LEVEL_KERNEL_MONITORING >= 1) /* with kernel monitoring */
   VAR(uint8, TYPEDEF)                         no_use4;
   VAR(uint8, TYPEDEF)                         no_use5;
   VAR(uint8, TYPEDEF)                         no_use6;
@@ -294,8 +300,8 @@ typedef struct
  * the process
  */
 typedef struct {
-  VAR(tpl_priority, TYPEDEF)  key;
-  VAR(tpl_proc_id, TYPEDEF)   id;
+  VAR(tpl_priority, TYPEDEF)  key ALIGNED;
+  VAR(tpl_proc_id, TYPEDEF)   id ALIGNED;
 } tpl_heap_entry;
 
 
