@@ -15,16 +15,18 @@ DeclareAlarm(blink_alarm);
 TASK(read_button)
 {
   static int a = 0;
+  if (readButton() == BUTTON_PRESSED) {
+    ledToggle(BLUE);
+    if (a == 0) {
+      SetRelAlarm(blink_alarm, 100, 100);
+      a = 1;
+    }
+    else {
+	  CancelAlarm(blink_alarm);
+      a = 0;
+    }
+  }
   DisableAllInterrupts();
-  ledToggle(BLUE);
-  if (a == 0) {
-    SetRelAlarm(blink_alarm, 100, 100);
-    a = 1;
-  }
-  else {
-    CancelAlarm(blink_alarm);
-    a = 0;
-  }
   EnableAllInterrupts();
   TerminateTask();
 }
@@ -43,14 +45,12 @@ TASK(blink)
 
 #define APP_ISR_isr_button_START_SEC_CODE
 #include "tpl_memmap.h"
-DeclareTask(read_button);
 
 ISR(isr_button)
 {
   DisableAllInterrupts();
   ledToggle(RED);
   EnableAllInterrupts();
-  // ActivateTask(read_button);
 }
 #define APP_ISR_isr_button_STOP_SEC_CODE
 #include "tpl_memmap.h"

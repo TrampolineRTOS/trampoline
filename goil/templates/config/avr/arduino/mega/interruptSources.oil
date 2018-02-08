@@ -1,0 +1,12 @@
+/*
+ * External Interrupt sources for the AVR Mega2560 micro-controller
+ */
+ENUM [
+  PIN2 { #include <sensibility.oil> },
+  PIN3 { #include <sensibility.oil> },
+  PIN18{ #include <sensibility.oil> },
+  PIN19{ #include <sensibility.oil> },
+  PIN20{ #include <sensibility.oil> },
+  PIN21{ #include <sensibility.oil> },
+  TIMER0_OVF /*used in Arduino for micros(), millis(), ...*/
+] SOURCE;

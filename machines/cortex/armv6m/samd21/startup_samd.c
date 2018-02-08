@@ -111,8 +111,8 @@ inline void __libc_fini_array(void)
 }
 
 // This is the place where Cortex-M core will go immediately after reset.
-//void __attribute__ ((section(".after_vectors"))) 
-void tpl_continue_reset_handler(void)
+void __attribute__ ((section(".osCode"))) 
+tpl_continue_reset_handler(void)
 {
   /*
    * Initialize the stacks and mode
@@ -142,6 +142,9 @@ void tpl_continue_reset_handler(void)
 
 }
 
+#include "eic.h"
+#include "clock.h"
+
 // System initialisation, executed before constructors.
 void system_init()
 {
@@ -153,6 +156,9 @@ void system_init()
 
   // Call the CSMSIS system initialisation routine
   SystemInit();
+
+  //define a default clock for EIC
+  EICInitClock(F32KHZ);
 }
 
 // The .preinit_array_sysinit section is defined in sections.ld as the first

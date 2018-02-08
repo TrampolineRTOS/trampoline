@@ -23,8 +23,6 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <string.h>
-
 #include "command_line_interface/C_builtin_CLI_Options.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -44,6 +42,16 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
                                                       '\0',
                                                       "version",
                                                       "Display version") ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_StringCommandLineOption
+gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_options",
+                                                      "emit_issue_json_file",
+                                                      '\0',
+                                                      "emit-issue-json-file",
+                                                      "Emit a JSON file that contains all compilation issues",
+                                                      "") ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

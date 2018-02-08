@@ -18,6 +18,8 @@ CPU blink {
     STATUS = EXTENDED;
     PRETASKHOOK = TRUE;
     POSTTASKHOOK = TRUE;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";

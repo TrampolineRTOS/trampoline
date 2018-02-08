@@ -37,7 +37,6 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
 
@@ -533,6 +532,19 @@ GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS)
   }
   return result ;
 }
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_uint GALGAS_string::getter_utf_38_Length (UNUSED_LOCATION_ARGS) const {
+  GALGAS_uint result ;
+  if (isValid ()) {
+    C_Data data ;
+    data.appendString (mString) ;
+    result = GALGAS_uint ((uint32_t) data.length ()) ;
+  }
+  return result ;
+}
+
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1695,7 +1707,7 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
       }
     }else{
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
     }
   }
 }
@@ -1738,7 +1750,7 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
           }
         }
       }else{
-        ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
       }
     }
   }
@@ -1765,7 +1777,7 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
       }
     }else{
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
     }
   }
 }
@@ -1808,7 +1820,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
           }
         }
       }else{
-        ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
       }
     }
   }
@@ -1966,7 +1978,7 @@ void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
                                              COMMA_LOCATION_ARGS) {
   if (inFilePath.isValid ()) {
     if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to delete '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to delete '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
     }else if (inFilePath.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("cannot perform file delete: file name is an empty string" COMMA_THERE) ;
     }else{
@@ -1999,7 +2011,7 @@ void GALGAS_string::class_method_removeEmptyDirectory (GALGAS_string inDirectory
                                                        COMMA_LOCATION_ARGS) {
   if (inDirectoryPath.isValid ()) {
     if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to remove directory '") + inDirectoryPath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to remove directory '") + inDirectoryPath.mString + "'.\n" COMMA_THERE) ;
     }else if (inDirectoryPath.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("cannot perform directory removing: directory path is an empty string" COMMA_THERE) ;
     }else{
@@ -2048,7 +2060,7 @@ void GALGAS_string::class_method_removeDirectoryRecursively (GALGAS_string inDir
                                                              COMMA_LOCATION_ARGS) {
   if (inDirectoryPath.isValid ()) {
     if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to remove directory '") + inDirectoryPath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to remove directory '") + inDirectoryPath.mString + "'.\n" COMMA_THERE) ;
     }else if (inDirectoryPath.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("cannot perform directory removing: directory path is an empty string" COMMA_THERE) ;
     }else{
@@ -2089,7 +2101,7 @@ static bool writeFile (const C_String & inMessage,
       ggs_printFileOperationSuccess (inMessage + " '" + inFullPathName + "'.\n") ;
     }
   }else{
-    ggs_printWarning (C_SourceTextInString(), C_IssueWithFixIt (), C_String ("Need to write '") + inFullPathName + "'.\n" COMMA_HERE) ;
+    ggs_printWarning (inCompiler, C_SourceTextInString(), C_IssueWithFixIt (), C_String ("Need to write '") + inFullPathName + "'.\n" COMMA_HERE) ;
   }
   return ok ;
 }

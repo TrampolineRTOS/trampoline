@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -26,6 +26,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_SourceLocation.h"
+#include "strings/C_String.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -53,8 +54,8 @@ class C_CommandLineOption {
 
 //--- Accessing option parameters from GALGAS
   public : inline char getter_char (void) const { return mCommandChar ; }
-  public : inline const char * getter_string (void) const { return mCommandString ; }
-  public : inline const char * getter_comment (void) const { return mComment ; }
+  public : inline C_String getter_string (void) const { return mCommandString ; }
+  public : inline C_String getter_comment (void) const { return mComment ; }
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*

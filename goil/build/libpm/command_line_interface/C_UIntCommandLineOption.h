@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -57,7 +57,7 @@ class C_UIntCommandLineOption : public C_CommandLineOption {
                                                       bool & outFound,
                                                       bool & outCommandLineOptionStringIsValid)  ;
   public : static void printUsageOfUIntOptions (void) ;
-  public : static void printUIntOptions (const uint32_t inDisplayLength) ;
+  public : static void printUIntOptions (void) ;
 
 //--- Option introspection
   public : static void getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) ;

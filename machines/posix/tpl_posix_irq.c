@@ -69,6 +69,7 @@ sigset_t signal_set;
  */
 extern void tpl_call_counter_tick();
 
+
 /**
  * Enable all interrupts
  */
@@ -82,6 +83,15 @@ void tpl_enable_interrupts(void)
 }
 
 /**
+ * Enable OS interrupts.
+ * Same as tpl_enable_interrupts on posix target
+ */
+void tpl_enable_os_interrupts(void)
+{
+    tpl_enable_interrupts();
+}
+
+/**
  * Disable all interrupts
  */
 void tpl_disable_interrupts(void)
@@ -91,6 +101,15 @@ void tpl_disable_interrupts(void)
         perror("tpl_disable_interrupts failed");
         exit(-1);
     }
+}
+
+/**
+ * Disable OS interrupts.
+ * Same as tpl_disable on posix target
+ */
+void tpl_disable_os_interrupts(void)
+{
+    tpl_disable_interrupts();
 }
 
 /*

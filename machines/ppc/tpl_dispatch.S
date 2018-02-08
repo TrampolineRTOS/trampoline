@@ -296,7 +296,7 @@ tpl_sc_handler:
   /*
    * get the context pointer of the task that just lost the CPU
    */
-  lwz   r3,0(r11)                     /* get s_old                    */
+  lwz   r3,0(r11)                     /* get s_running                    */
   bl    tpl_save_context
   
   /*
@@ -315,7 +315,7 @@ no_save:
 #endif
 
   lwz   r11,KS_KERN_PTR(r1)
-  lwz   r3,4(r11)                     /* get s_running                */
+  lwz   r3,4(r11)                     /* get s_elected                */
   bl    tpl_load_context
   
   /*

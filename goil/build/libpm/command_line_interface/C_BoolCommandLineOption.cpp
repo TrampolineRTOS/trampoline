@@ -20,13 +20,12 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include <string.h>
-#include <stdio.h>
+#include "command_line_interface/C_BoolCommandLineOption.h"
+#include "strings/C_String.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#include "command_line_interface/C_BoolCommandLineOption.h"
-#include "strings/C_String.h"
+#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -106,36 +105,24 @@ void C_BoolCommandLineOption::printUsageOfBoolOptions (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_BoolCommandLineOption::printBoolOptions (const uint32_t inDisplayLength) {
+void C_BoolCommandLineOption::printBoolOptions (void) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != NULL) {
-    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "-" << cStringWithCharacter (p->mCommandChar) ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 ;
-      if (p->mCommandString [0] != '\0') {
-        co << ", " ;
-        charCount += 2 ;
-      }
+      co << "\n" ;
     }
     if (p->mCommandString [0] != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "--" << p->mCommandString ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) strlen (p->mCommandString) ;
-    }
-    if (charCount > inDisplayLength) {
       co << "\n" ;
-      charCount = 0 ;
     }
-    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
-      co << " " ;
-    }
-    co << p->mComment << "\n" ;
+    co << "    " << p->mComment << "\n" ;
     p = p->mNext ;
   }
 }

@@ -1,78 +1,72 @@
 CPU avrArduino {
 
-  PLATFORM_FILES arduinoBase {
-    PATH = "avr/arduino";
-    CPPFILE = "main.cpp";
-  };
-
   BUILDOPTIONS buildOptionsForArduino {
-    PRELDFLAGS = "-lm"; //math lib requied
-    PREASFLAGS = "-x assembler-with-cpp";
+    PRELDFLAGS  = "-lm"; //math lib requied
+    PREASFLAGS  = "-x assembler-with-cpp";
     COMMONFLAGS = "-Wno-unused-but-set-variable";
   };
+
+  PLATFORM_FILES arduinoBase {
+    PATH    = "avr/arduino/cores/arduino";
+    CPPFILE = "main.cpp";        // main
+    CFILE   = "wiring_digital.c";  // pinMode, digitalWrite, digitalRead
+    CFILE   = "wiring.c";          // millis, micors, delay... and isr for counter.
+    CFILE   = "hooks.c";           // yield (not used directly , but included in wiring)
+    CFILE   = "wiring_analog.c";   // analogWrite, analogRead, analogReference
+    CPPFILE = "WMath.cpp";         // random, randomSeed, map
+    CPPFILE = "WString.cpp";       // String type
+    CPPFILE = "WInterrupts.c";     // attachInterrupts, detachInterrupts (=> should not be used directly!)
+    CPPFILE = "abi.cpp";           // some C++ stuff.
+    CPPFILE = "new.cpp";           // some C++ stuff.
+  };
+
+  GENERATED_FILES avrArduinoGenerated {
+    CFILE = "tpl_interrupts.c";
+  };
+
+  LIBRARY advancedIO {
+    PATH    = "avr/arduino/cores/arduino";
+    CPPFILE = "Tone.cpp";        // tone, noTone
+    ASFILE  = "wiring_pulse.S";
+    CPPFILE = "wiring_pulse.c";  // pulseIn, pulseInLong
+    CPPFILE = "wiring_shift.c";  // shiftIn, shiftOut
+  };
   
-  PLATFORM_FILES arduinoBaseSerial {
-    PATH = "avr/arduino/hardware/cores/arduino";
+  LIBRARY serial {
+    PATH    = "avr/arduino/cores/arduino";
+    CPPFILE = "Print.cpp";            //Stream inherits from Print
+    CPPFILE = "Stream.cpp";           //HardwareSerial inherits from Stream
     CPPFILE = "HardwareSerial0.cpp";
+    CPPFILE = "HardwareSerial1.cpp";
+    CPPFILE = "HardwareSerial2.cpp";
+    CPPFILE = "HardwareSerial3.cpp";
     CPPFILE = "HardwareSerial.cpp";
-    CPPFILE = "HID.cpp";
-    CPPFILE = "IPAddress.cpp";
-    CPPFILE = "new.cpp";
-    CPPFILE = "Print.cpp";
-    CPPFILE = "Stream.cpp";
-    CPPFILE = "Tone.cpp";
-    CPPFILE = "USBCore.cpp";
-    CPPFILE = "WMath.cpp";
-    CPPFILE = "WString.cpp";
-    CFILE = "wiring_digital.c";
-    CFILE = "wiring.c";
-    CPPFILE = "abi.cpp";
-    CFILE = "hooks.c";
   };
   
-};
+  LIBRARY spi {
+    PATH    = "avr/arduino/libraries/SPI/src";
+    CPPFILE = "SPI.cpp";
+  };
+  
+  LIBRARY i2c {
+    PATH    = "avr/arduino/libraries/Wire/src";
+    CPPFILE = "Wire.cpp";
+    CFILE   = "utility/twi.c";
+  };
 
-/*
- * This configuration file adds a SOURCE attribute to ISR and COUNTER
- * It also define a new object type: INTERRUPT
- */
-IMPLEMENTATION avr_interrupt {
-  TASK [] {
-    UINT32 STACKSIZE = 128;
+  LIBRARY eeprom {
+    PATH    = "avr/arduino/libraries/EEPROM/src"; //only .h files.
   };
-  ISR [] {
-    UINT32 STACKSIZE = 128;
-    STRING SOURCE;
+  
+  LIBRARY softwareSerial {
+    PATH    = "avr/arduino/libraries/SoftwareSerial/src";
+    CPPFILE = "SoftwareSerial.cpp";
   };
-  COUNTER [] {
-    STRING SOURCE;
-  };
-};
-
-//specific to arduino.
-IMPLEMENTATION Trampoline {
-  OS {
-        BOOLEAN [
-          TRUE {
-            //port to flash Arduino => marche pas!
-            STRING PORT = "/dev/ttyUSB0";
-            
-            //BOOLEAN SPI = FALSE;
-            //BOOLEAN I2C = FALSE;
-            //BOOLEAN SERVO = FALSE;
-            BOOLEAN SERIAL = FALSE;
-            //BOOLEAN NRF24 = FALSE;
-            //BOOLEAN TINYRTC = FALSE;
-            //BOOLEAN TIME = FALSE;
-            //BOOLEAN STANDARDWIRING = FALSE;
-            //BOOLEAN EVOLVEARDUINO = FALSE;
-            //BOOLEAN LCDCRYSTAL = FALSE;
-            //BOOLEAN STEPPER = FALSE;
-          },
-          FALSE
-        ] ARDUINO = TRUE;
-      BOOLEAN SYSTEM_CALL = TRUE;
-  };
+  
+  // not used (at this date):
+  // IPAddress.cpp
+  // PluggableUSB.cpp
+  // USBCore.cpp
 };
 
 CPU arduino {
@@ -80,6 +74,6 @@ CPU arduino {
     TICKSPERBASE = 1;
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
-    SOURCE = "TIMER0_OVF_vect";
+    SOURCE = TIMER0_OVF ;
   };
 }; 

@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2008, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -36,15 +36,16 @@ class acPtr_class ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class AC_GALGAS_class : public AC_GALGAS_root { // AC_GALGAS_class est une classe abstraite
-//--- Attribute
+//--- Properties
   protected : acPtr_class * mObjectPtr ;
+  protected : const bool mIsShared ;
   public : inline const acPtr_class * ptr (void) const { return mObjectPtr ; }
 
 //--- Default constructor
-  protected : AC_GALGAS_class (void) ;
+  protected : AC_GALGAS_class (const bool inIsShared) ;
   
 //--- Constructor from pointer
-  protected : AC_GALGAS_class (const acPtr_class * inPointer) ;
+  protected : AC_GALGAS_class (const acPtr_class * inPointer, const bool inIsShared) ;
   
 //--- Destructor
   protected : virtual ~ AC_GALGAS_class (void) ;

@@ -86,11 +86,10 @@ GALGAS_filewrapper & GALGAS_filewrapper::operator = (const GALGAS_filewrapper & 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static void
-internalEnumerateFiles (const cDirectoryWrapper & inDirectory,
-                        const C_String & inWrapperPath,
-                        const bool inEnumerateTextFile,
-                        GALGAS_stringlist & ioList) {
+static void internalEnumerateFiles (const cDirectoryWrapper & inDirectory,
+                                    const C_String & inWrapperPath,
+                                    const bool inEnumerateTextFile,
+                                    GALGAS_stringlist & ioList) {
 //--- Enumerate regular files
   const cRegularFileWrapper * * mFiles = inDirectory.mFiles ;
   while ((* mFiles) != NULL) {
@@ -163,11 +162,10 @@ GALGAS_stringlist GALGAS_filewrapper::getter_allDirectoryPathes (LOCATION_ARGS) 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static void
-internalEnumerateFilesWithExtension (const cDirectoryWrapper & inDirectory,
-                        const C_String & inWrapperPath,
-                        GALGAS_stringlist & ioList,
-                        const C_String & inExtension) {
+static void internalEnumerateFilesWithExtension (const cDirectoryWrapper & inDirectory,
+                                                 const C_String & inWrapperPath,
+                                                 GALGAS_stringlist & ioList,
+                                                 const C_String & inExtension) {
 //--- Enumerate regular files
   const cRegularFileWrapper * * mFiles = inDirectory.mFiles ;
   while ((* mFiles) != NULL) {

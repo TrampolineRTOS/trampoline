@@ -42,6 +42,12 @@ typedef P2FUNC(tpl_bool, OS_APPL_CODE, tpl_isr_helper)(void);
 typedef P2FUNC(void, OS_APPL_CODE, tpl_it_handler)(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
 
 /**
+ * Function pointer type for enable/disable interrupts functions
+ */
+typedef P2FUNC(void, OS_APPL_CODE, tpl_enable_disable_func)();
+
+
+/**
  * @struct TPL_IT_VECTOR_ENTRY
  *
  * Entry of the tpl interrupt vector
@@ -213,6 +219,31 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void);
  * @see #SuspendOSInterrupts
  */
 FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void);
+
+#if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
+/**
+ * @internal
+ *
+ * tpl_mask_isr2_priority masks ISR2s which have a lower priority than
+ * the ISR2 id given in argument
+ *
+ * @param isr isr for which interrupts have to be masked
+ */
+extern FUNC(void, OS_CODE) tpl_mask_isr2_priority(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+
+/**
+ * @internal
+ *
+ * tpl_unmask_isr2_priority unmask ISR2s which have a lower priority than
+ * the ISR2 id given in argument
+ *
+ * @param isr isr for which interrupts have to be unmasked
+ */
+extern FUNC(void, OS_CODE) tpl_unmask_isr2_priority(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+
+#endif /* WITH_ISR2_PRIORITY_MASKING */
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

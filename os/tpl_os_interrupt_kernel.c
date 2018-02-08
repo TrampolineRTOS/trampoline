@@ -71,7 +71,13 @@ VAR(uint32, OS_VAR) tpl_cpt_os_task_lock = 0;
 
 #if ISR_COUNT > 0
 STATIC VAR(sint32, OS_VAR) tpl_it_nesting =  0;
-#endif
+
+#if WITH_ISR2_PRIORITY_MASKING == YES
+extern CONST(tpl_enable_disable_func, OS_CONST) tpl_enable_table[];
+extern CONST(tpl_enable_disable_func, OS_CONST) tpl_disable_table[];
+#endif /* WITH_ISR2_PRIORITY_MASKING == YES */
+
+#endif /* ISR_COUNT > 0 */
 
 #define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -186,7 +192,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
 
-  tpl_disable_interrupts();
+  tpl_disable_os_interrupts();
 
   GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
 
@@ -212,7 +218,7 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 
 		if (0 == GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id))
 		{
-			tpl_enable_interrupts();
+			tpl_enable_os_interrupts();
 		}
 	}
 }
@@ -444,6 +450,41 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, 
     tmp = (uint32)isr_id;
     tpl_central_interrupt_handler(tmp);
 }
+
+#if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
+/**
+ * @internal
+ *
+ * tpl_mask_isr2_priority masks ISR2s which have a lower priority than
+ * the ISR2 id given in argument
+ *
+ * @param isr isr for which interrupts have to be masked
+ */
+FUNC(void, OS_CODE) tpl_mask_isr2_priority(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+  CONST(tpl_priority, AUTOMATIC) index =
+    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+  tpl_disable_table[index]();
+}
+
+/**
+ * @internal
+ *
+ * tpl_unmask_isr2_priority unmask ISR2s which have a lower priority than
+ * the ISR2 id given in argument
+ *
+ * @param isr isr for which interrupts have to be unmasked
+ */
+extern FUNC(void, OS_CODE) tpl_unmask_isr2_priority(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+  CONST(tpl_priority, AUTOMATIC) index =
+    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+  tpl_enable_table[index]();
+}
+
+#endif /* WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0 */
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

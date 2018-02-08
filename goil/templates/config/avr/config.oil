@@ -16,21 +16,13 @@ IMPLEMENTATION avr_interrupt {
   };
   ISR [] {
     UINT32 STACKSIZE = 128;
-    STRING SOURCE;
+    #include <interruptSources.oil>
   };
   COUNTER [] {
-    STRING SOURCE;
+    #include <interruptSources.oil>
   };
 
   OS {
       BOOLEAN SYSTEM_CALL = TRUE;
   };
 };
-
-//CPU avr {
-//  OS config {
-//    BUILD = TRUE {
-//      COMPILER = "avr-gcc"
-//    };
-//  };
-//};

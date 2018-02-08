@@ -156,6 +156,19 @@ rule '"' {
   end
 }
 
+rule '\'' {
+  repeat
+  while '\u0020'->'\u0026' | '\u0028' -> '\uFFFD' :
+    enterCharacterIntoString ( !?a_string !* )
+  end
+  select
+    case '\'' :
+      send $string$
+    default
+      error unterminatedLitteralString
+  end
+}
+
 $g_string$ !a_string  style pathStyle error message "in search path"
 
 rule '<' {

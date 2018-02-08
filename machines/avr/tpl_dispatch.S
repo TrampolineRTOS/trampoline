@@ -96,6 +96,13 @@ tpl_avr_counter_tick:
 	call tpl_sc_handler
 	ret
 	
+#avr entry point for an interrupt
+#the first argument should be the ISR2 id.
+.global tpl_avr_ISR2_handler
+tpl_avr_ISR2_handler:
+	ldi r30, TPL_ISR2_HANDLER
+	call tpl_sc_handler
+	ret
 
 /** This function is a 'virtual' system call handler:
  * It is called by each system call, to enter in the Kernel.

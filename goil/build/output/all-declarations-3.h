@@ -226,10 +226,10 @@ class cMapElement_arxmlMetaClassMap : public cMapElement {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_lstring mProperty_lkey ;
-  public : GALGAS_arxmlMetaClass mProperty_mType ;
 
+  public : GALGAS_arxmlMetaClass mProperty_mType ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -1151,9 +1151,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaClasslist 
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_arxmlMetaClass mProperty_lClass ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -1217,9 +1216,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaClasslist_
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_arxmlMetaElement mProperty_lElement ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -1283,9 +1281,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaElementLis
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_arxmlMetaAttribute mProperty_lAttribute ;
-
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -2885,28 +2882,5 @@ void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
                                          const GALGAS_gtlInt constin_index,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension setter '@gtlData deleteItemAtIndex'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_deleteItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlInt constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_deleteItemAtIndex (const int32_t inClassIndex,
-                                             extensionSetterSignature_gtlData_deleteItemAtIndex inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_deleteItemAtIndex (class cPtr_gtlData * inObject,
-                                            const GALGAS_gtlInt constin_index,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
 
 #endif

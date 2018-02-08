@@ -159,7 +159,7 @@ CPU api {
       HIDDEN = TRUE;
       KERNEL = tpl_call_terminate_task_service;
       LOCK_KERNEL = FALSE;
-      CALLABLE_BY_ISR1 = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     } : "Used internally as return address of tasks, should not be called by the user";
   };
 
@@ -211,7 +211,7 @@ CPU api {
       HIDDEN = TRUE;
       KERNEL = tpl_call_terminate_isr2_service;
       LOCK_KERNEL = TRUE;
-      CALLABLE_BY_ISR1 = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     };
   };
 

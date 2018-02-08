@@ -1,0 +1,8 @@
+/*
+ * External Interrupt sources for the AVR 328P micro-controller
+ */
+ENUM [
+  PIN2{ #include <sensibility.oil> },
+  PIN3{ #include <sensibility.oil> },
+  TIMER0_OVF /*used in Arduino for micros(), millis(), ...*/
+] SOURCE;

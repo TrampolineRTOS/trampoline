@@ -980,10 +980,11 @@ class GALGAS_goilContext : public GALGAS_gtlContext {
                                                             const class GALGAS_string & inOperand1,
                                                             const class GALGAS_string & inOperand2,
                                                             const class GALGAS_string & inOperand3,
-                                                            const class GALGAS_stringlist & inOperand4,
-                                                            const class GALGAS_gtlDataList & inOperand5,
-                                                            const class GALGAS_bool & inOperand6,
-                                                            const class GALGAS_debuggerContext & inOperand7
+                                                            const class GALGAS_string & inOperand4,
+                                                            const class GALGAS_stringlist & inOperand5,
+                                                            const class GALGAS_gtlDataList & inOperand6,
+                                                            const class GALGAS_bool & inOperand7,
+                                                            const class GALGAS_debuggerContext & inOperand8
                                                             COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -1019,6 +1020,7 @@ class cPtr_goilContext : public cPtr_gtlContext {
   public : cPtr_goilContext (const GALGAS_lstring & in_prefix,
                              const GALGAS_string & in_path,
                              const GALGAS_string & in_templateDirectory,
+                             const GALGAS_string & in_userTemplateDirectory,
                              const GALGAS_string & in_templateExtension,
                              const GALGAS_stringlist & in_importPath,
                              const GALGAS_gtlDataList & in_inputVars,

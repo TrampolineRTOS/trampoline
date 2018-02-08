@@ -7,6 +7,10 @@
 #import "PMDebug.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
+//            Unicode test functions                                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+ 
+//---------------------------------------------------------------------------------------------------------------------*
 
 @implementation OC_Lexique_goil_lexique
 
@@ -285,6 +289,20 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
       }while (mLoop && scanningOk) ;
       mLoop = YES ;
       if (scanningOk && ([self testForInputChar:34])) {
+        mTokenCode = goil_lexique_1_string ;
+      }else{
+        scanningOk = NO ;
+      }
+    }else if (scanningOk && ([self testForInputChar:39])) {
+      do {
+        if (scanningOk && ([self testForInputFromChar:32 toChar:38] || [self testForInputFromChar:40 toChar:65533])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
+        }else{
+          mLoop = NO ;
+        }
+      }while (mLoop && scanningOk) ;
+      mLoop = YES ;
+      if (scanningOk && ([self testForInputChar:39])) {
         mTokenCode = goil_lexique_1_string ;
       }else{
         scanningOk = NO ;

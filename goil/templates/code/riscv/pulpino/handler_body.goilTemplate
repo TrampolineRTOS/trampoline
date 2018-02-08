@@ -1,0 +1,107 @@
+.global ISR_% !handlerSource %
+.extern % !handlerIRQ %
+.extern push_interruption_mask
+.extern tpl_mestatus
+
+/*---------------------------------------------------------------------------*/
+ISR_% !handlerSource %:
+
+    /*-------------------------------------------------------------------------
+     * 1 - Interrupt function call
+     */
+    jal % !handlerIRQ %
+
+    /* No context switch if reentrant interruption */
+    lw a5, tpl_reentrancy_counter
+    li a6, 1
+    bne a5, a6, 1f
+
+    /*-------------------------------------------------------------------------
+     * 2 - Check the context switch condition in tpl_kern
+     */
+    la a0, tpl_kern
+    lb a6, TPL_KERN_OFFSET_NEED_SWITCH(a0)
+    beqz a6, 1f
+
+    /*-------------------------------------------------------------------------
+     * 3 - Save context
+     *     Load in a0 the pointer to the static descriptor of the running task
+     *     a0 already points to tpl_kern (from stage 2)
+     */
+
+    /* Prepare the call to tpl_run_elected by setting a0 to 0, aka no save */
+    li a0, 0
+
+    /* Check the save condition */
+    li a5, NEED_SAVE
+    and a5, a5, a6
+    beqz a5, 2f
+    
+    /* Save context */
+    la  a0, tpl_kern
+    lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
+    lw  a0, 0(a0)
+    jal tpl_save_context
+        
+    /* Prepare the call to tpl_run_elected by setting a0 to 1 */
+    li a0, 1
+
+    /*-------------------------------------------------------------------------
+     * 4 - Call tpl_run_elected.
+     *     The argument is a boolean which is true if the process is
+     *     preempted. 
+     */
+2:
+    jal tpl_run_elected
+
+    /*-------------------------------------------------------------------------
+     * 5 - Load context
+     *     Load in a0 the pointer to the context of the running task.
+     *     It has been changed by tpl_run_elected
+     */
+    la  a0, tpl_kern
+    lw  a0, TPL_KERN_OFFSET_S_RUNNING(a0)
+    lw  a0, 0(a0)
+    jal tpl_load_context
+
+    /* Reset tpl_need_switch variable */
+    la a5, tpl_kern
+    sb zero, TPL_KERN_OFFSET_NEED_SWITCH(a5)
+
+1:
+    /* Wakes up core in reentrant kernel calls by triggering dummy event */
+    li a5, 0x1a104018 //ESP
+    li a6, 1
+    sw a6, 0(a5)
+
+    /* Adjusts reentrancy counter */
+    lw a5, tpl_reentrancy_counter
+    addi a5, a5, -1
+    la a6, tpl_reentrancy_counter
+    sw a5, 0(a6)
+
+% if category == 2 then %
+    /* set priority */
+    jal push_interruption_mask
+    li  a0, % !priority %
+    jal tpl_set_priority
+% end if %
+    /* Reenables interruptions */
+    lw a6, tpl_reentrancy_counter
+    bnez a6, 1f
+    lw a6, tpl_mestatus
+    csrw 0x7c0, a6
+
+    /* Clears up dummy event */
+    li a5, 0x1a10401C //ECP
+    li a6, 1
+    sw a6, 0(a5)
+
+    /* Trigger pending interruptions */
+    li a5, 0x1a104000
+    lw a6, nextISP
+    sw a6, 8(a5) //ISP
+    la a5, nextISP
+    sw zero, 0(a5)
+1:
+    j tpl_no_context_switch

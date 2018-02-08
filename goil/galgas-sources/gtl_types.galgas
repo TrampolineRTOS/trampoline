@@ -28,14 +28,15 @@
 # @gtlContext is used to store the execution context of a template
 #-----------------------------------------------------------------------------*
 class @gtlContext {
-  @lstring         prefix             %setter
-  @string          path               %setter
-  @string          templateDirectory  %setter
-  @string          templateExtension  %setter
+  @lstring         prefix                 %setter
+  @string          path                   %setter
+  @string          templateDirectory      %setter
+  @string          userTemplateDirectory  %setter
+  @string          templateExtension      %setter
   @stringlist      importPath
-  @gtlDataList     inputVars          %setter
-  @bool            propagateError     %setter
-  @debuggerContext debuggerContext    %setter
+  @gtlDataList     inputVars              %setter
+  @bool            propagateError         %setter
+  @debuggerContext debuggerContext        %setter
 }
 
 func emptyContext
@@ -43,6 +44,7 @@ func emptyContext
 {
   context = .new {
     !emptylstring()
+    !""
     !""
     !""
     !"gtl"
@@ -106,18 +108,24 @@ getter @gtlContext fullTemplateFileName
 {
   @gtlContext copy = self
   @lstring fullPref = [self fullPrefix !vars]
-  @string prefixedTemplatePath = 
-    [templateDirectory stringByAppendingPath !fullPref]  
-  @string hierarchicalPath = path
-  @string rootPath = pathWithExtension(
+  
+  @bool found = false
+  @string prefixedTemplatePath
+  @string hierarchicalPath
+  @string rootPath
+
+  #
+  # First search in the user template directory
+  #
+  prefixedTemplatePath = 
+    [userTemplateDirectory stringByAppendingPath !fullPref]
+  hierarchicalPath = path
+  rootPath = pathWithExtension(
     !context
     ![prefixedTemplatePath stringByAppendingPath ![simpleName string]]
   )
-  
-  @bool found = false
 
   loop ( [hierarchicalPath length] )
-  while not found && [hierarchicalPath length] > 0 do
     @string fullPath = pathWithExtension(
       !context
       ![[prefixedTemplatePath stringByAppendingPath !hierarchicalPath] stringByAppendingPath
@@ -132,7 +140,41 @@ getter @gtlContext fullTemplateFileName
 #    else
 #      message "\n"
     end
+  while not found && [hierarchicalPath length] > 0 do
     hierarchicalPath = [hierarchicalPath stringByDeletingLastPathComponent]
+  end
+  
+  if not found then
+    #
+    # Second search in the template directory
+    #
+    prefixedTemplatePath = 
+      [templateDirectory stringByAppendingPath !fullPref]  
+    hierarchicalPath = path
+    rootPath = pathWithExtension(
+      !context
+      ![prefixedTemplatePath stringByAppendingPath ![simpleName string]]
+    )
+  
+
+    loop ( [hierarchicalPath length] )
+      @string fullPath = pathWithExtension(
+        !context
+        ![[prefixedTemplatePath stringByAppendingPath !hierarchicalPath] stringByAppendingPath
+          !simpleName
+         ]
+      )
+  #    message "Search in " + fullPath + "... "    
+      if [fullPath fileExists] then
+  #      message "found\n"
+        rootPath = fullPath
+        found = true
+  #    else
+  #      message "\n"
+      end
+    while not found && [hierarchicalPath length] > 0 do
+      hierarchicalPath = [hierarchicalPath stringByDeletingLastPathComponent]
+    end
   end
 #  message "#### Return " + rootPath + "\n"
   fullName = .new {

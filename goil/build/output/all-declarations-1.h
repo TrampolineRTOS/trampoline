@@ -2894,6 +2894,8 @@ class C_Lexique_goil_5F_lexique : public C_Lexique {
 
 //--- Indexing keys
 
+//--- Unicode test functions
+
 //--- Indexing directory
   protected : virtual C_String indexingDirectory (void) const ;
 
@@ -3198,10 +3200,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_List ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_uint_33__32_List_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-  public : GALGAS_uint mProperty_value ;
 
+  public : GALGAS_uint mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3406,10 +3408,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_List ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_uint_36__34_List_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-  public : GALGAS_uint_36__34_ mProperty_value ;
 
+  public : GALGAS_uint_36__34_ mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3614,10 +3616,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_List ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_sint_33__32_List_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-  public : GALGAS_sint mProperty_value ;
 
+  public : GALGAS_sint mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -3822,10 +3824,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_List ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_sint_36__34_List_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-  public : GALGAS_sint_36__34_ mProperty_value ;
 
+  public : GALGAS_sint_36__34_ mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4030,10 +4032,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatList ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_floatList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-  public : GALGAS_double mProperty_value ;
 
+  public : GALGAS_double mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
@@ -4317,10 +4319,10 @@ class cPtr_object_5F_t : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_numberList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Public data members
+//--------------------------------- Properties
   public : GALGAS_location mProperty_location ;
-  public : GALGAS_object_5F_t mProperty_value ;
 
+  public : GALGAS_object_5F_t mProperty_value ;
 
 //--------------------------------- Accessors
   public : VIRTUAL_IN_DEBUG bool isValid (void) const ;

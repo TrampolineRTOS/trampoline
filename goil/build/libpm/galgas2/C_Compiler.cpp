@@ -67,6 +67,7 @@ C_Compiler::C_Compiler (C_Compiler * inCallerCompiler
                         COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
 mCallerCompiler (NULL),
+mIssueArray (),
 mSentString (),
 mSentStringIsValid (true),
 mTemplateString (),
@@ -90,6 +91,43 @@ C_Compiler::~C_Compiler (void) {
 
 C_String C_Compiler::sourceFilePath (void) const {
   return mSourceText.sourceFilePath () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Issue
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Compiler::appendIssue (const cIssueDescriptor & inIssue) {
+  if (NULL == mCallerCompiler) {
+    mIssueArray.appendObject (inIssue) ;
+  }else{
+    mCallerCompiler->appendIssue (inIssue) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Compiler::writeIssueJSONFile (const C_String & inFile) {
+  if (performGeneration ()) {
+    C_String s ("[\n") ;
+    bool isFirst = true ;
+    for (int32_t i=0 ; i<mIssueArray.count () ; i++) {
+      mIssueArray (i COMMA_HERE).appendToJSONstring (s, isFirst) ;
+      isFirst = false ;
+    }
+    s << "\n]\n" ;
+    const bool ok = C_FileManager::writeStringToFile (s, inFile) ;
+    if (!ok) {
+      const C_String message (C_String ("Cannot write to '") + inFile + "'") ;
+      fatalError (message, "", 0) ;
+    }
+  }else{
+    ggs_printWarning (this, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to replace '") + inFile + "'.\n" COMMA_HERE) ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -152,7 +190,8 @@ void C_Compiler::resetAndLoadSourceFromText (const C_SourceTextInString & inSour
 
 void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                                         COMMA_LOCATION_ARGS) {
-  signalSemanticError (sourceText (),
+  signalSemanticError (this,
+                       sourceText (),
                        C_IssueWithFixIt (mCurrentLocation, mCurrentLocation, TC_Array <C_FixItDescription> ()),
                        inErrorMessage
                        COMMA_THERE) ;
@@ -168,7 +207,8 @@ void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
 
 void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                                           COMMA_LOCATION_ARGS) {
-  signalSemanticWarning (sourceText (), 
+  signalSemanticWarning (this,
+                         sourceText (),
                          C_IssueWithFixIt (mCurrentLocation, mCurrentLocation, TC_Array <C_FixItDescription> ()),
                          inWarningMessage
                          COMMA_THERE) ;
@@ -256,7 +296,8 @@ void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocatio
     if (!inErrorLocation.sourceText ().isValid ()) {
       onTheFlyRunTimeError (inErrorMessage COMMA_THERE) ;
     }else{
-      signalSemanticError (inErrorLocation.sourceText (),
+      signalSemanticError (this,
+                           inErrorLocation.sourceText (),
                            C_IssueWithFixIt (inErrorLocation.startLocation (), inErrorLocation.endLocation (), inFixItArray),
                            inErrorMessage
                            COMMA_THERE) ;
@@ -275,7 +316,8 @@ void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
     if (!inErrorLocation.sourceText ().isValid ()) {
       onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
     }else{
-      signalSemanticError (inErrorLocation.sourceText (),
+      signalSemanticError (this,
+                           inErrorLocation.sourceText (),
                            C_IssueWithFixIt (inErrorLocation.startLocation (), inErrorLocation.endLocation (), inFixItArray),
                            errorMessage
                            COMMA_THERE) ;
@@ -395,9 +437,10 @@ void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLoc
                                             COMMA_LOCATION_ARGS) {
   if (inWarningLocation.isValid ()) { // No warning raised if not built
     if (!inWarningLocation.sourceText ().isValid ()) {
-      signalRunTimeWarning (inWarningMessage COMMA_THERE) ;
+      signalRunTimeWarning (this, inWarningMessage COMMA_THERE) ;
     }else{
-      signalSemanticWarning (inWarningLocation.sourceText (),
+      signalSemanticWarning (this,
+                             inWarningLocation.sourceText (),
                              C_IssueWithFixIt (inWarningLocation.startLocation (), inWarningLocation.endLocation (), TC_Array <C_FixItDescription> ()),
                              inWarningMessage
                              COMMA_THERE) ;
@@ -414,9 +457,10 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
   if (inWarningLocation.isValid () && inWarningMessage.isValid ()) {
     const C_String warningMessage = inWarningMessage.stringValue () ;
     if (!inWarningLocation.sourceText ().isValid ()) {
-      signalRunTimeWarning (warningMessage COMMA_THERE) ;
+      signalRunTimeWarning (this, warningMessage COMMA_THERE) ;
     }else{
-      signalSemanticWarning (inWarningLocation.sourceText (),
+      signalSemanticWarning (this,
+                             inWarningLocation.sourceText (),
                              C_IssueWithFixIt (inWarningLocation.startLocation (), inWarningLocation.endLocation (), inFixItArray),
                              warningMessage
                              COMMA_THERE) ;
@@ -434,7 +478,7 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
 
 void C_Compiler::onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
                                        COMMA_LOCATION_ARGS) {
-  signalRunTimeError (inRunTimeErrorMessage COMMA_THERE) ;
+  signalRunTimeError (this, inRunTimeErrorMessage COMMA_THERE) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -533,7 +577,7 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
         ggs_printFileOperationSuccess (C_String ("Created '") + fileName + "'.\n") ;
       }
     }else{
-      ggs_printWarning (C_SourceTextInString(), C_IssueWithFixIt (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (this, C_SourceTextInString(), C_IssueWithFixIt (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
     }
   }else{
     const C_String previousContents = C_FileManager::stringWithContentOfFile (fullPathName) ;
@@ -552,7 +596,7 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
           }
         }
       }else{
-        ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+        ggs_printWarning (this, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
       }
     }
   }
@@ -620,7 +664,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
         #endif
       }
     }else{
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (this, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
     }
   }else{
     C_String firstUserPart ;
@@ -654,7 +698,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
       secondGeneratedPart = stringArray (1 COMMA_HERE) ;
     }
     if (! ok) {
-      ggs_printError (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
+      ggs_printError (this, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
     }else if ((firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
     }else if (performGeneration ()) {
       C_TextFileWrite f (fullPathName) ;
@@ -682,7 +726,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
         #endif
       }
     }else{
-      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (this, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
     }
   }
 }

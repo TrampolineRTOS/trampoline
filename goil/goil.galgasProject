@@ -24,6 +24,15 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.1.9    Added in OIL strings within simple quote without escape
+#          This allow to specify Windows like full paths
+# 3.1.8    Updated to GalGas 3.3.7
+# 3.1.7    Updated to GTL 3.0.12. Added a user template directory
+# 3.1.6    Updated to GTL 3.0.11. Expression data type, where list getter and
+#          where map getter. Added elementAtIndex list getter
+# 3.1.5    Updated to GTL 3.0.10. componentsJoinedByString list getter
+# 3.1.4    Added a EOF variable in the data passed to GTL. EOF location is
+#          at the end of the OIL file. EOF value is the location string.
 # 3.1.3    Updated to GTL 3.0.9. 
 # 3.1.2    Updated to GTL 3.0.8. 
 # 3.1.1    Unique structures are concatened.
@@ -51,7 +60,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:3) -> "goil" {
+project (3:1:9) -> "goil" {
 
   %makefile-macosx
   %makefile-unix
@@ -62,7 +71,7 @@ project (3:1:3) -> "goil" {
   
   #specific for Mac Cocoa Version:
   %LatestMacOS
-  %applicationBundleBase : "fr.irccyn.str"
+  %applicationBundleBase : "fr.ls2n.str"
   
 #---------------------------------------------------------------------------*
 # GTL

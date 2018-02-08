@@ -212,17 +212,17 @@ getter @applicationDefinition templateData
   ]
   
   [!?cfg setStructField
-    !@lstring.new{ !"OILVERSION" ![version location] }
+    !@lstring.new { !"OILVERSION" ![version location] }
     !@gtlString.new { !.here !versionDescription !version }
   ]
   
   [!?cfg setStructField
-    !@lstring.new{ !"OILDESCRIPTION" ![versionDescription location] }
+    !@lstring.new { !"OILDESCRIPTION" ![versionDescription location] }
     !@gtlString.new { !.here !versionDescription !versionDescription }
   ]
   
   [!?cfg setStructField
-    !@lstring.new{ !"TIMESTAMP" !.here }
+    !@lstring.new { !"TIMESTAMP" !.here }
     !@gtlString.new {
       !.here 
       !lstring(!"timestamp of OIL compiling") 
@@ -231,7 +231,7 @@ getter @applicationDefinition templateData
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"PROJECT" !.here }
+    !@lstring.new { !"PROJECT" !.here }
     !@gtlString.new { 
       !.here 
       !lstring(!"project name") 
@@ -240,7 +240,7 @@ getter @applicationDefinition templateData
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"TARGET" !.here }
+    !@lstring.new { !"TARGET" !.here }
     !@gtlString.new {
       !.here
       !lstring(!"target architecture/chip/board")
@@ -249,7 +249,7 @@ getter @applicationDefinition templateData
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"TEMPLATEPATH" !.here }
+    !@lstring.new { !"TEMPLATEPATH" !.here }
     !@gtlString.new { 
       !.here 
       !lstring(!"path of the templates used")
@@ -258,27 +258,27 @@ getter @applicationDefinition templateData
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"ARCH" !.here }
+    !@lstring.new { !"ARCH" !.here }
     !@gtlString.new { !.here !lstring(!"target architecture") !arch() }
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"CHIP" !.here }
+    !@lstring.new { !"CHIP" !.here }
     !@gtlString.new { !.here !lstring(!"target chip")!chip() }
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"BOARD" !.here }
+    !@lstring.new { !"BOARD" !.here }
     !@gtlString.new { !.here !lstring(!"target board")!board() }
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"TARGETPATHLIST" !.here }
+    !@lstring.new { !"TARGETPATHLIST" !.here }
     !@gtlList.new { !.here !lstring(!"target path list") !targetPathList() }
   ]
     
   [!?cfg setStructField
-    !@lstring.new{ !"LOGFILE" !.here }
+    !@lstring.new { !"LOGFILE" !.here }
     !@gtlBool.new {
       !.here 
       !lstring(!"Generated a logfile") 
@@ -286,6 +286,15 @@ getter @applicationDefinition templateData
     }
   ]
     
+  [!?cfg setStructField
+    !@lstring.new { !"EOF" !.here }
+    !@gtlString.new {
+      !.here
+      !lstring(!"End of file location")
+      ![@location.here locationString]
+    }
+  ]
+  
   # Parse the -o option
   @gtlData opts = @gtlStruct.new {
     !.here
@@ -311,6 +320,7 @@ getter @applicationDefinition templateData
       @gtlList objs = .new { !.here !lkey !.emptyList }
       for () in  [objectsOfKind objects] do
         @gtlData attrs = [attributes fieldMap]
+        
         [!?objs appendItem !attrs]
       end
       [!?cfg setStructField

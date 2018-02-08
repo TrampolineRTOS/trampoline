@@ -242,6 +242,7 @@ rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
   $display$ @location where = .here
+  
   <gtl_variable> ?@gtlVarPath variable
 
   instruction = @gtlDisplayStatementInstruction.new {

@@ -9,12 +9,19 @@
  */
 CPU armv7em {
 
-  INTERRUPT SysTick        { VECT = 15; VECTOR_TYPE = HANDLER { NAME =  "SysTick_Handler"; }; ACK = FALSE; };
+  INTERRUPT SysTick {
+    VECT = 15;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SysTick_Handler";
+    };
+    ACK = FALSE;
+  };
 
-  GENERATED_FILES cortex_m4 {
-    CFILE = "tpl_primary_irq.S";
-    CFILE = "tpl_vectors.c";
-    CFILE = "tpl_external_interrupts.c";
+  PLATFORM_FILES cortex_m4 {
+    PATH = "cortex/armv7em";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_ctx_switch_under_it.S";
+    CFILE = "tpl_interrupts.S";
   };
 };
 

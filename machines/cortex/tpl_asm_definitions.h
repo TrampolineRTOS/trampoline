@@ -23,6 +23,9 @@
  * $URL$
  */
 
+#ifndef TPL_ASM_DEFINITIONS_H
+#define TPL_ASM_DEFINITIONS_H
+
 /*
  * tpl_kern data structure offsets (for use into assembler sources)
  */
@@ -53,6 +56,7 @@
 .equ CPSR_IRQ_LOCKED, 0b10000000
 .equ CPSR_FIQ_LOCKED, 0b01000000
 
-   /*#endif *//* TPL_ASM_DEFINITIONS_H */
+#endif
+/* TPL_ASM_DEFINITIONS_H */
 
 /* Enf of file tpl_asm_definitions.h */

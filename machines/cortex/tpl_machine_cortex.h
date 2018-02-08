@@ -1,9 +1,9 @@
 /**
- * @file tpl_machine_arm_generic.h
+ * @file tpl_machine_cortex.h
  *
  * @section descr File description
  *
- * Common definitions for generic ARM platform
+ * Common definitions for cortex platform
  *
  * @section copyright Copyright
  *
@@ -23,8 +23,8 @@
  * $URL$
  */
 
-#ifndef TPL_MACHINE_ARM_GENERIC_H
-#define TPL_MACHINE_ARM_GENERIC_H
+#ifndef TPL_MACHINE_CORTEX_H
+#define TPL_MACHINE_CORTEX_H
 
 #include "tpl_os_std_types.h"
 #include "tpl_os_internal_types.h"
@@ -47,60 +47,27 @@
 #define TPL_KERN_OFFSET_NEED_SCHEDULE (25)
 
 /**
- * ARM internal registers symbolic names
- */
-typedef enum
-{
-  armreg_r0 = 0,
-    armreg_a1 = 0,
-  armreg_r1 = 1,
-    armreg_a2 = 1,
-  armreg_r2 = 2,
-    armreg_a3 = 2,
-  armreg_r3 = 3,
-    armreg_a4 = 3,
-  armreg_r4 = 4,
-    armreg_v1 = 4,
-  armreg_r5 = 5,
-    armreg_v2 = 5,
-  armreg_r6 = 6,
-    armreg_v3 = 6,
-  armreg_r7 = 7,
-    armreg_v4 = 7,
-  armreg_r8 = 8,
-    armreg_v5 = 8,
-  armreg_r9 = 9,
-    armreg_v6 = 9,
-    armreg_rfp = 9,
-  armreg_r10 = 10,
-    armreg_v7 = 10,
-    armreg_sl = 10,
-  armreg_r11 = 11,
-    armreg_v8 = 11,
-    armreg_fp = 11,
-  armreg_r12 = 12,
-    armreg_ip = 12,
-  armreg_r13 = 13,
-    armreg_sp = 13,
-  armreg_r14 = 14,
-    armreg_lr = 14,
-  armreg_r15 = 15,
-    armreg_pc = 15
-} tpl_arm_core_register_names;
-
-/**
  * ARM core registers
  */
 /*
  * ARM_CORE_EXCEPTION_FRAME_SIZE is 32 bytes long :
- * xpsr
- * pc
- * lr
- * r12
- * r3
- * r2
- * r1
- * r0
+ * +-------------------------------+
+ * | R0                            | <- PSP
+ * +-------------------------------+
+ * | R1                            | <- PSP+4
+ * +-------------------------------+
+ * | R2                            | <- PSP+8
+ * +-------------------------------+
+ * | R3                            | <- PSP+12
+ * +-------------------------------+
+ * | R12                           | <- PSP+16
+ * +-------------------------------+
+ * | LR (aka R14)                  | <- PSP+20
+ * +-------------------------------+
+ * | Return Address (saved PC/R15) | <- PSP+24
+ * +-------------------------------+
+ * | xPSR (bit 9 = 1)              | <- PSP+28
+ * +-------------------------------+
  */
 #define ARM_CORE_EXCEPTION_FRAME_SIZE ((uint32)32)
 /* ARM_INITIAL_EXC_RETURN
@@ -114,19 +81,44 @@ typedef enum
  */
 #define ARM_INITIAL_EXC_RETURN ((uint32)0xFFFFFFF9)
 
-struct ARM_CORE_CONTEXT {
-	/* General Purpose Register r0-r15 
-	 * We use r0, r4-r11
-	 */
-	uint32 gpr[16];
-	/* Stack Pointer - r13 */
-	uint32 stackPointer;
-};
+/*----------------------------------------------------------------------------*
+ * The second part of the context is stored in the following structure        *
+ * An instance of this structure is pointed by a pointer in the statuc task   *
+ * descriptor                                                                 *
+ *                                                                            *
+ * +------------------+                                                       *
+ * | R4               | <- CTX_GPR4                                           *
+ * +------------------+                                                       *
+ * | R5               | <- CTX_GPR5                                           *
+ * +------------------+                                                       *
+ * | R6               | <- CTX_GPR6                                           *
+ * +------------------+                                                       *
+ * | R7               | <- CTX_GPR7                                           *
+ * +------------------+                                                       *
+ * | R8               | <- CTX_GPR8                                           *
+ * +------------------+                                                       *
+ * | R9               | <- CTX_GPR9                                           *
+ * +------------------+                                                       *
+ * | R10              | <- CTX_GPR10                                          *
+ * +------------------+                                                       *
+ * | R11              | <- CTX_GPR11                                          *
+ * +------------------+                                                       *
+ * | PSP (R13)        | <- CTX_PSP                                            *
+ * +------------------+                                                       *
+ *----------------------------------------------------------------------------*/
 
-/**
- * ARM generic platform context
- */
-typedef struct ARM_CORE_CONTEXT arm_core_context;
+typedef struct ARM_CORE_CONTEXT
+{
+  uint32 gpr4;          /* General purpose register r4 */
+  uint32 gpr5;          /* General purpose register r5 */
+  uint32 gpr6;          /* General purpose register r6 */
+  uint32 gpr7;          /* General purpose register r7 */
+  uint32 gpr8;          /* General purpose register r8 */
+  uint32 gpr9;          /* General purpose register r9 */
+  uint32 gpr10;         /* General purpose register r10 */
+  uint32 gpr11;         /* General purpose register r11 */
+	uint32 stackPointer;  /* Stack Pointer - r13          */
+} arm_core_context;
 
 #ifdef WITH_FLOAT
 /*
@@ -181,7 +173,7 @@ typedef struct TPL_STACK tpl_stack;
 #define ENABLE_IRQ()  __asm__ __volatile__ ("cpsie i;")
 
 FUNC (void, OS_CODE) tpl_init_machine_specific (void);
-											
-#endif /* TPL_MACHINE_ARM_GENERIC_H */
 
-/* End of file tpl_machine_arm_generic.h */
+#endif /* TPL_MACHINE_CORTEX_H */
+
+/* End of file tpl_machine_cortex.h */

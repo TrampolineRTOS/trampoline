@@ -26,34 +26,5 @@ avr_context % !proc::NAME %_int_context;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-% if proc::KIND == "ISR" then 
-    if not exists proc::STACKSIZE then
-       error NAME : "!STACKSIZE attribute not defined for "+proc::KIND+" "+proc::NAME
-    else
-
 %
-//#define OS_START_SEC_CODE
-//#include "tpl_memmap.h"
-
-//#include <avr/interrupt.h>
-//extern uint8_t tpl_reentrancy_counter;
-//extern void tpl_switch_to_kernel_stack();
-//extern void tpl_switch_to_user_stack();
-//
-//ISR (% !proc::SOURCE%)
-//{
-//  //are we already in kernel stack?
-//  tpl_reentrancy_counter++;
-//  if(tpl_reentrancy_counter == 1) tpl_switch_to_kernel_stack();
-//  tpl_central_interrupt_handler(% !proc::NAME %_id);
-//  //get back to user stack
-//  tpl_reentrancy_counter--;
-//  if(tpl_reentrancy_counter == 0) tpl_switch_to_user_stack();
-//}
-
-//#define OS_STOP_SEC_CODE
-//#include "tpl_memmap.h"
-%
-    end if #!proc::STACKSIZE keyword
-  end if #ISR
 end if

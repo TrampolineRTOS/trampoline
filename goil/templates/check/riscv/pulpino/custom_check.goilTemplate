@@ -1,0 +1,35 @@
+%
+# @file custom_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# Not implemented : Throw a warning/error
+
+if OS::TIMINGPROTECTION then
+  warning OS::TIMINGPROTECTION : "Timing Protection not implemented."
+end if
+
+if USEMEMORYPROTECTION then
+  warning USEMEMORYPROTECTION : "Memory Protection is not implemented."
+end if
+
+%

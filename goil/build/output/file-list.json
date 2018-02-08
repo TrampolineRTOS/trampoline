@@ -4,6 +4,7 @@
     "SOURCES"  :  [
         "all-galgas.cpp",
         "all-libpm.cpp",
+        "all-declarations-12.cpp",
         "all-declarations-11.cpp",
         "all-declarations-10.cpp",
         "all-declarations-9.cpp",
@@ -18,7 +19,6 @@
         "all-declarations-0.cpp",
         "all-predefined-types.cpp",
         "C_galgas_quiet_option.cpp",
-
         "32-mp_bases.c",
         "mpn-invertappr.c",
         "mpn-sub_1.c",

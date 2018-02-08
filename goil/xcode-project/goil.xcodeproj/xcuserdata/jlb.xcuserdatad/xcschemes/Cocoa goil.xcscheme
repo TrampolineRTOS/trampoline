@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+               BlueprintIdentifier = "E1BF64D32A5527244D104CEA"
                BuildableName = "CocoaGoil.app"
                BlueprintName = "Cocoa goil"
                ReferencedContainer = "container:goil.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+            BlueprintIdentifier = "E1BF64D32A5527244D104CEA"
             BuildableName = "CocoaGoil.app"
             BlueprintName = "Cocoa goil"
             ReferencedContainer = "container:goil.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+            BlueprintIdentifier = "E1BF64D32A5527244D104CEA"
             BuildableName = "CocoaGoil.app"
             BlueprintName = "Cocoa goil"
             ReferencedContainer = "container:goil.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+            BlueprintIdentifier = "E1BF64D32A5527244D104CEA"
             BuildableName = "CocoaGoil.app"
             BlueprintName = "Cocoa goil"
             ReferencedContainer = "container:goil.xcodeproj">

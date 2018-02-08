@@ -1,0 +1,82 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 300 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 200 ;
+    } ;
+};
+
+CPU readbutton_isr {
+  OS config {
+    STATUS = EXTENDED;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "testDisableEnable.c";
+      APP_NAME = "testDisableEnable_exe";
+      CFLAGS  = "-O3"; 
+      LDFLAGS = "-Map=testDisableEnable.map";
+      COMPILER = "arm-none-eabi-gcc";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+
+      LIBRARY = gpt;
+
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE std {};
+  
+  TASK periodic {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK start_timer {
+    PRIORITY = 1;
+    AUTOSTART = TRUE {
+      APPMODE = std;
+    };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ALARM activate_periodic {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = periodic;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 1;
+      CYCLETIME = 1;
+    };
+  };
+  /*
+   * Connect a category 1 ISR to Timer 2
+   * 
+   * 
+   */
+  ISR isr_TIM2 {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = TIM2_IRQ;
+  };
+};

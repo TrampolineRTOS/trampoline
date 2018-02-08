@@ -60,7 +60,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#if __clang_major__ == 1
+#if _clang_major__ == 1
   #define PROPERTY_ATOMIC
 #else
   #define PROPERTY_ATOMIC (atomic)

@@ -1,0 +1,85 @@
+/**
+ * @file arch.oil
+ *
+ * @section desc File description
+ *
+ * Trampoline Test Suite : Machine dependant oil configuration
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+#include "../../common/arch.oil"
+
+IMPLEMENTATION archPULP
+{
+  TASK {
+    UINT32 STACKSIZE = 1024;
+    UINT32 PRIORITY = 1;
+  };
+
+};
+
+CPU archPULPDefault
+{
+  OS defaultOS
+  {
+    /* Build paths are from the test directory */
+    BUILD = TRUE
+    {
+      COMPILER = "riscv32-unknown-elf-gcc";
+      ASSEMBLER = "riscv32-unknown-elf-as";
+      LINKER = "riscv32-unknown-elf-gcc";
+      COPIER = "riscv32-unknown-elf-objcopy";
+      CFLAGS = "-Os";
+      ASFLAGS = "-march=RVIMAFD";
+      LDFLAGS = "-Wl,-Map=build.map";
+      LDFLAGS = "-L../../lib -lembUnit";
+      LDFLAGS = "-nostartfiles";
+      SYSTEM = PYTHON;
+      LIBRARY = archConfig;
+      LIBRARY = pulpino;
+      LIBRARY = string;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+
+  /* Lib paths are from the "TRAMPOLINE/machines" directory */
+  LIBRARY archConfig
+  {
+    PATH = "../tests/machines/riscv/pulpino/";
+    CHEADER = "archTestConfig.h";
+    CFILE = "archTestConfig.c";
+  };
+};

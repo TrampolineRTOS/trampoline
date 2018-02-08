@@ -8,15 +8,12 @@
  * Interrupt sources of the board
  */
 CPU armv6m {
-  GENERATED_FILES cortex_m0p {
-    CFILE = "tpl_primary_irq.S";
-    CFILE = "tpl_vectors.c";
-    CFILE = "tpl_external_interrupts.c";
-  };
-  
   PLATFORM_FILES cortex_armv6m {
     PATH = "cortex/armv6m";
     CFILE = "sys_handlers.c";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_ctx_switch_under_it.S";
+    CFILE = "tpl_interrupts.S";
   };
 };
 

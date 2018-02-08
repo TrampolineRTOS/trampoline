@@ -329,7 +329,7 @@ FUNC(void, OS_CODE) tpl_bubble_down(
  * @internal
  *
  * tpl_put_new_proc puts a new proc in a ready list. In a multicore kernel
- * it may be called from a core that not own the ready list (for
+ * it may be called from a core that does not own the ready list (for
  * a partitioned scheduler). So the core_id field of the proc descriptor
  * is used to get the corresponding ready list.
  */
@@ -612,7 +612,8 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 /**
  * @internal
  *
- * The elected task becomes the running task, the running proc is preempted
+ * The elected process becomes the running process, the running process is
+ * preempted
  *
  * @return  the pointer to the context of the task
  *          that was running before the elected task replace it
@@ -655,6 +656,31 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     tpl_tp_on_preempt(TPL_KERN_REF(kern).running_id);
   #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
+
+  #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
+  /*
+   * If the running process is an ISR2 and ISR2 priority masking is enabled
+   * tpl_unmask_isr2_priority is called for the preempted or terminated ISR2
+   * so that lowest priority ISR2 interrupts are unmasked. When OS starts,
+   * s_running is NULL, so it is check to prevent NULL dereference.
+   */
+  if (TPL_KERN_REF(kern).s_running       != NULL        &&
+      TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
+  {
+    tpl_unmask_isr2_priority(TPL_KERN_REF(kern).running_id);
+  }
+
+  /*
+   * If the elected process is an ISR2 and ISR2 priority masking is enabled
+   * tpl_mask_isr2_priority is called for the started ISR2 so that lowest
+   * priority ISR2 interrupts are masked
+   */
+  if (TPL_KERN_REF(kern).s_elected->type == IS_ROUTINE)
+  {
+    tpl_mask_isr2_priority(TPL_KERN_REF(kern).elected_id);
+  }
+  #endif /* WITH_ISR2_PRIORITY_MASKING */
+
   /* copy the elected proc in running slot of tpl_kern */
   TPL_KERN_REF(kern).running = TPL_KERN_REF(kern).elected;
   TPL_KERN_REF(kern).s_running = TPL_KERN_REF(kern).s_elected;
@@ -732,7 +758,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
-    DOW_DO(printf("%s is a new proc\n",proc_name_table[proc.id]));
+    DOW_DO(printf("%s is a new proc\n", proc_name_table[proc.id]));
     tpl_init_proc(proc.id);
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
 #if NUMBER_OF_CORES > 1
@@ -901,7 +927,9 @@ FUNC(void, OS_CODE) tpl_block(void)
 /**
  * @internal
  *
- * TODO: document this
+ * tpl_start_scheduling is called from tpl_start_os_service after AUTOSTART tasks have
+ * been put in the ready list. It sets nedd_switch to NEED_SWITCH (so no context save
+ * since there is no running task at that time and starts the highest priority task.
  */
 FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 {
@@ -1172,7 +1200,8 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   {
     if (tpl_alarm_app_mode[i] & app_mode_mask)
     {
-      auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
+      auto_time_obj =
+        (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       /* In multicore, we must check if the alarm belongs to the core */
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)

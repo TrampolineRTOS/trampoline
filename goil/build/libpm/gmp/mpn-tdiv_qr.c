@@ -42,7 +42,7 @@ see https://www.gnu.org/licenses/.  */
 #include "gmp.h"
 #include "gmp-impl.h"
 #include "longlong.h"
-
+#include "utilities/switch-fallthrough.h"
 
 void
 mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
@@ -59,7 +59,7 @@ mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
   switch (dn)
     {
     case 0:
-      DIVIDE_BY_ZERO;
+      DIVIDE_BY_ZERO; FALLTHROUGH ;
 
     case 1:
       {

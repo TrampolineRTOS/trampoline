@@ -1,0 +1,6 @@
+[submodule "machines/avr/arduino"]
+	path = machines/avr/arduino
+	url = https://github.com/TrampolineRTOS/ArduinoCore-avr.git
+[submodule "machines/riscv/pulpino/pulpino"]
+	path = machines/riscv/pulpino/pulpino
+	url = https://github.com/Instrumented-Pulpino/pulpino.git	

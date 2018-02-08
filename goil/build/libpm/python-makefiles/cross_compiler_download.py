@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #----------------------------------------------------------------------------------------------------------------------*
- 
+
 from __future__ import print_function
 import os, sys, subprocess
 import tool_chain_installation_path
@@ -31,7 +31,7 @@ def runCommand (cmd) :
 
 gPerCentLoaded = 0
 
-def downloadReportHook (a,b,fileSize): 
+def downloadReportHook (a,b,fileSize):
   if fileSize < (1 << 10):
     sizeString = str (fileSize)
   else:
@@ -90,7 +90,7 @@ def downloadToolChain (TOOL_CHAIN):
   downloadArchive (url, LOCAL_ARCHIVE)
   #--------------------------------------------------------------------------- Unzip
   runCommand (["bunzip2", TOOL_CHAIN + ".tar.bz2"])
-  runCommand (["tar", "xf", TOOL_CHAIN + ".tar"])
+  runCommand (["tar", "xmf", TOOL_CHAIN + ".tar"])
   runCommand (["rm", TOOL_CHAIN + ".tar"])
   #--------------------------------------------------------------------------- Restore current dir
   os.chdir (currentDir)
