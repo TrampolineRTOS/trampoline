@@ -1,4 +1,8 @@
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_START_SEC_DATA
+#else
 #define OS_START_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"
 /*-----------------------------------------------------------------------------
  * Resource descriptor of resource % !resource::NAME %
@@ -42,6 +46,9 @@ end if
 #endif    
   /* next resource in the list        */  NULL
 };
-
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_STOP_SEC_DATA
+#else
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"
