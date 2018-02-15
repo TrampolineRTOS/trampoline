@@ -5,44 +5,50 @@ let resourceMap := [RESOURCES mapBy: "NAME"]
 write to PROJECT+"/info.json":
 %{\n%
   #tasks
-  foreach task in TASKS 
-  before %  "task" : [\n    {\n%
-  do
-    %      "name"       : "%!task::NAME%",\n%
-    %      "priority"   : %!task::PRIORITY%,\n%
-    %      "autostart"  : "%![task::AUTOSTART trueOrFalse]%",\n%
-    %      "activation" : %!task::ACTIVATION%,\n%
-    let maxPrio := task::PRIORITY
-    foreach resource in task::RESOURCE
-    before %      "resource"   : [%
+  if exists TASKS then
+    foreach task in TASKS 
+    before %  "task" : [\n    {\n%
     do
-      let resName := resource::VALUE
-      let resPrio := resourceMap[resName]::PRIORITY
-      %"%!resName%"%
-      if (resPrio > maxPrio) then let maxPrio := resPrio end if
-    between %, %
-    after %],\n%
+      %      "name"       : "%!task::NAME%",\n%
+      %      "priority"   : %!task::PRIORITY%,\n%
+      %      "autostart"  : "%![task::AUTOSTART trueOrFalse]%",\n%
+      %      "activation" : %!task::ACTIVATION%,\n%
+      let maxPrio := task::PRIORITY
+      if exists task::RESOURCE then 
+        foreach resource in task::RESOURCE
+        before %      "resource"   : [%
+        do
+          let resName := resource::VALUE
+           let resPrio := resourceMap[resName]::PRIORITY
+          %"%!resName%"%
+          if (resPrio > maxPrio) then let maxPrio := resPrio end if
+        between %, %
+        after %],\n%
+        end foreach
+      end if #resources
+      %      "maxPriority": %!maxPrio%,\n%
+      %      "schedule"   : "%!task::SCHEDULE%",\n%
+      %      "extended"   : "%![[extendedTasksSet contains: task::NAME] trueOrFalse]%"\n%
+    between %    },\n    {\n%
+    after %    }\n  ]\n%
     end foreach
-    %      "maxPriority": %!maxPrio%,\n%
-    %      "schedule"   : "%!task::SCHEDULE%",\n%
-    %      "extended"   : "%![[extendedTasksSet contains: task::NAME] trueOrFalse]%"\n%
-  between %    },\n    {\n%
-  after %    }\n  ]\n%
-  end foreach
+  end if #TASKS
   #resources
-  foreach resource in RESOURCES
-  before %  ,"resources" : [\n    {\n%
-  do 
-    %      "name"       : "%!resource::NAME%",\n%
-    %      "priority"   : %!resource::PRIORITY%,\n%
-    foreach task in resource::TASKUSAGE
-    before %      "taskUsage"  : [%
-    do %"%!task::VALUE%"%
-    between %, %
-    after %]\n%
+  if exists RESOURCES then
+    foreach resource in RESOURCES
+    before %  ,"resources" : [\n    {\n%
+    do 
+      %      "name"       : "%!resource::NAME%",\n%
+      %      "priority"   : %!resource::PRIORITY%,\n%
+      foreach task in resource::TASKUSAGE
+      before %      "taskUsage"  : [%
+      do %"%!task::VALUE%"%
+      between %, %
+      after %]\n%
+      end foreach
+    between %    },\n    {\n%
+    after %    }\n  ]\n%
     end foreach
-  between %    },\n    {\n%
-  after %    }\n  ]\n%
-  end foreach
+  end if #RESOURCES
 %}\n%
 end write
