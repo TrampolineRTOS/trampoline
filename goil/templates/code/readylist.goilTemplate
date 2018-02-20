@@ -102,10 +102,11 @@ between %,
 %
 after %
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 end loop
 end if
 
 %
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
