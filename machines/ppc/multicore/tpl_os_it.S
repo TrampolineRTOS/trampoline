@@ -71,7 +71,7 @@ TPL_GLOBAL_REF(tpl_enable_interrupts):
   mfspr     r5,spr_PIR
   se_slwi   r5,2
   e_lis     r6,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
-  e_add16i  r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  e_add16i  r6, r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r6,r5
 
   se_lwz    r6,0(r6)
@@ -92,7 +92,7 @@ TPL_GLOBAL_REF(tpl_enable_interrupts):
   se_blr
 #endif
 /* ------------ NO VLE ------------------------------------------------------*/
-#else TODO
+#else
   lis   r11,TPL_HIG(TPL_INTC_CPR_PRC0)
   ori   r11,TPL_LOW(TPL_INTC_CPR_PRC0)
   li    r12,0
@@ -126,7 +126,7 @@ TPL_GLOBAL_REF(tpl_disable_interrupts):
   mfspr     r5,spr_PIR
   se_slwi   r5,2
   e_lis     r6,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
-  e_add16i  r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  e_add16i  r6, r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r6,r5
 
   se_lwz    r6,0(r6)
@@ -154,7 +154,7 @@ TPL_GLOBAL_REF(tpl_disable_interrupts):
   se_blr
 #endif
 /* ------------ NO VLE ------------------------------------------------------*/
-#else TODO
+#else
   lis   r11,TPL_HIG(TPL_INTC_CPR_PRC0)           /* load TPL_INTC_CPR_PRC0 ptr     */
   ori   r11,TPL_LOW(TPL_INTC_CPR_PRC0)
   lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_counter_it_level))    /* get priority value to load */
@@ -182,7 +182,7 @@ TPL_GLOBAL_REF(tpl_enable_os_interrupts):
   mfspr     r5,spr_PIR
   se_slwi   r5,2
   e_lis     r6,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
-  e_add16i  r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  e_add16i  r6, r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r6,r5
 
   se_lwz    r6,0(r6)
@@ -230,7 +230,7 @@ TPL_GLOBAL_REF(tpl_disable_os_interrupts):
   mfspr     r5,spr_PIR
   se_slwi   r5,2
   e_lis     r6,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
-  e_add16i  r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  e_add16i  r6, r6,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r6,r5
 
   se_lwz    r6,0(r6)

@@ -133,10 +133,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#if RESOURCE_COUNT > 0
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-#endif
-
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -153,9 +149,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   IF_NO_EXTENDED_ERROR(result)
   {
 #if RESOURCE_COUNT > 0
-    res = TPL_RESOURCE_TABLE(core_id)[res_id];
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = (tpl_resource *)TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
-    res = NULL; /* error */
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = NULL; /* error */
 #endif
 
     /*  Return an error if the task that attempt to get
@@ -216,8 +212,6 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -234,9 +228,9 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   IF_NO_EXTENDED_ERROR(result)
   {
 #if RESOURCE_COUNT > 0
-    res = TPL_RESOURCE_TABLE(core_id)[res_id];
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = (tpl_resource *) TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
-    res = NULL; /* error */
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = NULL; /* error */
 #endif
 
 

@@ -367,9 +367,9 @@ FUNC(void, OS_CODE) tpl_start_core(
   {
     /* write slave core start adresse */
 #if WITH_VLE == YES
-    TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup | SSCM_DPMBOOT_VLE;
+    TPL_SSCM.DPMBOOT = (uint32) tpl_slave_core_startup | SSCM_DPMBOOT_VLE;
 #else
-    TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup;
+    TPL_SSCM.DPMBOOT = (uint32) tpl_slave_core_startup;
 #endif
 
     /* write key and inverted key to start the core */

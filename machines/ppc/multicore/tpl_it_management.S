@@ -71,7 +71,7 @@ TPL_GLOBAL_REF(tpl_it_id):
   mfspr     r4, spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi    r4,r4,2
   e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_intc))
-  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
+  e_add16i  r3, r3,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
   se_add    r3,r4             /* load the correct pointer to INTC depending on the core */
   e_lwz     r3,0(r3)
   e_lwz     r3,TPL_INTC_IACKR_PRC0(r3) /* get value of field IACKR_PRC0 in INTC */
@@ -95,80 +95,80 @@ TPL_GLOBAL_REF(tpl_init_ivpr):
   se_stw    r5,4(r1)
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVPR_VECBASE))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVPR_VECBASE))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVPR_VECBASE))
   mtspr   spr_IVPR,r4
 
 /* #if TARGET_CHIP == "MPC5643" || TARGET_CHIP == "MPC5646" || TARGET_CHIP == "MPC5668" || TARGET_CHIP == "MPC5646C" */
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR0_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR0_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR0_OFFSET))
   mtspr     spr_IVOR0,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR1_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR1_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR1_OFFSET))
   mtspr     spr_IVOR1,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR2_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR2_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR2_OFFSET))
   mtspr     spr_IVOR2,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR3_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR3_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR3_OFFSET))
   mtspr     spr_IVOR3,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR4_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR4_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR4_OFFSET))
   mtspr     spr_IVOR4,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR5_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR5_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR5_OFFSET))
   mtspr     spr_IVOR5,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR6_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR6_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR6_OFFSET))
   mtspr     spr_IVOR6,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR7_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR7_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR7_OFFSET))
   mtspr     spr_IVOR7,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR8_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR8_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR8_OFFSET))
   mtspr     spr_IVOR8,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR10_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR10_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR10_OFFSET))
   mtspr     spr_IVOR10,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR11_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR11_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR11_OFFSET))
   mtspr     spr_IVOR11,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR12_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR12_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR12_OFFSET))
   mtspr     spr_IVOR12,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR13_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR13_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR13_OFFSET))
   mtspr     spr_IVOR13,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR14_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR14_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR14_OFFSET))
   mtspr     spr_IVOR14,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR15_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR15_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR15_OFFSET))
   mtspr     spr_IVOR15,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR32_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR32_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR32_OFFSET))
   mtspr     spr_IVOR32,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR33_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR33_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR33_OFFSET))
   mtspr     spr_IVOR33,r4
 
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR34_OFFSET))
-  e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR34_OFFSET))
+  e_add16i  r4, r4,TPL_LOW(TPL_EXTERN_REF(_IVOR34_OFFSET))
   mtspr     spr_IVOR34,r4
 
 /* #endif */
@@ -194,7 +194,7 @@ TPL_GLOBAL_REF(tpl_ack_irq):
   mfspr     r4, spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi    r4,r4,2
   e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_intc))
-  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
+  e_add16i  r3, r3,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
   se_add    r3,r4
   e_lwz     r3,0(r3)
 
@@ -222,7 +222,7 @@ TPL_GLOBAL_REF(tpl_get_cpu_prio):
   mfspr     r4, spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi    r4,r4,2
   e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_intc))
-  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
+  e_add16i  r3, r3,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
   se_add    r3,r4
   e_lwz     r3,0(r3)
 
@@ -249,7 +249,7 @@ TPL_GLOBAL_REF(tpl_set_cpu_prio):
   mfspr     r4, spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi    r4,r4,2
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_intc))
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
+  e_add16i  r5, r5,TPL_LOW(TPL_EXTERN_REF(tpl_intc))
   se_add    r5,r4
   e_lwz     r5,0(r5)
 

@@ -23,7 +23,7 @@ CPU mpc5643l_interrupt {
 
   PLATFORM_FILES ppc_multicore {
     PATH = "ppc/multicore";
-    CFILE = "tpl_multicore.s";
+    CFILE = "tpl_multicore.S";
   };
 };
 

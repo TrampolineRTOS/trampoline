@@ -32,6 +32,30 @@
  *
  * Code section
  */
+#ifdef OS_START_SEC_BOOT
+  #undef OS_START_SEC_BOOT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #error "Starting a .osBoot while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION_NAME
+    #define CURRENT_LINKER_CODE_SECTION_NAME __attribute__ ((section (".osBoot")))
+    #define CURRENT_LINKER_CODE_SECTION
+  #endif
+#endif
+
+#ifdef OS_STOP_SEC_BOOT
+  #undef OS_STOP_SEC_BOOT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION
+    #undef CURRENT_LINKER_CODE_SECTION_NAME
+    #define CURRENT_LINKER_CODE_SECTION_NAME
+  #else
+    #error "No section .osBoot started"
+  #endif
+#endif
+
 #ifdef OS_START_SEC_CODE
   #undef OS_START_SEC_CODE
   #ifdef CURRENT_LINKER_CODE_SECTION
@@ -57,7 +81,7 @@
 #endif
 
 %
-foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_", "_INIT_","_FAST_","_" ) do
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef OS_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -212,7 +236,7 @@ foreach app in APPLICATIONS do
  * Variables sections
  */
 %
-  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_", "_INIT_","_FAST_","_" ) do
     foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_OS_APP_% !app::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -337,7 +361,7 @@ foreach proc in PROCESSES do
  * Variables sections
  */
 %
-  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_", "_INIT_" ,"_FAST_","_" ) do
     foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -436,7 +460,7 @@ foreach isr in ISRS1 do
  * Variables sections
  */
 %
-  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_", "_INIT_","_FAST_","_" ) do
     foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_ISR_% !isr::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -567,7 +591,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
  * Variables sections
  */
 %
-  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_", "_INIT_","_FAST_","_" ) do
     foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %

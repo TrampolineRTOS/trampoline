@@ -36,6 +36,9 @@ end if
 /*=============================================================================
  * Application Modes tables for tasks, alarms and schedule tables
  * Application Modes masks are as follow:
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 foreach mode in APPMODE do
 % * % ! mode::NAME % = % ! app_mode_mask[mode::NAME] %
@@ -173,3 +176,7 @@ after
 };
 %
 end foreach
+%
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%

@@ -160,7 +160,7 @@ struct _tpl_pit {
 /*=============================================================================
  * SSCM registers
  */
-#define SSCM_DPMBOOT_VLE    0x1UL << 1
+#define SSCM_DPMBOOT_VLE    0x2UL /* Set the bit number 30 to 1. It sets VLE on. */
 #define SSCM_DPMKEY_KEY1    (uint16) 0x5AF0
 #define SSCM_DPMKEY_KEY2    (uint16) ~SSCM_DPMKEY_KEY1
 
@@ -315,4 +315,3 @@ struct __siul__ {
 #define SIUL (* (volatile struct __siul__*) 0xC3F90000UL)
 
 #endif
-

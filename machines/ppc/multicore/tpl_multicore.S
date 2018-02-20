@@ -78,7 +78,7 @@ TPL_GLOBAL_REF(tpl_get_kernel_lock):
 
   /* r6 : Get the Gates base address */
   e_lis     r6,TPL_HIG(TPL_SEMA4_BASE)
-  e_add16i  r6,TPL_LOW(TPL_SEMA4_BASE)
+  e_add16i  r6, r6, TPL_LOW(TPL_SEMA4_BASE)
 
   /* r5 : Core0 must write 0x1 ; Core1 must write 0x2 => just add 1 to the cpu_id */
   mfspr     r5,spr_PIR
@@ -97,7 +97,7 @@ tpl_get_kernel_lock_retry :
   se_lwz    r5,4(r1)
   se_lwz    r6,8(r1)
   se_addi   r1,12
-  blr
+  se_blr
 #endif
 TPL_TYPE(TPL_GLOBAL_REF(tpl_get_kernel_lock),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_get_kernel_lock),$-TPL_GLOBAL_REF(tpl_get_kernel_lock))
@@ -118,7 +118,7 @@ TPL_GLOBAL_REF(tpl_release_kernel_lock):
 
   /* r6 : Get the Gates base address */
   e_lis     r6,TPL_HIG(TPL_SEMA4_BASE)
-  e_add16i  r6,TPL_LOW(TPL_SEMA4_BASE)
+  e_add16i  r6, r6, TPL_LOW(TPL_SEMA4_BASE)
 
   /* r5 : Write 0 to unlock the gate */
   se_li     r5,0
@@ -128,7 +128,7 @@ TPL_GLOBAL_REF(tpl_release_kernel_lock):
   se_lwz    r5,0(r1)
   se_lwz    r6,4(r1)
   se_addi   r1,8
-  blr
+  se_blr
 
 #endif
 TPL_TYPE(TPL_GLOBAL_REF(tpl_release_kernel_lock),@function)

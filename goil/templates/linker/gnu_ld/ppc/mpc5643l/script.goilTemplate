@@ -1,0 +1,393 @@
+ENTRY(tpl_master_core_startup)
+
+MEMORY
+{
+  flash_const : ORIGIN = 0x00000000,  LENGTH = 0x00010000
+  flash_ivor_0 : ORIGIN = 0x00010000,  LENGTH = 0x00000010
+  flash_ivor_1 : ORIGIN = 0x00010010,  LENGTH = 0x00000010
+  flash_ivor_2 : ORIGIN = 0x00010020,  LENGTH = 0x00000010
+  flash_ivor_3 : ORIGIN = 0x00010030,  LENGTH = 0x00000010
+  flash_ivor_4 : ORIGIN = 0x00010040,  LENGTH = 0x00000010
+  flash_ivor_5 : ORIGIN = 0x00010050,  LENGTH = 0x00000010
+  flash_ivor_6 : ORIGIN = 0x00010060,  LENGTH = 0x00000010
+  flash_ivor_7 : ORIGIN = 0x00010070,  LENGTH = 0x00000010
+  flash_ivor_8 : ORIGIN = 0x00010080,  LENGTH = 0x00000010
+  flash_ivor_9 : ORIGIN = 0x00010090,  LENGTH = 0x00000010
+  flash_ivor_10 : ORIGIN = 0x000100a0,  LENGTH = 0x00000010
+  flash_ivor_11 : ORIGIN = 0x000100b0,  LENGTH = 0x00000010
+  flash_ivor_12 : ORIGIN = 0x000100c0,  LENGTH = 0x00000010
+  flash_ivor_13 : ORIGIN = 0x000100d0,  LENGTH = 0x00000010
+  flash_ivor_14 : ORIGIN = 0x000100e0,  LENGTH = 0x00000010
+  flash_ivor_15 : ORIGIN = 0x000100f0,  LENGTH = 0x00000010
+  flash_ivor_32 : ORIGIN = 0x00010100,  LENGTH = 0x00000010
+  flash_ivor_33 : ORIGIN = 0x00010110,  LENGTH = 0x00000010
+  flash_ivor_34 : ORIGIN = 0x00010120,  LENGTH = 0x00000010
+  flash_boot : ORIGIN = 0x00010200, LENGTH = 0x00000dff
+  flash_text : ORIGIN = 0x00011000, LENGTH = 0x00eef000
+  sram : ORIGIN = 0x40000000, LENGTH = 0x00010000
+}
+
+/*##############
+##    FLASH    ##
+ ###############
+
+/*************
+* ISR VECTORS
+*************/
+
+SECTIONS
+{
+  .exCritInput : { KEEP(*(.exCritInput)) } > flash_ivor_0
+  .exMchineChck : { KEEP(*(.exMchineChck)) } > flash_ivor_1
+  .exDatStorage : { KEEP(*(.exDatStorage)) } > flash_ivor_2
+  .exInstStrage : { KEEP(*(.exInstStrage)) } > flash_ivor_3
+  .EI_vector : { KEEP(*(.EI_vector)) } > flash_ivor_4
+  .exAlignment : { KEEP(*(.exAlignment)) } > flash_ivor_5
+  .exProgram : { KEEP(*(.exProgram)) } > flash_ivor_6
+  .exFltPntUnvl : { KEEP(*(.exFltPntUnvl)) } > flash_ivor_7
+  .SC_vector : { KEEP(*(.SC_vector)) } > flash_ivor_8
+  .rsrvIVOR9 : { KEEP(*(.rsrvIVOR9)) } > flash_ivor_9
+  .dec_vector : { KEEP(*(.dec_vector)) } > flash_ivor_10
+  .fxdIntrvlTim : { KEEP(*(.fxdIntrvlTim)) } > flash_ivor_11
+  .watchdogTim : { KEEP(*(.watchdogTim)) } > flash_ivor_12
+  .dataTlbError : { KEEP(*(.dataTlbError)) } > flash_ivor_13
+  .instTlbError : { KEEP(*(.instTlbError)) } > flash_ivor_14
+  .sdebug : { KEEP(*(.sdebug)) } > flash_ivor_15
+  .rsrvIVOR32 : { KEEP(*(.rsrvIVOR32)) } > flash_ivor_32
+  .rsrvIVOR33 : { KEEP(*(.rsrvIVOR33)) } > flash_ivor_33
+  .rsrvIVOR34 : { KEEP(*(.rsrvIVOR34)) } > flash_ivor_34
+}
+
+/**************
+* CONST & BAM
+**************/
+
+SECTIONS
+{
+  /* SYSTEM RESET */
+
+  .rchw : 
+  {
+    KEEP(*(.rchw))
+  } > flash_const
+
+  /* CONSTANTS */
+
+  .osconst : ALIGN(16)
+  {
+    __SEG_START_API_CONST_RGN = .;
+    *(.osConst)
+    *(.osApiConst)
+    __SEG_END_API_CONST_RGN =  . -1;
+  } > flash_const
+
+  .appconst : ALIGN(16)
+  {%
+foreach app in APPLICATIONS do
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%
+    *(.OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)%
+    end for
+  end for
+end foreach
+%
+  } > flash_const
+
+  .procconst : ALIGN(16)
+  {
+    __PROGCONST_SECTION_START = .;%
+foreach proc in PROCESSES do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%
+    *(.% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)%
+    end for
+  end for
+end foreach
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%
+    *(.Task_IDLE_TASK_% !core_id %_SEC% !SECTION_KIND !DATA_SIZE %)%
+    end for
+  end for
+end loop
+foreach isr in ISRS1 do
+%
+    *(.ISR_% !isr::NAME %Code)%
+end foreach
+%
+    __PROGCONST_SECTION_STOP = . -1;
+  } > flash_const
+
+  .const_garbage :
+  {
+    *(.sconst)
+  } > flash_const
+}
+
+/***********
+* BOOT CODE
+***********/
+
+SECTIONS
+{
+ .osboot : { *(.osBoot) } > flash_boot
+}
+
+/*******
+* CODE
+*******/
+
+SECTIONS
+{
+  .text :
+  {
+    *(.text)
+    *(.text.*)
+    *(.vtext)
+    *(.ctors)
+    *(.dtors)
+    KEEP (*(.init))
+    KEEP (*(.fini))
+    . = ALIGN(16);
+  } > flash_text
+
+  .apptext : ALIGN(16)
+  {
+    __SEG_START_API_CODE_RGN = .;
+    *(.rodata)
+    *(.rodata.*)
+    . = ALIGN(4);
+    *(.osApiCode)%
+foreach proc in PROCESSES do
+%
+    *(.% !proc::KIND %_% !proc::NAME %Code)%
+end foreach
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+    *(.Task_IDLE_TASK_% !core_id %Code)%
+end loop
+foreach isr in ISRS1 do
+%
+    *(.ISR_% !isr::NAME %Code)%
+end foreach
+%
+    __SEG_END_API_CODE_RGN = . -1;
+  } > flash_text
+
+  .ostext : ALIGN(16)
+  {
+    *(.SC_handler)
+    *(.EI_handler)
+    *(.dec_handler)
+    *(.osCode)
+    *(.appCommonCode)
+    *(.startup)
+  } > flash_text
+}
+
+/*##############
+##     RAM     ##
+ ###############
+
+/*****************
+* INITIALIZED DATA
+******************/
+
+/* Used by the startup to initialize data */
+SECTIONS
+{
+  _sidata = .;
+  .data : AT (_sidata)
+  {
+    . = ALIGN(4);
+    _sdata = .;
+    *(.data)
+    *(.data.*)
+    *(.sdata)
+    *(.sdata.*)
+    *(.sdata2)
+    *(.sdata2.*)
+    *(.got)
+    *(.got1)
+    *(.got2)
+    *(.fixup)
+    *(.gcc_except_table)
+    *(.eh_frame)
+    *(.jcr)
+    . = ALIGN(16);
+    *(.osVar)
+%
+foreach app in APPLICATIONS do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_", "_INIT_") do
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+
+foreach proc in PROCESSES do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_", "_INIT_") do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_", "_INIT_") do
+%    *(.Task_IDLE_TASK_% !core_id %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end loop
+%    . = ALIGN(4);
+    _edata = .;
+  } > sram
+}
+
+/**********
+* BSS DATA
+***********/
+
+SECTIONS
+{
+  . = ALIGN (16);
+
+  _bss_start = .;
+  .osvarnoinit : { *(.osVarNoInit) } > sram
+  .appvars :
+  {
+%
+foreach app in APPLICATIONS do
+%    __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_OS_APP_% !app::NAME %_VAR_RGN = ALIGN(16) - 1;
+%
+end foreach
+%  } > sram
+%
+foreach proc in PROCESSES do
+%  
+  .% !proc::KIND %_% !proc::NAME %_SEC_VAR : ALIGN(16)
+  {
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN = ALIGN(32) - 1;
+  } > sram
+%
+end foreach
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%  
+  .Task_IDLE_TASK_% !core_id %_SEC_VAR : ALIGN(16)
+  {
+    __SEG_START_Task_IDLE_TASK_% !core_id %_VAR_RGN = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+%    *(.Task_IDLE_TASK_% !core_id %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_Task_IDLE_TASK_% !core_id %_VAR_RGN = ALIGN(32) - 1;
+  } > sram
+%
+end loop
+%}
+
+SECTIONS
+{
+  .comment : { *(.comment) } > sram
+  .relocatable : { *(.rela.*) } > sram
+
+.bss_data : ALIGN(16)
+  {
+    *(.bss)
+    *(.sbss)
+    _bss_end = . -1;
+  } > sram
+}
+
+/**********
+*  STACKS
+**********/
+
+SECTIONS
+{
+%
+foreach proc in PROCESSES do
+%  .% !proc::KIND %_% !proc::NAME %_SEC_STACK : ALIGN(32)
+  {
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+    *(.% !proc::KIND %_% !proc::NAME %Stack)
+    __SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN = ALIGN(32) - 1;
+  } > sram
+%end foreach
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    let proc := @{}
+  if OS::NUMBER_OF_CORES == 1 then
+    let proc::NAME := "IDLE_TASK"
+  else
+    let proc::NAME := "IDLE_TASK_" + [core_id string]
+  end if
+%  .Task_%! proc::NAME%_SEC_STACK : ALIGN(32)
+  {
+    __SEG_START_Task_%! proc::NAME%_STACK_RGN = .;
+    *(.Task_%! proc::NAME%Stack)
+    __SEG_END_Task_%! proc::NAME%_STACK_RGN = ALIGN(32) - 1;
+  } > sram
+%end loop
+%}
+
+/*##############
+##   SYMBOLS   ##
+ ###############
+
+ /*************
+*  tpl_boot.s
+**************/
+
+_stack_addr = 0x4000F000;
+_stack_addr_p1 = 0x40010000;
+
+ /*********************
+*  tpl_it_management.s
+**********************/
+
+_IVPR_VECBASE = ADDR(.exCritInput);
+_IVOR0_OFFSET = ADDR(.exCritInput);
+_IVOR1_OFFSET = ADDR(.exMchineChck);
+_IVOR2_OFFSET = ADDR(.exDatStorage);
+_IVOR3_OFFSET = ADDR(.exInstStrage);
+_IVOR4_OFFSET = ADDR(.EI_vector);
+_IVOR5_OFFSET = ADDR(.exAlignment);
+_IVOR6_OFFSET = ADDR(.exProgram);
+_IVOR7_OFFSET = ADDR(.exFltPntUnvl);
+_IVOR8_OFFSET = ADDR(.SC_vector);
+_IVOR9_OFFSET = ADDR(.rsrvIVOR9);
+_IVOR10_OFFSET = ADDR(.dec_vector);
+_IVOR11_OFFSET = ADDR(.fxdIntrvlTim);
+_IVOR12_OFFSET = ADDR(.watchdogTim);
+_IVOR13_OFFSET = ADDR(.dataTlbError);
+_IVOR14_OFFSET = ADDR(.instTlbError);
+_IVOR15_OFFSET = ADDR(.sdebug);
+_IVOR32_OFFSET = ADDR(.rsrvIVOR32);
+_IVOR33_OFFSET = ADDR(.rsrvIVOR33);
+_IVOR34_OFFSET = ADDR(.rsrvIVOR34);

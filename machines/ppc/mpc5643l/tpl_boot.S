@@ -33,16 +33,21 @@ TPL_EXTERN(_sdata)
 TPL_EXTERN(_bss_start)
 TPL_EXTERN(_bss_end)
 TPL_EXTERN(_stack_addr)
-TPL_EXTERN(_idesc__)    /* Cosmic Software's linker initialised data descriptor 
-                         * address
-                         */
-
 TPL_EXTERN(tpl_reset_registers)
 TPL_EXTERN(tpl_init_mmu)
 TPL_EXTERN(tpl_copy_init_data)
 TPL_EXTERN(tpl_clear_bss)
 TPL_EXTERN(tpl_init_kernel_stack)
 TPL_EXTERN(tpl_init_interrupts)
+
+/* Used to manage initialised data */
+#if defined (__CSMC__)
+TPL_EXTERN(_idesc__) /* Cosmic Software's linker initialised data descriptor adress */
+#elif defined(__GNUC__)
+TPL_EXTERN(_sidata)
+TPL_EXTERN(_sdata)
+TPL_EXTERN(_edata)
+#endif
 
 #if (WITH_VLE == YES)
 TPL_VLE_ON
@@ -76,22 +81,32 @@ TPL_GLOBAL_REF(tpl_master_core_startup) :
 
     /* Set stack pointer */
     e_lis     r1,TPL_HIG(TPL_EXTERN_REF(_stack_addr))
-    e_add16i  r1,TPL_LOW(TPL_EXTERN_REF(_stack_addr))
+    e_add16i  r1, r1, TPL_LOW(TPL_EXTERN_REF(_stack_addr))
 
     /* Set data pointer */
     e_lis     r13,TPL_HIG(TPL_EXTERN_REF(_sdata))
-    e_add16i  r13,TPL_LOW(TPL_EXTERN_REF(_sdata))
+    e_add16i  r13, r13, TPL_LOW(TPL_EXTERN_REF(_sdata))
 
     /* Clear Ram call */
     e_lis     r3,TPL_HIG(TPL_EXTERN_REF(_bss_start))
-    e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(_bss_start))
+    e_add16i  r3, r3, TPL_LOW(TPL_EXTERN_REF(_bss_start))
     e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_bss_end))
-    e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_bss_end))
+    e_add16i  r4, r4, TPL_LOW(TPL_EXTERN_REF(_bss_end))
     e_bl      TPL_EXTERN_REF(tpl_clear_bss)
 
     /* Copy initialized datas call */
+
+#if defined (__CSMC__)
     e_lis     r3,TPL_HIG(TPL_EXTERN_REF(_idesc__))
-    e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(_idesc__))
+    e_add16i  r3, r3, TPL_LOW(TPL_EXTERN_REF(_idesc__))
+#elif defined(__GNUC__)
+    e_lis     r3,TPL_HIG(TPL_EXTERN_REF(_sidata))
+    e_add16i  r3, r3, TPL_LOW(TPL_EXTERN_REF(_sidata))
+    e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_sdata))
+    e_add16i  r4, r4, TPL_LOW(TPL_EXTERN_REF(_sdata))
+    e_lis     r5,TPL_HIG(TPL_EXTERN_REF(_edata))
+    e_add16i  r5, r5, TPL_LOW(TPL_EXTERN_REF(_edata))
+#endif
     e_bl      TPL_EXTERN_REF(tpl_copy_init_data)
 
    /**
@@ -104,7 +119,7 @@ TPL_GLOBAL_REF(tpl_master_core_startup) :
     e_bl      TPL_EXTERN_REF(tpl_init_interrupts)
 
     /* Go to main */
-    e_bl      TPL_EXTERN_REF(main)           ; execute main
+    e_bl      TPL_EXTERN_REF(main)           /* execute main */
 
 tpl_master_core_startup_loop:
     se_b      tpl_master_core_startup_loop
@@ -116,7 +131,7 @@ TPL_EXTERN(_stack_addr_p1)
 /* =============================================================================
  *  Slave core boot
  */
-ALIGN(4) /* Must be aligned to at least 4bytes */
+TPL_ALIGN(4) /* Must be aligned to at least 4bytes */
 TPL_GLOBAL(tpl_slave_core_startup)
 TPL_GLOBAL_REF(tpl_slave_core_startup):
 #if WITH_DEBUG == YES
@@ -136,11 +151,16 @@ TPL_GLOBAL_REF(tpl_slave_core_startup):
 
     /* Set stack pointer */
     e_lis     r1,TPL_HIG(TPL_EXTERN_REF(_stack_addr_p1))
-    e_add16i  r1,TPL_LOW(TPL_EXTERN_REF(_stack_addr_p1))
+    e_add16i  r1, r1, TPL_LOW(TPL_EXTERN_REF(_stack_addr_p1))
+
+#if defined(__GNUC__)
+    /* Emulate a calling function's frame (Needed for NXP GCC Compiler) */
+    e_add16i   r1, r1, TPL_LOW(TPL_EXTERN_REF(_stack_addr_p1)) - 0x10
+#endif
 
     /* Set data pointer */
     e_lis     r13,TPL_HIG(TPL_EXTERN_REF(_sdata))
-    e_add16i  r13,TPL_LOW(TPL_EXTERN_REF(_sdata))
+    e_add16i  r13, r13, TPL_LOW(TPL_EXTERN_REF(_sdata))
 
    /**
     * [SWS_Os_00606] : Some syscalls may be called before StartOS (at least
@@ -152,7 +172,7 @@ TPL_GLOBAL_REF(tpl_slave_core_startup):
     e_bl      TPL_EXTERN_REF(tpl_init_interrupts)
 
     /* Go to main */
-    e_bl      TPL_EXTERN_REF(main)           ; execute main
+    e_bl      TPL_EXTERN_REF(main)           /* execute main */
 
 tpl_slave_core_startup_loop:
   se_b      tpl_slave_core_startup_loop
@@ -416,13 +436,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   se_blr
 
 
-; The following MPC5643L e200z4 core registers require software initialization
+/* The following MPC5643L e200z4 core registers require software initialization
 ; General Registers — CR, CTR, LR, GPR0-GPR31, ACC
 ; Debug Registers — DBCNT, DVC1-DVC2
 ; Exception Handling — SPRG0-SPRG7, SPRG8-SPRG9, USPRG0, SRR0-SRR1, CSRR0-CSRR1,
 ; DSRR0-DSRR1, MCSRR0-MCSRR1, IVPR, IVOR0-IVOR15, IVOR32-IVOR34, MCAR, DEAR
 ; Timers — DEC, DECAR, TBL, TBU
-; Memory Management Registers — MAS0-MAS4, MAS6
+; Memory Management Registers — MAS0-MAS4, MAS6 */
 
 TPL_GLOBAL(tpl_reset_registers)
 TPL_GLOBAL_REF(tpl_reset_registers):
@@ -435,30 +455,30 @@ TPL_GLOBAL_REF(tpl_reset_registers):
     se_andi r5,0
     se_andi r6,0
     se_andi r7,0
-    e_and2i r8,0
-    e_and2i r9,0
-    e_and2i r10,0
-    e_and2i r11,0
-    e_and2i r12,0
-    e_and2i r13,0
-    e_and2i r14,0
-    e_and2i r15,0
-    e_and2i r16,0
-    e_and2i r17,0
-    e_and2i r18,0
-    e_and2i r19,0
-    e_and2i r20,0
-    e_and2i r21,0
-    e_and2i r22,0
-    e_and2i r23,0
-    e_and2i r24,0
-    e_and2i r25,0
-    e_and2i r26,0
-    e_and2i r27,0
-    e_and2i r28,0
-    e_and2i r29,0
-    e_and2i r30,0
-    e_and2i r31,0
+    e_and2i. r8,0
+    e_and2i. r9,0
+    e_and2i. r10,0
+    e_and2i. r11,0
+    e_and2i. r12,0
+    e_and2i. r13,0
+    e_and2i. r14,0
+    e_and2i. r15,0
+    e_and2i. r16,0
+    e_and2i. r17,0
+    e_and2i. r18,0
+    e_and2i. r19,0
+    e_and2i. r20,0
+    e_and2i. r21,0
+    e_and2i. r22,0
+    e_and2i. r23,0
+    e_and2i. r24,0
+    e_and2i. r25,0
+    e_and2i. r26,0
+    e_and2i. r27,0
+    e_and2i. r28,0
+    e_and2i. r29,0
+    e_and2i. r30,0
+    e_and2i. r31,0
 
     mtspr spr_CTR,r31
     mtspr spr_XER,r31

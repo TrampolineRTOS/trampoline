@@ -1,0 +1,37 @@
+/*
+ * MPC5643L PPC build options for gcc (CPU = e200z4)
+ */
+CPU buildOptions {
+  BUILDOPTIONS defaultBuildOptionsForE200Z4 {
+    /*
+     * Common flags for C and C++ compiling
+     */
+    COMMONFLAGS = "-g";                           // Produce debugging information
+    COMMONFLAGS = "-mcpu=e200z4";                 // Compile for e200z4
+    COMMONFLAGS = "-mhard-float";                 // Floating point numbers are computed in hardware
+    COMMONFLAGS = "-nostdlib";                    // Do not used implicitely the standard libraries to link
+    COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
+    COMMONFLAGS = "-fno-exceptions";              // No exceptions managed
+    COMMONFLAGS = "-ffunction-sections";          // Each function is put in its own section. Required to deleted unused code
+    COMMONFLAGS = "-fdata-sections";              // Each data is put in its own section. Required to deleted unused data
+    
+    /*
+     * C++ compiler flags
+     */
+    CPPFLAGS = "-fno-rtti";                       // No information for runtime (run time type information) - reduce exe size
+    CPPFLAGS = "-felide-constructors";            // Optimization to omit creating temporary object when used to initialize another object
+    CPPFLAGS = "-fno-threadsafe-statics";         // No thread safe init of local static variables - reduce code size
+    CPPFLAGS = "-fno-use-cxa-get-exception-ptr";  // Don't use the __cxa_get_exception_ptr runtime routine (no exception anyway)
+    CPPFLAGS = "-fno-enforce-eh-specs";           // Don't generate code to check for violation of exception specifications at runtime (no exception anyway)
+    
+    /*
+     * LINKER FLAGS
+     */
+    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+    LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
+    LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
+    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
+    CRTI_O = "ecrti.o";                           // Used to link any CRTI Object File in the Libgcc folder
+    CRTN_O = "ecrtn.o";                           // Used to link any CRTN Object File in the Libgcc folder
+  };
+};

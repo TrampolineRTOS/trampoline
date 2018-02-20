@@ -53,14 +53,14 @@ TPL_GLOBAL_REF(tpl_init_regs):
   se_subi   r1,4   /* space on the stack */
   e_stw     r3,0(r1)  /* save the working register  */
   e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_register_r2))       /*  save the start value of RTOC  */
-  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r2))
+  e_add16i  r3, r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r2))
   e_stw     r2,0(r3)
   e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_register_r13))      /*  save the start value of r13   */
-  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r13))
+  e_add16i  r3, r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r13))
   e_stw     r13,0(r3)
   mfmsr     r0
   e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_msr_start_value))   /*  save the start value of msr   */
-  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_msr_start_value))
+  e_add16i  r3, r3,TPL_LOW(TPL_EXTERN_REF(tpl_msr_start_value))
   e_stw     r0,0(r3)
   e_lwz     r3,0(r1)  /*  get back the working register */
   se_addi   r1,4   /*  release space on the stack    */

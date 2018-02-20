@@ -28,6 +28,7 @@
 
 void tpl_master_core_startup(void);	/* startup address */
 
+#if defined (__CSMC__)
 #pragma section const {rchw}
 
 /*	RCHW is duplicated at offset 0 and offset 2
@@ -38,3 +39,14 @@ const struct bam {
 	void (*start)(void);
 	} __rchw__ = {RCHW, RCHW, tpl_master_core_startup};
 
+#elif defined(__GNUC__)
+
+/*	RCHW is duplicated at offset 0 and offset 2
+ *	to support both variants
+ */
+const struct bam {
+	unsigned short rchw0, rchw2;
+	void (*start)(void);
+	} __rchw__ __attribute__ ((section (".rchw"))) = {RCHW, RCHW, tpl_master_core_startup};
+
+#endif

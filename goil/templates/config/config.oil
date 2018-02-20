@@ -152,6 +152,8 @@ IMPLEMENTATION trampoline_common {
     STRING PRECOMMONFLAGS[]; /* common flags for C++ and C */
     STRING PREASFLAGS[];
     STRING PRELDFLAGS[];
+    STRING CRTI_O[];
+    STRING CRTN_O[];
   };
 
   OS {

@@ -114,7 +114,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel_sc):
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
-  e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
+  e_add16i  r5, r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
   se_lwz    r6,0(r5)   /*  get the value of the counter */
   se_cmpi   r6,0
@@ -129,7 +129,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel_sc):
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  e_add16i  r5, r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r5,r6
   se_lwz    r5,0(r5)
   e_stw     r1,KS_SP-KS_FOOTPRINT(r5)  /*  save the sp of the caller     */
@@ -150,7 +150,7 @@ no_stack_change_sc:
 
 #if WITH_MULTICORE == YES
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_service_lock_kernel))
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_service_lock_kernel))
+  e_add16i  r5, r5,TPL_LOW(TPL_EXTERN_REF(tpl_service_lock_kernel))
   se_add    r5,r0
   se_lbz    r5,0(r5)
   se_cmpi   r5,1
@@ -214,7 +214,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel):
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
-  e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
+  e_add16i  r5, r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
   se_lwz    r6,0(r5)  /*  get the value of the counter */
   se_cmpi   r6,0
@@ -229,7 +229,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel):
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  e_add16i  r5, r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r5,r6
   se_lwz    r5,0(r5)
   e_stw     r1,KS_SP-KS_FOOTPRINT(r5)  /*  save the sp of the caller     */
@@ -305,7 +305,7 @@ TPL_GLOBAL_REF(tpl_leave_kernel):
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
-  e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
+  e_add16i  r5, r5, TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
   se_lwz    r6,0(r5)     /*  get the value of the counter */
   se_subi   r6,1
@@ -422,7 +422,7 @@ TPL_GLOBAL_REF(tpl_sc_handler):
   se_slwi   r6,2
 # endif
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_servicetrace))
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_servicetrace))
+  e_add16i  r5, r5,TPL_LOW(TPL_EXTERN_REF(tpl_servicetrace))
 # if WITH_MULTICORE == YES
   se_add    r5,r6
   se_lwz    r5,0(r5)
@@ -446,7 +446,7 @@ TPL_GLOBAL_REF(tpl_sc_handler):
    */
   se_slwi   r0,2                                /* compute the offset     */
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_dispatch_table))     /* load the ptr to the    */
-  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_dispatch_table))     /* dispatch table         */
+  e_add16i  r11, r11, TPL_LOW(TPL_EXTERN_REF(tpl_dispatch_table))     /* dispatch table         */
   lwzx      r11,r11,r0                    /* get the ptr to the service   */
   mtlr      r11                           /* put it in lr for future use  */
 
@@ -464,7 +464,7 @@ TPL_GLOBAL_REF(tpl_sc_handler):
   se_slwi   r6,2                          /* get core number, and multiply by 4, to get the index of table tpl_kern[] */
 #endif
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
+  e_add16i  r5, r5, TPL_LOW(TPL_EXTERN_REF(tpl_kern))
 #if WITH_MULTICORE == YES
   se_add    r5,r6
   se_lwz    r5,0(r5)
@@ -502,7 +502,7 @@ TPL_GLOBAL_REF(tpl_sc_handler):
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
-  e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
+  e_add16i  r5, r5, TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
   se_lwz    r6,0(r5)     /*  get the value of the counter */
   se_cmpi   r6,1
@@ -593,7 +593,7 @@ no_context_switch:
   se_slwi   r6,2
 # endif
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_servicetrace))
-  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_servicetrace))
+  e_add16i  r5, r5, TPL_LOW(TPL_EXTERN_REF(tpl_servicetrace))
 # if WITH_MULTICORE == YES
   se_add    r5,r6
   se_lwz    r5,0(r5)
