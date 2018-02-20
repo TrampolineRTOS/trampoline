@@ -6,14 +6,17 @@ write to PROJECT+"/info.json":
 %{\n%
   #tasks
   if exists TASKS then
+    let taskID := 0
     foreach task in TASKS 
     before %  "task" : [\n    {\n%
     do
       %      "name"       : "%!task::NAME%",\n%
+      %      "id"         : "%!taskID%",\n%
       %      "priority"   : %!task::PRIORITY%,\n%
       %      "autostart"  : "%![task::AUTOSTART trueOrFalse]%",\n%
       %      "activation" : %!task::ACTIVATION%,\n%
       let maxPrio := task::PRIORITY
+      let taskID := (taskID + 1)
       if exists task::RESOURCE then 
         foreach resource in task::RESOURCE
         before %      "resource"   : [%
@@ -30,7 +33,18 @@ write to PROJECT+"/info.json":
       %      "schedule"   : "%!task::SCHEDULE%",\n%
       %      "extended"   : "%![[extendedTasksSet contains: task::NAME] trueOrFalse]%"\n%
     between %    },\n    {\n%
-    after %    }\n  ]\n%
+    after #idle_task
+      %    },\n    {\n%
+      %      "name"       : "IDLE_TASK",\n%
+      %      "id"         : "%!([TASKS length]+[ISRS2 length])%",\n%
+      %      "priority"   : 0,\n%
+      %      "autostart"  : "true",\n%
+      %      "activation" : 1,\n% 
+      %      "resource"   : [],\n%
+      %      "maxPriority": 0,\n%
+      %      "schedule"   : "FULL",\n%
+      %      "extended"   : "false"\n%
+      %    }\n  ]\n%
     end foreach
   end if #TASKS
   #resources
@@ -38,17 +52,43 @@ write to PROJECT+"/info.json":
     foreach resource in RESOURCES
     before %  ,"resources" : [\n    {\n%
     do 
-      %      "name"       : "%!resource::NAME%",\n%
-      %      "priority"   : %!resource::PRIORITY%,\n%
-      foreach task in resource::TASKUSAGE
-      before %      "taskUsage"  : [%
-      do %"%!task::VALUE%"%
-      between %, %
-      after %]\n%
-      end foreach
-    between %    },\n    {\n%
-    after %    }\n  ]\n%
+      if(resource::NAME != "INTERNAL_RES_SCHEDULER") then #exclude_INTERNAL_RES_SCHEDULER
+        %      "name"       : "%!resource::NAME%",\n%
+        %      "priority"   : %!resource::PRIORITY%,\n%
+        foreach task in resource::TASKUSAGE
+        before %      "taskUsage"  : [%
+        do %"%!task::VALUE%"%
+        between %, %
+        after %]\n%
+        end foreach
+      end if #exclude_INTERNAL_RES_SCHEDULER
+      between %    },\n    {\n%
+      after %      "name"       : "res_sched",\n      "priority"   : %!OS::RESSCHEDULERPRIORITY%\n    }\n  ],\n%
     end foreach
   end if #RESOURCES
+  #Internal_resource
+  if exists RESOURCES then
+    foreach resource in RESOURCES
+    do
+      if(resource::NAME == "INTERNAL_RES_SCHEDULER") then 
+        %  "InternalResource" : {\n%
+        %      "priority"   : %!resource::PRIORITY%,\n%
+        foreach task in resource::TASKUSAGE
+        before %      "taskUsage"  : [%
+        do %"%!task::VALUE%"%
+        between %, %
+        after %]\n%
+        end foreach
+      end if #exclude_INTERNAL_RES_SCHEDULER
+      %  },\n%
+    end foreach
+  end if #RESOURCES
+  #size_information
+%  "size_ReadyList" : %!(READY_LIST_SIZE + 1)%,\n%  
+%  "size_ReadyList_key" : %![(1 << ([NUMBER_OF_PRIORITIES numberOfBits] + [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBits]%,\n%  
+%  "size_Task_ID" : %! [[PROCESSES length] + 1 signedNumberOfBits]%,\n%  
+%  "size_Prioritybis" : %! (KEY_SIZE*8) %,\n%  
+%  "size_Priority" : %! [NUMBER_OF_PRIORITIES signedNumberOfBits]%,\n% 
+%  "size_Priorityter" : %! [task_max_priority signedNumberOfBits]%\n% 
 %}\n%
 end write
