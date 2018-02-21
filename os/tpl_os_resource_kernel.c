@@ -149,7 +149,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   IF_NO_EXTENDED_ERROR(result)
   {
 #if RESOURCE_COUNT > 0
-    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = (tpl_resource *)TPL_RESOURCE_TABLE(core_id)[res_id];
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
     CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = NULL; /* error */
 #endif
@@ -228,7 +228,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   IF_NO_EXTENDED_ERROR(result)
   {
 #if RESOURCE_COUNT > 0
-    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = (tpl_resource *) TPL_RESOURCE_TABLE(core_id)[res_id];
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
     CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = NULL; /* error */
 #endif

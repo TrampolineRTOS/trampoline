@@ -87,8 +87,7 @@ extern CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
  * In multicore, tpl_ressource_table is an array indexed by a core id
  * containing the addresses of the core's tpl_ressource_table.
  */
-extern CONSTP2CONST(tpl_resource*, AUTOMATIC, OS_CONST)
-  tpl_resource_table[NUMBER_OF_CORES];
+extern CONSTP2CONST(tpl_resource*, AUTOMATIC, OS_CONST) tpl_resource_table[];
 #  define TPL_RESOURCE_TABLE(a_core_id) (tpl_resource_table[a_core_id])
 # endif
 

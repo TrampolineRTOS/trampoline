@@ -46,7 +46,7 @@
 #define CONSTP2VAR(ptrtype, memclass, ptrclass) \
                      ptrtype memclass * const ptrclass
 #define CONSTP2CONST(ptrtype, memclass, ptrclass) \
-                     const ptrtype memclass * const ptrclass
+                     ptrtype memclass const * const ptrclass
 #define P2FUNC(rettype, ptrclass, fctname) rettype (*ptrclass fctname)
 #define CONST(consttype, memclass) const consttype memclass
 #define VAR(vartype, memclass) vartype memclass

@@ -61,7 +61,7 @@
           CURRENT_LINKER_DATA_SECTION_NAME
 
 #define CONSTP2CONST(ptrtype, memclass, ptrclass) \
-          const ptrtype memclass * const ptrclass \
+          ptrtype memclass const * const ptrclass \
           CURRENT_LINKER_DATA_SECTION_NAME
                   
 #define P2FUNC(rettype, ptrclass, fctname) \
