@@ -52,7 +52,7 @@
  * with the ready list belonging to core core_id
  */
 #define GET_CORE_READY_LIST(a_core_id, a_ready_list) \
-  CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) a_ready_list = tpl_ready_list[a_core_id];
+  CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) a_ready_list = &(tpl_ready_list[a_core_id]);
 
 /*
  * CORE_ID_OR_VOID is defined as CONST(uint16, AUTOMATIC) core_id in multicore
@@ -90,7 +90,10 @@
 /*
  * READY_LIST expands to the ready_list constant
  */
-#define READY_LIST(a_ready_list)  a_ready_list
+
+#define READY_LIST_REF(a_ready_list) a_ready_list
+
+#define READY_LIST(a_core_id) (tpl_ready_list[a_core_id])
 
 /*
  * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.
@@ -128,7 +131,9 @@
 #define TPL_KERN(a_core_id) \
   tpl_kern
 
-#define READY_LIST(a_ready_list) tpl_ready_list
+#define READY_LIST_REF(a_ready_list) a_ready_list
+
+#define READY_LIST(a_core_id) tpl_ready_list
 
 /*
  * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.
