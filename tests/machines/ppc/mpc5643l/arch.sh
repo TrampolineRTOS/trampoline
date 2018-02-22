@@ -95,9 +95,7 @@ arch_compile()
   TESTDIR=$(pwd -P)
   EXENAME="$(basename $TESTDIR)_exe"
   ELFNAME="$EXENAME.elf"
-
-  # Cosmic Software requires libraries to be enumerated in the link script...
-  echo "../../lib/libembUnit.a" >> $(basename $1)/script.lkf
+  
   rm -f $EXENAME
   ./build.py
   # Set the elf as the executable

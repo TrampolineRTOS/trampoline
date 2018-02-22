@@ -9,29 +9,6 @@
  *
  * Trampoline Test Suite
  *
- * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
- * Trampoline Test Suite is protected by the French intellectual property law.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; version 2
- * of the License.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @section infos File informations
- *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #include "../../common/arch.oil"
@@ -55,27 +32,31 @@ IMPLEMENTATION archMpc5643l
   };
 };
 
-CPU archMpc5643lCosmic
+CPU archMpc5643lGcc
 {
   OS defaultOS {
-    MEMMAP = TRUE
-    {
-      LINKER = cosmic_ld { SCRIPT = "script.lkf";};
-      COMPILER = cosmic;
-      ASSEMBLER = cosmic_as;
-    };
-
     /* Build paths are from the test directory */
     BUILD = TRUE
     {
-      COMPILER = "../../../examples/ppc/tools/cxvle_auto.py";
-      ASSEMBLER = "../../../examples/ppc/tools/cxvle_auto.py";
-      LINKER = "../../../examples/ppc/tools/clnk_auto.py";
+      COMPILER = "powerpc-eabivle-gcc";
+      ASSEMBLER = "powerpc-eabivle-as";
+      LINKER = "powerpc-eabivle-ld";
+      CFLAGS = "-Os";
+      LDFLAGS = "-Map=build.map";
+      LDFLAGS = "-L../../lib -lembUnit";
       SYSTEM = PYTHON;
       LIBRARY = archConfig;
     };
-    USEVLE = TRUE;
+
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+
     SYSTEM_CALL = TRUE;
+    USEVLE = TRUE;
     DEBUG = TRUE;
     WITHORTI = TRUE {FILE = "trampoline.orti";};
   };
@@ -87,35 +68,4 @@ CPU archMpc5643lCosmic
     CHEADER = "archTestConfig.h";
     CFILE = "archTestConfig.c";
   };
-
-  /* Lib paths are from the "TRAMPOLINE/machines" directory */
-  //LIBRARY cosmic
-  //{
-  //  PATH = "../tests/machines/ppc/mpc5643l/";
-  //  CHEADER = "archTestConfig.h";
-  //  CFILE = "archTestConfig.c";
-  //};
 };
-
-/*
-#Not tested
-CPU archMpc5643lGcc {
-    OS config {
-        CFLAGS  = "-g";
-        CFLAGS  = "-Wall -pedantic -Wformat -std=c99 -mpowerpc";
-        CFLAGS  = "-static -nostdlib -fno-omit-frame-pointer -U__unix__";
-        ASFLAGS = "-g";
-        LDFLAGS = "-g";
-        COMPILER = "powerpc-elf-gcc";
-        ASSEMBLER = "powerpc-elf-as";
-        LINKER = "powerpc-elf-ld";
-        SYSTEM_CALL = TRUE;
-        MEMMAP = TRUE {
-          COMPILER = mwc;
-          LINKER = mwld { SCRIPT = "MPC551x.lcf"; };
-          MEMORY_PROTECTION = TRUE;
-        };
-    };
-};
-*/
-

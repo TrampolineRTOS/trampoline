@@ -1,7 +1,8 @@
-CC = ../../examples/ppc/tools/cxvle_auto.py
-CFLAGS += -DNO_STDIO_PRINTF
-AR = clib
-ARFLAGS = -c
+CC = powerpc-eabivle-gcc
+CFLAGS += -O -DNO_STDIO_PRINTF
+AR = powerpc-eabivle-ar
+ARFLAGS = ru
+RANLIB = powerpc-eabivle-ranlib
 
 ifndef ARCH_CUSTOM_SOURCE
   $(error ARCH_CUSTOM_SOURCE is not set)
@@ -15,7 +16,7 @@ $(ARCH_CUSTOM_OBJ) : $(ARCH_CUSTOM_SOURCE) config.h
 
 $(TARGET): $(OBJS) makedestdir
 	$(AR) $(ARFLAGS) $(OUTPUT)$@ $(OBJS)
+	$(RANLIB) $(OUTPUT)$@
 
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<
-
