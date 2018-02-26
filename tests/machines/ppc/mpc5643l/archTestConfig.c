@@ -46,9 +46,9 @@ void sendSoftwareIt(uint32 to_core_id, uint32 channel)
 {
   TPL_INTC(to_core_id).SSCIR[channel] = INTC_SSCIR_SET;
 #if WITH_VLE == YES
-  _asm("se_isync");
+  asm("se_isync");
 #else
-  _asm("isync");
+  asm("isync");
 #endif
 }
 #endif

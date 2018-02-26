@@ -214,7 +214,7 @@ WHILE &continue
   ELSE IF Register(PC)==ADDRESS.OFFSET(sYmbol.END(stdimpl_print))-ADDRESS.INSTR.LEN(symbol.END(stdimpl_print))+1
   (
     ; We're in a stdimp_print. Write the outString variable to the output file
-    WRITE #2 %Continue Var.String(outString)
+    WRITE #2 %Continue Var.String(tpl_lautherbach_string)
     go.direct
   )
   ELSE IF Register(PC)==ADDRESS.OFFSET(tpl_shutdown)

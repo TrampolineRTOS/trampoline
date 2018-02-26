@@ -40,7 +40,8 @@
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
-VAR(uint32, OS_VAR)   tpl_current_date[NUMBER_OF_CORES];
+VAR(uint32, OS_VAR) tpl_current_date[NUMBER_OF_CORES];
+VAR(char, OS_VAR) tpl_lautherbach_string[50];
 
 #if WITH_MULTICORE == YES
 extern FUNC(void, OS_CODE) tpl_slave_core_startup();
