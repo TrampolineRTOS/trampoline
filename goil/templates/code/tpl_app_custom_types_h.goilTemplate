@@ -24,15 +24,11 @@
 #include "tpl_os_std_types.h"
 
 /**
- * tpl_heap_key is the datatype used to store the key of a heap entry.
+ * tpl_index is used to store the index in the FIFO implementation
+ * of the ready list.
  */
-typedef uint% ! KEY_SIZE * 8 % tpl_heap_key;
-
-/**
- * tpl_rank_count is the datatype used to store the rank of an activation
- * It is the lower part of a tpl_heap_key
- */
-typedef uint% ! [RANK_MASK numberOfBytes] * 8% tpl_rank_count;
+//typedef uint% ! [MAX_JOBS_AMONG_PRIORITIES numberOfBytes] * 8 % tpl_index;
+typedef uint32 tpl_index;
 
 /**
  * tpl_proc_id is used for task and isrs identifiers.
@@ -55,7 +51,7 @@ typedef uint% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask
  *
  * @warning This type must be signed.
  */
-typedef sint% !8*KEY_SIZE % tpl_priority;
+typedef sint% ! [MAX_NUMBER_OF_PRIORITIES signedNumberOfBytes] * 8 % tpl_priority;
 
 /**
  * tpl_activate_counter is used to count

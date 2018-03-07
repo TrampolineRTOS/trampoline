@@ -116,6 +116,7 @@ trampoline_base_path = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/"
 cflags = []
 cppflags = []
 ldflags = []
+ldlibflags = []
 asflags = []
 # flags that should appear at the beginning of the command.
 precflags = []
@@ -291,8 +292,8 @@ if "gcc" in compiler:
     libcPath = os.path.dirname(procLibc.stdout.readline().strip())
     libgccPath = os.path.dirname(procLibgcc.stdout.readline().strip())
     #--- Add both to linker flags
-    ldflags += ['-L' + str(libcPath), '-lc']
-    ldflags += ['-L' + str(libgccPath), '-lgcc']
+    ldlibflags += ['-L' + libcPath, '-lc']
+    ldlibflags += ['-L' + libgccPath, '-lgcc']
 %
 end if
 
@@ -543,8 +544,23 @@ rule.mDependences += objectList
 rule.mCommand += [linker]
 rule.mCommand += ["-o", product]
 rule.mCommand += preldflags
-rule.mCommand += objectList
-rule.mCommand += ldflags%
+%
+foreach optionSet in exists BUILDOPTIONS default (@()) do
+  foreach object in exists optionSet::CRTI_O default (@()) do
+%rule.mCommand += [libgccPath + "/% !object::VALUE %"]
+%
+  end foreach
+end foreach
+%rule.mCommand += objectList
+rule.mCommand += ldlibflags
+%
+foreach optionSet in exists BUILDOPTIONS default (@()) do
+  foreach object in exists optionSet::CRTN_O default (@()) do
+%rule.mCommand += [libgccPath + "/% !object::VALUE %"]
+%
+  end foreach
+end foreach
+%rule.mCommand += ldflags%
 let target := OS::BUILD_S::APP_NAME
 if exists postgoals["all"] then
   let inFile := target

@@ -1,0 +1,103 @@
+/*=============================================================================
+ * Definition and initialization of Ready List structures
+ */
+ 
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+
+# In multicore implementation, tpl_ready_list is indexed
+# by the core identifier.
+
+#### --------
+#### MONOCORE
+####
+
+if OS::NUMBER_OF_CORES == 1 then
+let NUMBER_OF_JOBS_PER_PRIO := CORES["0"]::NUMBER_OF_JOBS_PER_PRIO
+
+%VAR(tpl_priority, OS_VAR) tpl_heap_[% ![NUMBER_OF_JOBS_PER_PRIO length] + 1 %] = {0};
+%
+
+loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
+do
+%VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
+%
+end loop
+%
+VAR(tpl_proc_list, OS_VAR) tpl_ready_list_[% ![NUMBER_OF_JOBS_PER_PRIO length] %] =
+{
+%
+loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
+do
+%  {0, 0, % !NUMBER_OF_JOBS_PER_PRIO[i]%, tpl_ready_list_% !i %}%
+between %,
+%
+end loop
+%
+};
+
+VAR(tpl_list, OS_VAR) tpl_ready_list = {tpl_ready_list_, tpl_heap_};
+%
+
+#### --------
+#### MULTICORE
+####
+
+else
+%/**
+ * @internal
+ * A tpl_ready_list is used for each core.
+ */
+
+%
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1
+do
+let NUMBER_OF_JOBS_PER_PRIO := CORES[[core_id string]]::NUMBER_OF_JOBS_PER_PRIO
+
+%VAR(tpl_priority, OS_VAR) tpl_heap_% !core_id %[% ![NUMBER_OF_JOBS_PER_PRIO length] + 1 %] = {0};
+%
+
+loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
+do
+%VAR(tpl_proc_id, OS_VAR) tpl_ready_list_% !core_id %_% !i %[% !NUMBER_OF_JOBS_PER_PRIO[i]%];
+%
+end loop
+%
+VAR(tpl_proc_list, OS_VAR) tpl_ready_list_% !core_id %[% ![NUMBER_OF_JOBS_PER_PRIO length] %] =
+{
+%
+loop i from 0 to [NUMBER_OF_JOBS_PER_PRIO length] - 1
+do
+%  {0, 0, % !NUMBER_OF_JOBS_PER_PRIO[i]%, tpl_ready_list_% !core_id %_% !i %}%
+between %,
+%
+end loop
+%
+};
+
+%
+end loop
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1
+before
+
+%VAR(tpl_list, OS_VAR) tpl_ready_list[% ! OS::NUMBER_OF_CORES %] =
+{
+%
+do
+%  {tpl_ready_list_% !core_id %, tpl_heap_% !core_id %}%
+between %,
+%
+after %
+};
+%
+end loop
+end if
+
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%

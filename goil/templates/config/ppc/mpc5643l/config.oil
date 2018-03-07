@@ -1,3 +1,5 @@
+#includeifexists <buildOptions.oil>
+
 IMPLEMENTATION mpc5643l {
 
   /* Add the source and the handler of the counter */
@@ -108,26 +110,26 @@ CPU mpc5643l_interrupt {
     CFILE = "tpl_machine_ppc.c";
     CFILE = "tpl_init_term.c";
     CFILE = "tpl_timers.c";
-    CFILE = "tpl_call_trusted_fct.s";
-    CFILE = "tpl_ctx_switch.s";
-    CFILE = "tpl_dispatch.s";
-    CFILE = "tpl_exceptions.s";
-    CFILE = "tpl_init.s";
-    CFILE = "tpl_it_handler.s";
-    CFILE = "tpl_it_management.s";
-    CFILE = "tpl_memory_protection.s";      /* FIXME : If memory_protection */
-    CFILE = "tpl_os_it.s";
-    CFILE = "tpl_protection.s";
-    CFILE = "tpl_tick.s";
+    CFILE = "tpl_call_trusted_fct.S";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_dispatch.S";
+    CFILE = "tpl_exceptions.S";
+    CFILE = "tpl_init.S";
+    CFILE = "tpl_it_handler.S";
+    CFILE = "tpl_it_management.S";
+    CFILE = "tpl_memory_protection.S";      /* FIXME : If memory_protection */
+    CFILE = "tpl_os_it.S";
+    CFILE = "tpl_protection.S";
+    CFILE = "tpl_tick.S";
   };
 
   PLATFORM_FILES mpc5643l {
     PATH = "ppc/mpc5643l";
-    CFILE = "tpl_boot.s";
+    CFILE = "tpl_boot.S";
     CFILE = "tpl_boot_utils.c";
+    CFILE = "tpl_eabi.S";
     CFILE = "Bam.c";
     CFILE = "tpl_led.c";        /* FIXME: Should be added in debug mode only */
   };
 
 };
-

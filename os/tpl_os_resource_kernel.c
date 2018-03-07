@@ -133,10 +133,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#if RESOURCE_COUNT > 0
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-#endif
-
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -153,9 +149,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   IF_NO_EXTENDED_ERROR(result)
   {
 #if RESOURCE_COUNT > 0
-    res = TPL_RESOURCE_TABLE(core_id)[res_id];
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
-    res = NULL; /* error */
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = NULL; /* error */
 #endif
 
     /*  Return an error if the task that attempt to get
@@ -180,15 +176,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
                    proc_name_table[TPL_KERN_REF(kern).running_id],
                    TPL_KERN_REF(kern).running->priority));
 
-      if (ACTUAL_PRIO(TPL_KERN_REF(kern).running->priority) <
-          res->ceiling_priority)
+      if (TPL_KERN_REF(kern).running->priority < res->ceiling_priority)
       {
-        GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
         /*  set the task priority at the ceiling priority of the resource
             if the ceiling priority is greater than the current priority of
             the task  */
-        TPL_KERN_REF(kern).running->priority =
-          DYNAMIC_PRIO(res->ceiling_priority, tail_for_prio);
+        TPL_KERN_REF(kern).running->priority = res->ceiling_priority;
         TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
         TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
       }
@@ -219,8 +212,6 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -237,9 +228,9 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   IF_NO_EXTENDED_ERROR(result)
   {
 #if RESOURCE_COUNT > 0
-    res = TPL_RESOURCE_TABLE(core_id)[res_id];
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
-    res = NULL; /* error */
+    CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res = NULL; /* error */
 #endif
 
 

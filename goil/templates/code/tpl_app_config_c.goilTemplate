@@ -330,7 +330,7 @@ VAR(tpl_resource, OS_VAR) res_sched_core% !core_id %_rez_desc = {%
     else %
 VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {%
     end if%
-  RES_SCHEDULER_PRIORITY,   /*  ceiling priority                            */
+  RES_SCHEDULER_PRIORITY_% !core_id %,   /*  ceiling priority                            */
   0,                        /*  owner_prev_priority                         */
   INVALID_PROC_ID,          /*  owner                                       */
 #if WITH_OSAPPLICATION == YES
@@ -427,15 +427,30 @@ tpl_resource_table[NUMBER_OF_CORES] = {
 end if
 
 #------------------------------------------------------------------------------
-
-foreach resource in INTERNALRESOURCES
-  before
 %
 /*=============================================================================
  * Definition and initialization of internal Resource related structures
  */
+
+/** If a core has a non-preemtable task, an internal ressource is
+ *  defined. It will be owned by every non-preemtable task and his priority
+ *  is higher than any task.
+ */
 %
-  do
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+if CORES[[core_id string]]::HASNONPREEMPTABLETASK then
+%
+VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER_% !core_id % = {
+    RES_SCHEDULER_PRIORITY_% ! core_id %,
+    0,
+    FALSE
+};
+%
+end if
+end loop
+
+foreach resource in INTERNALRESOURCES
+do
     template internal_resource_descriptor
 end foreach
 
@@ -1123,7 +1138,7 @@ CONSTP2CONST(tpl_ioc_unqueued_mo, OS_CONST, OS_CONST) tpl_ioc_unqueued_table[% !
 
 template if exists custom_app_config_c
 
-template heap_readylist
+template readylist
 
 template tpl_kern
 

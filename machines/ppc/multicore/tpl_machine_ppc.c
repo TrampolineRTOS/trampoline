@@ -40,7 +40,8 @@
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
-VAR(uint32, OS_VAR)   tpl_current_date[NUMBER_OF_CORES];
+VAR(uint32, OS_VAR) tpl_current_date[NUMBER_OF_CORES];
+VAR(char, OS_VAR) tpl_lautherbach_string[50];
 
 #if WITH_MULTICORE == YES
 extern FUNC(void, OS_CODE) tpl_slave_core_startup();
@@ -367,9 +368,9 @@ FUNC(void, OS_CODE) tpl_start_core(
   {
     /* write slave core start adresse */
 #if WITH_VLE == YES
-    TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup | SSCM_DPMBOOT_VLE;
+    TPL_SSCM.DPMBOOT = (uint32) tpl_slave_core_startup | SSCM_DPMBOOT_VLE;
 #else
-    TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup;
+    TPL_SSCM.DPMBOOT = (uint32) tpl_slave_core_startup;
 #endif
 
     /* write key and inverted key to start the core */

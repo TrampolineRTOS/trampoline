@@ -135,22 +135,8 @@ extern CONST(tpl_appmode_mask, OS_CONST)
 
 #endif
 
-/**
- * INTERNAL_RES_SCHEDULER is an internal resource with the higher task
- * priority in the application. A task is non preemptable when
- * INTERNAL_RES_SCHEDULER is set as internal resource.
- */
-VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
-    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the
-                                 maximum priority of the tasks of the
-                                 application */
-    0,
-    FALSE
-};
-
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -160,37 +146,12 @@ VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
 
 extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
 
-/*
- * MISRA RULE 13 VIOLATION: this function is only used for debug purpose,
- * so production release is not impacted by MISRA rules violated
- * in this function
- */
-FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
-{
-#if NUMBER_OF_CORES > 1
-  /* TODO */
-#else
-  uint32 i;
-  printf("ready list %s [%d]", msg, tpl_ready_list[0].key);
-  for (i = 1; i <= tpl_ready_list[0].key; i++)
-  {
-    printf(" {%d/%d,%s[%d](%d)}",
-           (int)(tpl_ready_list[i].key >> PRIORITY_SHIFT),
-           (int)(tpl_ready_list[i].key & RANK_MASK),
-           proc_name_table[tpl_ready_list[i].id],
-           (int)tpl_ready_list[i].id,
-           tpl_ready_list[i].key);
-  }
-  printf("\n");
-#endif
-}
-
 FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 {
 #if NUMBER_OF_CORES > 1
   /* TODO */
 #else
-  printf("KERN %s running : %s[%ld](%d), elected : %s[%ld](%d)\n",
+  printf("KERN %s running : %s[%ld](%d), elected : %s[%ld](%d)\r\n",
     msg,
     (tpl_kern.running_id == INVALID_TASK) ? "NONE" : proc_name_table[tpl_kern.running_id],
     tpl_kern.running_id,
@@ -201,377 +162,262 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
   );
 #endif
 }
-
 #endif
 
 /*
- * Jobs are stored in a heap. Each entry has a key (used to sort the heap)
- * and the id of the process. The size of the heap is computed by doing
- * the sum of the activations of a process (each activation of a process is
- * a job. The key is the concatenation of the priority of the job and the
- * rank of the job. The max value is a higher rank.
- *
- * The head of the queue contains the highest priority job and so the running
- * job.
- *
- * RANK_MASK is used to get the part of the key used to store the rank of
- * a job
- * PRIORITY_MASK is used to get the part of the key used to store
- * the priority of a job
- * PRIORITY_SHIFT is used to shift the part of the key used to store
- * the priority of a job
- */
-FUNC(int, OS_CODE) tpl_compare_entries(
-  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry,
-  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry
-  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
-{
-  VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
-  VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
-  VAR(uint32, AUTOMATIC) first_tmp ;
-  VAR(uint32, AUTOMATIC) second_tmp ;
-
-  first_tmp = ((first_key & RANK_MASK) -
-    TAIL_FOR_PRIO(tail_for_prio)[first_key >> PRIORITY_SHIFT]);
-  first_tmp = first_tmp & RANK_MASK;
-  first_key = (first_key & PRIORITY_MASK);
-  first_key = first_key | first_tmp;
-
-  second_tmp = ((second_key & RANK_MASK) -
-    TAIL_FOR_PRIO(tail_for_prio)[second_key >> PRIORITY_SHIFT]);
-  second_tmp = second_tmp & RANK_MASK;
-  second_key = (second_key & PRIORITY_MASK);
-  second_key = second_key | second_tmp;
-
-  return (first_key < second_key);
-}
-
-/*
  * @internal
- *
- * tpl_bubble_up bubbles the entry at index place up in the heap
- *
- * @param  heap   the heap on which the operation is done
- * @param  index  the place of the item to bubble up
- *
+ * tpl_heap_insert inserts the priority in the given ready list
  */
-FUNC(void, OS_CODE) tpl_bubble_up(
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
-  VAR(uint32, AUTOMATIC)                        index
-  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
+FUNC(void, OS_CODE) tpl_heap_insert(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_list, CONST(tpl_priority, AUTOMATIC) priority)
 {
-  VAR(uint32, AUTOMATIC) father = index >> 1;
-
-  while ((index > 1) &&
-    (tpl_compare_entries(heap + father,
-                         heap + index
-                         TAIL_FOR_PRIO_ARG(tail_for_prio))))
+  P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = ready_list->heap;
+  CONST(tpl_priority, AUTOMATIC) heap_index = ++ready_list->heap[0];
+  VAR(uint32, AUTOMATIC) i = heap_index, j;
+  
+  heap[heap_index] = priority;
+  while (i > 1 && (j = i/2) >= 1)
   {
-    /*
-     * if the father key is lower then the index key, swap them
-     */
-    VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
-    heap[index] = heap[father];
-    heap[father] = tmp;
-    index = father;
-    father >>= 1;
-  }
-}
-
-/*
- * @internal
- *
- * tpl_bubble_down bubbles the entry at index place down in the heap
- *
- * @param  heap   the heap on which the operation is done
- * @param  index  the place of the item to bubble down
- *
- */
-FUNC(void, OS_CODE) tpl_bubble_down(
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
-  VAR(uint32, AUTOMATIC)                        index
-  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
-{
-  CONST(uint32, AUTOMATIC) size = heap[0].key;
-  VAR(uint32, AUTOMATIC) child;
-
-  while ((child = index << 1) <= size) /* child = left */
-  {
-    CONST(uint32, AUTOMATIC) right = child + 1;
-    if ((right <= size) &&
-      tpl_compare_entries(heap + child,
-                          heap + right
-                          TAIL_FOR_PRIO_ARG(tail_for_prio)))
+    if (heap[i] > heap[j])
     {
-      /* the right child exists and is greater */
-      child = right;
-    }
-    if (tpl_compare_entries(heap + index,
-                            heap + child
-                            TAIL_FOR_PRIO_ARG(tail_for_prio)))
-    {
-      /* the father has a key <, swap */
-      CONST(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
-      heap[index] = heap[child];
-      heap[child] = tmp;
-      /* go down */
-      index = child;
+      int value = heap[i];
+      heap[i] = heap[j];
+      heap[j] = value;
+      i = j;
     }
     else
-    {
-      /* went down to its place, stop the loop */
       break;
-    }
   }
 }
 
 /*
  * @internal
- *
- * tpl_put_new_proc puts a new proc in a ready list. In a multicore kernel
- * it may be called from a core that does not own the ready list (for
- * a partitioned scheduler). So the core_id field of the proc descriptor
- * is used to get the corresponding ready list.
+ * tpl_heap_remove removes the given index in the given ready list
  */
-FUNC(void, OS_CODE) tpl_put_new_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(void, OS_CODE) tpl_heap_remove(CONSTP2VAR(tpl_list, AUTOMATIC, OS_VAR) ready_list)
 {
-  GET_PROC_CORE_ID(proc_id, core_id)
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
+  P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = ready_list->heap;
+  CONST(tpl_priority, AUTOMATIC) heap_index = ready_list->heap[0];
+  VAR(uint32, AUTOMATIC) i = 1, j;
 
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  VAR(tpl_priority, AUTOMATIC) dyn_prio;
-  CONST(tpl_priority, AUTOMATIC) prio =
-    tpl_stat_proc_table[proc_id]->base_priority;
-  /*
-   * add the new entry at the end of the ready list
-   */
-  dyn_prio = (prio << PRIORITY_SHIFT) |
-             (--TAIL_FOR_PRIO(tail_for_prio)[prio] & RANK_MASK);
-
-  DOW_DO(printf("put new %s, %d\n",proc_name_table[proc_id],dyn_prio);)
-
-  READY_LIST(ready_list)[index].key = dyn_prio;
-  READY_LIST(ready_list)[index].id = proc_id;
-
-  tpl_bubble_up(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  DOW_DO(printrl("put_new_proc");)
+  heap[1] = heap[heap_index];
+  while (2*i + 1 <= heap_index)
+  {
+    j = heap[2*i] > heap[2*i + 1] || 2*i + 1 == heap_index ? 2*i : 2*i + 1;
+    if (heap[i] < heap[j])
+    {
+      int value = heap[i];
+      heap[i] = heap[j];
+      heap[j] = value;
+      i = j;
+    }
+    else
+      break;
+  }
+  ready_list->heap[0]--;
 }
 
 /*
  * @internal
- *
- * tpl_put_preempted_proc puts a preempted proc in a ready list.
- * In a multicore kernel it may be called from a core that does not own
- * the ready list (for a partitioned scheduler). So the core_id field
- * of the proc descriptor is used to get the corresponding ready list.
+ * tpl_put_new_proc puts a new proc in a ready list. In a multicore kernel,
+ * the ready list is the proc's core ready list.
  */
-FUNC(void, OS_CODE) tpl_put_preempted_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
+  CONST(tpl_priority, AUTOMATIC) priority = tpl_stat_proc_table[proc_id]->base_priority;
+  
+  CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(core_id).array[priority];
+  VAR(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
+  CONST(tpl_index, AUTOMATIC) actual_size = proc_list->actual_size;
+  CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+  /* Up-heap operation if it is a new priority */
+  if (proc_list->actual_size == 0)
+  {
+    tpl_heap_insert(&READY_LIST(core_id), priority);
+  }
+  
+  /* Add the new entry at the end of the proc list */
+  DOW_DO(printf("put_new_proc: %s with priority %d\r\n",proc_name_table[proc_id], priority);)
 
-  CONST(tpl_priority, AUTOMATIC) dyn_prio =
-    tpl_dyn_proc_table[proc_id]->priority;
-
-  DOW_DO(printf("put preempted %s, %d\n",proc_name_table[proc_id],dyn_prio));
-  /*
-   * add the new entry at the end of the ready list
-   */
-  READY_LIST(ready_list)[index].key = dyn_prio;
-  READY_LIST(ready_list)[index].id = proc_id;
-
-  tpl_bubble_up(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  DOW_DO(printrl("put_preempted_proc"));
+  front_index = front_index + actual_size;
+  if (front_index >= full_size)
+    front_index = front_index - full_size;
+  proc_list->array[front_index] = proc_id;
+  proc_list->actual_size++;
 }
 
-/**
+/*
  * @internal
- *
+ * tpl_put_preempted_proc puts a preempted proc in a ready list.
+ * In a multicore kernel, the ready list is the proc's core ready list.
  */
 
-/**
+FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+  GET_PROC_CORE_ID(proc_id, core_id)
+
+  CONST(tpl_priority, AUTOMATIC) dyn_priority = tpl_dyn_proc_table[proc_id]->priority;
+
+  CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(core_id).array[dyn_priority];
+  VAR(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
+  CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
+
+  /* Up-heap operation if it is a new priority */
+  if (proc_list->actual_size == 0)
+  {
+    tpl_heap_insert(&READY_LIST(core_id), dyn_priority);
+  }
+
+  /* Add the new entry at the front of the proc list */
+  DOW_DO(printf("put_preempted_proc: %s with priority %d\r\n",proc_name_table[proc_id], dyn_priority));
+
+  front_index = front_index == 0 ? full_size - 1 : front_index - 1;
+  proc_list->array[front_index] = proc_id;
+  proc_list->front_index = front_index;
+  proc_list->actual_size++;
+}
+
+/*
  * @internal
- *
  * tpl_front_proc returns the proc_id of the highest priority proc in the
  * ready list on the current core
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
+FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 {
-  GET_CORE_READY_LIST(core_id, ready_list)
 
-  return (READY_LIST(ready_list)[1]);
+  CONST(tpl_priority, AUTOMATIC) priority = READY_LIST(core_id).heap[1];
+  CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(core_id).array[priority];
+
+  if (proc_list->actual_size > 0)
+  {
+      return proc_list->array[proc_list->front_index];
+  }
+  return INVALID_PROC_ID;
 }
 
 /*
  * @internal
- *
  * tpl_remove_front_proc removes the highest priority proc from the
- * ready list on the specified core and returns the heap_entry
+ * ready list of the specified core and returns proc_id
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
+FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
 {
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
-  /*
-   * Get the current size and update it (since the front element will be
-   * removed)
-   */
-  CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
-  VAR(uint32, AUTOMATIC) index = 1;
+  P2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap = READY_LIST(core_id).heap;
+  CONST(tpl_priority, AUTOMATIC) priority = heap[1];
+  CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(core_id).array[priority];
 
-  /*
-   * Get the proc_id of the front proc
-   */
-  VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
+  if (proc_list->actual_size > 0)
+  {
+    /* Remove the front entry of the ready list */
+    CONST(tpl_index, AUTOMATIC) front_index = proc_list->front_index;
+    CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
 
-  /*
-   * Put the last element in front
-   */
-  READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size];
+    proc_list->front_index = front_index == full_size - 1 ? 0 : front_index + 1;
+    proc_list->actual_size--;
 
-  /*
-   * bubble down to the right place
-   */
-  tpl_bubble_down(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  return proc;
+    /* Down-heap operation if the proc_list is empty*/
+    if (proc_list->actual_size == 0)
+    {
+      tpl_heap_remove(&READY_LIST(core_id));
+    }
+    return proc_list->array[front_index];
+  }
+  return INVALID_PROC_ID;
 }
-
-
 
 #if WITH_OSAPPLICATION == YES
 
 /**
  * @internal
- *
  * tpl_remove_proc removes all the process instances in the ready queue
  */
 FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   GET_PROC_CORE_ID(proc_id, core_id)
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
+  VAR(tpl_priority, AUTOMATIC) priority = READY_LIST(core_id).heap[1];
+  VAR(uint32, AUTOMATIC) i, j;
 
-  VAR(uint32, AUTOMATIC) index;
-  VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
-
-  DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
-  DOW_DO(printrl("tpl_remove_proc - before");)
-
-
-  for (index = 1; index <= size; index++)
+  /* The heap is erased here and recreated in the "for" loop */
+  READY_LIST(core_id).heap[0]= 0;
+  for (; priority >= 0; priority--)
   {
-    if (READY_LIST(ready_list)[index].id == proc_id)
+    CONSTP2VAR(tpl_proc_list, AUTOMATIC, OS_VAR) proc_list = &READY_LIST(core_id).array[priority];
+    VAR(tpl_index, AUTOMATIC) r = proc_list->front_index;
+    CONST(tpl_index, AUTOMATIC) full_size = proc_list->full_size;
+    CONST(tpl_index, AUTOMATIC) actual_size = proc_list->actual_size;
+
+    for (i = 0; i < actual_size; i++)
     {
-      READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size--];
-      tpl_bubble_down(
-        READY_LIST(ready_list),
-        index
-        TAIL_FOR_PRIO_ARG(tail_for_prio)
-      );
+      if (proc_list->array[(r + i) % full_size] == proc_id)
+      {
+        proc_list->actual_size--;
+        for (j = 0; j < proc_list->actual_size - i; j++)
+          proc_list->array[(r + i + j) % full_size] = proc_list->array[(r + i + j + 1) % full_size];
+      }
+    }
+    /* Up-heap operation if the proc_list is not empty */
+    if (proc_list->actual_size > 0)
+    {
+      tpl_heap_insert(&READY_LIST(core_id), priority);
     }
   }
-
-  READY_LIST(ready_list)[0].key = size;
-
-  DOW_DO(printrl("tpl_remove_proc - after");)
 }
 
 #endif /* WITH_OSAPPLICATION */
 
 /**
  * @internal
- *
  * tpl_current_os_state returns the current state of the OS.
- *
  * @see #tpl_os_state
  */
-FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
-  CORE_ID_OR_VOID(core_id))
+FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id))
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
-
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID) {
+  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID)
     state = OS_INIT;
-  }
   else if (TPL_KERN_REF(kern).running_id >= (TASK_COUNT + ISR_COUNT))
-  {
     state = OS_IDLE;
-  }
   else if (TPL_KERN_REF(kern).running_id < TASK_COUNT)
-  {
     state = OS_TASK;
-  }
-  else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT) )
-  {
+  else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT))
     state = OS_ISR2;
-  }
 
   return state;
 }
 
 /**
  * @internal
- *
  * Get an internal resource
- *
  * @param task task from which internal resource is got
  */
-FUNC(void, OS_CODE) tpl_get_internal_resource(
-  CONST(tpl_proc_id, AUTOMATIC) task_id)
+FUNC(void, OS_CODE) tpl_get_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
   GET_PROC_CORE_ID(task_id, core_id)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
+  tpl_stat_proc_table[task_id]->internal_resource;
 
   if ((NULL != rez) && (FALSE == rez->taken))
   {
     rez->taken = TRUE;
     rez->owner_prev_priority = tpl_dyn_proc_table[task_id]->priority;
-    tpl_dyn_proc_table[task_id]->priority =
-      DYNAMIC_PRIO(rez->ceiling_priority, tail_for_prio);
+    tpl_dyn_proc_table[task_id]->priority = rez->ceiling_priority;
   }
 }
 
 /**
  * @internal
- *
  * Release an internal resource
- *
  * @param task task from which internal resource is released
  */
-FUNC(void, OS_CODE) tpl_release_internal_resource(
-    CONST(tpl_proc_id, AUTOMATIC) task_id)
+FUNC(void, OS_CODE) tpl_release_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
+  tpl_stat_proc_table[task_id]->internal_resource;
 
   if ((NULL != rez) && (TRUE == rez->taken))
   {
@@ -582,7 +428,6 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
 
 /**
  * @internal
- *
  * Preempt the running process.
  */
 FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
@@ -599,11 +444,9 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
      * called, the trace is not done and the timing protection
      * is not notified.
      */
-    DOW_DO(print_kern("inside tpl_preempt"));
-
+    DOW_DO(print_kern("inside tpl_preempt\r\n"));
     /* The current elected task becomes READY */
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
-
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
@@ -618,8 +461,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
  * @return  the pointer to the context of the task
  *          that was running before the elected task replace it
  */
-FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
-  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
+FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE) tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
@@ -627,7 +469,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
     save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
 
-  DOW_DO(print_kern("before tpl_run_elected"));
+  DOW_DO(print_kern("before tpl_run_elected\r\n"));
 
   if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
   {
@@ -640,13 +482,10 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
     TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
 
-    DOW_DO(printf(
-      "tpl_run_elected preempt %s\n",
-      proc_name_table[TPL_KERN_REF(kern).running_id])
-    );
+    DOW_DO(printf("tpl_run_elected: preempt %s\r\n", proc_name_table[TPL_KERN_REF(kern).running_id]));
 
     /* The current running task becomes READY */
-    TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
+    TPL_KERN_REF(kern).running->state = (tpl_proc_state) READY;
 
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -687,11 +526,10 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   TPL_KERN_REF(kern).running_id = TPL_KERN_REF(kern).elected_id;
 
   DOW_DO(printf(
-    "start %s, %d\n",
+    "start %s, %d\r\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running->priority)
   );
-  DOW_DO(printrl("tpl_run_elected - after"));
 
   /* the elected task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
@@ -715,22 +553,20 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
    */
   CALL_PRE_TASK_HOOK()
 
-  DOW_DO(print_kern("after tpl_run_elected"));
+  DOW_DO(print_kern("after tpl_run_elected\r\n"));
 
   return old_context;
 }
 
 /**
  * @internal
- *
  * Start the highest priority READY process
  */
 FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  CONST(tpl_heap_entry, AUTOMATIC) proc =
-    tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+  CONST(tpl_proc_id, AUTOMATIC) proc_id = tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
 
 #if NUMBER_OF_CORES > 1
   /*
@@ -746,11 +582,11 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   }
 #endif
 
-  DOW_DO(print_kern("before tpl_start"));
+  DOW_DO(print_kern("before tpl_start\r\n"));
 
-  TPL_KERN_REF(kern).elected_id = (uint32)proc.id;
-  TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
-  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];
+  TPL_KERN_REF(kern).elected_id = (uint32) proc_id;
+  TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc_id];
+  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc_id];
 
   if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
   {
@@ -758,16 +594,15 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
-    DOW_DO(printf("%s is a new proc\n", proc_name_table[proc.id]));
-    tpl_init_proc(proc.id);
-    tpl_dyn_proc_table[proc.id]->priority = proc.key;
+    DOW_DO(printf("%s is a new proc\r\n", proc_name_table[proc_id]));
+    tpl_init_proc(proc_id);
 #if NUMBER_OF_CORES > 1
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
 #endif
   }
 
   TPL_KERN_REF(kern).need_schedule = FALSE;
-  DOW_DO(print_kern("after tpl_start"));
+  DOW_DO(print_kern("after tpl_start\r\n"));
 }
 
 /**
@@ -781,30 +616,26 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
  */
 FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 {
-  GET_CORE_READY_LIST(core_id, ready_list)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
-  DOW_DO(print_kern("before tpl_schedule_from_running"));
-  DOW_ASSERT((uint32)READY_LIST(ready_list)[1].key > 0)
+  DOW_DO(print_kern("BEFORE: tpl_schedule_from_running\r\n"));
 
-#if WITH_STACK_MONITORING == YES
-  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
-#endif /* WITH_STACK_MONITORING */
+  #if WITH_STACK_MONITORING == YES
+    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
+  #endif /* WITH_STACK_MONITORING */
 
-  if ((READY_LIST(ready_list)[1].key) >
-      (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
-        {
+  if (READY_LIST(core_id).heap[1] > (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
+  {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
     need_switch = NEED_SWITCH | NEED_SAVE;
     tpl_start(CORE_ID_OR_NOTHING(core_id));
   }
-
   TPL_KERN_REF(kern).need_switch = need_switch;
-  DOW_DO(print_kern("after tpl_schedule_from_running"));
+  DOW_DO(print_kern("AFTER: tpl_schedule_from_running\r\n"));
 }
 
 /**
@@ -825,7 +656,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_STACK_MONITORING */
 
-  DOW_DO(printf("tpl_terminate %s[%ld]\n",
+  DOW_DO(printf("tpl_terminate %s[%ld]\r\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running_id));
 
@@ -896,7 +727,7 @@ FUNC(void, OS_CODE) tpl_block(void)
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  DOW_DO(printf("tpl_block %s[%ld]\n",
+  DOW_DO(printf("tpl_block %s[%ld]\r\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running_id));
 
@@ -955,13 +786,11 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
-  VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
-    tpl_dyn_proc_table[task_id];
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
-    tpl_stat_proc_table[task_id];
+  VAR(tpl_status, AUTOMATIC) result = E_OS_LIMIT;
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)task = tpl_dyn_proc_table[task_id];
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task = tpl_stat_proc_table[task_id];
 
-  DOW_DO(printf("tpl_activate_task %s[%d](%d)\n",
+  DOW_DO(printf("tpl_activate_task %s[%d](%d)\r\n",
     proc_name_table[task_id],
     task_id,
     task->priority

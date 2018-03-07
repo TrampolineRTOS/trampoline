@@ -29,7 +29,7 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_error.h"
 
-#define OS_START_SEC_VAR_16BITS
+#define OS_START_SEC_VAR_16BIT
 #include "tpl_memmap.h"
 
 VAR(uint16, OS_VAR)
@@ -41,10 +41,10 @@ VAR(uint16, OS_VAR)
 VAR(uint16, OS_VAR) tpl_start_count_0 = 1;
 VAR(uint16, OS_VAR) tpl_start_count_1 = 1;
 
-#define OS_STOP_SEC_VAR_16BITS
+#define OS_STOP_SEC_VAR_16BIT
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_VAR_8BITS
+#define OS_START_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
 /**
@@ -53,7 +53,7 @@ VAR(uint16, OS_VAR) tpl_start_count_1 = 1;
  */
 extern VAR(CoreStatusType, OS_VAR) tpl_core_status[NUMBER_OF_CORES];
 
-#define OS_STOP_SEC_VAR_8BITS
+#define OS_STOP_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE

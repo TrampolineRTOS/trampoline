@@ -32,6 +32,28 @@
  *
  * Code section
  */
+
+  #ifdef OS_START_SEC_BOOT
+  #undef OS_START_SEC_BOOT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #error "Starting a .osBoot while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".osBoot", "ax"
+    #define CURRENT_LINKER_CODE_SECTION
+  #endif
+#endif
+
+#ifdef OS_STOP_SEC_BOOT
+  #undef OS_STOP_SEC_BOOT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION
+  #else
+    #error "No section .osBoot started"
+  #endif
+#endif
+
 #ifdef OS_START_SEC_CODE
   #undef OS_START_SEC_CODE
   #ifdef CURRENT_LINKER_CODE_SECTION
@@ -87,6 +109,232 @@
 #endif
 #ifdef OS_STOP_SEC_VAR
   #undef OS_STOP_SEC_VAR
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+/*
+* IVORS FOR MPC5643L
+*/
+
+#ifdef OS_START_SEC_EXCRITICALINPUT
+  #undef OS_START_SEC_EXCRITICALINPUT
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exCritInput", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXCRITICALINPUT
+  #undef OS_STOP_SEC_EXCRITICALINPUT
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXMACHINECHECK
+  #undef OS_START_SEC_EXMACHINECHECK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exMchineChck", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXMACHINECHECK
+  #undef OS_STOP_SEC_EXMACHINECHECK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXDATASTORAGE
+  #undef OS_START_SEC_EXDATASTORAGE
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exDatStorage", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXDATASTORAGE
+  #undef OS_STOP_SEC_EXDATASTORAGE
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+
+#ifdef OS_START_SEC_EXINSTRUCTIONSTORAGE
+  #undef OS_START_SEC_EXINSTRUCTIONSTORAGE
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exInstStrage", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXINSTRUCTIONSTORAGE
+  #undef OS_STOP_SEC_EXINSTRUCTIONSTORAGE
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+
+#ifdef OS_START_SEC_EXALIGNMENT
+  #undef OS_START_SEC_EXALIGNMENT
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exAlignment", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXALIGNMENT
+  #undef OS_STOP_SEC_EXALIGNMENT
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXPROGRAM
+  #undef OS_START_SEC_EXPROGRAM
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exProgram", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXPROGRAM
+  #undef OS_STOP_SEC_EXPROGRAM
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXFLOATINGPOINTUNAVAILABLE
+  #undef OS_START_SEC_EXFLOATINGPOINTUNAVAILABLE
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".exFltPntUnvl", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXFLOATINGPOINTUNAVAILABLE
+  #undef OS_STOP_SEC_EXFLOATINGPOINTUNAVAILABLE
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXFIXEDINTERVALTIMER
+  #undef OS_START_SEC_EXFIXEDINTERVALTIMER
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".fxdIntrvlTim", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXFIXEDINTERVALTIMER
+  #undef OS_STOP_SEC_EXFIXEDINTERVALTIMER
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXWATCHDOGTIMER
+  #undef OS_START_SEC_EXWATCHDOGTIMER
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".watchdogTim", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXWATCHDOGTIMER
+  #undef OS_STOP_SEC_EXWATCHDOGTIMER
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXDATATLBERROR
+  #undef OS_START_SEC_EXDATATLBERROR
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".dataTlbError", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXDATATLBERROR
+  #undef OS_STOP_SEC_EXDATATLBERROR
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+#ifdef OS_START_SEC_EXINSTRUCTIONTLBERROR
+  #undef OS_START_SEC_EXINSTRUCTIONTLBERROR
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVar data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .section ".instTlbError", "ax"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_EXINSTRUCTIONTLBERROR
+  #undef OS_STOP_SEC_EXINSTRUCTIONTLBERROR
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION

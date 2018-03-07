@@ -34,6 +34,10 @@
  * $URL$
  */
 
+#include <stdarg.h>
+
+extern char tpl_lautherbach_string[];
+
 static int stdimpl_strcpy(char* out, const char* in)
 {
   int length = 0;
@@ -41,9 +45,10 @@ static int stdimpl_strcpy(char* out, const char* in)
   return length;
 }
 
-static void stdimpl_sprintf(char* out, const char* string, char** va_args)
+static void stdimpl_sprintf(char* out, const char* string, va_list args)
 {
   char current;
+  char* arg;
 
   while(current = *string++)
   {
@@ -57,8 +62,8 @@ static void stdimpl_sprintf(char* out, const char* string, char** va_args)
       switch(current)
       {
         case 's':
-          out += stdimpl_strcpy(out, *va_args);
-          va_args = (char **)((int*)va_args + 1);
+          arg = va_arg(args, char*);
+          out += stdimpl_strcpy(out, arg);
           break;
         default :
           out += stdimpl_strcpy(out, "<undef>");
@@ -75,9 +80,10 @@ static void stdimpl_sprintf(char* out, const char* string, char** va_args)
  */
 void stdimpl_print(const char* string, ...)
 {
-  char outString[50];
-  char **va_args = &string + 1;
-  stdimpl_sprintf(outString, string, va_args);
+  va_list args;
+  va_start(args, string);
+  stdimpl_sprintf(tpl_lautherbach_string, string, args);
+  va_end(args);
   return;
 }
 

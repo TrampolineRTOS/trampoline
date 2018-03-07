@@ -27,7 +27,7 @@
  */
 
 /*
- * TODO : tpl_copy_init_data should be defined for each supported compiler
+ * TODO : tpl_copy_init_data should be defined for each supported compiler.
  */
 
 #include "tpl_os_std_types.h"
@@ -87,11 +87,16 @@ FUNC(void, OS_CODE) tpl_copy_init_data(csmic_idata_desc* desc)
         desc++;
     }
 }
-#else
+#elif defined(__GNUC__)
 
-FUNC(void, OS_CODE) tpl_copy_init_data(csmic_idata_desc* desc){
-    /* Undefined compiler */
-    return void;
+FUNC(void, OS_CODE) tpl_copy_init_data(uint32* from, uint32* section_begin, uint32* section_end)
+{
+    //Iterate and copy word by word. It is assumed that the pointers are word aligned.
+    uint32 *p = section_begin;
+    while (p < section_end)
+    {
+        *(p++) = *(from++);
+    }
 }
 
 #endif

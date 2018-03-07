@@ -30,7 +30,7 @@
 #include "tpl_os_multicore.h"
 #include "tpl_os_types.h"
 
-#define OS_START_SEC_VAR_8BITS
+#define OS_START_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
 /**
@@ -39,10 +39,10 @@
  */
 extern VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
 
-#define OS_STOP_SEC_VAR_8BITS
+#define OS_STOP_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_VAR_16BITS
+#define OS_START_SEC_VAR_16BIT
 #include "tpl_memmap.h"
 
 /**
@@ -57,7 +57,7 @@ extern VAR(uint16, OS_APPL_DATA) tpl_start_count_1;
 extern VAR(uint16, OS_APPL_DATA) tpl_number_of_activated_cores;
 
 
-#define OS_STOP_SEC_VAR_16BITS
+#define OS_STOP_SEC_VAR_16BIT
 #include "tpl_memmap.h"
 
 

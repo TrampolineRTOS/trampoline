@@ -108,7 +108,7 @@ end if
 if task::USEINTERNALRESOURCE then
   %&%!task::INTERNALRESOURCE%_rez_desc,%
 elsif task::NONPREEMPTABLE then
-  %&INTERNAL_RES_SCHEDULER,%
+  %&INTERNAL_RES_SCHEDULER_% !task::CORE %,%
 else
   %NULL,%
 end if

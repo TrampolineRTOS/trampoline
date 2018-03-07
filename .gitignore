@@ -19,3 +19,10 @@
 *.synctex.gz
 *.toc
 *.out
+#Visual Code
+.vscode
+#Hello World
+hello_world
+hello_world_2
+measures
+tests/functional
