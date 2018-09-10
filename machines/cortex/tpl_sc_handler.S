@@ -122,11 +122,11 @@ tpl_sc_handler:
 
     /*-------------------------------------------------------------------------
      * 0 - registers R0-R3 have to be restored from the stack. First the PSP
-     *     is copied in R12 to point to the process stack. Second registers
-     *     R0-R3 are loaded from the process stack
+     *     (process stack pointer) is copied in R0. Second registers R0-R3 are 
+     * loaded from the process stack
      */
-    mrs   r12,psp
-    ldmia r12,{r0, r1, r2, r3}
+    mrs   r0,psp
+    ldmia r0,{r0, r1, r2, r3}
 
     /*-------------------------------------------------------------------------
      * 1 - The service identifier is checked to prevent crashes if it has
