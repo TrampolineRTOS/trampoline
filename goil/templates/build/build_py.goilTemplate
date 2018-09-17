@@ -291,8 +291,8 @@ if "gcc" in compiler:
     libcPath = os.path.dirname(procLibc.stdout.readline().strip())
     libgccPath = os.path.dirname(procLibgcc.stdout.readline().strip())
     #--- Add both to linker flags
-    ldflags += ['-L' + str(libcPath), '-lc']
-    ldflags += ['-L' + str(libgccPath), '-lgcc']
+    ldflags += ['-L' + bytesdecode(libcPath), '-lc']
+    ldflags += ['-L' + bytesdecode(libgccPath), '-lgcc']
 %
 end if
 
