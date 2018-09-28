@@ -1,0 +1,65 @@
+\documentclass[10pt,notumble]{leaflet}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{a4paper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{lipsum}
+\usepackage{underscore}
+\usepackage{longtable}
+
+\title{\sc{OIL} QRDC\vspace{-.5em}}
+\author{\scriptsize Jean-Luc B\'echennec -- LS2N\\\scriptsize v1.0 -- September 2018}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+
+\maketitle
+
+
+\newcommand\ext[1]{\footnotesize #1$\dagger$}
+\newcommand\attrval[1]{\footnotesize #1}
+\newcommand\defattrval[1]{\footnotesize \hspace{-.3em}\fbox{#1}}
+\newcommand\sect[1]{\vspace{-1em}\section{\hrulefill\\#1}\vspace{-1.5em}\hrulefill}
+\newcommand\code[1]{\texttt{\small #1}}
+\newcommand\attr[1]{\vspace{-.8em}\subsection{#1}}
+\newcommand\optattr[1]{\vspace{-.8em}\subsection{#1$dagger$}}
+\newcommand\schedservice[1]{\vspace{-.8em}\subsection{#1 $\Join$}}
+
+%\lipsum[2-56]
+\thispagestyle{empty}
+
+
+\setlength\LTleft\parindent
+\setlength\LTright\fill
+\setlength\LTpre{.5em}
+\setlength\LTpost{-.2em}
+
+The OIL standard defines standard attributes but allows implementation-specific attributes. The latter are suffixed by a $\dagger$.
+
+\vspace{-1em}
+
+\sect{OS object attributes}
+
+\attr{STATUS}
+
+Set the error processing level of services. See the {\sc Osek} QRDC. Possible values are:
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{STANDARD} & does not check object ids, caller identity and state, alarm bounds and resources ownership.\\
+\attrval{EXTENDED} & check all possible errors.\\
+\end{longtable}
+
+\attr{STARTUPHOOK}
+
+Switch the call to the startup hook in StartOS.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the startup hook is not called\\
+\attrval{TRUE} & the startup hook is called\\
+\end{longtable}
+
+
+\end{document}  
