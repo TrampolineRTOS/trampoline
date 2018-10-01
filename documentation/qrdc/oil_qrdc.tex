@@ -10,7 +10,7 @@
 \usepackage{underscore}
 \usepackage{longtable}
 
-\title{\sc{Basic Oil} QRDC\vspace{-.5em}}
+\title{\vspace{-2em}\sc{Basic Oil} QRDC\vspace{-.5em}}
 \author{\scriptsize Jean-Luc B\'echennec -- LS2N\\\scriptsize v1.0 -- September 2018}
 \date{}							% Activate to display a given date or no date
 
@@ -22,12 +22,13 @@
 \newcommand\ext[1]{\footnotesize #1$\dagger$}
 \newcommand\attrval[1]{\footnotesize #1}
 \newcommand\defattrval[1]{\footnotesize \hspace{-.3em}\fbox{#1}}
-\newcommand\sect[1]{\vspace{-1em}\section{\hrulefill\\#1}\vspace{-1.5em}\hrulefill}
+\newcommand\sect[1]{\vspace{-1.5em}\section{\hrulefill\\#1}\vspace{-1.5em}\hrulefill}
 \newcommand\code[1]{\texttt{\small #1}}
-\newcommand\attr[1]{\vspace{-.8em}\subsection{#1}}
+\newcommand\attr[1]{\vspace{-.8em}\subsection{#1}\vspace{-.3em}}
 \newcommand\subattr[2]{\vspace{-.3em}\subsection{{\footnotesize #1} $\triangleright$ #2}}
 \newcommand\optattr[1]{\vspace{-.8em}\subsection{#1\,$\dagger$}}
 \newcommand\schedservice[1]{\vspace{-.8em}\subsection{#1 $\Join$}}
+\newcommand\many{\raisebox{.075em}{$\otimes$}}
 
 %\lipsum[2-56]
 \thispagestyle{empty}
@@ -40,8 +41,6 @@
 
 The OIL standard defines standard attributes but allows implementation-specific attributes. The latter are suffixed by a $\dagger$. Attribute values in a \fbox{\footnotesize box} are the default values. If none of the attribute values are boxed no default value exists.
 Attributes suffixed by a $\otimes$ may appear 0, 1 or many times.
-
-\vspace{-1em}
 
 \sect{OS object attributes}
 
@@ -135,11 +134,11 @@ Enable the generation of a build script.
 \attrval{TRUE} & a build script is generated\\
 \end{longtable}
 
-\subattr{TRUE}{APP_SRC $\otimes$}
+\subattr{TRUE}{APP_SRC \many}
 
 Gives as a string a C source file name where the application code is located.
 
-\subattr{TRUE}{APP_CPPSRC $\otimes$}
+\subattr{TRUE}{APP_CPPSRC \many}
 
 Gives as a string a C++ source file name where the application code is located.
 
@@ -151,6 +150,26 @@ The output binary executable file name.
 
 The path to the trampoline directory.
 
+\subattr{TRUE}{CFLAGS \many}
+
+Gives as a string the flags passed to the C compiler
+
+\subattr{TRUE}{CPPFLAGS \many}
+
+Gives as a string the flags passed to the C++ compiler
+
+\subattr{TRUE}{COMMONFLAGS \many}
+
+Gives as a string the flags passed to both the C and the C++ compiler
+
+\subattr{TRUE}{ASFLAGS \many}
+
+Gives as a string the flags passed to the assembler.
+
+\subattr{TRUE}{LDFLAGS \many}
+
+Gives as a string the flags passed to the linker.
+
 \sect{APPMODE objects attribute}
 
 \attr{DEFAULT}
@@ -161,51 +180,6 @@ If $>1$ APPMODE are defined, exactly one of the APPMODE shall have its DEFAULT a
 \defattrval{FALSE} & the APPMODE is not the default one\\
 \attrval{TRUE} & the APPMODE is the default one\\
 \end{longtable}
-
-\sect{TASK objects attributes}
-
-\attr{AUTOSTART}
-
-Specifies if a task is in the \code{READY} state or not when the OS is started.
-
-\begin{longtable}{lp{5.8cm}}
-\attrval{FALSE} & the task is in the \code{SUSPENDED} state\\
-\attrval{TRUE} & the task is in the \code{READY} state\\
-\end{longtable}
-
-\subattr{TRUE}{APPMODE $\otimes$}
-
-$\geq 1$ APPMODE sub-attribute shall be set. The task is AUTOSTART if the OS is started in one of these APPMODE.
-
-
-\attr{PRIORITY}
-
-Specifies the priority of the task. PRIORITY range from 0 (the lowest) to $2^{32}-1$ (the highest).
-
-\attr{ACTIVATION}
-
-Specifies the number of jobs that can be recorded. ACTIVATION ranges from 1 to $2^{32}-1$.
-
-\attr{SCHEDULE}
-
-Specifies if the task is preemptable or not.
-
-\begin{longtable}{lp{5.8cm}}
-\attrval{FULL} & the task is preemptable\\
-\attrval{NONE} & the task is not preemptable\\
-\end{longtable}
-
-\attr{EVENT $\otimes$}
-
-Gives the events used by the task. A task having no EVENT attribute is a basic task. A task having $\geq 1$ EVENT attribut is an extended task.
-
-\attr{RESOURCE $\otimes$}
-
-Gives the resources used by the task.
-
-\attr{MESSAGE $\otimes$}
-
-Gives the messages used by the task.
 
 \sect{ISR objects attributes}
 
@@ -227,13 +201,58 @@ Specifies the priority of the ISR. PRIORITY range from 0 (the lowest) to $2^{32}
 
 Specifies the hardware interrupt source. Possible values depend on the hardware platform.
 
-\attr{RESOURCE $\otimes$}
+\attr{RESOURCE \many}
 
 Gives the resources used by the ISR, usable only for ISR 2.
 
-\attr{MESSAGE $\otimes$}
+\attr{MESSAGE \many}
 
 Gives the messages used by the ISR, usable only for ISR 2.
+
+\sect{TASK objects attributes}
+
+\attr{AUTOSTART}
+
+Specifies if a task is in the \code{READY} state or not when the OS is started.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{FALSE} & the task is in the \code{SUSPENDED} state\\
+\attrval{TRUE} & the task is in the \code{READY} state\\
+\end{longtable}
+
+\subattr{TRUE}{APPMODE \many}
+
+$\geq 1$ APPMODE sub-attribute shall be set. The task is AUTOSTART if the OS is started in one of these APPMODE.
+
+
+\attr{PRIORITY}
+
+Specifies the priority of the task. PRIORITY range from 0 (the lowest) to $2^{32}-1$ (the highest).
+
+\attr{ACTIVATION}
+
+Specifies the number of jobs that can be recorded. ACTIVATION ranges from 1 to $2^{32}-1$.
+
+\attr{SCHEDULE}
+
+Specifies if the task is preemptable or not.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{FULL} & the task is preemptable\\
+\attrval{NONE} & the task is not preemptable\\
+\end{longtable}
+
+\attr{EVENT \many}
+
+Gives the events used by the task. A task having no EVENT attribute is a basic task. A task having $\geq 1$ EVENT attribut is an extended task.
+
+\attr{RESOURCE \many}
+
+Gives the resources used by the task.
+
+\attr{MESSAGE \many}
+
+Gives the messages used by the task.
 
 \sect{COUNTER objects attributes}
 
@@ -264,7 +283,7 @@ Specifies if an alarm is started or not when the OS is started.
 \attrval{TRUE} & the alarm is started\\
 \end{longtable}
 
-\subattr{TRUE}{APPMODE $\otimes$}
+\subattr{TRUE}{APPMODE \many}
 
 $\geq 1$ APPMODE sub-attribute shall be set. The alarm is AUTOSTART if the OS is started in one of these APPMODE.
 

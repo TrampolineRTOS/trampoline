@@ -10,7 +10,7 @@
 \usepackage{underscore}
 \usepackage{longtable}
 
-\title{\sc{Osek} QRDC\vspace{-.5em}}
+\title{\vspace{-2em}\sc{Osek} QRDC\vspace{-.5em}}
 \author{\scriptsize Jean-Luc B\'echennec -- LS2N\\\scriptsize v1.0 -- September 2018}
 \date{}							% Activate to display a given date or no date
 
@@ -29,7 +29,9 @@
 %\lipsum[2-56]
 \thispagestyle{empty}
 
-\setlength\LTleft\parindent\setlength\LTright\fill
+
+\setlength\LTleft\parindent
+\setlength\LTright\fill
 \setlength\LTpre{.5em}
 \setlength\LTpost{-.2em}
 
@@ -82,8 +84,8 @@ Returns the application mode used to start the operating system.
 Activate task \emph{task_id}. If task \emph{task_id} has a priority greater than the caller priority, the caller is preempted. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
-\std{E_OS_LIMIT} & Too many activation of \emph{task_id} \\
+\std{E_OK} & success \\
+\std{E_OS_LIMIT} & too many activation of \emph{task_id} \\
 \ext{E_OS_ID} & task \emph{task_id} does not exist\\
 \end{longtable}
 
@@ -94,9 +96,9 @@ Activate task \emph{task_id}. If task \emph{task_id} has a priority greater than
 Terminate the caller. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
-\ext{E_OS_RESOURCE} & The caller hold a resource \\
-\ext{E_OS_CALLEVEL} & The caller is not a task \\
+\std{E_OK} & success \\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
 \end{longtable}
 
 %-----------------------------------------------------------------------
@@ -106,11 +108,11 @@ Terminate the caller. Returns:
 Terminate the caller and activate \emph{task_id}. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
-\std{E_OS_LIMIT} & Too many activation of \emph{task_id} \\
+\std{E_OK} & success \\
+\std{E_OS_LIMIT} & too many activation of \emph{task_id} \\
 \ext{E_OS_ID} & task \emph{task_id} does not exist\\
-\ext{E_OS_RESOURCE} & The caller hold a resource \\
-\ext{E_OS_CALLEVEL} & The caller is not a task \\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
 \end{longtable}
 
 %-----------------------------------------------------------------------
@@ -120,9 +122,9 @@ Terminate the caller and activate \emph{task_id}. Returns:
 Call the scheduler. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
-\ext{E_OS_RESOURCE} & The caller hold a resource \\
-\ext{E_OS_CALLEVEL} & The caller is not a task \\
+\std{E_OK} & success \\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
 \end{longtable}
 
 %-----------------------------------------------------------------------
@@ -132,7 +134,7 @@ Call the scheduler. Returns:
 Get the task identifier of the task which is currently running. \emph{task_id_ref} is a \underline{\smash{pointer}} to a \code{TaskType} variable where the task identifier of the running task is written. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \end{longtable}
 
 
@@ -143,7 +145,7 @@ Get the task identifier of the task which is currently running. \emph{task_id_re
 Get the task state of task \emph{task_id}. \emph{task_state_ref} is a \underline{\smash{pointer}} to a \code{TaskState} variable where the  state is written. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_OS_ID} & task \emph{task_id} does not exist\\
 \end{longtable}
 
@@ -159,7 +161,7 @@ Get the task state of task \emph{task_id}. \emph{task_state_ref} is a \underline
 Get the remaining tick count of alarm \emph{alarm_id} before the alarm reaches the date. \emph{tick_ref} is a \underline{\smash{pointer}} to a \code{TickType} variable where the remaining tick count  is written. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \std{E_OS_NOFUNC} & alarm \emph{alarm_id} is not started\\
 \ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
 \end{longtable}
@@ -169,7 +171,7 @@ Get the remaining tick count of alarm \emph{alarm_id} before the alarm reaches t
 Get the information about the underlying counter of alarm \emph{alarm_id}. \emph{info_ref} is a \underline{\smash{pointer}} to a \code{AlarmBaseType} variable where the information is written. A \code{AlarmBaseType} is a \code{struct} with 3 fields: \code{maxallowedvalue}, \code{ticksperbase} and \code{mincycle}. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
 \end{longtable}
 
@@ -178,7 +180,7 @@ Get the information about the underlying counter of alarm \emph{alarm_id}. \emph
 Start alarm \emph{alarm_id}. After \emph{offset} ticks the alarm expire and its action is executed. \emph{offset} shall be $>0$. If \emph{cycle} is $>0$ the alarm is restarted and expire every \emph{cycle} ticks. Both \emph{offset} and \emph{cycle} shall $\in [$\code{MINCYCLE}, \code{MAXALLOWEDVALUE}$]$. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \std{E_OS_NOFUNC} & alarm \emph{alarm_id} is already started\\
 \ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
 \ext{E_OS_VALUE} & \emph{offset} and/or \emph{cycle} out of bounds\\
@@ -189,7 +191,7 @@ Start alarm \emph{alarm_id}. After \emph{offset} ticks the alarm expire and its 
 Start alarm \emph{alarm_id}. At next counter  \emph{date} the alarm expire and its action is executed. If \emph{cycle} is $>0$ the alarm is restarted and expire every \emph{cycle} ticks. \emph{date} shall be $\leq$ \code{MAXALLOWEDVALUE}. \emph{offset} shall $\in [$\code{MINCYCLE}, \code{MAXALLOWEDVALUE}$]$. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \std{E_OS_NOFUNC} & alarm \emph{alarm_id} is already started\\
 \ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
 \ext{E_OS_VALUE} & \emph{date} and/or \emph{cycle} out of bounds\\
@@ -200,7 +202,7 @@ Start alarm \emph{alarm_id}. At next counter  \emph{date} the alarm expire and i
 Stop alarm \emph{alarm_id}. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \std{E_OS_NOFUNC} & alarm \emph{alarm_id} is not started\\
 \ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
 \end{longtable}
@@ -212,7 +214,7 @@ Stop alarm \emph{alarm_id}. Returns:
 Set event(s) \emph{event_mask} to task \emph{task_id}. If task \emph{task_id} was waiting for one of the events of  \emph{event_mask} and it has a higher priority than the caller, the caller is preempted. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_OS_ID} & task \emph{task_id} does not exist\\
 \ext{E_OS_ACCESS} & task \emph{task_id} is not an extended task\\
 \ext{E_OS_STATE} & task \emph{task_id} is in \code{SUSPENDED} state\\
@@ -223,9 +225,9 @@ Set event(s) \emph{event_mask} to task \emph{task_id}. If task \emph{task_id} wa
 Clear the event(s) of the caller according to events set in \emph{event_mask}. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
-\ext{E_OS_ACCESS} & The caller is not an extended task\\
-\ext{E_OS_CALLEVEL} & The caller is not a task \\
+\std{E_OK} & success \\
+\ext{E_OS_ACCESS} & the caller is not an extended task\\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
 \end{longtable}
 
 \service{GetEvent(\emph{task_id}, \emph{event_mask_ref})}
@@ -233,7 +235,7 @@ Clear the event(s) of the caller according to events set in \emph{event_mask}. R
 Get a copy of the event mask of task \emph{task_id}. \emph{event_mask_ref} is a \underline{\smash{pointer}} to an \code{EventMaskType} variable where the copy is written. Returns
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_OS_ID} & task \emph{task_id} does not exist\\
 \ext{E_OS_ACCESS} & task \emph{task_id} is not an extended task\\
 \ext{E_OS_STATE} & task \emph{task_id} is in \code{SUSPENDED} state\\
@@ -244,10 +246,10 @@ Get a copy of the event mask of task \emph{task_id}. \emph{event_mask_ref} is a 
 If the none of the events in \emph{event_mask} is set in the event mask of the caller, the caller is put in the \code{WAITING} state. Returns:
 
 \begin{longtable}{ll}
-\std{E_OK} & Success \\
-\ext{E_OS_ACCESS} & The caller isn't an extended task\\
-\ext{E_OS_RESOURCE} & The caller hold a resource \\
-\ext{E_OS_CALLEVEL} & The caller is not a task \\
+\std{E_OK} & success \\
+\ext{E_OS_ACCESS} & the caller isn't an extended task\\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
 \end{longtable}
 
 \sect{Resources}
@@ -257,9 +259,9 @@ If the none of the events in \emph{event_mask} is set in the event mask of the c
 Get resource \emph{rez_id}. The priority of the caller is raised to the priority of the resource if higher. Returns:
 
 \begin{longtable}{lp{5.5cm}}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_OS_ID} & resource \emph{rez_id} does not exist\\
-\ext{E_OS_ACCESS} & The caller try to get a resource already held\\
+\ext{E_OS_ACCESS} & the caller try to get a resource already held\\
 \end{longtable}
 
 \schedservice{ReleaseResource(\emph{rez_id})}
@@ -267,10 +269,10 @@ Get resource \emph{rez_id}. The priority of the caller is raised to the priority
 Release resource \emph{rez_id}. The priority of the caller returns to the priority it had before. Returns:
 
 \begin{longtable}{lp{5.5cm}}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_OS_ID} & resource \emph{rez_id} does not exist\\
-\ext{E_OS_NOFUNC} & The caller try to release a resource it does not hold\\
-\ext{E_OS_ACCESS} & The caller try to release a resource with a priority lower than the caller one\\
+\ext{E_OS_NOFUNC} & the caller try to release a resource it does not hold\\
+\ext{E_OS_ACCESS} & the caller try to release a resource with a priority lower than the caller one\\
 \end{longtable}
 
 \sect{Messages}
@@ -280,7 +282,7 @@ Release resource \emph{rez_id}. The priority of the caller returns to the priori
 Send message \emph{mess_id}. \emph{data_ref} is a \underline{\smash{pointer}} to a variable containing the data to send. Returns:
 
 \begin{longtable}{lp{6cm}}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_COM_ID} & message \emph{mess_id} does not exist or has the wrong type\\
 \end{longtable}
 
@@ -289,7 +291,7 @@ Send message \emph{mess_id}. \emph{data_ref} is a \underline{\smash{pointer}} to
 Send signalization message \emph{mess_id}. Returns:
 
 \begin{longtable}{lp{6cm}}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_COM_ID} & message \emph{mess_id} does not exist or has the wrong type\\
 \end{longtable}
 
@@ -298,7 +300,7 @@ Send signalization message \emph{mess_id}. Returns:
 Receive message \emph{mess_id}. \emph{data_ref} is a \underline{\smash{pointer}} to a variable where the data are copied.
 
 \begin{longtable}{lp{5.25cm}}
-\std{E_OK} & Success \\
+\std{E_OK} & success \\
 \ext{E_COM_ID} & message \emph{mess_id} does not exist or has the wrong type\\
 \std{E_COM_NOMSG} & message \emph{mess_id} is queued and the queue is empty\\
 \std{E_COM_LIMIT} & message \emph{mess_id} is queued and the queue has overflown\\
@@ -312,7 +314,7 @@ Returns the status of a message:
 \ext{E_COM_ID} & message \emph{mess_id} does not exist\\
 \std{E_COM_NOMSG} & message \emph{mess_id} is queued and the queue is empty\\
 \std{E_COM_LIMIT} & message \emph{mess_id} is queued and the queue has overflown\\
-\std{E_OK} & None of the above \\
+\std{E_OK} & none of the above \\
 \end{longtable}
 
 \sect{Interrupts}
