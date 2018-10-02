@@ -95,9 +95,13 @@ Updated to version 3.1.9 on 2017, November 28.
 
 * [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various platforms.
 
-The OSEK-VDX portal is down since at least june because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
+The OSEK-VDX portal is down since at least june 2017 because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
 * [OIL specification](http://trampolinebin.rts-software.org/oil25.pdf)
 * [OS specification](http://trampolinebin.rts-software.org/os223.pdf)
 * [COM specification](http://trampolinebin.rts-software.org/OSEKCOM303.pdf)
 * [ORTI A](http://trampolinebin.rts-software.org/orti-a-22.pdf) and [ORTI B](http://trampolinebin.rts-software.org/orti-b-22.pdf) specifications
+* [OS Test Plan](http://trampolinebin.rts-software.org/ostestplan20.pdf)
+* [OS Test Procedure]((http://trampolinebin.rts-software.org/ostestproc20.pdf)
+* [COM Test Plan]((http://trampolinebin.rts-software.org/comtestplan20.pdf)
+* [COM Test Procedure]((http://trampolinebin.rts-software.org/comtestproc20.pdf)
