@@ -102,6 +102,6 @@ The OSEK-VDX portal is down since at least june 2017 because the working group h
 * [COM specification](http://trampolinebin.rts-software.org/OSEKCOM303.pdf)
 * [ORTI A](http://trampolinebin.rts-software.org/orti-a-22.pdf) and [ORTI B](http://trampolinebin.rts-software.org/orti-b-22.pdf) specifications
 * [OS Test Plan](http://trampolinebin.rts-software.org/ostestplan20.pdf)
-* [OS Test Procedure]((http://trampolinebin.rts-software.org/ostestproc20.pdf)
-* [COM Test Plan]((http://trampolinebin.rts-software.org/comtestplan20.pdf)
-* [COM Test Procedure]((http://trampolinebin.rts-software.org/comtestproc20.pdf)
+* [OS Test Procedure](http://trampolinebin.rts-software.org/ostestproc20.pdf)
+* [COM Test Plan](http://trampolinebin.rts-software.org/comtestplan20.pdf)
+* [COM Test Procedure](http://trampolinebin.rts-software.org/comtestproc20.pdf)
