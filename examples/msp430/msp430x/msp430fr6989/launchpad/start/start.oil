@@ -1,0 +1,49 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+};
+
+CPU start {
+  OS config {
+    STATUS = EXTENDED;    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "start.c";
+      APP_NAME = "start_exe";
+      CFLAGS  = "-O0"; 
+      LDFLAGS = "-Map=start.map";
+      COMPILER = "msp430-gcc";
+      ASSEMBLER = "msp430-as";
+      LINKER = "msp430-ld";
+      COPIER = "msp430-objcopy";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE std {};
+  
+  TASK start {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+};
+
