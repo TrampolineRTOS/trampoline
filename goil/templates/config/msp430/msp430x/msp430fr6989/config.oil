@@ -1,0 +1,175 @@
+#includeifexists <buildOptions.oil>
+
+/*
+ * MSP430 configuration file
+ */
+
+IMPLEMENTATION msp430fr6989 {
+
+  INTERRUPT [] {
+    UINT32 ADDRESS;
+    IDENTIFIER HANDLER;
+  };
+      
+};
+
+CPU msp430fr6989 {
+
+  PLATFORM_FILES msp430x {
+    PATH = "msp430/msp430x";
+  };
+  
+  GENERATED_FILES msp430x {
+  };
+
+  /*
+   * Interrupts of MSP430FR6989. See page 79 of 
+   * MSP430FR698x(1), MSP430FR598x(1) Mixed-Signal Microcontrollers 
+   */
+
+  INTERRUPT Reset {
+    ADDRESS = 0xFFFE;
+    HANDLER = Reset_handler;
+  };
+
+  INTERRUPT System_NMI {
+    ADDRESS = 0xFFFC;
+    HANDLER = System_NMI_handler;
+  };
+  
+  INTERRUPT User_NMI {
+    ADDRESS = 0xFFFA;
+    HANDLER = User_NMI_handler;
+  };
+  
+  INTERRUPT Comparator_E {
+    ADDRESS = 0xFFF8;
+    HANDLER = Comparator_E_handler;
+  };
+  
+  INTERRUPT TB0_CCR0 {
+    ADDRESS = 0xFFF6;
+    HANDLER = TB0_CCR0_handler;
+  };
+
+  INTERRUPT TB0_others {
+    ADDRESS = 0xFFF4;
+    HANDLER = TB0_others_handler;
+  };
+  
+  INTERRUPT Watchdog {
+    ADDRESS = 0xFFF2;
+    HANDLER = Watchdog_handler;
+  };
+  
+  INTERRUPT Extended_scan {
+    ADDRESS = 0xFFF0;
+    HANDLER = Extended_scan_handler;
+  };
+  
+  INTERRUPT eUSCI_A0 {
+    ADDRESS = 0xFFEE;
+    HANDLER = eUSCI_A0_handler;
+  };
+
+  INTERRUPT eUSCI_B0 {
+    ADDRESS = 0xFFEC;
+    HANDLER = eUSCI_B0_handler;
+  };
+
+  INTERRUPT ADC12_B {
+    ADDRESS = 0xFFEA;
+    HANDLER = ADC12_B_handler;
+  };
+  
+  INTERRUPT TA0_CCR0 {
+    ADDRESS = 0xFFE8;
+    HANDLER = TA0_CCR0_handler;
+  };
+
+  INTERRUPT TA0_others {
+    ADDRESS = 0xFFE6;
+    HANDLER = TA0_others_handler;
+  };
+  
+  INTERRUPT eUSCI_A1 {
+    ADDRESS = 0xFFE4;
+    HANDLER = eUSCI_A1_handler;
+  };
+
+  INTERRUPT eUSCI_B1 {
+    ADDRESS = 0xFFE2;
+    HANDLER = eUSCI_B1_handler;
+  };
+
+  INTERRUPT DMA {
+    ADDRESS = 0xFFE0;
+    HANDLER = DMA_handler;
+  };
+  
+  INTERRUPT TA1_CCR0 {
+    ADDRESS = 0xFFDE;
+    HANDLER = TA1_CCR0_handler;
+  };
+
+  INTERRUPT TA1_others {
+    ADDRESS = 0xFFDC;
+    HANDLER = TA1_others_handler;
+  };
+  
+  INTERRUPT IO_P1 {
+    ADDRESS = 0xFFDA;
+    HANDLER = IO_P1_handler;
+  };
+  
+  INTERRUPT TA2_CCR0 {
+    ADDRESS = 0xFFD8;
+    HANDLER = TA2_CCR0_handler;
+  };
+
+  INTERRUPT TA2_others {
+    ADDRESS = 0xFFD6;
+    HANDLER = TA2_others_handler;
+  };
+  
+  INTERRUPT IO_P2 {
+    ADDRESS = 0xFFD4;
+    HANDLER = IO_P2_handler;
+  };
+  
+  INTERRUPT TA3_CCR0 {
+    ADDRESS = 0xFFD2;
+    HANDLER = TA3_CCR0_handler;
+  };
+
+  INTERRUPT TA3_others {
+    ADDRESS = 0xFFD0;
+    HANDLER = TA3_others_handler;
+  };
+  
+  INTERRUPT IO_P3 {
+    ADDRESS = 0xFFCE;
+    HANDLER = IO_P3_handler;
+  };
+  
+  INTERRUPT IO_P4 {
+    ADDRESS = 0xFFCC;
+    HANDLER = IO_P4_handler;
+  };
+  
+  INTERRUPT LCD_C {
+    ADDRESS = 0xFFCA;
+    HANDLER = LCD_C_handler;
+  };
+  
+  INTERRUPT RTC_C {
+    ADDRESS = 0xFFC8;
+    HANDLER = RTC_C_handler;
+  };
+  
+  INTERRUPT AES {
+    ADDRESS = 0xFFC6;
+    HANDLER = AES_handler;
+  };
+  
+};

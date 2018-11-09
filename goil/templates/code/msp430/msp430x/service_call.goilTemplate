@@ -1,0 +1,16 @@
+
+ /*============================================================================
+  * Service % !api_func::NAME %
+  */
+.global % !exists api_func::ACTUAL default ( api_func::NAME ) %
+.type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
+% !exists api_func::ACTUAL default ( api_func::NAME ) %:
+    /*-------------------------------------------------------------------------
+     * Load the service id in r12 as fourth argument
+     */
+    mov.b #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %, r12
+    /*-------------------------------------------------------------------------
+     * Does the system call
+     */
+    calla tpl_sc_handler
+    ret
