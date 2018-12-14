@@ -3,16 +3,15 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-declarations-0.h"
 
-
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Class for element of '@gtlDataList' list                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlDataList : public cCollectionElement {
   public : GALGAS_gtlDataList_2D_element mObject ;
@@ -34,7 +33,7 @@ class cCollectionElement_gtlDataList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlDataList::cCollectionElement_gtlDataList (const GALGAS_gtlData & in_data
                                                                 COMMA_LOCATION_ARGS) :
@@ -42,13 +41,13 @@ cCollectionElement (THERE),
 mObject (in_data) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlDataList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlDataList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -56,7 +55,7 @@ cCollectionElement * cCollectionElement_gtlDataList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlDataList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -65,7 +64,7 @@ void cCollectionElement_gtlDataList::description (C_String & ioString, const int
   mObject.mProperty_data.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlDataList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlDataList * operand = (cCollectionElement_gtlDataList *) inOperand ;
@@ -73,25 +72,25 @@ typeComparisonResult cCollectionElement_gtlDataList::compare (const cCollectionE
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList::GALGAS_gtlDataList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList::GALGAS_gtlDataList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlDataList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::constructor_listWithValue (const GALGAS_gtlData & inOperand0
                                                                   COMMA_LOCATION_ARGS) {
@@ -105,7 +104,7 @@ GALGAS_gtlDataList GALGAS_gtlDataList::constructor_listWithValue (const GALGAS_g
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                     const GALGAS_gtlData & in_data
@@ -116,7 +115,7 @@ void GALGAS_gtlDataList::makeAttributesFromObjects (capCollectionElement & outAt
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::addAssign_operation (const GALGAS_gtlData & inOperand0
                                               COMMA_LOCATION_ARGS) {
@@ -130,7 +129,7 @@ void GALGAS_gtlDataList::addAssign_operation (const GALGAS_gtlData & inOperand0
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::setter_insertAtIndex (const GALGAS_gtlData inOperand0,
                                                const GALGAS_uint inInsertionIndex,
@@ -146,7 +145,7 @@ void GALGAS_gtlDataList::setter_insertAtIndex (const GALGAS_gtlData inOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::setter_removeAtIndex (GALGAS_gtlData & outOperand0,
                                                const GALGAS_uint inRemoveIndex,
@@ -165,7 +164,7 @@ void GALGAS_gtlDataList::setter_removeAtIndex (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::setter_popFirst (GALGAS_gtlData & outOperand0,
                                           C_Compiler * inCompiler
@@ -181,7 +180,7 @@ void GALGAS_gtlDataList::setter_popFirst (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::setter_popLast (GALGAS_gtlData & outOperand0,
                                          C_Compiler * inCompiler
@@ -197,7 +196,7 @@ void GALGAS_gtlDataList::setter_popLast (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::method_first (GALGAS_gtlData & outOperand0,
                                        C_Compiler * inCompiler
@@ -213,7 +212,7 @@ void GALGAS_gtlDataList::method_first (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::method_last (GALGAS_gtlData & outOperand0,
                                       C_Compiler * inCompiler
@@ -229,7 +228,7 @@ void GALGAS_gtlDataList::method_last (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::add_operation (const GALGAS_gtlDataList & inOperand,
                                                       C_Compiler * /* inCompiler */
@@ -242,7 +241,7 @@ GALGAS_gtlDataList GALGAS_gtlDataList::add_operation (const GALGAS_gtlDataList &
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                 C_Compiler * inCompiler
@@ -252,7 +251,7 @@ GALGAS_gtlDataList GALGAS_gtlDataList::getter_subListWithRange (const GALGAS_ran
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                 C_Compiler * inCompiler
@@ -262,7 +261,7 @@ GALGAS_gtlDataList GALGAS_gtlDataList::getter_subListFromIndex (const GALGAS_uin
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                               C_Compiler * inCompiler
@@ -272,7 +271,7 @@ GALGAS_gtlDataList GALGAS_gtlDataList::getter_subListToIndex (const GALGAS_uint 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList::plusAssign_operation (const GALGAS_gtlDataList inOperand,
                                                C_Compiler * /* inCompiler */
@@ -280,7 +279,7 @@ void GALGAS_gtlDataList::plusAssign_operation (const GALGAS_gtlDataList inOperan
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData GALGAS_gtlDataList::getter_dataAtIndex (const GALGAS_uint & inIndex,
                                                        C_Compiler * inCompiler
@@ -297,7 +296,7 @@ GALGAS_gtlData GALGAS_gtlDataList::getter_dataAtIndex (const GALGAS_uint & inInd
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlDataList::cEnumerator_gtlDataList (const GALGAS_gtlDataList & inEnumeratedObject,
                                                   const typeEnumerationOrder inOrder) :
@@ -305,7 +304,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList_2D_element cEnumerator_gtlDataList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlDataList * p = (const cCollectionElement_gtlDataList *) currentObjectPtr (THERE) ;
@@ -314,7 +313,7 @@ GALGAS_gtlDataList_2D_element cEnumerator_gtlDataList::current (LOCATION_ARGS) c
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData cEnumerator_gtlDataList::current_data (LOCATION_ARGS) const {
   const cCollectionElement_gtlDataList * p = (const cCollectionElement_gtlDataList *) currentObjectPtr (THERE) ;
@@ -325,23 +324,23 @@ GALGAS_gtlData cEnumerator_gtlDataList::current_data (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @gtlDataList type                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlDataList ("gtlDataList",
                                     NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlDataList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlDataList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlDataList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -351,7 +350,7 @@ AC_GALGAS_root * GALGAS_gtlDataList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList GALGAS_gtlDataList::extractObject (const GALGAS_object & inObject,
                                                       C_Compiler * inCompiler
@@ -368,11 +367,11 @@ GALGAS_gtlDataList GALGAS_gtlDataList::extractObject (const GALGAS_object & inOb
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension Getter '@string stringByAppendingPath'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string extensionGetter_stringByAppendingPath (const GALGAS_string & inObject,
                                                      const GALGAS_string & constinArgument_pathToAppend,
@@ -401,7 +400,7 @@ GALGAS_string extensionGetter_stringByAppendingPath (const GALGAS_string & inObj
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlVarMap::cMapElement_gtlVarMap (const GALGAS_lstring & inKey,
                                               const GALGAS_gtlData & in_value
@@ -410,13 +409,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_value (in_value) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlVarMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlVarMap::copy (void) {
   cMapElement * result = NULL ;
@@ -424,7 +423,7 @@ cMapElement * cMapElement_gtlVarMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlVarMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -433,7 +432,7 @@ void cMapElement_gtlVarMap::description (C_String & ioString, const int32_t inIn
   mProperty_value.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlVarMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlVarMap * operand = (cMapElement_gtlVarMap *) inOperand ;
@@ -444,26 +443,26 @@ typeComparisonResult cMapElement_gtlVarMap::compare (const cCollectionElement * 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap::GALGAS_gtlVarMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap::GALGAS_gtlVarMap (const GALGAS_gtlVarMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap & GALGAS_gtlVarMap::operator = (const GALGAS_gtlVarMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap GALGAS_gtlVarMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlVarMap result ;
@@ -471,7 +470,7 @@ GALGAS_gtlVarMap GALGAS_gtlVarMap::constructor_emptyMap (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap GALGAS_gtlVarMap::constructor_mapWithMapToOverride (const GALGAS_gtlVarMap & inMapToOverride
                                                                      COMMA_LOCATION_ARGS) {
@@ -480,7 +479,7 @@ GALGAS_gtlVarMap GALGAS_gtlVarMap::constructor_mapWithMapToOverride (const GALGA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap GALGAS_gtlVarMap::getter_overriddenMap (C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const {
@@ -489,7 +488,7 @@ GALGAS_gtlVarMap GALGAS_gtlVarMap::getter_overriddenMap (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap::addAssign_operation (const GALGAS_lstring & inKey,
                                             const GALGAS_gtlData & inArgument0,
@@ -505,7 +504,7 @@ void GALGAS_gtlVarMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap::setter_put (GALGAS_lstring inKey,
                                    GALGAS_gtlData inArgument0,
@@ -521,11 +520,11 @@ void GALGAS_gtlVarMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlVarMap_get = "there is no variable or field named '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap::method_get (GALGAS_lstring inKey,
                                    GALGAS_gtlData & outArgument0,
@@ -543,11 +542,11 @@ void GALGAS_gtlVarMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlVarMap_getResult = "function did not return a value in '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap::method_getResult (GALGAS_lstring inKey,
                                          GALGAS_gtlData & outArgument0,
@@ -565,7 +564,7 @@ void GALGAS_gtlVarMap::method_getResult (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap::setter_del (GALGAS_lstring inKey,
                                    GALGAS_gtlData & outArgument0,
@@ -583,7 +582,7 @@ void GALGAS_gtlVarMap::setter_del (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData GALGAS_gtlVarMap::getter_valueForKey (const GALGAS_string & inKey,
                                                      C_Compiler * inCompiler
@@ -598,7 +597,7 @@ GALGAS_gtlData GALGAS_gtlVarMap::getter_valueForKey (const GALGAS_string & inKey
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap::setter_setValueForKey (GALGAS_gtlData inAttributeValue,
                                               GALGAS_string inKey,
@@ -612,7 +611,7 @@ void GALGAS_gtlVarMap::setter_setValueForKey (GALGAS_gtlData inAttributeValue,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlVarMap * GALGAS_gtlVarMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                              const GALGAS_string & inKey
@@ -622,7 +621,7 @@ cMapElement_gtlVarMap * GALGAS_gtlVarMap::readWriteAccessForWithInstruction (C_C
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlVarMap::cEnumerator_gtlVarMap (const GALGAS_gtlVarMap & inEnumeratedObject,
                                               const typeEnumerationOrder inOrder) :
@@ -630,7 +629,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap_2D_element cEnumerator_gtlVarMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlVarMap * p = (const cMapElement_gtlVarMap *) currentObjectPtr (THERE) ;
@@ -638,7 +637,7 @@ GALGAS_gtlVarMap_2D_element cEnumerator_gtlVarMap::current (LOCATION_ARGS) const
   return GALGAS_gtlVarMap_2D_element (p->mProperty_lkey, p->mProperty_value) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlVarMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -646,7 +645,7 @@ GALGAS_lstring cEnumerator_gtlVarMap::current_lkey (LOCATION_ARGS) const {
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData cEnumerator_gtlVarMap::current_value (LOCATION_ARGS) const {
   const cMapElement_gtlVarMap * p = (const cMapElement_gtlVarMap *) currentObjectPtr (THERE) ;
@@ -656,23 +655,23 @@ GALGAS_gtlData cEnumerator_gtlVarMap::current_value (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @gtlVarMap type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlVarMap ("gtlVarMap",
                                   NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlVarMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVarMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlVarMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -682,7 +681,7 @@ AC_GALGAS_root * GALGAS_gtlVarMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap GALGAS_gtlVarMap::extractObject (const GALGAS_object & inObject,
                                                   C_Compiler * inCompiler
@@ -699,11 +698,11 @@ GALGAS_gtlVarMap GALGAS_gtlVarMap::extractObject (const GALGAS_object & inObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension method '@gtlVarMap replaceOrCreate'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionSetter_replaceOrCreate (GALGAS_gtlVarMap & ioObject,
                                       const GALGAS_lstring constinArgument_key,
@@ -724,11 +723,11 @@ void extensionSetter_replaceOrCreate (GALGAS_gtlVarMap & ioObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension method '@gtlVarMap replaceOrCreateAtLevel'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionSetter_replaceOrCreateAtLevel (GALGAS_gtlVarMap & ioObject,
                                              const GALGAS_lstring constinArgument_key,
@@ -750,7 +749,7 @@ void extensionSetter_replaceOrCreateAtLevel (GALGAS_gtlVarMap & ioObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlExpressionMap::cMapElement_gtlExpressionMap (const GALGAS_lstring & inKey,
                                                             const GALGAS_gtlExpression & in_expression
@@ -759,13 +758,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_expression (in_expression) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlExpressionMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_expression.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlExpressionMap::copy (void) {
   cMapElement * result = NULL ;
@@ -773,7 +772,7 @@ cMapElement * cMapElement_gtlExpressionMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlExpressionMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -782,7 +781,7 @@ void cMapElement_gtlExpressionMap::description (C_String & ioString, const int32
   mProperty_expression.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlExpressionMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlExpressionMap * operand = (cMapElement_gtlExpressionMap *) inOperand ;
@@ -793,26 +792,26 @@ typeComparisonResult cMapElement_gtlExpressionMap::compare (const cCollectionEle
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap::GALGAS_gtlExpressionMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap::GALGAS_gtlExpressionMap (const GALGAS_gtlExpressionMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap & GALGAS_gtlExpressionMap::operator = (const GALGAS_gtlExpressionMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlExpressionMap result ;
@@ -820,7 +819,7 @@ GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::constructor_emptyMap (LOCATION_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::constructor_mapWithMapToOverride (const GALGAS_gtlExpressionMap & inMapToOverride
                                                                                    COMMA_LOCATION_ARGS) {
@@ -829,7 +828,7 @@ GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::constructor_mapWithMapToOverrid
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::getter_overriddenMap (C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const {
@@ -838,7 +837,7 @@ GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::getter_overriddenMap (C_Compile
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap::addAssign_operation (const GALGAS_lstring & inKey,
                                                    const GALGAS_gtlExpression & inArgument0,
@@ -854,7 +853,7 @@ void GALGAS_gtlExpressionMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap::setter_put (GALGAS_lstring inKey,
                                           GALGAS_gtlExpression inArgument0,
@@ -870,11 +869,11 @@ void GALGAS_gtlExpressionMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlExpressionMap_get = "there is no field named '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap::method_get (GALGAS_lstring inKey,
                                           GALGAS_gtlExpression & outArgument0,
@@ -892,7 +891,7 @@ void GALGAS_gtlExpressionMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap::setter_del (GALGAS_lstring inKey,
                                           GALGAS_gtlExpression & outArgument0,
@@ -910,7 +909,7 @@ void GALGAS_gtlExpressionMap::setter_del (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression GALGAS_gtlExpressionMap::getter_expressionForKey (const GALGAS_string & inKey,
                                                                        C_Compiler * inCompiler
@@ -925,7 +924,7 @@ GALGAS_gtlExpression GALGAS_gtlExpressionMap::getter_expressionForKey (const GAL
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap::setter_setExpressionForKey (GALGAS_gtlExpression inAttributeValue,
                                                           GALGAS_string inKey,
@@ -939,7 +938,7 @@ void GALGAS_gtlExpressionMap::setter_setExpressionForKey (GALGAS_gtlExpression i
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlExpressionMap * GALGAS_gtlExpressionMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                            const GALGAS_string & inKey
@@ -949,7 +948,7 @@ cMapElement_gtlExpressionMap * GALGAS_gtlExpressionMap::readWriteAccessForWithIn
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlExpressionMap::cEnumerator_gtlExpressionMap (const GALGAS_gtlExpressionMap & inEnumeratedObject,
                                                             const typeEnumerationOrder inOrder) :
@@ -957,7 +956,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap_2D_element cEnumerator_gtlExpressionMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlExpressionMap * p = (const cMapElement_gtlExpressionMap *) currentObjectPtr (THERE) ;
@@ -965,7 +964,7 @@ GALGAS_gtlExpressionMap_2D_element cEnumerator_gtlExpressionMap::current (LOCATI
   return GALGAS_gtlExpressionMap_2D_element (p->mProperty_lkey, p->mProperty_expression) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlExpressionMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -973,7 +972,7 @@ GALGAS_lstring cEnumerator_gtlExpressionMap::current_lkey (LOCATION_ARGS) const 
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression cEnumerator_gtlExpressionMap::current_expression (LOCATION_ARGS) const {
   const cMapElement_gtlExpressionMap * p = (const cMapElement_gtlExpressionMap *) currentObjectPtr (THERE) ;
@@ -983,23 +982,23 @@ GALGAS_gtlExpression cEnumerator_gtlExpressionMap::current_expression (LOCATION_
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @gtlExpressionMap type                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlExpressionMap ("gtlExpressionMap",
                                          NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlExpressionMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlExpressionMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlExpressionMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -1009,7 +1008,7 @@ AC_GALGAS_root * GALGAS_gtlExpressionMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -1026,11 +1025,11 @@ GALGAS_gtlExpressionMap GALGAS_gtlExpressionMap::extractObject (const GALGAS_obj
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Class for element of '@gtlInstructionList' list                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlInstructionList : public cCollectionElement {
   public : GALGAS_gtlInstructionList_2D_element mObject ;
@@ -1052,7 +1051,7 @@ class cCollectionElement_gtlInstructionList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlInstructionList::cCollectionElement_gtlInstructionList (const GALGAS_gtlInstruction & in_instruction
                                                                               COMMA_LOCATION_ARGS) :
@@ -1060,13 +1059,13 @@ cCollectionElement (THERE),
 mObject (in_instruction) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlInstructionList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlInstructionList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -1074,7 +1073,7 @@ cCollectionElement * cCollectionElement_gtlInstructionList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlInstructionList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -1083,7 +1082,7 @@ void cCollectionElement_gtlInstructionList::description (C_String & ioString, co
   mObject.mProperty_instruction.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlInstructionList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlInstructionList * operand = (cCollectionElement_gtlInstructionList *) inOperand ;
@@ -1091,25 +1090,25 @@ typeComparisonResult cCollectionElement_gtlInstructionList::compare (const cColl
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList::GALGAS_gtlInstructionList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList::GALGAS_gtlInstructionList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlInstructionList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::constructor_listWithValue (const GALGAS_gtlInstruction & inOperand0
                                                                                 COMMA_LOCATION_ARGS) {
@@ -1123,7 +1122,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionList::constructor_listWithValue (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                            const GALGAS_gtlInstruction & in_instruction
@@ -1134,7 +1133,7 @@ void GALGAS_gtlInstructionList::makeAttributesFromObjects (capCollectionElement 
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::addAssign_operation (const GALGAS_gtlInstruction & inOperand0
                                                      COMMA_LOCATION_ARGS) {
@@ -1148,7 +1147,7 @@ void GALGAS_gtlInstructionList::addAssign_operation (const GALGAS_gtlInstruction
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::setter_insertAtIndex (const GALGAS_gtlInstruction inOperand0,
                                                       const GALGAS_uint inInsertionIndex,
@@ -1164,7 +1163,7 @@ void GALGAS_gtlInstructionList::setter_insertAtIndex (const GALGAS_gtlInstructio
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::setter_removeAtIndex (GALGAS_gtlInstruction & outOperand0,
                                                       const GALGAS_uint inRemoveIndex,
@@ -1183,7 +1182,7 @@ void GALGAS_gtlInstructionList::setter_removeAtIndex (GALGAS_gtlInstruction & ou
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::setter_popFirst (GALGAS_gtlInstruction & outOperand0,
                                                  C_Compiler * inCompiler
@@ -1199,7 +1198,7 @@ void GALGAS_gtlInstructionList::setter_popFirst (GALGAS_gtlInstruction & outOper
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::setter_popLast (GALGAS_gtlInstruction & outOperand0,
                                                 C_Compiler * inCompiler
@@ -1215,7 +1214,7 @@ void GALGAS_gtlInstructionList::setter_popLast (GALGAS_gtlInstruction & outOpera
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::method_first (GALGAS_gtlInstruction & outOperand0,
                                               C_Compiler * inCompiler
@@ -1231,7 +1230,7 @@ void GALGAS_gtlInstructionList::method_first (GALGAS_gtlInstruction & outOperand
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::method_last (GALGAS_gtlInstruction & outOperand0,
                                              C_Compiler * inCompiler
@@ -1247,7 +1246,7 @@ void GALGAS_gtlInstructionList::method_last (GALGAS_gtlInstruction & outOperand0
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::add_operation (const GALGAS_gtlInstructionList & inOperand,
                                                                     C_Compiler * /* inCompiler */
@@ -1260,7 +1259,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionList::add_operation (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                               C_Compiler * inCompiler
@@ -1270,7 +1269,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionList::getter_subListWithRange (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                               C_Compiler * inCompiler
@@ -1280,7 +1279,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionList::getter_subListFromIndex (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                             C_Compiler * inCompiler
@@ -1290,7 +1289,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionList::getter_subListToIndex (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::plusAssign_operation (const GALGAS_gtlInstructionList inOperand,
                                                       C_Compiler * /* inCompiler */
@@ -1298,7 +1297,7 @@ void GALGAS_gtlInstructionList::plusAssign_operation (const GALGAS_gtlInstructio
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionList::setter_setInstructionAtIndex (GALGAS_gtlInstruction inOperand,
                                                               GALGAS_uint inIndex,
@@ -1312,7 +1311,7 @@ void GALGAS_gtlInstructionList::setter_setInstructionAtIndex (GALGAS_gtlInstruct
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstruction GALGAS_gtlInstructionList::getter_instructionAtIndex (const GALGAS_uint & inIndex,
                                                                             C_Compiler * inCompiler
@@ -1329,7 +1328,7 @@ GALGAS_gtlInstruction GALGAS_gtlInstructionList::getter_instructionAtIndex (cons
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlInstructionList::cEnumerator_gtlInstructionList (const GALGAS_gtlInstructionList & inEnumeratedObject,
                                                                 const typeEnumerationOrder inOrder) :
@@ -1337,7 +1336,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList_2D_element cEnumerator_gtlInstructionList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlInstructionList * p = (const cCollectionElement_gtlInstructionList *) currentObjectPtr (THERE) ;
@@ -1346,7 +1345,7 @@ GALGAS_gtlInstructionList_2D_element cEnumerator_gtlInstructionList::current (LO
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstruction cEnumerator_gtlInstructionList::current_instruction (LOCATION_ARGS) const {
   const cCollectionElement_gtlInstructionList * p = (const cCollectionElement_gtlInstructionList *) currentObjectPtr (THERE) ;
@@ -1357,23 +1356,23 @@ GALGAS_gtlInstruction cEnumerator_gtlInstructionList::current_instruction (LOCAT
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @gtlInstructionList type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlInstructionList ("gtlInstructionList",
                                            NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlInstructionList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlInstructionList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlInstructionList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -1383,7 +1382,7 @@ AC_GALGAS_root * GALGAS_gtlInstructionList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionList::extractObject (const GALGAS_object & inObject,
                                                                     C_Compiler * inCompiler
@@ -1400,7 +1399,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionList::extractObject (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlTemplateMap::cMapElement_gtlTemplateMap (const GALGAS_lstring & inKey,
                                                         const GALGAS_gtlTemplate & in_aTemplate
@@ -1409,13 +1408,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_aTemplate (in_aTemplate) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlTemplateMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_aTemplate.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlTemplateMap::copy (void) {
   cMapElement * result = NULL ;
@@ -1423,7 +1422,7 @@ cMapElement * cMapElement_gtlTemplateMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlTemplateMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -1432,7 +1431,7 @@ void cMapElement_gtlTemplateMap::description (C_String & ioString, const int32_t
   mProperty_aTemplate.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlTemplateMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlTemplateMap * operand = (cMapElement_gtlTemplateMap *) inOperand ;
@@ -1443,26 +1442,26 @@ typeComparisonResult cMapElement_gtlTemplateMap::compare (const cCollectionEleme
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap::GALGAS_gtlTemplateMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap::GALGAS_gtlTemplateMap (const GALGAS_gtlTemplateMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap & GALGAS_gtlTemplateMap::operator = (const GALGAS_gtlTemplateMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlTemplateMap result ;
@@ -1470,7 +1469,7 @@ GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::constructor_emptyMap (LOCATION_ARGS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::constructor_mapWithMapToOverride (const GALGAS_gtlTemplateMap & inMapToOverride
                                                                                COMMA_LOCATION_ARGS) {
@@ -1479,7 +1478,7 @@ GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::constructor_mapWithMapToOverride (c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::getter_overriddenMap (C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) const {
@@ -1488,7 +1487,7 @@ GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::getter_overriddenMap (C_Compiler * 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTemplateMap::addAssign_operation (const GALGAS_lstring & inKey,
                                                  const GALGAS_gtlTemplate & inArgument0,
@@ -1504,7 +1503,7 @@ void GALGAS_gtlTemplateMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTemplateMap::setter_put (GALGAS_lstring inKey,
                                         GALGAS_gtlTemplate inArgument0,
@@ -1520,11 +1519,11 @@ void GALGAS_gtlTemplateMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlTemplateMap_get = "there is no template at path '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTemplateMap::method_get (GALGAS_lstring inKey,
                                         GALGAS_gtlTemplate & outArgument0,
@@ -1542,7 +1541,7 @@ void GALGAS_gtlTemplateMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplate GALGAS_gtlTemplateMap::getter_aTemplateForKey (const GALGAS_string & inKey,
                                                                   C_Compiler * inCompiler
@@ -1557,7 +1556,7 @@ GALGAS_gtlTemplate GALGAS_gtlTemplateMap::getter_aTemplateForKey (const GALGAS_s
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTemplateMap::setter_setATemplateForKey (GALGAS_gtlTemplate inAttributeValue,
                                                        GALGAS_string inKey,
@@ -1571,7 +1570,7 @@ void GALGAS_gtlTemplateMap::setter_setATemplateForKey (GALGAS_gtlTemplate inAttr
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlTemplateMap * GALGAS_gtlTemplateMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
@@ -1581,7 +1580,7 @@ cMapElement_gtlTemplateMap * GALGAS_gtlTemplateMap::readWriteAccessForWithInstru
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlTemplateMap::cEnumerator_gtlTemplateMap (const GALGAS_gtlTemplateMap & inEnumeratedObject,
                                                         const typeEnumerationOrder inOrder) :
@@ -1589,7 +1588,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element cEnumerator_gtlTemplateMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlTemplateMap * p = (const cMapElement_gtlTemplateMap *) currentObjectPtr (THERE) ;
@@ -1597,7 +1596,7 @@ GALGAS_gtlTemplateMap_2D_element cEnumerator_gtlTemplateMap::current (LOCATION_A
   return GALGAS_gtlTemplateMap_2D_element (p->mProperty_lkey, p->mProperty_aTemplate) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlTemplateMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -1605,7 +1604,7 @@ GALGAS_lstring cEnumerator_gtlTemplateMap::current_lkey (LOCATION_ARGS) const {
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplate cEnumerator_gtlTemplateMap::current_aTemplate (LOCATION_ARGS) const {
   const cMapElement_gtlTemplateMap * p = (const cMapElement_gtlTemplateMap *) currentObjectPtr (THERE) ;
@@ -1615,23 +1614,23 @@ GALGAS_gtlTemplate cEnumerator_gtlTemplateMap::current_aTemplate (LOCATION_ARGS)
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @gtlTemplateMap type                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlTemplateMap ("gtlTemplateMap",
                                        NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlTemplateMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlTemplateMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlTemplateMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -1641,7 +1640,7 @@ AC_GALGAS_root * GALGAS_gtlTemplateMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::extractObject (const GALGAS_object & inObject,
                                                             C_Compiler * inCompiler
@@ -1658,11 +1657,11 @@ GALGAS_gtlTemplateMap GALGAS_gtlTemplateMap::extractObject (const GALGAS_object 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension method '@gtlTemplateMap getTemplate'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionSetter_getTemplate (GALGAS_gtlTemplateMap & ioObject,
                                   const GALGAS_gtlContext constinArgument_context,
@@ -1707,7 +1706,7 @@ void extensionSetter_getTemplate (GALGAS_gtlTemplateMap & ioObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlFuncMap::cMapElement_gtlFuncMap (const GALGAS_lstring & inKey,
                                                 const GALGAS_gtlFunction & in_function
@@ -1716,13 +1715,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_function (in_function) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlFuncMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_function.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlFuncMap::copy (void) {
   cMapElement * result = NULL ;
@@ -1730,7 +1729,7 @@ cMapElement * cMapElement_gtlFuncMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlFuncMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -1739,7 +1738,7 @@ void cMapElement_gtlFuncMap::description (C_String & ioString, const int32_t inI
   mProperty_function.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlFuncMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlFuncMap * operand = (cMapElement_gtlFuncMap *) inOperand ;
@@ -1750,26 +1749,26 @@ typeComparisonResult cMapElement_gtlFuncMap::compare (const cCollectionElement *
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap::GALGAS_gtlFuncMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap::GALGAS_gtlFuncMap (const GALGAS_gtlFuncMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap & GALGAS_gtlFuncMap::operator = (const GALGAS_gtlFuncMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap GALGAS_gtlFuncMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlFuncMap result ;
@@ -1777,7 +1776,7 @@ GALGAS_gtlFuncMap GALGAS_gtlFuncMap::constructor_emptyMap (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap GALGAS_gtlFuncMap::constructor_mapWithMapToOverride (const GALGAS_gtlFuncMap & inMapToOverride
                                                                        COMMA_LOCATION_ARGS) {
@@ -1786,7 +1785,7 @@ GALGAS_gtlFuncMap GALGAS_gtlFuncMap::constructor_mapWithMapToOverride (const GAL
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap GALGAS_gtlFuncMap::getter_overriddenMap (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const {
@@ -1795,7 +1794,7 @@ GALGAS_gtlFuncMap GALGAS_gtlFuncMap::getter_overriddenMap (C_Compiler * inCompil
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlFuncMap::addAssign_operation (const GALGAS_lstring & inKey,
                                              const GALGAS_gtlFunction & inArgument0,
@@ -1811,7 +1810,7 @@ void GALGAS_gtlFuncMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlFuncMap::setter_put (GALGAS_lstring inKey,
                                     GALGAS_gtlFunction inArgument0,
@@ -1827,11 +1826,11 @@ void GALGAS_gtlFuncMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlFuncMap_get = "there is no function named '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlFuncMap::method_get (GALGAS_lstring inKey,
                                     GALGAS_gtlFunction & outArgument0,
@@ -1849,7 +1848,7 @@ void GALGAS_gtlFuncMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFunction GALGAS_gtlFuncMap::getter_functionForKey (const GALGAS_string & inKey,
                                                              C_Compiler * inCompiler
@@ -1864,7 +1863,7 @@ GALGAS_gtlFunction GALGAS_gtlFuncMap::getter_functionForKey (const GALGAS_string
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlFuncMap::setter_setFunctionForKey (GALGAS_gtlFunction inAttributeValue,
                                                   GALGAS_string inKey,
@@ -1878,7 +1877,7 @@ void GALGAS_gtlFuncMap::setter_setFunctionForKey (GALGAS_gtlFunction inAttribute
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlFuncMap * GALGAS_gtlFuncMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                const GALGAS_string & inKey
@@ -1888,7 +1887,7 @@ cMapElement_gtlFuncMap * GALGAS_gtlFuncMap::readWriteAccessForWithInstruction (C
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlFuncMap::cEnumerator_gtlFuncMap (const GALGAS_gtlFuncMap & inEnumeratedObject,
                                                 const typeEnumerationOrder inOrder) :
@@ -1896,7 +1895,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element cEnumerator_gtlFuncMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlFuncMap * p = (const cMapElement_gtlFuncMap *) currentObjectPtr (THERE) ;
@@ -1904,7 +1903,7 @@ GALGAS_gtlFuncMap_2D_element cEnumerator_gtlFuncMap::current (LOCATION_ARGS) con
   return GALGAS_gtlFuncMap_2D_element (p->mProperty_lkey, p->mProperty_function) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlFuncMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -1912,7 +1911,7 @@ GALGAS_lstring cEnumerator_gtlFuncMap::current_lkey (LOCATION_ARGS) const {
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFunction cEnumerator_gtlFuncMap::current_function (LOCATION_ARGS) const {
   const cMapElement_gtlFuncMap * p = (const cMapElement_gtlFuncMap *) currentObjectPtr (THERE) ;
@@ -1922,23 +1921,23 @@ GALGAS_gtlFunction cEnumerator_gtlFuncMap::current_function (LOCATION_ARGS) cons
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @gtlFuncMap type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlFuncMap ("gtlFuncMap",
                                    NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlFuncMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlFuncMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlFuncMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -1948,7 +1947,7 @@ AC_GALGAS_root * GALGAS_gtlFuncMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap GALGAS_gtlFuncMap::extractObject (const GALGAS_object & inObject,
                                                     C_Compiler * inCompiler
@@ -1965,7 +1964,7 @@ GALGAS_gtlFuncMap GALGAS_gtlFuncMap::extractObject (const GALGAS_object & inObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlGetterMap::cMapElement_gtlGetterMap (const GALGAS_lstring & inKey,
                                                     const GALGAS_gtlGetter & in_theGetter
@@ -1974,13 +1973,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_theGetter (in_theGetter) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlGetterMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_theGetter.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlGetterMap::copy (void) {
   cMapElement * result = NULL ;
@@ -1988,7 +1987,7 @@ cMapElement * cMapElement_gtlGetterMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlGetterMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -1997,7 +1996,7 @@ void cMapElement_gtlGetterMap::description (C_String & ioString, const int32_t i
   mProperty_theGetter.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlGetterMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlGetterMap * operand = (cMapElement_gtlGetterMap *) inOperand ;
@@ -2008,26 +2007,26 @@ typeComparisonResult cMapElement_gtlGetterMap::compare (const cCollectionElement
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap::GALGAS_gtlGetterMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap::GALGAS_gtlGetterMap (const GALGAS_gtlGetterMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap & GALGAS_gtlGetterMap::operator = (const GALGAS_gtlGetterMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap GALGAS_gtlGetterMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlGetterMap result ;
@@ -2035,7 +2034,7 @@ GALGAS_gtlGetterMap GALGAS_gtlGetterMap::constructor_emptyMap (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap GALGAS_gtlGetterMap::constructor_mapWithMapToOverride (const GALGAS_gtlGetterMap & inMapToOverride
                                                                            COMMA_LOCATION_ARGS) {
@@ -2044,7 +2043,7 @@ GALGAS_gtlGetterMap GALGAS_gtlGetterMap::constructor_mapWithMapToOverride (const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap GALGAS_gtlGetterMap::getter_overriddenMap (C_Compiler * inCompiler
                                                                COMMA_LOCATION_ARGS) const {
@@ -2053,7 +2052,7 @@ GALGAS_gtlGetterMap GALGAS_gtlGetterMap::getter_overriddenMap (C_Compiler * inCo
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlGetterMap::addAssign_operation (const GALGAS_lstring & inKey,
                                                const GALGAS_gtlGetter & inArgument0,
@@ -2069,7 +2068,7 @@ void GALGAS_gtlGetterMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlGetterMap::setter_put (GALGAS_lstring inKey,
                                       GALGAS_gtlGetter inArgument0,
@@ -2085,11 +2084,11 @@ void GALGAS_gtlGetterMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlGetterMap_get = "there is no getter named '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlGetterMap::method_get (GALGAS_lstring inKey,
                                       GALGAS_gtlGetter & outArgument0,
@@ -2107,7 +2106,7 @@ void GALGAS_gtlGetterMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetter GALGAS_gtlGetterMap::getter_theGetterForKey (const GALGAS_string & inKey,
                                                               C_Compiler * inCompiler
@@ -2122,7 +2121,7 @@ GALGAS_gtlGetter GALGAS_gtlGetterMap::getter_theGetterForKey (const GALGAS_strin
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlGetterMap::setter_setTheGetterForKey (GALGAS_gtlGetter inAttributeValue,
                                                      GALGAS_string inKey,
@@ -2136,7 +2135,7 @@ void GALGAS_gtlGetterMap::setter_setTheGetterForKey (GALGAS_gtlGetter inAttribut
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlGetterMap * GALGAS_gtlGetterMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                    const GALGAS_string & inKey
@@ -2146,7 +2145,7 @@ cMapElement_gtlGetterMap * GALGAS_gtlGetterMap::readWriteAccessForWithInstructio
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlGetterMap::cEnumerator_gtlGetterMap (const GALGAS_gtlGetterMap & inEnumeratedObject,
                                                     const typeEnumerationOrder inOrder) :
@@ -2154,7 +2153,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap_2D_element cEnumerator_gtlGetterMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlGetterMap * p = (const cMapElement_gtlGetterMap *) currentObjectPtr (THERE) ;
@@ -2162,7 +2161,7 @@ GALGAS_gtlGetterMap_2D_element cEnumerator_gtlGetterMap::current (LOCATION_ARGS)
   return GALGAS_gtlGetterMap_2D_element (p->mProperty_lkey, p->mProperty_theGetter) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlGetterMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -2170,7 +2169,7 @@ GALGAS_lstring cEnumerator_gtlGetterMap::current_lkey (LOCATION_ARGS) const {
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetter cEnumerator_gtlGetterMap::current_theGetter (LOCATION_ARGS) const {
   const cMapElement_gtlGetterMap * p = (const cMapElement_gtlGetterMap *) currentObjectPtr (THERE) ;
@@ -2180,23 +2179,23 @@ GALGAS_gtlGetter cEnumerator_gtlGetterMap::current_theGetter (LOCATION_ARGS) con
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @gtlGetterMap type                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlGetterMap ("gtlGetterMap",
                                      NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlGetterMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlGetterMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlGetterMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -2206,7 +2205,7 @@ AC_GALGAS_root * GALGAS_gtlGetterMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap GALGAS_gtlGetterMap::extractObject (const GALGAS_object & inObject,
                                                         C_Compiler * inCompiler
@@ -2223,7 +2222,7 @@ GALGAS_gtlGetterMap GALGAS_gtlGetterMap::extractObject (const GALGAS_object & in
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlSetterMap::cMapElement_gtlSetterMap (const GALGAS_lstring & inKey,
                                                     const GALGAS_gtlSetter & in_theSetter
@@ -2232,13 +2231,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_theSetter (in_theSetter) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlSetterMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_theSetter.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlSetterMap::copy (void) {
   cMapElement * result = NULL ;
@@ -2246,7 +2245,7 @@ cMapElement * cMapElement_gtlSetterMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlSetterMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -2255,7 +2254,7 @@ void cMapElement_gtlSetterMap::description (C_String & ioString, const int32_t i
   mProperty_theSetter.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlSetterMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlSetterMap * operand = (cMapElement_gtlSetterMap *) inOperand ;
@@ -2266,26 +2265,26 @@ typeComparisonResult cMapElement_gtlSetterMap::compare (const cCollectionElement
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap::GALGAS_gtlSetterMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap::GALGAS_gtlSetterMap (const GALGAS_gtlSetterMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap & GALGAS_gtlSetterMap::operator = (const GALGAS_gtlSetterMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap GALGAS_gtlSetterMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlSetterMap result ;
@@ -2293,7 +2292,7 @@ GALGAS_gtlSetterMap GALGAS_gtlSetterMap::constructor_emptyMap (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap GALGAS_gtlSetterMap::constructor_mapWithMapToOverride (const GALGAS_gtlSetterMap & inMapToOverride
                                                                            COMMA_LOCATION_ARGS) {
@@ -2302,7 +2301,7 @@ GALGAS_gtlSetterMap GALGAS_gtlSetterMap::constructor_mapWithMapToOverride (const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap GALGAS_gtlSetterMap::getter_overriddenMap (C_Compiler * inCompiler
                                                                COMMA_LOCATION_ARGS) const {
@@ -2311,7 +2310,7 @@ GALGAS_gtlSetterMap GALGAS_gtlSetterMap::getter_overriddenMap (C_Compiler * inCo
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlSetterMap::addAssign_operation (const GALGAS_lstring & inKey,
                                                const GALGAS_gtlSetter & inArgument0,
@@ -2327,7 +2326,7 @@ void GALGAS_gtlSetterMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlSetterMap::setter_put (GALGAS_lstring inKey,
                                       GALGAS_gtlSetter inArgument0,
@@ -2343,11 +2342,11 @@ void GALGAS_gtlSetterMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlSetterMap_get = "there is no setter named '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlSetterMap::method_get (GALGAS_lstring inKey,
                                       GALGAS_gtlSetter & outArgument0,
@@ -2365,7 +2364,7 @@ void GALGAS_gtlSetterMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetter GALGAS_gtlSetterMap::getter_theSetterForKey (const GALGAS_string & inKey,
                                                               C_Compiler * inCompiler
@@ -2380,7 +2379,7 @@ GALGAS_gtlSetter GALGAS_gtlSetterMap::getter_theSetterForKey (const GALGAS_strin
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlSetterMap::setter_setTheSetterForKey (GALGAS_gtlSetter inAttributeValue,
                                                      GALGAS_string inKey,
@@ -2394,7 +2393,7 @@ void GALGAS_gtlSetterMap::setter_setTheSetterForKey (GALGAS_gtlSetter inAttribut
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlSetterMap * GALGAS_gtlSetterMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                    const GALGAS_string & inKey
@@ -2404,7 +2403,7 @@ cMapElement_gtlSetterMap * GALGAS_gtlSetterMap::readWriteAccessForWithInstructio
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlSetterMap::cEnumerator_gtlSetterMap (const GALGAS_gtlSetterMap & inEnumeratedObject,
                                                     const typeEnumerationOrder inOrder) :
@@ -2412,7 +2411,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap_2D_element cEnumerator_gtlSetterMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlSetterMap * p = (const cMapElement_gtlSetterMap *) currentObjectPtr (THERE) ;
@@ -2420,7 +2419,7 @@ GALGAS_gtlSetterMap_2D_element cEnumerator_gtlSetterMap::current (LOCATION_ARGS)
   return GALGAS_gtlSetterMap_2D_element (p->mProperty_lkey, p->mProperty_theSetter) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlSetterMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -2428,7 +2427,7 @@ GALGAS_lstring cEnumerator_gtlSetterMap::current_lkey (LOCATION_ARGS) const {
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetter cEnumerator_gtlSetterMap::current_theSetter (LOCATION_ARGS) const {
   const cMapElement_gtlSetterMap * p = (const cMapElement_gtlSetterMap *) currentObjectPtr (THERE) ;
@@ -2438,23 +2437,23 @@ GALGAS_gtlSetter cEnumerator_gtlSetterMap::current_theSetter (LOCATION_ARGS) con
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @gtlSetterMap type                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlSetterMap ("gtlSetterMap",
                                      NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlSetterMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlSetterMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlSetterMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -2464,7 +2463,7 @@ AC_GALGAS_root * GALGAS_gtlSetterMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap GALGAS_gtlSetterMap::extractObject (const GALGAS_object & inObject,
                                                         C_Compiler * inCompiler
@@ -2481,9 +2480,9 @@ GALGAS_gtlSetterMap GALGAS_gtlSetterMap::extractObject (const GALGAS_object & in
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 
@@ -2503,45 +2502,45 @@ typeComparisonResult GALGAS_gtlVarItem::objectCompare (const GALGAS_gtlVarItem &
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarItem::GALGAS_gtlVarItem (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarItem::GALGAS_gtlVarItem (const cPtr_gtlVarItem * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlVarItem) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                         Pointer class for @gtlVarItem class                                         *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlVarItem::cPtr_gtlVarItem (LOCATION_ARGS) :
 acPtr_class (THERE) {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @gtlVarItem type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlVarItem ("gtlVarItem",
                                    NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlVarItem::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVarItem ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlVarItem::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -2551,7 +2550,7 @@ AC_GALGAS_root * GALGAS_gtlVarItem::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarItem GALGAS_gtlVarItem::extractObject (const GALGAS_object & inObject,
                                                     C_Compiler * inCompiler
@@ -2568,33 +2567,33 @@ GALGAS_gtlVarItem GALGAS_gtlVarItem::extractObject (const GALGAS_object & inObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Abstract extension getter '@gtlVarItem stringPath'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlVarItem_stringPath> gExtensionGetterTable_gtlVarItem_stringPath ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_stringPath (const int32_t inClassIndex,
                                       enterExtensionGetter_gtlVarItem_stringPath inGetter) {
   gExtensionGetterTable_gtlVarItem_stringPath.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlVarItem_stringPath (void) {
   gExtensionGetterTable_gtlVarItem_stringPath.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlVarItem_stringPath (NULL,
                                                   freeExtensionGetter_gtlVarItem_stringPath) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string callExtensionGetter_stringPath (const cPtr_gtlVarItem * inObject,
                                               const GALGAS_gtlContext in_exeContext,
@@ -2631,33 +2630,33 @@ GALGAS_string callExtensionGetter_stringPath (const cPtr_gtlVarItem * inObject,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Abstract extension getter '@gtlVarItem location'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlVarItem_location> gExtensionGetterTable_gtlVarItem_location ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_location (const int32_t inClassIndex,
                                     enterExtensionGetter_gtlVarItem_location inGetter) {
   gExtensionGetterTable_gtlVarItem_location.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlVarItem_location (void) {
   gExtensionGetterTable_gtlVarItem_location.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlVarItem_location (NULL,
                                                 freeExtensionGetter_gtlVarItem_location) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_location callExtensionGetter_location (const cPtr_gtlVarItem * inObject,
                                               C_Compiler * inCompiler
@@ -2691,33 +2690,33 @@ GALGAS_location callExtensionGetter_location (const cPtr_gtlVarItem * inObject,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Abstract extension method '@gtlVarItem setInContext'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlVarItem_setInContext> gExtensionMethodTable_gtlVarItem_setInContext ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_setInContext (const int32_t inClassIndex,
                                         extensionMethodSignature_gtlVarItem_setInContext inMethod) {
   gExtensionMethodTable_gtlVarItem_setInContext.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlVarItem_setInContext (void) {
   gExtensionMethodTable_gtlVarItem_setInContext.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlVarItem_setInContext (NULL,
                                                     freeExtensionMethod_gtlVarItem_setInContext) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_setInContext (const cPtr_gtlVarItem * inObject,
                                        const GALGAS_gtlContext constin_exeContext,
@@ -2756,33 +2755,33 @@ void callExtensionMethod_setInContext (const cPtr_gtlVarItem * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Abstract extension getter '@gtlVarItem getInContext'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlVarItem_getInContext> gExtensionGetterTable_gtlVarItem_getInContext ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_getInContext (const int32_t inClassIndex,
                                         enterExtensionGetter_gtlVarItem_getInContext inGetter) {
   gExtensionGetterTable_gtlVarItem_getInContext.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlVarItem_getInContext (void) {
   gExtensionGetterTable_gtlVarItem_getInContext.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlVarItem_getInContext (NULL,
                                                     freeExtensionGetter_gtlVarItem_getInContext) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData callExtensionGetter_getInContext (const cPtr_gtlVarItem * inObject,
                                                  const GALGAS_gtlContext in_exeContext,
@@ -2821,33 +2820,33 @@ GALGAS_gtlData callExtensionGetter_getInContext (const cPtr_gtlVarItem * inObjec
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Abstract extension getter '@gtlVarItem existsInContext'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlVarItem_existsInContext> gExtensionGetterTable_gtlVarItem_existsInContext ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_existsInContext (const int32_t inClassIndex,
                                            enterExtensionGetter_gtlVarItem_existsInContext inGetter) {
   gExtensionGetterTable_gtlVarItem_existsInContext.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlVarItem_existsInContext (void) {
   gExtensionGetterTable_gtlVarItem_existsInContext.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlVarItem_existsInContext (NULL,
                                                        freeExtensionGetter_gtlVarItem_existsInContext) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool callExtensionGetter_existsInContext (const cPtr_gtlVarItem * inObject,
                                                  const GALGAS_gtlContext in_exeContext,
@@ -2886,33 +2885,33 @@ GALGAS_bool callExtensionGetter_existsInContext (const cPtr_gtlVarItem * inObjec
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Abstract extension method '@gtlVarItem deleteInContext'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlVarItem_deleteInContext> gExtensionMethodTable_gtlVarItem_deleteInContext ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_deleteInContext (const int32_t inClassIndex,
                                            extensionMethodSignature_gtlVarItem_deleteInContext inMethod) {
   gExtensionMethodTable_gtlVarItem_deleteInContext.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlVarItem_deleteInContext (void) {
   gExtensionMethodTable_gtlVarItem_deleteInContext.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlVarItem_deleteInContext (NULL,
                                                        freeExtensionMethod_gtlVarItem_deleteInContext) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_deleteInContext (const cPtr_gtlVarItem * inObject,
                                           const GALGAS_gtlContext constin_exeContext,
@@ -2950,11 +2949,11 @@ void callExtensionMethod_deleteInContext (const cPtr_gtlVarItem * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Class for element of '@gtlVarPath' list                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlVarPath : public cCollectionElement {
   public : GALGAS_gtlVarPath_2D_element mObject ;
@@ -2976,7 +2975,7 @@ class cCollectionElement_gtlVarPath : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlVarPath::cCollectionElement_gtlVarPath (const GALGAS_gtlVarItem & in_item
                                                               COMMA_LOCATION_ARGS) :
@@ -2984,13 +2983,13 @@ cCollectionElement (THERE),
 mObject (in_item) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlVarPath::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlVarPath::copy (void) {
   cCollectionElement * result = NULL ;
@@ -2998,7 +2997,7 @@ cCollectionElement * cCollectionElement_gtlVarPath::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlVarPath::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -3007,7 +3006,7 @@ void cCollectionElement_gtlVarPath::description (C_String & ioString, const int3
   mObject.mProperty_item.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlVarPath::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlVarPath * operand = (cCollectionElement_gtlVarPath *) inOperand ;
@@ -3015,25 +3014,25 @@ typeComparisonResult cCollectionElement_gtlVarPath::compare (const cCollectionEl
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath::GALGAS_gtlVarPath (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath::GALGAS_gtlVarPath (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlVarPath  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::constructor_listWithValue (const GALGAS_gtlVarItem & inOperand0
                                                                 COMMA_LOCATION_ARGS) {
@@ -3047,7 +3046,7 @@ GALGAS_gtlVarPath GALGAS_gtlVarPath::constructor_listWithValue (const GALGAS_gtl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                    const GALGAS_gtlVarItem & in_item
@@ -3058,7 +3057,7 @@ void GALGAS_gtlVarPath::makeAttributesFromObjects (capCollectionElement & outAtt
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::addAssign_operation (const GALGAS_gtlVarItem & inOperand0
                                              COMMA_LOCATION_ARGS) {
@@ -3072,7 +3071,7 @@ void GALGAS_gtlVarPath::addAssign_operation (const GALGAS_gtlVarItem & inOperand
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::setter_insertAtIndex (const GALGAS_gtlVarItem inOperand0,
                                               const GALGAS_uint inInsertionIndex,
@@ -3088,7 +3087,7 @@ void GALGAS_gtlVarPath::setter_insertAtIndex (const GALGAS_gtlVarItem inOperand0
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::setter_removeAtIndex (GALGAS_gtlVarItem & outOperand0,
                                               const GALGAS_uint inRemoveIndex,
@@ -3107,7 +3106,7 @@ void GALGAS_gtlVarPath::setter_removeAtIndex (GALGAS_gtlVarItem & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::setter_popFirst (GALGAS_gtlVarItem & outOperand0,
                                          C_Compiler * inCompiler
@@ -3123,7 +3122,7 @@ void GALGAS_gtlVarPath::setter_popFirst (GALGAS_gtlVarItem & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::setter_popLast (GALGAS_gtlVarItem & outOperand0,
                                         C_Compiler * inCompiler
@@ -3139,7 +3138,7 @@ void GALGAS_gtlVarPath::setter_popLast (GALGAS_gtlVarItem & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::method_first (GALGAS_gtlVarItem & outOperand0,
                                       C_Compiler * inCompiler
@@ -3155,7 +3154,7 @@ void GALGAS_gtlVarPath::method_first (GALGAS_gtlVarItem & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::method_last (GALGAS_gtlVarItem & outOperand0,
                                      C_Compiler * inCompiler
@@ -3171,7 +3170,7 @@ void GALGAS_gtlVarPath::method_last (GALGAS_gtlVarItem & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::add_operation (const GALGAS_gtlVarPath & inOperand,
                                                     C_Compiler * /* inCompiler */
@@ -3184,7 +3183,7 @@ GALGAS_gtlVarPath GALGAS_gtlVarPath::add_operation (const GALGAS_gtlVarPath & in
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::getter_subListWithRange (const GALGAS_range & inRange,
                                                               C_Compiler * inCompiler
@@ -3194,7 +3193,7 @@ GALGAS_gtlVarPath GALGAS_gtlVarPath::getter_subListWithRange (const GALGAS_range
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                               C_Compiler * inCompiler
@@ -3204,7 +3203,7 @@ GALGAS_gtlVarPath GALGAS_gtlVarPath::getter_subListFromIndex (const GALGAS_uint 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                             C_Compiler * inCompiler
@@ -3214,7 +3213,7 @@ GALGAS_gtlVarPath GALGAS_gtlVarPath::getter_subListToIndex (const GALGAS_uint & 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarPath::plusAssign_operation (const GALGAS_gtlVarPath inOperand,
                                               C_Compiler * /* inCompiler */
@@ -3222,7 +3221,7 @@ void GALGAS_gtlVarPath::plusAssign_operation (const GALGAS_gtlVarPath inOperand,
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarItem GALGAS_gtlVarPath::getter_itemAtIndex (const GALGAS_uint & inIndex,
                                                          C_Compiler * inCompiler
@@ -3239,7 +3238,7 @@ GALGAS_gtlVarItem GALGAS_gtlVarPath::getter_itemAtIndex (const GALGAS_uint & inI
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlVarPath::cEnumerator_gtlVarPath (const GALGAS_gtlVarPath & inEnumeratedObject,
                                                 const typeEnumerationOrder inOrder) :
@@ -3247,7 +3246,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath_2D_element cEnumerator_gtlVarPath::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlVarPath * p = (const cCollectionElement_gtlVarPath *) currentObjectPtr (THERE) ;
@@ -3256,7 +3255,7 @@ GALGAS_gtlVarPath_2D_element cEnumerator_gtlVarPath::current (LOCATION_ARGS) con
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarItem cEnumerator_gtlVarPath::current_item (LOCATION_ARGS) const {
   const cCollectionElement_gtlVarPath * p = (const cCollectionElement_gtlVarPath *) currentObjectPtr (THERE) ;
@@ -3267,23 +3266,23 @@ GALGAS_gtlVarItem cEnumerator_gtlVarPath::current_item (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @gtlVarPath type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlVarPath ("gtlVarPath",
                                    NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlVarPath::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVarPath ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlVarPath::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -3293,7 +3292,7 @@ AC_GALGAS_root * GALGAS_gtlVarPath::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlVarPath::extractObject (const GALGAS_object & inObject,
                                                     C_Compiler * inCompiler
@@ -3310,11 +3309,11 @@ GALGAS_gtlVarPath GALGAS_gtlVarPath::extractObject (const GALGAS_object & inObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension Getter '@gtlVarPath pathAsFunctionName'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring extensionGetter_pathAsFunctionName (const GALGAS_gtlVarPath & inObject,
                                                    C_Compiler * inCompiler
@@ -3339,11 +3338,11 @@ GALGAS_lstring extensionGetter_pathAsFunctionName (const GALGAS_gtlVarPath & inO
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Extension Getter '@gtlVarPath stringPath'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string extensionGetter_stringPath (const GALGAS_gtlVarPath & inObject,
                                           const GALGAS_gtlContext & constinArgument_exeContext,
@@ -3369,11 +3368,11 @@ GALGAS_string extensionGetter_stringPath (const GALGAS_gtlVarPath & inObject,
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Extension method '@gtlVarPath set'                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_set (const GALGAS_gtlVarPath inObject,
                           const GALGAS_gtlContext constinArgument_exeContext,
@@ -3404,11 +3403,11 @@ void extensionMethod_set (const GALGAS_gtlVarPath inObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Extension Getter '@gtlVarPath get'                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData extensionGetter_get (const GALGAS_gtlVarPath & inObject,
                                     const GALGAS_gtlContext & constinArgument_exeContext,
@@ -3436,11 +3435,11 @@ GALGAS_gtlData extensionGetter_get (const GALGAS_gtlVarPath & inObject,
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Extension Getter '@gtlVarPath exists'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool extensionGetter_exists (const GALGAS_gtlVarPath & inObject,
                                     const GALGAS_gtlContext & constinArgument_exeContext,
@@ -3468,11 +3467,11 @@ GALGAS_bool extensionGetter_exists (const GALGAS_gtlVarPath & inObject,
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Extension method '@gtlVarPath delete'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_delete (const GALGAS_gtlVarPath inObject,
                              const GALGAS_gtlContext constinArgument_exeContext,
@@ -3494,11 +3493,11 @@ void extensionMethod_delete (const GALGAS_gtlVarPath inObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Extension Getter '@gtlVarPath location'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_location extensionGetter_location (const GALGAS_gtlVarPath & inObject,
                                           C_Compiler * inCompiler
@@ -3515,11 +3514,11 @@ GALGAS_location extensionGetter_location (const GALGAS_gtlVarPath & inObject,
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Class for element of '@gtlExpressionList' list                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlExpressionList : public cCollectionElement {
   public : GALGAS_gtlExpressionList_2D_element mObject ;
@@ -3541,7 +3540,7 @@ class cCollectionElement_gtlExpressionList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlExpressionList::cCollectionElement_gtlExpressionList (const GALGAS_gtlExpression & in_expression
                                                                             COMMA_LOCATION_ARGS) :
@@ -3549,13 +3548,13 @@ cCollectionElement (THERE),
 mObject (in_expression) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlExpressionList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlExpressionList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -3563,7 +3562,7 @@ cCollectionElement * cCollectionElement_gtlExpressionList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlExpressionList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -3572,7 +3571,7 @@ void cCollectionElement_gtlExpressionList::description (C_String & ioString, con
   mObject.mProperty_expression.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlExpressionList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlExpressionList * operand = (cCollectionElement_gtlExpressionList *) inOperand ;
@@ -3580,25 +3579,25 @@ typeComparisonResult cCollectionElement_gtlExpressionList::compare (const cColle
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList::GALGAS_gtlExpressionList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList::GALGAS_gtlExpressionList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlExpressionList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::constructor_listWithValue (const GALGAS_gtlExpression & inOperand0
                                                                               COMMA_LOCATION_ARGS) {
@@ -3612,7 +3611,7 @@ GALGAS_gtlExpressionList GALGAS_gtlExpressionList::constructor_listWithValue (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                           const GALGAS_gtlExpression & in_expression
@@ -3623,7 +3622,7 @@ void GALGAS_gtlExpressionList::makeAttributesFromObjects (capCollectionElement &
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::addAssign_operation (const GALGAS_gtlExpression & inOperand0
                                                     COMMA_LOCATION_ARGS) {
@@ -3637,7 +3636,7 @@ void GALGAS_gtlExpressionList::addAssign_operation (const GALGAS_gtlExpression &
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::setter_insertAtIndex (const GALGAS_gtlExpression inOperand0,
                                                      const GALGAS_uint inInsertionIndex,
@@ -3653,7 +3652,7 @@ void GALGAS_gtlExpressionList::setter_insertAtIndex (const GALGAS_gtlExpression 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::setter_removeAtIndex (GALGAS_gtlExpression & outOperand0,
                                                      const GALGAS_uint inRemoveIndex,
@@ -3672,7 +3671,7 @@ void GALGAS_gtlExpressionList::setter_removeAtIndex (GALGAS_gtlExpression & outO
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::setter_popFirst (GALGAS_gtlExpression & outOperand0,
                                                 C_Compiler * inCompiler
@@ -3688,7 +3687,7 @@ void GALGAS_gtlExpressionList::setter_popFirst (GALGAS_gtlExpression & outOperan
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::setter_popLast (GALGAS_gtlExpression & outOperand0,
                                                C_Compiler * inCompiler
@@ -3704,7 +3703,7 @@ void GALGAS_gtlExpressionList::setter_popLast (GALGAS_gtlExpression & outOperand
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::method_first (GALGAS_gtlExpression & outOperand0,
                                              C_Compiler * inCompiler
@@ -3720,7 +3719,7 @@ void GALGAS_gtlExpressionList::method_first (GALGAS_gtlExpression & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::method_last (GALGAS_gtlExpression & outOperand0,
                                             C_Compiler * inCompiler
@@ -3736,7 +3735,7 @@ void GALGAS_gtlExpressionList::method_last (GALGAS_gtlExpression & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::add_operation (const GALGAS_gtlExpressionList & inOperand,
                                                                   C_Compiler * /* inCompiler */
@@ -3749,7 +3748,7 @@ GALGAS_gtlExpressionList GALGAS_gtlExpressionList::add_operation (const GALGAS_g
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                             C_Compiler * inCompiler
@@ -3759,7 +3758,7 @@ GALGAS_gtlExpressionList GALGAS_gtlExpressionList::getter_subListWithRange (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                             C_Compiler * inCompiler
@@ -3769,7 +3768,7 @@ GALGAS_gtlExpressionList GALGAS_gtlExpressionList::getter_subListFromIndex (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                           C_Compiler * inCompiler
@@ -3779,7 +3778,7 @@ GALGAS_gtlExpressionList GALGAS_gtlExpressionList::getter_subListToIndex (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList::plusAssign_operation (const GALGAS_gtlExpressionList inOperand,
                                                      C_Compiler * /* inCompiler */
@@ -3787,7 +3786,7 @@ void GALGAS_gtlExpressionList::plusAssign_operation (const GALGAS_gtlExpressionL
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression GALGAS_gtlExpressionList::getter_expressionAtIndex (const GALGAS_uint & inIndex,
                                                                          C_Compiler * inCompiler
@@ -3804,7 +3803,7 @@ GALGAS_gtlExpression GALGAS_gtlExpressionList::getter_expressionAtIndex (const G
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlExpressionList::cEnumerator_gtlExpressionList (const GALGAS_gtlExpressionList & inEnumeratedObject,
                                                               const typeEnumerationOrder inOrder) :
@@ -3812,7 +3811,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList_2D_element cEnumerator_gtlExpressionList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlExpressionList * p = (const cCollectionElement_gtlExpressionList *) currentObjectPtr (THERE) ;
@@ -3821,7 +3820,7 @@ GALGAS_gtlExpressionList_2D_element cEnumerator_gtlExpressionList::current (LOCA
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression cEnumerator_gtlExpressionList::current_expression (LOCATION_ARGS) const {
   const cCollectionElement_gtlExpressionList * p = (const cCollectionElement_gtlExpressionList *) currentObjectPtr (THERE) ;
@@ -3832,23 +3831,23 @@ GALGAS_gtlExpression cEnumerator_gtlExpressionList::current_expression (LOCATION
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @gtlExpressionList type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlExpressionList ("gtlExpressionList",
                                           NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlExpressionList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlExpressionList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlExpressionList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -3858,7 +3857,7 @@ AC_GALGAS_root * GALGAS_gtlExpressionList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList GALGAS_gtlExpressionList::extractObject (const GALGAS_object & inObject,
                                                                   C_Compiler * inCompiler
@@ -3875,11 +3874,11 @@ GALGAS_gtlExpressionList GALGAS_gtlExpressionList::extractObject (const GALGAS_o
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Extension Getter '@string gtlType'                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type extensionGetter_gtlType (const GALGAS_string & inObject,
                                      const GALGAS_location & constinArgument_location,
@@ -3968,11 +3967,11 @@ GALGAS_type extensionGetter_gtlType (const GALGAS_string & inObject,
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Class for element of '@gtlTypedArgumentList' list                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlTypedArgumentList : public cCollectionElement {
   public : GALGAS_gtlTypedArgumentList_2D_element mObject ;
@@ -3994,7 +3993,7 @@ class cCollectionElement_gtlTypedArgumentList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlTypedArgumentList::cCollectionElement_gtlTypedArgumentList (const GALGAS_type & in_type
                                                                                   COMMA_LOCATION_ARGS) :
@@ -4002,13 +4001,13 @@ cCollectionElement (THERE),
 mObject (in_type) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlTypedArgumentList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlTypedArgumentList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -4016,7 +4015,7 @@ cCollectionElement * cCollectionElement_gtlTypedArgumentList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlTypedArgumentList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -4025,7 +4024,7 @@ void cCollectionElement_gtlTypedArgumentList::description (C_String & ioString, 
   mObject.mProperty_type.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlTypedArgumentList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlTypedArgumentList * operand = (cCollectionElement_gtlTypedArgumentList *) inOperand ;
@@ -4033,25 +4032,25 @@ typeComparisonResult cCollectionElement_gtlTypedArgumentList::compare (const cCo
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList::GALGAS_gtlTypedArgumentList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList::GALGAS_gtlTypedArgumentList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlTypedArgumentList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::constructor_listWithValue (const GALGAS_type & inOperand0
                                                                                     COMMA_LOCATION_ARGS) {
@@ -4065,7 +4064,7 @@ GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::constructor_listWithVal
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                              const GALGAS_type & in_type
@@ -4076,7 +4075,7 @@ void GALGAS_gtlTypedArgumentList::makeAttributesFromObjects (capCollectionElemen
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::addAssign_operation (const GALGAS_type & inOperand0
                                                        COMMA_LOCATION_ARGS) {
@@ -4090,7 +4089,7 @@ void GALGAS_gtlTypedArgumentList::addAssign_operation (const GALGAS_type & inOpe
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::setter_insertAtIndex (const GALGAS_type inOperand0,
                                                         const GALGAS_uint inInsertionIndex,
@@ -4106,7 +4105,7 @@ void GALGAS_gtlTypedArgumentList::setter_insertAtIndex (const GALGAS_type inOper
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::setter_removeAtIndex (GALGAS_type & outOperand0,
                                                         const GALGAS_uint inRemoveIndex,
@@ -4125,7 +4124,7 @@ void GALGAS_gtlTypedArgumentList::setter_removeAtIndex (GALGAS_type & outOperand
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::setter_popFirst (GALGAS_type & outOperand0,
                                                    C_Compiler * inCompiler
@@ -4141,7 +4140,7 @@ void GALGAS_gtlTypedArgumentList::setter_popFirst (GALGAS_type & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::setter_popLast (GALGAS_type & outOperand0,
                                                   C_Compiler * inCompiler
@@ -4157,7 +4156,7 @@ void GALGAS_gtlTypedArgumentList::setter_popLast (GALGAS_type & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::method_first (GALGAS_type & outOperand0,
                                                 C_Compiler * inCompiler
@@ -4173,7 +4172,7 @@ void GALGAS_gtlTypedArgumentList::method_first (GALGAS_type & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::method_last (GALGAS_type & outOperand0,
                                                C_Compiler * inCompiler
@@ -4189,7 +4188,7 @@ void GALGAS_gtlTypedArgumentList::method_last (GALGAS_type & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::add_operation (const GALGAS_gtlTypedArgumentList & inOperand,
                                                                         C_Compiler * /* inCompiler */
@@ -4202,7 +4201,7 @@ GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::add_operation (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                                   C_Compiler * inCompiler
@@ -4212,7 +4211,7 @@ GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::getter_subListWithRange
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                                   C_Compiler * inCompiler
@@ -4222,7 +4221,7 @@ GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::getter_subListFromIndex
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                                 C_Compiler * inCompiler
@@ -4232,7 +4231,7 @@ GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::getter_subListToIndex (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTypedArgumentList::plusAssign_operation (const GALGAS_gtlTypedArgumentList inOperand,
                                                         C_Compiler * /* inCompiler */
@@ -4240,7 +4239,7 @@ void GALGAS_gtlTypedArgumentList::plusAssign_operation (const GALGAS_gtlTypedArg
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type GALGAS_gtlTypedArgumentList::getter_typeAtIndex (const GALGAS_uint & inIndex,
                                                              C_Compiler * inCompiler
@@ -4257,7 +4256,7 @@ GALGAS_type GALGAS_gtlTypedArgumentList::getter_typeAtIndex (const GALGAS_uint &
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlTypedArgumentList::cEnumerator_gtlTypedArgumentList (const GALGAS_gtlTypedArgumentList & inEnumeratedObject,
                                                                     const typeEnumerationOrder inOrder) :
@@ -4265,7 +4264,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList_2D_element cEnumerator_gtlTypedArgumentList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlTypedArgumentList * p = (const cCollectionElement_gtlTypedArgumentList *) currentObjectPtr (THERE) ;
@@ -4274,7 +4273,7 @@ GALGAS_gtlTypedArgumentList_2D_element cEnumerator_gtlTypedArgumentList::current
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type cEnumerator_gtlTypedArgumentList::current_type (LOCATION_ARGS) const {
   const cCollectionElement_gtlTypedArgumentList * p = (const cCollectionElement_gtlTypedArgumentList *) currentObjectPtr (THERE) ;
@@ -4285,23 +4284,23 @@ GALGAS_type cEnumerator_gtlTypedArgumentList::current_type (LOCATION_ARGS) const
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @gtlTypedArgumentList type                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlTypedArgumentList ("gtlTypedArgumentList",
                                              NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlTypedArgumentList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlTypedArgumentList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlTypedArgumentList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4311,7 +4310,7 @@ AC_GALGAS_root * GALGAS_gtlTypedArgumentList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::extractObject (const GALGAS_object & inObject,
                                                                         C_Compiler * inCompiler
@@ -4328,11 +4327,11 @@ GALGAS_gtlTypedArgumentList GALGAS_gtlTypedArgumentList::extractObject (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          Class for element of '@list' list                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_list : public cCollectionElement {
   public : GALGAS_list_2D_element mObject ;
@@ -4354,7 +4353,7 @@ class cCollectionElement_list : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_list::cCollectionElement_list (const GALGAS_gtlData & in_value
                                                   COMMA_LOCATION_ARGS) :
@@ -4362,13 +4361,13 @@ cCollectionElement (THERE),
 mObject (in_value) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_list::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_list::copy (void) {
   cCollectionElement * result = NULL ;
@@ -4376,7 +4375,7 @@ cCollectionElement * cCollectionElement_list::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_list::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -4385,7 +4384,7 @@ void cCollectionElement_list::description (C_String & ioString, const int32_t in
   mObject.mProperty_value.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_list::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_list * operand = (cCollectionElement_list *) inOperand ;
@@ -4393,25 +4392,25 @@ typeComparisonResult cCollectionElement_list::compare (const cCollectionElement 
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list::GALGAS_list (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list::GALGAS_list (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_list  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::constructor_listWithValue (const GALGAS_gtlData & inOperand0
                                                     COMMA_LOCATION_ARGS) {
@@ -4425,7 +4424,7 @@ GALGAS_list GALGAS_list::constructor_listWithValue (const GALGAS_gtlData & inOpe
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                              const GALGAS_gtlData & in_value
@@ -4436,7 +4435,7 @@ void GALGAS_list::makeAttributesFromObjects (capCollectionElement & outAttribute
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::addAssign_operation (const GALGAS_gtlData & inOperand0
                                        COMMA_LOCATION_ARGS) {
@@ -4450,7 +4449,7 @@ void GALGAS_list::addAssign_operation (const GALGAS_gtlData & inOperand0
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::setter_insertAtIndex (const GALGAS_gtlData inOperand0,
                                         const GALGAS_uint inInsertionIndex,
@@ -4466,7 +4465,7 @@ void GALGAS_list::setter_insertAtIndex (const GALGAS_gtlData inOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::setter_removeAtIndex (GALGAS_gtlData & outOperand0,
                                         const GALGAS_uint inRemoveIndex,
@@ -4485,7 +4484,7 @@ void GALGAS_list::setter_removeAtIndex (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::setter_popFirst (GALGAS_gtlData & outOperand0,
                                    C_Compiler * inCompiler
@@ -4501,7 +4500,7 @@ void GALGAS_list::setter_popFirst (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::setter_popLast (GALGAS_gtlData & outOperand0,
                                   C_Compiler * inCompiler
@@ -4517,7 +4516,7 @@ void GALGAS_list::setter_popLast (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::method_first (GALGAS_gtlData & outOperand0,
                                 C_Compiler * inCompiler
@@ -4533,7 +4532,7 @@ void GALGAS_list::method_first (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::method_last (GALGAS_gtlData & outOperand0,
                                C_Compiler * inCompiler
@@ -4549,7 +4548,7 @@ void GALGAS_list::method_last (GALGAS_gtlData & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::add_operation (const GALGAS_list & inOperand,
                                             C_Compiler * /* inCompiler */
@@ -4562,7 +4561,7 @@ GALGAS_list GALGAS_list::add_operation (const GALGAS_list & inOperand,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::getter_subListWithRange (const GALGAS_range & inRange,
                                                   C_Compiler * inCompiler
@@ -4572,7 +4571,7 @@ GALGAS_list GALGAS_list::getter_subListWithRange (const GALGAS_range & inRange,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                   C_Compiler * inCompiler
@@ -4582,7 +4581,7 @@ GALGAS_list GALGAS_list::getter_subListFromIndex (const GALGAS_uint & inIndex,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                 C_Compiler * inCompiler
@@ -4592,7 +4591,7 @@ GALGAS_list GALGAS_list::getter_subListToIndex (const GALGAS_uint & inIndex,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::plusAssign_operation (const GALGAS_list inOperand,
                                         C_Compiler * /* inCompiler */
@@ -4600,7 +4599,7 @@ void GALGAS_list::plusAssign_operation (const GALGAS_list inOperand,
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list::setter_setValueAtIndex (GALGAS_gtlData inOperand,
                                               GALGAS_uint inIndex,
@@ -4614,7 +4613,7 @@ void GALGAS_list::setter_setValueAtIndex (GALGAS_gtlData inOperand,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData GALGAS_list::getter_valueAtIndex (const GALGAS_uint & inIndex,
                                                  C_Compiler * inCompiler
@@ -4631,7 +4630,7 @@ GALGAS_gtlData GALGAS_list::getter_valueAtIndex (const GALGAS_uint & inIndex,
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_list::cEnumerator_list (const GALGAS_list & inEnumeratedObject,
                                     const typeEnumerationOrder inOrder) :
@@ -4639,7 +4638,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list_2D_element cEnumerator_list::current (LOCATION_ARGS) const {
   const cCollectionElement_list * p = (const cCollectionElement_list *) currentObjectPtr (THERE) ;
@@ -4648,7 +4647,7 @@ GALGAS_list_2D_element cEnumerator_list::current (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData cEnumerator_list::current_value (LOCATION_ARGS) const {
   const cCollectionElement_list * p = (const cCollectionElement_list *) currentObjectPtr (THERE) ;
@@ -4659,23 +4658,23 @@ GALGAS_gtlData cEnumerator_list::current_value (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @list type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_list ("list",
                              NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_list::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_list ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_list::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4685,7 +4684,7 @@ AC_GALGAS_root * GALGAS_list::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list GALGAS_list::extractObject (const GALGAS_object & inObject,
                                         C_Compiler * inCompiler
@@ -4702,20 +4701,20 @@ GALGAS_list GALGAS_list::extractObject (const GALGAS_object & inObject,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_lstringset::cMapElement_lstringset (const GALGAS_lstring & inKey
                                                 COMMA_LOCATION_ARGS) :
 cMapElement (inKey COMMA_THERE) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_lstringset::isValid (void) const {
   return mProperty_lkey.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_lstringset::copy (void) {
   cMapElement * result = NULL ;
@@ -4723,12 +4722,12 @@ cMapElement * cMapElement_lstringset::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_lstringset::description (C_String & /* ioString */, const int32_t /* inIndentation */) const {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_lstringset::compare (const cCollectionElement * inOperand) const {
   cMapElement_lstringset * operand = (cMapElement_lstringset *) inOperand ;
@@ -4736,26 +4735,26 @@ typeComparisonResult cMapElement_lstringset::compare (const cCollectionElement *
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset::GALGAS_lstringset (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset::GALGAS_lstringset (const GALGAS_lstringset & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset & GALGAS_lstringset::operator = (const GALGAS_lstringset & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset GALGAS_lstringset::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_lstringset result ;
@@ -4763,7 +4762,7 @@ GALGAS_lstringset GALGAS_lstringset::constructor_emptyMap (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset GALGAS_lstringset::constructor_mapWithMapToOverride (const GALGAS_lstringset & inMapToOverride
                                                                        COMMA_LOCATION_ARGS) {
@@ -4772,7 +4771,7 @@ GALGAS_lstringset GALGAS_lstringset::constructor_mapWithMapToOverride (const GAL
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset GALGAS_lstringset::getter_overriddenMap (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const {
@@ -4781,7 +4780,7 @@ GALGAS_lstringset GALGAS_lstringset::getter_overriddenMap (C_Compiler * inCompil
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_lstringset::addAssign_operation (const GALGAS_lstring & inKey,
                                              C_Compiler * inCompiler
@@ -4796,7 +4795,7 @@ void GALGAS_lstringset::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_lstringset::setter_put (GALGAS_lstring inKey,
                                     C_Compiler * inCompiler
@@ -4811,11 +4810,11 @@ void GALGAS_lstringset::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_lstringset_get = "there is no set element named '%K' to get" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_lstringset::method_get (GALGAS_lstring inKey,
                                     C_Compiler * inCompiler
@@ -4830,7 +4829,7 @@ void GALGAS_lstringset::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_lstringset::setter_del (GALGAS_lstring inKey,
                                     C_Compiler * inCompiler
@@ -4845,7 +4844,7 @@ void GALGAS_lstringset::setter_del (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_lstringset * GALGAS_lstringset::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                const GALGAS_string & inKey
@@ -4855,7 +4854,7 @@ cMapElement_lstringset * GALGAS_lstringset::readWriteAccessForWithInstruction (C
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_lstringset::cEnumerator_lstringset (const GALGAS_lstringset & inEnumeratedObject,
                                                 const typeEnumerationOrder inOrder) :
@@ -4863,7 +4862,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element cEnumerator_lstringset::current (LOCATION_ARGS) const {
   const cMapElement_lstringset * p = (const cMapElement_lstringset *) currentObjectPtr (THERE) ;
@@ -4871,7 +4870,7 @@ GALGAS_lstringset_2D_element cEnumerator_lstringset::current (LOCATION_ARGS) con
   return GALGAS_lstringset_2D_element (p->mProperty_lkey) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_lstringset::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -4881,23 +4880,23 @@ GALGAS_lstring cEnumerator_lstringset::current_lkey (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @lstringset type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_lstringset ("lstringset",
                                    NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_lstringset::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_lstringset ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_lstringset::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4907,7 +4906,7 @@ AC_GALGAS_root * GALGAS_lstringset::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset GALGAS_lstringset::extractObject (const GALGAS_object & inObject,
                                                     C_Compiler * inCompiler
@@ -4924,17 +4923,17 @@ GALGAS_lstringset GALGAS_lstringset::extractObject (const GALGAS_object & inObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     L E X I Q U E                                                                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "strings/unicode_character_cpp.h"
 #include "galgas2/scanner_actions.h"
 #include "galgas2/cLexiqueIntrospection.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cTokenFor_gtl_5F_scanner::cTokenFor_gtl_5F_scanner (void) :
 mLexicalAttribute_a_5F_string (),
@@ -4947,7 +4946,7 @@ mLexicalAttribute_tokenString (),
 mLexicalAttribute_uint_33__32_value () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_Lexique_gtl_5F_scanner::C_Lexique_gtl_5F_scanner (C_Compiler * inCallerCompiler,
                                                     const C_String & inSourceFileName
@@ -4956,7 +4955,7 @@ C_Lexique (inCallerCompiler, inSourceFileName COMMA_THERE),
 mMatchedTemplateDelimiterIndex (-1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_Lexique_gtl_5F_scanner::C_Lexique_gtl_5F_scanner (C_Compiler * inCallerCompiler,
                                                     const C_String & inSourceString,
@@ -4966,17 +4965,17 @@ C_Lexique (inCallerCompiler, inSourceString, inStringForError COMMA_THERE),
 mMatchedTemplateDelimiterIndex (-1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                 I N D E X I N G    D I R E C T O R Y                                                                *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::indexingDirectory (void) const {
   return "" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                        Lexical error message list                                                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const char * gLexicalMessage_gtl_5F_scanner_floatNumberConversionError = "invalid float number" ;
 
@@ -4996,9 +4995,9 @@ static const char * gLexicalMessage_gtl_5F_scanner_unknownHTMLescapeSequence = "
 
 static const char * gLexicalMessage_gtl_5F_scanner_unterminatedLitteralString = "Unterminated literal string" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //          Syntax error messages, for every terminal symbol                                                           *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 //--- Syntax error message for terminal '$identifier$' :
 static const char * gSyntaxErrorMessage_gtl_5F_scanner_identifier = "an identifier" ;
@@ -5342,132 +5341,137 @@ static const char * gSyntaxErrorMessage_gtl_5F_scanner__40__21_ = "the '@!' deli
 //--- Syntax error message for terminal '$@?$' :
 static const char * gSyntaxErrorMessage_gtl_5F_scanner__40__3F_ = "the '@\?' delimitor" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                getMessageForTerminal                                                                                *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
-  static const char * syntaxErrorMessageArray [115] = {kEndOfSourceLexicalErrorMessage,
-    gSyntaxErrorMessage_gtl_5F_scanner_identifier,
-    gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_enum,
-    gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_double,
-    gSyntaxErrorMessage_gtl_5F_scanner_signed_5F_literal_5F_integer_5F_bigint,
-    gSyntaxErrorMessage_gtl_5F_scanner__2D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2E_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2E__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2E__2E__2E_,
-    gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_char,
-    gSyntaxErrorMessage_gtl_5F_scanner_string,
-    gSyntaxErrorMessage_gtl_5F_scanner_comment,
-    gSyntaxErrorMessage_gtl_5F_scanner_after,
-    gSyntaxErrorMessage_gtl_5F_scanner_before,
-    gSyntaxErrorMessage_gtl_5F_scanner_between,
-    gSyntaxErrorMessage_gtl_5F_scanner_by,
-    gSyntaxErrorMessage_gtl_5F_scanner_default,
-    gSyntaxErrorMessage_gtl_5F_scanner_display,
-    gSyntaxErrorMessage_gtl_5F_scanner_do,
-    gSyntaxErrorMessage_gtl_5F_scanner_down,
-    gSyntaxErrorMessage_gtl_5F_scanner_else,
-    gSyntaxErrorMessage_gtl_5F_scanner_elsif,
-    gSyntaxErrorMessage_gtl_5F_scanner_emptylist,
-    gSyntaxErrorMessage_gtl_5F_scanner_emptymap,
-    gSyntaxErrorMessage_gtl_5F_scanner_end,
-    gSyntaxErrorMessage_gtl_5F_scanner_error,
-    gSyntaxErrorMessage_gtl_5F_scanner_exists,
-    gSyntaxErrorMessage_gtl_5F_scanner_false,
-    gSyntaxErrorMessage_gtl_5F_scanner_for,
-    gSyntaxErrorMessage_gtl_5F_scanner_foreach,
-    gSyntaxErrorMessage_gtl_5F_scanner_from,
-    gSyntaxErrorMessage_gtl_5F_scanner_func,
-    gSyntaxErrorMessage_gtl_5F_scanner_here,
-    gSyntaxErrorMessage_gtl_5F_scanner_if,
-    gSyntaxErrorMessage_gtl_5F_scanner_in,
-    gSyntaxErrorMessage_gtl_5F_scanner_import,
-    gSyntaxErrorMessage_gtl_5F_scanner_listof,
-    gSyntaxErrorMessage_gtl_5F_scanner_let,
-    gSyntaxErrorMessage_gtl_5F_scanner_loop,
-    gSyntaxErrorMessage_gtl_5F_scanner_mapof,
-    gSyntaxErrorMessage_gtl_5F_scanner_mod,
-    gSyntaxErrorMessage_gtl_5F_scanner_no,
-    gSyntaxErrorMessage_gtl_5F_scanner_not,
-    gSyntaxErrorMessage_gtl_5F_scanner_or,
-    gSyntaxErrorMessage_gtl_5F_scanner_print,
-    gSyntaxErrorMessage_gtl_5F_scanner_println,
-    gSyntaxErrorMessage_gtl_5F_scanner_repeat,
-    gSyntaxErrorMessage_gtl_5F_scanner_sort,
-    gSyntaxErrorMessage_gtl_5F_scanner_step,
-    gSyntaxErrorMessage_gtl_5F_scanner_tab,
-    gSyntaxErrorMessage_gtl_5F_scanner_template,
-    gSyntaxErrorMessage_gtl_5F_scanner_then,
-    gSyntaxErrorMessage_gtl_5F_scanner_to,
-    gSyntaxErrorMessage_gtl_5F_scanner_true,
-    gSyntaxErrorMessage_gtl_5F_scanner_typeof,
-    gSyntaxErrorMessage_gtl_5F_scanner_up,
-    gSyntaxErrorMessage_gtl_5F_scanner_yes,
-    gSyntaxErrorMessage_gtl_5F_scanner_warning,
-    gSyntaxErrorMessage_gtl_5F_scanner_while,
-    gSyntaxErrorMessage_gtl_5F_scanner_write,
-    gSyntaxErrorMessage_gtl_5F_scanner_executable,
-    gSyntaxErrorMessage_gtl_5F_scanner_variables,
-    gSyntaxErrorMessage_gtl_5F_scanner_getter,
-    gSyntaxErrorMessage_gtl_5F_scanner_unlet,
-    gSyntaxErrorMessage_gtl_5F_scanner_setter,
-    gSyntaxErrorMessage_gtl_5F_scanner_libraries,
-    gSyntaxErrorMessage_gtl_5F_scanner_input,
-    gSyntaxErrorMessage_gtl_5F_scanner_break,
-    gSyntaxErrorMessage_gtl_5F_scanner__5F__5F_VARS_5F__5F_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2A_,
-    gSyntaxErrorMessage_gtl_5F_scanner__7C_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2C_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2B_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3A__3A_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3E_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3A_,
-    gSyntaxErrorMessage_gtl_5F_scanner__28_,
-    gSyntaxErrorMessage_gtl_5F_scanner__29_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2D__3E_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3F_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3D__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__21_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3A__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__5B_,
-    gSyntaxErrorMessage_gtl_5F_scanner__5D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2B__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2D__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2F_,
-    gSyntaxErrorMessage_gtl_5F_scanner__21__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3E__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__26_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3C__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__7B_,
-    gSyntaxErrorMessage_gtl_5F_scanner__7D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3C_,
-    gSyntaxErrorMessage_gtl_5F_scanner__5E_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3E__3E_,
-    gSyntaxErrorMessage_gtl_5F_scanner__7E_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3C__2D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3C__3C_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2A__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__2F__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__26__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__7C__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3C__3C__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__3E__3E__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner_mod_3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__5E__3D_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40__5B_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40__28_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40__7B_,
-    gSyntaxErrorMessage_gtl_5F_scanner__5B__21_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40__21_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40__3F_} ;
-  return syntaxErrorMessageArray [inTerminalIndex] ;
+  C_String result = "<unknown>" ;
+  if ((inTerminalIndex >= 0) && (inTerminalIndex < 115)) {
+    static const char * syntaxErrorMessageArray [115] = {kEndOfSourceLexicalErrorMessage,
+        gSyntaxErrorMessage_gtl_5F_scanner_identifier,
+        gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_enum,
+        gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_double,
+        gSyntaxErrorMessage_gtl_5F_scanner_signed_5F_literal_5F_integer_5F_bigint,
+        gSyntaxErrorMessage_gtl_5F_scanner__2D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2E_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2E__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2E__2E__2E_,
+        gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_char,
+        gSyntaxErrorMessage_gtl_5F_scanner_string,
+        gSyntaxErrorMessage_gtl_5F_scanner_comment,
+        gSyntaxErrorMessage_gtl_5F_scanner_after,
+        gSyntaxErrorMessage_gtl_5F_scanner_before,
+        gSyntaxErrorMessage_gtl_5F_scanner_between,
+        gSyntaxErrorMessage_gtl_5F_scanner_by,
+        gSyntaxErrorMessage_gtl_5F_scanner_default,
+        gSyntaxErrorMessage_gtl_5F_scanner_display,
+        gSyntaxErrorMessage_gtl_5F_scanner_do,
+        gSyntaxErrorMessage_gtl_5F_scanner_down,
+        gSyntaxErrorMessage_gtl_5F_scanner_else,
+        gSyntaxErrorMessage_gtl_5F_scanner_elsif,
+        gSyntaxErrorMessage_gtl_5F_scanner_emptylist,
+        gSyntaxErrorMessage_gtl_5F_scanner_emptymap,
+        gSyntaxErrorMessage_gtl_5F_scanner_end,
+        gSyntaxErrorMessage_gtl_5F_scanner_error,
+        gSyntaxErrorMessage_gtl_5F_scanner_exists,
+        gSyntaxErrorMessage_gtl_5F_scanner_false,
+        gSyntaxErrorMessage_gtl_5F_scanner_for,
+        gSyntaxErrorMessage_gtl_5F_scanner_foreach,
+        gSyntaxErrorMessage_gtl_5F_scanner_from,
+        gSyntaxErrorMessage_gtl_5F_scanner_func,
+        gSyntaxErrorMessage_gtl_5F_scanner_here,
+        gSyntaxErrorMessage_gtl_5F_scanner_if,
+        gSyntaxErrorMessage_gtl_5F_scanner_in,
+        gSyntaxErrorMessage_gtl_5F_scanner_import,
+        gSyntaxErrorMessage_gtl_5F_scanner_listof,
+        gSyntaxErrorMessage_gtl_5F_scanner_let,
+        gSyntaxErrorMessage_gtl_5F_scanner_loop,
+        gSyntaxErrorMessage_gtl_5F_scanner_mapof,
+        gSyntaxErrorMessage_gtl_5F_scanner_mod,
+        gSyntaxErrorMessage_gtl_5F_scanner_no,
+        gSyntaxErrorMessage_gtl_5F_scanner_not,
+        gSyntaxErrorMessage_gtl_5F_scanner_or,
+        gSyntaxErrorMessage_gtl_5F_scanner_print,
+        gSyntaxErrorMessage_gtl_5F_scanner_println,
+        gSyntaxErrorMessage_gtl_5F_scanner_repeat,
+        gSyntaxErrorMessage_gtl_5F_scanner_sort,
+        gSyntaxErrorMessage_gtl_5F_scanner_step,
+        gSyntaxErrorMessage_gtl_5F_scanner_tab,
+        gSyntaxErrorMessage_gtl_5F_scanner_template,
+        gSyntaxErrorMessage_gtl_5F_scanner_then,
+        gSyntaxErrorMessage_gtl_5F_scanner_to,
+        gSyntaxErrorMessage_gtl_5F_scanner_true,
+        gSyntaxErrorMessage_gtl_5F_scanner_typeof,
+        gSyntaxErrorMessage_gtl_5F_scanner_up,
+        gSyntaxErrorMessage_gtl_5F_scanner_yes,
+        gSyntaxErrorMessage_gtl_5F_scanner_warning,
+        gSyntaxErrorMessage_gtl_5F_scanner_while,
+        gSyntaxErrorMessage_gtl_5F_scanner_write,
+        gSyntaxErrorMessage_gtl_5F_scanner_executable,
+        gSyntaxErrorMessage_gtl_5F_scanner_variables,
+        gSyntaxErrorMessage_gtl_5F_scanner_getter,
+        gSyntaxErrorMessage_gtl_5F_scanner_unlet,
+        gSyntaxErrorMessage_gtl_5F_scanner_setter,
+        gSyntaxErrorMessage_gtl_5F_scanner_libraries,
+        gSyntaxErrorMessage_gtl_5F_scanner_input,
+        gSyntaxErrorMessage_gtl_5F_scanner_break,
+        gSyntaxErrorMessage_gtl_5F_scanner__5F__5F_VARS_5F__5F_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2A_,
+        gSyntaxErrorMessage_gtl_5F_scanner__7C_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2C_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2B_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3A__3A_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3E_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3A_,
+        gSyntaxErrorMessage_gtl_5F_scanner__28_,
+        gSyntaxErrorMessage_gtl_5F_scanner__29_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2D__3E_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3F_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3D__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__21_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3A__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__5B_,
+        gSyntaxErrorMessage_gtl_5F_scanner__5D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2B__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2D__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2F_,
+        gSyntaxErrorMessage_gtl_5F_scanner__21__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3E__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__26_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3C__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__7B_,
+        gSyntaxErrorMessage_gtl_5F_scanner__7D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3C_,
+        gSyntaxErrorMessage_gtl_5F_scanner__5E_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3E__3E_,
+        gSyntaxErrorMessage_gtl_5F_scanner__7E_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3C__2D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3C__3C_,
+        gSyntaxErrorMessage_gtl_5F_scanner__40_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2A__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__2F__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__26__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__7C__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3C__3C__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__3E__3E__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner_mod_3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__5E__3D_,
+        gSyntaxErrorMessage_gtl_5F_scanner__40__5B_,
+        gSyntaxErrorMessage_gtl_5F_scanner__40__28_,
+        gSyntaxErrorMessage_gtl_5F_scanner__40__7B_,
+        gSyntaxErrorMessage_gtl_5F_scanner__5B__21_,
+        gSyntaxErrorMessage_gtl_5F_scanner__40__21_,
+        gSyntaxErrorMessage_gtl_5F_scanner__40__3F_
+    } ;
+    result = syntaxErrorMessageArray [inTerminalIndex] ;
+  }
+  return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                      U N I C O D E    S T R I N G S                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 //--- Unicode string for '$_A_$'
 static const utf32 kUnicodeString_gtl_5F_scanner__A_ [] = {
@@ -6415,9 +6419,9 @@ static const utf32 kUnicodeString_gtl_5F_scanner__7E_ [] = {
   TO_UNICODE (0)
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //             Key words table 'galgasDelimitorsList'                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const int32_t ktable_size_gtl_5F_scanner_galgasDelimitorsList = 46 ;
 
@@ -6474,9 +6478,9 @@ int16_t C_Lexique_gtl_5F_scanner::search_into_galgasDelimitorsList (const C_Stri
   return searchInList (inSearchedString, ktable_for_gtl_5F_scanner_galgasDelimitorsList, ktable_size_gtl_5F_scanner_galgasDelimitorsList) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //             Key words table 'goilTemplateKeyWordList'                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const int32_t ktable_size_gtl_5F_scanner_goilTemplateKeyWordList = 57 ;
 
@@ -6545,9 +6549,9 @@ int16_t C_Lexique_gtl_5F_scanner::search_into_goilTemplateKeyWordList (const C_S
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                          getCurrentTokenString                                                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::getCurrentTokenString (const cToken * inTokenPtr) const {
   const cTokenFor_gtl_5F_scanner * ptr = (const cTokenFor_gtl_5F_scanner *) inTokenPtr ;
@@ -7148,17 +7152,17 @@ C_String C_Lexique_gtl_5F_scanner::getCurrentTokenString (const cToken * inToken
   return s ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                           Template Delimiters                                                                       *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const cTemplateDelimiter gtl_5F_scanner_kTemplateDefinitionArray [1] = {
   cTemplateDelimiter (kUnicodeString_gtl_5F_scanner__25_, 1, kUnicodeString_gtl_5F_scanner__25_, 1, NULL, true)
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                           Template Replacements                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const cTemplateDelimiter gtl_5F_scanner_kTemplateReplacementArray [3] = {
   cTemplateDelimiter (kUnicodeString_gtl_5F_scanner__5C__25_, 2, kUnicodeString_gtl_5F_scanner__25_, 1, NULL, true),
@@ -7166,9 +7170,9 @@ static const cTemplateDelimiter gtl_5F_scanner_kTemplateReplacementArray [3] = {
   cTemplateDelimiter (kUnicodeString_gtl_5F_scanner__5C__5C_, 2, kUnicodeString_gtl_5F_scanner__5C_, 1, NULL, true)
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //            Terminal Symbols as end of script in template mark                                                       *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [114] = {
   false /* identifier */,
@@ -7287,13 +7291,13 @@ static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [114] = {
   false /* @? */
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //            Unicode test functions                                                                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
  
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //               P A R S E    L E X I C A L    T O K E N                                                               *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool C_Lexique_gtl_5F_scanner::parseLexicalToken (void) {
   cTokenFor_gtl_5F_scanner token ;
@@ -7873,14 +7877,15 @@ bool C_Lexique_gtl_5F_scanner::parseLexicalToken (void) {
   return token.mTokenCode > 0 ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                         E N T E R    T O K E N                                                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_Lexique_gtl_5F_scanner::enterToken (cTokenFor_gtl_5F_scanner & ioToken) {
   cTokenFor_gtl_5F_scanner * ptr = NULL ;
   macroMyNew (ptr, cTokenFor_gtl_5F_scanner ()) ;
   ptr->mTokenCode = ioToken.mTokenCode ;
+  // ptr->mIsOptional = ioToken.mIsOptional ;
   ptr->mStartLocation = mTokenStartLocation ;
   ptr->mEndLocation = mTokenEndLocation ;
   ptr->mTemplateStringBeforeToken = ioToken.mTemplateStringBeforeToken ;
@@ -7896,70 +7901,70 @@ void C_Lexique_gtl_5F_scanner::enterToken (cTokenFor_gtl_5F_scanner & ioToken) {
   enterTokenFromPointer (ptr) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //               A T T R I B U T E   A C C E S S                                                                       *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::attributeValue_a_5F_string (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_a_5F_string ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 utf32 C_Lexique_gtl_5F_scanner::attributeValue_charValue (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_charValue ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 double C_Lexique_gtl_5F_scanner::attributeValue_floatValue (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_floatValue ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::attributeValue_functionContent (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_functionContent ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::attributeValue_identifierString (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_identifierString ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BigInt C_Lexique_gtl_5F_scanner::attributeValue_intValue (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_intValue ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::attributeValue_tokenString (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_tokenString ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_Lexique_gtl_5F_scanner::attributeValue_uint_33__32_value (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   return ptr->mLexicalAttribute_uint_33__32_value ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //         A S S I G N    F R O M    A T T R I B U T E                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_a_5F_string (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_string value (ptr->mLexicalAttribute_a_5F_string) ;
@@ -7967,10 +7972,10 @@ GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_a_5F_string (void)
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lchar C_Lexique_gtl_5F_scanner::synthetizedAttribute_charValue (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_char value (ptr->mLexicalAttribute_charValue) ;
@@ -7978,10 +7983,10 @@ GALGAS_lchar C_Lexique_gtl_5F_scanner::synthetizedAttribute_charValue (void) con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_ldouble C_Lexique_gtl_5F_scanner::synthetizedAttribute_floatValue (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_double value (ptr->mLexicalAttribute_floatValue) ;
@@ -7989,10 +7994,10 @@ GALGAS_ldouble C_Lexique_gtl_5F_scanner::synthetizedAttribute_floatValue (void) 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_functionContent (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_string value (ptr->mLexicalAttribute_functionContent) ;
@@ -8000,10 +8005,10 @@ GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_functionContent (v
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_identifierString (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_string value (ptr->mLexicalAttribute_identifierString) ;
@@ -8011,10 +8016,10 @@ GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_identifierString (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lbigint C_Lexique_gtl_5F_scanner::synthetizedAttribute_intValue (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_bigint value (ptr->mLexicalAttribute_intValue) ;
@@ -8022,10 +8027,10 @@ GALGAS_lbigint C_Lexique_gtl_5F_scanner::synthetizedAttribute_intValue (void) co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_tokenString (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_string value (ptr->mLexicalAttribute_tokenString) ;
@@ -8033,10 +8038,10 @@ GALGAS_lstring C_Lexique_gtl_5F_scanner::synthetizedAttribute_tokenString (void)
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_luint C_Lexique_gtl_5F_scanner::synthetizedAttribute_uint_33__32_value (void) const {
-  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) mCurrentTokenPtr ;
+  cTokenFor_gtl_5F_scanner * ptr = (cTokenFor_gtl_5F_scanner *) currentTokenPtr (HERE) ;
   macroValidSharedObject (ptr, cTokenFor_gtl_5F_scanner) ;
   GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
   GALGAS_uint value (ptr->mLexicalAttribute_uint_33__32_value) ;
@@ -8044,9 +8049,9 @@ GALGAS_luint C_Lexique_gtl_5F_scanner::synthetizedAttribute_uint_33__32_value (v
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                         I N T R O S P E C T I O N                                                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist C_Lexique_gtl_5F_scanner::symbols (LOCATION_ARGS) {
   GALGAS_stringlist result = GALGAS_stringlist::constructor_emptyList (THERE) ;
@@ -8167,14 +8172,14 @@ GALGAS_stringlist C_Lexique_gtl_5F_scanner::symbols (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void getKeywordLists_gtl_5F_scanner (TC_UniqueArray <C_String> & ioList) {
   ioList.appendObject ("gtl_scanner:galgasDelimitorsList") ;
   ioList.appendObject ("gtl_scanner:goilTemplateKeyWordList") ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void getKeywordsForIdentifier_gtl_5F_scanner (const C_String & inIdentifier,
                                                      bool & ioFound,
@@ -8292,15 +8297,15 @@ static void getKeywordsForIdentifier_gtl_5F_scanner (const C_String & inIdentifi
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static cLexiqueIntrospection lexiqueIntrospection_gtl_5F_scanner
 __attribute__ ((used))
 __attribute__ ((unused)) (getKeywordLists_gtl_5F_scanner, getKeywordsForIdentifier_gtl_5F_scanner) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   S T Y L E   I N D E X    F O R    T E R M I N A L                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
   static const uint32_t kTerminalSymbolStyles [115] = {0,
@@ -8422,9 +8427,9 @@ uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTermin
   return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   S T Y L E   N A M E    F O R    S T Y L E    I N D E X                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String C_Lexique_gtl_5F_scanner::styleNameForIndex (const uint32_t inStyleIndex) const {
   C_String result ;
@@ -8445,11 +8450,11 @@ C_String C_Lexique_gtl_5F_scanner::styleNameForIndex (const uint32_t inStyleInde
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Class for element of '@gtlArgumentList' list                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlArgumentList : public cCollectionElement {
   public : GALGAS_gtlArgumentList_2D_element mObject ;
@@ -8473,7 +8478,7 @@ class cCollectionElement_gtlArgumentList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlArgumentList::cCollectionElement_gtlArgumentList (const GALGAS_bool & in_typed,
                                                                         const GALGAS_type & in_type,
@@ -8483,13 +8488,13 @@ cCollectionElement (THERE),
 mObject (in_typed, in_type, in_name) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlArgumentList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlArgumentList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -8497,7 +8502,7 @@ cCollectionElement * cCollectionElement_gtlArgumentList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlArgumentList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -8514,7 +8519,7 @@ void cCollectionElement_gtlArgumentList::description (C_String & ioString, const
   mObject.mProperty_name.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlArgumentList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlArgumentList * operand = (cCollectionElement_gtlArgumentList *) inOperand ;
@@ -8522,25 +8527,25 @@ typeComparisonResult cCollectionElement_gtlArgumentList::compare (const cCollect
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList::GALGAS_gtlArgumentList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList::GALGAS_gtlArgumentList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlArgumentList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::constructor_listWithValue (const GALGAS_bool & inOperand0,
                                                                           const GALGAS_type & inOperand1,
@@ -8556,7 +8561,7 @@ GALGAS_gtlArgumentList GALGAS_gtlArgumentList::constructor_listWithValue (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                         const GALGAS_bool & in_typed,
@@ -8571,7 +8576,7 @@ void GALGAS_gtlArgumentList::makeAttributesFromObjects (capCollectionElement & o
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::addAssign_operation (const GALGAS_bool & inOperand0,
                                                   const GALGAS_type & inOperand1,
@@ -8587,7 +8592,7 @@ void GALGAS_gtlArgumentList::addAssign_operation (const GALGAS_bool & inOperand0
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::setter_insertAtIndex (const GALGAS_bool inOperand0,
                                                    const GALGAS_type inOperand1,
@@ -8605,7 +8610,7 @@ void GALGAS_gtlArgumentList::setter_insertAtIndex (const GALGAS_bool inOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::setter_removeAtIndex (GALGAS_bool & outOperand0,
                                                    GALGAS_type & outOperand1,
@@ -8630,7 +8635,7 @@ void GALGAS_gtlArgumentList::setter_removeAtIndex (GALGAS_bool & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::setter_popFirst (GALGAS_bool & outOperand0,
                                               GALGAS_type & outOperand1,
@@ -8652,7 +8657,7 @@ void GALGAS_gtlArgumentList::setter_popFirst (GALGAS_bool & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::setter_popLast (GALGAS_bool & outOperand0,
                                              GALGAS_type & outOperand1,
@@ -8674,7 +8679,7 @@ void GALGAS_gtlArgumentList::setter_popLast (GALGAS_bool & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::method_first (GALGAS_bool & outOperand0,
                                            GALGAS_type & outOperand1,
@@ -8696,7 +8701,7 @@ void GALGAS_gtlArgumentList::method_first (GALGAS_bool & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::method_last (GALGAS_bool & outOperand0,
                                           GALGAS_type & outOperand1,
@@ -8718,7 +8723,7 @@ void GALGAS_gtlArgumentList::method_last (GALGAS_bool & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::add_operation (const GALGAS_gtlArgumentList & inOperand,
                                                               C_Compiler * /* inCompiler */
@@ -8731,7 +8736,7 @@ GALGAS_gtlArgumentList GALGAS_gtlArgumentList::add_operation (const GALGAS_gtlAr
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                         C_Compiler * inCompiler
@@ -8741,7 +8746,7 @@ GALGAS_gtlArgumentList GALGAS_gtlArgumentList::getter_subListWithRange (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                         C_Compiler * inCompiler
@@ -8751,7 +8756,7 @@ GALGAS_gtlArgumentList GALGAS_gtlArgumentList::getter_subListFromIndex (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                       C_Compiler * inCompiler
@@ -8761,7 +8766,7 @@ GALGAS_gtlArgumentList GALGAS_gtlArgumentList::getter_subListToIndex (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList::plusAssign_operation (const GALGAS_gtlArgumentList inOperand,
                                                    C_Compiler * /* inCompiler */
@@ -8769,7 +8774,7 @@ void GALGAS_gtlArgumentList::plusAssign_operation (const GALGAS_gtlArgumentList 
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_gtlArgumentList::getter_typedAtIndex (const GALGAS_uint & inIndex,
                                                          C_Compiler * inCompiler
@@ -8784,7 +8789,7 @@ GALGAS_bool GALGAS_gtlArgumentList::getter_typedAtIndex (const GALGAS_uint & inI
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type GALGAS_gtlArgumentList::getter_typeAtIndex (const GALGAS_uint & inIndex,
                                                         C_Compiler * inCompiler
@@ -8799,7 +8804,7 @@ GALGAS_type GALGAS_gtlArgumentList::getter_typeAtIndex (const GALGAS_uint & inIn
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlArgumentList::getter_nameAtIndex (const GALGAS_uint & inIndex,
                                                            C_Compiler * inCompiler
@@ -8816,7 +8821,7 @@ GALGAS_lstring GALGAS_gtlArgumentList::getter_nameAtIndex (const GALGAS_uint & i
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlArgumentList::cEnumerator_gtlArgumentList (const GALGAS_gtlArgumentList & inEnumeratedObject,
                                                           const typeEnumerationOrder inOrder) :
@@ -8824,7 +8829,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList_2D_element cEnumerator_gtlArgumentList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlArgumentList * p = (const cCollectionElement_gtlArgumentList *) currentObjectPtr (THERE) ;
@@ -8833,7 +8838,7 @@ GALGAS_gtlArgumentList_2D_element cEnumerator_gtlArgumentList::current (LOCATION
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool cEnumerator_gtlArgumentList::current_typed (LOCATION_ARGS) const {
   const cCollectionElement_gtlArgumentList * p = (const cCollectionElement_gtlArgumentList *) currentObjectPtr (THERE) ;
@@ -8841,7 +8846,7 @@ GALGAS_bool cEnumerator_gtlArgumentList::current_typed (LOCATION_ARGS) const {
   return p->mObject.mProperty_typed ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type cEnumerator_gtlArgumentList::current_type (LOCATION_ARGS) const {
   const cCollectionElement_gtlArgumentList * p = (const cCollectionElement_gtlArgumentList *) currentObjectPtr (THERE) ;
@@ -8849,7 +8854,7 @@ GALGAS_type cEnumerator_gtlArgumentList::current_type (LOCATION_ARGS) const {
   return p->mObject.mProperty_type ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlArgumentList::current_name (LOCATION_ARGS) const {
   const cCollectionElement_gtlArgumentList * p = (const cCollectionElement_gtlArgumentList *) currentObjectPtr (THERE) ;
@@ -8860,23 +8865,23 @@ GALGAS_lstring cEnumerator_gtlArgumentList::current_name (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @gtlArgumentList type                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlArgumentList ("gtlArgumentList",
                                         NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlArgumentList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlArgumentList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlArgumentList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -8886,7 +8891,7 @@ AC_GALGAS_root * GALGAS_gtlArgumentList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlArgumentList::extractObject (const GALGAS_object & inObject,
                                                               C_Compiler * inCompiler
@@ -8903,7 +8908,7 @@ GALGAS_gtlArgumentList GALGAS_gtlArgumentList::extractObject (const GALGAS_objec
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlProcMap::cMapElement_gtlProcMap (const GALGAS_lstring & inKey,
                                                 const GALGAS_gtlProcedure & in_procedure
@@ -8912,13 +8917,13 @@ cMapElement (inKey COMMA_THERE),
 mProperty_procedure (in_procedure) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cMapElement_gtlProcMap::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_procedure.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement * cMapElement_gtlProcMap::copy (void) {
   cMapElement * result = NULL ;
@@ -8926,7 +8931,7 @@ cMapElement * cMapElement_gtlProcMap::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cMapElement_gtlProcMap::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -8935,7 +8940,7 @@ void cMapElement_gtlProcMap::description (C_String & ioString, const int32_t inI
   mProperty_procedure.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cMapElement_gtlProcMap::compare (const cCollectionElement * inOperand) const {
   cMapElement_gtlProcMap * operand = (cMapElement_gtlProcMap *) inOperand ;
@@ -8946,26 +8951,26 @@ typeComparisonResult cMapElement_gtlProcMap::compare (const cCollectionElement *
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap::GALGAS_gtlProcMap (void) :
 AC_GALGAS_map () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap::GALGAS_gtlProcMap (const GALGAS_gtlProcMap & inSource) :
 AC_GALGAS_map (inSource) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap & GALGAS_gtlProcMap::operator = (const GALGAS_gtlProcMap & inSource) {
   * ((AC_GALGAS_map *) this) = inSource ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap GALGAS_gtlProcMap::constructor_emptyMap (LOCATION_ARGS) {
   GALGAS_gtlProcMap result ;
@@ -8973,7 +8978,7 @@ GALGAS_gtlProcMap GALGAS_gtlProcMap::constructor_emptyMap (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap GALGAS_gtlProcMap::constructor_mapWithMapToOverride (const GALGAS_gtlProcMap & inMapToOverride
                                                                        COMMA_LOCATION_ARGS) {
@@ -8982,7 +8987,7 @@ GALGAS_gtlProcMap GALGAS_gtlProcMap::constructor_mapWithMapToOverride (const GAL
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap GALGAS_gtlProcMap::getter_overriddenMap (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const {
@@ -8991,7 +8996,7 @@ GALGAS_gtlProcMap GALGAS_gtlProcMap::getter_overriddenMap (C_Compiler * inCompil
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlProcMap::addAssign_operation (const GALGAS_lstring & inKey,
                                              const GALGAS_gtlProcedure & inArgument0,
@@ -9007,7 +9012,7 @@ void GALGAS_gtlProcMap::addAssign_operation (const GALGAS_lstring & inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlProcMap::setter_put (GALGAS_lstring inKey,
                                     GALGAS_gtlProcedure inArgument0,
@@ -9023,11 +9028,11 @@ void GALGAS_gtlProcMap::setter_put (GALGAS_lstring inKey,
   performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const char * kSearchErrorMessage_gtlProcMap_get = "there is no procedure named '%K'" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlProcMap::method_get (GALGAS_lstring inKey,
                                     GALGAS_gtlProcedure & outArgument0,
@@ -9045,7 +9050,7 @@ void GALGAS_gtlProcMap::method_get (GALGAS_lstring inKey,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcedure GALGAS_gtlProcMap::getter_procedureForKey (const GALGAS_string & inKey,
                                                                C_Compiler * inCompiler
@@ -9060,7 +9065,7 @@ GALGAS_gtlProcedure GALGAS_gtlProcMap::getter_procedureForKey (const GALGAS_stri
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlProcMap::setter_setProcedureForKey (GALGAS_gtlProcedure inAttributeValue,
                                                    GALGAS_string inKey,
@@ -9074,7 +9079,7 @@ void GALGAS_gtlProcMap::setter_setProcedureForKey (GALGAS_gtlProcedure inAttribu
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cMapElement_gtlProcMap * GALGAS_gtlProcMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                const GALGAS_string & inKey
@@ -9084,7 +9089,7 @@ cMapElement_gtlProcMap * GALGAS_gtlProcMap::readWriteAccessForWithInstruction (C
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlProcMap::cEnumerator_gtlProcMap (const GALGAS_gtlProcMap & inEnumeratedObject,
                                                 const typeEnumerationOrder inOrder) :
@@ -9092,7 +9097,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element cEnumerator_gtlProcMap::current (LOCATION_ARGS) const {
   const cMapElement_gtlProcMap * p = (const cMapElement_gtlProcMap *) currentObjectPtr (THERE) ;
@@ -9100,7 +9105,7 @@ GALGAS_gtlProcMap_2D_element cEnumerator_gtlProcMap::current (LOCATION_ARGS) con
   return GALGAS_gtlProcMap_2D_element (p->mProperty_lkey, p->mProperty_procedure) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_gtlProcMap::current_lkey (LOCATION_ARGS) const {
   const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
@@ -9108,7 +9113,7 @@ GALGAS_lstring cEnumerator_gtlProcMap::current_lkey (LOCATION_ARGS) const {
   return p->mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcedure cEnumerator_gtlProcMap::current_procedure (LOCATION_ARGS) const {
   const cMapElement_gtlProcMap * p = (const cMapElement_gtlProcMap *) currentObjectPtr (THERE) ;
@@ -9118,23 +9123,23 @@ GALGAS_gtlProcedure cEnumerator_gtlProcMap::current_procedure (LOCATION_ARGS) co
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @gtlProcMap type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlProcMap ("gtlProcMap",
                                    NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlProcMap::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlProcMap ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlProcMap::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -9144,7 +9149,7 @@ AC_GALGAS_root * GALGAS_gtlProcMap::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap GALGAS_gtlProcMap::extractObject (const GALGAS_object & inObject,
                                                     C_Compiler * inCompiler
@@ -9173,14 +9178,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_0 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 39)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__7C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 39)) ;
       GALGAS_location var_opLocation_1099 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 39)) ;
       GALGAS_gtlExpression var_rightSon_1156 ;
       nt_gtl_5F_relation_5F_term_ (var_rightSon_1156, inCompiler) ;
       outArgument_expression = GALGAS_gtlOrExpression::constructor_new (var_opLocation_1099, outArgument_expression, var_rightSon_1156  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 41)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 43)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 43)) ;
       GALGAS_location var_opLocation_1269 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 43)) ;
       GALGAS_gtlExpression var_rightSon_1326 ;
       nt_gtl_5F_relation_5F_term_ (var_rightSon_1326, inCompiler) ;
@@ -9201,11 +9206,11 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_0 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 39)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__7C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 39)) ;
       nt_gtl_5F_relation_5F_term_parse (inCompiler) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 43)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 43)) ;
       nt_gtl_5F_relation_5F_term_parse (inCompiler) ;
     } break ;
     default:
@@ -9226,7 +9231,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_1 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__26_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 59)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__26_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 59)) ;
       GALGAS_location var_opLocation_1794 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 59)) ;
       GALGAS_gtlExpression var_rightSon_1853 ;
       nt_gtl_5F_relation_5F_factor_ (var_rightSon_1853, inCompiler) ;
@@ -9247,7 +9252,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_1 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__26_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 59)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__26_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 59)) ;
       nt_gtl_5F_relation_5F_factor_parse (inCompiler) ;
     } break ;
     default:
@@ -9268,42 +9273,42 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   case 1: {
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3D__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 75)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3D__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 75)) ;
     GALGAS_location var_opLocation_2323 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 75)) ;
     GALGAS_gtlExpression var_rightSon_2384 ;
     nt_gtl_5F_simple_5F_expression_ (var_rightSon_2384, inCompiler) ;
     outArgument_expression = GALGAS_gtlEqualExpression::constructor_new (var_opLocation_2323, outArgument_expression, var_rightSon_2384  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 77)) ;
   } break ;
   case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__21__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 81)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__21__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 81)) ;
     GALGAS_location var_opLocation_2508 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 81)) ;
     GALGAS_gtlExpression var_rightSon_2569 ;
     nt_gtl_5F_simple_5F_expression_ (var_rightSon_2569, inCompiler) ;
     outArgument_expression = GALGAS_gtlNotEqualExpression::constructor_new (var_opLocation_2508, outArgument_expression, var_rightSon_2569  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 83)) ;
   } break ;
   case 4: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 87)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3C__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 87)) ;
     GALGAS_location var_opLocation_2696 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 87)) ;
     GALGAS_gtlExpression var_rightSon_2757 ;
     nt_gtl_5F_simple_5F_expression_ (var_rightSon_2757, inCompiler) ;
     outArgument_expression = GALGAS_gtlLowerOrEqualExpression::constructor_new (var_opLocation_2696, outArgument_expression, var_rightSon_2757  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 89)) ;
   } break ;
   case 5: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 93)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3E__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 93)) ;
     GALGAS_location var_opLocation_2888 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 93)) ;
     GALGAS_gtlExpression var_rightSon_2949 ;
     nt_gtl_5F_simple_5F_expression_ (var_rightSon_2949, inCompiler) ;
     outArgument_expression = GALGAS_gtlGreaterOrEqualExpression::constructor_new (var_opLocation_2888, outArgument_expression, var_rightSon_2949  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 95)) ;
   } break ;
   case 6: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 99)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 99)) ;
     GALGAS_location var_opLocation_3081 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 99)) ;
     GALGAS_gtlExpression var_rightSon_3142 ;
     nt_gtl_5F_simple_5F_expression_ (var_rightSon_3142, inCompiler) ;
     outArgument_expression = GALGAS_gtlGreaterThanExpression::constructor_new (var_opLocation_3081, outArgument_expression, var_rightSon_3142  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 101)) ;
   } break ;
   case 7: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 105)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 105)) ;
     GALGAS_location var_opLocation_3271 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 105)) ;
     GALGAS_gtlExpression var_rightSon_3332 ;
     nt_gtl_5F_simple_5F_expression_ (var_rightSon_3332, inCompiler) ;
@@ -9322,27 +9327,27 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   case 1: {
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3D__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 75)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3D__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 75)) ;
     nt_gtl_5F_simple_5F_expression_parse (inCompiler) ;
   } break ;
   case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__21__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 81)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__21__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 81)) ;
     nt_gtl_5F_simple_5F_expression_parse (inCompiler) ;
   } break ;
   case 4: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 87)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3C__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 87)) ;
     nt_gtl_5F_simple_5F_expression_parse (inCompiler) ;
   } break ;
   case 5: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 93)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3E__3D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 93)) ;
     nt_gtl_5F_simple_5F_expression_parse (inCompiler) ;
   } break ;
   case 6: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 99)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 99)) ;
     nt_gtl_5F_simple_5F_expression_parse (inCompiler) ;
   } break ;
   case 7: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 105)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 105)) ;
     nt_gtl_5F_simple_5F_expression_parse (inCompiler) ;
   } break ;
   default:
@@ -9361,28 +9366,28 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_3 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 123)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3C__3C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 123)) ;
       GALGAS_location var_opLocation_3811 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 123)) ;
       GALGAS_gtlExpression var_rightSon_3859 ;
       nt_gtl_5F_term_ (var_rightSon_3859, inCompiler) ;
       outArgument_expression = GALGAS_gtlShiftLeftExpression::constructor_new (var_opLocation_3811, outArgument_expression, var_rightSon_3859  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 125)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 129)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3E__3E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 129)) ;
       GALGAS_location var_opLocation_3991 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 129)) ;
       GALGAS_gtlExpression var_rightSon_4039 ;
       nt_gtl_5F_term_ (var_rightSon_4039, inCompiler) ;
       outArgument_expression = GALGAS_gtlShiftRightExpression::constructor_new (var_opLocation_3991, outArgument_expression, var_rightSon_4039  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 131)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 135)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 135)) ;
       GALGAS_location var_opLocation_4171 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 135)) ;
       GALGAS_gtlExpression var_rightSon_4219 ;
       nt_gtl_5F_term_ (var_rightSon_4219, inCompiler) ;
       outArgument_expression = GALGAS_gtlAddExpression::constructor_new (var_opLocation_4171, outArgument_expression, var_rightSon_4219  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 137)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 141)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 141)) ;
       GALGAS_location var_opLocation_4344 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 141)) ;
       const enumGalgasBool test_1 = GALGAS_bool (gOption_gtl_5F_options_warnDeprecated.getter_value ()).boolEnum () ;
       if (kBoolTrue == test_1) {
@@ -9395,7 +9400,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       outArgument_expression = GALGAS_gtlAddExpression::constructor_new (var_opLocation_4344, outArgument_expression, var_rightSon_4532  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 146)) ;
     } break ;
     case 6: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 150)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 150)) ;
       GALGAS_location var_opLocation_4657 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 150)) ;
       GALGAS_gtlExpression var_rightSon_4705 ;
       nt_gtl_5F_term_ (var_rightSon_4705, inCompiler) ;
@@ -9416,23 +9421,23 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_3 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 123)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3C__3C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 123)) ;
       nt_gtl_5F_term_parse (inCompiler) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 129)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3E__3E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 129)) ;
       nt_gtl_5F_term_parse (inCompiler) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 135)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 135)) ;
       nt_gtl_5F_term_parse (inCompiler) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 141)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 141)) ;
       nt_gtl_5F_term_parse (inCompiler) ;
     } break ;
     case 6: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 150)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 150)) ;
       nt_gtl_5F_term_parse (inCompiler) ;
     } break ;
     default:
@@ -9453,21 +9458,21 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_4 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 168)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 168)) ;
       GALGAS_location var_opLocation_5172 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 168)) ;
       GALGAS_gtlExpression var_rightSon_5222 ;
       nt_gtl_5F_factor_ (var_rightSon_5222, inCompiler) ;
       outArgument_expression = GALGAS_gtlMultiplyExpression::constructor_new (var_opLocation_5172, outArgument_expression, var_rightSon_5222  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 170)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 174)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 174)) ;
       GALGAS_location var_opLocation_5352 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 174)) ;
       GALGAS_gtlExpression var_rightSon_5402 ;
       nt_gtl_5F_factor_ (var_rightSon_5402, inCompiler) ;
       outArgument_expression = GALGAS_gtlDivideExpression::constructor_new (var_opLocation_5352, outArgument_expression, var_rightSon_5402  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 176)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mod) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 180)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_mod COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 180)) ;
       GALGAS_location var_opLocation_5532 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 180)) ;
       GALGAS_gtlExpression var_rightSon_5582 ;
       nt_gtl_5F_factor_ (var_rightSon_5582, inCompiler) ;
@@ -9488,15 +9493,15 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   while (repeatFlag_0) {
     switch (select_gtl_5F_expression_5F_parser_4 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 168)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 168)) ;
       nt_gtl_5F_factor_parse (inCompiler) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 174)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 174)) ;
       nt_gtl_5F_factor_parse (inCompiler) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mod) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 180)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_mod COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 180)) ;
       nt_gtl_5F_factor_parse (inCompiler) ;
     } break ;
     default:
@@ -9512,20 +9517,20 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i5_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 195)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 195)) ;
   GALGAS_location var_opLocation_6002 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 195)) ;
   GALGAS_gtlExpression var_factorExpression_6062 ;
   nt_gtl_5F_expression_ (var_factorExpression_6062, inCompiler) ;
   outArgument_expression = GALGAS_gtlParenthesizedExpression::constructor_new (var_opLocation_6002, var_factorExpression_6062  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 197)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 201)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 201)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i5_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 195)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 195)) ;
   nt_gtl_5F_expression_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 201)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 201)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9534,7 +9539,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i6_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 211)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_not COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 211)) ;
   GALGAS_location var_opLocation_6484 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 211)) ;
   GALGAS_gtlExpression var_notExpression_6537 ;
   nt_gtl_5F_factor_ (var_notExpression_6537, inCompiler) ;
@@ -9544,7 +9549,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i6_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 211)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_not COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 211)) ;
   nt_gtl_5F_factor_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
@@ -9554,7 +9559,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i7_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 223)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__7E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 223)) ;
   GALGAS_location var_opLocation_6928 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 223)) ;
   GALGAS_gtlExpression var_notExpression_6981 ;
   nt_gtl_5F_factor_ (var_notExpression_6981, inCompiler) ;
@@ -9564,7 +9569,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i7_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7E_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 223)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__7E_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 223)) ;
   nt_gtl_5F_factor_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
@@ -9574,7 +9579,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i8_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 235)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 235)) ;
   GALGAS_location var_opLocation_7372 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 235)) ;
   GALGAS_gtlExpression var_minusExpression_7427 ;
   nt_gtl_5F_factor_ (var_minusExpression_7427, inCompiler) ;
@@ -9584,7 +9589,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i8_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 235)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 235)) ;
   nt_gtl_5F_factor_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
@@ -9594,7 +9599,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i9_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 247)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 247)) ;
   GALGAS_location var_opLocation_7822 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 247)) ;
   GALGAS_gtlExpression var_plusExpression_7876 ;
   nt_gtl_5F_factor_ (var_plusExpression_7876, inCompiler) ;
@@ -9604,7 +9609,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i9_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 247)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 247)) ;
   nt_gtl_5F_factor_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
@@ -9614,7 +9619,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i10_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_yes) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 259)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_yes COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 259)) ;
   GALGAS_location var_opLocation_8271 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 259)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (var_opLocation_8271, GALGAS_gtlBool::constructor_new (var_opLocation_8271, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 261)), GALGAS_bool (true)  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 261))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 260)) ;
 }
@@ -9622,7 +9627,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i10_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_yes) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 259)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_yes COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 259)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9631,14 +9636,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i11_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_no) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 272)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_no COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 272)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 274)), GALGAS_gtlBool::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 274)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 274)), GALGAS_bool (false)  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 274))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 273)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i11_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_no) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 272)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_no COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 272)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9648,14 +9653,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
   GALGAS_lbigint var_literalInteger_9142 = inCompiler->synthetizedAttribute_intValue () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 285)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 285)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 287)), GALGAS_gtlInt::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 287)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 287)), var_literalInteger_9142.getter_bigint (SOURCE_FILE ("gtl_expression_parser.galgas", 287))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 287))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 286)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i12_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 285)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 285)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9665,14 +9670,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
   GALGAS_ldouble var_literalFloat_9597 = inCompiler->synthetizedAttribute_floatValue () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_literal_5F_double) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 298)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_literal_5F_double COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 298)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 300)), GALGAS_gtlFloat::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 300)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 300)), var_literalFloat_9597.getter_double (SOURCE_FILE ("gtl_expression_parser.galgas", 300))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 300))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 299)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i13_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_literal_5F_double) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 298)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_literal_5F_double COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 298)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9682,14 +9687,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
   GALGAS_lstring var_literalString_10045 = inCompiler->synthetizedAttribute_a_5F_string () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 311)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_string COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 311)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 313)), GALGAS_gtlString::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 313)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 313)), var_literalString_10045.getter_string (SOURCE_FILE ("gtl_expression_parser.galgas", 313))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 313))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 312)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i14_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 311)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_string COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 311)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9699,14 +9704,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
   GALGAS_lchar var_literalChar_10495 = inCompiler->synthetizedAttribute_charValue () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_literal_5F_char) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 324)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_literal_5F_char COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 324)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 326)), GALGAS_gtlChar::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 326)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 326)), var_literalChar_10495.getter_char (SOURCE_FILE ("gtl_expression_parser.galgas", 326))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 326))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 325)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i15_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_literal_5F_char) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 324)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_literal_5F_char COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 324)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9715,11 +9720,11 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i16_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 338)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 338)) ;
   GALGAS_gtlExpression var_target_11029 ;
   nt_gtl_5F_expression_ (var_target_11029, inCompiler) ;
   GALGAS_lstring var_getterName_11069 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 340)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 340)) ;
   const enumGalgasBool test_0 = GALGAS_bool (gOption_gtl_5F_options_warnDeprecated.getter_value ()).boolEnum () ;
   if (kBoolTrue == test_0) {
     const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, GALGAS_string ("stringByCapitalizingFirstCharacter").objectCompare (var_getterName_11069.getter_string (SOURCE_FILE ("gtl_expression_parser.galgas", 342)))).boolEnum () ;
@@ -9734,7 +9739,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   case 1: {
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 350)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 350)) ;
     bool repeatFlag_3 = true ;
     while (repeatFlag_3) {
       GALGAS_gtlExpression var_argument_11444 ;
@@ -9742,7 +9747,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       var_argumentList_11350.addAssign_operation (var_argument_11444  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 353)) ;
       switch (select_gtl_5F_expression_5F_parser_6 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 355)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 355)) ;
       } break ;
       default:
         repeatFlag_3 = false ;
@@ -9753,27 +9758,27 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 358)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 358)) ;
   outArgument_expression = GALGAS_gtlGetterCallExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 360)), var_target_11029, var_getterName_11069, var_argumentList_11350  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 359)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i16_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 338)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 338)) ;
   nt_gtl_5F_expression_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 340)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 340)) ;
   switch (select_gtl_5F_expression_5F_parser_5 (inCompiler)) {
   case 1: {
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 350)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 350)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       nt_gtl_5F_expression_parse (inCompiler) ;
       switch (select_gtl_5F_expression_5F_parser_6 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 355)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 355)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -9784,7 +9789,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 358)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 358)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9806,7 +9811,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 377)), GALGAS_string ("illegal function name"), fixItArray1  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 377)) ;
     }
     GALGAS_gtlExpressionList var_functionArguments_11982 = GALGAS_gtlExpressionList::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 379)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 380)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 380)) ;
     switch (select_gtl_5F_expression_5F_parser_8 (inCompiler)) {
     case 1: {
       bool repeatFlag_2 = true ;
@@ -9816,7 +9821,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
         var_functionArguments_11982.addAssign_operation (var_expression_12079  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 384)) ;
         switch (select_gtl_5F_expression_5F_parser_9 (inCompiler)) {
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 386)) ;
+          inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 386)) ;
         } break ;
         default:
           repeatFlag_2 = false ;
@@ -9829,7 +9834,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
     default:
       break ;
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 389)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 389)) ;
     GALGAS_lstring var_functionName_12199 = extensionGetter_pathAsFunctionName (var_path_11796, inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 390)) ;
     outArgument_expression = GALGAS_gtlFunctionCallExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 392)), var_functionName_12199, var_functionArguments_11982  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 391)) ;
   } break ;
@@ -9846,7 +9851,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   case 1: {
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 380)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 380)) ;
     switch (select_gtl_5F_expression_5F_parser_8 (inCompiler)) {
     case 1: {
       bool repeatFlag_0 = true ;
@@ -9854,7 +9859,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
         nt_gtl_5F_expression_parse (inCompiler) ;
         switch (select_gtl_5F_expression_5F_parser_9 (inCompiler)) {
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 386)) ;
+          inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 386)) ;
         } break ;
         default:
           repeatFlag_0 = false ;
@@ -9867,7 +9872,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
     default:
       break ;
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 389)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 389)) ;
   } break ;
   default:
     break ;
@@ -9880,16 +9885,16 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i18_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_exists) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 404)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_exists COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 404)) ;
   GALGAS_gtlVarPath var_path_12529 ;
   nt_gtl_5F_variable_ (var_path_12529, inCompiler) ;
   switch (select_gtl_5F_expression_5F_parser_10 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_default) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 406)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 407)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_default COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 406)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 407)) ;
     GALGAS_gtlExpression var_defaultExpression_12615 ;
     nt_gtl_5F_expression_ (var_defaultExpression_12615, inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 409)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 409)) ;
     outArgument_expression = GALGAS_gtlExistsDefaultExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 411)), var_path_12529, var_defaultExpression_12615  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 410)) ;
   } break ;
   case 2: {
@@ -9903,14 +9908,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i18_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_exists) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 404)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_exists COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 404)) ;
   nt_gtl_5F_variable_parse (inCompiler) ;
   switch (select_gtl_5F_expression_5F_parser_10 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_default) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 406)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 407)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_default COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 406)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 407)) ;
     nt_gtl_5F_expression_parse (inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 409)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 409)) ;
   } break ;
   case 2: {
   } break ;
@@ -9925,7 +9930,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i19_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_typeof) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 423)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_typeof COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 423)) ;
   GALGAS_gtlVarPath var_path_12970 ;
   nt_gtl_5F_variable_ (var_path_12970, inCompiler) ;
   outArgument_expression = GALGAS_gtlTypeOfExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 424)), var_path_12970  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 424)) ;
@@ -9934,7 +9939,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i19_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_typeof) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 423)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_typeof COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 423)) ;
   nt_gtl_5F_variable_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
@@ -9944,14 +9949,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i20_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_true) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 432)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_true COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 432)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 434)), GALGAS_gtlBool::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 436)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 437)), GALGAS_bool (true)  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 435))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 433)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i20_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_true) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 432)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_true COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 432)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9960,14 +9965,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i21_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_false) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 448)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_false COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 448)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 450)), GALGAS_gtlBool::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 452)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 453)), GALGAS_bool (false)  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 451))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 449)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i21_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_false) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 448)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_false COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 448)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9977,14 +9982,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
   GALGAS_lstring var_enumValue_13736 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_literal_5F_enum) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 464)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_literal_5F_enum COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 464)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 466)), GALGAS_gtlEnum::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 468)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 469)), var_enumValue_13736.getter_string (SOURCE_FILE ("gtl_expression_parser.galgas", 470))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 467))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 465)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i22_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_literal_5F_enum) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 464)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_literal_5F_enum COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 464)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9993,9 +9998,9 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i23_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
   GALGAS_lstring var_typeName_14040 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
   GALGAS_string var_name_14055 = var_typeName_14040.getter_string (SOURCE_FILE ("gtl_expression_parser.galgas", 481)) ;
   GALGAS_gtlType var_type_14091 ;
   const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_name_14055.objectCompare (GALGAS_string ("int"))).boolEnum () ;
@@ -10067,8 +10072,8 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i23_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 480)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10077,7 +10082,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i24_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_emptylist) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 517)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_emptylist COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 517)) ;
   const enumGalgasBool test_0 = GALGAS_bool (gOption_gtl_5F_options_warnDeprecated.getter_value ()).boolEnum () ;
   if (kBoolTrue == test_0) {
     TC_Array <C_FixItDescription> fixItArray1 ;
@@ -10090,7 +10095,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i24_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_emptylist) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 517)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_emptylist COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 517)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10099,7 +10104,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i25_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_emptymap) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 536)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_emptymap COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 536)) ;
   const enumGalgasBool test_0 = GALGAS_bool (gOption_gtl_5F_options_warnDeprecated.getter_value ()).boolEnum () ;
   if (kBoolTrue == test_0) {
     TC_Array <C_FixItDescription> fixItArray1 ;
@@ -10112,7 +10117,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i25_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_emptymap) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 536)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_emptymap COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 536)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10121,18 +10126,18 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i26_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mapof) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 555)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_mapof COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 555)) ;
   GALGAS_gtlExpression var_data_16406 ;
   nt_gtl_5F_expression_ (var_data_16406, inCompiler) ;
   switch (select_gtl_5F_expression_5F_parser_11 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_by) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 558)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_by COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 558)) ;
     GALGAS_lstring var_key_16459 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 559)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 559)) ;
     outArgument_expression = GALGAS_gtlMapOfListExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 561)), var_data_16406, var_key_16459  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 560)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 566)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_end COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 566)) ;
     outArgument_expression = GALGAS_gtlMapOfStructExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 568)), var_data_16406  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 567)) ;
   } break ;
   default:
@@ -10143,15 +10148,15 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i26_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mapof) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 555)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_mapof COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 555)) ;
   nt_gtl_5F_expression_parse (inCompiler) ;
   switch (select_gtl_5F_expression_5F_parser_11 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_by) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 558)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 559)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_by COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 558)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 559)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 566)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_end COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 566)) ;
   } break ;
   default:
     break ;
@@ -10164,19 +10169,19 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i27_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_listof) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 579)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_listof COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 579)) ;
   GALGAS_gtlExpression var_data_16839 ;
   nt_gtl_5F_expression_ (var_data_16839, inCompiler) ;
   outArgument_expression = GALGAS_gtlListOfExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 581)), var_data_16839  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 581)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 582)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_end COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 582)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i27_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_listof) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 579)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_listof COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 579)) ;
   nt_gtl_5F_expression_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 582)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_end COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 582)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10185,7 +10190,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i28_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 590)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 590)) ;
   GALGAS_gtlExpressionList var_expressionList_17081 = GALGAS_gtlExpressionList::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 591)) ;
   switch (select_gtl_5F_expression_5F_parser_12 (inCompiler)) {
   case 1: {
@@ -10196,7 +10201,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       var_expressionList_17081.addAssign_operation (var_listItem_17162  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 595)) ;
       switch (select_gtl_5F_expression_5F_parser_13 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 596)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 596)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10209,14 +10214,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 600)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 600)) ;
   outArgument_expression = GALGAS_gtlLiteralListExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 601)), var_expressionList_17081  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 601)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i28_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 590)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 590)) ;
   switch (select_gtl_5F_expression_5F_parser_12 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
@@ -10224,7 +10229,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       nt_gtl_5F_expression_parse (inCompiler) ;
       switch (select_gtl_5F_expression_5F_parser_13 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 596)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 596)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10237,7 +10242,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 600)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 600)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10246,15 +10251,15 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i29_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 609)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 609)) ;
   GALGAS_gtlExpressionMap var_expressionMap_17482 = GALGAS_gtlExpressionMap::constructor_emptyMap (SOURCE_FILE ("gtl_expression_parser.galgas", 610)) ;
   switch (select_gtl_5F_expression_5F_parser_14 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       GALGAS_lstring var_key_17548 = inCompiler->synthetizedAttribute_a_5F_string () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 613)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 614)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_string COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 613)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 614)) ;
       GALGAS_gtlExpression var_mapItem_17605 ;
       nt_gtl_5F_expression_ (var_mapItem_17605, inCompiler) ;
       {
@@ -10262,7 +10267,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       }
       switch (select_gtl_5F_expression_5F_parser_15 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 617)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 617)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10275,24 +10280,24 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 621)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 621)) ;
   outArgument_expression = GALGAS_gtlLiteralMapExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 622)), var_expressionMap_17482  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 622)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i29_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 609)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 609)) ;
   switch (select_gtl_5F_expression_5F_parser_14 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 613)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 614)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_string COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 613)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 614)) ;
       nt_gtl_5F_expression_parse (inCompiler) ;
       switch (select_gtl_5F_expression_5F_parser_15 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 617)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 617)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10305,7 +10310,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 621)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 621)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10314,15 +10319,15 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i30_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__7B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 630)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__7B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 630)) ;
   GALGAS_gtlExpressionMap var_expressionMap_17931 = GALGAS_gtlExpressionMap::constructor_emptyMap (SOURCE_FILE ("gtl_expression_parser.galgas", 631)) ;
   switch (select_gtl_5F_expression_5F_parser_16 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       GALGAS_lstring var_fieldName_18006 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 634)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 635)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 634)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 635)) ;
       GALGAS_gtlExpression var_structField_18067 ;
       nt_gtl_5F_expression_ (var_structField_18067, inCompiler) ;
       {
@@ -10330,7 +10335,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       }
       switch (select_gtl_5F_expression_5F_parser_17 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 638)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 638)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10343,24 +10348,24 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 642)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__7D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 642)) ;
   outArgument_expression = GALGAS_gtlLiteralStructExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 643)), var_expressionMap_17931  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 643)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i30_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__7B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 630)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__7B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 630)) ;
   switch (select_gtl_5F_expression_5F_parser_16 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 634)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 635)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 634)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 635)) ;
       nt_gtl_5F_expression_parse (inCompiler) ;
       switch (select_gtl_5F_expression_5F_parser_17 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 638)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 638)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10373,7 +10378,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 642)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__7D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 642)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10382,7 +10387,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i31_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__21_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 651)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__21_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 651)) ;
   GALGAS_gtlExpressionList var_expressionList_18408 = GALGAS_gtlExpressionList::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 652)) ;
   switch (select_gtl_5F_expression_5F_parser_18 (inCompiler)) {
   case 1: {
@@ -10393,7 +10398,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       var_expressionList_18408.addAssign_operation (var_setElement_18491  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 656)) ;
       switch (select_gtl_5F_expression_5F_parser_19 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 657)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 657)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10406,14 +10411,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__21_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 661)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__21_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 661)) ;
   outArgument_expression = GALGAS_gtlLiteralSetExpression::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 662)), var_expressionList_18408  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 662)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i31_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__21_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 651)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__21_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 651)) ;
   switch (select_gtl_5F_expression_5F_parser_18 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
@@ -10421,7 +10426,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       nt_gtl_5F_expression_parse (inCompiler) ;
       switch (select_gtl_5F_expression_5F_parser_19 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 657)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 657)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10434,7 +10439,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__21_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 661)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__21_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 661)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10443,19 +10448,19 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__3F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
   GALGAS_gtlExpression var_exp_18817 ;
   nt_gtl_5F_expression_ (var_exp_18817, inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
   outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)), GALGAS_gtlExpr::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)), var_exp_18817  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40__3F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
   nt_gtl_5F_expression_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10464,14 +10469,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_ (GALGAS_gtlExpression & outArgument_expression,
                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_expression.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
   outArgument_expression = GALGAS_gtlAllVarsRef::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10484,29 +10489,29 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     GALGAS_lstring var_variableName_19304 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 692)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 692)) ;
     switch (select_gtl_5F_expression_5F_parser_21 (inCompiler)) {
     case 1: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 694)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 694)) ;
       GALGAS_gtlExpression var_expression_19379 ;
       nt_gtl_5F_expression_ (var_expression_19379, inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
       outArgument_path.addAssign_operation (GALGAS_gtlVarItemCollection::constructor_new (var_variableName_19304, var_expression_19379  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 697))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 697)) ;
       switch (select_gtl_5F_expression_5F_parser_22 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 699)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 699)) ;
         GALGAS_gtlExpression var_expression_19541 ;
         nt_gtl_5F_expression_ (var_expression_19541, inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 701)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 701)) ;
         outArgument_path.addAssign_operation (GALGAS_gtlVarItemSubCollection::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 702)), var_expression_19541  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 702))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 702)) ;
         bool repeatFlag_1 = true ;
         while (repeatFlag_1) {
           switch (select_gtl_5F_expression_5F_parser_23 (inCompiler)) {
           case 2: {
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 705)) ;
+            inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 705)) ;
             GALGAS_gtlExpression var_expression_19723 ;
             nt_gtl_5F_expression_ (var_expression_19723, inCompiler) ;
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
+            inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
             outArgument_path.addAssign_operation (GALGAS_gtlVarItemSubCollection::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 708)), var_expression_19723  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 708))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 708)) ;
           } break ;
           default:
@@ -10529,7 +10534,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
     }
     switch (select_gtl_5F_expression_5F_parser_20 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 716)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 716)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -10543,24 +10548,24 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i34_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 692)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 692)) ;
     switch (select_gtl_5F_expression_5F_parser_21 (inCompiler)) {
     case 1: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 694)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 694)) ;
       nt_gtl_5F_expression_parse (inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
       switch (select_gtl_5F_expression_5F_parser_22 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 699)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 699)) ;
         nt_gtl_5F_expression_parse (inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 701)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 701)) ;
         bool repeatFlag_1 = true ;
         while (repeatFlag_1) {
           switch (select_gtl_5F_expression_5F_parser_23 (inCompiler)) {
           case 2: {
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 705)) ;
+            inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5B_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 705)) ;
             nt_gtl_5F_expression_parse (inCompiler) ;
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
+            inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__5D_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
           } break ;
           default:
             repeatFlag_1 = false ;
@@ -10581,7 +10586,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
     }
     switch (select_gtl_5F_expression_5F_parser_20 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 716)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 716)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -10600,7 +10605,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   outArgument_hereInstead.drop () ; // Release 'out' argument
   switch (select_gtl_5F_expression_5F_parser_24 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_here) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_here COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
     outArgument_path = GALGAS_gtlVarPath::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
     outArgument_hereInstead = GALGAS_bool (true) ;
   } break ;
@@ -10618,7 +10623,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i35_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
   switch (select_gtl_5F_expression_5F_parser_24 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_here) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
+    inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_here COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
   } break ;
   case 2: {
     nt_gtl_5F_variable_parse (inCompiler) ;
@@ -10635,19 +10640,19 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
                                                                                                          C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_arguments.drop () ; // Release 'out' argument
   outArgument_arguments = GALGAS_gtlArgumentList::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 739)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 740)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 740)) ;
   switch (select_gtl_5F_expression_5F_parser_25 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       GALGAS_lstring var_argumentName_20445 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 743)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 743)) ;
       switch (select_gtl_5F_expression_5F_parser_27 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
         GALGAS_lstring var_typeName_20510 = inCompiler->synthetizedAttribute_tokenString () ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
         outArgument_arguments.addAssign_operation (GALGAS_bool (true), extensionGetter_gtlType (var_typeName_20510, inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 746)), var_argumentName_20445  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 746)) ;
       } break ;
       case 2: {
@@ -10658,7 +10663,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       }
       switch (select_gtl_5F_expression_5F_parser_26 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 750)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 750)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10671,23 +10676,23 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 753)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 753)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i36_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 740)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__28_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 740)) ;
   switch (select_gtl_5F_expression_5F_parser_25 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 743)) ;
+      inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 743)) ;
       switch (select_gtl_5F_expression_5F_parser_27 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__3A_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__40_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken_identifier COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
       } break ;
       case 2: {
       } break ;
@@ -10696,7 +10701,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       }
       switch (select_gtl_5F_expression_5F_parser_26 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 750)) ;
+        inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__2C_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 750)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10709,13 +10714,13 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 753)) ;
+  inCompiler->acceptTerminal (C_Lexique_gtl_5F_scanner::kToken__29_ COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 753)) ;
   inCompiler->resetTemplateString () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 
@@ -10735,20 +10740,20 @@ typeComparisonResult GALGAS_gtlInstruction::objectCompare (const GALGAS_gtlInstr
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstruction::GALGAS_gtlInstruction (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstruction::GALGAS_gtlInstruction (const cPtr_gtlInstruction * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_location GALGAS_gtlInstruction::getter_where (UNUSED_LOCATION_ARGS) const {
   GALGAS_location result ;
@@ -10760,13 +10765,13 @@ GALGAS_location GALGAS_gtlInstruction::getter_where (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_location cPtr_gtlInstruction::getter_where (UNUSED_LOCATION_ARGS) const {
   return mProperty_where ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_gtlInstruction::getter_signature (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -10778,15 +10783,15 @@ GALGAS_string GALGAS_gtlInstruction::getter_signature (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string cPtr_gtlInstruction::getter_signature (UNUSED_LOCATION_ARGS) const {
   return mProperty_signature ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                       Pointer class for @gtlInstruction class                                       *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlInstruction::cPtr_gtlInstruction (const GALGAS_location & in_where,
                                           const GALGAS_string & in_signature
@@ -10797,23 +10802,23 @@ mProperty_signature (in_signature) {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @gtlInstruction type                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlInstruction ("gtlInstruction",
                                        NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -10823,7 +10828,7 @@ AC_GALGAS_root * GALGAS_gtlInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstruction GALGAS_gtlInstruction::extractObject (const GALGAS_object & inObject,
                                                             C_Compiler * inCompiler
@@ -10840,22 +10845,22 @@ GALGAS_gtlInstruction GALGAS_gtlInstruction::extractObject (const GALGAS_object 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension getter '@gtlInstruction location'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlInstruction_location> gExtensionGetterTable_gtlInstruction_location ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_location (const int32_t inClassIndex,
                                     enterExtensionGetter_gtlInstruction_location inGetter) {
   gExtensionGetterTable_gtlInstruction_location.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_location callExtensionGetter_location (const cPtr_gtlInstruction * inObject,
                                               C_Compiler * inCompiler
@@ -10889,7 +10894,7 @@ GALGAS_location callExtensionGetter_location (const cPtr_gtlInstruction * inObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_location extensionGetter_gtlInstruction_location (const cPtr_gtlInstruction * inObject,
                                                                 C_Compiler * /* inCompiler */
@@ -10903,51 +10908,51 @@ static GALGAS_location extensionGetter_gtlInstruction_location (const cPtr_gtlIn
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_gtlInstruction_location (void) {
   enterExtensionGetter_location (kTypeDescriptor_GALGAS_gtlInstruction.mSlotID,
                                  extensionGetter_gtlInstruction_location) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlInstruction_location (void) {
   gExtensionGetterTable_gtlInstruction_location.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlInstruction_location (defineExtensionGetter_gtlInstruction_location,
                                                     freeExtensionGetter_gtlInstruction_location) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Abstract extension method '@gtlInstruction execute'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlInstruction_execute> gExtensionMethodTable_gtlInstruction_execute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_execute (const int32_t inClassIndex,
                                    extensionMethodSignature_gtlInstruction_execute inMethod) {
   gExtensionMethodTable_gtlInstruction_execute.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlInstruction_execute (void) {
   gExtensionMethodTable_gtlInstruction_execute.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlInstruction_execute (NULL,
                                                    freeExtensionMethod_gtlInstruction_execute) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_execute (const cPtr_gtlInstruction * inObject,
                                   GALGAS_gtlContext & io_context,
@@ -10984,11 +10989,11 @@ void callExtensionMethod_execute (const cPtr_gtlInstruction * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension method '@gtlInstructionList execute'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_execute (const GALGAS_gtlInstructionList inObject,
                               GALGAS_gtlContext & ioArgument_context,
@@ -11125,9 +11130,9 @@ void extensionMethod_execute (const GALGAS_gtlInstructionList inObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlLetUnconstructedInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -11145,7 +11150,7 @@ typeComparisonResult cPtr_gtlLetUnconstructedInstruction::dynamicObjectCompare (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlLetUnconstructedInstruction::objectCompare (const GALGAS_gtlLetUnconstructedInstruction & inOperand) const {
@@ -11164,13 +11169,13 @@ typeComparisonResult GALGAS_gtlLetUnconstructedInstruction::objectCompare (const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLetUnconstructedInstruction::GALGAS_gtlLetUnconstructedInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLetUnconstructedInstruction GALGAS_gtlLetUnconstructedInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlLetUnconstructedInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -11179,14 +11184,14 @@ GALGAS_gtlLetUnconstructedInstruction GALGAS_gtlLetUnconstructedInstruction::con
                                                                  COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLetUnconstructedInstruction::GALGAS_gtlLetUnconstructedInstruction (const cPtr_gtlLetUnconstructedInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlLetUnconstructedInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLetUnconstructedInstruction GALGAS_gtlLetUnconstructedInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                               const GALGAS_string & inAttribute_signature,
@@ -11199,7 +11204,7 @@ GALGAS_gtlLetUnconstructedInstruction GALGAS_gtlLetUnconstructedInstruction::con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlLetUnconstructedInstruction::getter_lValue (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlVarPath result ;
@@ -11211,15 +11216,15 @@ GALGAS_gtlVarPath GALGAS_gtlLetUnconstructedInstruction::getter_lValue (UNUSED_L
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath cPtr_gtlLetUnconstructedInstruction::getter_lValue (UNUSED_LOCATION_ARGS) const {
   return mProperty_lValue ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                               Pointer class for @gtlLetUnconstructedInstruction class                               *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlLetUnconstructedInstruction::cPtr_gtlLetUnconstructedInstruction (const GALGAS_location & in_where,
                                                                           const GALGAS_string & in_signature,
@@ -11229,7 +11234,7 @@ cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
 mProperty_lValue (in_lValue) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlLetUnconstructedInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlLetUnconstructedInstruction ;
@@ -11246,7 +11251,7 @@ void cPtr_gtlLetUnconstructedInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlLetUnconstructedInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -11255,23 +11260,23 @@ acPtr_class * cPtr_gtlLetUnconstructedInstruction::duplicate (LOCATION_ARGS) con
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @gtlLetUnconstructedInstruction type                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlLetUnconstructedInstruction ("gtlLetUnconstructedInstruction",
                                                        & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlLetUnconstructedInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlLetUnconstructedInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlLetUnconstructedInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11281,7 +11286,7 @@ AC_GALGAS_root * GALGAS_gtlLetUnconstructedInstruction::clonedObject (void) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLetUnconstructedInstruction GALGAS_gtlLetUnconstructedInstruction::extractObject (const GALGAS_object & inObject,
                                                                                             C_Compiler * inCompiler
@@ -11298,9 +11303,9 @@ GALGAS_gtlLetUnconstructedInstruction GALGAS_gtlLetUnconstructedInstruction::ext
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlUnletInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -11318,7 +11323,7 @@ typeComparisonResult cPtr_gtlUnletInstruction::dynamicObjectCompare (const acPtr
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlUnletInstruction::objectCompare (const GALGAS_gtlUnletInstruction & inOperand) const {
@@ -11337,13 +11342,13 @@ typeComparisonResult GALGAS_gtlUnletInstruction::objectCompare (const GALGAS_gtl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlUnletInstruction::GALGAS_gtlUnletInstruction (void) :
 GALGAS_gtlLetUnconstructedInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlUnletInstruction GALGAS_gtlUnletInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlUnletInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -11352,14 +11357,14 @@ GALGAS_gtlUnletInstruction GALGAS_gtlUnletInstruction::constructor_default (LOCA
                                                       COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlUnletInstruction::GALGAS_gtlUnletInstruction (const cPtr_gtlUnletInstruction * inSourcePtr) :
 GALGAS_gtlLetUnconstructedInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlUnletInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlUnletInstruction GALGAS_gtlUnletInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                         const GALGAS_string & inAttribute_signature,
@@ -11372,9 +11377,9 @@ GALGAS_gtlUnletInstruction GALGAS_gtlUnletInstruction::constructor_new (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                    Pointer class for @gtlUnletInstruction class                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlUnletInstruction::cPtr_gtlUnletInstruction (const GALGAS_location & in_where,
                                                     const GALGAS_string & in_signature,
@@ -11383,7 +11388,7 @@ cPtr_gtlUnletInstruction::cPtr_gtlUnletInstruction (const GALGAS_location & in_w
 cPtr_gtlLetUnconstructedInstruction (in_where, in_signature, in_lValue COMMA_THERE) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlUnletInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlUnletInstruction ;
@@ -11400,7 +11405,7 @@ void cPtr_gtlUnletInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlUnletInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -11409,23 +11414,23 @@ acPtr_class * cPtr_gtlUnletInstruction::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @gtlUnletInstruction type                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlUnletInstruction ("gtlUnletInstruction",
                                             & kTypeDescriptor_GALGAS_gtlLetUnconstructedInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlUnletInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlUnletInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlUnletInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11435,7 +11440,7 @@ AC_GALGAS_root * GALGAS_gtlUnletInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlUnletInstruction GALGAS_gtlUnletInstruction::extractObject (const GALGAS_object & inObject,
                                                                       C_Compiler * inCompiler
@@ -11452,9 +11457,9 @@ GALGAS_gtlUnletInstruction GALGAS_gtlUnletInstruction::extractObject (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlTemplateStringInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -11472,7 +11477,7 @@ typeComparisonResult cPtr_gtlTemplateStringInstruction::dynamicObjectCompare (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlTemplateStringInstruction::objectCompare (const GALGAS_gtlTemplateStringInstruction & inOperand) const {
@@ -11491,13 +11496,13 @@ typeComparisonResult GALGAS_gtlTemplateStringInstruction::objectCompare (const G
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateStringInstruction::GALGAS_gtlTemplateStringInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateStringInstruction GALGAS_gtlTemplateStringInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlTemplateStringInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -11506,14 +11511,14 @@ GALGAS_gtlTemplateStringInstruction GALGAS_gtlTemplateStringInstruction::constru
                                                                COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateStringInstruction::GALGAS_gtlTemplateStringInstruction (const cPtr_gtlTemplateStringInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlTemplateStringInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateStringInstruction GALGAS_gtlTemplateStringInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                           const GALGAS_string & inAttribute_signature,
@@ -11526,7 +11531,7 @@ GALGAS_gtlTemplateStringInstruction GALGAS_gtlTemplateStringInstruction::constru
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_gtlTemplateStringInstruction::getter_value (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -11538,15 +11543,15 @@ GALGAS_string GALGAS_gtlTemplateStringInstruction::getter_value (UNUSED_LOCATION
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string cPtr_gtlTemplateStringInstruction::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                Pointer class for @gtlTemplateStringInstruction class                                *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlTemplateStringInstruction::cPtr_gtlTemplateStringInstruction (const GALGAS_location & in_where,
                                                                       const GALGAS_string & in_signature,
@@ -11556,7 +11561,7 @@ cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
 mProperty_value (in_value) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlTemplateStringInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlTemplateStringInstruction ;
@@ -11573,7 +11578,7 @@ void cPtr_gtlTemplateStringInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlTemplateStringInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -11582,23 +11587,23 @@ acPtr_class * cPtr_gtlTemplateStringInstruction::duplicate (LOCATION_ARGS) const
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @gtlTemplateStringInstruction type                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlTemplateStringInstruction ("gtlTemplateStringInstruction",
                                                      & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlTemplateStringInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlTemplateStringInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlTemplateStringInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11608,7 +11613,7 @@ AC_GALGAS_root * GALGAS_gtlTemplateStringInstruction::clonedObject (void) const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateStringInstruction GALGAS_gtlTemplateStringInstruction::extractObject (const GALGAS_object & inObject,
                                                                                         C_Compiler * inCompiler
@@ -11625,9 +11630,9 @@ GALGAS_gtlTemplateStringInstruction GALGAS_gtlTemplateStringInstruction::extract
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlGetColumnInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -11645,7 +11650,7 @@ typeComparisonResult cPtr_gtlGetColumnInstruction::dynamicObjectCompare (const a
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlGetColumnInstruction::objectCompare (const GALGAS_gtlGetColumnInstruction & inOperand) const {
@@ -11664,13 +11669,13 @@ typeComparisonResult GALGAS_gtlGetColumnInstruction::objectCompare (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetColumnInstruction::GALGAS_gtlGetColumnInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlGetColumnInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -11679,14 +11684,14 @@ GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::constructor_defau
                                                           COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetColumnInstruction::GALGAS_gtlGetColumnInstruction (const cPtr_gtlGetColumnInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlGetColumnInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                 const GALGAS_string & inAttribute_signature,
@@ -11699,7 +11704,7 @@ GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::constructor_new (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlGetColumnInstruction::getter_destVariable (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlVarPath result ;
@@ -11711,15 +11716,15 @@ GALGAS_gtlVarPath GALGAS_gtlGetColumnInstruction::getter_destVariable (UNUSED_LO
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath cPtr_gtlGetColumnInstruction::getter_destVariable (UNUSED_LOCATION_ARGS) const {
   return mProperty_destVariable ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                  Pointer class for @gtlGetColumnInstruction class                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlGetColumnInstruction::cPtr_gtlGetColumnInstruction (const GALGAS_location & in_where,
                                                             const GALGAS_string & in_signature,
@@ -11729,7 +11734,7 @@ cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
 mProperty_destVariable (in_destVariable) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlGetColumnInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlGetColumnInstruction ;
@@ -11746,7 +11751,7 @@ void cPtr_gtlGetColumnInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlGetColumnInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -11755,23 +11760,23 @@ acPtr_class * cPtr_gtlGetColumnInstruction::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlGetColumnInstruction type                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlGetColumnInstruction ("gtlGetColumnInstruction",
                                                 & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlGetColumnInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlGetColumnInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlGetColumnInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11781,7 +11786,7 @@ AC_GALGAS_root * GALGAS_gtlGetColumnInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -11798,11 +11803,11 @@ GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::extractObject (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Class for element of '@gtlThenElsifStatementList' list                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlThenElsifStatementList : public cCollectionElement {
   public : GALGAS_gtlThenElsifStatementList_2D_element mObject ;
@@ -11825,7 +11830,7 @@ class cCollectionElement_gtlThenElsifStatementList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlThenElsifStatementList::cCollectionElement_gtlThenElsifStatementList (const GALGAS_gtlExpression & in_condition,
                                                                                             const GALGAS_gtlInstructionList & in_instructionList
@@ -11834,13 +11839,13 @@ cCollectionElement (THERE),
 mObject (in_condition, in_instructionList) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlThenElsifStatementList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlThenElsifStatementList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -11848,7 +11853,7 @@ cCollectionElement * cCollectionElement_gtlThenElsifStatementList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlThenElsifStatementList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -11861,7 +11866,7 @@ void cCollectionElement_gtlThenElsifStatementList::description (C_String & ioStr
   mObject.mProperty_instructionList.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlThenElsifStatementList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlThenElsifStatementList * operand = (cCollectionElement_gtlThenElsifStatementList *) inOperand ;
@@ -11869,25 +11874,25 @@ typeComparisonResult cCollectionElement_gtlThenElsifStatementList::compare (cons
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList::GALGAS_gtlThenElsifStatementList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList::GALGAS_gtlThenElsifStatementList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlThenElsifStatementList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::constructor_listWithValue (const GALGAS_gtlExpression & inOperand0,
                                                                                               const GALGAS_gtlInstructionList & inOperand1
@@ -11902,7 +11907,7 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::constructor_l
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                                   const GALGAS_gtlExpression & in_condition,
@@ -11915,7 +11920,7 @@ void GALGAS_gtlThenElsifStatementList::makeAttributesFromObjects (capCollectionE
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::addAssign_operation (const GALGAS_gtlExpression & inOperand0,
                                                             const GALGAS_gtlInstructionList & inOperand1
@@ -11930,7 +11935,7 @@ void GALGAS_gtlThenElsifStatementList::addAssign_operation (const GALGAS_gtlExpr
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::setter_insertAtIndex (const GALGAS_gtlExpression inOperand0,
                                                              const GALGAS_gtlInstructionList inOperand1,
@@ -11947,7 +11952,7 @@ void GALGAS_gtlThenElsifStatementList::setter_insertAtIndex (const GALGAS_gtlExp
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::setter_removeAtIndex (GALGAS_gtlExpression & outOperand0,
                                                              GALGAS_gtlInstructionList & outOperand1,
@@ -11969,7 +11974,7 @@ void GALGAS_gtlThenElsifStatementList::setter_removeAtIndex (GALGAS_gtlExpressio
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::setter_popFirst (GALGAS_gtlExpression & outOperand0,
                                                         GALGAS_gtlInstructionList & outOperand1,
@@ -11988,7 +11993,7 @@ void GALGAS_gtlThenElsifStatementList::setter_popFirst (GALGAS_gtlExpression & o
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::setter_popLast (GALGAS_gtlExpression & outOperand0,
                                                        GALGAS_gtlInstructionList & outOperand1,
@@ -12007,7 +12012,7 @@ void GALGAS_gtlThenElsifStatementList::setter_popLast (GALGAS_gtlExpression & ou
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::method_first (GALGAS_gtlExpression & outOperand0,
                                                      GALGAS_gtlInstructionList & outOperand1,
@@ -12026,7 +12031,7 @@ void GALGAS_gtlThenElsifStatementList::method_first (GALGAS_gtlExpression & outO
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::method_last (GALGAS_gtlExpression & outOperand0,
                                                     GALGAS_gtlInstructionList & outOperand1,
@@ -12045,7 +12050,7 @@ void GALGAS_gtlThenElsifStatementList::method_last (GALGAS_gtlExpression & outOp
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::add_operation (const GALGAS_gtlThenElsifStatementList & inOperand,
                                                                                   C_Compiler * /* inCompiler */
@@ -12058,7 +12063,7 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::add_operation
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                                             C_Compiler * inCompiler
@@ -12068,7 +12073,7 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::getter_subLis
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                                             C_Compiler * inCompiler
@@ -12078,7 +12083,7 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::getter_subLis
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                                           C_Compiler * inCompiler
@@ -12088,7 +12093,7 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::getter_subLis
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList::plusAssign_operation (const GALGAS_gtlThenElsifStatementList inOperand,
                                                              C_Compiler * /* inCompiler */
@@ -12096,7 +12101,7 @@ void GALGAS_gtlThenElsifStatementList::plusAssign_operation (const GALGAS_gtlThe
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression GALGAS_gtlThenElsifStatementList::getter_conditionAtIndex (const GALGAS_uint & inIndex,
                                                                                 C_Compiler * inCompiler
@@ -12111,7 +12116,7 @@ GALGAS_gtlExpression GALGAS_gtlThenElsifStatementList::getter_conditionAtIndex (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList::getter_instructionListAtIndex (const GALGAS_uint & inIndex,
                                                                                            C_Compiler * inCompiler
@@ -12128,7 +12133,7 @@ GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList::getter_instructionLi
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlThenElsifStatementList::cEnumerator_gtlThenElsifStatementList (const GALGAS_gtlThenElsifStatementList & inEnumeratedObject,
                                                                               const typeEnumerationOrder inOrder) :
@@ -12136,7 +12141,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList_2D_element cEnumerator_gtlThenElsifStatementList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlThenElsifStatementList * p = (const cCollectionElement_gtlThenElsifStatementList *) currentObjectPtr (THERE) ;
@@ -12145,7 +12150,7 @@ GALGAS_gtlThenElsifStatementList_2D_element cEnumerator_gtlThenElsifStatementLis
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression cEnumerator_gtlThenElsifStatementList::current_condition (LOCATION_ARGS) const {
   const cCollectionElement_gtlThenElsifStatementList * p = (const cCollectionElement_gtlThenElsifStatementList *) currentObjectPtr (THERE) ;
@@ -12153,7 +12158,7 @@ GALGAS_gtlExpression cEnumerator_gtlThenElsifStatementList::current_condition (L
   return p->mObject.mProperty_condition ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList cEnumerator_gtlThenElsifStatementList::current_instructionList (LOCATION_ARGS) const {
   const cCollectionElement_gtlThenElsifStatementList * p = (const cCollectionElement_gtlThenElsifStatementList *) currentObjectPtr (THERE) ;
@@ -12164,23 +12169,23 @@ GALGAS_gtlInstructionList cEnumerator_gtlThenElsifStatementList::current_instruc
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @gtlThenElsifStatementList type                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlThenElsifStatementList ("gtlThenElsifStatementList",
                                                   NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlThenElsifStatementList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlThenElsifStatementList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlThenElsifStatementList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12190,7 +12195,7 @@ AC_GALGAS_root * GALGAS_gtlThenElsifStatementList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -12207,9 +12212,9 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlThenElsifStatementList::extractObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlIfStatementInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -12230,7 +12235,7 @@ typeComparisonResult cPtr_gtlIfStatementInstruction::dynamicObjectCompare (const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlIfStatementInstruction::objectCompare (const GALGAS_gtlIfStatementInstruction & inOperand) const {
@@ -12249,13 +12254,13 @@ typeComparisonResult GALGAS_gtlIfStatementInstruction::objectCompare (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlIfStatementInstruction::GALGAS_gtlIfStatementInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlIfStatementInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -12265,14 +12270,14 @@ GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::constructor_d
                                                             COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlIfStatementInstruction::GALGAS_gtlIfStatementInstruction (const cPtr_gtlIfStatementInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlIfStatementInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                     const GALGAS_string & inAttribute_signature,
@@ -12286,7 +12291,7 @@ GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::constructor_n
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList GALGAS_gtlIfStatementInstruction::getter_thenElsifList (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlThenElsifStatementList result ;
@@ -12298,13 +12303,13 @@ GALGAS_gtlThenElsifStatementList GALGAS_gtlIfStatementInstruction::getter_thenEl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList cPtr_gtlIfStatementInstruction::getter_thenElsifList (UNUSED_LOCATION_ARGS) const {
   return mProperty_thenElsifList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlIfStatementInstruction::getter_elseList (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlInstructionList result ;
@@ -12316,15 +12321,15 @@ GALGAS_gtlInstructionList GALGAS_gtlIfStatementInstruction::getter_elseList (UNU
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList cPtr_gtlIfStatementInstruction::getter_elseList (UNUSED_LOCATION_ARGS) const {
   return mProperty_elseList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                 Pointer class for @gtlIfStatementInstruction class                                  *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlIfStatementInstruction::cPtr_gtlIfStatementInstruction (const GALGAS_location & in_where,
                                                                 const GALGAS_string & in_signature,
@@ -12336,7 +12341,7 @@ mProperty_thenElsifList (in_thenElsifList),
 mProperty_elseList (in_elseList) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlIfStatementInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlIfStatementInstruction ;
@@ -12355,7 +12360,7 @@ void cPtr_gtlIfStatementInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlIfStatementInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -12364,23 +12369,23 @@ acPtr_class * cPtr_gtlIfStatementInstruction::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @gtlIfStatementInstruction type                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlIfStatementInstruction ("gtlIfStatementInstruction",
                                                   & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlIfStatementInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlIfStatementInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlIfStatementInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12390,7 +12395,7 @@ AC_GALGAS_root * GALGAS_gtlIfStatementInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -12407,9 +12412,9 @@ GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::extractObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlDisplayStatementInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -12427,7 +12432,7 @@ typeComparisonResult cPtr_gtlDisplayStatementInstruction::dynamicObjectCompare (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlDisplayStatementInstruction::objectCompare (const GALGAS_gtlDisplayStatementInstruction & inOperand) const {
@@ -12446,13 +12451,13 @@ typeComparisonResult GALGAS_gtlDisplayStatementInstruction::objectCompare (const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDisplayStatementInstruction::GALGAS_gtlDisplayStatementInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDisplayStatementInstruction GALGAS_gtlDisplayStatementInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlDisplayStatementInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -12461,14 +12466,14 @@ GALGAS_gtlDisplayStatementInstruction GALGAS_gtlDisplayStatementInstruction::con
                                                                  COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDisplayStatementInstruction::GALGAS_gtlDisplayStatementInstruction (const cPtr_gtlDisplayStatementInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlDisplayStatementInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDisplayStatementInstruction GALGAS_gtlDisplayStatementInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                               const GALGAS_string & inAttribute_signature,
@@ -12481,7 +12486,7 @@ GALGAS_gtlDisplayStatementInstruction GALGAS_gtlDisplayStatementInstruction::con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlDisplayStatementInstruction::getter_variablePath (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlVarPath result ;
@@ -12493,15 +12498,15 @@ GALGAS_gtlVarPath GALGAS_gtlDisplayStatementInstruction::getter_variablePath (UN
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath cPtr_gtlDisplayStatementInstruction::getter_variablePath (UNUSED_LOCATION_ARGS) const {
   return mProperty_variablePath ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                               Pointer class for @gtlDisplayStatementInstruction class                               *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlDisplayStatementInstruction::cPtr_gtlDisplayStatementInstruction (const GALGAS_location & in_where,
                                                                           const GALGAS_string & in_signature,
@@ -12511,7 +12516,7 @@ cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
 mProperty_variablePath (in_variablePath) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlDisplayStatementInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlDisplayStatementInstruction ;
@@ -12528,7 +12533,7 @@ void cPtr_gtlDisplayStatementInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlDisplayStatementInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -12537,23 +12542,23 @@ acPtr_class * cPtr_gtlDisplayStatementInstruction::duplicate (LOCATION_ARGS) con
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @gtlDisplayStatementInstruction type                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlDisplayStatementInstruction ("gtlDisplayStatementInstruction",
                                                        & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlDisplayStatementInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlDisplayStatementInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlDisplayStatementInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12563,7 +12568,7 @@ AC_GALGAS_root * GALGAS_gtlDisplayStatementInstruction::clonedObject (void) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDisplayStatementInstruction GALGAS_gtlDisplayStatementInstruction::extractObject (const GALGAS_object & inObject,
                                                                                             C_Compiler * inCompiler
@@ -12580,11 +12585,11 @@ GALGAS_gtlDisplayStatementInstruction GALGAS_gtlDisplayStatementInstruction::ext
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Class for element of '@sortingKeyList' list                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_sortingKeyList : public cCollectionElement {
   public : GALGAS_sortingKeyList_2D_element mObject ;
@@ -12607,7 +12612,7 @@ class cCollectionElement_sortingKeyList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_sortingKeyList::cCollectionElement_sortingKeyList (const GALGAS_lstring & in_key,
                                                                       const GALGAS_lsint & in_order
@@ -12616,13 +12621,13 @@ cCollectionElement (THERE),
 mObject (in_key, in_order) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_sortingKeyList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_sortingKeyList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -12630,7 +12635,7 @@ cCollectionElement * cCollectionElement_sortingKeyList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_sortingKeyList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -12643,7 +12648,7 @@ void cCollectionElement_sortingKeyList::description (C_String & ioString, const 
   mObject.mProperty_order.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_sortingKeyList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_sortingKeyList * operand = (cCollectionElement_sortingKeyList *) inOperand ;
@@ -12651,25 +12656,25 @@ typeComparisonResult cCollectionElement_sortingKeyList::compare (const cCollecti
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList::GALGAS_sortingKeyList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList::GALGAS_sortingKeyList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_sortingKeyList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::constructor_listWithValue (const GALGAS_lstring & inOperand0,
                                                                         const GALGAS_lsint & inOperand1
@@ -12684,7 +12689,7 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::constructor_listWithValue (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                        const GALGAS_lstring & in_key,
@@ -12697,7 +12702,7 @@ void GALGAS_sortingKeyList::makeAttributesFromObjects (capCollectionElement & ou
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::addAssign_operation (const GALGAS_lstring & inOperand0,
                                                  const GALGAS_lsint & inOperand1
@@ -12712,7 +12717,7 @@ void GALGAS_sortingKeyList::addAssign_operation (const GALGAS_lstring & inOperan
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::setter_insertAtIndex (const GALGAS_lstring inOperand0,
                                                   const GALGAS_lsint inOperand1,
@@ -12729,7 +12734,7 @@ void GALGAS_sortingKeyList::setter_insertAtIndex (const GALGAS_lstring inOperand
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::setter_removeAtIndex (GALGAS_lstring & outOperand0,
                                                   GALGAS_lsint & outOperand1,
@@ -12751,7 +12756,7 @@ void GALGAS_sortingKeyList::setter_removeAtIndex (GALGAS_lstring & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::setter_popFirst (GALGAS_lstring & outOperand0,
                                              GALGAS_lsint & outOperand1,
@@ -12770,7 +12775,7 @@ void GALGAS_sortingKeyList::setter_popFirst (GALGAS_lstring & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::setter_popLast (GALGAS_lstring & outOperand0,
                                             GALGAS_lsint & outOperand1,
@@ -12789,7 +12794,7 @@ void GALGAS_sortingKeyList::setter_popLast (GALGAS_lstring & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::method_first (GALGAS_lstring & outOperand0,
                                           GALGAS_lsint & outOperand1,
@@ -12808,7 +12813,7 @@ void GALGAS_sortingKeyList::method_first (GALGAS_lstring & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::method_last (GALGAS_lstring & outOperand0,
                                          GALGAS_lsint & outOperand1,
@@ -12827,7 +12832,7 @@ void GALGAS_sortingKeyList::method_last (GALGAS_lstring & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::add_operation (const GALGAS_sortingKeyList & inOperand,
                                                             C_Compiler * /* inCompiler */
@@ -12840,7 +12845,7 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::add_operation (const GALGAS_sorting
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                       C_Compiler * inCompiler
@@ -12850,7 +12855,7 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListWithRange (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                       C_Compiler * inCompiler
@@ -12860,7 +12865,7 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListFromIndex (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                     C_Compiler * inCompiler
@@ -12870,7 +12875,7 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListToIndex (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList::plusAssign_operation (const GALGAS_sortingKeyList inOperand,
                                                   C_Compiler * /* inCompiler */
@@ -12878,7 +12883,7 @@ void GALGAS_sortingKeyList::plusAssign_operation (const GALGAS_sortingKeyList in
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_sortingKeyList::getter_keyAtIndex (const GALGAS_uint & inIndex,
                                                          C_Compiler * inCompiler
@@ -12893,7 +12898,7 @@ GALGAS_lstring GALGAS_sortingKeyList::getter_keyAtIndex (const GALGAS_uint & inI
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lsint GALGAS_sortingKeyList::getter_orderAtIndex (const GALGAS_uint & inIndex,
                                                          C_Compiler * inCompiler
@@ -12910,7 +12915,7 @@ GALGAS_lsint GALGAS_sortingKeyList::getter_orderAtIndex (const GALGAS_uint & inI
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_sortingKeyList::cEnumerator_sortingKeyList (const GALGAS_sortingKeyList & inEnumeratedObject,
                                                         const typeEnumerationOrder inOrder) :
@@ -12918,7 +12923,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element cEnumerator_sortingKeyList::current (LOCATION_ARGS) const {
   const cCollectionElement_sortingKeyList * p = (const cCollectionElement_sortingKeyList *) currentObjectPtr (THERE) ;
@@ -12927,7 +12932,7 @@ GALGAS_sortingKeyList_2D_element cEnumerator_sortingKeyList::current (LOCATION_A
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cEnumerator_sortingKeyList::current_key (LOCATION_ARGS) const {
   const cCollectionElement_sortingKeyList * p = (const cCollectionElement_sortingKeyList *) currentObjectPtr (THERE) ;
@@ -12935,7 +12940,7 @@ GALGAS_lstring cEnumerator_sortingKeyList::current_key (LOCATION_ARGS) const {
   return p->mObject.mProperty_key ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lsint cEnumerator_sortingKeyList::current_order (LOCATION_ARGS) const {
   const cCollectionElement_sortingKeyList * p = (const cCollectionElement_sortingKeyList *) currentObjectPtr (THERE) ;
@@ -12946,23 +12951,23 @@ GALGAS_lsint cEnumerator_sortingKeyList::current_order (LOCATION_ARGS) const {
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @sortingKeyList type                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_sortingKeyList ("sortingKeyList",
                                        NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_sortingKeyList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_sortingKeyList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_sortingKeyList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12972,7 +12977,7 @@ AC_GALGAS_root * GALGAS_sortingKeyList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_sortingKeyList::extractObject (const GALGAS_object & inObject,
                                                             C_Compiler * inCompiler
@@ -12989,9 +12994,9 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::extractObject (const GALGAS_object 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 
@@ -13011,20 +13016,20 @@ typeComparisonResult GALGAS_gtlAbstractSortInstruction::objectCompare (const GAL
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlAbstractSortInstruction::GALGAS_gtlAbstractSortInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlAbstractSortInstruction::GALGAS_gtlAbstractSortInstruction (const cPtr_gtlAbstractSortInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlAbstractSortInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath GALGAS_gtlAbstractSortInstruction::getter_variablePath (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlVarPath result ;
@@ -13036,15 +13041,15 @@ GALGAS_gtlVarPath GALGAS_gtlAbstractSortInstruction::getter_variablePath (UNUSED
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarPath cPtr_gtlAbstractSortInstruction::getter_variablePath (UNUSED_LOCATION_ARGS) const {
   return mProperty_variablePath ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                 Pointer class for @gtlAbstractSortInstruction class                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlAbstractSortInstruction::cPtr_gtlAbstractSortInstruction (const GALGAS_location & in_where,
                                                                   const GALGAS_string & in_signature,
@@ -13055,23 +13060,23 @@ mProperty_variablePath (in_variablePath) {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @gtlAbstractSortInstruction type                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlAbstractSortInstruction ("gtlAbstractSortInstruction",
                                                    & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlAbstractSortInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlAbstractSortInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlAbstractSortInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13081,7 +13086,7 @@ AC_GALGAS_root * GALGAS_gtlAbstractSortInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlAbstractSortInstruction GALGAS_gtlAbstractSortInstruction::extractObject (const GALGAS_object & inObject,
                                                                                     C_Compiler * inCompiler
@@ -13098,33 +13103,33 @@ GALGAS_gtlAbstractSortInstruction GALGAS_gtlAbstractSortInstruction::extractObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                           Abstract extension getter '@gtlAbstractSortInstruction compare'                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlAbstractSortInstruction_compare> gExtensionGetterTable_gtlAbstractSortInstruction_compare ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_compare (const int32_t inClassIndex,
                                    enterExtensionGetter_gtlAbstractSortInstruction_compare inGetter) {
   gExtensionGetterTable_gtlAbstractSortInstruction_compare.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlAbstractSortInstruction_compare (void) {
   gExtensionGetterTable_gtlAbstractSortInstruction_compare.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlAbstractSortInstruction_compare (NULL,
                                                                freeExtensionGetter_gtlAbstractSortInstruction_compare) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sint callExtensionGetter_compare (const cPtr_gtlAbstractSortInstruction * inObject,
                                          const GALGAS_gtlData in_s_31_,
@@ -13160,22 +13165,22 @@ GALGAS_sint callExtensionGetter_compare (const cPtr_gtlAbstractSortInstruction *
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@gtlAbstractSortInstruction swap'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlAbstractSortInstruction_swap> gExtensionMethodTable_gtlAbstractSortInstruction_swap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_swap (const int32_t inClassIndex,
                                 extensionMethodSignature_gtlAbstractSortInstruction_swap inMethod) {
   gExtensionMethodTable_gtlAbstractSortInstruction_swap.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_swap (const cPtr_gtlAbstractSortInstruction * inObject,
                                GALGAS_list & io_aList,
@@ -13209,7 +13214,7 @@ void callExtensionMethod_swap (const cPtr_gtlAbstractSortInstruction * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_gtlAbstractSortInstruction_swap (const cPtr_gtlAbstractSortInstruction * /* inObject */,
                                                              GALGAS_list & ioArgument_aList,
@@ -13225,40 +13230,40 @@ static void extensionMethod_gtlAbstractSortInstruction_swap (const cPtr_gtlAbstr
   ioArgument_aList.setter_setValueAtIndex (var_temp_29399, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 980)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_gtlAbstractSortInstruction_swap (void) {
   enterExtensionMethod_swap (kTypeDescriptor_GALGAS_gtlAbstractSortInstruction.mSlotID,
                              extensionMethod_gtlAbstractSortInstruction_swap) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlAbstractSortInstruction_swap (void) {
   gExtensionMethodTable_gtlAbstractSortInstruction_swap.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlAbstractSortInstruction_swap (defineExtensionMethod_gtlAbstractSortInstruction_swap,
                                                             freeExtensionMethod_gtlAbstractSortInstruction_swap) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension method '@gtlAbstractSortInstruction partition'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlAbstractSortInstruction_partition> gExtensionMethodTable_gtlAbstractSortInstruction_partition ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_partition (const int32_t inClassIndex,
                                      extensionMethodSignature_gtlAbstractSortInstruction_partition inMethod) {
   gExtensionMethodTable_gtlAbstractSortInstruction_partition.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_partition (const cPtr_gtlAbstractSortInstruction * inObject,
                                     GALGAS_list & io_aList,
@@ -13293,7 +13298,7 @@ void callExtensionMethod_partition (const cPtr_gtlAbstractSortInstruction * inOb
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_gtlAbstractSortInstruction_partition (const cPtr_gtlAbstractSortInstruction * inObject,
                                                                   GALGAS_list & ioArgument_aList,
@@ -13338,40 +13343,40 @@ static void extensionMethod_gtlAbstractSortInstruction_partition (const cPtr_gtl
   callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_4.ptr (), ioArgument_aList, var_storeIndex_29775, constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1001)) ;
   ioArgument_pivotIndex = var_storeIndex_29775 ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_gtlAbstractSortInstruction_partition (void) {
   enterExtensionMethod_partition (kTypeDescriptor_GALGAS_gtlAbstractSortInstruction.mSlotID,
                                   extensionMethod_gtlAbstractSortInstruction_partition) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlAbstractSortInstruction_partition (void) {
   gExtensionMethodTable_gtlAbstractSortInstruction_partition.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlAbstractSortInstruction_partition (defineExtensionMethod_gtlAbstractSortInstruction_partition,
                                                                  freeExtensionMethod_gtlAbstractSortInstruction_partition) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@gtlAbstractSortInstruction sort'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlAbstractSortInstruction_sort> gExtensionMethodTable_gtlAbstractSortInstruction_sort ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_sort (const int32_t inClassIndex,
                                 extensionMethodSignature_gtlAbstractSortInstruction_sort inMethod) {
   gExtensionMethodTable_gtlAbstractSortInstruction_sort.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_sort (const cPtr_gtlAbstractSortInstruction * inObject,
                                GALGAS_list & io_aList,
@@ -13405,7 +13410,7 @@ void callExtensionMethod_sort (const cPtr_gtlAbstractSortInstruction * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_gtlAbstractSortInstruction_sort (const cPtr_gtlAbstractSortInstruction * inObject,
                                                              GALGAS_list & ioArgument_aList,
@@ -13426,27 +13431,27 @@ static void extensionMethod_gtlAbstractSortInstruction_sort (const cPtr_gtlAbstr
     callExtensionMethod_sort ((const cPtr_gtlAbstractSortInstruction *) temp_3.ptr (), ioArgument_aList, var_pivotIndex_30187.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1014)), constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1014)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_gtlAbstractSortInstruction_sort (void) {
   enterExtensionMethod_sort (kTypeDescriptor_GALGAS_gtlAbstractSortInstruction.mSlotID,
                              extensionMethod_gtlAbstractSortInstruction_sort) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlAbstractSortInstruction_sort (void) {
   gExtensionMethodTable_gtlAbstractSortInstruction_sort.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlAbstractSortInstruction_sort (defineExtensionMethod_gtlAbstractSortInstruction_sort,
                                                             freeExtensionMethod_gtlAbstractSortInstruction_sort) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlSortStatementStructInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -13467,7 +13472,7 @@ typeComparisonResult cPtr_gtlSortStatementStructInstruction::dynamicObjectCompar
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlSortStatementStructInstruction::objectCompare (const GALGAS_gtlSortStatementStructInstruction & inOperand) const {
@@ -13486,13 +13491,13 @@ typeComparisonResult GALGAS_gtlSortStatementStructInstruction::objectCompare (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSortStatementStructInstruction::GALGAS_gtlSortStatementStructInstruction (void) :
 GALGAS_gtlAbstractSortInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSortStatementStructInstruction GALGAS_gtlSortStatementStructInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlSortStatementStructInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -13502,14 +13507,14 @@ GALGAS_gtlSortStatementStructInstruction GALGAS_gtlSortStatementStructInstructio
                                                                     COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSortStatementStructInstruction::GALGAS_gtlSortStatementStructInstruction (const cPtr_gtlSortStatementStructInstruction * inSourcePtr) :
 GALGAS_gtlAbstractSortInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlSortStatementStructInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSortStatementStructInstruction GALGAS_gtlSortStatementStructInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                                     const GALGAS_string & inAttribute_signature,
@@ -13523,7 +13528,7 @@ GALGAS_gtlSortStatementStructInstruction GALGAS_gtlSortStatementStructInstructio
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList GALGAS_gtlSortStatementStructInstruction::getter_sortingKey (UNUSED_LOCATION_ARGS) const {
   GALGAS_sortingKeyList result ;
@@ -13535,15 +13540,15 @@ GALGAS_sortingKeyList GALGAS_gtlSortStatementStructInstruction::getter_sortingKe
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList cPtr_gtlSortStatementStructInstruction::getter_sortingKey (UNUSED_LOCATION_ARGS) const {
   return mProperty_sortingKey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                             Pointer class for @gtlSortStatementStructInstruction class                              *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlSortStatementStructInstruction::cPtr_gtlSortStatementStructInstruction (const GALGAS_location & in_where,
                                                                                 const GALGAS_string & in_signature,
@@ -13554,7 +13559,7 @@ cPtr_gtlAbstractSortInstruction (in_where, in_signature, in_variablePath COMMA_T
 mProperty_sortingKey (in_sortingKey) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlSortStatementStructInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlSortStatementStructInstruction ;
@@ -13573,7 +13578,7 @@ void cPtr_gtlSortStatementStructInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlSortStatementStructInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -13582,23 +13587,23 @@ acPtr_class * cPtr_gtlSortStatementStructInstruction::duplicate (LOCATION_ARGS) 
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       @gtlSortStatementStructInstruction type                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlSortStatementStructInstruction ("gtlSortStatementStructInstruction",
                                                           & kTypeDescriptor_GALGAS_gtlAbstractSortInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlSortStatementStructInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlSortStatementStructInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlSortStatementStructInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13608,7 +13613,7 @@ AC_GALGAS_root * GALGAS_gtlSortStatementStructInstruction::clonedObject (void) c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSortStatementStructInstruction GALGAS_gtlSortStatementStructInstruction::extractObject (const GALGAS_object & inObject,
                                                                                                   C_Compiler * inCompiler
@@ -13625,22 +13630,22 @@ GALGAS_gtlSortStatementStructInstruction GALGAS_gtlSortStatementStructInstructio
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                        Extension getter '@gtlSortStatementStructInstruction compareElements'                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_gtlSortStatementStructInstruction_compareElements> gExtensionGetterTable_gtlSortStatementStructInstruction_compareElements ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_compareElements (const int32_t inClassIndex,
                                            enterExtensionGetter_gtlSortStatementStructInstruction_compareElements inGetter) {
   gExtensionGetterTable_gtlSortStatementStructInstruction_compareElements.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sint callExtensionGetter_compareElements (const cPtr_gtlSortStatementStructInstruction * inObject,
                                                  const GALGAS_gtlData in_s_31_,
@@ -13677,7 +13682,7 @@ GALGAS_sint callExtensionGetter_compareElements (const cPtr_gtlSortStatementStru
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_sint extensionGetter_gtlSortStatementStructInstruction_compareElements (const cPtr_gtlSortStatementStructInstruction * inObject,
                                                                                       const GALGAS_gtlData constinArgument_s_31_,
@@ -13751,27 +13756,27 @@ static GALGAS_sint extensionGetter_gtlSortStatementStructInstruction_compareElem
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_gtlSortStatementStructInstruction_compareElements (void) {
   enterExtensionGetter_compareElements (kTypeDescriptor_GALGAS_gtlSortStatementStructInstruction.mSlotID,
                                         extensionGetter_gtlSortStatementStructInstruction_compareElements) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_gtlSortStatementStructInstruction_compareElements (void) {
   gExtensionGetterTable_gtlSortStatementStructInstruction_compareElements.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_gtlSortStatementStructInstruction_compareElements (defineExtensionGetter_gtlSortStatementStructInstruction_compareElements,
                                                                               freeExtensionGetter_gtlSortStatementStructInstruction_compareElements) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlVariablesInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -13789,7 +13794,7 @@ typeComparisonResult cPtr_gtlVariablesInstruction::dynamicObjectCompare (const a
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlVariablesInstruction::objectCompare (const GALGAS_gtlVariablesInstruction & inOperand) const {
@@ -13808,13 +13813,13 @@ typeComparisonResult GALGAS_gtlVariablesInstruction::objectCompare (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVariablesInstruction::GALGAS_gtlVariablesInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVariablesInstruction GALGAS_gtlVariablesInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlVariablesInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -13823,14 +13828,14 @@ GALGAS_gtlVariablesInstruction GALGAS_gtlVariablesInstruction::constructor_defau
                                                           COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVariablesInstruction::GALGAS_gtlVariablesInstruction (const cPtr_gtlVariablesInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlVariablesInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVariablesInstruction GALGAS_gtlVariablesInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                 const GALGAS_string & inAttribute_signature,
@@ -13843,7 +13848,7 @@ GALGAS_gtlVariablesInstruction GALGAS_gtlVariablesInstruction::constructor_new (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_gtlVariablesInstruction::getter_shortDisplay (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -13855,15 +13860,15 @@ GALGAS_bool GALGAS_gtlVariablesInstruction::getter_shortDisplay (UNUSED_LOCATION
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool cPtr_gtlVariablesInstruction::getter_shortDisplay (UNUSED_LOCATION_ARGS) const {
   return mProperty_shortDisplay ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                  Pointer class for @gtlVariablesInstruction class                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlVariablesInstruction::cPtr_gtlVariablesInstruction (const GALGAS_location & in_where,
                                                             const GALGAS_string & in_signature,
@@ -13873,7 +13878,7 @@ cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
 mProperty_shortDisplay (in_shortDisplay) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlVariablesInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVariablesInstruction ;
@@ -13890,7 +13895,7 @@ void cPtr_gtlVariablesInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlVariablesInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -13899,23 +13904,23 @@ acPtr_class * cPtr_gtlVariablesInstruction::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlVariablesInstruction type                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlVariablesInstruction ("gtlVariablesInstruction",
                                                 & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlVariablesInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVariablesInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlVariablesInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13925,7 +13930,7 @@ AC_GALGAS_root * GALGAS_gtlVariablesInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVariablesInstruction GALGAS_gtlVariablesInstruction::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -13942,22 +13947,22 @@ GALGAS_gtlVariablesInstruction GALGAS_gtlVariablesInstruction::extractObject (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension method '@gtlVariablesInstruction displayShort'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlVariablesInstruction_displayShort> gExtensionMethodTable_gtlVariablesInstruction_displayShort ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_displayShort (const int32_t inClassIndex,
                                         extensionMethodSignature_gtlVariablesInstruction_displayShort inMethod) {
   gExtensionMethodTable_gtlVariablesInstruction_displayShort.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_displayShort (const cPtr_gtlVariablesInstruction * inObject,
                                        const GALGAS_gtlData constin_vars,
@@ -13989,7 +13994,7 @@ void callExtensionMethod_displayShort (const cPtr_gtlVariablesInstruction * inOb
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_gtlVariablesInstruction_displayShort (const cPtr_gtlVariablesInstruction * inObject,
                                                                   const GALGAS_gtlData constinArgument_vars,
@@ -14013,40 +14018,40 @@ static void extensionMethod_gtlVariablesInstruction_displayShort (const cPtr_gtl
     }
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_gtlVariablesInstruction_displayShort (void) {
   enterExtensionMethod_displayShort (kTypeDescriptor_GALGAS_gtlVariablesInstruction.mSlotID,
                                      extensionMethod_gtlVariablesInstruction_displayShort) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlVariablesInstruction_displayShort (void) {
   gExtensionMethodTable_gtlVariablesInstruction_displayShort.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlVariablesInstruction_displayShort (defineExtensionMethod_gtlVariablesInstruction_displayShort,
                                                                  freeExtensionMethod_gtlVariablesInstruction_displayShort) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension method '@gtlVariablesInstruction displayLong'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_gtlVariablesInstruction_displayLong> gExtensionMethodTable_gtlVariablesInstruction_displayLong ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_displayLong (const int32_t inClassIndex,
                                        extensionMethodSignature_gtlVariablesInstruction_displayLong inMethod) {
   gExtensionMethodTable_gtlVariablesInstruction_displayLong.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_displayLong (const cPtr_gtlVariablesInstruction * inObject,
                                       const GALGAS_gtlData constin_vars,
@@ -14078,7 +14083,7 @@ void callExtensionMethod_displayLong (const cPtr_gtlVariablesInstruction * inObj
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_gtlVariablesInstruction_displayLong (const cPtr_gtlVariablesInstruction * inObject,
                                                                  const GALGAS_gtlData constinArgument_vars,
@@ -14111,27 +14116,27 @@ static void extensionMethod_gtlVariablesInstruction_displayLong (const cPtr_gtlV
   }
   inCompiler->printMessage (var_delimitor_34448  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1188)) ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_gtlVariablesInstruction_displayLong (void) {
   enterExtensionMethod_displayLong (kTypeDescriptor_GALGAS_gtlVariablesInstruction.mSlotID,
                                     extensionMethod_gtlVariablesInstruction_displayLong) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_gtlVariablesInstruction_displayLong (void) {
   gExtensionMethodTable_gtlVariablesInstruction_displayLong.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_gtlVariablesInstruction_displayLong (defineExtensionMethod_gtlVariablesInstruction_displayLong,
                                                                 freeExtensionMethod_gtlVariablesInstruction_displayLong) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlLibrariesInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -14146,7 +14151,7 @@ typeComparisonResult cPtr_gtlLibrariesInstruction::dynamicObjectCompare (const a
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlLibrariesInstruction::objectCompare (const GALGAS_gtlLibrariesInstruction & inOperand) const {
@@ -14165,13 +14170,13 @@ typeComparisonResult GALGAS_gtlLibrariesInstruction::objectCompare (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLibrariesInstruction::GALGAS_gtlLibrariesInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLibrariesInstruction GALGAS_gtlLibrariesInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlLibrariesInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -14179,14 +14184,14 @@ GALGAS_gtlLibrariesInstruction GALGAS_gtlLibrariesInstruction::constructor_defau
                                                           COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLibrariesInstruction::GALGAS_gtlLibrariesInstruction (const cPtr_gtlLibrariesInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlLibrariesInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLibrariesInstruction GALGAS_gtlLibrariesInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                 const GALGAS_string & inAttribute_signature
@@ -14198,9 +14203,9 @@ GALGAS_gtlLibrariesInstruction GALGAS_gtlLibrariesInstruction::constructor_new (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                  Pointer class for @gtlLibrariesInstruction class                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlLibrariesInstruction::cPtr_gtlLibrariesInstruction (const GALGAS_location & in_where,
                                                             const GALGAS_string & in_signature
@@ -14208,7 +14213,7 @@ cPtr_gtlLibrariesInstruction::cPtr_gtlLibrariesInstruction (const GALGAS_locatio
 cPtr_gtlInstruction (in_where, in_signature COMMA_THERE) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlLibrariesInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlLibrariesInstruction ;
@@ -14223,7 +14228,7 @@ void cPtr_gtlLibrariesInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlLibrariesInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -14232,23 +14237,23 @@ acPtr_class * cPtr_gtlLibrariesInstruction::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlLibrariesInstruction type                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlLibrariesInstruction ("gtlLibrariesInstruction",
                                                 & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlLibrariesInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlLibrariesInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlLibrariesInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -14258,7 +14263,7 @@ AC_GALGAS_root * GALGAS_gtlLibrariesInstruction::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlLibrariesInstruction GALGAS_gtlLibrariesInstruction::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -14275,9 +14280,9 @@ GALGAS_gtlLibrariesInstruction GALGAS_gtlLibrariesInstruction::extractObject (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_gtlInputStatementInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -14295,7 +14300,7 @@ typeComparisonResult cPtr_gtlInputStatementInstruction::dynamicObjectCompare (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_gtlInputStatementInstruction::objectCompare (const GALGAS_gtlInputStatementInstruction & inOperand) const {
@@ -14314,13 +14319,13 @@ typeComparisonResult GALGAS_gtlInputStatementInstruction::objectCompare (const G
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInputStatementInstruction::GALGAS_gtlInputStatementInstruction (void) :
 GALGAS_gtlInstruction () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::constructor_default (LOCATION_ARGS) {
   return GALGAS_gtlInputStatementInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
@@ -14329,14 +14334,14 @@ GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::constru
                                                                COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInputStatementInstruction::GALGAS_gtlInputStatementInstruction (const cPtr_gtlInputStatementInstruction * inSourcePtr) :
 GALGAS_gtlInstruction (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlInputStatementInstruction) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::constructor_new (const GALGAS_location & inAttribute_where,
                                                                                           const GALGAS_string & inAttribute_signature,
@@ -14349,7 +14354,7 @@ GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::constru
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList GALGAS_gtlInputStatementInstruction::getter_formalArguments (UNUSED_LOCATION_ARGS) const {
   GALGAS_gtlArgumentList result ;
@@ -14361,15 +14366,15 @@ GALGAS_gtlArgumentList GALGAS_gtlInputStatementInstruction::getter_formalArgumen
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList cPtr_gtlInputStatementInstruction::getter_formalArguments (UNUSED_LOCATION_ARGS) const {
   return mProperty_formalArguments ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                Pointer class for @gtlInputStatementInstruction class                                *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_gtlInputStatementInstruction::cPtr_gtlInputStatementInstruction (const GALGAS_location & in_where,
                                                                       const GALGAS_string & in_signature,
@@ -14379,7 +14384,7 @@ cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
 mProperty_formalArguments (in_formalArguments) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_gtlInputStatementInstruction::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlInputStatementInstruction ;
@@ -14396,7 +14401,7 @@ void cPtr_gtlInputStatementInstruction::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_gtlInputStatementInstruction::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -14405,23 +14410,23 @@ acPtr_class * cPtr_gtlInputStatementInstruction::duplicate (LOCATION_ARGS) const
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @gtlInputStatementInstruction type                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlInputStatementInstruction ("gtlInputStatementInstruction",
                                                      & kTypeDescriptor_GALGAS_gtlInstruction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlInputStatementInstruction::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlInputStatementInstruction ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlInputStatementInstruction::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -14431,7 +14436,7 @@ AC_GALGAS_root * GALGAS_gtlInputStatementInstruction::clonedObject (void) const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::extractObject (const GALGAS_object & inObject,
                                                                                         C_Compiler * inCompiler
@@ -14448,11 +14453,11 @@ GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::extract
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension method '@string loadCommandFile'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_loadCommandFile (const GALGAS_string inObject,
                                       GALGAS_gtlContext & ioArgument_context,
@@ -14499,11 +14504,11 @@ void extensionMethod_loadCommandFile (const GALGAS_string inObject,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Class for element of '@gtlBreakpointList' list                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlBreakpointList : public cCollectionElement {
   public : GALGAS_gtlBreakpointList_2D_element mObject ;
@@ -14525,7 +14530,7 @@ class cCollectionElement_gtlBreakpointList : public cCollectionElement {
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlBreakpointList::cCollectionElement_gtlBreakpointList (const GALGAS_gtlBreakpoint & in_breakpoint
                                                                             COMMA_LOCATION_ARGS) :
@@ -14533,13 +14538,13 @@ cCollectionElement (THERE),
 mObject (in_breakpoint) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlBreakpointList::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlBreakpointList::copy (void) {
   cCollectionElement * result = NULL ;
@@ -14547,7 +14552,7 @@ cCollectionElement * cCollectionElement_gtlBreakpointList::copy (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlBreakpointList::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -14556,7 +14561,7 @@ void cCollectionElement_gtlBreakpointList::description (C_String & ioString, con
   mObject.mProperty_breakpoint.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlBreakpointList::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlBreakpointList * operand = (cCollectionElement_gtlBreakpointList *) inOperand ;
@@ -14564,25 +14569,25 @@ typeComparisonResult cCollectionElement_gtlBreakpointList::compare (const cColle
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList::GALGAS_gtlBreakpointList (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList::GALGAS_gtlBreakpointList (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlBreakpointList  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::constructor_listWithValue (const GALGAS_gtlBreakpoint & inOperand0
                                                                               COMMA_LOCATION_ARGS) {
@@ -14596,7 +14601,7 @@ GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::constructor_listWithValue (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                           const GALGAS_gtlBreakpoint & in_breakpoint
@@ -14607,7 +14612,7 @@ void GALGAS_gtlBreakpointList::makeAttributesFromObjects (capCollectionElement &
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::addAssign_operation (const GALGAS_gtlBreakpoint & inOperand0
                                                     COMMA_LOCATION_ARGS) {
@@ -14621,7 +14626,7 @@ void GALGAS_gtlBreakpointList::addAssign_operation (const GALGAS_gtlBreakpoint &
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::setter_insertAtIndex (const GALGAS_gtlBreakpoint inOperand0,
                                                      const GALGAS_uint inInsertionIndex,
@@ -14637,7 +14642,7 @@ void GALGAS_gtlBreakpointList::setter_insertAtIndex (const GALGAS_gtlBreakpoint 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::setter_removeAtIndex (GALGAS_gtlBreakpoint & outOperand0,
                                                      const GALGAS_uint inRemoveIndex,
@@ -14656,7 +14661,7 @@ void GALGAS_gtlBreakpointList::setter_removeAtIndex (GALGAS_gtlBreakpoint & outO
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::setter_popFirst (GALGAS_gtlBreakpoint & outOperand0,
                                                 C_Compiler * inCompiler
@@ -14672,7 +14677,7 @@ void GALGAS_gtlBreakpointList::setter_popFirst (GALGAS_gtlBreakpoint & outOperan
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::setter_popLast (GALGAS_gtlBreakpoint & outOperand0,
                                                C_Compiler * inCompiler
@@ -14688,7 +14693,7 @@ void GALGAS_gtlBreakpointList::setter_popLast (GALGAS_gtlBreakpoint & outOperand
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::method_first (GALGAS_gtlBreakpoint & outOperand0,
                                              C_Compiler * inCompiler
@@ -14704,7 +14709,7 @@ void GALGAS_gtlBreakpointList::method_first (GALGAS_gtlBreakpoint & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::method_last (GALGAS_gtlBreakpoint & outOperand0,
                                             C_Compiler * inCompiler
@@ -14720,7 +14725,7 @@ void GALGAS_gtlBreakpointList::method_last (GALGAS_gtlBreakpoint & outOperand0,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::add_operation (const GALGAS_gtlBreakpointList & inOperand,
                                                                   C_Compiler * /* inCompiler */
@@ -14733,7 +14738,7 @@ GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::add_operation (const GALGAS_g
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::getter_subListWithRange (const GALGAS_range & inRange,
                                                                             C_Compiler * inCompiler
@@ -14743,7 +14748,7 @@ GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::getter_subListWithRange (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                             C_Compiler * inCompiler
@@ -14753,7 +14758,7 @@ GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::getter_subListFromIndex (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                           C_Compiler * inCompiler
@@ -14763,7 +14768,7 @@ GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::getter_subListToIndex (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlBreakpointList::plusAssign_operation (const GALGAS_gtlBreakpointList inOperand,
                                                      C_Compiler * /* inCompiler */
@@ -14771,7 +14776,7 @@ void GALGAS_gtlBreakpointList::plusAssign_operation (const GALGAS_gtlBreakpointL
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpoint GALGAS_gtlBreakpointList::getter_breakpointAtIndex (const GALGAS_uint & inIndex,
                                                                          C_Compiler * inCompiler
@@ -14788,7 +14793,7 @@ GALGAS_gtlBreakpoint GALGAS_gtlBreakpointList::getter_breakpointAtIndex (const G
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlBreakpointList::cEnumerator_gtlBreakpointList (const GALGAS_gtlBreakpointList & inEnumeratedObject,
                                                               const typeEnumerationOrder inOrder) :
@@ -14796,7 +14801,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList_2D_element cEnumerator_gtlBreakpointList::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlBreakpointList * p = (const cCollectionElement_gtlBreakpointList *) currentObjectPtr (THERE) ;
@@ -14805,7 +14810,7 @@ GALGAS_gtlBreakpointList_2D_element cEnumerator_gtlBreakpointList::current (LOCA
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpoint cEnumerator_gtlBreakpointList::current_breakpoint (LOCATION_ARGS) const {
   const cCollectionElement_gtlBreakpointList * p = (const cCollectionElement_gtlBreakpointList *) currentObjectPtr (THERE) ;
@@ -14816,23 +14821,23 @@ GALGAS_gtlBreakpoint cEnumerator_gtlBreakpointList::current_breakpoint (LOCATION
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @gtlBreakpointList type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlBreakpointList ("gtlBreakpointList",
                                           NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlBreakpointList::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlBreakpointList ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlBreakpointList::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -14842,7 +14847,7 @@ AC_GALGAS_root * GALGAS_gtlBreakpointList::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::extractObject (const GALGAS_object & inObject,
                                                                   C_Compiler * inCompiler
@@ -14859,11 +14864,11 @@ GALGAS_gtlBreakpointList GALGAS_gtlBreakpointList::extractObject (const GALGAS_o
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Class for element of '@gtlInstructionListContextStack' list                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cCollectionElement_gtlInstructionListContextStack : public cCollectionElement {
   public : GALGAS_gtlInstructionListContextStack_2D_element mObject ;
@@ -14886,7 +14891,7 @@ class cCollectionElement_gtlInstructionListContextStack : public cCollectionElem
   public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement_gtlInstructionListContextStack::cCollectionElement_gtlInstructionListContextStack (const GALGAS_uint & in_nextInstructionIndex,
                                                                                                       const GALGAS_gtlInstructionList & in_instructionList
@@ -14895,13 +14900,13 @@ cCollectionElement (THERE),
 mObject (in_nextInstructionIndex, in_instructionList) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool cCollectionElement_gtlInstructionListContextStack::isValid (void) const {
   return mObject.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * cCollectionElement_gtlInstructionListContextStack::copy (void) {
   cCollectionElement * result = NULL ;
@@ -14909,7 +14914,7 @@ cCollectionElement * cCollectionElement_gtlInstructionListContextStack::copy (vo
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cCollectionElement_gtlInstructionListContextStack::description (C_String & ioString, const int32_t inIndentation) const {
   ioString << "\n" ;
@@ -14922,7 +14927,7 @@ void cCollectionElement_gtlInstructionListContextStack::description (C_String & 
   mObject.mProperty_instructionList.description (ioString, inIndentation) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cCollectionElement_gtlInstructionListContextStack::compare (const cCollectionElement * inOperand) const {
   cCollectionElement_gtlInstructionListContextStack * operand = (cCollectionElement_gtlInstructionListContextStack *) inOperand ;
@@ -14930,25 +14935,25 @@ typeComparisonResult cCollectionElement_gtlInstructionListContextStack::compare 
   return mObject.objectCompare (operand->mObject) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack::GALGAS_gtlInstructionListContextStack (void) :
 AC_GALGAS_list () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack::GALGAS_gtlInstructionListContextStack (const capCollectionElementArray & inSharedArray) :
 AC_GALGAS_list (inSharedArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::constructor_emptyList (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlInstructionListContextStack  (capCollectionElementArray ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::constructor_listWithValue (const GALGAS_uint & inOperand0,
                                                                                                         const GALGAS_gtlInstructionList & inOperand1
@@ -14963,7 +14968,7 @@ GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                                        const GALGAS_uint & in_nextInstructionIndex,
@@ -14976,7 +14981,7 @@ void GALGAS_gtlInstructionListContextStack::makeAttributesFromObjects (capCollec
   macroDetachSharedObject (p) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::addAssign_operation (const GALGAS_uint & inOperand0,
                                                                  const GALGAS_gtlInstructionList & inOperand1
@@ -14991,7 +14996,7 @@ void GALGAS_gtlInstructionListContextStack::addAssign_operation (const GALGAS_ui
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::setter_insertAtIndex (const GALGAS_uint inOperand0,
                                                                   const GALGAS_gtlInstructionList inOperand1,
@@ -15008,7 +15013,7 @@ void GALGAS_gtlInstructionListContextStack::setter_insertAtIndex (const GALGAS_u
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::setter_removeAtIndex (GALGAS_uint & outOperand0,
                                                                   GALGAS_gtlInstructionList & outOperand1,
@@ -15030,7 +15035,7 @@ void GALGAS_gtlInstructionListContextStack::setter_removeAtIndex (GALGAS_uint & 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::setter_popFirst (GALGAS_uint & outOperand0,
                                                              GALGAS_gtlInstructionList & outOperand1,
@@ -15049,7 +15054,7 @@ void GALGAS_gtlInstructionListContextStack::setter_popFirst (GALGAS_uint & outOp
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::setter_popLast (GALGAS_uint & outOperand0,
                                                             GALGAS_gtlInstructionList & outOperand1,
@@ -15068,7 +15073,7 @@ void GALGAS_gtlInstructionListContextStack::setter_popLast (GALGAS_uint & outOpe
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::method_first (GALGAS_uint & outOperand0,
                                                           GALGAS_gtlInstructionList & outOperand1,
@@ -15087,7 +15092,7 @@ void GALGAS_gtlInstructionListContextStack::method_first (GALGAS_uint & outOpera
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::method_last (GALGAS_uint & outOperand0,
                                                          GALGAS_gtlInstructionList & outOperand1,
@@ -15106,7 +15111,7 @@ void GALGAS_gtlInstructionListContextStack::method_last (GALGAS_uint & outOperan
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::add_operation (const GALGAS_gtlInstructionListContextStack & inOperand,
                                                                                             C_Compiler * /* inCompiler */
@@ -15119,7 +15124,7 @@ GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::add
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::getter_subListWithRange (const GALGAS_range & inRange,
                                                                                                       C_Compiler * inCompiler
@@ -15129,7 +15134,7 @@ GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::get
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::getter_subListFromIndex (const GALGAS_uint & inIndex,
                                                                                                       C_Compiler * inCompiler
@@ -15139,7 +15144,7 @@ GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::get
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::getter_subListToIndex (const GALGAS_uint & inIndex,
                                                                                                     C_Compiler * inCompiler
@@ -15149,7 +15154,7 @@ GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::get
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlInstructionListContextStack::plusAssign_operation (const GALGAS_gtlInstructionListContextStack inOperand,
                                                                   C_Compiler * /* inCompiler */
@@ -15157,7 +15162,7 @@ void GALGAS_gtlInstructionListContextStack::plusAssign_operation (const GALGAS_g
   appendList (inOperand) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint GALGAS_gtlInstructionListContextStack::getter_nextInstructionIndexAtIndex (const GALGAS_uint & inIndex,
                                                                                        C_Compiler * inCompiler
@@ -15172,7 +15177,7 @@ GALGAS_uint GALGAS_gtlInstructionListContextStack::getter_nextInstructionIndexAt
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlInstructionListContextStack::getter_instructionListAtIndex (const GALGAS_uint & inIndex,
                                                                                                 C_Compiler * inCompiler
@@ -15189,7 +15194,7 @@ GALGAS_gtlInstructionList GALGAS_gtlInstructionListContextStack::getter_instruct
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cEnumerator_gtlInstructionListContextStack::cEnumerator_gtlInstructionListContextStack (const GALGAS_gtlInstructionListContextStack & inEnumeratedObject,
                                                                                         const typeEnumerationOrder inOrder) :
@@ -15197,7 +15202,7 @@ cGenericAbstractEnumerator (inOrder) {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack_2D_element cEnumerator_gtlInstructionListContextStack::current (LOCATION_ARGS) const {
   const cCollectionElement_gtlInstructionListContextStack * p = (const cCollectionElement_gtlInstructionListContextStack *) currentObjectPtr (THERE) ;
@@ -15206,7 +15211,7 @@ GALGAS_gtlInstructionListContextStack_2D_element cEnumerator_gtlInstructionListC
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint cEnumerator_gtlInstructionListContextStack::current_nextInstructionIndex (LOCATION_ARGS) const {
   const cCollectionElement_gtlInstructionListContextStack * p = (const cCollectionElement_gtlInstructionListContextStack *) currentObjectPtr (THERE) ;
@@ -15214,7 +15219,7 @@ GALGAS_uint cEnumerator_gtlInstructionListContextStack::current_nextInstructionI
   return p->mObject.mProperty_nextInstructionIndex ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList cEnumerator_gtlInstructionListContextStack::current_instructionList (LOCATION_ARGS) const {
   const cCollectionElement_gtlInstructionListContextStack * p = (const cCollectionElement_gtlInstructionListContextStack *) currentObjectPtr (THERE) ;
@@ -15225,23 +15230,23 @@ GALGAS_gtlInstructionList cEnumerator_gtlInstructionListContextStack::current_in
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @gtlInstructionListContextStack type                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlInstructionListContextStack ("gtlInstructionListContextStack",
                                                        NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlInstructionListContextStack::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlInstructionListContextStack ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlInstructionListContextStack::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -15251,7 +15256,7 @@ AC_GALGAS_root * GALGAS_gtlInstructionListContextStack::clonedObject (void) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionListContextStack GALGAS_gtlInstructionListContextStack::extractObject (const GALGAS_object & inObject,
                                                                                             C_Compiler * inCompiler

@@ -35,8 +35,9 @@ see https://www.gnu.org/licenses/.  */
 
    This file defines the public interface. */
 
-#ifndef __MINI_GMP_H__
-#define __MINI_GMP_H__
+#pragma once
+//#ifndef __MINI_GMP_H__
+//#define __MINI_GMP_H__
 
 /* For size_t */
 #include <stddef.h>
@@ -291,4 +292,4 @@ void *mpz_export (void *, size_t *, int, size_t, int, size_t, const mpz_t);
 #if defined (__cplusplus)
 }
 #endif
-#endif /* __MINI_GMP_H__ */
+//#endif /* __MINI_GMP_H__ */

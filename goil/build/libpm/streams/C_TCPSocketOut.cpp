@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'C_TCPSocketOut' : a class for sending data as TCP socket client                                                   *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2011, ..., 2011 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,14 +18,14 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "streams/C_TCPSocketOut.h"
 #include "strings/unicode_character_cpp.h"
 #include "strings/C_String.h"
 #include "utilities/M_machine.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifndef COMPILE_FOR_WINDOWS
   #error COMPILE_FOR_WINDOWS is not defined
@@ -46,13 +46,13 @@
   #include <unistd.h>
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_TCPSocketOut::C_TCPSocketOut (void) :
 mSocket (-1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool C_TCPSocketOut::connect (const uint16_t inServerPort,
                               const C_String & inHostName) {
@@ -83,7 +83,7 @@ bool C_TCPSocketOut::connect (const uint16_t inServerPort,
   return ok ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_TCPSocketOut::performActualCharArrayOutput (const char * inCharArray,
                                                    const int32_t inArrayCount) {
@@ -102,7 +102,7 @@ void C_TCPSocketOut::performActualCharArrayOutput (const char * inCharArray,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_TCPSocketOut::performActualUnicodeArrayOutput (const utf32 * inCharArray,
                                                       const int32_t inArrayCount) {
@@ -113,7 +113,7 @@ void C_TCPSocketOut::performActualUnicodeArrayOutput (const utf32 * inCharArray,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_TCPSocketOut::~C_TCPSocketOut (void) {
   if (mSocket >=0) {
@@ -122,4 +122,4 @@ C_TCPSocketOut::~C_TCPSocketOut (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

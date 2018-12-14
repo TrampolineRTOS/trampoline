@@ -3,10 +3,9 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-declarations-6.h"
-
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -3084,19 +3083,19 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
     TC_Array <C_FixItDescription> fixItArray1 ;
     inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 46)), GALGAS_string ("No character is allowed before XML header"), fixItArray1  COMMA_SOURCE_FILE ("arxml_parser.galgas", 46)) ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3C__3F_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 49)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3C__3F_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 49)) ;
   GALGAS_lstring var_name_1404 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 50)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 50)) ;
   GALGAS_arxmlAttributeMap var_attributes_1437 = GALGAS_arxmlAttributeMap::constructor_emptyMap (SOURCE_FILE ("arxml_parser.galgas", 52)) ;
   bool repeatFlag_2 = true ;
   while (repeatFlag_2) {
     switch (select_arxml_5F_parser_0 (inCompiler)) {
     case 2: {
       GALGAS_lstring var_attributeName_1505 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 55)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 56)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 55)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 56)) ;
       GALGAS_lstring var_attributeValue_1554 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxml_parser.galgas", 57)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxml_parser.galgas", 57)) ;
       {
       var_attributes_1437.setter_insertKey (var_attributeName_1505, var_attributeValue_1554, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 58)) ;
       }
@@ -3106,7 +3105,7 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
       break ;
     }
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3F__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 60)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3F__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 60)) ;
   GALGAS_arxmlNodeList var_nodes_1668 = GALGAS_arxmlNodeList::constructor_emptyList (SOURCE_FILE ("arxml_parser.galgas", 62)) ;
   nt_element_5F_list_ (var_nodes_1668, constinArgument_includeComments, constinArgument_doNotCondenseWhiteSpaces, inCompiler) ;
   outArgument_rootNode = GALGAS_arxmlElementNode::constructor_new (var_name_1404, var_attributes_1437, var_nodes_1668  COMMA_SOURCE_FILE ("arxml_parser.galgas", 68)) ;
@@ -3190,22 +3189,22 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_parse (C_Lexique_arxml_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3C__3F_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 49)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 50)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3C__3F_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 49)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 50)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     switch (select_arxml_5F_parser_0 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 55)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 56)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxml_parser.galgas", 57)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 55)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 56)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxml_parser.galgas", 57)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3F__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 60)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3F__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 60)) ;
   nt_element_5F_list_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
@@ -3256,7 +3255,7 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i2_ (GALGAS_arxmlNode
                                                                 const GALGAS_bool /* constinArgument_doNotCondenseWhiteSpaces */,
                                                                 C_Lexique_arxml_5F_scanner * inCompiler) {
   GALGAS_lstring var_commentString_6443 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_comment) COMMA_SOURCE_FILE ("arxml_parser.galgas", 210)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_comment COMMA_SOURCE_FILE ("arxml_parser.galgas", 210)) ;
   const enumGalgasBool test_0 = constinArgument_includeComments.boolEnum () ;
   if (kBoolTrue == test_0) {
     ioArgument_nodes.addAssign_operation (GALGAS_arxmlCommentNode::constructor_new (var_commentString_6443  COMMA_SOURCE_FILE ("arxml_parser.galgas", 212))  COMMA_SOURCE_FILE ("arxml_parser.galgas", 212)) ;
@@ -3266,7 +3265,7 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i2_ (GALGAS_arxmlNode
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i2_parse (C_Lexique_arxml_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_comment) COMMA_SOURCE_FILE ("arxml_parser.galgas", 210)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_comment COMMA_SOURCE_FILE ("arxml_parser.galgas", 210)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -3276,19 +3275,19 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_ (GALGAS_arxmlNode
                                                                 const GALGAS_bool constinArgument_includeComments,
                                                                 const GALGAS_bool constinArgument_doNotCondenseWhiteSpaces,
                                                                 C_Lexique_arxml_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3C_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 223)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3C_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 223)) ;
   GALGAS_lstring var_name_6768 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 224)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 224)) ;
   GALGAS_arxmlAttributeMap var_attributeMap_6802 = GALGAS_arxmlAttributeMap::constructor_emptyMap (SOURCE_FILE ("arxml_parser.galgas", 225)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     switch (select_arxml_5F_parser_2 (inCompiler)) {
     case 2: {
       GALGAS_lstring var_attributeName_6870 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 228)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 229)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 228)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 229)) ;
       GALGAS_lstring var_attributeValue_6919 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxml_parser.galgas", 230)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxml_parser.galgas", 230)) ;
       {
       var_attributeMap_6802.setter_insertKey (var_attributeName_6870, var_attributeValue_6919, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 231)) ;
       }
@@ -3301,23 +3300,23 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_ (GALGAS_arxmlNode
   GALGAS_arxmlNodeList var_nodeList_7014 = GALGAS_arxmlNodeList::constructor_emptyList (SOURCE_FILE ("arxml_parser.galgas", 234)) ;
   switch (select_arxml_5F_parser_3 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 236)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 236)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 238)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 238)) ;
     nt_element_5F_list_ (var_nodeList_7014, constinArgument_includeComments, constinArgument_doNotCondenseWhiteSpaces, inCompiler) ;
     {
     routine_addText (var_nodeList_7014, constinArgument_doNotCondenseWhiteSpaces, inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 244)) ;
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3C__2F_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 246)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3C__2F_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 246)) ;
     GALGAS_lstring var_closingName_7253 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 247)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 247)) ;
     const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_closingName_7253.getter_string (SOURCE_FILE ("arxml_parser.galgas", 248)).objectCompare (var_name_6768.getter_string (SOURCE_FILE ("arxml_parser.galgas", 248)))).boolEnum () ;
     if (kBoolTrue == test_1) {
       TC_Array <C_FixItDescription> fixItArray2 ;
       inCompiler->emitSemanticError (var_closingName_7253.getter_location (SOURCE_FILE ("arxml_parser.galgas", 249)), GALGAS_string ("incorrect closing tag </").add_operation (var_closingName_7253.getter_string (SOURCE_FILE ("arxml_parser.galgas", 249)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 249)).add_operation (GALGAS_string ("> instead of </"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 250)).add_operation (var_name_6768.getter_string (SOURCE_FILE ("arxml_parser.galgas", 250)), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 250)).add_operation (GALGAS_string (">"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 250)), fixItArray2  COMMA_SOURCE_FILE ("arxml_parser.galgas", 249)) ;
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 252)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 252)) ;
   } break ;
   default:
     break ;
@@ -3328,15 +3327,15 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_ (GALGAS_arxmlNode
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_parse (C_Lexique_arxml_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3C_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 223)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 224)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3C_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 223)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 224)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     switch (select_arxml_5F_parser_2 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 228)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 229)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxml_parser.galgas", 230)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 228)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 229)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxml_parser.galgas", 230)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -3345,14 +3344,14 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_parse (C_Lexique_a
   }
   switch (select_arxml_5F_parser_3 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 236)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 236)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 238)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 238)) ;
     nt_element_5F_list_parse (inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3C__2F_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 246)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxml_parser.galgas", 247)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxml_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxml_parser.galgas", 252)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3C__2F_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 246)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxml_parser.galgas", 247)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxml_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxml_parser.galgas", 252)) ;
   } break ;
   default:
     break ;
@@ -3360,9 +3359,9 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_parse (C_Lexique_a
   inCompiler->resetTemplateString () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlElementNode::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -3380,7 +3379,7 @@ typeComparisonResult cPtr_arxmlElementNode::dynamicObjectCompare (const acPtr_cl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlElementNode::objectCompare (const GALGAS_arxmlElementNode & inOperand) const {
@@ -3399,13 +3398,13 @@ typeComparisonResult GALGAS_arxmlElementNode::objectCompare (const GALGAS_arxmlE
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementNode::GALGAS_arxmlElementNode (void) :
 GALGAS_arxmlNode () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlElementNode::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -3414,14 +3413,14 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_default (LOCATION_A
                                                    COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementNode::GALGAS_arxmlElementNode (const cPtr_arxmlElementNode * inSourcePtr) :
 GALGAS_arxmlNode (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlElementNode) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                   const GALGAS_arxmlAttributeMap & inAttribute_attributes,
@@ -3434,7 +3433,7 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_new (const GALGAS_l
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -3446,13 +3445,13 @@ GALGAS_lstring GALGAS_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlAttributeMap GALGAS_arxmlElementNode::getter_attributes (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlAttributeMap result ;
@@ -3464,13 +3463,13 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementNode::getter_attributes (UNUSED_LOCA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlAttributeMap cPtr_arxmlElementNode::getter_attributes (UNUSED_LOCATION_ARGS) const {
   return mProperty_attributes ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlNodeList GALGAS_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlNodeList result ;
@@ -3482,15 +3481,15 @@ GALGAS_arxmlNodeList GALGAS_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCAT
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlNodeList cPtr_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCATION_ARGS) const {
   return mProperty_enclosedNodes ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                      Pointer class for @arxmlElementNode class                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlElementNode::cPtr_arxmlElementNode (const GALGAS_lstring & in_name,
                                               const GALGAS_arxmlAttributeMap & in_attributes,
@@ -3502,7 +3501,7 @@ mProperty_attributes (in_attributes),
 mProperty_enclosedNodes (in_enclosedNodes) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlElementNode::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementNode ;
@@ -3519,7 +3518,7 @@ void cPtr_arxmlElementNode::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlElementNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -3528,23 +3527,23 @@ acPtr_class * cPtr_arxmlElementNode::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlElementNode type                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlElementNode ("arxmlElementNode",
                                          & kTypeDescriptor_GALGAS_arxmlNode) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlElementNode::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementNode ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlElementNode::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -3554,7 +3553,7 @@ AC_GALGAS_root * GALGAS_arxmlElementNode::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementNode GALGAS_arxmlElementNode::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -3571,22 +3570,22 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementNode::extractObject (const GALGAS_obj
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@arxmlElementNode getSubElements'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getSubElements> gExtensionMethodTable_arxmlElementNode_getSubElements ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getSubElements (const int32_t inClassIndex,
                                           extensionMethodSignature_arxmlElementNode_getSubElements inMethod) {
   gExtensionMethodTable_arxmlElementNode_getSubElements.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getSubElements (const cPtr_arxmlElementNode * inObject,
                                          GALGAS_arxmlElementList & out_nodeList,
@@ -3619,7 +3618,7 @@ void callExtensionMethod_getSubElements (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementNode_getSubElements (const cPtr_arxmlElementNode * inObject,
                                                              GALGAS_arxmlElementList & outArgument_nodeList,
@@ -3646,40 +3645,40 @@ static void extensionMethod_arxmlElementNode_getSubElements (const cPtr_arxmlEle
     enumerator_4586.gotoNextObject () ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementNode_getSubElements (void) {
   enterExtensionMethod_getSubElements (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                        extensionMethod_arxmlElementNode_getSubElements) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementNode_getSubElements (void) {
   gExtensionMethodTable_arxmlElementNode_getSubElements.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getSubElements (defineExtensionMethod_arxmlElementNode_getSubElements,
                                                             freeExtensionMethod_arxmlElementNode_getSubElements) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension method '@arxmlElementNode getText'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getText> gExtensionMethodTable_arxmlElementNode_getText ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getText (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlElementNode_getText inMethod) {
   gExtensionMethodTable_arxmlElementNode_getText.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getText (const cPtr_arxmlElementNode * inObject,
                                   GALGAS_lstring & io_value,
@@ -3712,7 +3711,7 @@ void callExtensionMethod_getText (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementNode_getText (const cPtr_arxmlElementNode * inObject,
                                                       GALGAS_lstring & ioArgument_value,
@@ -3746,40 +3745,40 @@ static void extensionMethod_arxmlElementNode_getText (const cPtr_arxmlElementNod
     }
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementNode_getText (void) {
   enterExtensionMethod_getText (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                 extensionMethod_arxmlElementNode_getText) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementNode_getText (void) {
   gExtensionMethodTable_arxmlElementNode_getText.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getText (defineExtensionMethod_arxmlElementNode_getText,
                                                      freeExtensionMethod_arxmlElementNode_getText) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@arxmlElementNode getAttributes'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getAttributes> gExtensionMethodTable_arxmlElementNode_getAttributes ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getAttributes (const int32_t inClassIndex,
                                          extensionMethodSignature_arxmlElementNode_getAttributes inMethod) {
   gExtensionMethodTable_arxmlElementNode_getAttributes.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getAttributes (const cPtr_arxmlElementNode * inObject,
                                         GALGAS_arxmlAttributeMap & io_outAttributes,
@@ -3811,7 +3810,7 @@ void callExtensionMethod_getAttributes (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementNode_getAttributes (const cPtr_arxmlElementNode * inObject,
                                                             GALGAS_arxmlAttributeMap & ioArgument_outAttributes,
@@ -3821,40 +3820,40 @@ static void extensionMethod_arxmlElementNode_getAttributes (const cPtr_arxmlElem
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   ioArgument_outAttributes = object->mProperty_attributes ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementNode_getAttributes (void) {
   enterExtensionMethod_getAttributes (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                       extensionMethod_arxmlElementNode_getAttributes) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementNode_getAttributes (void) {
   gExtensionMethodTable_arxmlElementNode_getAttributes.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getAttributes (defineExtensionMethod_arxmlElementNode_getAttributes,
                                                            freeExtensionMethod_arxmlElementNode_getAttributes) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension method '@arxmlElementNode getAttribute'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getAttribute> gExtensionMethodTable_arxmlElementNode_getAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getAttribute (const int32_t inClassIndex,
                                         extensionMethodSignature_arxmlElementNode_getAttribute inMethod) {
   gExtensionMethodTable_arxmlElementNode_getAttribute.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getAttribute (const cPtr_arxmlElementNode * inObject,
                                        GALGAS_string in_attributeName,
@@ -3888,7 +3887,7 @@ void callExtensionMethod_getAttribute (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementNode_getAttribute (const cPtr_arxmlElementNode * inObject,
                                                            GALGAS_string inArgument_attributeName,
@@ -3899,40 +3898,40 @@ static void extensionMethod_arxmlElementNode_getAttribute (const cPtr_arxmlEleme
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   object->mProperty_attributes.method_searchKey (function_lstringWith (inArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)), outArgument_outAttribute, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)) ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementNode_getAttribute (void) {
   enterExtensionMethod_getAttribute (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                      extensionMethod_arxmlElementNode_getAttribute) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementNode_getAttribute (void) {
   gExtensionMethodTable_arxmlElementNode_getAttribute.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getAttribute (defineExtensionMethod_arxmlElementNode_getAttribute,
                                                           freeExtensionMethod_arxmlElementNode_getAttribute) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension method '@arxmlElementNode getName'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getName> gExtensionMethodTable_arxmlElementNode_getName ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getName (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlElementNode_getName inMethod) {
   gExtensionMethodTable_arxmlElementNode_getName.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getName (const cPtr_arxmlElementNode * inObject,
                                   GALGAS_lstring & out_outName,
@@ -3965,7 +3964,7 @@ void callExtensionMethod_getName (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementNode_getName (const cPtr_arxmlElementNode * inObject,
                                                       GALGAS_lstring & outArgument_outName,
@@ -3975,27 +3974,27 @@ static void extensionMethod_arxmlElementNode_getName (const cPtr_arxmlElementNod
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   outArgument_outName = object->mProperty_name ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementNode_getName (void) {
   enterExtensionMethod_getName (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                 extensionMethod_arxmlElementNode_getName) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementNode_getName (void) {
   gExtensionMethodTable_arxmlElementNode_getName.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getName (defineExtensionMethod_arxmlElementNode_getName,
                                                      freeExtensionMethod_arxmlElementNode_getName) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlCommentNode::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -4007,7 +4006,7 @@ typeComparisonResult cPtr_arxmlCommentNode::dynamicObjectCompare (const acPtr_cl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlCommentNode::objectCompare (const GALGAS_arxmlCommentNode & inOperand) const {
@@ -4026,27 +4025,27 @@ typeComparisonResult GALGAS_arxmlCommentNode::objectCompare (const GALGAS_arxmlC
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlCommentNode::GALGAS_arxmlCommentNode (void) :
 GALGAS_arxmlNode () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlCommentNode::constructor_new (GALGAS_lstring::constructor_default (HERE)
                                                    COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlCommentNode::GALGAS_arxmlCommentNode (const cPtr_arxmlCommentNode * inSourcePtr) :
 GALGAS_arxmlNode (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlCommentNode) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::constructor_new (const GALGAS_lstring & inAttribute_comment
                                                                   COMMA_LOCATION_ARGS) {
@@ -4057,7 +4056,7 @@ GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::constructor_new (const GALGAS_l
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4069,15 +4068,15 @@ GALGAS_lstring GALGAS_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) const {
   return mProperty_comment ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                      Pointer class for @arxmlCommentNode class                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlCommentNode::cPtr_arxmlCommentNode (const GALGAS_lstring & in_comment
                                               COMMA_LOCATION_ARGS) :
@@ -4085,7 +4084,7 @@ cPtr_arxmlNode (THERE),
 mProperty_comment (in_comment) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlCommentNode::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlCommentNode ;
@@ -4098,7 +4097,7 @@ void cPtr_arxmlCommentNode::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlCommentNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -4107,23 +4106,23 @@ acPtr_class * cPtr_arxmlCommentNode::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlCommentNode type                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlCommentNode ("arxmlCommentNode",
                                          & kTypeDescriptor_GALGAS_arxmlNode) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlCommentNode::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlCommentNode ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlCommentNode::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4133,7 +4132,7 @@ AC_GALGAS_root * GALGAS_arxmlCommentNode::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -4150,9 +4149,9 @@ GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::extractObject (const GALGAS_obj
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlTextNode::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -4164,7 +4163,7 @@ typeComparisonResult cPtr_arxmlTextNode::dynamicObjectCompare (const acPtr_class
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlTextNode::objectCompare (const GALGAS_arxmlTextNode & inOperand) const {
@@ -4183,27 +4182,27 @@ typeComparisonResult GALGAS_arxmlTextNode::objectCompare (const GALGAS_arxmlText
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlTextNode::GALGAS_arxmlTextNode (void) :
 GALGAS_arxmlNode () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlTextNode GALGAS_arxmlTextNode::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlTextNode::constructor_new (GALGAS_lstring::constructor_default (HERE)
                                                 COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlTextNode::GALGAS_arxmlTextNode (const cPtr_arxmlTextNode * inSourcePtr) :
 GALGAS_arxmlNode (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlTextNode) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlTextNode GALGAS_arxmlTextNode::constructor_new (const GALGAS_lstring & inAttribute_text
                                                             COMMA_LOCATION_ARGS) {
@@ -4214,7 +4213,7 @@ GALGAS_arxmlTextNode GALGAS_arxmlTextNode::constructor_new (const GALGAS_lstring
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4226,15 +4225,15 @@ GALGAS_lstring GALGAS_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   return mProperty_text ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                       Pointer class for @arxmlTextNode class                                        *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlTextNode::cPtr_arxmlTextNode (const GALGAS_lstring & in_text
                                         COMMA_LOCATION_ARGS) :
@@ -4242,7 +4241,7 @@ cPtr_arxmlNode (THERE),
 mProperty_text (in_text) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlTextNode::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlTextNode ;
@@ -4255,7 +4254,7 @@ void cPtr_arxmlTextNode::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlTextNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -4264,23 +4263,23 @@ acPtr_class * cPtr_arxmlTextNode::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @arxmlTextNode type                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlTextNode ("arxmlTextNode",
                                       & kTypeDescriptor_GALGAS_arxmlNode) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlTextNode::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlTextNode ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlTextNode::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4290,7 +4289,7 @@ AC_GALGAS_root * GALGAS_arxmlTextNode::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlTextNode GALGAS_arxmlTextNode::extractObject (const GALGAS_object & inObject,
                                                           C_Compiler * inCompiler
@@ -4307,22 +4306,22 @@ GALGAS_arxmlTextNode GALGAS_arxmlTextNode::extractObject (const GALGAS_object & 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Extension method '@arxmlTextNode getText'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlTextNode_getText> gExtensionMethodTable_arxmlTextNode_getText ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getText (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlTextNode_getText inMethod) {
   gExtensionMethodTable_arxmlTextNode_getText.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getText (const cPtr_arxmlTextNode * inObject,
                                   GALGAS_lstring & out_outText,
@@ -4355,7 +4354,7 @@ void callExtensionMethod_getText (const cPtr_arxmlTextNode * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlTextNode_getText (const cPtr_arxmlTextNode * inObject,
                                                    GALGAS_lstring & outArgument_outText,
@@ -4365,27 +4364,27 @@ static void extensionMethod_arxmlTextNode_getText (const cPtr_arxmlTextNode * in
   macroValidSharedObject (object, cPtr_arxmlTextNode) ;
   outArgument_outText = object->mProperty_text ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlTextNode_getText (void) {
   enterExtensionMethod_getText (kTypeDescriptor_GALGAS_arxmlTextNode.mSlotID,
                                 extensionMethod_arxmlTextNode_getText) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlTextNode_getText (void) {
   gExtensionMethodTable_arxmlTextNode_getText.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlTextNode_getText (defineExtensionMethod_arxmlTextNode_getText,
                                                   freeExtensionMethod_arxmlTextNode_getText) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlElementValue::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -4406,7 +4405,7 @@ typeComparisonResult cPtr_arxmlElementValue::dynamicObjectCompare (const acPtr_c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlElementValue::objectCompare (const GALGAS_arxmlElementValue & inOperand) const {
@@ -4425,13 +4424,13 @@ typeComparisonResult GALGAS_arxmlElementValue::objectCompare (const GALGAS_arxml
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValue::GALGAS_arxmlElementValue (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlElementValue::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -4441,14 +4440,14 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_default (LOCATION
                                                     COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValue::GALGAS_arxmlElementValue (const cPtr_arxmlElementValue * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlElementValue) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_new (const GALGAS_lstring & inAttribute_type,
                                                                     const GALGAS_lstring & inAttribute_text,
@@ -4462,7 +4461,7 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_new (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4474,13 +4473,13 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4492,13 +4491,13 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) const {
   return mProperty_text ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValueMap GALGAS_arxmlElementValue::getter_elements (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlElementValueMap result ;
@@ -4510,13 +4509,13 @@ GALGAS_arxmlElementValueMap GALGAS_arxmlElementValue::getter_elements (UNUSED_LO
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValueMap cPtr_arxmlElementValue::getter_elements (UNUSED_LOCATION_ARGS) const {
   return mProperty_elements ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlAttributeMap GALGAS_arxmlElementValue::getter_attributes (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlAttributeMap result ;
@@ -4528,15 +4527,15 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementValue::getter_attributes (UNUSED_LOC
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlAttributeMap cPtr_arxmlElementValue::getter_attributes (UNUSED_LOCATION_ARGS) const {
   return mProperty_attributes ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                     Pointer class for @arxmlElementValue class                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlElementValue::cPtr_arxmlElementValue (const GALGAS_lstring & in_type,
                                                 const GALGAS_lstring & in_text,
@@ -4550,7 +4549,7 @@ mProperty_elements (in_elements),
 mProperty_attributes (in_attributes) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlElementValue::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementValue ;
@@ -4569,7 +4568,7 @@ void cPtr_arxmlElementValue::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlElementValue::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -4578,23 +4577,23 @@ acPtr_class * cPtr_arxmlElementValue::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlElementValue type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlElementValue ("arxmlElementValue",
                                           NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlElementValue::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementValue ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlElementValue::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4604,7 +4603,7 @@ AC_GALGAS_root * GALGAS_arxmlElementValue::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlElementValue GALGAS_arxmlElementValue::extractObject (const GALGAS_object & inObject,
                                                                   C_Compiler * inCompiler
@@ -4621,22 +4620,22 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::extractObject (const GALGAS_o
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension setter '@arxmlElementValue insertElement'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlElementValue_insertElement> gExtensionModifierTable_arxmlElementValue_insertElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_insertElement (const int32_t inClassIndex,
                                          extensionSetterSignature_arxmlElementValue_insertElement inModifier) {
   gExtensionModifierTable_arxmlElementValue_insertElement.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_insertElement (cPtr_arxmlElementValue * inObject,
                                         GALGAS_lstring in_key,
@@ -4667,7 +4666,7 @@ void callExtensionSetter_insertElement (cPtr_arxmlElementValue * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlElementValue_insertElement (cPtr_arxmlElementValue * inObject,
                                                              GALGAS_lstring inArgument_key,
@@ -4690,40 +4689,40 @@ static void extensionSetter_arxmlElementValue_insertElement (cPtr_arxmlElementVa
   object->mProperty_elements.setter_insertKey (inArgument_key, var_keyList_8388, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 391)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlElementValue_insertElement (void) {
   enterExtensionSetter_insertElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                       extensionSetter_arxmlElementValue_insertElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlElementValue_insertElement (void) {
   gExtensionModifierTable_arxmlElementValue_insertElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlElementValue_insertElement (defineExtensionSetter_arxmlElementValue_insertElement,
                                                             freeExtensionModifier_arxmlElementValue_insertElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension method '@arxmlElementValue getElementsByPath'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getElementsByPath> gExtensionMethodTable_arxmlElementValue_getElementsByPath ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getElementsByPath (const int32_t inClassIndex,
                                              extensionMethodSignature_arxmlElementValue_getElementsByPath inMethod) {
   gExtensionMethodTable_arxmlElementValue_getElementsByPath.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getElementsByPath (const cPtr_arxmlElementValue * inObject,
                                             GALGAS_stringlist in_path,
@@ -4756,7 +4755,7 @@ void callExtensionMethod_getElementsByPath (const cPtr_arxmlElementValue * inObj
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementValue_getElementsByPath (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_stringlist inArgument_path,
@@ -4785,40 +4784,40 @@ static void extensionMethod_arxmlElementValue_getElementsByPath (const cPtr_arxm
     }
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementValue_getElementsByPath (void) {
   enterExtensionMethod_getElementsByPath (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                           extensionMethod_arxmlElementValue_getElementsByPath) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementValue_getElementsByPath (void) {
   gExtensionMethodTable_arxmlElementValue_getElementsByPath.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getElementsByPath (defineExtensionMethod_arxmlElementValue_getElementsByPath,
                                                                 freeExtensionMethod_arxmlElementValue_getElementsByPath) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension method '@arxmlElementValue getElements'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getElements> gExtensionMethodTable_arxmlElementValue_getElements ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getElements (const int32_t inClassIndex,
                                        extensionMethodSignature_arxmlElementValue_getElements inMethod) {
   gExtensionMethodTable_arxmlElementValue_getElements.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getElements (const cPtr_arxmlElementValue * inObject,
                                       GALGAS_string in_elementName,
@@ -4852,7 +4851,7 @@ void callExtensionMethod_getElements (const cPtr_arxmlElementValue * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementValue_getElements (const cPtr_arxmlElementValue * inObject,
                                                            GALGAS_string inArgument_elementName,
@@ -4869,40 +4868,40 @@ static void extensionMethod_arxmlElementValue_getElements (const cPtr_arxmlEleme
     outArgument_outElements = GALGAS_arxmlElementValueList::constructor_emptyList (SOURCE_FILE ("arxml_types.galgas", 420)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementValue_getElements (void) {
   enterExtensionMethod_getElements (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                     extensionMethod_arxmlElementValue_getElements) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementValue_getElements (void) {
   gExtensionMethodTable_arxmlElementValue_getElements.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getElements (defineExtensionMethod_arxmlElementValue_getElements,
                                                           freeExtensionMethod_arxmlElementValue_getElements) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension method '@arxmlElementValue getElement'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getElement> gExtensionMethodTable_arxmlElementValue_getElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getElement (const int32_t inClassIndex,
                                       extensionMethodSignature_arxmlElementValue_getElement inMethod) {
   gExtensionMethodTable_arxmlElementValue_getElement.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getElement (const cPtr_arxmlElementValue * inObject,
                                      GALGAS_string in_elementName,
@@ -4936,7 +4935,7 @@ void callExtensionMethod_getElement (const cPtr_arxmlElementValue * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementValue_getElement (const cPtr_arxmlElementValue * inObject,
                                                           GALGAS_string inArgument_elementName,
@@ -4957,40 +4956,40 @@ static void extensionMethod_arxmlElementValue_getElement (const cPtr_arxmlElemen
     var_foundElements_9451.method_first (outArgument_outElement, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 435)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementValue_getElement (void) {
   enterExtensionMethod_getElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                    extensionMethod_arxmlElementValue_getElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementValue_getElement (void) {
   gExtensionMethodTable_arxmlElementValue_getElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getElement (defineExtensionMethod_arxmlElementValue_getElement,
                                                          freeExtensionMethod_arxmlElementValue_getElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension getter '@arxmlElementValue hasElement'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_arxmlElementValue_hasElement> gExtensionGetterTable_arxmlElementValue_hasElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_hasElement (const int32_t inClassIndex,
                                       enterExtensionGetter_arxmlElementValue_hasElement inGetter) {
   gExtensionGetterTable_arxmlElementValue_hasElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue * inObject,
                                             GALGAS_string in_elementName,
@@ -5025,7 +5024,7 @@ GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue * inObj
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_bool extensionGetter_arxmlElementValue_hasElement (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_string inArgument_elementName,
@@ -5048,40 +5047,40 @@ static GALGAS_bool extensionGetter_arxmlElementValue_hasElement (const cPtr_arxm
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_arxmlElementValue_hasElement (void) {
   enterExtensionGetter_hasElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                    extensionGetter_arxmlElementValue_hasElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_arxmlElementValue_hasElement (void) {
   gExtensionGetterTable_arxmlElementValue_hasElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_arxmlElementValue_hasElement (defineExtensionGetter_arxmlElementValue_hasElement,
                                                          freeExtensionGetter_arxmlElementValue_hasElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension getter '@arxmlElementValue getTextFromElement'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_arxmlElementValue_getTextFromElement> gExtensionGetterTable_arxmlElementValue_getTextFromElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_getTextFromElement (const int32_t inClassIndex,
                                               enterExtensionGetter_arxmlElementValue_getTextFromElement inGetter) {
   gExtensionGetterTable_arxmlElementValue_getTextFromElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlElementValue * inObject,
                                                        GALGAS_string in_elementName,
@@ -5116,7 +5115,7 @@ GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlElementVa
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_lstring extensionGetter_arxmlElementValue_getTextFromElement (const cPtr_arxmlElementValue * inObject,
                                                                             GALGAS_string inArgument_elementName,
@@ -5134,40 +5133,40 @@ static GALGAS_lstring extensionGetter_arxmlElementValue_getTextFromElement (cons
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_arxmlElementValue_getTextFromElement (void) {
   enterExtensionGetter_getTextFromElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                            extensionGetter_arxmlElementValue_getTextFromElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_arxmlElementValue_getTextFromElement (void) {
   gExtensionGetterTable_arxmlElementValue_getTextFromElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_arxmlElementValue_getTextFromElement (defineExtensionGetter_arxmlElementValue_getTextFromElement,
                                                                  freeExtensionGetter_arxmlElementValue_getTextFromElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension method '@arxmlElementValue getAllTextsInSelf'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getAllTextsInSelf> gExtensionMethodTable_arxmlElementValue_getAllTextsInSelf ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getAllTextsInSelf (const int32_t inClassIndex,
                                              extensionMethodSignature_arxmlElementValue_getAllTextsInSelf inMethod) {
   gExtensionMethodTable_arxmlElementValue_getAllTextsInSelf.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getAllTextsInSelf (const cPtr_arxmlElementValue * inObject,
                                             GALGAS_string in_separator,
@@ -5200,7 +5199,7 @@ void callExtensionMethod_getAllTextsInSelf (const cPtr_arxmlElementValue * inObj
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlElementValue_getAllTextsInSelf (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_string inArgument_separator,
@@ -5231,40 +5230,40 @@ static void extensionMethod_arxmlElementValue_getAllTextsInSelf (const cPtr_arxm
     enumerator_10610.gotoNextObject () ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlElementValue_getAllTextsInSelf (void) {
   enterExtensionMethod_getAllTextsInSelf (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                           extensionMethod_arxmlElementValue_getAllTextsInSelf) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlElementValue_getAllTextsInSelf (void) {
   gExtensionMethodTable_arxmlElementValue_getAllTextsInSelf.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getAllTextsInSelf (defineExtensionMethod_arxmlElementValue_getAllTextsInSelf,
                                                                 freeExtensionMethod_arxmlElementValue_getAllTextsInSelf) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                         Extension getter '@arxmlElementValue getAttributeValueFromElement'                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_arxmlElementValue_getAttributeValueFromElement> gExtensionGetterTable_arxmlElementValue_getAttributeValueFromElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_getAttributeValueFromElement (const int32_t inClassIndex,
                                                         enterExtensionGetter_arxmlElementValue_getAttributeValueFromElement inGetter) {
   gExtensionGetterTable_arxmlElementValue_getAttributeValueFromElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_string in_elementName,
@@ -5300,7 +5299,7 @@ GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPtr_arxm
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_lstring extensionGetter_arxmlElementValue_getAttributeValueFromElement (const cPtr_arxmlElementValue * inObject,
                                                                                       GALGAS_string inArgument_elementName,
@@ -5320,27 +5319,27 @@ static GALGAS_lstring extensionGetter_arxmlElementValue_getAttributeValueFromEle
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_arxmlElementValue_getAttributeValueFromElement (void) {
   enterExtensionGetter_getAttributeValueFromElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                                      extensionGetter_arxmlElementValue_getAttributeValueFromElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_arxmlElementValue_getAttributeValueFromElement (void) {
   gExtensionGetterTable_arxmlElementValue_getAttributeValueFromElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_arxmlElementValue_getAttributeValueFromElement (defineExtensionGetter_arxmlElementValue_getAttributeValueFromElement,
                                                                            freeExtensionGetter_arxmlElementValue_getAttributeValueFromElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlMetaClass::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -5370,7 +5369,7 @@ typeComparisonResult cPtr_arxmlMetaClass::dynamicObjectCompare (const acPtr_clas
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlMetaClass::objectCompare (const GALGAS_arxmlMetaClass & inOperand) const {
@@ -5389,13 +5388,13 @@ typeComparisonResult GALGAS_arxmlMetaClass::objectCompare (const GALGAS_arxmlMet
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaClass::GALGAS_arxmlMetaClass (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlMetaClass::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -5408,14 +5407,14 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_default (LOCATION_ARGS)
                                                  COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaClass::GALGAS_arxmlMetaClass (const cPtr_arxmlMetaClass * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaClass) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                               const GALGAS_bool & inAttribute_isAbstract,
@@ -5432,7 +5431,7 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_new (const GALGAS_lstri
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -5444,13 +5443,13 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -5462,13 +5461,13 @@ GALGAS_bool GALGAS_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool cPtr_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) const {
   return mProperty_isAbstract ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElement (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaElementList result ;
@@ -5480,13 +5479,13 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElement (UNUSED_LOCAT
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElementList cPtr_arxmlMetaClass::getter_lElement (UNUSED_LOCATION_ARGS) const {
   return mProperty_lElement ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElementLegacy (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaElementList result ;
@@ -5498,13 +5497,13 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElementLegacy (UNUSED
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElementList cPtr_arxmlMetaClass::getter_lElementLegacy (UNUSED_LOCATION_ARGS) const {
   return mProperty_lElementLegacy ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttribute (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaAttributeList result ;
@@ -5516,13 +5515,13 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttribute (UNUSED_L
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttributeList cPtr_arxmlMetaClass::getter_lAttribute (UNUSED_LOCATION_ARGS) const {
   return mProperty_lAttribute ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttributeLegacy (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaAttributeList result ;
@@ -5534,13 +5533,13 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttributeLegacy (UN
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttributeList cPtr_arxmlMetaClass::getter_lAttributeLegacy (UNUSED_LOCATION_ARGS) const {
   return mProperty_lAttributeLegacy ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -5552,15 +5551,15 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   return mProperty_desc ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                       Pointer class for @arxmlMetaClass class                                       *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlMetaClass::cPtr_arxmlMetaClass (const GALGAS_lstring & in_name,
                                           const GALGAS_bool & in_isAbstract,
@@ -5580,7 +5579,7 @@ mProperty_lAttributeLegacy (in_lAttributeLegacy),
 mProperty_desc (in_desc) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaClass::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaClass ;
@@ -5605,7 +5604,7 @@ void cPtr_arxmlMetaClass::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlMetaClass::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -5614,23 +5613,23 @@ acPtr_class * cPtr_arxmlMetaClass::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @arxmlMetaClass type                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaClass ("arxmlMetaClass",
                                        NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaClass::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaClass ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlMetaClass::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -5640,7 +5639,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaClass::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::extractObject (const GALGAS_object & inObject,
                                                             C_Compiler * inCompiler
@@ -5657,22 +5656,22 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::extractObject (const GALGAS_object 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension setter '@arxmlMetaClass legacyAddParameters'                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_legacyAddParameters> gExtensionModifierTable_arxmlMetaClass_legacyAddParameters ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_legacyAddParameters (const int32_t inClassIndex,
                                                extensionSetterSignature_arxmlMetaClass_legacyAddParameters inModifier) {
   gExtensionModifierTable_arxmlMetaClass_legacyAddParameters.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_legacyAddParameters (cPtr_arxmlMetaClass * inObject,
                                               GALGAS_arxmlMetaClassMap & io_classMap,
@@ -5703,7 +5702,7 @@ void callExtensionSetter_legacyAddParameters (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaClass_legacyAddParameters (cPtr_arxmlMetaClass * inObject,
                                                                 GALGAS_arxmlMetaClassMap & ioArgument_classMap,
@@ -5720,40 +5719,40 @@ static void extensionSetter_arxmlMetaClass_legacyAddParameters (cPtr_arxmlMetaCl
     enumerator_2572.gotoNextObject () ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaClass_legacyAddParameters (void) {
   enterExtensionSetter_legacyAddParameters (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                             extensionSetter_arxmlMetaClass_legacyAddParameters) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaClass_legacyAddParameters (void) {
   gExtensionModifierTable_arxmlMetaClass_legacyAddParameters.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_legacyAddParameters (defineExtensionSetter_arxmlMetaClass_legacyAddParameters,
                                                                freeExtensionModifier_arxmlMetaClass_legacyAddParameters) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension setter '@arxmlMetaClass legacyUpdate'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_legacyUpdate> gExtensionModifierTable_arxmlMetaClass_legacyUpdate ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_legacyUpdate (const int32_t inClassIndex,
                                         extensionSetterSignature_arxmlMetaClass_legacyUpdate inModifier) {
   gExtensionModifierTable_arxmlMetaClass_legacyUpdate.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_legacyUpdate (cPtr_arxmlMetaClass * inObject,
                                        GALGAS_arxmlMetaElementList in_iElement,
@@ -5784,7 +5783,7 @@ void callExtensionSetter_legacyUpdate (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaClass_legacyUpdate (cPtr_arxmlMetaClass * inObject,
                                                          GALGAS_arxmlMetaElementList inArgument_iElement,
@@ -5796,40 +5795,40 @@ static void extensionSetter_arxmlMetaClass_legacyUpdate (cPtr_arxmlMetaClass * i
   object->mProperty_lElementLegacy.plusAssign_operation(inArgument_iElement, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 105)) ;
   object->mProperty_lAttributeLegacy.plusAssign_operation(inArgument_iAttribute, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 106)) ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaClass_legacyUpdate (void) {
   enterExtensionSetter_legacyUpdate (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                      extensionSetter_arxmlMetaClass_legacyUpdate) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaClass_legacyUpdate (void) {
   gExtensionModifierTable_arxmlMetaClass_legacyUpdate.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_legacyUpdate (defineExtensionSetter_arxmlMetaClass_legacyUpdate,
                                                         freeExtensionModifier_arxmlMetaClass_legacyUpdate) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension method '@arxmlMetaClass display'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlMetaClass_display> gExtensionMethodTable_arxmlMetaClass_display ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_display (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlMetaClass_display inMethod) {
   gExtensionMethodTable_arxmlMetaClass_display.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_display (const cPtr_arxmlMetaClass * inObject,
                                   GALGAS_arxmlMetaClassMap in_classMap,
@@ -5862,7 +5861,7 @@ void callExtensionMethod_display (const cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * inObject,
                                                     GALGAS_arxmlMetaClassMap inArgument_classMap,
@@ -5935,40 +5934,40 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
     "\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 232)) ;
   ioArgument_ioString = ioArgument_ioString.add_operation (var_svgString_2953, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 233)) ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlMetaClass_display (void) {
   enterExtensionMethod_display (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                 extensionMethod_arxmlMetaClass_display) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlMetaClass_display (void) {
   gExtensionMethodTable_arxmlMetaClass_display.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlMetaClass_display (defineExtensionMethod_arxmlMetaClass_display,
                                                    freeExtensionMethod_arxmlMetaClass_display) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension setter '@arxmlMetaClass addElement'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_addElement> gExtensionModifierTable_arxmlMetaClass_addElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_addElement (const int32_t inClassIndex,
                                       extensionSetterSignature_arxmlMetaClass_addElement inModifier) {
   gExtensionModifierTable_arxmlMetaClass_addElement.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_addElement (cPtr_arxmlMetaClass * inObject,
                                      GALGAS_arxmlMetaElement in_mElement,
@@ -5998,7 +5997,7 @@ void callExtensionSetter_addElement (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inObject,
                                                        GALGAS_arxmlMetaElement inArgument_mElement,
@@ -6024,40 +6023,40 @@ static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inO
     object->mProperty_lElement.addAssign_operation (inArgument_mElement  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 246)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaClass_addElement (void) {
   enterExtensionSetter_addElement (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                    extensionSetter_arxmlMetaClass_addElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaClass_addElement (void) {
   gExtensionModifierTable_arxmlMetaClass_addElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_addElement (defineExtensionSetter_arxmlMetaClass_addElement,
                                                       freeExtensionModifier_arxmlMetaClass_addElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension setter '@arxmlMetaClass addAttribute'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_addAttribute> gExtensionModifierTable_arxmlMetaClass_addAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_addAttribute (const int32_t inClassIndex,
                                         extensionSetterSignature_arxmlMetaClass_addAttribute inModifier) {
   gExtensionModifierTable_arxmlMetaClass_addAttribute.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_addAttribute (cPtr_arxmlMetaClass * inObject,
                                        GALGAS_arxmlMetaAttribute in_mAttribute,
@@ -6087,7 +6086,7 @@ void callExtensionSetter_addAttribute (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * inObject,
                                                          GALGAS_arxmlMetaAttribute inArgument_mAttribute,
@@ -6113,40 +6112,40 @@ static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * i
     object->mProperty_lAttribute.addAssign_operation (inArgument_mAttribute  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 260)) ;
   }
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaClass_addAttribute (void) {
   enterExtensionSetter_addAttribute (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                      extensionSetter_arxmlMetaClass_addAttribute) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaClass_addAttribute (void) {
   gExtensionModifierTable_arxmlMetaClass_addAttribute.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_addAttribute (defineExtensionSetter_arxmlMetaClass_addAttribute,
                                                         freeExtensionModifier_arxmlMetaClass_addAttribute) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension setter '@arxmlMetaClass setDescription'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_setDescription> gExtensionModifierTable_arxmlMetaClass_setDescription ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_setDescription (const int32_t inClassIndex,
                                           extensionSetterSignature_arxmlMetaClass_setDescription inModifier) {
   gExtensionModifierTable_arxmlMetaClass_setDescription.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_setDescription (cPtr_arxmlMetaClass * inObject,
                                          GALGAS_lstring in_iDesc,
@@ -6176,7 +6175,7 @@ void callExtensionSetter_setDescription (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaClass_setDescription (cPtr_arxmlMetaClass * inObject,
                                                            GALGAS_lstring inArgument_iDesc,
@@ -6186,40 +6185,40 @@ static void extensionSetter_arxmlMetaClass_setDescription (cPtr_arxmlMetaClass *
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   object->mProperty_desc = inArgument_iDesc ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaClass_setDescription (void) {
   enterExtensionSetter_setDescription (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                        extensionSetter_arxmlMetaClass_setDescription) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaClass_setDescription (void) {
   gExtensionModifierTable_arxmlMetaClass_setDescription.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_setDescription (defineExtensionSetter_arxmlMetaClass_setDescription,
                                                           freeExtensionModifier_arxmlMetaClass_setDescription) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension getter '@arxmlMetaClass hasElement'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_arxmlMetaClass_hasElement> gExtensionGetterTable_arxmlMetaClass_hasElement ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_hasElement (const int32_t inClassIndex,
                                       enterExtensionGetter_arxmlMetaClass_hasElement inGetter) {
   gExtensionGetterTable_arxmlMetaClass_hasElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * inObject,
                                             GALGAS_string in_eleName,
@@ -6254,7 +6253,7 @@ GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * inObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_bool extensionGetter_arxmlMetaClass_hasElement (const cPtr_arxmlMetaClass * inObject,
                                                               GALGAS_string inArgument_eleName,
@@ -6284,40 +6283,40 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasElement (const cPtr_arxmlMe
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_arxmlMetaClass_hasElement (void) {
   enterExtensionGetter_hasElement (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                    extensionGetter_arxmlMetaClass_hasElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_arxmlMetaClass_hasElement (void) {
   gExtensionGetterTable_arxmlMetaClass_hasElement.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_arxmlMetaClass_hasElement (defineExtensionGetter_arxmlMetaClass_hasElement,
                                                       freeExtensionGetter_arxmlMetaClass_hasElement) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension getter '@arxmlMetaClass hasAttribute'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <enterExtensionGetter_arxmlMetaClass_hasAttribute> gExtensionGetterTable_arxmlMetaClass_hasAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_hasAttribute (const int32_t inClassIndex,
                                         enterExtensionGetter_arxmlMetaClass_hasAttribute inGetter) {
   gExtensionGetterTable_arxmlMetaClass_hasAttribute.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool callExtensionGetter_hasAttribute (const cPtr_arxmlMetaClass * inObject,
                                               GALGAS_string in_attrName,
@@ -6352,7 +6351,7 @@ GALGAS_bool callExtensionGetter_hasAttribute (const cPtr_arxmlMetaClass * inObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static GALGAS_bool extensionGetter_arxmlMetaClass_hasAttribute (const cPtr_arxmlMetaClass * inObject,
                                                                 GALGAS_string inArgument_attrName,
@@ -6382,27 +6381,27 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasAttribute (const cPtr_arxml
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionGetter_arxmlMetaClass_hasAttribute (void) {
   enterExtensionGetter_hasAttribute (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                      extensionGetter_arxmlMetaClass_hasAttribute) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionGetter_arxmlMetaClass_hasAttribute (void) {
   gExtensionGetterTable_arxmlMetaClass_hasAttribute.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gGetter_arxmlMetaClass_hasAttribute (defineExtensionGetter_arxmlMetaClass_hasAttribute,
                                                         freeExtensionGetter_arxmlMetaClass_hasAttribute) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlMetaElement::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -6426,7 +6425,7 @@ typeComparisonResult cPtr_arxmlMetaElement::dynamicObjectCompare (const acPtr_cl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlMetaElement::objectCompare (const GALGAS_arxmlMetaElement & inOperand) const {
@@ -6445,13 +6444,13 @@ typeComparisonResult GALGAS_arxmlMetaElement::objectCompare (const GALGAS_arxmlM
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElement::GALGAS_arxmlMetaElement (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlMetaElement::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -6462,14 +6461,14 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_default (LOCATION_A
                                                    COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElement::GALGAS_arxmlMetaElement (const cPtr_arxmlMetaElement * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaElement) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                   const GALGAS_lstring & inAttribute_type,
@@ -6484,7 +6483,7 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_new (const GALGAS_l
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6496,13 +6495,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6514,13 +6513,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6532,13 +6531,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) const {
   return mProperty_minOccurs ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6550,13 +6549,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) const {
   return mProperty_maxOccurs ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6568,15 +6567,15 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) const {
   return mProperty_prefix ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                      Pointer class for @arxmlMetaElement class                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlMetaElement::cPtr_arxmlMetaElement (const GALGAS_lstring & in_name,
                                               const GALGAS_lstring & in_type,
@@ -6592,7 +6591,7 @@ mProperty_maxOccurs (in_maxOccurs),
 mProperty_prefix (in_prefix) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaElement::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaElement ;
@@ -6613,7 +6612,7 @@ void cPtr_arxmlMetaElement::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlMetaElement::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -6622,23 +6621,23 @@ acPtr_class * cPtr_arxmlMetaElement::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlMetaElement type                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaElement ("arxmlMetaElement",
                                          NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaElement::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaElement ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlMetaElement::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -6648,7 +6647,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaElement::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -6665,9 +6664,9 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::extractObject (const GALGAS_obj
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlMetaAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -6688,7 +6687,7 @@ typeComparisonResult cPtr_arxmlMetaAttribute::dynamicObjectCompare (const acPtr_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlMetaAttribute::objectCompare (const GALGAS_arxmlMetaAttribute & inOperand) const {
@@ -6707,13 +6706,13 @@ typeComparisonResult GALGAS_arxmlMetaAttribute::objectCompare (const GALGAS_arxm
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttribute::GALGAS_arxmlMetaAttribute (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlMetaAttribute::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -6723,14 +6722,14 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_default (LOCATI
                                                      COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttribute::GALGAS_arxmlMetaAttribute (const cPtr_arxmlMetaAttribute * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaAttribute) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                       const GALGAS_lstring & inAttribute_type,
@@ -6744,7 +6743,7 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_new (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6756,13 +6755,13 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6774,13 +6773,13 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6792,13 +6791,13 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) const {
   return mProperty_prefix ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6810,15 +6809,15 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) const {
   return mProperty_use ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                     Pointer class for @arxmlMetaAttribute class                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlMetaAttribute::cPtr_arxmlMetaAttribute (const GALGAS_lstring & in_name,
                                                   const GALGAS_lstring & in_type,
@@ -6832,7 +6831,7 @@ mProperty_prefix (in_prefix),
 mProperty_use (in_use) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaAttribute::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaAttribute ;
@@ -6851,7 +6850,7 @@ void cPtr_arxmlMetaAttribute::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlMetaAttribute::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -6860,23 +6859,23 @@ acPtr_class * cPtr_arxmlMetaAttribute::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @arxmlMetaAttribute type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaAttribute ("arxmlMetaAttribute",
                                            NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaAttribute::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaAttribute ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlMetaAttribute::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -6886,7 +6885,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaAttribute::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::extractObject (const GALGAS_object & inObject,
                                                                     C_Compiler * inCompiler
@@ -6903,9 +6902,9 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::extractObject (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult cPtr_arxmlMetaSimpletype::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -6926,7 +6925,7 @@ typeComparisonResult cPtr_arxmlMetaSimpletype::dynamicObjectCompare (const acPtr
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 
 typeComparisonResult GALGAS_arxmlMetaSimpletype::objectCompare (const GALGAS_arxmlMetaSimpletype & inOperand) const {
@@ -6945,20 +6944,20 @@ typeComparisonResult GALGAS_arxmlMetaSimpletype::objectCompare (const GALGAS_arx
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaSimpletype::GALGAS_arxmlMetaSimpletype (void) :
 AC_GALGAS_class (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaSimpletype::GALGAS_arxmlMetaSimpletype (const cPtr_arxmlMetaSimpletype * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaSimpletype) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                         const GALGAS_restrictionType & inAttribute_type,
@@ -6972,7 +6971,7 @@ GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::constructor_new (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6984,13 +6983,13 @@ GALGAS_lstring GALGAS_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring cPtr_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_restrictionType GALGAS_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_restrictionType result ;
@@ -7002,13 +7001,13 @@ GALGAS_restrictionType GALGAS_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_restrictionType cPtr_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_restrictionBaseType GALGAS_arxmlMetaSimpletype::getter_base (UNUSED_LOCATION_ARGS) const {
   GALGAS_restrictionBaseType result ;
@@ -7020,13 +7019,13 @@ GALGAS_restrictionBaseType GALGAS_arxmlMetaSimpletype::getter_base (UNUSED_LOCAT
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_restrictionBaseType cPtr_arxmlMetaSimpletype::getter_base (UNUSED_LOCATION_ARGS) const {
   return mProperty_base ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringlist GALGAS_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
@@ -7038,15 +7037,15 @@ GALGAS_lstringlist GALGAS_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_AR
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringlist cPtr_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_ARGS) const {
   return mProperty_values ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                    Pointer class for @arxmlMetaSimpletype class                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cPtr_arxmlMetaSimpletype::cPtr_arxmlMetaSimpletype (const GALGAS_lstring & in_name,
                                                     const GALGAS_restrictionType & in_type,
@@ -7060,7 +7059,7 @@ mProperty_base (in_base),
 mProperty_values (in_values) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaSimpletype::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaSimpletype ;
@@ -7079,7 +7078,7 @@ void cPtr_arxmlMetaSimpletype::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 acPtr_class * cPtr_arxmlMetaSimpletype::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -7088,23 +7087,23 @@ acPtr_class * cPtr_arxmlMetaSimpletype::duplicate (LOCATION_ARGS) const {
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @arxmlMetaSimpletype type                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaSimpletype ("arxmlMetaSimpletype",
                                             NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaSimpletype::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaSimpletype ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_arxmlMetaSimpletype::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -7114,7 +7113,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaSimpletype::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::extractObject (const GALGAS_object & inObject,
                                                                       C_Compiler * inCompiler
@@ -7131,22 +7130,22 @@ GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::extractObject (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension method '@arxmlMetaSimpletype display'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionMethodSignature_arxmlMetaSimpletype_display> gExtensionMethodTable_arxmlMetaSimpletype_display ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_display (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlMetaSimpletype_display inMethod) {
   gExtensionMethodTable_arxmlMetaSimpletype_display.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_display (const cPtr_arxmlMetaSimpletype * inObject,
                                   GALGAS_arxmlMetaClassMap in_classMap,
@@ -7179,7 +7178,7 @@ void callExtensionMethod_display (const cPtr_arxmlMetaSimpletype * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSimpletype * inObject,
                                                          GALGAS_arxmlMetaClassMap /* inArgument_classMap */,
@@ -7231,40 +7230,40 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
   }
   ioArgument_ioString = ioArgument_ioString.add_operation (var_svgString_9977, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 399)) ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionMethod_arxmlMetaSimpletype_display (void) {
   enterExtensionMethod_display (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
                                 extensionMethod_arxmlMetaSimpletype_display) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionMethod_arxmlMetaSimpletype_display (void) {
   gExtensionMethodTable_arxmlMetaSimpletype_display.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gMethod_arxmlMetaSimpletype_display (defineExtensionMethod_arxmlMetaSimpletype_display,
                                                         freeExtensionMethod_arxmlMetaSimpletype_display) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension setter '@arxmlMetaSimpletype setType'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaSimpletype_setType> gExtensionModifierTable_arxmlMetaSimpletype_setType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_setType (const int32_t inClassIndex,
                                    extensionSetterSignature_arxmlMetaSimpletype_setType inModifier) {
   gExtensionModifierTable_arxmlMetaSimpletype_setType.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_setType (cPtr_arxmlMetaSimpletype * inObject,
                                   GALGAS_restrictionType in_iType,
@@ -7294,7 +7293,7 @@ void callExtensionSetter_setType (cPtr_arxmlMetaSimpletype * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaSimpletype_setType (cPtr_arxmlMetaSimpletype * inObject,
                                                          GALGAS_restrictionType inArgument_iType,
@@ -7304,40 +7303,40 @@ static void extensionSetter_arxmlMetaSimpletype_setType (cPtr_arxmlMetaSimpletyp
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
   object->mProperty_type = inArgument_iType ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaSimpletype_setType (void) {
   enterExtensionSetter_setType (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
                                 extensionSetter_arxmlMetaSimpletype_setType) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaSimpletype_setType (void) {
   gExtensionModifierTable_arxmlMetaSimpletype_setType.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaSimpletype_setType (defineExtensionSetter_arxmlMetaSimpletype_setType,
                                                         freeExtensionModifier_arxmlMetaSimpletype_setType) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension setter '@arxmlMetaSimpletype setBase'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaSimpletype_setBase> gExtensionModifierTable_arxmlMetaSimpletype_setBase ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_setBase (const int32_t inClassIndex,
                                    extensionSetterSignature_arxmlMetaSimpletype_setBase inModifier) {
   gExtensionModifierTable_arxmlMetaSimpletype_setBase.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_setBase (cPtr_arxmlMetaSimpletype * inObject,
                                   GALGAS_restrictionBaseType in_iBase,
@@ -7367,7 +7366,7 @@ void callExtensionSetter_setBase (cPtr_arxmlMetaSimpletype * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaSimpletype_setBase (cPtr_arxmlMetaSimpletype * inObject,
                                                          GALGAS_restrictionBaseType inArgument_iBase,
@@ -7377,40 +7376,40 @@ static void extensionSetter_arxmlMetaSimpletype_setBase (cPtr_arxmlMetaSimpletyp
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
   object->mProperty_base = inArgument_iBase ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaSimpletype_setBase (void) {
   enterExtensionSetter_setBase (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
                                 extensionSetter_arxmlMetaSimpletype_setBase) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaSimpletype_setBase (void) {
   gExtensionModifierTable_arxmlMetaSimpletype_setBase.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaSimpletype_setBase (defineExtensionSetter_arxmlMetaSimpletype_setBase,
                                                         freeExtensionModifier_arxmlMetaSimpletype_setBase) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension setter '@arxmlMetaSimpletype addValue'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaSimpletype_addValue> gExtensionModifierTable_arxmlMetaSimpletype_addValue ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_addValue (const int32_t inClassIndex,
                                     extensionSetterSignature_arxmlMetaSimpletype_addValue inModifier) {
   gExtensionModifierTable_arxmlMetaSimpletype_addValue.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_addValue (cPtr_arxmlMetaSimpletype * inObject,
                                    GALGAS_lstring in_value,
@@ -7440,7 +7439,7 @@ void callExtensionSetter_addValue (cPtr_arxmlMetaSimpletype * inObject,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void extensionSetter_arxmlMetaSimpletype_addValue (cPtr_arxmlMetaSimpletype * inObject,
                                                           GALGAS_lstring inArgument_value,
@@ -7450,20 +7449,20 @@ static void extensionSetter_arxmlMetaSimpletype_addValue (cPtr_arxmlMetaSimplety
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
   object->mProperty_values.addAssign_operation (inArgument_value  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 414)) ;
 }
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void defineExtensionSetter_arxmlMetaSimpletype_addValue (void) {
   enterExtensionSetter_addValue (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
                                  extensionSetter_arxmlMetaSimpletype_addValue) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void freeExtensionModifier_arxmlMetaSimpletype_addValue (void) {
   gExtensionModifierTable_arxmlMetaSimpletype_addValue.free () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue gSetter_arxmlMetaSimpletype_addValue (defineExtensionSetter_arxmlMetaSimpletype_addValue,
                                                          freeExtensionModifier_arxmlMetaSimpletype_addValue) ;
@@ -7505,17 +7504,17 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_arxmlmeta
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xml_5F_header_i1_ (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__3F_xml) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 63)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__3F_xml COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 63)) ;
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 65)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 65)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xml_5F_header_i1_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__3F_xml) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 63)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__3F_xml COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 63)) ;
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 65)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 65)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -7528,19 +7527,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_an
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_0 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 81)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 81)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_1 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 83)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 83)) ;
         switch (select_arxmlmetaparser_5F_syntax_2 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 84)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 84)) ;
           nt_xsd_5F_appinfo_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 86)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 86)) ;
           nt_xsd_5F_documentation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         default:
@@ -7552,12 +7551,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_an
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 91)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 92)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 93)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 91)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 92)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 93)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 94)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 94)) ;
   } break ;
   default:
     break ;
@@ -7570,19 +7569,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_an
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_0 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 81)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 81)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_1 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 83)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 83)) ;
         switch (select_arxmlmetaparser_5F_syntax_2 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 84)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 84)) ;
           nt_xsd_5F_appinfo_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 86)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 86)) ;
           nt_xsd_5F_documentation_parse (inCompiler) ;
         } break ;
         default:
@@ -7594,12 +7593,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_an
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 91)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 92)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 93)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 91)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 92)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 93)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 94)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 94)) ;
   } break ;
   default:
     break ;
@@ -7616,13 +7615,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ap
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_3 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 107)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 109)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 110)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 111)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 107)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 109)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 110)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 111)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 112)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 112)) ;
   } break ;
   default:
     break ;
@@ -7635,13 +7634,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ap
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_3 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 107)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 109)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 110)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 111)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 107)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 109)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_appinfo COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 110)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 111)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 112)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 112)) ;
   } break ;
   default:
     break ;
@@ -7679,17 +7678,17 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_4 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 130)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 132)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 130)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 132)) ;
       var_attributeRef_3054 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 133)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 133)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 134)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 134)) ;
       GALGAS_lstring var_fullType_3315 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 136)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 136)) ;
       var_fullType_3315 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 137)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 137)) ;
       const enumGalgasBool test_1 = var_fullType_3315.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 139)).boolEnum () ;
       if (kBoolTrue == test_1) {
         GALGAS_stringlist var_parsed_3478 = var_fullType_3315.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 140)) ;
@@ -7705,18 +7704,18 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       }
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 151)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 152)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 151)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 152)) ;
       var_attributeName_3012 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 153)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 153)) ;
       var_attributeName_3012.mProperty_string = var_attributeName_3012.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 154)) ;
       var_attributeName_3012.mProperty_string = var_attributeName_3012.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 155)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 156)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 157)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 156)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 157)) ;
       var_attributeUse_3143 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 158)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 158)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -7732,19 +7731,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
   }
   switch (select_arxmlmetaparser_5F_syntax_5 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 171)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 171)) ;
     bool repeatFlag_3 = true ;
     while (repeatFlag_3) {
       switch (select_arxmlmetaparser_5F_syntax_6 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 173)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 173)) ;
         switch (select_arxmlmetaparser_5F_syntax_7 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 174)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 174)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 176)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 176)) ;
           nt_xsd_5F_simpleType_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         default:
@@ -7756,12 +7755,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 181)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 182)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 183)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 181)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 182)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 183)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 184)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 184)) ;
   } break ;
   default:
     break ;
@@ -7775,24 +7774,24 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_4 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 130)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 132)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 133)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 130)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 132)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 133)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 134)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 136)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 137)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 134)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 136)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 137)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 151)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 152)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 153)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 151)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 152)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 153)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 156)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 157)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 158)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 156)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 157)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 158)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -7801,19 +7800,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
   }
   switch (select_arxmlmetaparser_5F_syntax_5 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 171)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 171)) ;
     bool repeatFlag_1 = true ;
     while (repeatFlag_1) {
       switch (select_arxmlmetaparser_5F_syntax_6 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 173)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 173)) ;
         switch (select_arxmlmetaparser_5F_syntax_7 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 174)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 174)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 176)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 176)) ;
           nt_xsd_5F_simpleType_parse (inCompiler) ;
         } break ;
         default:
@@ -7825,12 +7824,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 181)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 182)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 183)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 181)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 182)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 183)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 184)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 184)) ;
   } break ;
   default:
     break ;
@@ -7848,10 +7847,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
   GALGAS_lstring var_nextParentClass_5270 ;
   switch (select_arxmlmetaparser_5F_syntax_8 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 199)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 201)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 199)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 201)) ;
     var_className_5243 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 202)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 202)) ;
     var_className_5243.mProperty_string = var_className_5243.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 203)) ;
     var_className_5243.mProperty_string = var_className_5243.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 204)) ;
     GALGAS_lstring var_desc_5610 ;
@@ -7871,10 +7870,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
     var_nextParentClass_5270 = var_className_5243 ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 220)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 221)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 220)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 221)) ;
     GALGAS_lstring var_fullClassName_6318 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 222)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 222)) ;
     var_className_5243 = var_fullClassName_6318 ;
     const enumGalgasBool test_1 = var_fullClassName_6318.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 225)).boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -7896,31 +7895,31 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
   }
   switch (select_arxmlmetaparser_5F_syntax_9 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 239)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 239)) ;
     bool repeatFlag_3 = true ;
     while (repeatFlag_3) {
       switch (select_arxmlmetaparser_5F_syntax_10 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 241)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 241)) ;
         switch (select_arxmlmetaparser_5F_syntax_11 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 242)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 242)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_5270, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 244)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 244)) ;
           nt_xsd_5F_attribute_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_5270, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 246)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 246)) ;
           nt_xsd_5F_attributeGroup_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_5270, inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 248)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 248)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_5270, inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 250)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 250)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_5270, inCompiler) ;
         } break ;
         default:
@@ -7932,12 +7931,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 255)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 256)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 257)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 255)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 256)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 257)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 258)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 258)) ;
   } break ;
   default:
     break ;
@@ -7949,45 +7948,45 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_attributeGroup_i5_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
   switch (select_arxmlmetaparser_5F_syntax_8 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 199)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 201)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 202)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 199)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 201)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 202)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 220)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 221)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 222)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 220)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 221)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 222)) ;
   } break ;
   default:
     break ;
   }
   switch (select_arxmlmetaparser_5F_syntax_9 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 239)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 239)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_10 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 241)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 241)) ;
         switch (select_arxmlmetaparser_5F_syntax_11 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 242)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 242)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 244)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 244)) ;
           nt_xsd_5F_attribute_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 246)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 246)) ;
           nt_xsd_5F_attributeGroup_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 248)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 248)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 250)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 250)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         default:
@@ -7999,12 +7998,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 255)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 256)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 257)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 255)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 256)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 257)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 258)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 258)) ;
   } break ;
   default:
     break ;
@@ -8021,31 +8020,31 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ch
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_12 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 271)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 271)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_13 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 273)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 273)) ;
         switch (select_arxmlmetaparser_5F_syntax_14 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 274)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 274)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 276)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 276)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 278)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 278)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 280)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 280)) ;
           nt_xsd_5F_element_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 282)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 282)) ;
           nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         default:
@@ -8057,12 +8056,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ch
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 287)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 288)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 289)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 287)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 288)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 289)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 290)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 290)) ;
   } break ;
   default:
     break ;
@@ -8075,31 +8074,31 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ch
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_12 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 271)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 271)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_13 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 273)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 273)) ;
         switch (select_arxmlmetaparser_5F_syntax_14 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 274)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 274)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 276)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 276)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 278)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 278)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 280)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 280)) ;
           nt_xsd_5F_element_parse (inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 282)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 282)) ;
           nt_xsd_5F_group_parse (inCompiler) ;
         } break ;
         default:
@@ -8111,12 +8110,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ch
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 287)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 288)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 289)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 287)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 288)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 289)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 290)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 290)) ;
   } break ;
   default:
     break ;
@@ -8146,22 +8145,22 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_15 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 307)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 308)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 307)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 308)) ;
       var_complexAbstract_8404 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 309)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 309)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 310)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 311)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 310)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 311)) ;
       var_complexMixed_8446 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 312)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 312)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 313)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 314)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 313)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 314)) ;
       var_complexName_8487 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 315)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 315)) ;
       var_complexName_8487.mProperty_string = var_complexName_8487.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 316)) ;
       var_complexName_8487.mProperty_string = var_complexName_8487.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 317)) ;
     } break ;
@@ -8190,39 +8189,39 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
   }
   switch (select_arxmlmetaparser_5F_syntax_16 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 339)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 339)) ;
     bool repeatFlag_3 = true ;
     while (repeatFlag_3) {
       switch (select_arxmlmetaparser_5F_syntax_17 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 341)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 341)) ;
         switch (select_arxmlmetaparser_5F_syntax_18 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 342)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 342)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 344)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 344)) ;
           nt_xsd_5F_attribute_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 346)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 346)) ;
           nt_xsd_5F_attributeGroup_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 348)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 348)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 350)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 350)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         case 6: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 352)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 352)) ;
           nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         case 7: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 354)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 354)) ;
           nt_xsd_5F_simpleContent_ (ioArgument_classMap, ioArgument_classGraph, var_complexName_8487, inCompiler) ;
         } break ;
         default:
@@ -8234,12 +8233,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 359)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 360)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 361)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 359)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 360)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 361)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 362)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 362)) ;
   } break ;
   default:
     break ;
@@ -8253,19 +8252,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_15 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 307)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 308)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 309)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 307)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 308)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 309)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 310)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 311)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 312)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 310)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 311)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 312)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 313)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 314)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 315)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 313)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 314)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 315)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -8274,39 +8273,39 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
   }
   switch (select_arxmlmetaparser_5F_syntax_16 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 339)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 339)) ;
     bool repeatFlag_1 = true ;
     while (repeatFlag_1) {
       switch (select_arxmlmetaparser_5F_syntax_17 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 341)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 341)) ;
         switch (select_arxmlmetaparser_5F_syntax_18 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 342)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 342)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 344)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 344)) ;
           nt_xsd_5F_attribute_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 346)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 346)) ;
           nt_xsd_5F_attributeGroup_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 348)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 348)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 350)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 350)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         case 6: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 352)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 352)) ;
           nt_xsd_5F_group_parse (inCompiler) ;
         } break ;
         case 7: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 354)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 354)) ;
           nt_xsd_5F_simpleContent_parse (inCompiler) ;
         } break ;
         default:
@@ -8318,12 +8317,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 359)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 360)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 361)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 359)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 360)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 361)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 362)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 362)) ;
   } break ;
   default:
     break ;
@@ -8340,13 +8339,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_do
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_19 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 375)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 378)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 379)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 380)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 375)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 378)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 379)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 380)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 381)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 381)) ;
   } break ;
   default:
     break ;
@@ -8359,13 +8358,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_do
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_19 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 375)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 378)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 379)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 380)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 375)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 378)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_documentation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 379)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 380)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 381)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 381)) ;
   } break ;
   default:
     break ;
@@ -8404,23 +8403,23 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_20 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 401)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 402)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 401)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 402)) ;
       var_elementMax_11150 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 403)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 403)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 404)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 405)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 404)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 405)) ;
       var_elementMin_11109 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 406)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 406)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 407)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 407)) ;
       GALGAS_lstring var_fullType_11363 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 409)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 409)) ;
       var_fullType_11363 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 410)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 410)) ;
       const enumGalgasBool test_1 = var_fullType_11363.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 412)).boolEnum () ;
       if (kBoolTrue == test_1) {
         GALGAS_stringlist var_parsed_11526 = var_fullType_11363.getter_string (HERE).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 413)) ;
@@ -8436,10 +8435,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
       }
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 424)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 425)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 424)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 425)) ;
       var_elementName_11069 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 426)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 426)) ;
       var_elementName_11069.mProperty_string = var_elementName_11069.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 427)) ;
       var_elementName_11069.mProperty_string = var_elementName_11069.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 428)) ;
     } break ;
@@ -8493,23 +8492,23 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
   }
   switch (select_arxmlmetaparser_5F_syntax_21 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 473)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 473)) ;
     bool repeatFlag_8 = true ;
     while (repeatFlag_8) {
       switch (select_arxmlmetaparser_5F_syntax_22 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 475)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 475)) ;
         switch (select_arxmlmetaparser_5F_syntax_23 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 476)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 476)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, var_elementName_11069, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 478)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 478)) ;
           nt_xsd_5F_complexType_ (ioArgument_classMap, ioArgument_classGraph, var_elementName_11069, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 480)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 480)) ;
           nt_xsd_5F_simpleType_ (ioArgument_classMap, ioArgument_classGraph, var_elementName_11069, inCompiler) ;
         } break ;
         default:
@@ -8521,12 +8520,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 485)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 486)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 487)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 485)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 486)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 487)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 488)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 488)) ;
   } break ;
   default:
     break ;
@@ -8540,24 +8539,24 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_20 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 401)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 402)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 403)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 401)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 402)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 403)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 404)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 405)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 406)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 404)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 405)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 406)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 407)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 409)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 410)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 407)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 409)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 410)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 424)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 425)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 426)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 424)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 425)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 426)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -8566,23 +8565,23 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
   }
   switch (select_arxmlmetaparser_5F_syntax_21 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 473)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 473)) ;
     bool repeatFlag_1 = true ;
     while (repeatFlag_1) {
       switch (select_arxmlmetaparser_5F_syntax_22 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 475)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 475)) ;
         switch (select_arxmlmetaparser_5F_syntax_23 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 476)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 476)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 478)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 478)) ;
           nt_xsd_5F_complexType_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 480)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 480)) ;
           nt_xsd_5F_simpleType_parse (inCompiler) ;
         } break ;
         default:
@@ -8594,12 +8593,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 485)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 486)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 487)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 485)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 486)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 487)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 488)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 488)) ;
   } break ;
   default:
     break ;
@@ -8614,10 +8613,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_en
                                                                                                 GALGAS_lstring inArgument_parentClass,
                                                                                                 GALGAS_arxmlMetaSimpletype & ioArgument_restriction,
                                                                                                 C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 501)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 502)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 501)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 502)) ;
   GALGAS_lstring var_enumValue_14383 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 503)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 503)) ;
   {
   ioArgument_restriction.insulate (HERE) ;
   cPtr_arxmlMetaSimpletype * ptr_14400 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
@@ -8625,13 +8624,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_en
   }
   switch (select_arxmlmetaparser_5F_syntax_24 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 506)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 506)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_25 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 508)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 509)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 508)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 509)) ;
         nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
       } break ;
       default:
@@ -8639,12 +8638,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_en
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 513)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 514)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 515)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 513)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 514)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 515)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 516)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 516)) ;
   } break ;
   default:
     break ;
@@ -8654,18 +8653,18 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_en
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_enumeration_i10_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 501)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 502)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 503)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 501)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 502)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 503)) ;
   switch (select_arxmlmetaparser_5F_syntax_24 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 506)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 506)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_25 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 508)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 509)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 508)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 509)) ;
         nt_xsd_5F_annotation_parse (inCompiler) ;
       } break ;
       default:
@@ -8673,12 +8672,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_en
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 513)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 514)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 515)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 513)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 514)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 515)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 516)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 516)) ;
   } break ;
   default:
     break ;
@@ -8695,35 +8694,35 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ex
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_26 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 530)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 530)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_27 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 532)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 532)) ;
         switch (select_arxmlmetaparser_5F_syntax_28 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 533)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 533)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 535)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 535)) ;
           nt_xsd_5F_attribute_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 537)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 537)) ;
           nt_xsd_5F_attributeGroup_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 539)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 539)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 541)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 541)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 6: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 543)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 543)) ;
           nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         default:
@@ -8735,12 +8734,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ex
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 548)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 549)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 550)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 548)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 549)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 550)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 551)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 551)) ;
   } break ;
   default:
     break ;
@@ -8753,35 +8752,35 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ex
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_26 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 530)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 530)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_27 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 532)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 532)) ;
         switch (select_arxmlmetaparser_5F_syntax_28 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 533)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 533)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 535)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 535)) ;
           nt_xsd_5F_attribute_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 537)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 537)) ;
           nt_xsd_5F_attributeGroup_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 539)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 539)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 541)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 541)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         case 6: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 543)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 543)) ;
           nt_xsd_5F_group_parse (inCompiler) ;
         } break ;
         default:
@@ -8793,12 +8792,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ex
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 548)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 549)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 550)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 548)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 549)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 550)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 551)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 551)) ;
   } break ;
   default:
     break ;
@@ -8816,10 +8815,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
   GALGAS_lstring var_nextParentClass_15773 ;
   switch (select_arxmlmetaparser_5F_syntax_29 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 566)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 568)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 566)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 568)) ;
     var_className_15746 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 569)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 569)) ;
     var_className_15746.mProperty_string = var_className_15746.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 570)) ;
     var_className_15746.mProperty_string = var_className_15746.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 571)) ;
     GALGAS_lstring var_desc_16113 ;
@@ -8839,10 +8838,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
     var_nextParentClass_15773 = var_className_15746 ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 587)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 588)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 587)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 588)) ;
     GALGAS_lstring var_fullClassName_16822 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 589)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 589)) ;
     var_className_15746 = var_fullClassName_16822 ;
     const enumGalgasBool test_1 = var_fullClassName_16822.getter_string (HERE).getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 592)).boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -8864,27 +8863,27 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
   }
   switch (select_arxmlmetaparser_5F_syntax_30 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 607)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 607)) ;
     bool repeatFlag_3 = true ;
     while (repeatFlag_3) {
       switch (select_arxmlmetaparser_5F_syntax_31 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 609)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 609)) ;
         switch (select_arxmlmetaparser_5F_syntax_32 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 610)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 610)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_15773, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 612)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 612)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_15773, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 614)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 614)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_15773, inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 616)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 616)) ;
           nt_xsd_5F_element_ (ioArgument_classMap, ioArgument_classGraph, var_nextParentClass_15773, inCompiler) ;
         } break ;
         default:
@@ -8896,12 +8895,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 621)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 622)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 623)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 621)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 622)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 623)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 624)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 624)) ;
   } break ;
   default:
     break ;
@@ -8913,41 +8912,41 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_group_i12_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
   switch (select_arxmlmetaparser_5F_syntax_29 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 566)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 568)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 569)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 566)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 568)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 569)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 587)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 588)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 589)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 587)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 588)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 589)) ;
   } break ;
   default:
     break ;
   }
   switch (select_arxmlmetaparser_5F_syntax_30 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 607)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 607)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_31 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 609)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 609)) ;
         switch (select_arxmlmetaparser_5F_syntax_32 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 610)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 610)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 612)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 612)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 614)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 614)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 616)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 616)) ;
           nt_xsd_5F_element_parse (inCompiler) ;
         } break ;
         default:
@@ -8959,12 +8958,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 621)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 622)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 623)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 621)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 622)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 623)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 624)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 624)) ;
   } break ;
   default:
     break ;
@@ -8981,13 +8980,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_im
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_33 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 636)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 636)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_34 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 638)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 639)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 638)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 639)) ;
         nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
       } break ;
       default:
@@ -8995,12 +8994,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_im
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 643)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 644)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 645)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 643)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 644)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 645)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 646)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 646)) ;
   } break ;
   default:
     break ;
@@ -9013,13 +9012,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_im
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_33 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 636)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 636)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_34 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 638)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 639)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 638)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 639)) ;
         nt_xsd_5F_annotation_parse (inCompiler) ;
       } break ;
       default:
@@ -9027,12 +9026,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_im
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 643)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 644)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 645)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 643)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 644)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 645)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 646)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 646)) ;
   } break ;
   default:
     break ;
@@ -9052,10 +9051,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
   routine_lstringhere (var_baseType_18531, GALGAS_string::makeEmptyString (), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 659)) ;
   }
   GALGAS_lstringlist var_valuesifenum_18564 = GALGAS_lstringlist::constructor_emptyList (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 660)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 662)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 663)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 662)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 663)) ;
   var_baseType_18531 = inCompiler->synthetizedAttribute_tokenString () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 664)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 664)) ;
   GALGAS_bool test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:string").objectCompare (var_baseType_18531.getter_string (HERE))) ;
   if (kBoolTrue != test_0.boolEnum ()) {
     test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKEN").objectCompare (var_baseType_18531.getter_string (HERE))) ;
@@ -9110,20 +9109,20 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
   }
   switch (select_arxmlmetaparser_5F_syntax_35 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 681)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 681)) ;
     bool repeatFlag_6 = true ;
     while (repeatFlag_6) {
       switch (select_arxmlmetaparser_5F_syntax_36 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 683)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 683)) ;
         switch (select_arxmlmetaparser_5F_syntax_37 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 684)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 684)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 686)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 687)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 686)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 687)) ;
           nt_xsd_5F_attribute_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
           ioArgument_restriction.insulate (HERE) ;
@@ -9132,8 +9131,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 690)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 691)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 690)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 691)) ;
           nt_xsd_5F_attributeGroup_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
           ioArgument_restriction.insulate (HERE) ;
@@ -9142,8 +9141,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 694)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 695)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 694)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 695)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
           ioArgument_restriction.insulate (HERE) ;
@@ -9152,8 +9151,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 698)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 699)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 698)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 699)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
           ioArgument_restriction.insulate (HERE) ;
@@ -9162,8 +9161,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
         } break ;
         case 6: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 702)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 703)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 702)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 703)) ;
           nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
           ioArgument_restriction.insulate (HERE) ;
@@ -9172,7 +9171,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
         } break ;
         case 7: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 706)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 706)) ;
           nt_xsd_5F_simpleType_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
           ioArgument_restriction.insulate (HERE) ;
@@ -9181,7 +9180,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
         } break ;
         case 8: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 709)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 709)) ;
           GALGAS_bool test_7 = ioArgument_restriction.getter_type (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 711)).getter_isRestrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 711)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 711)) ;
           if (kBoolTrue == test_7.boolEnum ()) {
             test_7 = ioArgument_restriction.getter_base (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 712)).getter_isRestrictionString (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 712)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 712)) ;
@@ -9194,7 +9193,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           nt_xsd_5F_whiteSpace_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 9: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 716)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 716)) ;
           GALGAS_bool test_10 = ioArgument_restriction.getter_type (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 718)).getter_isRestrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 718)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 718)) ;
           if (kBoolTrue == test_10.boolEnum ()) {
             test_10 = ioArgument_restriction.getter_base (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 719)).getter_isRestrictionString (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 719)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 719)) ;
@@ -9207,7 +9206,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           nt_xsd_5F_maxLength_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 10: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 723)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 723)) ;
           GALGAS_bool test_13 = ioArgument_restriction.getter_type (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 725)).getter_isRestrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 725)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 725)) ;
           if (kBoolTrue == test_13.boolEnum ()) {
             test_13 = ioArgument_restriction.getter_base (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 726)).getter_isRestrictionString (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 726)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 726)) ;
@@ -9220,7 +9219,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           nt_xsd_5F_pattern_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 11: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 730)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 730)) ;
           GALGAS_bool test_16 = ioArgument_restriction.getter_type (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 731)).getter_isRestrictionEnum (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 731)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 731)) ;
           if (kBoolTrue == test_16.boolEnum ()) {
             test_16 = ioArgument_restriction.getter_type (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 732)).getter_isRestrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 732)).operator_not (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 732)) ;
@@ -9251,12 +9250,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 743)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 744)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 745)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 743)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 744)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 745)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 746)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 746)) ;
   } break ;
   default:
     break ;
@@ -9266,65 +9265,65 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_restriction_i14_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 662)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 663)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 664)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 662)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 663)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 664)) ;
   switch (select_arxmlmetaparser_5F_syntax_35 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 681)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 681)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_36 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 683)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 683)) ;
         switch (select_arxmlmetaparser_5F_syntax_37 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 684)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 684)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 686)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 687)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 686)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 687)) ;
           nt_xsd_5F_attribute_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 690)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 691)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 690)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 691)) ;
           nt_xsd_5F_attributeGroup_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 694)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 695)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 694)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 695)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 698)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 699)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 698)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 699)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         case 6: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 702)) ;
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 703)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 702)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 703)) ;
           nt_xsd_5F_group_parse (inCompiler) ;
         } break ;
         case 7: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 706)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 706)) ;
           nt_xsd_5F_simpleType_parse (inCompiler) ;
         } break ;
         case 8: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 709)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 709)) ;
           nt_xsd_5F_whiteSpace_parse (inCompiler) ;
         } break ;
         case 9: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 716)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 716)) ;
           nt_xsd_5F_maxLength_parse (inCompiler) ;
         } break ;
         case 10: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 723)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 723)) ;
           nt_xsd_5F_pattern_parse (inCompiler) ;
         } break ;
         case 11: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 730)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 730)) ;
           nt_xsd_5F_enumeration_parse (inCompiler) ;
         } break ;
         default:
@@ -9336,12 +9335,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 743)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 744)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 745)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 743)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 744)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 745)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 746)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 746)) ;
   } break ;
   default:
     break ;
@@ -9354,10 +9353,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_schema_i15_ (GALGAS_arxmlMetaClassMap & ioArgument_classMap,
                                                                                            GALGAS_arxmlMetaClassGraph & ioArgument_classGraph,
                                                                                            C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 757)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 758)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 757)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 758)) ;
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 760)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 760)) ;
   GALGAS_lstring var_rootClassName_22343 ;
   {
   routine_lstringhere (var_rootClassName_22343, GALGAS_string ("root"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 766)) ;
@@ -9377,38 +9376,38 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_sc
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_38 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 780)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 780)) ;
       switch (select_arxmlmetaparser_5F_syntax_39 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 781)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 781)) ;
         nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 783)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 783)) ;
         nt_xsd_5F_attribute_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 3: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 785)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 785)) ;
         nt_xsd_5F_attributeGroup_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 4: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 787)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 787)) ;
         nt_xsd_5F_complexType_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 5: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 789)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 789)) ;
         nt_xsd_5F_element_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 6: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 791)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 791)) ;
         nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 7: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_import) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 793)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_import COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 793)) ;
         nt_xsd_5F_import_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       case 8: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 795)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 795)) ;
         nt_xsd_5F_simpleType_ (ioArgument_classMap, ioArgument_classGraph, var_rootClassName_22343, inCompiler) ;
       } break ;
       default:
@@ -9420,54 +9419,54 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_sc
       break ;
     }
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 801)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 802)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 803)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 801)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 802)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 803)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_schema_i15_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 757)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 758)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 757)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 758)) ;
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 760)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 760)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_38 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 780)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 780)) ;
       switch (select_arxmlmetaparser_5F_syntax_39 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 781)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 781)) ;
         nt_xsd_5F_annotation_parse (inCompiler) ;
       } break ;
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 783)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 783)) ;
         nt_xsd_5F_attribute_parse (inCompiler) ;
       } break ;
       case 3: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 785)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 785)) ;
         nt_xsd_5F_attributeGroup_parse (inCompiler) ;
       } break ;
       case 4: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 787)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 787)) ;
         nt_xsd_5F_complexType_parse (inCompiler) ;
       } break ;
       case 5: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 789)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 789)) ;
         nt_xsd_5F_element_parse (inCompiler) ;
       } break ;
       case 6: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 791)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 791)) ;
         nt_xsd_5F_group_parse (inCompiler) ;
       } break ;
       case 7: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_import) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 793)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_import COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 793)) ;
         nt_xsd_5F_import_parse (inCompiler) ;
       } break ;
       case 8: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 795)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 795)) ;
         nt_xsd_5F_simpleType_parse (inCompiler) ;
       } break ;
       default:
@@ -9479,9 +9478,9 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_sc
       break ;
     }
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 801)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 802)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 803)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 801)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 802)) ;
+  inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 803)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -9493,31 +9492,31 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_se
                                                                                              C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
   switch (select_arxmlmetaparser_5F_syntax_40 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 815)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 815)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_41 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 817)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 817)) ;
         switch (select_arxmlmetaparser_5F_syntax_42 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 818)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 818)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 820)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 820)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 822)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 822)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 824)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 824)) ;
           nt_xsd_5F_element_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 826)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 826)) ;
           nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         default:
@@ -9529,12 +9528,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_se
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 831)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 832)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 833)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 831)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 832)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 833)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 834)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 834)) ;
   } break ;
   default:
     break ;
@@ -9546,31 +9545,31 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_se
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_sequence_i16_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
   switch (select_arxmlmetaparser_5F_syntax_40 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 815)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 815)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_41 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 817)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 817)) ;
         switch (select_arxmlmetaparser_5F_syntax_42 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 818)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 818)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 820)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 820)) ;
           nt_xsd_5F_choice_parse (inCompiler) ;
         } break ;
         case 3: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 822)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 822)) ;
           nt_xsd_5F_sequence_parse (inCompiler) ;
         } break ;
         case 4: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 824)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 824)) ;
           nt_xsd_5F_element_parse (inCompiler) ;
         } break ;
         case 5: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 826)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 826)) ;
           nt_xsd_5F_group_parse (inCompiler) ;
         } break ;
         default:
@@ -9582,12 +9581,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_se
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 831)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 832)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 833)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 831)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 832)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 833)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 834)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 834)) ;
   } break ;
   default:
     break ;
@@ -9603,19 +9602,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
                                                                                                   C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
   switch (select_arxmlmetaparser_5F_syntax_43 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 854)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 854)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_44 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 856)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 856)) ;
         switch (select_arxmlmetaparser_5F_syntax_45 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 857)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 857)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 859)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 859)) ;
           nt_xsd_5F_extension_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
         } break ;
         default:
@@ -9627,12 +9626,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 866)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 867)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 868)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 866)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 867)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 868)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 869)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 869)) ;
   } break ;
   default:
     break ;
@@ -9644,19 +9643,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
 void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleContent_i17_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) {
   switch (select_arxmlmetaparser_5F_syntax_43 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 854)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 854)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_44 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 856)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 856)) ;
         switch (select_arxmlmetaparser_5F_syntax_45 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 857)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 857)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 859)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 859)) ;
           nt_xsd_5F_extension_parse (inCompiler) ;
         } break ;
         default:
@@ -9668,12 +9667,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 866)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 867)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 868)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 866)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 867)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 868)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 869)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 869)) ;
   } break ;
   default:
     break ;
@@ -9695,10 +9694,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_46 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 886)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 887)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 886)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 887)) ;
       var_typeName_25954 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 888)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 888)) ;
       var_typeName_25954.mProperty_string = var_typeName_25954.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 889)) ;
       var_typeName_25954.mProperty_string = var_typeName_25954.getter_string (HERE).getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 890)) ;
     } break ;
@@ -9733,19 +9732,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
   }
   switch (select_arxmlmetaparser_5F_syntax_47 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 918)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 918)) ;
     bool repeatFlag_5 = true ;
     while (repeatFlag_5) {
       switch (select_arxmlmetaparser_5F_syntax_48 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 920)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 920)) ;
         switch (select_arxmlmetaparser_5F_syntax_49 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 921)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 921)) ;
           nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, var_typeName_25954, inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 923)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 923)) ;
           nt_xsd_5F_restriction_ (ioArgument_classMap, ioArgument_classGraph, var_typeName_25954, var_restriction_26426, inCompiler) ;
         } break ;
         default:
@@ -9757,12 +9756,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 928)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 929)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 930)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 928)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 929)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 930)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 931)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 931)) ;
   } break ;
   default:
     break ;
@@ -9776,9 +9775,9 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_46 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 886)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 887)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 888)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 886)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 887)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 888)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -9787,19 +9786,19 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
   }
   switch (select_arxmlmetaparser_5F_syntax_47 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 918)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 918)) ;
     bool repeatFlag_1 = true ;
     while (repeatFlag_1) {
       switch (select_arxmlmetaparser_5F_syntax_48 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 920)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 920)) ;
         switch (select_arxmlmetaparser_5F_syntax_49 (inCompiler)) {
         case 1: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 921)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 921)) ;
           nt_xsd_5F_annotation_parse (inCompiler) ;
         } break ;
         case 2: {
-          inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 923)) ;
+          inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 923)) ;
           nt_xsd_5F_restriction_parse (inCompiler) ;
         } break ;
         default:
@@ -9811,12 +9810,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 928)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 929)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 930)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 928)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 929)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 930)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 931)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 931)) ;
   } break ;
   default:
     break ;
@@ -9833,13 +9832,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ma
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_50 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 948)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 948)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_51 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 950)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 951)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 950)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 951)) ;
         nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
       } break ;
       default:
@@ -9847,12 +9846,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ma
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 955)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 956)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 957)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 955)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 956)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 957)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 958)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 958)) ;
   } break ;
   default:
     break ;
@@ -9865,13 +9864,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ma
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_50 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 948)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 948)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_51 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 950)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 951)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 950)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 951)) ;
         nt_xsd_5F_annotation_parse (inCompiler) ;
       } break ;
       default:
@@ -9879,12 +9878,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ma
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 955)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 956)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 957)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 955)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 956)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 957)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 958)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 958)) ;
   } break ;
   default:
     break ;
@@ -9901,13 +9900,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_pa
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_52 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 973)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 973)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_53 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 975)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 976)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 975)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 976)) ;
         nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
       } break ;
       default:
@@ -9915,12 +9914,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_pa
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 980)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 981)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 982)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 980)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 981)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 982)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 983)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 983)) ;
   } break ;
   default:
     break ;
@@ -9933,13 +9932,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_pa
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_52 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 973)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 973)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_53 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 975)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 976)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 975)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 976)) ;
         nt_xsd_5F_annotation_parse (inCompiler) ;
       } break ;
       default:
@@ -9947,12 +9946,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_pa
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 980)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 981)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 982)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 980)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 981)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 982)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 983)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 983)) ;
   } break ;
   default:
     break ;
@@ -9969,13 +9968,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_wh
   nt_xsd_5F_ignore_5F_attributes_ (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_54 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 997)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 997)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_55 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 999)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1000)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 999)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1000)) ;
         nt_xsd_5F_annotation_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
       } break ;
       default:
@@ -9983,12 +9982,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_wh
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1004)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1005)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1006)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1004)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1005)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1006)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1007)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1007)) ;
   } break ;
   default:
     break ;
@@ -10001,13 +10000,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_wh
   nt_xsd_5F_ignore_5F_attributes_parse (inCompiler) ;
   switch (select_arxmlmetaparser_5F_syntax_54 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 997)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 997)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_arxmlmetaparser_5F_syntax_55 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 999)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1000)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 999)) ;
+        inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1000)) ;
         nt_xsd_5F_annotation_parse (inCompiler) ;
       } break ;
       default:
@@ -10015,12 +10014,12 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_wh
         break ;
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1004)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1005)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1006)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1004)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1005)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1006)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1007)) ;
+    inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1007)) ;
   } break ;
   default:
     break ;
@@ -10035,298 +10034,298 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ig
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_56 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1014)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1014)) ;
       GALGAS_lstring var_attributeValue_29529 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1016)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1016)) ;
       var_attributeValue_29529 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1017)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1017)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeFormDefault) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1018)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeFormDefault COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1018)) ;
       GALGAS_lstring var_attributeValue_29630 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1020)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1020)) ;
       var_attributeValue_29630 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1021)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1021)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeRef) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1022)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeRef COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1022)) ;
       GALGAS_lstring var_attributeValue_29723 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1024)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1024)) ;
       var_attributeValue_29723 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1025)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1025)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1026)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1026)) ;
       GALGAS_lstring var_attributeValue_29808 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1028)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1028)) ;
       var_attributeValue_29808 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1029)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1029)) ;
     } break ;
     case 6: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_category) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1030)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_category COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1030)) ;
       GALGAS_lstring var_attributeValue_29897 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1032)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1032)) ;
       var_attributeValue_29897 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1033)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1033)) ;
     } break ;
     case 7: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_CATEGORY) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1034)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_CATEGORY COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1034)) ;
       GALGAS_lstring var_attributeValue_29986 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1036)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1036)) ;
       var_attributeValue_29986 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1037)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1037)) ;
     } break ;
     case 8: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_color) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1038)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_color COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1038)) ;
       GALGAS_lstring var_attributeValue_30072 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1040)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1040)) ;
       var_attributeValue_30072 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1041)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1041)) ;
     } break ;
     case 9: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_customType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1042)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_customType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1042)) ;
       GALGAS_lstring var_attributeValue_30163 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1044)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1044)) ;
       var_attributeValue_30163 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1045)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1045)) ;
     } break ;
     case 10: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_elementFormDefault) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1046)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_elementFormDefault COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1046)) ;
       GALGAS_lstring var_attributeValue_30262 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1048)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1048)) ;
       var_attributeValue_30262 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1049)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1049)) ;
     } break ;
     case 11: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_encoding) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1050)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_encoding COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1050)) ;
       GALGAS_lstring var_attributeValue_30351 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1052)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1052)) ;
       var_attributeValue_30351 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1053)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1053)) ;
     } break ;
     case 12: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enforceMinMultiplicity) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1054)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enforceMinMultiplicity COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1054)) ;
       GALGAS_lstring var_attributeValue_30454 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1056)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1056)) ;
       var_attributeValue_30454 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1057)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1057)) ;
     } break ;
     case 13: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_globalElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1058)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_globalElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1058)) ;
       GALGAS_lstring var_attributeValue_30548 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1060)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1060)) ;
       var_attributeValue_30548 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1061)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1061)) ;
     } break ;
     case 14: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_id) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1062)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_id COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1062)) ;
       GALGAS_lstring var_attributeValue_30631 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1064)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1064)) ;
       var_attributeValue_30631 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1065)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1065)) ;
     } break ;
     case 15: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_latestBindingTime) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1066)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_latestBindingTime COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1066)) ;
       GALGAS_lstring var_attributeValue_30729 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1068)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1068)) ;
       var_attributeValue_30729 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1069)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1069)) ;
     } break ;
     case 16: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1070)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1070)) ;
       GALGAS_lstring var_attributeValue_30819 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1072)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1072)) ;
       var_attributeValue_30819 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1073)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1073)) ;
     } break ;
     case 17: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1074)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1074)) ;
       GALGAS_lstring var_attributeValue_30909 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1076)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1076)) ;
       var_attributeValue_30909 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1077)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1077)) ;
     } break ;
     case 18: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1078)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1078)) ;
       GALGAS_lstring var_attributeValue_30995 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1080)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1080)) ;
       var_attributeValue_30995 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1081)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1081)) ;
     } break ;
     case 19: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1082)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1082)) ;
       GALGAS_lstring var_attributeValue_31080 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1084)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1084)) ;
       var_attributeValue_31080 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1085)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1085)) ;
     } break ;
     case 20: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namePlural) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1086)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namePlural COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1086)) ;
       GALGAS_lstring var_attributeValue_31171 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1088)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1088)) ;
       var_attributeValue_31171 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1089)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1089)) ;
     } break ;
     case 21: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namespace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1090)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namespace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1090)) ;
       GALGAS_lstring var_attributeValue_31261 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1092)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1092)) ;
       var_attributeValue_31261 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1093)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1093)) ;
     } break ;
     case 22: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_noteType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1094)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_noteType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1094)) ;
       GALGAS_lstring var_attributeValue_31350 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1096)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1096)) ;
       var_attributeValue_31350 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1097)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1097)) ;
     } break ;
     case 23: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_nsPrefix) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1098)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_nsPrefix COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1098)) ;
       GALGAS_lstring var_attributeValue_31439 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1100)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1100)) ;
       var_attributeValue_31439 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1101)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1101)) ;
     } break ;
     case 24: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_qualifiedName) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1102)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_qualifiedName COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1102)) ;
       GALGAS_lstring var_attributeValue_31533 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1104)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1104)) ;
       var_attributeValue_31533 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1105)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1105)) ;
     } break ;
     case 25: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_recommendedPackage) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1106)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_recommendedPackage COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1106)) ;
       GALGAS_lstring var_attributeValue_31632 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1108)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1108)) ;
       var_attributeValue_31632 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1109)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1109)) ;
     } break ;
     case 26: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1110)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1110)) ;
       GALGAS_lstring var_attributeValue_31716 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1112)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1112)) ;
       var_attributeValue_31716 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1113)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1113)) ;
     } break ;
     case 27: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1114)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1114)) ;
       GALGAS_lstring var_attributeValue_31808 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1116)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1116)) ;
       var_attributeValue_31808 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1117)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1117)) ;
     } break ;
     case 28: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleWrapperElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1118)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleWrapperElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1118)) ;
       GALGAS_lstring var_attributeValue_31907 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1120)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1120)) ;
       var_attributeValue_31907 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1121)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1121)) ;
     } break ;
     case 29: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schemaLocation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1122)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schemaLocation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1122)) ;
       GALGAS_lstring var_attributeValue_32002 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1124)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1124)) ;
       var_attributeValue_32002 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1125)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1125)) ;
     } break ;
     case 30: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequenceOffset) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1126)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequenceOffset COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1126)) ;
       GALGAS_lstring var_attributeValue_32097 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1128)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1128)) ;
       var_attributeValue_32097 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1129)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1129)) ;
     } break ;
     case 31: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_source) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1130)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_source COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1130)) ;
       GALGAS_lstring var_attributeValue_32184 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1132)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1132)) ;
       var_attributeValue_32184 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1133)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1133)) ;
     } break ;
     case 32: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Splitkey) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1134)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Splitkey COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1134)) ;
       GALGAS_lstring var_attributeValue_32273 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1136)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1136)) ;
       var_attributeValue_32273 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1137)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1137)) ;
     } break ;
     case 33: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Status) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1138)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Status COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1138)) ;
       GALGAS_lstring var_attributeValue_32360 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1140)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1140)) ;
       var_attributeValue_32360 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1141)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1141)) ;
     } break ;
     case 34: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_StatusRevisionBegin) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1142)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_StatusRevisionBegin COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1142)) ;
       GALGAS_lstring var_attributeValue_32460 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1144)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1144)) ;
       var_attributeValue_32460 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1145)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1145)) ;
     } break ;
     case 35: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_targetNamespace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1146)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_targetNamespace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1146)) ;
       GALGAS_lstring var_attributeValue_32556 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1148)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1148)) ;
       var_attributeValue_32556 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1149)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1149)) ;
     } break ;
     case 36: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1150)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1150)) ;
       GALGAS_lstring var_attributeValue_32641 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1152)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1152)) ;
       var_attributeValue_32641 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1153)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1153)) ;
     } break ;
     case 37: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1154)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1154)) ;
       GALGAS_lstring var_attributeValue_32733 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1156)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1156)) ;
       var_attributeValue_32733 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1157)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1157)) ;
     } break ;
     case 38: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeWrapperElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1158)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeWrapperElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1158)) ;
       GALGAS_lstring var_attributeValue_32832 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1160)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1160)) ;
       var_attributeValue_32832 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1161)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1161)) ;
     } break ;
     case 39: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1162)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1162)) ;
       GALGAS_lstring var_attributeValue_32916 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1164)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1164)) ;
       var_attributeValue_32916 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1165)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1165)) ;
     } break ;
     case 40: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1166)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1166)) ;
       GALGAS_lstring var_attributeValue_33002 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1168)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1168)) ;
       var_attributeValue_33002 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1169)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1169)) ;
     } break ;
     case 41: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_version) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1170)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_version COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1170)) ;
       GALGAS_lstring var_attributeValue_33090 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1172)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1172)) ;
       var_attributeValue_33090 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1173)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1173)) ;
     } break ;
     case 42: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_AR) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1174)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_AR COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1174)) ;
       GALGAS_lstring var_attributeValue_33179 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1176)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1176)) ;
       var_attributeValue_33179 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1177)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1177)) ;
     } break ;
     case 43: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_xsd) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1178)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_xsd COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1178)) ;
       GALGAS_lstring var_attributeValue_33269 ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1180)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1180)) ;
       var_attributeValue_33269 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1181)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1181)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -10342,214 +10341,214 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ig
   while (repeatFlag_0) {
     switch (select_arxmlmetaparser_5F_syntax_56 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1014)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1016)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1017)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1014)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1016)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1017)) ;
     } break ;
     case 3: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeFormDefault) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1018)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1020)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1021)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeFormDefault COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1018)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1020)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1021)) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeRef) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1022)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1024)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1025)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeRef COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1022)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1024)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1025)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1026)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1028)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1029)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1026)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1028)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1029)) ;
     } break ;
     case 6: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_category) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1030)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1032)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1033)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_category COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1030)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1032)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1033)) ;
     } break ;
     case 7: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_CATEGORY) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1034)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1036)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1037)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_CATEGORY COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1034)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1036)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1037)) ;
     } break ;
     case 8: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_color) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1038)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1040)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1041)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_color COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1038)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1040)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1041)) ;
     } break ;
     case 9: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_customType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1042)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1044)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1045)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_customType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1042)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1044)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1045)) ;
     } break ;
     case 10: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_elementFormDefault) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1046)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1048)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1049)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_elementFormDefault COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1046)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1048)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1049)) ;
     } break ;
     case 11: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_encoding) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1050)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1052)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1053)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_encoding COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1050)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1052)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1053)) ;
     } break ;
     case 12: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enforceMinMultiplicity) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1054)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1056)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1057)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enforceMinMultiplicity COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1054)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1056)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1057)) ;
     } break ;
     case 13: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_globalElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1058)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1060)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1061)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_globalElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1058)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1060)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1061)) ;
     } break ;
     case 14: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_id) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1062)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1064)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1065)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_id COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1062)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1064)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1065)) ;
     } break ;
     case 15: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_latestBindingTime) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1066)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1068)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1069)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_latestBindingTime COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1066)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1068)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1069)) ;
     } break ;
     case 16: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1070)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1072)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1073)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1070)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1072)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1073)) ;
     } break ;
     case 17: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1074)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1076)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1077)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1074)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1076)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1077)) ;
     } break ;
     case 18: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1078)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1080)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1081)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1078)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1080)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1081)) ;
     } break ;
     case 19: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1082)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1084)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1085)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1082)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1084)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1085)) ;
     } break ;
     case 20: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namePlural) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1086)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1088)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1089)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namePlural COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1086)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1088)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1089)) ;
     } break ;
     case 21: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namespace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1090)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1092)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1093)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namespace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1090)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1092)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1093)) ;
     } break ;
     case 22: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_noteType) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1094)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1096)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1097)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_noteType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1094)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1096)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1097)) ;
     } break ;
     case 23: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_nsPrefix) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1098)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1100)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1101)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_nsPrefix COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1098)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1100)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1101)) ;
     } break ;
     case 24: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_qualifiedName) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1102)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1104)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1105)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_qualifiedName COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1102)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1104)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1105)) ;
     } break ;
     case 25: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_recommendedPackage) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1106)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1108)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1109)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_recommendedPackage COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1106)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1108)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1109)) ;
     } break ;
     case 26: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1110)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1112)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1113)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1110)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1112)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1113)) ;
     } break ;
     case 27: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1114)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1116)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1117)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1114)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1116)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1117)) ;
     } break ;
     case 28: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleWrapperElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1118)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1120)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1121)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleWrapperElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1118)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1120)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1121)) ;
     } break ;
     case 29: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schemaLocation) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1122)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1124)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1125)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schemaLocation COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1122)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1124)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1125)) ;
     } break ;
     case 30: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequenceOffset) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1126)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1128)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1129)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequenceOffset COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1126)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1128)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1129)) ;
     } break ;
     case 31: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_source) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1130)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1132)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1133)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_source COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1130)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1132)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1133)) ;
     } break ;
     case 32: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Splitkey) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1134)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1136)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1137)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Splitkey COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1134)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1136)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1137)) ;
     } break ;
     case 33: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Status) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1138)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1140)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1141)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Status COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1138)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1140)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1141)) ;
     } break ;
     case 34: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_StatusRevisionBegin) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1142)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1144)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1145)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_StatusRevisionBegin COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1142)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1144)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1145)) ;
     } break ;
     case 35: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_targetNamespace) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1146)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1148)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1149)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_targetNamespace COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1146)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1148)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1149)) ;
     } break ;
     case 36: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1150)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1152)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1153)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1150)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1152)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1153)) ;
     } break ;
     case 37: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1154)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1156)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1157)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1154)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1156)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1157)) ;
     } break ;
     case 38: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeWrapperElement) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1158)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1160)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1161)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeWrapperElement COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1158)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1160)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1161)) ;
     } break ;
     case 39: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1162)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1164)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1165)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1162)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1164)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1165)) ;
     } break ;
     case 40: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1166)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1168)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1169)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1166)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1168)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1169)) ;
     } break ;
     case 41: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_version) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1170)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1172)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1173)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_version COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1170)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1172)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1173)) ;
     } break ;
     case 42: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_AR) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1174)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1176)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1177)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_AR COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1174)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1176)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1177)) ;
     } break ;
     case 43: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_xsd) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1178)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1180)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1181)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_xsd COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1178)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_ COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1180)) ;
+      inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1181)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -10559,24 +10558,24 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ig
   inCompiler->resetTemplateString () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList_2D_element::GALGAS_gtlDataList_2D_element (void) :
 mProperty_data () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList_2D_element::~ GALGAS_gtlDataList_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList_2D_element::GALGAS_gtlDataList_2D_element (const GALGAS_gtlData & inOperand0) :
 mProperty_data (inOperand0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::constructor_new (const GALGAS_gtlData & inOperand0 
                                                                               COMMA_UNUSED_LOCATION_ARGS) {
@@ -10587,7 +10586,7 @@ GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::constructor_new (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlDataList_2D_element::objectCompare (const GALGAS_gtlDataList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -10597,19 +10596,19 @@ typeComparisonResult GALGAS_gtlDataList_2D_element::objectCompare (const GALGAS_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlDataList_2D_element::isValid (void) const {
   return mProperty_data.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList_2D_element::drop (void) {
   mProperty_data.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlDataList_2D_element::description (C_String & ioString,
                                                  const int32_t inIndentation) const {
@@ -10622,7 +10621,7 @@ void GALGAS_gtlDataList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData GALGAS_gtlDataList_2D_element::getter_data (UNUSED_LOCATION_ARGS) const {
   return mProperty_data ;
@@ -10630,23 +10629,23 @@ GALGAS_gtlData GALGAS_gtlDataList_2D_element::getter_data (UNUSED_LOCATION_ARGS)
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @gtlDataList-element type                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlDataList_2D_element ("gtlDataList-element",
                                                NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlDataList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlDataList_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlDataList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -10656,7 +10655,7 @@ AC_GALGAS_root * GALGAS_gtlDataList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                             C_Compiler * inCompiler
@@ -10673,19 +10672,19 @@ GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::extractObject (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap_2D_element::GALGAS_gtlVarMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_value () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap_2D_element::~ GALGAS_gtlVarMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap_2D_element::GALGAS_gtlVarMap_2D_element (const GALGAS_lstring & inOperand0,
                                                           const GALGAS_gtlData & inOperand1) :
@@ -10693,7 +10692,7 @@ mProperty_lkey (inOperand0),
 mProperty_value (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                           const GALGAS_gtlData & inOperand1 
@@ -10705,7 +10704,7 @@ GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::constructor_new (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlVarMap_2D_element::objectCompare (const GALGAS_gtlVarMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -10718,20 +10717,20 @@ typeComparisonResult GALGAS_gtlVarMap_2D_element::objectCompare (const GALGAS_gt
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlVarMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_value.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlVarMap_2D_element::description (C_String & ioString,
                                                const int32_t inIndentation) const {
@@ -10746,13 +10745,13 @@ void GALGAS_gtlVarMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlVarMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData GALGAS_gtlVarMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -10760,23 +10759,23 @@ GALGAS_gtlData GALGAS_gtlVarMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) 
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @gtlVarMap-element type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlVarMap_2D_element ("gtlVarMap-element",
                                              NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlVarMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVarMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlVarMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -10786,7 +10785,7 @@ AC_GALGAS_root * GALGAS_gtlVarMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                         C_Compiler * inCompiler
@@ -10803,19 +10802,19 @@ GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::extractObject (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap_2D_element::GALGAS_gtlExpressionMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_expression () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap_2D_element::~ GALGAS_gtlExpressionMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap_2D_element::GALGAS_gtlExpressionMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                         const GALGAS_gtlExpression & inOperand1) :
@@ -10823,7 +10822,7 @@ mProperty_lkey (inOperand0),
 mProperty_expression (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                         const GALGAS_gtlExpression & inOperand1 
@@ -10835,7 +10834,7 @@ GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::construct
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlExpressionMap_2D_element::objectCompare (const GALGAS_gtlExpressionMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -10848,20 +10847,20 @@ typeComparisonResult GALGAS_gtlExpressionMap_2D_element::objectCompare (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlExpressionMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_expression.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_expression.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionMap_2D_element::description (C_String & ioString,
                                                       const int32_t inIndentation) const {
@@ -10876,13 +10875,13 @@ void GALGAS_gtlExpressionMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlExpressionMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression GALGAS_gtlExpressionMap_2D_element::getter_expression (UNUSED_LOCATION_ARGS) const {
   return mProperty_expression ;
@@ -10890,23 +10889,23 @@ GALGAS_gtlExpression GALGAS_gtlExpressionMap_2D_element::getter_expression (UNUS
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @gtlExpressionMap-element type                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlExpressionMap_2D_element ("gtlExpressionMap-element",
                                                     NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlExpressionMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlExpressionMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlExpressionMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -10916,7 +10915,7 @@ AC_GALGAS_root * GALGAS_gtlExpressionMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                       C_Compiler * inCompiler
@@ -10933,19 +10932,19 @@ GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::extractOb
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element::GALGAS_gtlTemplateMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_aTemplate () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element::~ GALGAS_gtlTemplateMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element::GALGAS_gtlTemplateMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                     const GALGAS_gtlTemplate & inOperand1) :
@@ -10953,14 +10952,14 @@ mProperty_lkey (inOperand0),
 mProperty_aTemplate (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlTemplateMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                            GALGAS_gtlTemplate::constructor_default (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                     const GALGAS_gtlTemplate & inOperand1 
@@ -10972,7 +10971,7 @@ GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_n
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlTemplateMap_2D_element::objectCompare (const GALGAS_gtlTemplateMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -10985,20 +10984,20 @@ typeComparisonResult GALGAS_gtlTemplateMap_2D_element::objectCompare (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlTemplateMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_aTemplate.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTemplateMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_aTemplate.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlTemplateMap_2D_element::description (C_String & ioString,
                                                     const int32_t inIndentation) const {
@@ -11013,13 +11012,13 @@ void GALGAS_gtlTemplateMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlTemplateMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplate GALGAS_gtlTemplateMap_2D_element::getter_aTemplate (UNUSED_LOCATION_ARGS) const {
   return mProperty_aTemplate ;
@@ -11027,23 +11026,23 @@ GALGAS_gtlTemplate GALGAS_gtlTemplateMap_2D_element::getter_aTemplate (UNUSED_LO
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlTemplateMap-element type                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlTemplateMap_2D_element ("gtlTemplateMap-element",
                                                   NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlTemplateMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlTemplateMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlTemplateMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11053,7 +11052,7 @@ AC_GALGAS_root * GALGAS_gtlTemplateMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -11070,24 +11069,24 @@ GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::extractObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList_2D_element::GALGAS_gtlExpressionList_2D_element (void) :
 mProperty_expression () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList_2D_element::~ GALGAS_gtlExpressionList_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList_2D_element::GALGAS_gtlExpressionList_2D_element (const GALGAS_gtlExpression & inOperand0) :
 mProperty_expression (inOperand0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::constructor_new (const GALGAS_gtlExpression & inOperand0 
                                                                                           COMMA_UNUSED_LOCATION_ARGS) {
@@ -11098,7 +11097,7 @@ GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::constru
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlExpressionList_2D_element::objectCompare (const GALGAS_gtlExpressionList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11108,19 +11107,19 @@ typeComparisonResult GALGAS_gtlExpressionList_2D_element::objectCompare (const G
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlExpressionList_2D_element::isValid (void) const {
   return mProperty_expression.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList_2D_element::drop (void) {
   mProperty_expression.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlExpressionList_2D_element::description (C_String & ioString,
                                                        const int32_t inIndentation) const {
@@ -11133,7 +11132,7 @@ void GALGAS_gtlExpressionList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression GALGAS_gtlExpressionList_2D_element::getter_expression (UNUSED_LOCATION_ARGS) const {
   return mProperty_expression ;
@@ -11141,23 +11140,23 @@ GALGAS_gtlExpression GALGAS_gtlExpressionList_2D_element::getter_expression (UNU
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @gtlExpressionList-element type                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlExpressionList_2D_element ("gtlExpressionList-element",
                                                      NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlExpressionList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlExpressionList_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlExpressionList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11167,7 +11166,7 @@ AC_GALGAS_root * GALGAS_gtlExpressionList_2D_element::clonedObject (void) const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                         C_Compiler * inCompiler
@@ -11184,24 +11183,24 @@ GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::extract
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list_2D_element::GALGAS_list_2D_element (void) :
 mProperty_value () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list_2D_element::~ GALGAS_list_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list_2D_element::GALGAS_list_2D_element (const GALGAS_gtlData & inOperand0) :
 mProperty_value (inOperand0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list_2D_element GALGAS_list_2D_element::constructor_new (const GALGAS_gtlData & inOperand0 
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
@@ -11212,7 +11211,7 @@ GALGAS_list_2D_element GALGAS_list_2D_element::constructor_new (const GALGAS_gtl
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_list_2D_element::objectCompare (const GALGAS_list_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11222,19 +11221,19 @@ typeComparisonResult GALGAS_list_2D_element::objectCompare (const GALGAS_list_2D
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_list_2D_element::isValid (void) const {
   return mProperty_value.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list_2D_element::drop (void) {
   mProperty_value.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_list_2D_element::description (C_String & ioString,
                                           const int32_t inIndentation) const {
@@ -11247,7 +11246,7 @@ void GALGAS_list_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlData GALGAS_list_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -11255,23 +11254,23 @@ GALGAS_gtlData GALGAS_list_2D_element::getter_value (UNUSED_LOCATION_ARGS) const
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @list-element type                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_list_2D_element ("list-element",
                                         NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_list_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_list_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_list_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11281,7 +11280,7 @@ AC_GALGAS_root * GALGAS_list_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_list_2D_element GALGAS_list_2D_element::extractObject (const GALGAS_object & inObject,
                                                               C_Compiler * inCompiler
@@ -11298,30 +11297,30 @@ GALGAS_list_2D_element GALGAS_list_2D_element::extractObject (const GALGAS_objec
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element::GALGAS_lstringset_2D_element (void) :
 mProperty_lkey () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element::~ GALGAS_lstringset_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element::GALGAS_lstringset_2D_element (const GALGAS_lstring & inOperand0) :
 mProperty_lkey (inOperand0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_lstringset_2D_element (GALGAS_lstring::constructor_default (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_new (const GALGAS_lstring & inOperand0 
                                                                             COMMA_UNUSED_LOCATION_ARGS) {
@@ -11332,7 +11331,7 @@ GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_new (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_lstringset_2D_element::objectCompare (const GALGAS_lstringset_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11342,19 +11341,19 @@ typeComparisonResult GALGAS_lstringset_2D_element::objectCompare (const GALGAS_l
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_lstringset_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_lstringset_2D_element::drop (void) {
   mProperty_lkey.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_lstringset_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -11367,7 +11366,7 @@ void GALGAS_lstringset_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_lstringset_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
@@ -11375,23 +11374,23 @@ GALGAS_lstring GALGAS_lstringset_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) 
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @lstringset-element type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_lstringset_2D_element ("lstringset-element",
                                               NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_lstringset_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_lstringset_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_lstringset_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11401,7 +11400,7 @@ AC_GALGAS_root * GALGAS_lstringset_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -11418,7 +11417,7 @@ GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::extractObject (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList_2D_element::GALGAS_gtlArgumentList_2D_element (void) :
 mProperty_typed (),
@@ -11426,12 +11425,12 @@ mProperty_type (),
 mProperty_name () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList_2D_element::~ GALGAS_gtlArgumentList_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList_2D_element::GALGAS_gtlArgumentList_2D_element (const GALGAS_bool & inOperand0,
                                                                       const GALGAS_type & inOperand1,
@@ -11441,7 +11440,7 @@ mProperty_type (inOperand1),
 mProperty_name (inOperand2) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::constructor_new (const GALGAS_bool & inOperand0,
                                                                                       const GALGAS_type & inOperand1,
@@ -11454,7 +11453,7 @@ GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::constructor
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlArgumentList_2D_element::objectCompare (const GALGAS_gtlArgumentList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11470,13 +11469,13 @@ typeComparisonResult GALGAS_gtlArgumentList_2D_element::objectCompare (const GAL
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlArgumentList_2D_element::isValid (void) const {
   return mProperty_typed.isValid () && mProperty_type.isValid () && mProperty_name.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList_2D_element::drop (void) {
   mProperty_typed.drop () ;
@@ -11484,7 +11483,7 @@ void GALGAS_gtlArgumentList_2D_element::drop (void) {
   mProperty_name.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlArgumentList_2D_element::description (C_String & ioString,
                                                      const int32_t inIndentation) const {
@@ -11501,19 +11500,19 @@ void GALGAS_gtlArgumentList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_gtlArgumentList_2D_element::getter_typed (UNUSED_LOCATION_ARGS) const {
   return mProperty_typed ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type GALGAS_gtlArgumentList_2D_element::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlArgumentList_2D_element::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
@@ -11521,23 +11520,23 @@ GALGAS_lstring GALGAS_gtlArgumentList_2D_element::getter_name (UNUSED_LOCATION_A
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlArgumentList-element type                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlArgumentList_2D_element ("gtlArgumentList-element",
                                                    NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlArgumentList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlArgumentList_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlArgumentList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11547,7 +11546,7 @@ AC_GALGAS_root * GALGAS_gtlArgumentList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                     C_Compiler * inCompiler
@@ -11564,19 +11563,19 @@ GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::extractObje
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element::GALGAS_gtlProcMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_procedure () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element::~ GALGAS_gtlProcMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element::GALGAS_gtlProcMap_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_gtlProcedure & inOperand1) :
@@ -11584,14 +11583,14 @@ mProperty_lkey (inOperand0),
 mProperty_procedure (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlProcMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                        GALGAS_gtlProcedure::constructor_default (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                             const GALGAS_gtlProcedure & inOperand1 
@@ -11603,7 +11602,7 @@ GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_new (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlProcMap_2D_element::objectCompare (const GALGAS_gtlProcMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11616,20 +11615,20 @@ typeComparisonResult GALGAS_gtlProcMap_2D_element::objectCompare (const GALGAS_g
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlProcMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_procedure.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlProcMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_procedure.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlProcMap_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -11644,13 +11643,13 @@ void GALGAS_gtlProcMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlProcMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcedure GALGAS_gtlProcMap_2D_element::getter_procedure (UNUSED_LOCATION_ARGS) const {
   return mProperty_procedure ;
@@ -11658,23 +11657,23 @@ GALGAS_gtlProcedure GALGAS_gtlProcMap_2D_element::getter_procedure (UNUSED_LOCAT
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @gtlProcMap-element type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlProcMap_2D_element ("gtlProcMap-element",
                                               NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlProcMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlProcMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlProcMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11684,7 +11683,7 @@ AC_GALGAS_root * GALGAS_gtlProcMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -11701,19 +11700,19 @@ GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::extractObject (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element::GALGAS_gtlFuncMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_function () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element::~ GALGAS_gtlFuncMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element::GALGAS_gtlFuncMap_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_gtlFunction & inOperand1) :
@@ -11721,14 +11720,14 @@ mProperty_lkey (inOperand0),
 mProperty_function (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlFuncMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                        GALGAS_gtlFunction::constructor_default (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                             const GALGAS_gtlFunction & inOperand1 
@@ -11740,7 +11739,7 @@ GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_new (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlFuncMap_2D_element::objectCompare (const GALGAS_gtlFuncMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11753,20 +11752,20 @@ typeComparisonResult GALGAS_gtlFuncMap_2D_element::objectCompare (const GALGAS_g
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlFuncMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_function.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlFuncMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_function.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlFuncMap_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -11781,13 +11780,13 @@ void GALGAS_gtlFuncMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlFuncMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFunction GALGAS_gtlFuncMap_2D_element::getter_function (UNUSED_LOCATION_ARGS) const {
   return mProperty_function ;
@@ -11795,23 +11794,23 @@ GALGAS_gtlFunction GALGAS_gtlFuncMap_2D_element::getter_function (UNUSED_LOCATIO
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @gtlFuncMap-element type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlFuncMap_2D_element ("gtlFuncMap-element",
                                               NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlFuncMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlFuncMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlFuncMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11821,7 +11820,7 @@ AC_GALGAS_root * GALGAS_gtlFuncMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -11838,19 +11837,19 @@ GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::extractObject (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap_2D_element::GALGAS_gtlGetterMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_theGetter () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap_2D_element::~ GALGAS_gtlGetterMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap_2D_element::GALGAS_gtlGetterMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                 const GALGAS_gtlGetter & inOperand1) :
@@ -11858,7 +11857,7 @@ mProperty_lkey (inOperand0),
 mProperty_theGetter (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                 const GALGAS_gtlGetter & inOperand1 
@@ -11870,7 +11869,7 @@ GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::constructor_new (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlGetterMap_2D_element::objectCompare (const GALGAS_gtlGetterMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11883,20 +11882,20 @@ typeComparisonResult GALGAS_gtlGetterMap_2D_element::objectCompare (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlGetterMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_theGetter.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlGetterMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_theGetter.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlGetterMap_2D_element::description (C_String & ioString,
                                                   const int32_t inIndentation) const {
@@ -11911,13 +11910,13 @@ void GALGAS_gtlGetterMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlGetterMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetter GALGAS_gtlGetterMap_2D_element::getter_theGetter (UNUSED_LOCATION_ARGS) const {
   return mProperty_theGetter ;
@@ -11925,23 +11924,23 @@ GALGAS_gtlGetter GALGAS_gtlGetterMap_2D_element::getter_theGetter (UNUSED_LOCATI
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @gtlGetterMap-element type                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlGetterMap_2D_element ("gtlGetterMap-element",
                                                 NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlGetterMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlGetterMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlGetterMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11951,7 +11950,7 @@ AC_GALGAS_root * GALGAS_gtlGetterMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -11968,19 +11967,19 @@ GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::extractObject (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap_2D_element::GALGAS_gtlSetterMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_theSetter () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap_2D_element::~ GALGAS_gtlSetterMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap_2D_element::GALGAS_gtlSetterMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                 const GALGAS_gtlSetter & inOperand1) :
@@ -11988,7 +11987,7 @@ mProperty_lkey (inOperand0),
 mProperty_theSetter (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                 const GALGAS_gtlSetter & inOperand1 
@@ -12000,7 +11999,7 @@ GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::constructor_new (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlSetterMap_2D_element::objectCompare (const GALGAS_gtlSetterMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12013,20 +12012,20 @@ typeComparisonResult GALGAS_gtlSetterMap_2D_element::objectCompare (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlSetterMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_theSetter.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlSetterMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_theSetter.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlSetterMap_2D_element::description (C_String & ioString,
                                                   const int32_t inIndentation) const {
@@ -12041,13 +12040,13 @@ void GALGAS_gtlSetterMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_gtlSetterMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetter GALGAS_gtlSetterMap_2D_element::getter_theSetter (UNUSED_LOCATION_ARGS) const {
   return mProperty_theSetter ;
@@ -12055,23 +12054,23 @@ GALGAS_gtlSetter GALGAS_gtlSetterMap_2D_element::getter_theSetter (UNUSED_LOCATI
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @gtlSetterMap-element type                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlSetterMap_2D_element ("gtlSetterMap-element",
                                                 NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlSetterMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlSetterMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlSetterMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12081,7 +12080,7 @@ AC_GALGAS_root * GALGAS_gtlSetterMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -12098,19 +12097,19 @@ GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::extractObject (co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList_2D_element::GALGAS_gtlThenElsifStatementList_2D_element (void) :
 mProperty_condition (),
 mProperty_instructionList () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList_2D_element::~ GALGAS_gtlThenElsifStatementList_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList_2D_element::GALGAS_gtlThenElsifStatementList_2D_element (const GALGAS_gtlExpression & inOperand0,
                                                                                           const GALGAS_gtlInstructionList & inOperand1) :
@@ -12118,7 +12117,7 @@ mProperty_condition (inOperand0),
 mProperty_instructionList (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_element::constructor_new (const GALGAS_gtlExpression & inOperand0,
                                                                                                           const GALGAS_gtlInstructionList & inOperand1 
@@ -12130,7 +12129,7 @@ GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_gtlThenElsifStatementList_2D_element::objectCompare (const GALGAS_gtlThenElsifStatementList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12143,20 +12142,20 @@ typeComparisonResult GALGAS_gtlThenElsifStatementList_2D_element::objectCompare 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_gtlThenElsifStatementList_2D_element::isValid (void) const {
   return mProperty_condition.isValid () && mProperty_instructionList.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList_2D_element::drop (void) {
   mProperty_condition.drop () ;
   mProperty_instructionList.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_gtlThenElsifStatementList_2D_element::description (C_String & ioString,
                                                                const int32_t inIndentation) const {
@@ -12171,13 +12170,13 @@ void GALGAS_gtlThenElsifStatementList_2D_element::description (C_String & ioStri
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlExpression GALGAS_gtlThenElsifStatementList_2D_element::getter_condition (UNUSED_LOCATION_ARGS) const {
   return mProperty_condition ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList_2D_element::getter_instructionList (UNUSED_LOCATION_ARGS) const {
   return mProperty_instructionList ;
@@ -12185,23 +12184,23 @@ GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList_2D_element::getter_in
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       @gtlThenElsifStatementList-element type                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlThenElsifStatementList_2D_element ("gtlThenElsifStatementList-element",
                                                              NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_gtlThenElsifStatementList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlThenElsifStatementList_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_gtlThenElsifStatementList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12211,7 +12210,7 @@ AC_GALGAS_root * GALGAS_gtlThenElsifStatementList_2D_element::clonedObject (void
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                                         C_Compiler * inCompiler
@@ -12228,19 +12227,19 @@ GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element::GALGAS_sortingKeyList_2D_element (void) :
 mProperty_key (),
 mProperty_order () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element::~ GALGAS_sortingKeyList_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element::GALGAS_sortingKeyList_2D_element (const GALGAS_lstring & inOperand0,
                                                                     const GALGAS_lsint & inOperand1) :
@@ -12248,14 +12247,14 @@ mProperty_key (inOperand0),
 mProperty_order (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_sortingKeyList_2D_element (GALGAS_lstring::constructor_default (HERE),
                                            GALGAS_lsint::constructor_default (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                     const GALGAS_lsint & inOperand1 
@@ -12267,7 +12266,7 @@ GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_n
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_sortingKeyList_2D_element::objectCompare (const GALGAS_sortingKeyList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12280,20 +12279,20 @@ typeComparisonResult GALGAS_sortingKeyList_2D_element::objectCompare (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_sortingKeyList_2D_element::isValid (void) const {
   return mProperty_key.isValid () && mProperty_order.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList_2D_element::drop (void) {
   mProperty_key.drop () ;
   mProperty_order.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_sortingKeyList_2D_element::description (C_String & ioString,
                                                     const int32_t inIndentation) const {
@@ -12308,13 +12307,13 @@ void GALGAS_sortingKeyList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_sortingKeyList_2D_element::getter_key (UNUSED_LOCATION_ARGS) const {
   return mProperty_key ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lsint GALGAS_sortingKeyList_2D_element::getter_order (UNUSED_LOCATION_ARGS) const {
   return mProperty_order ;
@@ -12322,23 +12321,23 @@ GALGAS_lsint GALGAS_sortingKeyList_2D_element::getter_order (UNUSED_LOCATION_ARG
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @sortingKeyList-element type                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_sortingKeyList_2D_element ("sortingKeyList-element",
                                                   NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_sortingKeyList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_sortingKeyList_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_sortingKeyList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12348,7 +12347,7 @@ AC_GALGAS_root * GALGAS_sortingKeyList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -12365,19 +12364,19 @@ GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::extractObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_numberList_2D_element::GALGAS_numberList_2D_element (void) :
 mProperty_location (),
 mProperty_value () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_numberList_2D_element::~ GALGAS_numberList_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_numberList_2D_element::GALGAS_numberList_2D_element (const GALGAS_location & inOperand0,
                                                             const GALGAS_object_5F_t & inOperand1) :
@@ -12385,7 +12384,7 @@ mProperty_location (inOperand0),
 mProperty_value (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_numberList_2D_element GALGAS_numberList_2D_element::constructor_new (const GALGAS_location & inOperand0,
                                                                             const GALGAS_object_5F_t & inOperand1 
@@ -12397,7 +12396,7 @@ GALGAS_numberList_2D_element GALGAS_numberList_2D_element::constructor_new (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_numberList_2D_element::objectCompare (const GALGAS_numberList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12410,20 +12409,20 @@ typeComparisonResult GALGAS_numberList_2D_element::objectCompare (const GALGAS_n
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_numberList_2D_element::isValid (void) const {
   return mProperty_location.isValid () && mProperty_value.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_numberList_2D_element::drop (void) {
   mProperty_location.drop () ;
   mProperty_value.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_numberList_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -12438,13 +12437,13 @@ void GALGAS_numberList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_location GALGAS_numberList_2D_element::getter_location (UNUSED_LOCATION_ARGS) const {
   return mProperty_location ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_object_5F_t GALGAS_numberList_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -12452,23 +12451,23 @@ GALGAS_object_5F_t GALGAS_numberList_2D_element::getter_value (UNUSED_LOCATION_A
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @numberList-element type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_numberList_2D_element ("numberList-element",
                                               NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_numberList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_numberList_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_numberList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12478,7 +12477,7 @@ AC_GALGAS_root * GALGAS_numberList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_numberList_2D_element GALGAS_numberList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -12495,19 +12494,19 @@ GALGAS_numberList_2D_element GALGAS_numberList_2D_element::extractObject (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObjectMap_2D_element::GALGAS_implementationObjectMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_type () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObjectMap_2D_element::~ GALGAS_implementationObjectMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObjectMap_2D_element::GALGAS_implementationObjectMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                                       const GALGAS_impType & inOperand1) :
@@ -12515,7 +12514,7 @@ mProperty_lkey (inOperand0),
 mProperty_type (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                                       const GALGAS_impType & inOperand1 
@@ -12527,7 +12526,7 @@ GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_elem
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_implementationObjectMap_2D_element::objectCompare (const GALGAS_implementationObjectMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12540,20 +12539,20 @@ typeComparisonResult GALGAS_implementationObjectMap_2D_element::objectCompare (c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_implementationObjectMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_type.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_implementationObjectMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_type.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_implementationObjectMap_2D_element::description (C_String & ioString,
                                                              const int32_t inIndentation) const {
@@ -12568,13 +12567,13 @@ void GALGAS_implementationObjectMap_2D_element::description (C_String & ioString
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_implementationObjectMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_impType GALGAS_implementationObjectMap_2D_element::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
@@ -12582,23 +12581,23 @@ GALGAS_impType GALGAS_implementationObjectMap_2D_element::getter_type (UNUSED_LO
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @implementationObjectMap-element type                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementationObjectMap_2D_element ("implementationObjectMap-element",
                                                            NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_implementationObjectMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_implementationObjectMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_implementationObjectMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12608,7 +12607,7 @@ AC_GALGAS_root * GALGAS_implementationObjectMap_2D_element::clonedObject (void) 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                                     C_Compiler * inCompiler
@@ -12625,19 +12624,19 @@ GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_elem
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_enumValues_2D_element::GALGAS_enumValues_2D_element (void) :
 mProperty_lkey (),
 mProperty_subAttributes () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_enumValues_2D_element::~ GALGAS_enumValues_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_enumValues_2D_element::GALGAS_enumValues_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_implementationObjectMap & inOperand1) :
@@ -12645,14 +12644,14 @@ mProperty_lkey (inOperand0),
 mProperty_subAttributes (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_enumValues_2D_element (GALGAS_lstring::constructor_default (HERE),
                                        GALGAS_implementationObjectMap::constructor_emptyMap (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                             const GALGAS_implementationObjectMap & inOperand1 
@@ -12664,7 +12663,7 @@ GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_new (cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_enumValues_2D_element::objectCompare (const GALGAS_enumValues_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12677,20 +12676,20 @@ typeComparisonResult GALGAS_enumValues_2D_element::objectCompare (const GALGAS_e
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_enumValues_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_subAttributes.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_enumValues_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_subAttributes.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_enumValues_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -12705,13 +12704,13 @@ void GALGAS_enumValues_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_enumValues_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObjectMap GALGAS_enumValues_2D_element::getter_subAttributes (UNUSED_LOCATION_ARGS) const {
   return mProperty_subAttributes ;
@@ -12719,23 +12718,23 @@ GALGAS_implementationObjectMap GALGAS_enumValues_2D_element::getter_subAttribute
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @enumValues-element type                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_enumValues_2D_element ("enumValues-element",
                                               NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_enumValues_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_enumValues_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_enumValues_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12745,7 +12744,7 @@ AC_GALGAS_root * GALGAS_enumValues_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -12762,19 +12761,19 @@ GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::extractObject (const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationMap_2D_element::GALGAS_implementationMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_obj () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationMap_2D_element::~ GALGAS_implementationMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationMap_2D_element::GALGAS_implementationMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                           const GALGAS_implementationObject & inOperand1) :
@@ -12782,14 +12781,14 @@ mProperty_lkey (inOperand0),
 mProperty_obj (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_implementationMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                               GALGAS_implementationObject::constructor_default (HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                           const GALGAS_implementationObject & inOperand1 
@@ -12801,7 +12800,7 @@ GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constru
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_implementationMap_2D_element::objectCompare (const GALGAS_implementationMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12814,20 +12813,20 @@ typeComparisonResult GALGAS_implementationMap_2D_element::objectCompare (const G
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_implementationMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_obj.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_implementationMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_obj.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_implementationMap_2D_element::description (C_String & ioString,
                                                        const int32_t inIndentation) const {
@@ -12842,13 +12841,13 @@ void GALGAS_implementationMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_implementationMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationObject GALGAS_implementationMap_2D_element::getter_obj (UNUSED_LOCATION_ARGS) const {
   return mProperty_obj ;
@@ -12856,23 +12855,23 @@ GALGAS_implementationObject GALGAS_implementationMap_2D_element::getter_obj (UNU
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @implementationMap-element type                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementationMap_2D_element ("implementationMap-element",
                                                      NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_implementationMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_implementationMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_implementationMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12882,7 +12881,7 @@ AC_GALGAS_root * GALGAS_implementationMap_2D_element::clonedObject (void) const 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                         C_Compiler * inCompiler
@@ -12899,19 +12898,19 @@ GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::extract
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_identifierMap_2D_element::GALGAS_identifierMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_value () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_identifierMap_2D_element::~ GALGAS_identifierMap_2D_element (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_identifierMap_2D_element::GALGAS_identifierMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                   const GALGAS_object_5F_t & inOperand1) :
@@ -12919,7 +12918,7 @@ mProperty_lkey (inOperand0),
 mProperty_value (inOperand1) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                   const GALGAS_object_5F_t & inOperand1 
@@ -12931,7 +12930,7 @@ GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::constructor_new
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_identifierMap_2D_element::objectCompare (const GALGAS_identifierMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12944,20 +12943,20 @@ typeComparisonResult GALGAS_identifierMap_2D_element::objectCompare (const GALGA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool GALGAS_identifierMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_identifierMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_value.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_identifierMap_2D_element::description (C_String & ioString,
                                                    const int32_t inIndentation) const {
@@ -12972,13 +12971,13 @@ void GALGAS_identifierMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_identifierMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_object_5F_t GALGAS_identifierMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -12986,23 +12985,23 @@ GALGAS_object_5F_t GALGAS_identifierMap_2D_element::getter_value (UNUSED_LOCATIO
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @identifierMap-element type                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_identifierMap_2D_element ("identifierMap-element",
                                                  NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const C_galgas_type_descriptor * GALGAS_identifierMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_identifierMap_2D_element ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_GALGAS_root * GALGAS_identifierMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13012,7 +13011,7 @@ AC_GALGAS_root * GALGAS_identifierMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                 C_Compiler * inCompiler
@@ -13024,6 +13023,257 @@ GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::extractObject (
       result = *p ;
     }else{
       inCompiler->castError ("identifierMap-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_identifierList_2D_element::GALGAS_identifierList_2D_element (void) :
+mProperty_item () {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_identifierList_2D_element::~ GALGAS_identifierList_2D_element (void) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_identifierList_2D_element::GALGAS_identifierList_2D_element (const GALGAS_object_5F_t & inOperand0) :
+mProperty_item (inOperand0) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_identifierList_2D_element GALGAS_identifierList_2D_element::constructor_new (const GALGAS_object_5F_t & inOperand0 
+                                                                                    COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_identifierList_2D_element result ;
+  if (inOperand0.isValid ()) {
+    result = GALGAS_identifierList_2D_element (inOperand0) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typeComparisonResult GALGAS_identifierList_2D_element::objectCompare (const GALGAS_identifierList_2D_element & inOperand) const {
+   typeComparisonResult result = kOperandEqual ;
+  if (result == kOperandEqual) {
+    result = mProperty_item.objectCompare (inOperand.mProperty_item) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+bool GALGAS_identifierList_2D_element::isValid (void) const {
+  return mProperty_item.isValid () ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_identifierList_2D_element::drop (void) {
+  mProperty_item.drop () ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_identifierList_2D_element::description (C_String & ioString,
+                                                    const int32_t inIndentation) const {
+  ioString << "<struct @identifierList-element:" ;
+  if (! isValid ()) {
+    ioString << " not built" ;
+  }else{
+    mProperty_item.description (ioString, inIndentation+1) ;
+  }
+  ioString << ">" ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_object_5F_t GALGAS_identifierList_2D_element::getter_item (UNUSED_LOCATION_ARGS) const {
+  return mProperty_item ;
+}
+
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                            @identifierList-element type                                             *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_identifierList_2D_element ("identifierList-element",
+                                                  NULL) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+const C_galgas_type_descriptor * GALGAS_identifierList_2D_element::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_identifierList_2D_element ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+AC_GALGAS_root * GALGAS_identifierList_2D_element::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_identifierList_2D_element (*this)) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_identifierList_2D_element GALGAS_identifierList_2D_element::extractObject (const GALGAS_object & inObject,
+                                                                                  C_Compiler * inCompiler
+                                                                                  COMMA_LOCATION_ARGS) {
+  GALGAS_identifierList_2D_element result ;
+  const GALGAS_identifierList_2D_element * p = (const GALGAS_identifierList_2D_element *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_identifierList_2D_element *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("identifierList-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_stringMap_2D_element::GALGAS_stringMap_2D_element (void) :
+mProperty_lkey (),
+mProperty_value () {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_stringMap_2D_element::~ GALGAS_stringMap_2D_element (void) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_stringMap_2D_element::GALGAS_stringMap_2D_element (const GALGAS_lstring & inOperand0,
+                                                          const GALGAS_string & inOperand1) :
+mProperty_lkey (inOperand0),
+mProperty_value (inOperand1) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_stringMap_2D_element GALGAS_stringMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_stringMap_2D_element (GALGAS_lstring::constructor_default (HERE),
+                                      GALGAS_string::constructor_default (HERE)) ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_stringMap_2D_element GALGAS_stringMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
+                                                                          const GALGAS_string & inOperand1 
+                                                                          COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_stringMap_2D_element result ;
+  if (inOperand0.isValid () && inOperand1.isValid ()) {
+    result = GALGAS_stringMap_2D_element (inOperand0, inOperand1) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typeComparisonResult GALGAS_stringMap_2D_element::objectCompare (const GALGAS_stringMap_2D_element & inOperand) const {
+   typeComparisonResult result = kOperandEqual ;
+  if (result == kOperandEqual) {
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
+  }
+  if (result == kOperandEqual) {
+    result = mProperty_value.objectCompare (inOperand.mProperty_value) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+bool GALGAS_stringMap_2D_element::isValid (void) const {
+  return mProperty_lkey.isValid () && mProperty_value.isValid () ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_stringMap_2D_element::drop (void) {
+  mProperty_lkey.drop () ;
+  mProperty_value.drop () ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_stringMap_2D_element::description (C_String & ioString,
+                                               const int32_t inIndentation) const {
+  ioString << "<struct @stringMap-element:" ;
+  if (! isValid ()) {
+    ioString << " not built" ;
+  }else{
+    mProperty_lkey.description (ioString, inIndentation+1) ;
+    ioString << ", " ;
+    mProperty_value.description (ioString, inIndentation+1) ;
+  }
+  ioString << ">" ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_lstring GALGAS_stringMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
+  return mProperty_lkey ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_string GALGAS_stringMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
+  return mProperty_value ;
+}
+
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                               @stringMap-element type                                               *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_stringMap_2D_element ("stringMap-element",
+                                             NULL) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+const C_galgas_type_descriptor * GALGAS_stringMap_2D_element::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_stringMap_2D_element ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+AC_GALGAS_root * GALGAS_stringMap_2D_element::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_stringMap_2D_element (*this)) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_stringMap_2D_element GALGAS_stringMap_2D_element::extractObject (const GALGAS_object & inObject,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) {
+  GALGAS_stringMap_2D_element result ;
+  const GALGAS_stringMap_2D_element * p = (const GALGAS_stringMap_2D_element *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_stringMap_2D_element *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("stringMap-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;

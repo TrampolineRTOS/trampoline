@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  Built-in GALGAS Command Line Interface Options                                                                     *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2006, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,13 +18,13 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "streams/C_TCPSocketOut.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree ("galgas_builtin_options",
                                          "outputConcreteSyntaxTree",
@@ -32,7 +32,7 @@ C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSynta
                                          "output-concrete-syntax-tree",
                                          "Generate the concrete syntax tree, in .dot format (suitable for Graphviz)") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ("galgas_cli_options",
@@ -41,7 +41,7 @@ gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ("galgas_cli_options",
                                                       "log-file-read",
                                                       "Log every file read") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galgas_cli_options",
@@ -50,7 +50,7 @@ gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galg
                                                                            "no-file-generation",
                                                                            "Do not generate any file") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_cli_options",
@@ -59,7 +59,7 @@ gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_c
                                                                        "Werror",
                                                                        "Treat warnings as errors") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_UIntCommandLineOption
 gOption_galgas_5F_builtin_5F_options_max_5F_errors ("galgas_cli_options",
@@ -69,7 +69,7 @@ gOption_galgas_5F_builtin_5F_options_max_5F_errors ("galgas_cli_options",
                                                     "Stop after the given number of errors has been reached",
                                                     100) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_UIntCommandLineOption
 gOption_galgas_5F_builtin_5F_options_max_5F_warnings ("galgas_cli_options",
@@ -79,7 +79,7 @@ gOption_galgas_5F_builtin_5F_options_max_5F_warnings ("galgas_cli_options",
                                                 "Stop after the given number of warnings has been reached",
                                                 100) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli_options",
                                          "mode",
@@ -88,7 +88,7 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli
                                          "'lexical-only', 'syntax-only' or 'latex'",
                                          "") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_outputKeywordList ("galgas_cli_options",
                                          "outputKeywordList",
@@ -97,16 +97,16 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_outputKeywordList
                                          "Output a Latex file containing keyword list",
                                          "") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //   EXECUTION MODE                                                                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static EnumExecutionMode gExecutionMode = kExecutionModeNormal ;
 static C_String gModeLatexSuffixString ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void setExecutionMode (C_String & outErrorMessage) {
   const C_String mode = gOption_galgas_5F_builtin_5F_options_mode.mValue ;
@@ -143,51 +143,51 @@ void setExecutionMode (C_String & outErrorMessage) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 EnumExecutionMode executionMode (void) {
   return gExecutionMode ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool executionModeIsLexicalAnalysisOnly (void) {
   return gExecutionMode == kExecutionModeLexicalAnalysisOnly ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool executionModeIsSyntaxAnalysisOnly (void) {
   return gExecutionMode == kExecutionModeSyntaxAnalysisOnly ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool executionModeIsIndexing (void) {
   return gExecutionMode == kExecutionModeIndexing ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool executionModeIsLatex (void) {
   return gExecutionMode == kExecutionModeLatex ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_String latexModeStyleSuffixString (void) {
   return gModeLatexSuffixString ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void epilogueAction (void) {
   gModeLatexSuffixString.releaseString () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_PrologueEpilogue prologueEpilogue (NULL, epilogueAction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 

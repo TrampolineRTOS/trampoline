@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  GALGAS_timer                                                                                                       *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2015, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,12 +18,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_timer::GALGAS_timer (void) :
 AC_GALGAS_root (),
@@ -31,7 +31,7 @@ mIsValid (false),
 mTimer () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_timer::description (C_String & ioString,
                                     const int32_t /* inIndentation */) const {
@@ -44,7 +44,7 @@ void GALGAS_timer::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_timer GALGAS_timer::constructor_start (UNUSED_LOCATION_ARGS) {
   GALGAS_timer result ;
@@ -52,7 +52,7 @@ GALGAS_timer GALGAS_timer::constructor_start (UNUSED_LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_timer::setter_stop (UNUSED_LOCATION_ARGS) {
   if (isValid ()) {
@@ -60,7 +60,7 @@ void GALGAS_timer::setter_stop (UNUSED_LOCATION_ARGS) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_timer::setter_resume (UNUSED_LOCATION_ARGS) {
   if (isValid ()) {
@@ -68,7 +68,7 @@ void GALGAS_timer::setter_resume (UNUSED_LOCATION_ARGS) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_timer::getter_isRunning (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -78,7 +78,7 @@ GALGAS_bool GALGAS_timer::getter_isRunning (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint GALGAS_timer::getter_msFromStart (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -88,7 +88,7 @@ GALGAS_uint GALGAS_timer::getter_msFromStart (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_timer::getter_string (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -98,4 +98,4 @@ GALGAS_string GALGAS_timer::getter_string (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
