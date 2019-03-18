@@ -146,7 +146,7 @@ before
    */%
 do
 %
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIO% !KEY %, ENABLE);%
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIO% !KEY %, ENABLE);%
 end foreach
 
 # Program each input pin
@@ -165,7 +165,7 @@ do
   if pin::PULL == "NONE" then !"NOPULL"
   else !pin::PULL
   end if%;
-  GPIO_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_InitDef.GPIO_Speed = GPIO_Speed_10MHz;
   GPIO_Init(GPIO% !pin::GPIO %, &GPIO_InitDef);%
 between%
 %

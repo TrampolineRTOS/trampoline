@@ -10,7 +10,7 @@ CPU buildOptions {
     // Produce debugging information
     COMMONFLAGS = "-g";
     // All warnings on
-    COMMONFLAGS = "-Wall";                        
+    //COMMONFLAGS = "-Wall";                        
     COMMONFLAGS = "-Wno-unused-but-set-variable"; // Except unused variables
     COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
     COMMONFLAGS = "-mcpu=cortex-m4";              // Compile for cortex-m4
@@ -19,11 +19,13 @@ CPU buildOptions {
     COMMONFLAGS = "-mfpu=fpv4-sp-d16";            // Truly obscure option to set. Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
     COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
     COMMONFLAGS = "-fno-builtin";                 // Do not used built in gcc functions
-    COMMONFLAGS = "--specs=nosys.specs";          // 
+    CFLAGS = "--specs=nosys.specs";          // 
     COMMONFLAGS = "-fno-exceptions";              // No exceptions managed
     COMMONFLAGS = "-nostdlib";                    // Do not used implicitely the standard libraries to link
     COMMONFLAGS = "-ffunction-sections";          // Each function is put in its own section. Required to deleted unused code
     COMMONFLAGS = "-fdata-sections";              // Each data is put in its own section. Required to deleted unused data
+
+    //CFLAGS = "-fpermissive";					  // pour les sources d'it 
     
     /*
      * C++ compiler flags
