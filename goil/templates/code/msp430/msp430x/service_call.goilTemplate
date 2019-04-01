@@ -6,9 +6,9 @@
 .type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
 % !exists api_func::ACTUAL default ( api_func::NAME ) %:
     /*-------------------------------------------------------------------------
-     * Load the service id in r12 as fourth argument
+     * Load the service id in r12
      */
-    mov.b #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %, r12
+    mov   #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %, r12
     /*-------------------------------------------------------------------------
      * Does the system call
      */
