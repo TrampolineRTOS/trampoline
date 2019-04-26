@@ -1,21 +1,19 @@
 #include "tpl_os.h"
+#include "msp430.h"
 
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
-	pinMode(RED_LED,OUTPUT);
+	P4DIR |= 1<<6; //P4.6 as output (red led)
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }
 
 TASK(blink)
 {
-	static int state = 0;
-	if(state) digitalWrite(RED_LED,HIGH);
-	else digitalWrite(RED_LED,LOW);
-	state = !state;
+	P4OUT ^= 1<<6; //toggle led.
 	TerminateTask();
 }
 
