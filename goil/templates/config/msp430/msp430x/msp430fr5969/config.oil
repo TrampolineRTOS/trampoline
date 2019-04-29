@@ -16,7 +16,8 @@ IMPLEMENTATION msp430fr5969 {
 CPU msp430fr5969 {
 
   PLATFORM_FILES msp430x {
-    PATH = "msp430/msp430x";
+    PATH  = "msp430/msp430x";
+	CFILE = "tpl_machine.c";
   };
   
   GENERATED_FILES msp430x {
@@ -29,9 +30,9 @@ CPU msp430fr5969 {
    * -> hardware/tools/msp430/msp430/include/msp430fr5969.h
    */
 
-  LIBRARY IO { //pinMode, digitalWrite, .. as in Arduino.
-    PATH = ""
-  };
+  //LIBRARY IO { //pinMode, digitalWrite, .. as in Arduino.
+  //  PATH = "";
+  //};
 
   INTERRUPT AES256_VECTOR    {
   	ADDRESS = 0xFFCC;		/* AES256 */
