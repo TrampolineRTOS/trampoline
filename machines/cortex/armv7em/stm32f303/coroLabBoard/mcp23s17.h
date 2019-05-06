@@ -21,9 +21,9 @@ class mcp23s17 {
 			GPINTENB = 0x5,
 			DEFVALA  = 0x6,	//default value (pin differs => it)
 			DEFVALB  = 0x7,
-			INTCONA  = 0x8,	// if if pin!=defval(1) or 
+			INTCONA  = 0x8,	// if if pin!=defval(1) or
 			INTCONB  = 0x9,	// pin!=previous => edge detection(0)
-			IOCON    = 0xA,	// or 0xB. Config. default Ok => not used 
+			IOCON    = 0xA,	// or 0xB. Config. default Ok => not used
 			GPPUA    = 0xC,	//pullup
 			GPPUB    = 0xD,
 			INTFA    = 0xE,	//interrupt flag
@@ -36,7 +36,7 @@ class mcp23s17 {
 			OLATB	 = 0x15,
 		};
 	//store latch config, to remove read operation during ouput access.
-	uint8_t mOLAT[2];	
+	uint8_t mOLAT[2];
 	//interrupt edge type.
 	itType mItTypeTab[16];
 	//callback associated to the interrupt
@@ -55,18 +55,27 @@ class mcp23s17 {
 		mcp23s17();
 		void begin();
 		//configure a pin
-		// - port is PORTA or PORTB 
+		// - port is PORTA or PORTB
 		// - numBit is the pin number (0 to 7)
 		// - mode is in DISABLE, OUTPUT, INPUT, ...)
 		int pinMode(	port p,
-						unsigned char bitNum,
-						mode m);
+				uint8_t bitNum,
+				mode m);
 		//set a pin, previously configured as OUTPUT
 		// high state if 'value' is different from 0
 		// low state if 'value' is 0.
-		void digitalWrite(	port p,
-							unsigned char bitNum,
-							bool value);
+		void digitalWrite(  port p,
+				    uint8_t bitNum,
+				    bool value);
+                // read a pin, previously configured as OUTPUT
+                // high state if 'value' is different from 0
+                // low state if 'value' is 0.
+                // -1 is bitNum is above 7.
+                int8_t digitalRead(    port p,
+                                        uint8_t bitNum);
+                // toggle a pin, previously configured as OUTPUT
+                void digitalToggle( port p,
+                                    uint8_t bitNum);
 		//set several bits of the same port in the same time.
 		//for each bit of the bitfield:
 		// 1 - set the bit
