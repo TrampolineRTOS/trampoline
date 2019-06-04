@@ -16,8 +16,10 @@ IMPLEMENTATION msp430fr5969 {
 CPU msp430fr5969 {
 
   PLATFORM_FILES msp430x {
-    PATH  = "msp430/msp430x";
-	CFILE = "tpl_machine.c";
+    PATH  =  "msp430/msp430x";
+	CFILE =  "tpl_machine.c";
+	CFILE =  "tpl_startup.c";
+	ASFILE = "tpl_startup.S";
   };
   
   GENERATED_FILES msp430x {

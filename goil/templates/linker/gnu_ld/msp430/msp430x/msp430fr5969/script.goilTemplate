@@ -17,6 +17,14 @@
 /*                      only after power on reset.                            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Peripheral registers definition		  */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+%
+template periph
+%
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -204,13 +212,13 @@ SECTIONS {
 
   /* used by the startup to initialize data */
 SECTIONS {
-  _sidata = .;
+  __data_load_start = .;
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
-  .data : AT ( _sidata )
+  .data : AT ( __data_load_start )
   {
     . = ALIGN(4);
-    _sdata = .;        /* create a global symbol at data start */
+    __data_start = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
     *(.osVar)
@@ -239,7 +247,7 @@ foreach app in APPLICATIONS do
 end foreach
 %
     . = ALIGN(4);
-    _edata = .;        /* define a global symbol at data end */
+    __data_end = .;        /* define a global symbol at data end */
   } >RAM
 }
 

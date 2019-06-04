@@ -26,7 +26,7 @@ CPU blink {
       CFLAGS  = "-O0";
       LDFLAGS = "-Map=blink.map";
       COMPILER = "msp430-gcc";
-      ASSEMBLER = "msp430-as";
+      ASSEMBLER = "msp430-gcc";
       LINKER = "msp430-ld";
       COPIER = "msp430-objcopy";
       SYSTEM = PYTHON;
