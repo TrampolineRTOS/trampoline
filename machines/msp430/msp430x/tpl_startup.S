@@ -35,24 +35,25 @@
  #define OS_START_SEC_CODE
  #include "tpl_as_memmap.h"
 
+	.section .init, "ax", @progbits
 	.global tpl_reset_handler
 	.type tpl_reset_handler, %function
 
 tpl_reset_handler:
 	/* watchdog support */
 
-#if WITH_DISABLE_WDT
-/*	mov     #0x5a80, &__WDTCTL */
-#else /* WITH_DISABLE_WDT */
-/*	mov.b	&__WDTCTL, r5
+/* #if WITH_DISABLE_WDT */
+	mov     #0x5a80, &__WDTCTL 
+/* #else 
+	mov.b	&__WDTCTL, r5
 	bis	#0x5a08, r5
-	mov	r5, &__wdt_clear_value  */
-#endif /* WITH_DISABLE_WDT */
+	mov	r5, &__wdt_clear_value  
+#endif */
 
 	/* init stack */
-	mov     #_estack, r1
+	mov     #_estack-2, r1
 
-    call tpl_continue_reset_handler
+    call #tpl_continue_reset_handler
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

@@ -76,6 +76,14 @@ SECTIONS {
 /*                                    Code                                    */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+/* init section for msp430. 
+ * execution starts at the beginning of the fram. */
+SECTIONS {
+	.textInit : {
+		. = ALIGN(2);
+		KEEP(*(.init)) /* start here after reset */
+	} > FLASH
+}
 
 /*
  * code and const of the operating system (Trampoline).
@@ -414,3 +422,5 @@ SECTIONS {
     libgcc.a ( * )
   }
 }
+/* vim:ft=ld
+ */

@@ -12,5 +12,5 @@
     /*-------------------------------------------------------------------------
      * Does the system call
      */
-    calla tpl_sc_handler
+    call #tpl_sc_handler
     ret
