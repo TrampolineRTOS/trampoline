@@ -166,4 +166,13 @@ CPU msp430fr5969 {
   	HANDLER = RESET_Handler;
   };
 
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "mspdebug";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "tilib \\\"load";
+      POSTOPTION = "\\\"";
+    };
+  };
 };
