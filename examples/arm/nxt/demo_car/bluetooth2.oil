@@ -1,0 +1,138 @@
+/**
+ * @file bluetooth2.oil
+ *
+ * @section desc File description
+ *
+ * This example is for a robot-car, made of 4 wheels (the 2 rear wheels are commanded by 2 motors).
+ * Another motor (motorC) set the direction.
+ * To turn left, set a motorC speed positive. To turn right, set a motorC speed negative.
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        PRETASKHOOK = FALSE;
+        BUILD = TRUE {
+            TRAMPOLINE_BASE_PATH = "/trampoline";
+            APP_SRC = "bluetooth2.c"; 
+            APP_NAME = "tpl_bluetooth2";
+            CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99 -I/trampoline/machines/arm/nxt/drivers/lejos_nxj/src/nxtvm/platform/nxt -I/trampoline/machines/arm/nxt/drivers/ecrobot/c -I/trampoline/machines/arm/nxt/drivers -I/trampoline/machines/arm/nxt/drivers/ecrobot/bios -I/trampoline/machines/arm/nxt/drivers/lejos_nxj/src/nxtvm/javavm -I/trampoline/os -DTRUE=1 -DFALSE=0 -Du8=uint8 -Du32=uint32 -Du16=uint16 -Ds8=sint8 -Ds32=sint32"; //-MD ";
+            ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
+            LDFLAGS = "-g --allow-multiple-definition --gc-sections -L/usr/arm-none-eabi/lib -L/usr/lib/gcc/arm-none-eabi/7.3.1 -lc -lm -lgcc"; //--cref 
+        
+            COMPILER = "arm-none-eabi-gcc";
+            ASSEMBLER = "arm-none-eabi-as";
+            LINKER = "arm-none-eabi-ld";
+        };
+        SYSTEM_CALL = TRUE;
+        MEMMAP = TRUE{
+          COMPILER = gcc;
+          LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
+          MEMORY_PROTECTION = FALSE;
+        };
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK task_idle {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };   
+    
+    TASK task_check_bt {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+     
+    TASK task_command_motors {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };   
+   
+    COUNTER SystemCounter {
+       SOURCE = it_timer1;
+       MAXALLOWEDVALUE = 2000;
+		TICKSPERBASE = 10;
+		MINCYCLE = 1; 
+    };
+	
+	ALARM Alarm1{
+		COUNTER = SystemCounter;
+		ACTION = ACTIVATETASK {
+			TASK = task_check_bt;
+		};
+        AUTOSTART = TRUE {
+            ALARMTIME = 200;
+            CYCLETIME = 10; //each 100 ms.
+            APPMODE = std;
+		};
+	};
+	
+	ALARM Alarm2{
+		COUNTER = SystemCounter;
+		ACTION = ACTIVATETASK {
+			TASK = task_command_motors;
+		};
+        AUTOSTART = TRUE {
+            ALARMTIME = 200;
+            CYCLETIME = 10; //each 100 ms.
+            APPMODE = std;
+		};
+	};
+
+   ISR isr_button_stop {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button_stop;
+   };
+};
+
+/* End of file bluetooth2.oil */
