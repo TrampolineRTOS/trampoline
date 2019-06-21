@@ -68,7 +68,6 @@
 				COMPILER = "arm-none-eabi-gcc";
 				ASSEMBLER = "arm-none-eabi-as";
 				LINKER = "arm-none-eabi-ld";
-				OBJCOPY = "arm-none-eabi-objcopy";
 			};
 			SYSTEM_CALL = TRUE;
 
