@@ -34,7 +34,7 @@
  * $URL$
  */
 
-OIL_VERSION = "3.1" : "test" ;
+OIL_VERSION = "2.5" : "test" ;
 
 IMPLEMENTATION trampoline {
     TASK {
