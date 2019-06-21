@@ -27,7 +27,7 @@ FUNC(void, OS_CODE) tpl_tick_% ! interrupt::NAME %()
 {
 %
     do
-      %  tpl_counter_tick(&% !fct::VALUE %_counter_desc);
+      %  tpl_counter_tick(&% !fct %_counter_desc);
 %
     after %
   
