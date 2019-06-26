@@ -17,9 +17,11 @@ CPU msp430fr5969 {
 
   PLATFORM_FILES msp430x {
     PATH  =  "msp430/msp430x";
-	CFILE =  "tpl_machine.c";
+	CFILE =  "tpl_machine_msp430x.c";
 	CFILE =  "tpl_startup.c";
 	ASFILE = "tpl_startup.S";
+  ASFILE = "tpl_sc_handler.S";
+  ASFILE = "tpl_ctx_switch.S";
   };
   
   GENERATED_FILES msp430x {
@@ -166,4 +168,13 @@ CPU msp430fr5969 {
   	HANDLER = RESET_Handler;
   };
 
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "mspdebug";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "tilib \\\"load";
+      POSTOPTION = "\\\"";
+    };
+  };
 };
