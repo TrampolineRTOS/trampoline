@@ -6,7 +6,7 @@
 #define PC r0
 #define SP r1
 #define SR r2
-#define CD r3
+#define CG r3
 #define R4 r4
 #define R5 r5
 #define R6 r6

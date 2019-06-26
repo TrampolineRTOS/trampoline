@@ -42,21 +42,18 @@
 tpl_reset_handler:
 	/* watchdog support */
 
-/*#if WITH_DISABLE_WDT */
-/* #0x5a80 */
-	mov     #0x5a80, &__WDTCTL
-/*#else 
+/* #if WITH_DISABLE_WDT */
+	mov     #0x5a80, &__WDTCTL 
+/* #else 
 	mov.b	&__WDTCTL, r5
 	bis	#0x5a08, r5
-	/*mov	r5, &__wdt_clear_value 
-#endif*/
+	mov	r5, &__wdt_clear_value  
+#endif */
 
 	/* init stack */
-	/*mov     #_estack-2, r1*/
-	/*add #20, r1*/
-	mov #tpl_continue_reset_handler, r1
+	mov     #_estack-2, r1
 
-    call #tpl_continue_reset_handler
+    call 	#tpl_continue_reset_handler
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
