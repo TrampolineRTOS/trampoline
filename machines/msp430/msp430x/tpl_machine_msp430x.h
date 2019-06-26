@@ -39,6 +39,6 @@ typedef struct TPL_STACK {
     tpl_stack_size  stack_size;
 } tpl_stack;
 
-#define OS_STACK_PATTERN ((uint32)0xDEADBEEF)
+#define OS_STACK_PATTERN ((uint16)0xBEEF)	//16bit mcu
 
 #endif

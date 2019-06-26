@@ -3,13 +3,6 @@
 //#include "tpl_os_kernel_stack.h"
 #include "tpl_service_ids.h"
 
-#define KERNEL_STACK_SIZE 100
-
-tpl_kernel_stack:
-    .space KERNEL_STACK_SIZE-1
-tpl_kernel_stack_bottom:
-    .space 1
-
 .equ NO_NEED_SWITCH_NOR_SCHEDULE,   0
 .equ NO_NEED_SWITCH,                0
 .equ NEED_SWITCH,                   1
@@ -23,8 +16,12 @@ tpl_kernel_stack_bottom:
 
 #define OS_START_SEC_VAR
 #include "tpl_as_memmap.h"
-
+.equ KERNEL_STACK_SIZE, 400
 .extern tpl_kern
+tpl_kernel_stack:
+	.space KERNEL_STACK_SIZE-2
+tpl_kernel_stack_bottom:
+	.space 2
 
 #define OS_STOP_SEC_VAR
 #include "tpl_as_memmap.h"
@@ -62,7 +59,6 @@ tpl_sc_handler:
     mov         r1, r11
     mov         #tpl_kernel_stack_bottom, r1
     pushx       r11
-    ret
 
 .global         tpl_sc_handler_invalid_service_id
 .type           tpl_sc_handler_invalid_service_id, %function
@@ -136,66 +132,62 @@ tpl_sc_handler_still_in_kernel:
     popx.a      REG_RETARG
     ret
 
-.global tpl_kern_stack_bottom
-tpl_kern_stack_bottom:
-    .align      4
-
 .global tpl_systick_handler
 .type   tpl_systick_handler, %function
 
-tpl_systick_handler:
-    pushx.a REG_RETARG
-#ifdef MSPGCC_ABI
-    pushm.a     #4, r14
-#endif
-#ifdef GCCFORMSP_ABI
-    pushm.a     #3, r15
-    pushx.a     r11
-#endif
+//tpl_systick_handler:
+//    pushx.a REG_RETARG
+//#ifdef MSPGCC_ABI
+//    pushm.a     #4, r14
+//#endif
+//#ifdef GCCFORMSP_ABI
+//    pushm.a     #3, r15
+//    pushx.a     r11
+//#endif
+//
+//    mov         r1, r11
+//    mov         #tpl_kern_stack_bottom, r1
+//    push        r11
+//
+//    mov         #tpl_kern, r11
+//    mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+//    mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
+//
+//    call        tpl_counter_tick/*_SystemCounter*/
+//
+//    mov         r1, r13
+//    pop         r1
+//    mov         #tpl_kern, r11
+//    tst.b       TPL_KERN_OFFSET_NEED_SWITCH(r11)
+//    jz          tpl_systick_handler_no_context_switch
+//
+//    pushm.a     #7, r10
+//
+//    mov         &tpl_kern, r11
+//    mov         @r11, r11
+//    mov         r1, @r11
+//
+//    mov         r13, r1
+//    mov         #1, REG_RETARG
+//    add         #2, r1
+//    call        tpl_run_elected
+//
+//    mov         &tpl_kern, r11
+//    mov         @r11, r11
+//    mov         @r11, r1
+//
+//    popm.a      #7, r10
 
-    mov         r1, r11
-    mov         #tpl_kern_stack_bottom, r1
-    push        r11
-
-    mov         #tpl_kern, r11
-    mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
-
-    call        tpl_counter_tick/*_SystemCounter*/
-
-    mov         r1, r13
-    pop         r1
-    mov         #tpl_kern, r11
-    tst.b       TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    jz          tpl_systick_handler_no_context_switch
-
-    pushm.a     #7, r10
-
-    mov         &tpl_kern, r11
-    mov         @r11, r11
-    mov         r1, @r11
-
-    mov         r13, r1
-    mov         #1, REG_RETARG
-    add         #2, r1
-    call        tpl_run_elected
-
-    mov         &tpl_kern, r11
-    mov         @r11, r11
-    mov         @r11, r1
-
-    popm.a      #7, r10
-
-tpl_systick_handler_no_context_switch:
-#ifdef MSPGCC_ABI
-    popm.a      #4, r14
-#endif
-#ifdef GCCFORMSP_ABI
-    popx.a r11
-    popm.a #3, r15
-#endif
-    popx.a REG_RETARG
-    reti
+//tpl_systick_handler_no_context_switch:
+//#ifdef MSPGCC_ABI
+//    popm.a      #4, r14
+//#endif
+//#ifdef GCCFORMSP_ABI
+//    popx.a r11
+//    popm.a #3, r15
+//#endif
+//    popx.a REG_RETARG
+//    reti
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

@@ -17,6 +17,8 @@
 #include "msp430.h"
 
 /*end my code */
+//#define KERNEL_STACK_SIZE 400
+//VAR(uint16,AUTOMATIC) tpl_kernel_stack[KERNEL_STACK_SIZE/2];
 
 //function that should be defined for msp430...
 
@@ -53,15 +55,15 @@ FUNC(void, OS_CODE) tpl_init_context(
   CONSTP2VAR(msp430x_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context = the_proc->context;
 
   //pointer to the stack of the process
-  CONSTP2VAR(msp430x_core_context, AUTOMATIC, OS_APPL_DATA) stack = the_proc->stack.stack_zone;
+  CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack = the_proc->stack.stack_zone;
 
   //size of the stack in 16 bit words above the exceptionf rame
-  CONST(uint16, AUTOMATIC) size_of_stack_above_exception_frame = (the_proc->stack.stack_size - MSP430X_CORE_EXCEPTION_FRAME_SIZE) >> 2;
+  CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame = (the_proc->stack.stack_size - MSP430X_CORE_EXCEPTION_FRAME_SIZE) >> 2;
 
   //pointer to the exception frame
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame = stack + size_of_stack_above_exception_frame;
 
-#if WITH_PAINT_REGISTER == YES
+#if WITH_PAINT_REGISTERS == YES
   l_tpl_context->gpr5 = 
   l_tpl_context->gpr6 = 
   l_tpl_context->gpr7 = 
@@ -75,6 +77,10 @@ FUNC(void, OS_CODE) tpl_init_context(
     exception_frame[i] = OS_STACK_PATTERN;
   }
 #endif
+
+//#if WITH_PAINT_STACK == YES
+//  for(i = 0; i < GPR_ON_EXCEPTION_FRAME; i++);
+//#endif
 
   l_tpl_context->stackPointer = (uint16)exception_frame;
   /*struct MSP430X_CONTEXT *core_context;
