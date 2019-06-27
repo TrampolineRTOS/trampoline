@@ -30,9 +30,9 @@ extern FUNC(void, OS_CODE) CallTerminateTask(void);
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 #endif
 
-extern FUNC(void, OS_CODE) CallTerminateTask(void);
+//extern FUNC(void, OS_CODE) CallTerminateTask(void);
 
-extern FUNC(void, OS_CODE) CallTerminateISR2(void);
+//extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 //copied from cortex
 //extern FUNC(void, OS_CODE) tpl_init_external_interrupts();
@@ -40,6 +40,9 @@ extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 extern FUNC(void, OS_CODE) tpl_init_it_priority();
 
 #define GPR_ON_EXCEPTION_FRAME  5
+#define LR_IDX                  5
+#define PC_IDX                  6
+#define xPSR_IDX                7
 
 FUNC(void, OS_CODE) tpl_init_context(
   CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
@@ -58,7 +61,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack = the_proc->stack.stack_zone;
 
   //size of the stack in 16 bit words above the exceptionf rame
-  CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame = (the_proc->stack.stack_size - MSP430X_CORE_EXCEPTION_FRAME_SIZE) >> 2;
+  CONST(uint16, AUTOMATIC) size_of_stack_above_exception_frame = (the_proc->stack.stack_size - MSP430X_CORE_EXCEPTION_FRAME_SIZE) >> 2; /* changed from 2 to 1, maybe wrong*/
 
   //pointer to the exception frame
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame = stack + size_of_stack_above_exception_frame;
@@ -78,26 +81,37 @@ FUNC(void, OS_CODE) tpl_init_context(
   }
 #endif
 
-//#if WITH_PAINT_STACK == YES
-//  for(i = 0; i < GPR_ON_EXCEPTION_FRAME; i++);
-//#endif
-
   l_tpl_context->stackPointer = (uint16)exception_frame;
-  /*struct MSP430X_CONTEXT *core_context;
-  const tpl_proc_static *the_proc;
 
-  the_proc = tpl_stat_proc_table[proc_id];
-  core_context = the_proc->context;
+#if WITH_PAINT_STACK == YES
+  for(i = 0; i < size_of_stack_above_exception_frame; i++)
+  {
+    stack[i] = OS_STACK_PATTERN;
+  }
+#endif
 
-  //stack pointer 
-  core_context->sp = ((uint16)the_proc->stack.stack_zone) + the_proc->stack.stack_size - 16;
-
-  //Dealing with initial return address 
-  core_context->gpr12 = (IS_ROUTINE == the_proc->type) ? 
-    (uint16)(CallTerminateISR2) : 
+#if TASK_COUNT > 0
+#if   ISR_COUNT > 0
+  exception_frame[LR_IDX] = (IS_ROUTINE == the_proc->type) ? 
+    (uint16)(CallTerminateISR2) :
     (uint16)(CallTerminateTask) ;
+#else 
+  exception_frame[LR_IDX] = (uint16)(CallTerminateTask);
+#endif
+#else
+#if ISR_COUNT > 0
+  exception_frame[LR_IDX] = (uint16)(CallTerminateISR2);
+#else
+exception_frame[LR_IDX] = NULL;
+#endif
+#endif
+  exception_frame[PC_IDX] = (uint16)(the_proc->entry);
+  exception_frame[xPSR_IDX] = 0x0100;
 
-  core_context->stackPointer = (uint16) the_proc->entry;*/
+#if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
+  (*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
+#endif
+
 }
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)

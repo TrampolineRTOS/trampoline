@@ -23,12 +23,19 @@
 .type   tpl_save_context, %function
 
 tpl_save_context:
-
-    /*popx    0(r4)
-
-
-    popx    
-    push    r2, #CTX_GPR4(r1)*/
+    mov         22(r1), r14         /* Saved PC [19..16] */
+    mov         20(r1), 22(r1)      /* Copy saved PC [15..0] at the good place */
+    swpb        r14                 /* Get saved PC [19..16] in bits 11..8 */
+    rlam.w      #4, r14             /* Shift them to bits 19..16 */
+    bis         r2, r14             /* Add the SR in its location at 11..0 */
+    mov         r14, 20(r1)         /* The stack is ok */
+/* the rest of the context is saved on the process stack */
+    pushm.a     #7, r10             /* push r4 to r10 */
+/* The whole context is now saved on the process stack and the kernel stack has been cleaned 
+   the stack pointer is saved in the dedicated location */
+    mov         &tpl_kern, r11      /* Get the s_running slot of tpl_kern in r11 */
+    mov         @r11, r11           /* Get the pointer to the context (SP alone) */
+    mov         r1, @r11 
     ret
 
 .global tpl_load_context
