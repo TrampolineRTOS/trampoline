@@ -54,19 +54,11 @@ tpl_sc_handler:
     pushx.a     r11
     dint
     tst.b       &tpl_reentrancy_counter
-    /*cmp         #SYSCALL_COUNT_ISR1, REG_SID*/
-    jnz/*jge*/        tpl_sc_handler_no_stack_switch
+    jnz         tpl_sc_handler_no_stack_switch
     mov         r1, r11
     mov         #tpl_kernel_stack_bottom, r1
     pushx       r11
 
-.global         tpl_sc_handler_invalid_service_id
-.type           tpl_sc_handler_invalid_service_id, %function
-tpl_sc_handler_invalid_service_id:
-    ret
-
-.global         tpl_sc_handler_no_stack_switch
-.type           tpl_sc_handler_no_stack_switch, %function 
 tpl_sc_handler_no_stack_switch:
     inc.b       &tpl_reentrancy_counter
     mov         #tpl_kern, r11
@@ -94,11 +86,8 @@ tpl_sc_handler_no_stack_switch:
     mov         @r11, r11
     mov         r1, @r11
     mov         r13, r1
-    /**/call    tpl_save_context
     mov         #1, REG_RETARG
 
-.global         tpl_sc_handler_no_save_running_context
-.type           tpl_sc_handler_no_save_running_context, %function
 tpl_sc_handler_no_save_running_context:
     add         #2, r1
     call        tpl_run_elected
@@ -117,23 +106,22 @@ tpl_sc_handler_no_save_running_context:
     mov         r11, 22(r1)
     /**/call    tpl_load_context
 
-.global         tpl_sc_handler_no_context_switch
-.type           tpl_sc_handler_no_context_switch, %function 
+tpl_sc_handler_invalid_service_id:
+    nop
+
 tpl_sc_handler_no_context_switch:
     dec.b       &tpl_reentrancy_counter
     jnz         tpl_sc_handler_still_in_kernel
     eint
 
-.global         tpl_sc_handler_still_in_kernel
-.type           tpl_sc_handler_still_in_kernel, %function
 tpl_sc_handler_still_in_kernel:
     popx.a      r11
     add         #12, r1
     popx.a      REG_RETARG
     ret
 
-.global tpl_systick_handler
-.type   tpl_systick_handler, %function
+//.global tpl_systick_handler
+//.type   tpl_systick_handler, %function
 
 //tpl_systick_handler:
 //    pushx.a REG_RETARG
