@@ -41,7 +41,8 @@ extern FUNC(void, OS_CODE) tpl_init_it_priority();
 
 #define GPR_ON_EXCEPTION_FRAME  5
 #define LR_IDX                  5
-#define PC_IDX                  6
+#define SR_IDX                  48
+#define PC_IDX                  50
 #define xPSR_IDX                7
 
 FUNC(void, OS_CODE) tpl_init_context(
@@ -105,7 +106,10 @@ FUNC(void, OS_CODE) tpl_init_context(
 exception_frame[LR_IDX] = NULL;
 #endif
 #endif
+  //status register. Set the GIE bit (Global interrupt)
+  exception_frame[SR_IDX] = (((uint32)(the_proc->entry) >> 16) << 12) | 0x8;
   exception_frame[PC_IDX] = (uint16)(the_proc->entry);
+
   exception_frame[xPSR_IDX] = 0x0100;
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
