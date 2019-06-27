@@ -108,7 +108,7 @@ tpl_sc_handler_no_stack_switch:
 
 tpl_sc_handler_no_save_running_context:
     add         #2, r1              /* "pop" the PSP xhixh is no longer useful */
-    call        tpl_run_elected
+    call        #tpl_run_elected
 /* tpl_run_elected has copied the elected process slot of the tpl_kern of the running slot
    we load the stack pointer of the new running process */
     mov         &tpl_kern, r11      /* Get the s_running slot of tpl_kern in r11 */
