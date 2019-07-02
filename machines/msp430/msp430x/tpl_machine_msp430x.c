@@ -22,32 +22,50 @@
 
 //function that should be defined for msp430...
 
-#if TASK_COUNT > 0
+/* #if TASK_COUNT > 0
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
 #endif
 
 #if ISR_COUNT > 0
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
-#endif
+#endif*/
 
-//extern FUNC(void, OS_CODE) CallTerminateTask(void);
+extern FUNC(void, OS_CODE) CallTerminateTask(void);
 
-//extern FUNC(void, OS_CODE) CallTerminateISR2(void);
+extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 //copied from cortex
 //extern FUNC(void, OS_CODE) tpl_init_external_interrupts();
 //
 extern FUNC(void, OS_CODE) tpl_init_it_priority();
 
-#define GPR_ON_EXCEPTION_FRAME  5
-#define LR_IDX                  5
+#define GPR_ON_EXCEPTION_FRAME  6
+#define LR_IDX                  44
 #define SR_IDX                  48
 #define PC_IDX                  50
-#define xPSR_IDX                7
+//#define xPSR_IDX                7
 
 FUNC(void, OS_CODE) tpl_init_context(
   CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
+  //from riscv
+  /*
+  struct MSP430X_CONTEXT *core_context;
+  const tpl_proc_static *the_proc;
+
+  the_proc = tpl_stat_proc_table[proc_id];
+  core_context = the_proc->context;
+
+  core_context->gpr4 = the_proc->stack.stack_zone + the_proc->stack.stack_size;
+
+  core_context->gpr13 = (IS_ROUTINE == the_proc->type) ?
+    (uint16)(CallTerminateISR2) :
+    (uint16)(CallTerminateTask) ;
+
+  core_context->gpr14 = the_proc->entry;
+  core_context->gpr15 = the_proc->entry;
+  */
+  //from cortex
 #if WITH_PAINT_REGISTERS == YES || WITH_PAINT_STACK == YES
   VAR(int, AUTOMATIC) i;
 #endif
@@ -62,19 +80,23 @@ FUNC(void, OS_CODE) tpl_init_context(
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack = the_proc->stack.stack_zone;
 
   //size of the stack in 16 bit words above the exceptionf rame
-  CONST(uint16, AUTOMATIC) size_of_stack_above_exception_frame = (the_proc->stack.stack_size - MSP430X_CORE_EXCEPTION_FRAME_SIZE) >> 2; /* changed from 2 to 1, maybe wrong*/
+  CONST(uint16, AUTOMATIC) size_of_stack_above_exception_frame = (the_proc->stack.stack_size - MSP430X_CORE_EXCEPTION_FRAME_SIZE) >> 2;
 
   //pointer to the exception frame
   CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame = stack + size_of_stack_above_exception_frame;
 
 #if WITH_PAINT_REGISTERS == YES
-  l_tpl_context->gpr5 = 
-  l_tpl_context->gpr6 = 
-  l_tpl_context->gpr7 = 
-  l_tpl_context->gpr8 = 
-  l_tpl_context->gpr9 = 
-  l_tpl_context->gpr10 = 
+  l_tpl_context->gpr5 = OS_STACK_PATTERN;
+  l_tpl_context->gpr6 = OS_STACK_PATTERN;
+  l_tpl_context->gpr7 = OS_STACK_PATTERN;
+  l_tpl_context->gpr8 = OS_STACK_PATTERN;
+  l_tpl_context->gpr9 = OS_STACK_PATTERN;
+  l_tpl_context->gpr10 = OS_STACK_PATTERN;
   l_tpl_context->gpr11 = OS_STACK_PATTERN;
+  l_tpl_context->gpr12 = OS_STACK_PATTERN;
+  l_tpl_context->gpr13 = OS_STACK_PATTERN;
+  l_tpl_context->gpr14 = OS_STACK_PATTERN;
+  l_tpl_context->gpr15 = OS_STACK_PATTERN;
 
   for(i = 0; i < GPR_ON_EXCEPTION_FRAME; i++)
   {
@@ -82,7 +104,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   }
 #endif
 
-  l_tpl_context->stackPointer = (uint16)exception_frame;
+  l_tpl_context->gpr4 = (uint16)exception_frame;
 
 #if WITH_PAINT_STACK == YES
   for(i = 0; i < size_of_stack_above_exception_frame; i++)
@@ -107,10 +129,10 @@ exception_frame[LR_IDX] = NULL;
 #endif
 #endif
   //status register. Set the GIE bit (Global interrupt)
-  exception_frame[SR_IDX] = (((uint32)(the_proc->entry) >> 16) << 12) | 0x8;
+  exception_frame[SR_IDX] = (uint16)(the_proc->entry);/* >> 16) << 12); | 0x8; /* from 16/12 to 8/6 */
   exception_frame[PC_IDX] = (uint16)(the_proc->entry);
 
-  exception_frame[xPSR_IDX] = 0x0100;
+  //exception_frame[xPSR_IDX] = 0x0100;
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
   (*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;

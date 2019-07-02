@@ -21,14 +21,26 @@ extern uint32 tpl_reentrancy_counter;
 
 typedef struct MSP430X_CONTEXT
 {
-  uint16 stackPointer;  /* General purpose register r4 */
-  uint16 gpr5;          /* General purpose register r5 */
-  uint16 gpr6;          /* General purpose register r6 */
-  uint16 gpr7;          /* General purpose register r7 */
-  uint16 gpr8;          /* General purpose register r8 */
-  uint16 gpr9;          /* General purpose register r9 */
-  uint16 gpr10;         /* General purpose register r10 */
-  uint16 gpr11; 
+  //uint16 stackPointer;  /* General purpose register r4 */
+  //uint16 gpr5;          /* General purpose register r5 */
+  //uint16 gpr6;          /* General purpose register r6 */
+  //uint16 gpr7;          /* General purpose register r7 */
+  //uint16 gpr8;          /* General purpose register r8 */
+  //uint16 gpr9;          /* General purpose register r9 */
+  //uint16 gpr10;         /* General purpose register r10 */
+  //uint16 gpr11;
+  uint16 gpr4;
+  uint16 gpr5;
+  uint16 gpr6;
+  uint16 gpr7;
+  uint16 gpr8;
+  uint16 gpr9;
+  uint16 gpr10;
+  uint16 gpr11;
+  uint16 gpr12;
+  uint16 gpr13;
+  uint16 gpr14;
+  uint16 gpr15;
 } msp430x_core_context;
 
 typedef uint16 tpl_stack_word;

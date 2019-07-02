@@ -63,7 +63,7 @@ tpl_sc_handler:
 /* in case of a stack switch, the process stack pointer is saved on the stack */
     mov         r1, r11
     mov         #tpl_kernel_stack_bottom, r1
-    pushx       r11
+    push        r11
 
 tpl_sc_handler_no_stack_switch:
 /* increment tpl_reentrancy counter */
@@ -107,7 +107,7 @@ tpl_sc_handler_no_stack_switch:
     mov         #1, REG_RETARG
 
 tpl_sc_handler_no_save_running_context:
-    add         #2, r1              /* "pop" the PSP xhixh is no longer useful */
+    add         #2, r1              /* "pop" the PSP which is no longer useful */
     call        #tpl_run_elected
 /* tpl_run_elected has copied the elected process slot of the tpl_kern of the running slot
    we load the stack pointer of the new running process */
@@ -137,7 +137,7 @@ tpl_sc_handler_still_in_kernel:
     popx.a      r11
     add         #12, r1             /* skip volatile */
     popx.a      REG_RETARG          /* Get back the return value */
-    reta
+    reti
 
 tpl_sc_handler_invalid_service_id:
     nop
