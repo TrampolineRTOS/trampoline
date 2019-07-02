@@ -23,7 +23,7 @@ CPU blink {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
       APP_NAME = "blink_exe";
-      CFLAGS  = "-O0";
+      CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=blink.map";
       COMPILER = "msp430-gcc";
       ASSEMBLER = "msp430-gcc";
