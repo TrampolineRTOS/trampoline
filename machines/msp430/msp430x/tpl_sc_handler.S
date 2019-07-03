@@ -113,9 +113,7 @@ tpl_sc_handler_no_save_running_context:
    we load the stack pointer of the new running process */
     mov         &tpl_kern, r11      /* Get the s_running slot of tpl_kern in r11 */
     mov         @r11, r11           /* Get the pointer to the context (SP alone) */
-    mov         @r11, r1           /* Get the stack pointer - was mov @r11, r1 */
-    /*I added this*/
-    /*mov         @30(r11), r1*/
+    mov         @r11, r1           /* Get the stack pointer */
 /* the context of the new runnign process is loaded, we pop r4 to r10 */
     popm.a      #7, r10             /* pop r4 to r10 */
 /* the saved PC is reorganized to fir the calla pattern and REG_RETARG is popped */
@@ -123,7 +121,7 @@ tpl_sc_handler_no_save_running_context:
     mov         20(r1), 20(r1)      /* Copy saved PC [15..0] */
     and         #0x0FFF, r11        /* Isolate SR part THIS!!!! */
     mov         r11, r2             /* Copy in SR */
-    mov         20(r1), r11         /* Get saved PC [19..16] again */
+    mov         20(r1), r11         /* Get saved PC [19..16] again */ /* Stops here after TerminateTask() */
     and         #0x0FFF, r11        /* Isolate the PC [19..16] part */
     swpb        r11                 /* put interesting part in bits 7..4 */
     rram.w      #4, r11             /* Shift it in bits 3..0 */
@@ -142,7 +140,7 @@ tpl_sc_handler_still_in_kernel:
     reta
 
 tpl_sc_handler_invalid_service_id:
-    nop
+    ret
 
 //.global tpl_systick_handler
 //.type   tpl_systick_handler, %function
