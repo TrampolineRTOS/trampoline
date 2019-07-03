@@ -117,15 +117,16 @@ tpl_sc_handler_no_save_running_context:
 /* the context of the new runnign process is loaded, we pop r4 to r10 */
     popm.a      #7, r10             /* pop r4 to r10 */
 /* the saved PC is reorganized to fir the calla pattern and REG_RETARG is popped */
-    mov         20(r1), r11         /* get saved PC [19..16] and saved SR */
-    mov         20(r1), 20(r1)      /* Copy saved PC [15..0] */
+    mov         18(r1), r11         /* get saved PC [19..16] and saved SR */
     and         #0x0FFF, r11        /* Isolate SR part THIS!!!! */
     mov         r11, r2             /* Copy in SR */
-    mov         20(r1), r11         /* Get saved PC [19..16] again */ /* Stops here after TerminateTask() */
-    and         #0x0FFF, r11        /* Isolate the PC [19..16] part */
+
+    mov         18(r1), r11         /* Get saved PC [19..16] again */ /* Stops here after TerminateTask() */
+    mov         20(r1), 18(r1)      /* Copy saved PC [15..0] */
+    and         #0xF000, r11        /* Isolate the PC [19..16] part */
     swpb        r11                 /* put interesting part in bits 7..4 */
     rram.w      #4, r11             /* Shift it in bits 3..0 */
-    mov         r11, 22(r1)         /* Put on stack at the expected location */
+    mov         r11, 20(r1)         /* Put on stack at the expected location */
 
 /* tpl_reentrancy_counter is decremented, interrupts are enabled, we return */
 tpl_sc_handler_no_context_switch:
