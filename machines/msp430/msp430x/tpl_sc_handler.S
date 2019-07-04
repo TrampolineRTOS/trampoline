@@ -118,7 +118,7 @@ tpl_sc_handler_no_save_running_context:
     popm.a      #7, r10             /* pop r4 to r10 */
 /* the saved PC is reorganized to fir the calla pattern and REG_RETARG is popped */
     mov         18(r1), r11         /* get saved PC [19..16] and saved SR */
-    and         #0x0FFF, r11        /* Isolate SR part THIS!!!! */
+    and         #0x0FFF, r11        /* Isolate SR part */
     mov         r11, r2             /* Copy in SR */
 
     mov         18(r1), r11         /* Get saved PC [19..16] again */ /* Stops here after TerminateTask() */
@@ -135,7 +135,7 @@ tpl_sc_handler_no_context_switch:
     eint
 
 tpl_sc_handler_still_in_kernel:
-    popx.a      r11
+    pop/*x.a*/  r11
     add         #12, r1             /* skip volatile */
     popx.a      REG_RETARG          /* Get back the return value */
     reta
