@@ -48,6 +48,13 @@ CPU blink {
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
+
+  TASK task_2 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
   
   //ALARM blink_blink {
   //  COUNTER = SystemCounter;

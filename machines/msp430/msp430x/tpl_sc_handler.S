@@ -91,10 +91,21 @@ tpl_sc_handler_no_stack_switch:
 /* Save the context. First the process stack is reorganized to fit the interrupt handler shape */
     mov         22(r1), r14         /* Saved PC [19..16] */
     mov         20(r1), 22(r1)      /* Copy saved PC [15..0] at the good place */
-    swpb        r14                 /* Get saved PC [19..16] in bits 11..8 */
-    rlam.w      #4, r14             /* Shift them to bits 19..16 */
-    bis         r2, r14             /* Add the SR in its location at 11..0 */
+    /*swpb        r14                 /* Get saved PC [19..16] in bits 11..8 */
+    /*rlam.w      #4, r14             /* Shift them to bits 19..16 */
+    /*bis         r2, r14             /* Add the SR in its location at 11..0 */
     mov         r14, 20(r1)         /* The stack is ok */
+
+    /*mov         20(r1), r14
+    rlam.w      #4, r14
+    swpb        r14
+    and         #0xF000, r14
+    mov         18(r1), 20(r1)
+    mov         18(r1), r14
+
+    bis         r2, r14
+    and         #0x0FFF, r14
+    mov         r14, 18(r1)*/
 /* the rest of the context is saved on the process stack */
     pushm.a     #7, r10             /* push r4 to r10 */
 /* The whole context is now saved on the process stack and the kernel stack has been cleaned 
