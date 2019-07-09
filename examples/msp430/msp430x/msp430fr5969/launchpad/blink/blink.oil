@@ -44,7 +44,9 @@ CPU blink {
   
   TASK blink {
     PRIORITY = 1;
-    AUTOSTART = TRUE {APPMODE = std;} ;
+    AUTOSTART = TRUE {
+      APPMODE = std;
+    };
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };

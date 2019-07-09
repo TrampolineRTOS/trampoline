@@ -89,12 +89,13 @@ tpl_sc_handler_no_stack_switch:
     bit.b       #NEED_SAVE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
     jz          tpl_sc_handler_no_save_running_context
 /* Save the context. First the process stack is reorganized to fit the interrupt handler shape */
-    mov         22(r1), r14         /* Saved PC [19..16] */
-    mov         20(r1), 22(r1)      /* Copy saved PC [15..0] at the good place */
+    mov         18(r1), r14         /* Saved PC [19..16] */
+    mov         24(r1), 22(r1)      /* Copy saved PC [15..0] at the good place */
     swpb        r14                 /* Get saved PC [19..16] in bits 11..8 */
     rlam.w      #4, r14             /* Shift them to bits 19..16 */
     bis         r2, r14             /* Add the SR in its location at 11..0 */
-    mov         r14, 20(r1)         /* The stack is ok */
+    mov         r14, 18(r1)         /* The stack is ok */
+    
 
     /*mov         20(r1), r14
     rlam.w      #4, r14
