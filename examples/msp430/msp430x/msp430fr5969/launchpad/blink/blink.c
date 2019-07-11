@@ -16,12 +16,29 @@ TASK(blink)
 {
 	P4OUT ^= 1<<6; //toggle led.
 	ActivateTask(task_2);
+	//ChainTask(task_4);
+	//ActivateTask(task_3);
 	TerminateTask();
 }
 
 TASK(task_2)
 {
 	P1OUT ^= 1<<1; //toggle led
+	ChainTask(task_4);
+	ActivateTask(task_4);
+	TerminateTask();
+}
+
+TASK(task_3)
+{
+	P4OUT ^= 1<<6;
+	ActivateTask(task_4);
+	TerminateTask();
+}
+
+TASK(task_4)
+{
+	P1OUT ^= 1<<1;
 	TerminateTask();
 }
 
