@@ -15,7 +15,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 TASK(blink)
 {
 	P4OUT ^= 1<<6; //toggle led.
-	ActivateTask(task_2);
+	ActivateTask(task_4);
 	//ChainTask(task_4);
 	//ActivateTask(task_3);
 	TerminateTask();
@@ -24,8 +24,8 @@ TASK(blink)
 TASK(task_2)
 {
 	P1OUT ^= 1<<1; //toggle led
-	ChainTask(task_4);
-	ActivateTask(task_4);
+	//ChainTask(task_4);
+	//ActivateTask(task_4);
 	TerminateTask();
 }
 

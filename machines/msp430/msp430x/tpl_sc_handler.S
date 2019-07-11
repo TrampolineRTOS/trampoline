@@ -82,7 +82,8 @@ tpl_sc_handler_no_stack_switch:
 /* check the context switch condition in tpl_kern */
     mov         #tpl_kern, r11
     tst.b       TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    jz          tpl_sc_handler_no_context_switch
+    //jz          tpl_sc_handler_no_context_switch /* see comment at tpl_additional_pop_if_no_switch */
+    jz          tpl_additional_pop_if_no_switch
 /* prepare the call to tpl_run_elected by setting REG_RETARG to 0, a.k.a. no save */
     mov         #0, REG_RETARG
 /* test the NEED_SAVE condition */
@@ -142,6 +143,11 @@ tpl_sc_handler_still_in_kernel:
 
 tpl_sc_handler_invalid_service_id:
     ret
+
+/* if there is no context switch, we need to "pop" one more time, to get the right address*/
+tpl_additional_pop_if_no_switch:
+    add         #2, r1
+    jmp         tpl_sc_handler_no_context_switch
 
 /* MAYBE SHOULDN'T BE HERE BUT IN A SEPERATE FILE */
 tpl_systick_handler:
