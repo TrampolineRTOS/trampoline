@@ -43,10 +43,10 @@ CPU blink {
   APPMODE std {};
   
   TASK blink {
-    PRIORITY = 1;
-    AUTOSTART = TRUE {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;/*TRUE {
       APPMODE = std;
-    };
+    };*/
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
@@ -66,22 +66,22 @@ CPU blink {
   };
 
   TASK task_4 {
-    PRIORITY = 1;
+    PRIORITY = 0;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
   
-  //ALARM blink_blink {
-  //  COUNTER = SystemCounter;
-  //  ACTION = ACTIVATETASK {
-  //    TASK = blink;
-  //  };
-  //  AUTOSTART = TRUE {
-  //    APPMODE = std;
-  //    ALARMTIME = 100;
-  //    CYCLETIME = 100;
-  //  };
-  //};
+  ALARM blink_blink {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = blink;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 100;
+      CYCLETIME = 100;
+    };
+  };
 };
 

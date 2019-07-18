@@ -1,6 +1,4 @@
 #include "tpl_machine.h"
-/*my code */
-
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_definitions.h"
@@ -23,6 +21,9 @@ extern FUNC(void, OS_CODE) tpl_init_it_priority();
 #define SR_IDX    23
 #define PC_IDX    24
 #define CALL_IDX  25 //call to terminateTask/ISR2.
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_init_context(
   CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
@@ -97,11 +98,43 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 
 FUNC(void, OS_CODE) tpl_init_machine_specific (void)
 {
+  TA0CCTL0 = CCIE;
+  TA0CTL = TASSEL_2 + MC_1 + ID_0;
+  TA0CCR0 = 32767;
+  tpl_enable_interrupts();
+  //TA3CCR1 = 62500;
+  //TA3CTL |= CCIE;
+  //TA3CTL = TASSEL_2 + ID_0 + MC_1;
+  //__enable_interrupt();
+  
   //copied from cortex
   //tpl_set_systick_timer();
   //tpl_init_external_interrupts();
   //tpl_init_it_priority();
 }
+
+/* for alarms */
+/*FUNC(void, OS_CODE) tpl_set_systick_timer()
+{
+  /if(tpl_configure_systick(SystemCoreClock / 1000, OS_ISR_PRIO_UNSHIFTED) != E_OK)
+  {
+    while(1);
+  }
+}
+FUNC(uint32, OS_CODE) tpl_configure_systick(
+  CONST(uint32, AUTOMATIC) ticks,
+  CONST(uint32, AUTOMATIC) priority)
+{
+  TIMER3_A1_Handler->LOAD = ticks - 1;
+  TIMER3_A1_Handler->VAL = 0;
+  TIMER3_A1_Handler->CTRL = TIMER3_A1_Handler_CTRL_CLKSOURCE_Msk  |
+                            TIMER3_A1_Handler_CTRL_TICKINT_Msk    |
+                            TIMER3_A1_Handler_CTRL_ENABLE_Msk;
+  return (E_OK);
+}*/
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 uint32 tpl_reentrancy_counter = 0;
 

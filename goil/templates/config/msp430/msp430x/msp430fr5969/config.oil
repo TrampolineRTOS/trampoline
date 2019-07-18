@@ -4,16 +4,23 @@
  * MSP430 configuration file
  */
 
+
 IMPLEMENTATION msp430fr5969 {
 
   INTERRUPT [] {
     UINT32 ADDRESS;
     IDENTIFIER HANDLER;
   };
-      
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
 };
 
 CPU msp430fr5969 {
+
+  COUNTER SystemCounter {
+    SOURCE = TIMER0_A0_VECTOR;
+  };
 
   PLATFORM_FILES msp430x {
     PATH  =  "msp430/msp430x";

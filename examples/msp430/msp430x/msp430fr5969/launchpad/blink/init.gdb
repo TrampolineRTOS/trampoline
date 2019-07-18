@@ -1,8 +1,5 @@
 target remote localhost:2000
 delete
-b tpl_sc_handler
+b tpl_init_machine_specific
 c
-b 133
-c
-delete
 

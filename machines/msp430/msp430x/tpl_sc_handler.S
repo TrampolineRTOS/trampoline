@@ -170,7 +170,7 @@ tpl_systick_handler:
     mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
     mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 
-    call        tpl_counter_tick/*_SystemCounter*/
+    call        tpl_counter_tick//_SystemCounter
 
     mov         r1, r13                     /* get a copy of the KSP to restore it later */
     pop         r1                          /* get the saved process stack pointer back */
