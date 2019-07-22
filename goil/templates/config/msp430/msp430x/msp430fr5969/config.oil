@@ -19,7 +19,7 @@ IMPLEMENTATION msp430fr5969 {
 CPU msp430fr5969 {
 
   COUNTER SystemCounter {
-    SOURCE = TIMER0_A0_VECTOR;
+    SOURCE = TIMER3_A0_VECTOR;
   };
 
   PLATFORM_FILES msp430x {
@@ -27,8 +27,7 @@ CPU msp430fr5969 {
 	CFILE =  "tpl_machine_msp430x.c";
 	CFILE =  "tpl_startup.c";
 	ASFILE = "tpl_startup.S";
-  ASFILE = "tpl_sc_handler.S";
-  ASFILE = "tpl_ctx_switch.S";
+    ASFILE = "tpl_sc_handler.S";
   };
   
   GENERATED_FILES msp430x {

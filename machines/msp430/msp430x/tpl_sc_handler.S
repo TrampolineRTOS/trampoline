@@ -122,7 +122,7 @@ tpl_sc_handler_no_save_running_context:
     and         #0x0FFF, r11        /* Isolate SR part */
     mov         r11, r2             /* Copy in SR */
 
-    mov         18(r1), r11         /* Get saved PC [19..16] again */ /* Stops here after TerminateTask() */
+    mov         18(r1), r11         /* Get saved PC [19..16] again */ 
     mov         20(r1), 18(r1)      /* Copy saved PC [15..0] */
     and         #0xF000, r11        /* Isolate the PC [19..16] part */
     swpb        r11                 /* put interesting part in bits 7..4 */
@@ -150,7 +150,9 @@ tpl_additional_pop_if_no_switch:
     jmp         tpl_sc_handler_no_context_switch
 
 /* MAYBE SHOULDN'T BE HERE BUT IN A SEPERATE FILE */
-tpl_systick_handler:
+.global TIMER3_A0_Handler
+.type   TIMER3_A0_Handler, %function
+TIMER3_A0_Handler:
     pushx.a REG_RETARG
 #ifdef MSPGCC_ABI
     /* r15 has been pushed by pushed by pushx.a REG_RETARG */
@@ -170,7 +172,7 @@ tpl_systick_handler:
     mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
     mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 
-    call        tpl_counter_tick//_SystemCounter
+    call        tpl_tick_TIMER3_A0_VECTOR
 
     mov         r1, r13                     /* get a copy of the KSP to restore it later */
     pop         r1                          /* get the saved process stack pointer back */
@@ -178,7 +180,7 @@ tpl_systick_handler:
     
     mov         #tpl_kern, r11              /* check the context switch condition in tpl_kern */
     tst.b       TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    jz          tpl_systick_handler_no_context_switch
+    jz          tpl_TIMER3_A0_Handler_no_context_switch
 
     pushm.a     #7, r10                     /* push r4 to r10 */
 
@@ -197,7 +199,7 @@ tpl_systick_handler:
 
     popm.a      #7, r10                     /* Pop r4 to r10 */
 
-tpl_systick_handler_no_context_switch:
+tpl_TIMER3_A0_Handler_no_context_switch:
 #ifdef MSPGCC_ABI
     /* r15 will be popped by popx.a REG_RETARG */
     popm.a      #4, r14                     /* Pop r11, r12, r13, r14 */
