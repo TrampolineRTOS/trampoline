@@ -42,6 +42,20 @@ TASK(task_4)
 	TerminateTask();
 }
 
+
+
 #define APP_Task_blink_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+//extern VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc;
+FUNC(tpl_bool, OS_CODE) __attribute__((interrupt(TIMER3_A0_VECTOR))) tpl_tick_SystemCounter(void)
+{
+//  tpl_counter_tick(&SystemCounter_counter_desc);
+//
+//  if (tpl_kern.need_schedule == TRUE)
+//  {
+//    tpl_schedule_from_running();
+//  }
+  return TRUE;
+}
 
