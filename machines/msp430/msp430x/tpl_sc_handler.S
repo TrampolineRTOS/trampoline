@@ -172,7 +172,7 @@ TIMER3_A0_Handler:
     mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
     mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 
-    call        tpl_tick_TIMER3_A0_VECTOR
+    call        #tpl_tick_TIMER3_A0_VECTOR
 
     mov         r1, r13                     /* get a copy of the KSP to restore it later */
     pop         r1                          /* get the saved process stack pointer back */
@@ -184,19 +184,20 @@ TIMER3_A0_Handler:
 
     pushm.a     #7, r10                     /* push r4 to r10 */
 
-    mov         #tpl_kern, r11              /* Get the s_running slot of tpl_kern in r11 */
+    mov         &tpl_kern, r11              /* Get the s_running slot of tpl_kern in r11 */
     mov         @r11, r11                   /* get the pointer to the context (SP alone) */
     mov         r1, @r11                    /* Save the stack pointer */
 
     mov         r13, r1                     /* Switch back to the kernel stack */
     mov         #1, REG_RETARG
     add         #2, r1                      /* "pop" the PSP which is no longer usefull */
-    call        tpl_run_elected
+    call        #tpl_run_elected
 
-    mov         #tpl_kern, r11              /* Get the s_runnign slot of tpl_kern in r11 */
+    mov         &tpl_kern, r11              /* Get the s_runnign slot of tpl_kern in r11 */
     mov         @r11, r11                   /* Get the pointer to the context (SP alone) */
     mov         @r11, r1                    /* Get the stack  pointer */
 
+    sub         #2, r1                      /* need to push to match memory organization*/
     popm.a      #7, r10                     /* Pop r4 to r10 */
 
 tpl_TIMER3_A0_Handler_no_context_switch:

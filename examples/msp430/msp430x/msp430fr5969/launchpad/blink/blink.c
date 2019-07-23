@@ -6,15 +6,17 @@
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
-	P4DIR |= 1<<6; //P4.6 as output (red led)
-	P1DIR |= 1<<1; //P1.0 as output (green led)
+	//P1DIR = 0x01; //P1.0 as output (green led)
+	//P1OUT = 0x00;
+	P1DIR = 0x41;
+	P1OUT = 0x01;
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }
 
 TASK(blink)
 {
-	P4OUT ^= 1<<6; //toggle led.
+	P1OUT ^= 0x41; //toggle led.
 	//ActivateTask(task_4);
 	//ChainTask(task_4);
 	//ActivateTask(task_3);
@@ -48,14 +50,14 @@ TASK(task_4)
 #include "tpl_memmap.h"
 
 //extern VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc;
-FUNC(tpl_bool, OS_CODE) __attribute__((interrupt(TIMER3_A0_VECTOR))) tpl_tick_SystemCounter(void)
-{
-//  tpl_counter_tick(&SystemCounter_counter_desc);
-//
-//  if (tpl_kern.need_schedule == TRUE)
-//  {
-//    tpl_schedule_from_running();
-//  }
+//extern FUNC(tpl_bool, OS_CODE) __attribute__((interrupt(TIMER3_A0_VECTOR))) tpl_tick_TIMER3_A0_VECTOR(void);
+/*{
+  tpl_counter_tick(&SystemCounter_counter_desc);
+
+  if (tpl_kern.need_schedule == TRUE)
+  {
+    tpl_schedule_from_running();
+  }
   return TRUE;
-}
+}*/
 
