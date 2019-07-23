@@ -6,9 +6,10 @@
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
-	//P1DIR = 0x01; //P1.0 as output (green led)
-	//P1OUT = 0x00;
-	P1DIR = 0x41;
+	// Disable the GPIO power-on default high-impedance mode
+    // to activate previously configured port settings
+    PM5CTL0 &= ~LOCKLPM5;
+	P1DIR = 0x01;
 	P1OUT = 0x01;
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
@@ -16,7 +17,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(blink)
 {
-	P1OUT ^= 0x41; //toggle led.
+	P1OUT ^= 0x01; //toggle led.
 	//ActivateTask(task_4);
 	//ChainTask(task_4);
 	//ActivateTask(task_3);
