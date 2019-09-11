@@ -4,22 +4,31 @@
  * MSP430 configuration file
  */
 
+
 IMPLEMENTATION msp430fr5969 {
 
   INTERRUPT [] {
     UINT32 ADDRESS;
     IDENTIFIER HANDLER;
   };
-      
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
 };
 
 CPU msp430fr5969 {
 
+  COUNTER SystemCounter {
+    SOURCE = TIMER3_A0_VECTOR;
+  };
+
   PLATFORM_FILES msp430x {
     PATH  =  "msp430/msp430x";
-	CFILE =  "tpl_machine.c";
+	CFILE =  "tpl_machine_msp430x.c";
 	CFILE =  "tpl_startup.c";
+    CFILE =  "tpl_vectors.c";
 	ASFILE = "tpl_startup.S";
+    ASFILE = "tpl_sc_handler.S";
   };
   
   GENERATED_FILES msp430x {

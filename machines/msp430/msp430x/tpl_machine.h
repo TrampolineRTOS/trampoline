@@ -24,20 +24,21 @@
 #include "tpl_os_std_types.h"
 #include "tpl_os_custom_types.h"
 
-typedef uint16 tpl_stack_word;
-typedef uint16 tpl_stack_size;
+#include "tpl_machine_msp430x.h"
+
+//typedef uint16 tpl_stack_word;
+//typedef uint16 tpl_stack_size;
 
 /**
  * @def SIZE_OF_IDLE_TASK
  *
  * The size of the stack of the idle task
  */
-#define IDLE_STACK_SIZE  16
+#define IDLE_STACK_SIZE  100
 
-struct MSP430X_CONTEXT {
-  uint32  sp;
+struct TPL_CONTEXT {
+  uint16  sp;
 };
-
 
 //typedef struct TPL_CONTEXT tpl_context;
 
@@ -45,13 +46,15 @@ typedef struct MSP430X_CONTEXT *tpl_context;
 
 extern struct MSP430X_CONTEXT idle_task_context;
 
+//extern unsigned long _estack;
+
 /**
  * Stack definition
  */
-typedef struct TPL_STACK {
+/*typedef struct TPL_STACK {
     tpl_stack_word  *stack_zone;
     tpl_stack_size  stack_size;
-} tpl_stack;
+} tpl_stack;*/
 
 /*
  * Configuration of systick timer (can be a generic timer if systick is not available
