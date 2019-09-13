@@ -40,8 +40,8 @@
 	.type tpl_reset_handler, %function
 
 tpl_reset_handler:
-	/* watchdog support */
 
+	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
 	mov     #0x5a80, &__WDTCTL 
 /* #else 
@@ -49,6 +49,11 @@ tpl_reset_handler:
 	bis	#0x5a08, r5
 	mov	r5, &__wdt_clear_value  
 #endif */
+
+	/* disable interrupts at startup
+	 * they will be enabled when the first task wil start (including idle task)
+	*/
+	dint
 
 	/* init stack */
 	mov     #_estack-2, r1
