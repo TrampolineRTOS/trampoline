@@ -1,16 +1,15 @@
 OIL_VERSION = "2.5";
 
 IMPLEMENTATION trampoline {
+  /* This fix the default STACKSIZE of tasks */
+  TASK {
+    UINT32 STACKSIZE = 100 ;
+  } ;
 
-    /* This fix the default STACKSIZE of tasks */
-    TASK {
-        UINT32 STACKSIZE = 100 ;
-    } ;
-
-    /* This fix the default STACKSIZE of ISRs */
-    ISR {
-        UINT32 STACKSIZE = 100 ;
-    } ;
+  /* This fix the default STACKSIZE of ISRs */
+  ISR {
+    UINT32 STACKSIZE = 100 ;
+  } ;
 };
 
 CPU blink {
@@ -44,34 +43,11 @@ CPU blink {
   
   TASK blink {
     PRIORITY = 3;
-    AUTOSTART = FALSE;/*TRUE {
-      APPMODE = std;
-    };*/
-    ACTIVATION = 1;
-    SCHEDULE = FULL;
-  };
-
-  TASK task_2 {
-    PRIORITY = 2;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  TASK task_3 {
-    PRIORITY = 2;
-    AUTOSTART = FALSE;
-    ACTIVATION = 1;
-    SCHEDULE = FULL;
-  };
-
-  TASK task_4 {
-    PRIORITY = 0;
-    AUTOSTART = FALSE;
-    ACTIVATION = 1;
-    SCHEDULE = FULL;
-  };
-  
   ALARM blink_blink {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
@@ -79,8 +55,8 @@ CPU blink {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 500;
-      CYCLETIME = 500;
+      ALARMTIME = 50;
+      CYCLETIME = 50;
     };
   };
 };
