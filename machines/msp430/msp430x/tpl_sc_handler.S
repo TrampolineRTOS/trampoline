@@ -221,7 +221,6 @@ TIMER3_A0_Handler:
     mov         @r11, r11                   /* Get the pointer to the context (SP alone) */
     mov         @r11, r1                    /* Get the stack  pointer */
 
-    sub         #2, r1                      /* need to push to match memory organization*/
     popm.a      #7, r10                     /* Pop r4 to r10 */
 
 tpl_TIMER3_A0_Handler_no_context_switch:

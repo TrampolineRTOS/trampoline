@@ -27,7 +27,7 @@ void tpl_continue_reset_handler(void)
 	  * p = 0 ;
 	  p ++ ;
 	}
-	---------4- Init .data section 
+	//---------4- Init .data section 
 	extern unsigned __data_start ;
 	extern unsigned __data_end ;
 	extern unsigned __data_load_start ;
