@@ -58,7 +58,6 @@ tpl_reset_handler:
 	/* init stack */
 	mov     #_estack-2, r1
 
-
 	call    #tpl_continue_reset_handler
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

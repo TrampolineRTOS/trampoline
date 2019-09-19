@@ -17,41 +17,47 @@
 
 //we save 14 registers: from top
 // Each register uses 32 bits (20 bits in hardware), but SR and SP are merged.
-// --------------------------------------
-// |  PC (high)                         | 
-// |  PC (low) & SR                     | 
-// |  REG_RETARG (ABI dependent) - high | 
-// |  REG_RETARG (ABI dependent) - low  | 
-// |  ARG (ABIdependent) - high         | 
-// |  ARG (ABIdependent) - low          | 
-// |  ARG (ABIdependent) - high         | 
-// |  ARG (ABIdependent) - low          | 
-// |  ARG (ABIdependent) - high         | 
-// |  ARG (ABIdependent) - low          | 
-// |  R11 - high                        | 
-// |  R11 - low                         | 
-// |  R10 - high                        | 
-// |  R10 - low                         | 
-// |  R9  - high                        | 
-// |  R9  - low                         | 
-// |  R8  - high                        | 
-// |  R8  - low                         | 
-// |  R7  - high                        | 
-// |  R7  - low                         | 
-// |  R6  - high                        | 
-// |  R6  - low                         | 
-// |  R5  - high                        | 
-// |  R5  - low                         | 
-// |  R4  - high                        | 
-// |  R4  - low                         | 
-#define MSP430X_CORE_EXCEPTION_FRAME_SIZE ((uint16)52)
+// -----------------------------------------
+// | 26  @ of CallTerminate(ISR/Task)      |
+// | 25  PC (high)                         | 
+// | 24  PC (low) & SR                     | 
+// | 23  REG_RETARG (ABI dependent) - high | 
+// | 22  REG_RETARG (ABI dependent) - low  | 
+// | 21  ARG (ABIdependent) - high         | 
+// | 20  ARG (ABIdependent) - low          | 
+// | 19  ARG (ABIdependent) - high         | 
+// | 18  ARG (ABIdependent) - low          | 
+// | 17  ARG (ABIdependent) - high         | 
+// | 16  ARG (ABIdependent) - low          | 
+// | 15  R11 - high                        | 
+// | 14  R11 - low                         | 
+// | 13  R10 - high                        | 
+// | 12  R10 - low                         | 
+// | 11  R9  - high                        | 
+// | 10  R9  - low                         | 
+// |  9  R8  - high                        | 
+// |  8  R8  - low                         | 
+// |  7  R7  - high                        | 
+// |  6  R7  - low                         | 
+// |  5  R6  - high                        | 
+// |  4  R6  - low                         | 
+// |  3  R5  - high                        | 
+// |  2  R5  - low                         | 
+// |  1  R4  - high                        | 
+// |  0  R4  - low                         | 
+#define MSP430X_CORE_EXCEPTION_FRAME_SIZE ((uint16)54)
+
+#define SR_IDX    24
+#define PC_IDX    25
+#define CALL_IDX  26 //call to terminateTask/ISR2.
+
 #define GPR_ON_EXCEPTION_FRAME  (13<<1) //we reserve 32bits/GPR
 
-extern uint32 tpl_reentrancy_counter;
+extern volatile uint8 tpl_reentrancy_counter;
 
 typedef struct MSP430X_CONTEXT
 {
-  uint16 stackPointer;  /* General purpose register r4 */
+	uint16 stackPointer;  /* General purpose register r4 */
 } msp430x_core_context;
 
 typedef uint16 tpl_stack_word;
@@ -62,7 +68,7 @@ typedef struct TPL_STACK {
     tpl_stack_size  stack_size;
 } tpl_stack;
 
-#define OS_STACK_PATTERN ((uint16)0xBEEF)	//16bit mcu
-#define OS_REG_PATTERN ((uint16)0xabcd)	//16bit mcu
+#define OS_STACK_PATTERN ((uint16)0xbeef)	//16bit mcu
+#define OS_REG_PATTERN   ((uint16)0xabcd)	//16bit mcu
 
 #endif

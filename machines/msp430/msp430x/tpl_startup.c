@@ -14,32 +14,30 @@
  */
 
 #include "tpl_os.h"
-//#include "tpl_compiler.h"
-//#include "tpl_os_interrupt_kernel.h"
 
 extern int main (void);
 
 void tpl_continue_reset_handler(void)
 {
-//---------3- Init .bss section
-  extern unsigned __bss_start__ ;
-  extern unsigned __bss_end__ ;
-  unsigned * p = & __bss_start__ ;
-  while (p != & __bss_end__) {
-    * p = 0 ;
-    p ++ ;
-  }
-//---------4- Init .data section 
-  extern unsigned __data_start ;
-  extern unsigned __data_end ;
-  extern unsigned __data_load_start ;
-  unsigned * pSrc = & __data_load_start ;
-  unsigned * pDest = & __data_start ;
-  while (pDest != & __data_end) {
-    * pDest = * pSrc ;
-    pDest ++ ;
-    pSrc ++ ;
-  }
+	//---------3- Init .bss section
+	extern unsigned __bss_start__ ;
+	extern unsigned __bss_end__ ;
+	unsigned * p = & __bss_start__ ;
+	while (p != & __bss_end__) {
+	  * p = 0 ;
+	  p ++ ;
+	}
+	---------4- Init .data section 
+	extern unsigned __data_start ;
+	extern unsigned __data_end ;
+	extern unsigned __data_load_start ;
+	unsigned * pSrc = & __data_load_start ;
+	unsigned * pDest = & __data_start ;
+	while (pDest != & __data_end) {
+	  * pDest = * pSrc ;
+	  pDest ++ ;
+	  pSrc ++ ;
+	}
 
 //---------5- Exec constructors for global variables
   /*extern void (* __preinit_array_start) (void) ;
@@ -58,6 +56,6 @@ void tpl_continue_reset_handler(void)
      ptr ++ ;
    }*/
 //---------7- Exécuter le programme utilisateur
-  main();
-  while (1) ;
+	main();
+	while (1) ;
 }
