@@ -32,14 +32,6 @@
 #include "tpl_app_custom_types.h"
 
 /**
- * tpl_tick is used for relative and absolute dates.
- * tpl_tick should be an unsigned datatype.
- *
- * Default aliased type is "unsigned long int"
- */
-typedef uint32 tpl_tick;
-
-/**
  * tpl_buffer is a pointer to a chunk of data in memory
  */
 typedef P2VAR(uint8, TYPEDEF, OS_APPL_DATA) tpl_buffer;

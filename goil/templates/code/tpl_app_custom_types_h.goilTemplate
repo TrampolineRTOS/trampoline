@@ -246,6 +246,18 @@ end if
 
 #endif /* WITH_AUTOSAR */
 
+/* target specific types */
+
+% template if exists tpl_target_specific_types or % 
+/**
+ * tpl_tick is used for relative and absolute dates.
+ * tpl_tick should be an unsigned datatype.
+ *
+ * Default aliased type is "unsigned long int"
+ */
+typedef uint32 tpl_tick;
+%end template%
+
 #endif /* TPL_APP_CUSTOM_TYPES_H */
 
 /* End of file % !FILENAME % */
