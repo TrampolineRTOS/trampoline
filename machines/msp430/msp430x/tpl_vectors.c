@@ -6,6 +6,7 @@
 
 extern FUNC(void, OS_CODE) tpl_reset_handler(void);
 extern FUNC(void, OS_CODE) TIMER3_A0_Handler(void);
+extern FUNC(void, OS_CODE) tpl_MPU_violation(void);
 
 
 /* Interrupt table vector -- start at 0xFF80 */
@@ -73,7 +74,7 @@ __attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, OS_CONST) tpl_it_
   (tpl_it_handler)tpl_null_it, /* TIMER0_B0_VECTOR     0xFFF6 Timer0_B7 CC0 */
   (tpl_it_handler)tpl_null_it, /* COMP_E_VECTOR        0xFFF8 Comparator E */
   (tpl_it_handler)tpl_null_it, /* UNMI_VECTOR          0xFFFA User Non-maskable */
-  (tpl_it_handler)tpl_null_it, /* SYSNMI_VECTOR        0xFFFC System Non-maskable */
+  (tpl_it_handler)tpl_MPU_violation, /* SYSNMI_VECTOR        0xFFFC System Non-maskable */
   (tpl_it_handler)tpl_reset_handler  /* RESET_VECTOR         0xFFFE Reset [Highest Priority] */
 };
 

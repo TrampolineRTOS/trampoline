@@ -14,8 +14,33 @@
  */
 
 #include "tpl_os.h"
+#include "msp430.h"
+
+/* MPU basic configuration:
+ * The MPU uses 2 register to split the memory in 3 chunks:
+ *  ------------  
+ * |            |
+ * | RW FRAM    |  FRAM with R/W access
+ * |   (seg3)   |
+ *  ------------ => MPU Segment 2 limit = 0xFFFF
+ * |            |
+ * | R/X FRAM   |  FRAM with R/eXecute access => code, interrupts
+ * |   (seg2)   |  should include 0xFF80-FFFF to prevent to "secure" the chip!
+ * |            |
+ *  ------------ => MPU Segment 1 limit = 0x4400 (start of FRAM)
+ * |     RAM    |
+ * |            |
+ * | peripheral |
+ * |   (seg1)   |
+ *  ------------  
+ */
+
+#define ADDR_LOW  0x4400
+#define ADDR_HIGH 0xffff
 
 extern int main (void);
+
+extern FUNC(void, OS_CODE) tpl_MPU_violation(void) {while(1);};
 
 void tpl_continue_reset_handler(void)
 {
@@ -39,6 +64,13 @@ void tpl_continue_reset_handler(void)
 	  pSrc ++ ;
 	}
 
+	//program MPU so that flash below 0xFFFF should not be overwritten
+	MPUCTL0  = 0xA500;         //password
+	MPUSEGB2 = ADDR_HIGH >> 4; //only 16 most significant bits.
+	MPUSEGB1 = ADDR_LOW  >> 4; //only 16 most significant bits.
+	MPUSAM   = 0x0353;         // Segment 3 => -WR (3), segment 2, X-R (5), segment 1 -WR (3)
+	MPUCTL0  = 0xA500 | MPUSEGIE | MPULOCK | MPUENA;         //it (SYSNMI)+lock+enable
+	
 //---------5- Exec constructors for global variables
   /*extern void (* __preinit_array_start) (void) ;
   extern void (* __preinit_array_end) (void) ;
