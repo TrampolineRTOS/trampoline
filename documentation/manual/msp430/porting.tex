@@ -92,6 +92,8 @@ Register & \emph{MSPGCC} & \emph{GCC compiler for MSP} \\
 \end{center}
 
 
+It can be noted that the arguments being passed through the low weight 16 bits of the registers, except perhaps for the far pointers, the arguments of the Trampoline services must fit on 16 bits. This limits the tick argument of the services related to alarms to 16 bits. 
+
 % Some Trampoline services use a pointer as an argument: \lstinline{GetTaskId}, \lstinline{GetTaskState}, \lstinline{GetAlarmBase}, \lstinline{GetAlarm}, \lstinline{GetEvent}, \lstinline{SendMessage}, \lstinline{ReceiveMessage}, \lstinline{GetCounterValue}, \lstinline{GetScheduleTableStatus} and \lstinline{GetApplica-}    \lstinline{tionState}. Since none of these services uses more than 2 arguments, a pointer to a high address will occupy 2 registers and the other argument only one. An AUTOSAR service is a problem: \lstinline{GetElapsedCounterValue}. This service takes 3 arguments, two of which are pointers. If the pointed data are in high addresses, some of the arguments will be passed through the stack. However, by forcing the storage of application data whose pointers have been passed to the OS in the lower memory, only 3 registers will be used. Not doing so would lead to unreasonable complexity of wrappers and of the services handler.
 
 \section{Stack}
@@ -197,16 +199,16 @@ The first thing to do is to compare the service id to the number of services to 
     jhs tpl_sc_handler_invalid_service_id
 \end{lstlisting}
 
-We need to make room (16 bytes) on the stack for volatile registers. It is not necessary to save them since the caller does not expect their values to be preserved. The two 16 bits words at the bottom of this area is for the \lstinline{REG_RETARG} which is not saved yet.
+We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operation system. Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. The 16 bit words at the bottom of this area is for the \lstinline{REG_RETARG} which is not saved yet.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    sub #16, r1
+    sub     #8, r1
 \end{lstlisting}
 
 The \sch\ needs one working register and we choose to use \lstinline{r11} which has to be saved on the process stack before using it.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    pushx.a r11
+    pushx.w r11
 \end{lstlisting}
 
 Then interrupts are disabled.
@@ -215,58 +217,58 @@ Then interrupts are disabled.
     dint
 \end{lstlisting}
 
+At that stage the stack is as follow:
+
+\begin{center}
+\begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
+\draw[thick] (0,0) rectangle ++(16,1); \node at (8,0.5) {saved r11};
+\draw[thick] (0,5) rectangle ++(16,1); \node at (8,5.5) {saved PC [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
+\draw[thick] (0,6) rectangle ++(16,1); \node at (14,6.5) {saved PC [19..16]};% \node at (10,5.5) {saved SR [11..0]};
+\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
+\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
+\draw (12,6) -- ++(0,1);
+\foreach \y in {1,2,3} {
+\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
+}
+\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {space of arg - will hold {\small REG\_RETARG}};
+\foreach \x in {0,16} \draw (\x,-.5) -- (\x,7.5);
+\node at (-.5,0.5) {SP$\rightarrow$};
+\foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
+\end{tikzpicture}
+\end{center}
+
+
+
 The bottom of the stack have to be updated to the normalized stack (i.e. the stack in an interrupt handler, figure \ref{fig:stackit}).
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    mov     22(r1), r11    /* Saved PC [19..16] -> r11                  */
-    mov     20(r1), 22(r1) /* Copy saved PC [15..0] at the good place   */
+    mov     12(r1), r11    /* Saved PC [19..16] -> r11                  */
+    mov     10(r1), 12(r1) /* Copy saved PC [15..0] at the good place   */
     swpb    r11            /* Get saved PC [19..16] in bits 11..8       */
     rlam.w  #4, r11        /* Shift them to bits 19..16                 */
     bis     r2, r11        /* Add the SR in its location at 11..0       */
     bis     #8, r11        /* set GIE bit (reset just before with dint) */
-    mov     r11, 20(r1)    /* The stack is ok                           */
+    mov     r11, 12(r1)    /* The stack is ok                           */
 \end{lstlisting}
 
 The stack is then as follow:
 
 \begin{center}
-\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.75}]
-%\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r10 [15..0]};
-%\foreach \x in {4,8,12} { \draw (\x,7) -- ++(0,.15);  \draw (\x,8) -- ++(0,-.15); }
-%\draw[thick] (0,6) rectangle ++(16,1); \node at (14,6.5) {saved r10 [19..16]};
-%\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
-\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved r11 [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
-\draw[thick] (0,12) rectangle ++(16,1); \node at (14,12.5) {saved r11 [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,12) rectangle ++(12,1);
-
-%\draw[thick] (0,3) rectangle ++(16,1); \node at (8,3.5) {saved PC [15..0]};
-%\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-%\draw[thick] (0,2) rectangle ++(16,1); \node at (14,2.5) {saved PC [19..16]};
-%\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
-
-\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-\draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]}; \node at (10,3.5) {saved SR [11..0]};
-\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-\draw (4,3) -- ++(0,1);
-%\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {service identifier};
-%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
-%\draw[thick] (0,0) rectangle ++(16,1); \node at (14,.5) {saved r11 [19..16]};
-%\draw (12,0) -- ++(0,1);
-%\draw[pattern=north west lines, pattern color=purple] (0,0) rectangle ++(12,1);
-
-\foreach \y in {6,7,...,11} {
+\begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
+\draw[thick] (0,0) rectangle ++(16,1); \node at (8,0.5) {saved r11};
+\draw[thick] (0,6) rectangle ++(16,1); \node at (8,6.5) {saved PC [15..0]};
+\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
+\draw[thick] (0,5) rectangle ++(16,1); \node at (2,5.5) {saved PC [19..16]}; \node at (10,5.5) {saved SR [11..0]};
+\foreach \x in {8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
+\draw (4,5) -- ++(0,1);
+\foreach \y in {1,2,3} {
 \draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
 }
-
-\draw[thick] (0,5) rectangle ++(16,1); \node at ($(8,5.5)$) {space of arg - will hold {\small REG\_RETARG} [15..0]};
-
-\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {space of arg - will hold {\small REG\_RETARG} [19..16]};
-
-\foreach \x in {0,16} \draw (\x,1.5) -- (\x,14.5);
-\node at (-.5,13.5) {SP$\rightarrow$};
-\foreach \offset in {0,2,...,22} \node[anchor=west] at ($(16.1,13.5-.5*\offset)$) {PTOS+\offset};
+\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {space of arg - will hold {\small REG\_RETARG}};
+\foreach \x in {0,16} \draw (\x,-.5) -- (\x,7.5);
+\node at (-.5,0.5) {SP$\rightarrow$};
+\foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
 \end{tikzpicture}
 \end{center}
 
@@ -278,12 +280,12 @@ The reentrancy counter is checked to prevent a switch to the kernel stack when e
     jnz   tpl_sc_handler_no_stack_switch
 \end{lstlisting}
 
-In case of stack switch, the process stack pointer is saved on the kernel stack
+In case of stack switch, the process stack pointer (PSP) is saved on the kernel stack
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov r1,r11
-    mov #tpl_kern_stack_bottom, r1
-    push r1
+    mov  r1,r11
+    mov  #tpl_kern_stack_bottom, r1
+    push r11
 \end{lstlisting}
 
 The kernel stack is as follow (\texttt{KTOS} stands for \emph{Kernel Top Of Stack}):
@@ -320,43 +322,42 @@ Call the service.
     call tpl_dispatch_table(REG_SID)
 \end{lstlisting}
 
-From there, \lstinline{REG_RETARG} holds the return value. It is put at its location in the process stack.
+From there, \lstinline{REG_RETARG} holds the return value. It is put at its location in the process stack. Also \lstinline{r13} and \lstinline{r14} become usable whatever is the ABI.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    pop	r13 //get back PSP => r13
-    movx.a REG_RETARG, 16(r13) //put in Process's stack
+    pop	    r13 //get back PSP => r13
+    movx.w  REG_RETARG, 8(r13) //put in Process's stack
 \end{lstlisting}
 
 Check the context switch condition in \lstinline{tpl_kern}.
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov   #tpl_kern, r11
-    tst.b TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    jz    tpl_sc_handler_no_context_switch
+    mov     #tpl_kern, r11
+    tst.b   TPL_KERN_OFFSET_NEED_SWITCH(r11)
+    jz      tpl_sc_handler_no_context_switch
 \end{lstlisting}
 
 Prepare the call to \lstinline{tpl_run_elected} by setting \lstinline{REG_RETARG} to 0, aka no save.
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov   #0, REG_RETARG
+    mov     #0, REG_RETARG
 \end{lstlisting}
 
 Test the \lstinline{NEED_SAVE} condition.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    bit.b #NEED_SAVE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    jz    tpl_sc_handler_no_save_running_context
+    bit.b   #NEED_SAVE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+    jz      tpl_sc_handler_no_save_running_context
 \end{lstlisting}
-Save the context. The MSP430 have a "push multiple words", but no "mov multiple word". So, we get back to process stack to benefit this instruction
+Save the context. The MSP430 have a ``push multiple words", but no ``move multiple word". So, we get back to process stack to benefit this instruction
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov    r1, r14	/* get a copy of the KSP to restore it later */
+    mov     r1, r14	/* get a copy of the KSP to restore it later */
 \end{lstlisting}
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    mov	   r13, r1	/* change stack to process stack */	
-    pushm.a #7, r10	/* Push r4 to r10 on process stack (save) */
-    mov	   r1, r13	/* get process stack back */	
+    mov     r13, r1	/* change stack to process stack */	
+    pushm.w #7, r10	/* Push r4 to r10 on process stack (save) */
 \end{lstlisting}
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov    r14, r1	/* get back to kernel stack */
+    mov     r14, r1	/* get back to kernel stack */
 \end{lstlisting}
 
 The whole context is now saved on process stack and the kernel stack has been cleaned. The saved context structure is shown at figure \ref{fig:context}.
@@ -405,17 +406,17 @@ The whole context is now saved on process stack and the kernel stack has been cl
 Now the stack pointer is saved in the dedicated location.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov &tpl_kern, r11  /* Get the s_running slot of tpl_kern in r11 */
-    mov @r11, r11       /* Get the pointer to the context (SP alone) */
-    mov r13, @r11        /* Save the stack pointer                    */
+    mov     &tpl_kern, r11  /* Get the s_running slot of tpl_kern in r11 */
+    mov     @r11, r11       /* Get the pointer to the context (SP alone) */
+    mov     r13, @r11       /* Save the stack pointer                    */
 \end{lstlisting}
 
 Prepare the argument of \lstinline{tpl_run_elected} : 1 (aka save) and call it after switching back to the kernel stack.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov #1, REG_RETARG
+    mov     #1, REG_RETARG
 tpl_sc_handler_no_save_running_context:
-    call tpl_run_elected
+    call    tpl_run_elected
 \end{lstlisting}
 
 \lstinline{tpl_run_elected} has copied the elected process slot of \lstinline{tpl_kern} to the \lstinline{running} slot. We load the stack pointer of the new running process.
