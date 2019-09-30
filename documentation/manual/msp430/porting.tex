@@ -14,7 +14,7 @@
 
 \newcommand{\sch}{\lstinline{tpl_sc_handler}}
 
-\title{MSP430X port}
+\title{MSP430X port - small memory model version}
 \author{Jean-Luc Béchennec}
 %\date{}							% Activate to display a given date or no date
 
@@ -27,7 +27,7 @@
 \begin{document}
 \maketitle
 
-Instruction set of the MSP430X is available in \cite{slau208q} or \cite{slau367o}.
+This document describes the small version for the CPUX of the Trampoline port on MSP430, which assumes that the code is hosted in the first 64kB of memory and therefore the addresses are stored on 16-bit words. Instruction set of the MSP430X is available in \cite{slau208q} or \cite{slau367o}.
 
 \section{ABI}
 
@@ -104,9 +104,9 @@ A service call is done using the \lstinline{CALLA} instruction in the service ca
 \begin{figure}[h]
 \caption{Service wrapper}
 \begin{lstlisting}
-    mov   #<service_id>, REG_SID
-    calla #tpl_sc_handler        /* call the service call handler */
-    ret                          /* return to the caller          */
+    mov  #<service_id>, REG_SID /* put the service id in the ad-hoc reg */
+    call #tpl_sc_handler        /* call the service call handler        */
+    ret                         /* return to the caller                 */
 \end{lstlisting}
 \label{lst:wrapper}
 \end{figure}
@@ -114,33 +114,33 @@ A service call is done using the \lstinline{CALLA} instruction in the service ca
 When in the \sch\ the stack is as shown at figure \ref{fig:stacksc}\footnote{stacks are drawn with the lower address up so they are growing upward, not downward. Each stack location is a 16 bits word.}. \texttt{PTOS} stands for \emph{Process Top Of Stack}.
 
 \begin{figure}[h]
-\caption{Stack in \sch}
+\caption{Stack at beginning of \sch}
 \centering
 \vspace{1em}
-\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.75}]
-\draw[thick] (0,3) rectangle ++(16,1); \node at (8,3.5) {saved PC [15..0]};
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.75}]
+\draw[thick] (0,3) rectangle ++(16,1); \node at (8,3.5) {saved PC};
 \foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-\draw[thick] (0,2) rectangle ++(16,1); \node at (14,2.5) {saved PC [19..16]};
+%\draw[thick] (0,2) rectangle ++(16,1); \node at (14,2.5) {saved PC [19..16]};
 %\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {service identifier};
 %\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
 %\draw[thick] (0,0) rectangle ++(16,1); \node at (14,.5) {saved r11 [19..16]};
 %\draw (12,0) -- ++(0,1);
 %\draw[pattern=north west lines, pattern color=purple] (0,0) rectangle ++(12,1);
-\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
-\foreach \x in {0,16} \draw (\x,1.5) -- (\x,4.5);
+%\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
+\foreach \x in {0,16} \draw (\x,2.5) -- (\x,4.5);
 \node at (-.5,3.5) {SP$\rightarrow$};
-\foreach \y/\offset in {3.5/0,2.5/2} \node at (17,\y) {PTOS+\offset};
+\foreach \y/\offset in {3.5/0,2.5/2} \node[anchor=west] at (16.1,\y) {PTOS+\offset};
 \end{tikzpicture}
 \label{fig:stacksc}
 \end{figure}
 
-When an interrupt is taken into account, the \lstinline{PC} and the \lstinline{SR} are pushed on the stack. To save space, the \lstinline{SR} is stored in the same 16-bit word as bits 19..16 of \lstinline{PC}. For an obscure reason, words are in reverse order and bits 19..16 of \lstinline{PC} are in high bits. The stack is shown at figure \ref{fig:stackit}.
+When an interrupt is taken into account, the \lstinline{PC} and the \lstinline{SR} are pushed on the stack. To save space, the \lstinline{SR} is stored in the same 16-bit word as bits 19..16 of \lstinline{PC}. For an obscure reason, words are in reverse order and bits 19..16 of \lstinline{PC} are in high bits. Since all the code is in the first 64kb of the memory, bits 19 to 16 of the PC are always 0. The stack is shown at figure \ref{fig:stackit}.
 
 \begin{figure}[h]
 \caption{Stack in an interrupt handler}
 \centering
 \vspace{1em}
-\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.75}]
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.75}]
 \draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
 \foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
 \draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]}; \node at (10,3.5) {saved SR [11..0]};
@@ -153,7 +153,7 @@ When an interrupt is taken into account, the \lstinline{PC} and the \lstinline{S
 %\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
 \foreach \x in {0,16} \draw (\x,1.5) -- (\x,4.5);
 \node at (-.5,3.5) {SP$\rightarrow$};
-\foreach \y/\offset in {3.5/0,2.5/2} \node at (17,\y) {PTOS+\offset};
+\foreach \y/\offset in {3.5/0,2.5/2} \node[anchor=west] at (16.1,\y) {PTOS+\offset};
 \end{tikzpicture}
 \label{fig:stackit}
 \end{figure}
@@ -195,75 +195,83 @@ The background color of the code snippets depends on the current active stack:
 The first thing to do is to compare the service id to the number of services to verify its validity.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    cmp #SYSCALL_COUNT, REG_SID
-    jhs tpl_sc_handler_invalid_service_id
+    cmp   #SYSCALL_COUNT, REG_SID
+    jlo   tpl_sc_handler_id_ok                /* continue if lower        */
+    ret                                       /* return if higher or same */
+tpl_sc_handler_id_ok:
 \end{lstlisting}
 
-We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operation system. Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. The 16 bit words at the bottom of this area is for the \lstinline{REG_RETARG} which is not saved yet.
+Check the reentrancy counter. If it is not zero, it means the service is called from a hook and has to be processed differently.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    sub     #8, r1
+    tst.b &tpl_reentrancy_counter
+    jnz   tpl_sc_handler_from_hook
+    inc.b &tpl_reentrancy_counter     /* It is zero, so it is incremented */
+\end{lstlisting}
+
+
+We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operating system. So we push the SR and we reset the 4 higher bits (high weight of PC). Interrupts are disabled so that the kernel cannot be interrupted.
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
+    push  sr
+    bic.b #0xF0,1(sp)              /* reset the 4 higher bits of saved SR */
+    dint
+\end{lstlisting}
+
+The stack is then as follow:
+
+\begin{center}
+\begin{tikzpicture}[xscale=0.6,yscale=-0.6, every node/.style={scale=0.75}]
+\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {saved PC};
+\draw[thick] (0,0) rectangle ++(16,1); \node at (10,0.5) {saved SR}; \node at (2,0.5) {0 0 0 0};
+\draw (4,0) -- ++(0,1);
+\foreach \y in {0,1} {
+	\foreach \x in {4,8,12} { \draw (\x,\y) -- ++(0,.15);  \draw ($(\x,\y+1)$) -- ++(0,-.15); }
+}
+%\draw[thick] (0,2) rectangle ++(16,1); \node at (14,2.5) {saved PC [19..16]};
+%\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {service identifier};
+%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
+%\draw[thick] (0,0) rectangle ++(16,1); \node at (14,.5) {saved r11 [19..16]};
+%\draw (12,0) -- ++(0,1);
+%\draw[pattern=north west lines, pattern color=purple] (0,0) rectangle ++(12,1);
+%\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
+\foreach \x in {0,16} \draw (\x,-0.5) -- (\x,2.5);
+\node at (-.5,0.5) {SP$\rightarrow$};
+\foreach \offset in {0,2} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
+\end{tikzpicture}
+\end{center}
+
+Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. The 16 bit words at the bottom of this area is for the \lstinline{REG_RETARG} which is not saved yet.
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
+    sub  #8, r1
 \end{lstlisting}
 
 The \sch\ needs one working register and we choose to use \lstinline{r11} which has to be saved on the process stack before using it.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    pushx.w r11
+    push r11
 \end{lstlisting}
 
-Then interrupts are disabled.
+At that stage the stack is shown in figure \ref{fig:stackShapeBeforeCallingService}.
 
-\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    dint
-\end{lstlisting}
-
-At that stage the stack is as follow:
-
+\begin{figure}[t]
+\caption{Stack shape before calling the service}
 \begin{center}
 \begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
 \draw[thick] (0,0) rectangle ++(16,1); \node at (8,0.5) {saved r11};
-\draw[thick] (0,5) rectangle ++(16,1); \node at (8,5.5) {saved PC [15..0]};
-%\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
-\draw[thick] (0,6) rectangle ++(16,1); \node at (14,6.5) {saved PC [19..16]};% \node at (10,5.5) {saved SR [11..0]};
-\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
-\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
-\draw (12,6) -- ++(0,1);
-\foreach \y in {1,2,3} {
-\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
-}
-\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {space of arg - will hold {\small REG\_RETARG}};
-\foreach \x in {0,16} \draw (\x,-.5) -- (\x,7.5);
-\node at (-.5,0.5) {SP$\rightarrow$};
-\foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
-\end{tikzpicture}
-\end{center}
-
-
-
-The bottom of the stack have to be updated to the normalized stack (i.e. the stack in an interrupt handler, figure \ref{fig:stackit}).
-
-\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    mov     12(r1), r11    /* Saved PC [19..16] -> r11                  */
-    mov     10(r1), 12(r1) /* Copy saved PC [15..0] at the good place   */
-    swpb    r11            /* Get saved PC [19..16] in bits 11..8       */
-    rlam.w  #4, r11        /* Shift them to bits 19..16                 */
-    bis     r2, r11        /* Add the SR in its location at 11..0       */
-    bis     #8, r11        /* set GIE bit (reset just before with dint) */
-    mov     r11, 12(r1)    /* The stack is ok                           */
-\end{lstlisting}
-
-The stack is then as shown at figure \ref{fig:contextBottom}.
-
-\begin{figure}[h!]
-\caption{Bottom of the context saved on stack}
-\begin{center}
-\begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
-\draw[thick] (0,0) rectangle ++(16,1); \node at (8,0.5) {saved r11};
-\draw[thick] (0,6) rectangle ++(16,1); \node at (8,6.5) {saved PC [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
-\draw[thick] (0,5) rectangle ++(16,1); \node at (2,5.5) {saved PC [19..16]}; \node at (10,5.5) {saved SR [11..0]};
-\foreach \x in {8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
+\draw[thick] (0,6) rectangle ++(16,1); \node at (8,6.5) {saved PC};
+\draw[thick] (0,5) rectangle ++(16,1); \node at (10,5.5) {saved SR}; \node at (2,5.5) {0 0 0 0};
 \draw (4,5) -- ++(0,1);
+\foreach \y in {5,6} {
+	\foreach \x in {4,8,12} { \draw (\x,\y) -- ++(0,.15);  \draw ($(\x,\y+1)$) -- ++(0,-.15); }
+}
+%\draw[thick] (0,5) rectangle ++(16,1); \node at (8,5.5) {saved PC [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
+%\draw[thick] (0,6) rectangle ++(16,1); \node at (14,6.5) {saved PC [19..16]};% \node at (10,5.5) {saved SR [11..0]};
+%\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
+%\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
+%\draw (12,6) -- ++(0,1);
 \foreach \y in {1,2,3} {
 \draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
 }
@@ -273,17 +281,48 @@ The stack is then as shown at figure \ref{fig:contextBottom}.
 \foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
 \end{tikzpicture}
 \end{center}
-\label{fig:contextBottom}
+\label{fig:stackShapeBeforeCallingService}
 \end{figure}
 
-The reentrancy counter is checked to prevent a switch to the kernel stack when executing a service called by a hook.
 
-\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    tst.b &tpl_reentrancy_counter
-    jnz   tpl_sc_handler_no_stack_switch
-\end{lstlisting}
 
-In case of stack switch, the process stack pointer (PSP) is saved on the kernel stack
+%The bottom of the stack have to be updated to the normalized stack (i.e. the stack in an interrupt handler, figure \ref{fig:stackit}).
+%
+%\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
+%    mov     12(r1), r11    /* Saved PC [19..16] -> r11                  */
+%    mov     10(r1), 12(r1) /* Copy saved PC [15..0] at the good place   */
+%    swpb    r11            /* Get saved PC [19..16] in bits 11..8       */
+%    rlam.w  #4, r11        /* Shift them to bits 19..16                 */
+%    bis     r2, r11        /* Add the SR in its location at 11..0       */
+%    bis     #8, r11        /* set GIE bit (reset just before with dint) */
+%    mov     r11, 12(r1)    /* The stack is ok                           */
+%\end{lstlisting}
+%
+%The stack is then as shown at figure \ref{fig:contextBottom}.
+%
+%\begin{figure}[h!]
+%\caption{Bottom of the context saved on stack}
+%\begin{center}
+%\begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
+%\draw[thick] (0,0) rectangle ++(16,1); \node at (8,0.5) {saved r11};
+%\draw[thick] (0,6) rectangle ++(16,1); \node at (8,6.5) {saved PC [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
+%\draw[thick] (0,5) rectangle ++(16,1); \node at (2,5.5) {saved PC [19..16]}; \node at (10,5.5) {saved SR [11..0]};
+%\foreach \x in {8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
+%\draw (4,5) -- ++(0,1);
+%\foreach \y in {1,2,3} {
+%\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
+%}
+%\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {space of arg - will hold {\small REG\_RETARG}};
+%\foreach \x in {0,16} \draw (\x,-.5) -- (\x,7.5);
+%\node at (-.5,0.5) {SP$\rightarrow$};
+%\foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
+%\end{tikzpicture}
+%\end{center}
+%\label{fig:contextBottom}
+%\end{figure}
+
+Before calling the service, we setup the kernel stack. The process stack pointer (PSP) is saved in r11, then SP is loaded to the kernel stack bottom and the PSP is saved on the kernel stack.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
     mov  r1,r11
@@ -303,13 +342,6 @@ The kernel stack is as follow (\texttt{KTOS} stands for \emph{Kernel Top Of Stac
 \end{tikzpicture}
 \end{center}
 
-Increment the reentrancy counter.
-
-\begin{lstlisting}[backgroundcolor=\color{red!15}]
-tpl_sc_handler_no_stack_switch:
-    inc.b &tpl_reentrancy_counter
-\end{lstlisting}
-
 Init the \lstinline{NEED_SWITCH}/\lstinline{SAVE} in \lstinline{tpl_kern}.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
@@ -328,8 +360,8 @@ Call the service.
 From there, \lstinline{REG_RETARG} holds the return value. It is put at its location in the process stack. Also \lstinline{r13} and \lstinline{r14} become usable whatever is the ABI.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    pop	    r13 //get back PSP => r13
-    movx.w  REG_RETARG, 8(r13) //put in Process's stack
+    mov  @r1, r13           //get back PSP => r13
+    mov  REG_RETARG, 8(r13) //put in Process's stack
 \end{lstlisting}
 
 Check the context switch condition in \lstinline{tpl_kern}.
@@ -374,9 +406,9 @@ The whole context is now saved on process stack and the kernel stack has been cl
 	\draw[thick] ($(0,\r-4)$) rectangle ++(16,1); \node at ($(8,\r-4+.5)$) {saved r\r};
 }
 \draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r11};
-\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved PC [15..0]};
+\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved PC};
 \foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
-\draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {saved PC [19..16]}; \node at (10,12.5) {saved SR [11..0]};
+\draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {0 0 0 0}; \node at (10,12.5) {saved SR};
 \foreach \x in {8,12} { \draw (\x,12) -- ++(0,.15);  \draw (\x,13) -- ++(0,-.15); }
 \draw (4,12) -- ++(0,1);
 \foreach \y in {8,9,10} {
@@ -424,56 +456,56 @@ Now, the context of the new running process is loaded. At start it has the same 
     jmp    tpl_sc_end_of_context_switch
 \end{lstlisting}
 
-The process stack is then as in figure \ref{fig:contextBottom}.
+The process stack is then as in figure \ref{fig:stackShapeBeforeCallingService}.
 
-\begin{figure}[h!]
-\caption{Process stack just loaded}
-\begin{center}
-\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.75}]
-%\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r10 [15..0]};
-%\foreach \x in {4,8,12} { \draw (\x,7) -- ++(0,.15);  \draw (\x,8) -- ++(0,-.15); }
-%\draw[thick] (0,6) rectangle ++(16,1); \node at (14,6.5) {saved r10 [19..16]};
-%\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
-\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved r11 [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
-\draw[thick] (0,12) rectangle ++(16,1); \node at (14,12.5) {saved r11 [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,12) rectangle ++(12,1);
-%\draw[thick] (0,3) rectangle ++(16,1); \node at (8,3.5) {saved PC [15..0]};
+%\begin{figure}[h!]
+%\caption{Process stack just loaded}
+%\begin{center}
+%\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.75}]
+%%\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r10 [15..0]};
+%%\foreach \x in {4,8,12} { \draw (\x,7) -- ++(0,.15);  \draw (\x,8) -- ++(0,-.15); }
+%%\draw[thick] (0,6) rectangle ++(16,1); \node at (14,6.5) {saved r10 [19..16]};
+%%\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
+%\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved r11 [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
+%\draw[thick] (0,12) rectangle ++(16,1); \node at (14,12.5) {saved r11 [19..16]};
+%\draw[pattern=north west lines, pattern color=purple] (0,12) rectangle ++(12,1);
+%%\draw[thick] (0,3) rectangle ++(16,1); \node at (8,3.5) {saved PC [15..0]};
+%%\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
+%%\draw[thick] (0,2) rectangle ++(16,1); \node at (14,2.5) {saved PC [19..16]};
+%%\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
+%
+%\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
 %\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-%\draw[thick] (0,2) rectangle ++(16,1); \node at (14,2.5) {saved PC [19..16]};
-%\draw[pattern=north west lines, pattern color=purple] (0,2) rectangle ++(12,1);
-
-\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-\draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]};
-\draw[thick] (0,3) rectangle ++(16,1); \node at (10,3.5) {saved SR [11..0]};
-\foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,3) -- ++(0,-.15); }
-\draw (4,3) -- ++(0,1);
-
-
-%\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {service identifier};
-%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
-%\draw[thick] (0,0) rectangle ++(16,1); \node at (14,.5) {saved r11 [19..16]};
-%\draw (12,0) -- ++(0,1);
-%\draw[pattern=north west lines, pattern color=purple] (0,0) rectangle ++(12,1);
-
-\foreach \y in {6,7,...,11} {
-\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
-\foreach \x in {4,8,12} { \draw (\x,\y) -- ++(0,.15);  \draw ($(\x,\y+1)$) -- ++(0,-.15); }
-}
-
-\draw[thick] (0,5) rectangle ++(16,1); \node at ($(8,5.5)$) {\small REG\_RETARG [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw ($(\x,6)$) -- ++(0,-.15); }
-\draw[thick] (0,4) rectangle ++(16,1); \node at ($(14,4.5)$) {\scriptsize REG\_RETARG [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,4) rectangle ++(12,1);
-
-\foreach \x in {0,16} \draw (\x,1.5) -- (\x,14.5);
-\node at (-.5,13.5) {SP$\rightarrow$};
-\foreach \offset in {0,2,...,22} \node[anchor=west] at ($(16.1,13.5-.5*\offset)$) {PTOS+\offset};
-\end{tikzpicture}
-\end{center}
-\label{fig:processStackLoaded}
-\end{figure}
+%\draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]};
+%\draw[thick] (0,3) rectangle ++(16,1); \node at (10,3.5) {saved SR [11..0]};
+%\foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,3) -- ++(0,-.15); }
+%\draw (4,3) -- ++(0,1);
+%
+%
+%%\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {service identifier};
+%%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
+%%\draw[thick] (0,0) rectangle ++(16,1); \node at (14,.5) {saved r11 [19..16]};
+%%\draw (12,0) -- ++(0,1);
+%%\draw[pattern=north west lines, pattern color=purple] (0,0) rectangle ++(12,1);
+%
+%\foreach \y in {6,7,...,11} {
+%\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
+%\foreach \x in {4,8,12} { \draw (\x,\y) -- ++(0,.15);  \draw ($(\x,\y+1)$) -- ++(0,-.15); }
+%}
+%
+%\draw[thick] (0,5) rectangle ++(16,1); \node at ($(8,5.5)$) {\small REG\_RETARG [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw ($(\x,6)$) -- ++(0,-.15); }
+%\draw[thick] (0,4) rectangle ++(16,1); \node at ($(14,4.5)$) {\scriptsize REG\_RETARG [19..16]};
+%\draw[pattern=north west lines, pattern color=purple] (0,4) rectangle ++(12,1);
+%
+%\foreach \x in {0,16} \draw (\x,1.5) -- (\x,14.5);
+%\node at (-.5,13.5) {SP$\rightarrow$};
+%\foreach \offset in {0,2,...,22} \node[anchor=west] at ($(16.1,13.5-.5*\offset)$) {PTOS+\offset};
+%\end{tikzpicture}
+%\end{center}
+%\label{fig:processStackLoaded}
+%\end{figure}
 
 In case of no context switch, we have to get to the process stack, stored in r13
 
@@ -504,49 +536,71 @@ The context that shoud be set during the task's initialisation (\texttt{tpl\_ini
 \begin{figure}[h!]
 \caption{Context initialisation}
 \begin{center}
-\begin{tikzpicture}[scale=0.55, every node/.style={scale=0.75}]
-
-\foreach \reg/\y in {10/7,9/9,8/11,7/13,6/15,5/17,4/19} {
-\draw[thick] ($(0,\y+8)$) rectangle ++(16,1); \node at ($(8,\y+8.5)$) {saved r\reg [15..0]};
-\foreach \x in {4,8,12} { \draw ($(\x,\y+8)$) -- ++(0,.15);  \draw ($(\x,\y+9)$) -- ++(0,-.15); }
-\draw[thick] ($(0,\y+7)$) rectangle ++(16,1); \node at ($(14,\y+7.5)$) {saved r\reg [19..16]};
-\draw[pattern=north west lines, pattern color=purple] ($(0,\y+7)$) rectangle ++(12,1);
+\begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
+\foreach \r in {4,5,...,10} {
+	\draw[thick] ($(0,\r-4)$) rectangle ++(16,1); \node at ($(8,\r-4+.5)$) {saved r\r};
 }
-
-\draw[thick] (0,5) rectangle ++(16,1); \node at (8,5.5) {\small REG\_RETARG [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,23) -- ++(0,.15);  \draw (\x,5) -- ++(0,-.15); }
-\draw[thick] (0,4) rectangle ++(16,1); \node at (14,4.5) {\scriptsize REG\_RETARG [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,4) rectangle ++(12,1);
-
-
-\foreach \y in {6,7,...,11} {
-\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
+\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r11};
+\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved PC [15..0]};
+\foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
+\draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {saved PC [19..16]}; \node at (10,12.5) {saved SR [11..0]};
+\foreach \x in {8,12} { \draw (\x,12) -- ++(0,.15);  \draw (\x,13) -- ++(0,-.15); }
+\draw (4,12) -- ++(0,1);
+\foreach \y in {8,9,10} {
+	\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
 }
-
-%\draw[thick] (0,6) rectangle ++(16,1); \node at (8,6.5) {saved r15};
-%\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
-
-\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved r11 [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
-\draw[thick] (0,12) rectangle ++(16,1); \node at (14,12.5) {saved r11 [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,12) rectangle ++(12,1);
-
-\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-\draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]};
-\draw[thick] (0,3) rectangle ++(16,1); \node at (10,3.5) {saved SR [11..0]};
-\foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,3) -- ++(0,-.15); }
-\draw (4,3) -- ++(0,1);
-\foreach \x in {0,16} \draw (\x,1.5) -- (\x,28.5);
-\node at (-.5,27.5) {SP$\rightarrow$};
-\foreach \offset in {0,2,...,52} \node[anchor=west] at ($(16.1,27.5-.5*\offset)$) {PTOS+\offset};
-%22.5/0,21.5/2,20.5/4,19.5/6,18.5/8,17.5/10,16.5/12,15.5/14,14.5/16,13.5/18,
-%12.5/20,11.5/22,10.5/24,9.5/26,8.5/28,7.5/30,6.5/32,5.5/34,4.5/36,3.5/38,2.5/40,
-%1.5/42,0.5/44,-.5/46,-1.5/48,-2.5/50,-3.5/52,-4.5/54
-%} \node[anchor=west] at ($(16.1,\y+7)$) {PTOS+\offset};
-\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {CallTerminateXXX [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
+\draw[thick] (0,11) rectangle ++(16,1); \node at ($(8,11.5)$) {{\small REG\_RETARG}};
+\draw[thick] (0,14) rectangle ++(16,1); \node at (8,14.5) {CallTerminateXXX [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
+\foreach \x in {0,16} \draw (\x,-.5) -- (\x,15.5);
+\node at (-.5,0.5) {SP$\rightarrow$};
+\foreach \offset in {0,2,...,28} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
 \end{tikzpicture}
+
+
+%\begin{tikzpicture}[scale=0.55, every node/.style={scale=0.75}]
+%
+%\foreach \reg/\y in {10/7,9/9,8/11,7/13,6/15,5/17,4/19} {
+%\draw[thick] ($(0,\y+8)$) rectangle ++(16,1); \node at ($(8,\y+8.5)$) {saved r\reg [15..0]};
+%\foreach \x in {4,8,12} { \draw ($(\x,\y+8)$) -- ++(0,.15);  \draw ($(\x,\y+9)$) -- ++(0,-.15); }
+%\draw[thick] ($(0,\y+7)$) rectangle ++(16,1); \node at ($(14,\y+7.5)$) {saved r\reg [19..16]};
+%\draw[pattern=north west lines, pattern color=purple] ($(0,\y+7)$) rectangle ++(12,1);
+%}
+%
+%\draw[thick] (0,5) rectangle ++(16,1); \node at (8,5.5) {\small REG\_RETARG [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,23) -- ++(0,.15);  \draw (\x,5) -- ++(0,-.15); }
+%\draw[thick] (0,4) rectangle ++(16,1); \node at (14,4.5) {\scriptsize REG\_RETARG [19..16]};
+%\draw[pattern=north west lines, pattern color=purple] (0,4) rectangle ++(12,1);
+%
+%
+%\foreach \y in {6,7,...,11} {
+%\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
+%}
+%
+%%\draw[thick] (0,6) rectangle ++(16,1); \node at (8,6.5) {saved r15};
+%%\foreach \x in {4,8,12} { \draw (\x,6) -- ++(0,.15);  \draw (\x,7) -- ++(0,-.15); }
+%
+%\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved r11 [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
+%\draw[thick] (0,12) rectangle ++(16,1); \node at (14,12.5) {saved r11 [19..16]};
+%\draw[pattern=north west lines, pattern color=purple] (0,12) rectangle ++(12,1);
+%
+%\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
+%\draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]};
+%\draw[thick] (0,3) rectangle ++(16,1); \node at (10,3.5) {saved SR [11..0]};
+%\foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,3) -- ++(0,-.15); }
+%\draw (4,3) -- ++(0,1);
+%\foreach \x in {0,16} \draw (\x,1.5) -- (\x,28.5);
+%\node at (-.5,27.5) {SP$\rightarrow$};
+%\foreach \offset in {0,2,...,52} \node[anchor=west] at ($(16.1,27.5-.5*\offset)$) {PTOS+\offset};
+%%22.5/0,21.5/2,20.5/4,19.5/6,18.5/8,17.5/10,16.5/12,15.5/14,14.5/16,13.5/18,
+%%12.5/20,11.5/22,10.5/24,9.5/26,8.5/28,7.5/30,6.5/32,5.5/34,4.5/36,3.5/38,2.5/40,
+%%1.5/42,0.5/44,-.5/46,-1.5/48,-2.5/50,-3.5/52,-4.5/54
+%%} \node[anchor=west] at ($(16.1,\y+7)$) {PTOS+\offset};
+%\draw[thick] (0,1) rectangle ++(16,1); \node at (8,1.5) {CallTerminateXXX [15..0]};
+%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
+%\end{tikzpicture}
 \end{center}
 \label{fig:contextInit}
 \end{figure}
