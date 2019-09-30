@@ -252,8 +252,10 @@ The bottom of the stack have to be updated to the normalized stack (i.e. the sta
     mov     r11, 12(r1)    /* The stack is ok                           */
 \end{lstlisting}
 
-The stack is then as follow:
+The stack is then as shown at figure \ref{fig:contextBottom}.
 
+\begin{figure}[h!]
+\caption{Bottom of the context saved on stack}
 \begin{center}
 \begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
 \draw[thick] (0,0) rectangle ++(16,1); \node at (8,0.5) {saved r11};
@@ -271,7 +273,8 @@ The stack is then as follow:
 \foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
 \end{tikzpicture}
 \end{center}
-
+\label{fig:contextBottom}
+\end{figure}
 
 The reentrancy counter is checked to prevent a switch to the kernel stack when executing a service called by a hook.
 
@@ -362,42 +365,27 @@ Save the context. The MSP430 have a ``push multiple words", but no ``move multip
 
 The whole context is now saved on process stack and the kernel stack has been cleaned. The saved context structure is shown at figure \ref{fig:context}.
 
+
 \begin{figure}[h!]
 \caption{Context saved on stack}
 \begin{center}
-\begin{tikzpicture}[scale=0.55, every node/.style={scale=0.75}]
-
-\foreach \reg/\y in {10/7,9/9,8/11,7/13,6/15,5/17,4/19} {
-\draw[thick] ($(0,\y+8)$) rectangle ++(16,1); \node at ($(8,\y+8.5)$) {saved r\reg [15..0]};
-\foreach \x in {4,8,12} { \draw ($(\x,\y+8)$) -- ++(0,.15);  \draw ($(\x,\y+9)$) -- ++(0,-.15); }
-\draw[thick] ($(0,\y+7)$) rectangle ++(16,1); \node at ($(14,\y+7.5)$) {saved r\reg [19..16]};
-\draw[pattern=north west lines, pattern color=purple] ($(0,\y+7)$) rectangle ++(12,1);
+\begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
+\foreach \r in {4,5,...,10} {
+	\draw[thick] ($(0,\r-4)$) rectangle ++(16,1); \node at ($(8,\r-4+.5)$) {saved r\r};
 }
-
-\draw[thick] (0,5) rectangle ++(16,1); \node at (8,5.5) {\small REG\_RETARG [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,23) -- ++(0,.15);  \draw (\x,5) -- ++(0,-.15); }
-\draw[thick] (0,4) rectangle ++(16,1); \node at (14,4.5) {\scriptsize REG\_RETARG [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,4) rectangle ++(12,1);
-
-
-\foreach \y in {6,7,...,11} {
-\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
+\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r11};
+\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved PC [15..0]};
+\foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
+\draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {saved PC [19..16]}; \node at (10,12.5) {saved SR [11..0]};
+\foreach \x in {8,12} { \draw (\x,12) -- ++(0,.15);  \draw (\x,13) -- ++(0,-.15); }
+\draw (4,12) -- ++(0,1);
+\foreach \y in {8,9,10} {
+	\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
 }
-
-\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved r11 [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
-\draw[thick] (0,12) rectangle ++(16,1); \node at (14,12.5) {saved r11 [19..16]};
-\draw[pattern=north west lines, pattern color=purple] (0,12) rectangle ++(12,1);
-
-\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {saved PC [15..0]};
-\foreach \x in {4,8,12} { \draw (\x,3) -- ++(0,.15);  \draw (\x,4) -- ++(0,-.15); }
-\draw[thick] (0,3) rectangle ++(16,1); \node at (2,3.5) {saved PC [19..16]};
-\draw[thick] (0,3) rectangle ++(16,1); \node at (10,3.5) {saved SR [11..0]};
-\foreach \x in {4,8,12} { \draw (\x,2) -- ++(0,.15);  \draw (\x,3) -- ++(0,-.15); }
-\draw (4,3) -- ++(0,1);
-\foreach \x in {0,16} \draw (\x,1.5) -- (\x,28.5);
-\node at (-.5,27.5) {SP$\rightarrow$};
-\foreach \offset in {0,2,...,50} \node[anchor=west] at ($(16.1,27.5-.5*\offset)$) {PTOS+\offset};
+\draw[thick] (0,11) rectangle ++(16,1); \node at ($(8,11.5)$) {{\small REG\_RETARG}};
+\foreach \x in {0,16} \draw (\x,-.5) -- (\x,14.5);
+\node at (-.5,0.5) {SP$\rightarrow$};
+\foreach \offset in {0,2,...,26} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
 \end{tikzpicture}
 \end{center}
 \label{fig:context}
@@ -422,21 +410,21 @@ tpl_sc_handler_no_save_running_context:
 \lstinline{tpl_run_elected} has copied the elected process slot of \lstinline{tpl_kern} to the \lstinline{running} slot. We load the stack pointer of the new running process.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov &tpl_kern, r11  /* Get the s_running slot of tpl_kern in r11 */
-    mov @r11, r11       /* Get the pointer to the context (SP alone) */
+    mov     &tpl_kern, r11  /* Get the s_running slot of tpl_kern in r11 */
+    mov     @r11, r11       /* Get the pointer to the context (SP alone) */
 \end{lstlisting}
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    mov @r11, r1        /* Get the stack pointer                     */
+    mov     @r11, r1        /* Get the stack pointer                     */
 \end{lstlisting}
 
-Now, the context of the new running process is loaded. First we pop \lstinline{r4} to \lstinline{r10}
+Now, the context of the new running process is loaded. At start it has the same pattern as the one shown at figure \ref{fig:context}. First we pop \lstinline{r4} to \lstinline{r10}
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    popm.a #7,r10       /* Pop r4 to r10  */
-	jmp tpl_sc_end_of_context_switch
+    popm.w #7,r10       /* Pop r4 to r10  */
+    jmp    tpl_sc_end_of_context_switch
 \end{lstlisting}
 
-The process stack is then as in figure \ref{fig:processStackLoaded}.
+The process stack is then as in figure \ref{fig:contextBottom}.
 
 \begin{figure}[h!]
 \caption{Process stack just loaded}
@@ -491,7 +479,7 @@ In case of no context switch, we have to get to the process stack, stored in r13
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
 tpl_sc_handler_no_context_switch:
-	mov r13, r1	 /* get back to process stack */
+    mov r13, r1	 /* get back to process stack, r13 NOT PRESERVED ! */
 \end{lstlisting}
 At last the reentrancy counter is decremented, r11 is restored, the \emph{space of args}, used in asynchronous preemption is removed from stack and the \lstinline{REG_RETARG} is poped.
 
@@ -502,9 +490,9 @@ tpl_sc_end_of_context_switch:
     jnz    tpl_sc_handler_still_in_kernel    
 
 tpl_sc_handler_still_in_kernel:
-    popx.a r11
+    popx.w r11
     add    #12,r1       /* Skip volatile             */
-    popx.a REG_RETARG   /* Get back the return value */
+    popx.w REG_RETARG   /* Get back the return value */
     reti
 \end{lstlisting}
 
@@ -560,7 +548,7 @@ The context that shoud be set during the task's initialisation (\texttt{tpl\_ini
 \foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
 \end{tikzpicture}
 \end{center}
-\label{fig:context}
+\label{fig:contextInit}
 \end{figure}
 
 
