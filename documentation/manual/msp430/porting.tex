@@ -246,7 +246,7 @@ The stack is then as follow:
 Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. However register names appear un figures but are in italic. Either \textit{r12} if MSPGCC ABI is used or \textit{r15} if GCC for MSP ABI is used is for the \lstinline{REG_RETARG} which is not saved yet.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    sub  #8, r1
+    sub  #8, sp
 \end{lstlisting}
 
 The \sch\ needs one working register and we choose to use \lstinline{r11} which has to be saved on the process stack before using it.
@@ -537,7 +537,7 @@ Here we have the stack shaped as shown at figure \ref{fig:stackShapeBeforeCallin
 
 \subsection{Branch when the sc handler is called from hook}
 
-Here we are on the kernel stack already and the \lstinline{pc} has been pushed on the stack by the \lstinline{call}. \lstinline{REG_SID} contains the identifier of the service and the 3 other registers contain the arguments if any. We do not need to do complicated stuff here because we have not context switch to do. We only call the service then return and that's it.
+Here we are on the kernel stack already and the \lstinline{pc} has been pushed on the stack by the \lstinline{call}. \lstinline{REG_SID} contains the identifier of the service and the 3 other registers contain the arguments if any. We do not need to do complicated stuff here because we have no context switch to do. We only call the service then return and that's it.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
 tpl_sc_handler_from_hook:
@@ -548,28 +548,28 @@ tpl_sc_handler_from_hook:
 
 \subsection{Context initialisation}
 
-The context that shoud be set during the task's initialisation (\texttt{tpl\_init\_context}) is the one of the figure \ref{fig:context}, but with a call to either \texttt{CallTerminateTask} or \texttt{CallTerminateISR2}, depending of the type of the process to init.
-
+The context that shoud be set during the task's initialisation (\lstinline{tpl_init_context}) is the one of the figure \ref{fig:context}, but with a call to either \lstinline{CallTerminateTask} or \lstinline{CallTerminateISR2} as return address of the task/ISR2 function, depending of the type of the process to init.
 
 \begin{figure}[h!]
-\caption{Context initialisation}
+\caption{Context initialization}
 \begin{center}
 \begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
 \foreach \r in {4,5,...,10} {
-	\draw[thick] ($(0,\r-4)$) rectangle ++(16,1); \node at ($(8,\r-4+.5)$) {saved r\r};
+	\draw[thick] ($(0,\r-4)$) rectangle ++(16,1); \node at ($(8,\r-4+.5)$) {r\r};
 }
-\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {saved r11};
-\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {saved PC [15..0]};
+\draw[thick] (0,7) rectangle ++(16,1); \node at (8,7.5) {r11};
+\draw[thick] (0,13) rectangle ++(16,1); \node at (8,13.5) {PC};
 \foreach \x in {4,8,12} { \draw (\x,13) -- ++(0,.15);  \draw (\x,14) -- ++(0,-.15); }
-\draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {saved PC [19..16]}; \node at (10,12.5) {saved SR [11..0]};
+\draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {0 0 0 0}; \node at (10,12.5) {SR};
 \foreach \x in {8,12} { \draw (\x,12) -- ++(0,.15);  \draw (\x,13) -- ++(0,-.15); }
 \draw (4,12) -- ++(0,1);
-\foreach \y in {8,9,10} {
-	\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
-}
-\draw[thick] (0,11) rectangle ++(16,1); \node at ($(8,11.5)$) {{\small REG\_RETARG}};
-\draw[thick] (0,14) rectangle ++(16,1); \node at (8,14.5) {CallTerminateXXX [15..0]};
-%\foreach \x in {4,8,12} { \draw (\x,1) -- ++(0,.15);  \draw (\x,2) -- ++(0,-.15); }
+\draw[thick] (0,8) rectangle ++(16,1); \node at ($(8,8.5)$) {r12 - {\small REG\_RETARG} in GCC for MSP ABI};
+
+\draw[thick] (0,9) rectangle ++(16,1); \node at (8,9.5) {r13};
+\draw[thick] (0,10) rectangle ++(16,1); \node at (8,10.5) {r14};
+
+\draw[thick] (0,11) rectangle ++(16,1); \node at ($(8,11.5)$) {r15 - {\small REG\_RETARG} in MSPGCC ABI};
+\draw[thick] (0,14) rectangle ++(16,1); \node at ($(8,14.5)$) {CallTerminateTask/CallTerminateISR2};
 \foreach \x in {0,16} \draw (\x,-.5) -- (\x,15.5);
 \node at (-.5,0.5) {SP$\rightarrow$};
 \foreach \offset in {0,2,...,28} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
@@ -622,6 +622,18 @@ The context that shoud be set during the task's initialisation (\texttt{tpl\_ini
 \end{center}
 \label{fig:contextInit}
 \end{figure}
+
+
+
+Beside that, registers from \lstinline{r4} to \lstinline{r15} may be initialized to 0 or left uninitialized to save both execution time and energy consumption. \lstinline{PC} has to be initialized to the address of the task/ISR2 function. \lstinline{SR} has to be initialized with:
+\begin{itemize}
+\item \lstinline{V} at 0
+\item \lstinline{SCG1}, \lstinline{SCG0}, \lstinline{OSCOFF} and \lstinline{CPUOFF} control the low power mode and are all at 0. This correspond to the Active Mode.
+\item \lstinline{GIE} at 1 so interrupts are enabled when the task runs.
+\item \lstinline{N}, \lstinline{Z} and \lstinline{C} at 0.
+\end{itemize}
+
+So the initialization value of \lstinline{SR} is \lstinline{0x0008}. 
 
 
 \section{The Systick Handler}
