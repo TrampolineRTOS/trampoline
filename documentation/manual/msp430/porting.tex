@@ -391,6 +391,9 @@ Save the context. The MSP430 have a ``push multiple words", but no ``move multip
     mov     r13, r1	/* change stack to process stack */	
     pushm.w #7, r10	/* Push r4 to r10 on process stack (save) */
 \end{lstlisting}
+
+\textbf{The stack pointer has been changed ! r13 IS NOT UP TO DATE !}
+
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
     mov     r14, r1	/* get back to kernel stack */
 \end{lstlisting}
@@ -430,6 +433,8 @@ Now the stack pointer is saved in the dedicated location.
     mov     @r11, r11       /* Get the pointer to the context (SP alone) */
     mov     r13, @r11       /* Save the stack pointer                    */
 \end{lstlisting}
+
+\textbf{HERE r13 IS THE OLD STACK POINTER !}
 
 Prepare the argument of \lstinline{tpl_run_elected} : 1 (aka save) and call it after switching back to the kernel stack.
 
@@ -511,7 +516,7 @@ In case of no context switch, we have to get to the process stack, stored in r13
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
 tpl_sc_handler_no_context_switch:
-    mov r13, r1	 /* get back to process stack, r13 NOT PRESERVED ! */
+    mov r13, r1	 /* get back to process stack */
 \end{lstlisting}
 At last the reentrancy counter is decremented, r11 is restored, the \emph{space of args}, used in asynchronous preemption is removed from stack and the \lstinline{REG_RETARG} is poped.
 
@@ -527,6 +532,8 @@ tpl_sc_handler_still_in_kernel:
     popx.w REG_RETARG   /* Get back the return value */
     reti
 \end{lstlisting}
+
+\textbf{Here instead of a add, a pop should be done because this context may have been pushed under interrupts !}
 
 \subsection{Context initialisation}
 The context that shoud be set during the task's initialisation (\texttt{tpl\_init\_context}) is the one of the figure \ref{fig:context}, but with a call to either \texttt{CallTerminateTask} or \texttt{CallTerminateISR2}, depending of the type of the process to init.
