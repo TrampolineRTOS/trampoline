@@ -48,11 +48,13 @@ Adapting to both ABIs at compile time is not very complicated. This involves exc
 #define MSPGCC_ABI
 #define REG_SID r12
 #define REG_RETARG r15
+#define REG_RETARG_OFFSET 8
 #elif __GXX_ABI_VERSION == 1011
 /* GCC compiler for MSP ABI */
 #define GCCFORMSP_ABI
 #define REG_SID r15
 #define REG_RETARG r12
+#define REG_RETARG_OFFSET 2
 #else
 #error "Unsupported ABI"
 #endif
@@ -206,15 +208,15 @@ Check the reentrancy counter. If it is not zero, it means the service is called 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
     tst.b &tpl_reentrancy_counter
     jnz   tpl_sc_handler_from_hook
-    inc.b &tpl_reentrancy_counter     /* It is zero, so it is incremented */
 \end{lstlisting}
 
 
-We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operating system. So we push the SR and we reset the 4 higher bits (high weight of PC). Interrupts are disabled so that the kernel cannot be interrupted.
+We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operating system. So we push the SR and we reset the 4 higher bits (high weight of PC, not sure it is needed) and set GIE. Interrupts are disabled so that the kernel cannot be interrupted.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
+    bis   #0008, sr
     push  sr
-    bic.b #0xF0,1(sp)              /* reset the 4 higher bits of saved SR */
+    bic.b #0xF0, 1(sp)             /* reset the 4 higher bits of saved SR */
     dint
 \end{lstlisting}
 
@@ -241,7 +243,7 @@ The stack is then as follow:
 \end{tikzpicture}
 \end{center}
 
-Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. The 16 bit words at the bottom of this area is for the \lstinline{REG_RETARG} which is not saved yet.
+Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. However register names appear un figures but are in italic. Either \textit{r12} if MSPGCC ABI is used or \textit{r15} if GCC for MSP ABI is used is for the \lstinline{REG_RETARG} which is not saved yet.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
     sub  #8, r1
@@ -272,10 +274,10 @@ At that stage the stack is shown in figure \ref{fig:stackShapeBeforeCallingServi
 %\draw[pattern=north west lines, pattern color=purple] (0,6) rectangle ++(12,1);
 %\foreach \x in {4,8,12} { \draw (\x,5) -- ++(0,.15);  \draw (\x,6) -- ++(0,-.15); }
 %\draw (12,6) -- ++(0,1);
-\foreach \y in {1,2,3} {
-\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
-}
-\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {space of arg - will hold {\small REG\_RETARG}};
+\draw[thick] (0,2) rectangle ++(16,1); \node at (8,2.5) {\textit{saved r13}};
+\draw[thick] (0,3) rectangle ++(16,1); \node at (8,3.5) {\textit{saved r14}};
+\draw[thick] (0,1) rectangle ++(16,1); \node at ($(8,1.5)$) {\textit{saved r12} - will hold {\small REG\_RETARG} in GCC for MSP ABI};
+\draw[thick] (0,4) rectangle ++(16,1); \node at ($(8,4.5)$) {\textit{saved r15} - will hold {\small REG\_RETARG} in MSPGCC ABI};
 \foreach \x in {0,16} \draw (\x,-.5) -- (\x,7.5);
 \node at (-.5,0.5) {SP$\rightarrow$};
 \foreach \offset in {0,2,...,12} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
@@ -325,9 +327,9 @@ At that stage the stack is shown in figure \ref{fig:stackShapeBeforeCallingServi
 Before calling the service, we setup the kernel stack. The process stack pointer (PSP) is saved in r11, then SP is loaded to the kernel stack bottom and the PSP is saved on the kernel stack.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov  r1,r11
-    mov  #tpl_kern_stack_bottom, r1
-    push r11
+    mov   r1,r11
+    mov   #tpl_kern_stack_bottom, r1
+    push  r11
 \end{lstlisting}
 
 The kernel stack is as follow (\texttt{KTOS} stands for \emph{Kernel Top Of Stack}):
@@ -345,23 +347,25 @@ The kernel stack is as follow (\texttt{KTOS} stands for \emph{Kernel Top Of Stac
 Init the \lstinline{NEED_SWITCH}/\lstinline{SAVE} in \lstinline{tpl_kern}.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov #tpl_kern, r11
+    mov   #tpl_kern, r11
     mov.b #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
     mov.b #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 \end{lstlisting}
 
-Call the service.
-
+Call the service. The reentrancy counter is incremented before and decremented after.
+ 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    rla  REG_SID /* index -> offset */
-    call tpl_dispatch_table(REG_SID)
+    inc.b &tpl_reentrancy_counter        /* surround the call by inc ...  */
+    rla   REG_SID                        /* index -> offset               */
+    call  tpl_dispatch_table(REG_SID)
+    dec.b &tpl_reentrancy_counter        /* ... and dec of the counter    */
 \end{lstlisting}
 
 From there, \lstinline{REG_RETARG} holds the return value. It is put at its location in the process stack. Also \lstinline{r13} and \lstinline{r14} become usable whatever is the ABI.
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov  @r1, r13           //get back PSP => r13
-    mov  REG_RETARG, 8(r13) //put in Process's stack
+    pop  r13                                /* get back PSP => r13.       */
+    mov  REG_RETARG, REG_RETARG_OFFSET(r13) /* put in Process's stack     */
 \end{lstlisting}
 
 Check the context switch condition in \lstinline{tpl_kern}.
@@ -370,6 +374,8 @@ Check the context switch condition in \lstinline{tpl_kern}.
     tst.b   TPL_KERN_OFFSET_NEED_SWITCH(r11)
     jz      tpl_sc_handler_no_context_switch
 \end{lstlisting}
+
+\subsection{Branch of context switching}
 
 Prepare the call to \lstinline{tpl_run_elected} by setting \lstinline{REG_RETARG} to 0, aka no save.
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
@@ -386,20 +392,16 @@ Save the context. The MSP430 have a ``push multiple words", but no ``move multip
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
     mov     r1, r14	/* get a copy of the KSP to restore it later */
-\end{lstlisting}
-\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
     mov     r13, r1	/* change stack to process stack */	
+\end{lstlisting}
+\vspace{-1em}
+\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
     pushm.w #7, r10	/* Push r4 to r10 on process stack (save) */
 \end{lstlisting}
 
-\textbf{The stack pointer has been changed ! r13 IS NOT UP TO DATE !}
-
-\begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov     r14, r1	/* get back to kernel stack */
-\end{lstlisting}
+%\textbf{The stack pointer has been changed ! r13 IS NOT UP TO DATE !}
 
 The whole context is now saved on process stack and the kernel stack has been cleaned. The saved context structure is shown at figure \ref{fig:context}.
-
 
 \begin{figure}[h!]
 \caption{Context saved on stack}
@@ -414,10 +416,12 @@ The whole context is now saved on process stack and the kernel stack has been cl
 \draw[thick] (0,12) rectangle ++(16,1); \node at (2,12.5) {0 0 0 0}; \node at (10,12.5) {saved SR};
 \foreach \x in {8,12} { \draw (\x,12) -- ++(0,.15);  \draw (\x,13) -- ++(0,-.15); }
 \draw (4,12) -- ++(0,1);
-\foreach \y in {8,9,10} {
-	\draw[thick] (0,\y) rectangle ++(16,1); \node at ($(8,\y+.5)$) {space of arg};
-}
-\draw[thick] (0,11) rectangle ++(16,1); \node at ($(8,11.5)$) {{\small REG\_RETARG}};
+\draw[thick] (0,8) rectangle ++(16,1); \node at ($(8,8.5)$) {\textit{saved r12} - {\small REG\_RETARG} in GCC for MSP ABI};
+
+\draw[thick] (0,9) rectangle ++(16,1); \node at (8,9.5) {\textit{saved r13}};
+\draw[thick] (0,10) rectangle ++(16,1); \node at (8,10.5) {\textit{saved r14}};
+
+\draw[thick] (0,11) rectangle ++(16,1); \node at ($(8,11.5)$) {\textit{saved r15} - will hold {\small REG\_RETARG} in MSPGCC ABI};
 \foreach \x in {0,16} \draw (\x,-.5) -- (\x,14.5);
 \node at (-.5,0.5) {SP$\rightarrow$};
 \foreach \offset in {0,2,...,26} \node[anchor=west] at ($(16.1,.5+.5*\offset)$) {PTOS+\offset};
@@ -428,16 +432,18 @@ The whole context is now saved on process stack and the kernel stack has been cl
 
 Now the stack pointer is saved in the dedicated location.
 
-\begin{lstlisting}[backgroundcolor=\color{red!15}]
+\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
     mov     &tpl_kern, r11  /* Get the s_running slot of tpl_kern in r11 */
     mov     @r11, r11       /* Get the pointer to the context (SP alone) */
-    mov     r13, @r11       /* Save the stack pointer                    */
+    mov     r1, @r11        /* Save the stack pointer                    */
 \end{lstlisting}
-
-\textbf{HERE r13 IS THE OLD STACK POINTER !}
 
 Prepare the argument of \lstinline{tpl_run_elected} : 1 (aka save) and call it after switching back to the kernel stack.
 
+\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
+    mov     r14, r1	/* get back to kernel stack */
+\end{lstlisting}
+\vspace{-1em}
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
     mov     #1, REG_RETARG
 tpl_sc_handler_no_save_running_context:
@@ -454,14 +460,12 @@ tpl_sc_handler_no_save_running_context:
     mov     @r11, r1        /* Get the stack pointer                     */
 \end{lstlisting}
 
-Now, the context of the new running process is loaded. At start it has the same pattern as the one shown at figure \ref{fig:context}. First we pop \lstinline{r4} to \lstinline{r10}
+Now, the context of the new running process is loaded. At start it has the same pattern as the one shown at figure \ref{fig:context}. Registers \lstinline{r4} to \lstinline{r15} are popped and we return.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    popm.w #7,r10       /* Pop r4 to r10  */
-    jmp    tpl_sc_end_of_context_switch
+    popm.w #12,r15       /* Pop r4 to r15 at once              */
+    reti                 /* and return with interrupts enabled */
 \end{lstlisting}
-
-The process stack is then as in figure \ref{fig:stackShapeBeforeCallingService}.
 
 %\begin{figure}[h!]
 %\caption{Process stack just loaded}
@@ -512,33 +516,40 @@ The process stack is then as in figure \ref{fig:stackShapeBeforeCallingService}.
 %\label{fig:processStackLoaded}
 %\end{figure}
 
+\subsection{Branch of No context switching}
+
 In case of no context switch, we have to get to the process stack, stored in r13
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
 tpl_sc_handler_no_context_switch:
-    mov r13, r1	 /* get back to process stack */
+    mov  r13, r1	 /* get back to process stack */
 \end{lstlisting}
-At last the reentrancy counter is decremented, r11 is restored, the \emph{space of args}, used in asynchronous preemption is removed from stack and the \lstinline{REG_RETARG} is poped.
 
-Interrupts are enables during the \texttt{reti} instruction because it is related to the \texttt{GIE} bit in the status register.
+Here we have the stack shaped as shown at figure \ref{fig:stackShapeBeforeCallingService}.
+\lstinline{REG_RETARG} is restored, \lstinline{r11} is restored, the stack is cleaned and we return. Interrupts are enabled at that time.
+
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-tpl_sc_end_of_context_switch:
-    dec.b  &tpl_reentrancy_counter
-    jnz    tpl_sc_handler_still_in_kernel    
-
-tpl_sc_handler_still_in_kernel:
-    popx.w r11
-    add    #12,r1       /* Skip volatile             */
-    popx.w REG_RETARG   /* Get back the return value */
-    reti
+    mov  REG_RETARG_OFFSET(r1), REG_RETARG /* get back REG_RETARG     */
+    pop  r11                               /* get back r11            */
+    add  #8, r1                            /* clean the stack         */
+    reti                                   /* return with int enabled */
 \end{lstlisting}
 
-\textbf{Here instead of a add, a pop should be done because this context may have been pushed under interrupts !}
+\subsection{Branch when the sc handler is called from hook}
+
+Here we are on the kernel stack already and the \lstinline{pc} has been pushed on the stack by the \lstinline{call}. \lstinline{REG_SID} contains the identifier of the service and the 3 other registers contain the arguments if any. We do not need to do complicated stuff here because we have not context switch to do. We only call the service then return and that's it.
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!15}]
+tpl_sc_handler_from_hook:
+    rla   REG_SID                        /* index -> offset               */
+    call  tpl_dispatch_table(REG_SID)
+    ret
+\end{lstlisting}
 
 \subsection{Context initialisation}
+
 The context that shoud be set during the task's initialisation (\texttt{tpl\_init\_context}) is the one of the figure \ref{fig:context}, but with a call to either \texttt{CallTerminateTask} or \texttt{CallTerminateISR2}, depending of the type of the process to init.
 
-\emph{TODO} Works only with 16-bit register.Should be updated.
 
 \begin{figure}[h!]
 \caption{Context initialisation}
