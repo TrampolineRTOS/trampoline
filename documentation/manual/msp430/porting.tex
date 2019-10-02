@@ -101,14 +101,13 @@ It can be noted that the arguments being passed through the low weight 16 bits o
 \section{Stack}
 %\subsection{}
 
-A service call is done using the \lstinline{CALLA} instruction in the service call wrapper. The service identifier is passed to the service call handler through the \lstinline{REG_SID} register. So a service call wrapper is as shown in listing at figure \ref{lst:wrapper}.
+A service call is done using the \lstinline{br} instruction in the service call wrapper to prevent 2 nested call and fold the \lstinline{ret} instruction. The service identifier is passed to the service call handler through the \lstinline{REG_SID} register. So a service call wrapper is as shown in listing at figure \ref{lst:wrapper}.
 
 \begin{figure}[h]
 \caption{Service wrapper}
 \begin{lstlisting}
     mov  #<service_id>, REG_SID /* put the service id in the ad-hoc reg */
-    call #tpl_sc_handler        /* call the service call handler        */
-    ret                         /* return to the caller                 */
+    br   #tpl_sc_handler        /* branch to the service call handler   */
 \end{lstlisting}
 \label{lst:wrapper}
 \end{figure}
@@ -203,21 +202,23 @@ The first thing to do is to compare the service id to the number of services to 
 tpl_sc_handler_id_ok:
 \end{lstlisting}
 
-Check the reentrancy counter. If it is not zero, it means the service is called from a hook and has to be processed differently.
+Disable interrupts so that the kernel cannot be interrupted. Check the reentrancy flag. If it is not zero, it means the service is called from a hook and has to be processed differently.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    tst.b &tpl_reentrancy_counter
+    dint
+    tst.b &tpl_reentrancy_flag
     jnz   tpl_sc_handler_from_hook
 \end{lstlisting}
 
 
-We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operating system. So we push the SR and we reset the 4 higher bits (high weight of PC, not sure it is needed) and set GIE. Interrupts are disabled so that the kernel cannot be interrupted.
+We need to have the same stack pattern for both the \sch\ and an interrupt handler which calls the operating system. So we push the SR
+ and we reset the 4 higher bits (high weight of PC, not sure it is needed)
+ and set GIE in the saved SR.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    bis   #0008, sr
-    push  sr
-    bic.b #0xF0, 1(sp)             /* reset the 4 higher bits of saved SR */
-    dint
+    push         sr
+    bic.b        #0xF0, 1(sp)     /* reset the 4 higher bits of saved SR */
+    bis.b        #0x08, 0(sp)     /* set the GIE bit in the saved SR     */
 \end{lstlisting}
 
 The stack is then as follow:
@@ -243,7 +244,7 @@ The stack is then as follow:
 \end{tikzpicture}
 \end{center}
 
-Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. However register names appear un figures but are in italic. Either \textit{r12} if MSPGCC ABI is used or \textit{r15} if GCC for MSP ABI is used is for the \lstinline{REG_RETARG} which is not saved yet.
+Obviously volatile registers (r12 to r15 because we take into account both ABIs) are not saved in \sch\ since the caller does not expect their values to be preserved but we need to make room (8 bytes) on the stack for them because an interrupt handler will save these registers at this location. However register names appear in figures but are in italic. Either \textit{r12} if MSPGCC ABI is used or \textit{r15} if GCC for MSP ABI is used is for the \lstinline{REG_RETARG} which is not saved yet.
 
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
     sub  #8, sp
@@ -352,13 +353,13 @@ Init the \lstinline{NEED_SWITCH}/\lstinline{SAVE} in \lstinline{tpl_kern}.
     mov.b #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 \end{lstlisting}
 
-Call the service. The reentrancy counter is incremented before and decremented after.
+Call the service. The reentrancy flag is incremented before and decremented after.
  
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    inc.b &tpl_reentrancy_counter        /* surround the call by inc ...  */
+    inc.b &tpl_reentrancy_flag           /* surround the call by inc ...  */
     rla   REG_SID                        /* index -> offset               */
     call  tpl_dispatch_table(REG_SID)
-    dec.b &tpl_reentrancy_counter        /* ... and dec of the counter    */
+    dec.b &tpl_reentrancy_flag           /* ... and dec of the flag.      */
 \end{lstlisting}
 
 From there, \lstinline{REG_RETARG} holds the return value. It is put at its location in the process stack. Also \lstinline{r13} and \lstinline{r14} become usable whatever is the ABI.
@@ -369,6 +370,7 @@ From there, \lstinline{REG_RETARG} holds the return value. It is put at its loca
 \end{lstlisting}
 
 Check the context switch condition in \lstinline{tpl_kern}.
+
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
     mov     #tpl_kern, r11
     tst.b   TPL_KERN_OFFSET_NEED_SWITCH(r11)
@@ -391,12 +393,12 @@ Test the \lstinline{NEED_SAVE} condition.
 Save the context. The MSP430 have a ``push multiple words", but no ``move multiple word". So, we get back to process stack to benefit this instruction
 
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
-    mov     r1, r14	/* get a copy of the KSP to restore it later */
-    mov     r13, r1	/* change stack to process stack */	
+    mov     r1, r14     /* get a copy of the KSP to restore it later */
+    mov     r13, r1     /* change stack to process stack */	
 \end{lstlisting}
 \vspace{-1em}
 \begin{lstlisting}[backgroundcolor=\color{yellow!15}]
-    pushm.w #7, r10	/* Push r4 to r10 on process stack (save) */
+    pushm.w #7, r10     /* Push r4 to r10 on process stack (save) */
 \end{lstlisting}
 
 %\textbf{The stack pointer has been changed ! r13 IS NOT UP TO DATE !}
