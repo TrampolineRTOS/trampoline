@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  C_IssueWithFixIt                                                                                                   *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2016, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,19 +18,19 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_IssueWithFixIt.h"
 #include "all-predefined-types.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_FixItDescription::C_FixItDescription (void) :
 mKind (kFixItRemove),
 mActionString ("") {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_FixItDescription::C_FixItDescription (const EnumFixItKind inKind,
                                         const C_String & inActionString) :
@@ -38,7 +38,7 @@ mKind (inKind),
 mActionString (inActionString) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_IssueWithFixIt::C_IssueWithFixIt (void) :
 mStartLocation (),
@@ -46,7 +46,7 @@ mEndLocation (),
 mFixItArray () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_IssueWithFixIt::C_IssueWithFixIt (const C_LocationInSource & inStartLocation,
                                     const C_LocationInSource & inEndLocation,
@@ -56,7 +56,7 @@ mEndLocation (inEndLocation),
 mFixItArray (inFixItArray) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
                          const EnumFixItKind inKind,
@@ -69,7 +69,7 @@ void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
                          const EnumFixItKind inKind,
@@ -82,7 +82,7 @@ void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
                          const EnumFixItKind inKind,
@@ -95,7 +95,7 @@ void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
                          const EnumFixItKind inKind,
@@ -104,4 +104,4 @@ void appendFixItActions (TC_Array <C_FixItDescription> & ioArray,
   ioArray.appendObject (C_FixItDescription (inKind, s)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

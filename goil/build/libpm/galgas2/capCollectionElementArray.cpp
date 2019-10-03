@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  capCollectionElementArray                                                                                          *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2010, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,22 +18,22 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/capCollectionElementArray.h"
 #include "utilities/MF_MemoryControl.h"
 #include "strings/C_String.h"
 #include "galgas2/C_Compiler.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   capCollectionRoot                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark capCollectionRoot
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class capCollectionRoot : public C_SharedObject {
 //--- Default constructor
@@ -58,7 +58,7 @@ class capCollectionRoot : public C_SharedObject {
   friend class capCollectionElementArray ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionRoot::capCollectionRoot (void) :
 C_SharedObject (HERE),
@@ -67,7 +67,7 @@ mCapacity (0),
 mCount (0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionRoot::capCollectionRoot (const capCollectionRoot * inSource) :
 C_SharedObject (HERE),
@@ -85,41 +85,41 @@ mCount (0) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionRoot::~ capCollectionRoot (void) {
   macroMyDeleteArray (mArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   capCollectionElementArray                                                                                         *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark capCollectionElementArray
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionElementArray::capCollectionElementArray (void) :
 mSharedRoot (NULL) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionElementArray::capCollectionElementArray (const uint32_t inCapacity) :
 mSharedRoot (NULL) {
   setCapacity (inCapacity) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionElementArray::capCollectionElementArray (const capCollectionElementArray & inSource) :
 mSharedRoot (NULL) {
   macroAssignSharedObject (mSharedRoot, inSource.mSharedRoot) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionElementArray & capCollectionElementArray::operator = (const capCollectionElementArray & inSource) {
   if (mSharedRoot != inSource.mSharedRoot) {
@@ -128,25 +128,25 @@ capCollectionElementArray & capCollectionElementArray::operator = (const capColl
   return *this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionElementArray::~capCollectionElementArray (void) {
   macroDetachSharedObject (mSharedRoot) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t capCollectionElementArray::count (void) const {
   return (NULL == mSharedRoot) ? 0 : mSharedRoot->mCount ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t capCollectionElementArray::capacity (void) const {
   return (NULL == mSharedRoot) ? 0 : mSharedRoot->mCapacity ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::insulateOrCreate (void) {
   if (NULL == mSharedRoot) {
@@ -159,7 +159,7 @@ void capCollectionElementArray::insulateOrCreate (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::setCapacity (const uint32_t inNewCapacity) {
   insulateOrCreate () ;
@@ -180,7 +180,7 @@ void capCollectionElementArray::setCapacity (const uint32_t inNewCapacity) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::appendObject (const capCollectionElement & inObject) {
   setCapacity (count () + 1) ;
@@ -190,7 +190,7 @@ void capCollectionElementArray::appendObject (const capCollectionElement & inObj
   mSharedRoot->mCount ++ ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::insertObjectAtIndex (const capCollectionElement & inObject,
                                                      const uint32_t inInsertionIndex,
@@ -212,7 +212,7 @@ void capCollectionElementArray::insertObjectAtIndex (const capCollectionElement 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::removeObjectAtIndex (capCollectionElement & outObject,
                                                      const uint32_t inIndex,
@@ -235,7 +235,7 @@ void capCollectionElementArray::removeObjectAtIndex (capCollectionElement & outO
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::removeFirstObject (capCollectionElement & outObject,
                                                    C_Compiler * inCompiler
@@ -255,7 +255,7 @@ void capCollectionElementArray::removeFirstObject (capCollectionElement & outObj
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::readFirstObject (capCollectionElement & outObject,
                                                  C_Compiler * inCompiler
@@ -268,7 +268,7 @@ void capCollectionElementArray::readFirstObject (capCollectionElement & outObjec
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::removeLastObject (capCollectionElement & outObject,
                                                   C_Compiler * inCompiler
@@ -285,7 +285,7 @@ void capCollectionElementArray::removeLastObject (capCollectionElement & outObje
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::readLastObject (capCollectionElement & outObject,
                                                 C_Compiler * inCompiler
@@ -298,7 +298,7 @@ void capCollectionElementArray::readLastObject (capCollectionElement & outObject
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement & inObject,
                                                       const uint32_t inIndex
@@ -309,7 +309,7 @@ void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement
   mSharedRoot->mArray [inIndex] = inObject ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 capCollectionElement capCollectionElementArray::objectAtIndex (const uint32_t inIndex
                                                                COMMA_LOCATION_ARGS) const {
@@ -317,7 +317,7 @@ capCollectionElement capCollectionElementArray::objectAtIndex (const uint32_t in
   return mSharedRoot->mArray [inIndex] ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cCollectionElement * capCollectionElementArray::uniquelyReferencedPointerAtIndex (const uint32_t inIndex
                                                                                   COMMA_LOCATION_ARGS) {
@@ -328,7 +328,7 @@ cCollectionElement * capCollectionElementArray::uniquelyReferencedPointerAtIndex
   return mSharedRoot->mArray [inIndex].ptr () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 const cCollectionElement * capCollectionElementArray::pointerAtIndexForReadAccess (const uint32_t inIndex
                                                                                    COMMA_LOCATION_ARGS) const {
@@ -336,7 +336,7 @@ const cCollectionElement * capCollectionElementArray::pointerAtIndexForReadAcces
   return mSharedRoot->mArray [inIndex].ptr () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::removeObjectAtIndex (const uint32_t inIndex) {
   insulateOrCreate () ;
@@ -349,7 +349,7 @@ void capCollectionElementArray::removeObjectAtIndex (const uint32_t inIndex) {
   mSharedRoot->mArray [mSharedRoot->mCount].drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::predendObject (const capCollectionElement & inObject) {
   setCapacity (count () + 1) ;
@@ -362,7 +362,7 @@ void capCollectionElementArray::predendObject (const capCollectionElement & inOb
   mSharedRoot->mCount ++ ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::removeAllObjects (void) {
   insulateOrCreate () ;
@@ -373,7 +373,7 @@ void capCollectionElementArray::removeAllObjects (void) {
   mSharedRoot->mCount = 0 ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::appendObjects (const capCollectionElementArray inObjects) {
   const uint32_t operandCount = inObjects.count () ;
@@ -388,7 +388,7 @@ void capCollectionElementArray::appendObjects (const capCollectionElementArray i
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult capCollectionElementArray::compareCollectionElementArray (const capCollectionElementArray & inOperand) const {
   typeComparisonResult result = kOperandEqual ;
@@ -404,7 +404,7 @@ typeComparisonResult capCollectionElementArray::compareCollectionElementArray (c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::description (C_String & ioString,
                                              const int32_t inIndentation) const {
@@ -416,7 +416,7 @@ void capCollectionElementArray::description (C_String & ioString,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::subListToIndex (capCollectionElementArray & outSubList,
                                                 const uint32_t inIndex,
@@ -442,7 +442,7 @@ void capCollectionElementArray::subListToIndex (capCollectionElementArray & outS
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::subListWithRange (capCollectionElementArray & outSubList,
                                                   const uint32_t inStartIndex,
@@ -470,7 +470,7 @@ void capCollectionElementArray::subListWithRange (capCollectionElementArray & ou
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void capCollectionElementArray::subListFromIndex (capCollectionElementArray & outSubList,
                                                   const uint32_t inIndex,
@@ -496,4 +496,4 @@ void capCollectionElementArray::subListFromIndex (capCollectionElementArray & ou
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

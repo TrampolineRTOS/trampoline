@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'cIssueDescriptor'                                                                                                 *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2017, ..., 2017 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,11 +18,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/cIssueDescriptor.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cIssueDescriptor::cIssueDescriptor (void) :
 mIsError (false),
@@ -33,7 +33,7 @@ mEndColumn (0),
 mMessage ("") {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cIssueDescriptor::cIssueDescriptor (const bool inIsError,
                                     const C_String & inFile,
@@ -49,7 +49,7 @@ mEndColumn (inEndColumn),
 mMessage (inMessage) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cIssueDescriptor::cIssueDescriptor (const cIssueDescriptor & inSource) :
 mIsError (inSource.mIsError),
@@ -60,7 +60,7 @@ mEndColumn (inSource.mEndColumn),
 mMessage (inSource.mMessage) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 cIssueDescriptor & cIssueDescriptor::operator = (const cIssueDescriptor & inSource) {
   if (this != & inSource) {
@@ -74,7 +74,7 @@ cIssueDescriptor & cIssueDescriptor::operator = (const cIssueDescriptor & inSour
   return *this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void cIssueDescriptor::appendToJSONstring (C_String & ioJSONstring, const bool inIsFirstIssue) const {
   C_String s = mMessage.stringByReplacingStringByString("\n", "\\n") ;
@@ -89,4 +89,4 @@ void cIssueDescriptor::appendToJSONstring (C_String & ioJSONstring, const bool i
                << "  }" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

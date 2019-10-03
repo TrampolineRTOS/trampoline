@@ -3,10 +3,9 @@
 
 //--- END OF USER ZONE 1
 
-#ifndef GALGAS2_INCLUDED_DEFINITIONS
-#define GALGAS2_INCLUDED_DEFINITIONS
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "strings/C_String.h"
 #include "time/C_Timer.h"
@@ -30,7 +29,7 @@
 #include "utilities/C_PrologueEpilogue.h"
 #include "utilities/C_BigInt.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_Compiler ;
 class GALGAS_string ;
@@ -53,24 +52,23 @@ class GALGAS_function ;
 class GALGAS_object ;
 class GALGAS_timer ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @string type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const GALGAS_string & inString) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const GALGAS_lstring & inString) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-class GALGAS_string : public AC_GALGAS_root
- {
+class GALGAS_string : public AC_GALGAS_root {
 //--------------------------------- Private data members
   private : bool mIsValid ;
   private : C_String mString ;
@@ -459,19 +457,19 @@ class GALGAS_string : public AC_GALGAS_root
 } ; // End of GALGAS_string class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_string ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @bool type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef enum {kBoolNotValid, kBoolFalse, kBoolTrue} enumGalgasBool ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bool : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -559,15 +557,15 @@ class GALGAS_bool : public AC_GALGAS_root {
 } ; // End of GALGAS_bool class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bool ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @stringset type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringset : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -673,9 +671,9 @@ class GALGAS_stringset : public AC_GALGAS_root {
  
 } ; // End of GALGAS_stringset class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_stringset : public cGenericAbstractEnumerator {
   public : cEnumerator_stringset (const GALGAS_stringset & inEnumeratedObject,
@@ -687,20 +685,20 @@ class cEnumerator_stringset : public cGenericAbstractEnumerator {
   public : class GALGAS_string current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringset ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @location type                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_location : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -780,18 +778,17 @@ class GALGAS_location : public AC_GALGAS_root {
 } ; // End of GALGAS_location class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_location ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @type type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-class GALGAS_type : public AC_GALGAS_root
- {
+class GALGAS_type : public AC_GALGAS_root {
 //--------------------------------- Private data members
   private : const C_galgas_type_descriptor * mTypeDescriptor ;
 
@@ -852,15 +849,15 @@ class GALGAS_type : public AC_GALGAS_root
 } ; // End of GALGAS_type class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_type ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @char type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_char : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -959,15 +956,15 @@ class GALGAS_char : public AC_GALGAS_root {
 } ; // End of GALGAS_char class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_char ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @bigint type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bigint : public AC_GALGAS_root {
 //--------------------------------- Private properties
@@ -1127,6 +1124,11 @@ class GALGAS_bigint : public AC_GALGAS_root {
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexString (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexStringSeparatedBy (const class GALGAS_char & constinOperand0,
+                                                                             const class GALGAS_uint & constinOperand1,
+                                                                             C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_isZero (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_sint getter_sign (LOCATION_ARGS) const ;
@@ -1157,15 +1159,15 @@ class GALGAS_bigint : public AC_GALGAS_root {
 } ; // End of GALGAS_bigint class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bigint ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @double type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_double : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -1319,15 +1321,15 @@ class GALGAS_double : public AC_GALGAS_root {
 } ; // End of GALGAS_double class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_double ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @sint64 type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_sint_36__34_ : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -1491,6 +1493,11 @@ class GALGAS_sint_36__34_ : public AC_GALGAS_root {
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexString (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexStringSeparatedBy (const class GALGAS_char & constinOperand0,
+                                                                             const class GALGAS_uint & constinOperand1,
+                                                                             C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_sint getter_sint (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const ;
 
@@ -1511,15 +1518,15 @@ class GALGAS_sint_36__34_ : public AC_GALGAS_root {
 } ; // End of GALGAS_sint_36__34_ class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_ ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @uint type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_uint : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -1558,6 +1565,8 @@ class GALGAS_uint : public AC_GALGAS_root {
   public : static class GALGAS_uint constructor_errorCount (LOCATION_ARGS) ;
 
   public : static class GALGAS_uint constructor_max (LOCATION_ARGS) ;
+
+  public : static class GALGAS_uint constructor_random (LOCATION_ARGS) ;
 
   public : static class GALGAS_uint constructor_valueWithMask (const class GALGAS_uint & inOperand0,
                                                                const class GALGAS_uint & inOperand1,
@@ -1667,8 +1676,13 @@ class GALGAS_uint : public AC_GALGAS_root {
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
+  public : static void class_method_setRandomSeed (class GALGAS_uint constinArgument0
+                                                   COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_alphaString (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_bigint getter_bigint (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_canAdd (const class GALGAS_uint & constinOperand0
@@ -1686,6 +1700,11 @@ class GALGAS_uint : public AC_GALGAS_root {
   public : VIRTUAL_IN_DEBUG class GALGAS_double getter_double (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexString (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexStringSeparatedBy (const class GALGAS_char & constinOperand0,
+                                                                             const class GALGAS_uint & constinOperand1,
+                                                                             C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_isInRange (const class GALGAS_range & constinOperand0
                                                                 COMMA_LOCATION_ARGS) const ;
@@ -1717,18 +1736,17 @@ class GALGAS_uint : public AC_GALGAS_root {
 } ; // End of GALGAS_uint class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @uint64 type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-class GALGAS_uint_36__34_ : public AC_GALGAS_root
- {
+class GALGAS_uint_36__34_ : public AC_GALGAS_root {
 //--------------------------------- Private data members
   private : bool mIsValid ;
   private : uint64_t mUInt64Value ;
@@ -1875,6 +1893,8 @@ class GALGAS_uint_36__34_ : public AC_GALGAS_root
 //--------------------------------- Class Methods
 
 //--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_alphaString (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_bigint getter_bigint (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_canAdd (const class GALGAS_uint_36__34_ & constinOperand0
@@ -1892,6 +1912,11 @@ class GALGAS_uint_36__34_ : public AC_GALGAS_root
   public : VIRTUAL_IN_DEBUG class GALGAS_double getter_double (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexString (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexStringSeparatedBy (const class GALGAS_char & constinOperand0,
+                                                                             const class GALGAS_uint & constinOperand1,
+                                                                             C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_sint getter_sint (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const ;
@@ -1918,15 +1943,15 @@ class GALGAS_uint_36__34_ : public AC_GALGAS_root
 } ; // End of GALGAS_uint_36__34_ class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_ ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @sint type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_sint : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -2090,6 +2115,11 @@ class GALGAS_sint : public AC_GALGAS_root {
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexString (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_hexStringSeparatedBy (const class GALGAS_char & constinOperand0,
+                                                                             const class GALGAS_uint & constinOperand1,
+                                                                             C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_sint_36__34_ getter_sint_36__34_ (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_string (LOCATION_ARGS) const ;
@@ -2109,15 +2139,15 @@ class GALGAS_sint : public AC_GALGAS_root {
 } ; // End of GALGAS_sint class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @application type                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_application : public AC_GALGAS_root {
 //--------------------------------- Accessors
@@ -2159,6 +2189,10 @@ class GALGAS_application : public AC_GALGAS_root {
 
   public : static class GALGAS__32_stringlist constructor_boolOptionNameList (LOCATION_ARGS) ;
 
+  public : static class GALGAS_bool constructor_boolOptionValue (const class GALGAS_string & inOperand0,
+                                                                 const class GALGAS_string & inOperand1
+                                                                 COMMA_LOCATION_ARGS) ;
+
   public : static class GALGAS_string constructor_commandLineArgumentAtIndex (const class GALGAS_uint & inOperand0,
                                                                               class C_Compiler * inCompiler
                                                                               COMMA_LOCATION_ARGS) ;
@@ -2188,6 +2222,10 @@ class GALGAS_application : public AC_GALGAS_root {
 
   public : static class GALGAS__32_stringlist constructor_stringOptionNameList (LOCATION_ARGS) ;
 
+  public : static class GALGAS_string constructor_stringOptionValue (const class GALGAS_string & inOperand0,
+                                                                     const class GALGAS_string & inOperand1
+                                                                     COMMA_LOCATION_ARGS) ;
+
   public : static class GALGAS_string constructor_system (LOCATION_ARGS) ;
 
   public : static class GALGAS_string constructor_uintOptionCommentString (const class GALGAS_string & inOperand0,
@@ -2204,6 +2242,10 @@ class GALGAS_application : public AC_GALGAS_root {
 
   public : static class GALGAS__32_stringlist constructor_uintOptionNameList (LOCATION_ARGS) ;
 
+  public : static class GALGAS_uint constructor_uintOptionValue (const class GALGAS_string & inOperand0,
+                                                                 const class GALGAS_string & inOperand1
+                                                                 COMMA_LOCATION_ARGS) ;
+
   public : static class GALGAS_bool constructor_verboseOutput (LOCATION_ARGS) ;
 
 //--------------------------------- Implementation of getter 'description'
@@ -2216,6 +2258,21 @@ class GALGAS_application : public AC_GALGAS_root {
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
+  public : static void class_method_setBoolOptionValue (class GALGAS_string constinArgument0,
+                                                        class GALGAS_string constinArgument1,
+                                                        class GALGAS_bool constinArgument2
+                                                        COMMA_LOCATION_ARGS) ;
+
+  public : static void class_method_setStringOptionValue (class GALGAS_string constinArgument0,
+                                                          class GALGAS_string constinArgument1,
+                                                          class GALGAS_string constinArgument2
+                                                          COMMA_LOCATION_ARGS) ;
+
+  public : static void class_method_setUIntOptionValue (class GALGAS_string constinArgument0,
+                                                        class GALGAS_string constinArgument1,
+                                                        class GALGAS_uint constinArgument2
+                                                        COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Getters
 
@@ -2225,19 +2282,19 @@ class GALGAS_application : public AC_GALGAS_root {
 } ; // End of GALGAS_application class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_application ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @binaryset type                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "bdd/C_BDD.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_binaryset : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -2534,15 +2591,15 @@ class GALGAS_binaryset : public AC_GALGAS_root {
 } ; // End of GALGAS_binaryset class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_binaryset ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @data type                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_data : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -2642,9 +2699,9 @@ class GALGAS_data : public AC_GALGAS_root {
  
 } ; // End of GALGAS_data class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_data : public cGenericAbstractEnumerator {
   public : cEnumerator_data (const GALGAS_data & inEnumeratedObject,
@@ -2656,15 +2713,15 @@ class cEnumerator_data : public cGenericAbstractEnumerator {
   public : class GALGAS_uint current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_data ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @filewrapper type                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cRegularFileWrapper {
   public : const char * mName ;
@@ -2685,7 +2742,7 @@ class cRegularFileWrapper {
   private : cRegularFileWrapper & operator = (const cRegularFileWrapper &) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cDirectoryWrapper {
   public : const char * mDirectoryName ;
@@ -2706,7 +2763,7 @@ class cDirectoryWrapper {
   private : cDirectoryWrapper & operator = (const cDirectoryWrapper &) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_filewrapper : public AC_GALGAS_root {
 //--------------------------------- Private data members
@@ -2803,19 +2860,19 @@ class GALGAS_filewrapper : public AC_GALGAS_root {
 } ; // End of GALGAS_filewrapper class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_filewrapper ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @function type                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_galgas_function_descriptor ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_function : public AC_GALGAS_root {
 //--------------------------------- Private data member
@@ -2888,19 +2945,19 @@ class GALGAS_function : public AC_GALGAS_root {
 } ; // End of GALGAS_function class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_function ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @object type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_object ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_object : public AC_GALGAS_root {
 //--------------------------------- Private data member
@@ -2960,15 +3017,15 @@ class GALGAS_object : public AC_GALGAS_root {
 } ; // End of GALGAS_object class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_object ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @timer type                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_timer : public AC_GALGAS_root {
 //--------------------------------- Private properties
@@ -3024,15 +3081,15 @@ class GALGAS_timer : public AC_GALGAS_root {
 } ; // End of GALGAS_timer class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_timer ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @stringlist list                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3138,9 +3195,9 @@ class GALGAS_stringlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_stringlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_stringlist : public cGenericAbstractEnumerator {
   public : cEnumerator_stringlist (const GALGAS_stringlist & inEnumeratedObject,
@@ -3152,15 +3209,15 @@ class cEnumerator_stringlist : public cGenericAbstractEnumerator {
   public : class GALGAS_stringlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @lbigint struct                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lbigint : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -3223,15 +3280,15 @@ class GALGAS_lbigint : public AC_GALGAS_root {
 } ; // End of GALGAS_lbigint class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lbigint ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @lstringlist list                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstringlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3337,9 +3394,9 @@ class GALGAS_lstringlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_lstringlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_lstringlist : public cGenericAbstractEnumerator {
   public : cEnumerator_lstringlist (const GALGAS_lstringlist & inEnumeratedObject,
@@ -3351,15 +3408,15 @@ class cEnumerator_lstringlist : public cGenericAbstractEnumerator {
   public : class GALGAS_lstringlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @lbool struct                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lbool : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -3422,15 +3479,15 @@ class GALGAS_lbool : public AC_GALGAS_root {
 } ; // End of GALGAS_lbool class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lbool ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @functionlist list                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_functionlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3536,9 +3593,9 @@ class GALGAS_functionlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_functionlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_functionlist : public cGenericAbstractEnumerator {
   public : cEnumerator_functionlist (const GALGAS_functionlist & inEnumeratedObject,
@@ -3550,15 +3607,15 @@ class cEnumerator_functionlist : public cGenericAbstractEnumerator {
   public : class GALGAS_functionlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_functionlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @luintlist list                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_luintlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3664,9 +3721,9 @@ class GALGAS_luintlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_luintlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_luintlist : public cGenericAbstractEnumerator {
   public : cEnumerator_luintlist (const GALGAS_luintlist & inEnumeratedObject,
@@ -3678,15 +3735,15 @@ class cEnumerator_luintlist : public cGenericAbstractEnumerator {
   public : class GALGAS_luintlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_luintlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @luint struct                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_luint : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -3749,15 +3806,15 @@ class GALGAS_luint : public AC_GALGAS_root {
 } ; // End of GALGAS_luint class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_luint ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @objectlist list                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3863,9 +3920,9 @@ class GALGAS_objectlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_objectlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_objectlist : public cGenericAbstractEnumerator {
   public : cEnumerator_objectlist (const GALGAS_objectlist & inEnumeratedObject,
@@ -3877,15 +3934,15 @@ class cEnumerator_objectlist : public cGenericAbstractEnumerator {
   public : class GALGAS_objectlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @typelist list                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_typelist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3991,9 +4048,9 @@ class GALGAS_typelist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_typelist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_typelist : public cGenericAbstractEnumerator {
   public : cEnumerator_typelist (const GALGAS_typelist & inEnumeratedObject,
@@ -4005,15 +4062,15 @@ class cEnumerator_typelist : public cGenericAbstractEnumerator {
   public : class GALGAS_typelist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_typelist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @uintlist list                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_uintlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -4119,9 +4176,9 @@ class GALGAS_uintlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_uintlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_uintlist : public cGenericAbstractEnumerator {
   public : cEnumerator_uintlist (const GALGAS_uintlist & inEnumeratedObject,
@@ -4133,15 +4190,15 @@ class cEnumerator_uintlist : public cGenericAbstractEnumerator {
   public : class GALGAS_uintlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uintlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @uint64list list                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_uint_36__34_list : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -4247,9 +4304,9 @@ class GALGAS_uint_36__34_list : public AC_GALGAS_list {
  
 } ; // End of GALGAS_uint_36__34_list class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_uint_36__34_list : public cGenericAbstractEnumerator {
   public : cEnumerator_uint_36__34_list (const GALGAS_uint_36__34_list & inEnumeratedObject,
@@ -4261,15 +4318,15 @@ class cEnumerator_uint_36__34_list : public cGenericAbstractEnumerator {
   public : class GALGAS_uint_36__34_list_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_list ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @bigintlist list                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bigintlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -4375,9 +4432,9 @@ class GALGAS_bigintlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_bigintlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_bigintlist : public cGenericAbstractEnumerator {
   public : cEnumerator_bigintlist (const GALGAS_bigintlist & inEnumeratedObject,
@@ -4389,15 +4446,15 @@ class cEnumerator_bigintlist : public cGenericAbstractEnumerator {
   public : class GALGAS_bigintlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bigintlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @lbigintlist list                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lbigintlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -4503,9 +4560,9 @@ class GALGAS_lbigintlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS_lbigintlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_lbigintlist : public cGenericAbstractEnumerator {
   public : cEnumerator_lbigintlist (const GALGAS_lbigintlist & inEnumeratedObject,
@@ -4517,15 +4574,15 @@ class cEnumerator_lbigintlist : public cGenericAbstractEnumerator {
   public : class GALGAS_lbigintlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lbigintlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @lchar struct                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lchar : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -4588,15 +4645,15 @@ class GALGAS_lchar : public AC_GALGAS_root {
 } ; // End of GALGAS_lchar class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lchar ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @ldouble struct                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_ldouble : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -4659,15 +4716,15 @@ class GALGAS_ldouble : public AC_GALGAS_root {
 } ; // End of GALGAS_ldouble class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_ldouble ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @lsint_36__34_ struct                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lsint_36__34_ : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -4730,15 +4787,15 @@ class GALGAS_lsint_36__34_ : public AC_GALGAS_root {
 } ; // End of GALGAS_lsint_36__34_ class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lsint_36__34_ ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @luint_36__34_ struct                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_luint_36__34_ : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -4801,15 +4858,15 @@ class GALGAS_luint_36__34_ : public AC_GALGAS_root {
 } ; // End of GALGAS_luint_36__34_ class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_luint_36__34_ ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @2stringlist list                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS__32_stringlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -4933,9 +4990,9 @@ class GALGAS__32_stringlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS__32_stringlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator__32_stringlist : public cGenericAbstractEnumerator {
   public : cEnumerator__32_stringlist (const GALGAS__32_stringlist & inEnumeratedObject,
@@ -4948,15 +5005,15 @@ class cEnumerator__32_stringlist : public cGenericAbstractEnumerator {
   public : class GALGAS__32_stringlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS__32_stringlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @2lstringlist list                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS__32_lstringlist : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -5080,9 +5137,9 @@ class GALGAS__32_lstringlist : public AC_GALGAS_list {
  
 } ; // End of GALGAS__32_lstringlist class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator__32_lstringlist : public cGenericAbstractEnumerator {
   public : cEnumerator__32_lstringlist (const GALGAS__32_lstringlist & inEnumeratedObject,
@@ -5095,15 +5152,15 @@ class cEnumerator__32_lstringlist : public cGenericAbstractEnumerator {
   public : class GALGAS__32_lstringlist_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS__32_lstringlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @range struct                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_range : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5166,15 +5223,15 @@ class GALGAS_range : public AC_GALGAS_root {
 } ; // End of GALGAS_range class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_range ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @functionlist_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_functionlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5228,15 +5285,15 @@ class GALGAS_functionlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_functionlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_functionlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @luintlist_2D_element struct                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_luintlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5293,15 +5350,15 @@ class GALGAS_luintlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_luintlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_luintlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @objectlist_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5355,15 +5412,15 @@ class GALGAS_objectlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_objectlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @stringlist_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5420,15 +5477,15 @@ class GALGAS_stringlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_stringlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @typelist_2D_element struct                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_typelist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5482,15 +5539,15 @@ class GALGAS_typelist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_typelist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_typelist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @uintlist_2D_element struct                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_uintlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5547,15 +5604,15 @@ class GALGAS_uintlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_uintlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uintlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @uint_36__34_list_2D_element struct                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_uint_36__34_list_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5612,15 +5669,15 @@ class GALGAS_uint_36__34_list_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_uint_36__34_list_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_list_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @bigintlist_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bigintlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5677,15 +5734,15 @@ class GALGAS_bigintlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_bigintlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bigintlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @lbigintlist_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lbigintlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5742,15 +5799,15 @@ class GALGAS_lbigintlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_lbigintlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lbigintlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @_32_stringlist_2D_element struct                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS__32_stringlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5813,15 +5870,15 @@ class GALGAS__32_stringlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS__32_stringlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS__32_stringlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @lstring struct                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstring : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5884,15 +5941,15 @@ class GALGAS_lstring : public AC_GALGAS_root {
 } ; // End of GALGAS_lstring class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstring ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                    @lsint struct                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lsint : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -5955,15 +6012,15 @@ class GALGAS_lsint : public AC_GALGAS_root {
 } ; // End of GALGAS_lsint class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lsint ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @lstringlist_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstringlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -6020,15 +6077,15 @@ class GALGAS_lstringlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_lstringlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @_32_lstringlist_2D_element struct                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS__32_lstringlist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -6091,15 +6148,15 @@ class GALGAS__32_lstringlist_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS__32_lstringlist_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS__32_lstringlist_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/cCollectionElement.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement : public cCollectionElement {
 //--- Attribut
@@ -6114,7 +6171,7 @@ class cMapElement : public cCollectionElement {
   private : cMapElement & operator = (const cMapElement &) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/cSortedListElement.h"
 #include "galgas2/capSortedListElement.h"
@@ -6126,4 +6183,3 @@ class cMapElement : public cCollectionElement {
 
 
 //--- END OF USER ZONE 2
-#endif

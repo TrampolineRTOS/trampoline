@@ -366,69 +366,10 @@ tpl_sc_handler_from_hook:
   call         tpl_dispatch_table(REG_SID)
   ret
 
-
-/* MAYBE SHOULDN'T BE HERE BUT IN A SEPERATE FILE */
-.global TIMER3_A0_Handler
-.type   TIMER3_A0_Handler, %function
-TIMER3_A0_Handler:
-    pushx.a REG_RETARG
-#ifdef MSPGCC_ABI
-    /* r15 has been pushed by pushed by pushx.a REG_RETARG */
-    pushm.a     #4, r14                     /* Push r11, r12, r13, r14 */
-#endif
-#ifdef GCCFORMSP_ABI
-    /* r12 has been pushed by pushx.a REG_RETARG */
-    pushm.a     #3, r15                     /* push r13, r14, r15 */
-    pushx.a     r11
-#endif
-
-    mov         r1, r11 /* Copy the PSP to r11 */
-    mov         #tpl_kernel_stack_bottom, r1/* Switch to the kernel stack */
-    push        r11                         /* Save PCP to kernel stack */
-
-    mov         #tpl_kern, r11
-    mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    mov.b       #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
-
-    call        #tpl_tick_TIMER3_A0_VECTOR
-
-    mov         r1, r13                     /* get a copy of the KSP to restore it later */
-    pop         r1                          /* get the saved process stack pointer back */
-
-
-    mov         #tpl_kern, r11              /* check the context switch condition in tpl_kern */
-    tst.b       TPL_KERN_OFFSET_NEED_SWITCH(r11)
-    jz          tpl_TIMER3_A0_Handler_no_context_switch
-
-    pushm.a     #7, r10                     /* push r4 to r10 */
-
-    mov         &tpl_kern, r11              /* Get the s_running slot of tpl_kern in r11 */
-    mov         @r11, r11                   /* get the pointer to the context (SP alone) */
-    mov         r1, @r11                    /* Save the stack pointer */
-
-    mov         r13, r1                     /* Switch back to the kernel stack */
-    mov         #1, REG_RETARG
-    add         #2, r1                      /* "pop" the PSP which is no longer usefull */
-    call        #tpl_run_elected
-
-    mov         &tpl_kern, r11              /* Get the s_runnign slot of tpl_kern in r11 */
-    mov         @r11, r11                   /* Get the pointer to the context (SP alone) */
-    mov         @r11, r1                    /* Get the stack  pointer */
-
-    popm.a      #7, r10                     /* Pop r4 to r10 */
-
-tpl_TIMER3_A0_Handler_no_context_switch:
-#ifdef MSPGCC_ABI
-    /* r15 will be popped by popx.a REG_RETARG */
-    popm.a      #4, r14                     /* Pop r11, r12, r13, r14 */
-#endif
-#ifdef GCCFORMSP_ABI
-    /* r12 will be popped by popx.a REG_RETARG */
-    popx.a      r11
-    popm.a      #3, r15                     /* Pop r13, r14, r15 */
-#endif
-    popx.a      REG_RETARG
-    reti
-
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
+
+/*
+ * End of tpl_sc_handler.S
+ *=============================================================================
+ */

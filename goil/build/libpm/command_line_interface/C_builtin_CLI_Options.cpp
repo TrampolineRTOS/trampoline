@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  Generic Command Line Interface Options                                                                             *
 //   --help : Display help information                                                                                 *
@@ -9,9 +9,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2003, ..., 2012 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -21,11 +21,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "command_line_interface/C_builtin_CLI_Options.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BoolCommandLineOption
 gOption_generic_5F_cli_5F_options_display_5F_help ("generic_cli_options",
@@ -34,7 +34,7 @@ gOption_generic_5F_cli_5F_options_display_5F_help ("generic_cli_options",
                                                    "help",
                                                    "Display help information") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BoolCommandLineOption
 gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
@@ -43,7 +43,7 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
                                                       "version",
                                                       "Display version") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_StringCommandLineOption
 gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_options",
@@ -53,7 +53,7 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
                                                       "Emit a JSON file that contains all compilation issues",
                                                       "") ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #if COMPILE_FOR_WINDOWS == 0
   C_BoolCommandLineOption
@@ -64,7 +64,7 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
                                                  "Do not issue colored messages") ;
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #if COMPILE_FOR_WINDOWS == 1
   C_BoolCommandLineOption
@@ -75,4 +75,4 @@ gOption_generic_5F_cli_5F_options_emit_5F_issue_5F_json_5F_file ("generic_cli_op
                                               "Do Not Display any dialog when no input file (Windows only)") ;
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

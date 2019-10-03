@@ -1,15 +1,15 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'C_Lexique' : an abstract lexique class ;                                                                          *
 //  Galgas generated scanner classes inherit from this class.                                                          *
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1996, ..., 2018 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -19,27 +19,26 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-#ifndef GALGAS_LEXIQUE_CLASS_DEFINED
-#define GALGAS_LEXIQUE_CLASS_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_Compiler.h"
 #include "galgas2/cProductionNameDescriptor.h"
 #include "galgas2/cTemplateDelimiter.h"
 #include "galgas2/C_galgas_io.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cIndexingDictionary ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                 Lexique class                                                                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_Lexique : public C_Compiler {
 //--- Constructors and destructor
@@ -75,10 +74,15 @@ class C_Lexique : public C_Compiler {
 //--- Token list
   private : cToken * mFirstToken ;
   private : cToken * mLastToken ;
-  protected : cToken * mCurrentTokenPtr ;
+  private : cToken * mCurrentTokenPtr ;
   protected : void enterTokenFromPointer (cToken * inToken) ;
-  protected : int32_t mLastSeparatorIndex ;
+  private : int32_t mLastSeparatorIndex ;
   public : void appendLastSeparatorTo (C_String & ioString) const ;
+
+  protected : cToken * currentTokenPtr (LOCATION_ARGS) const {
+    macroValidPointerThere (mCurrentTokenPtr) ;
+    return mCurrentTokenPtr ;
+  }
 
 //--- Syntax directed translation : accessing current token
   public : C_String preceedingSeparatorString (void) const ;
@@ -176,7 +180,7 @@ class C_Lexique : public C_Compiler {
   protected : void lexicalLog (LOCATION_ARGS) ;
 
 //--- Methods for parsing during second pass
-  public : void acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) ;
+  public : void acceptTerminal (const int16_t inExpectedTerminal COMMA_LOCATION_ARGS) ;
   public : int16_t nextProductionIndex (void) ;
   public : virtual int16_t terminalVocabularyCount (void) const = 0 ;
 
@@ -235,6 +239,4 @@ class C_Lexique : public C_Compiler {
   protected : virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const = 0 ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#endif
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

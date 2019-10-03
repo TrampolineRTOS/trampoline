@@ -23,8 +23,10 @@
  * See md5.c for more information.
  */
 
-#ifndef MD5_ROUTINES_DEFINED
-#define MD5_ROUTINES_DEFINED
+#pragma once
+
+//#ifndef MD5_ROUTINES_DEFINED
+//#define MD5_ROUTINES_DEFINED
 //#ifdef HAVE_OPENSSL
 //#include <openssl/md5.h>
 //#elif !defined(_MD5_H)
@@ -44,4 +46,4 @@ void MD5_Init (MD5_CTX *ctx);
 void MD5_Update (MD5_CTX *ctx, const void *data, unsigned long size);
 void MD5_Final (unsigned char *result, MD5_CTX *ctx);
 
-#endif
+//#endif

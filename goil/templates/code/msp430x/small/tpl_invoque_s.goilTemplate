@@ -1,0 +1,8 @@
+%
+!PROJECT %/tpl_invoque.S
+%
+write to PROJECT + "/tpl_invoque.S":
+  let EXTENSION := "S"
+  let ASSEMBLERHEADER := true
+  template tpl_invoque in code
+end write

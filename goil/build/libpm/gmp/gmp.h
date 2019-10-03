@@ -28,7 +28,8 @@ You should have received copies of the GNU General Public License and the
 GNU Lesser General Public License along with the GNU MP Library.  If not,
 see https://www.gnu.org/licenses/.  */
 
-#ifndef __GMP_H__
+#pragma once
+//#ifndef __GMP_H__
 
 #if defined (__cplusplus)
 #include <iosfwd>   /* for std::istream, std::ostream, std::string */
@@ -2340,5 +2341,5 @@ enum
 #define __GNU_MP_VERSION_PATCHLEVEL 0
 #define __GNU_MP_RELEASE (__GNU_MP_VERSION * 10000 + __GNU_MP_VERSION_MINOR * 100 + __GNU_MP_VERSION_PATCHLEVEL)
 
-#define __GMP_H__
-#endif /* __GMP_H__ */
+//#define __GMP_H__
+//#endif /* __GMP_H__ */
