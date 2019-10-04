@@ -486,6 +486,11 @@ override getter @gtlUnconstructed performGetter
     result = @gtlString.new {
       !meta !emptylstring() !meta
     }
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   elsif [lib getterExists !"unconstructed" !methodName] then
     result = [[lib getGetter !"unconstructed" !methodName] callGetter
       ![methodName location]
@@ -669,6 +674,11 @@ override getter @gtlType performGetter
     argumentsCheck(!methodName !noArgument() !arguments)
     result = @gtlString.new {
       !meta !emptylstring() !meta
+    }
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
     }
   elsif [lib getterExists !"type" !methodName] then
     result = [[lib getGetter !"type" !methodName] callGetter
@@ -870,6 +880,11 @@ override getter @gtlEnum performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for enum target" : result
   end
@@ -1147,6 +1162,11 @@ override getter @gtlChar performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for char target" : result
   end
@@ -1613,6 +1633,11 @@ override getter @gtlInt performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for int target" : result
   end
@@ -1962,6 +1987,11 @@ override getter @gtlFloat performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for float target" : result
   end
@@ -2449,6 +2479,11 @@ override getter @gtlString performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for string target"
       : result
@@ -2770,6 +2805,11 @@ override getter @gtlBool performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for boolean target"
       : result
@@ -3101,6 +3141,11 @@ override getter @gtlSet performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for set target"
       : result
@@ -3356,6 +3401,11 @@ override getter @gtlStruct performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for struct target"
       : result
@@ -3838,6 +3888,11 @@ override getter @gtlList performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for list target"
       : result
@@ -4176,6 +4231,11 @@ override getter @gtlMap performGetter
       !self
       !arguments
     ]
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for map target"
       : result
@@ -4533,6 +4593,11 @@ override getter @gtlExpr performGetter
     argumentsCheck(!methodName !noArgument() !arguments)
     result = @gtlString.new {
       !meta !emptylstring() !meta
+    }
+  elsif "location" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() ![where locationString]
     }
   elsif [lib getterExists !"expression" !methodName] then
     result = [[lib getGetter !"expression" !methodName] callGetter

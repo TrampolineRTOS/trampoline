@@ -1,0 +1,35 @@
+%
+# @file custom_code.goilTemplate
+#
+# @section desc File description
+#
+# Root template file for goil
+# 
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+# 
+
+
+
+write to PROJECT+"/tpl_interrupt_vectors.c":
+ let EXTENSIONINTERRUPTVECTORS := "c"
+ template tpl_interrupt_vectors in code
+end write
+
+write to PROJECT+"/tpl_irq_handlers.S":
+ let EXTENSIONIRQHANDLERS := "S"
+ template tpl_irq_handlers in code
+end write

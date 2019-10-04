@@ -14,6 +14,13 @@ IMPLEMENTATION msp430fr5969 {
   COUNTER [] {
     INTERRUPT_TYPE SOURCE;
   };
+  ISR [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+  INTERRUPT_VECTOR_SPEC {
+    UINT32 ORIGIN;
+    UINT32 SIZE;
+  };
 };
 
 CPU msp430fr5969 {
@@ -32,6 +39,8 @@ CPU msp430fr5969 {
   };
   
   GENERATED_FILES msp430x {
+    ASFILE = "tpl_irq_handlers.S";
+    CFILE  = "tpl_interrupt_vectors.c";
   };
 
   /*
@@ -44,6 +53,12 @@ CPU msp430fr5969 {
   //LIBRARY IO { //pinMode, digitalWrite, .. as in Arduino.
   //  PATH = "";
   //};
+  
+  INTERRUPT_VECTOR_SPEC msp430fr5969_interrupt_vectors {
+    ORIGIN = 0xFFCC;
+    SIZE = 26;
+  };
+  
 
   INTERRUPT AES256_VECTOR    {
    ADDRESS = 0xFFCC;  /* AES256 */
