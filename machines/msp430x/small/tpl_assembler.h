@@ -19,6 +19,10 @@
 #define R13 r13
 #define R14 r14
 #define R15 r15
+#define pc r0
+#define sp r1
+#define sr r2
+
 //R15 behavior depends on the ABI flavor
 
 #if __GXX_ABI_VERSION == 1002

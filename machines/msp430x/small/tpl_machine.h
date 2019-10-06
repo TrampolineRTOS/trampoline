@@ -37,9 +37,9 @@ struct TPL_CONTEXT {
 	uint16  sp;
 };
 
-typedef struct MSP430X_CONTEXT *tpl_context;
+typedef msp430x_small_context *tpl_context;
 
-extern struct MSP430X_CONTEXT idle_task_context;
+extern msp430x_small_context idle_task_context;
 
 /*
  * Configuration of systick timer (can be a generic timer if systick is not available

@@ -43,7 +43,11 @@ foreach obj in objForIRQ do
     if obj::CATEGORY == 1 then
       let anIrq::generatePrimaryIrq := true
       let anIrq::function := obj::NAME + "_function"
+    else # category 2
+      let anIrq::function := obj::NAME + "_isr2"
     end if
+  elsif obj::KIND == "COUNTER" then
+    let anIrq::function := "tpl_tick_" + KEY
   end if
   let irqStageList += anIrq 
 end foreach
@@ -64,12 +68,10 @@ end foreach
 
 #include "tpl_assembler.h"
 #include "tpl_asm_definitions.h"
+#include "tpl_kern_stack.h"
 
-#define OS_START_SEC_VAR
-#include "tpl_as_memmap.h"
 .extern tpl_kern
-#define OS_STOP_SEC_VAR
-#include "tpl_as_memmap.h"
+.extern tpl_kern_stack
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
@@ -93,7 +95,7 @@ foreach irq in irqStageList
   do
     let handlerSource := irq::handlerSource
     let handlerName := irq::handlerName
-    let handlerIRQ := handlerSource."_Handler"
+    let handlerIRQ := irq::function
     if not irq::generatePrimaryIrq then
 %
 /*=============================================================================
@@ -102,7 +104,6 @@ foreach irq in irqStageList
 %
       template primary_irq_handler_body
     else
-      let handlerFunction := irq::function
       template direct_irq_handler_body
     end if
   after

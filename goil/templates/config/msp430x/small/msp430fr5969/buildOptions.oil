@@ -61,7 +61,7 @@ CPU msp430fr5969 {
     // Assemble for msp430fr5969
     ASFLAGS = "-mmcu=msp430fr5969";
     // A warning is an error
-    ASFLAGS = "--fatal-warnings";
+    /* ASFLAGS = "--fatal-warnings"; */
 
     /*
      * Linker flags

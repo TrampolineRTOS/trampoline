@@ -10,6 +10,7 @@
 	#include "tpl_as_definitions.h"
 #endif
 #include "tpl_os_interrupt.h"
+#include "tpl_kern_stack.h"
 
 #include "msp430.h"
 
@@ -32,7 +33,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 		tpl_stat_proc_table[proc_id];
 
 	//pointer to the context of the process
-	CONSTP2VAR(msp430x_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
+	CONSTP2VAR(msp430x_small_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
 		the_proc->context;
 
 	//pointer to the stack of the process
@@ -45,7 +46,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 	//pointer to the exception frame
 	CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) frame =
-		(tpl_stack_word)(stack + size_of_stack_above_frame);
+		(tpl_stack_word*)(stack + size_of_stack_above_frame);
 
 #if WITH_PAINT_REGISTERS == YES
 	for(i = 0; i < GPR_ON_SMALL_FRAME; i++)
@@ -73,15 +74,15 @@ FUNC(void, OS_CODE) tpl_init_context(
 	#endif
 #else
 	#if ISR_COUNT > 0
-		frame[CALL_IDX] = (uint16)(CallTerminateISR2);
+		frame[CALL_SMALL_IDX] = (uint16)(CallTerminateISR2);
 	#else
-		frame[CALL_IDX] = NULL;
+		frame[CALL_SMALL_IDX] = NULL;
 	#endif
 #endif
 	/* status register. Set the GIE bit (Global interrupt) */
-	frame[SR_IDX] = 0x8;
+	frame[SR_SMALL_IDX] = 0x8;
 	/* init the return address to the entry point of the task/ISR2 */
-	frame[PC_IDX] = (uint16)(the_proc->entry);
+	frame[PC_SMALL_IDX] = (uint16)(the_proc->entry);
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
 	stack[0] = OS_STACK_PATTERN;
@@ -114,6 +115,16 @@ FUNC(void, OS_CODE) tpl_set_systick_timer()
 }
 
 #define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/*
+ * The kernel stack
+ */
+#define OS_START_SEC_VAR_NOINIT_16BIT
+#include "tpl_memmap.h"
+CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA)
+  tpl_kern_stack[TPL_KERNEL_STACK_SIZE];
+#define OS_STOP_SEC_VAR_NOINIT_16BIT
 #include "tpl_memmap.h"
 
 /*

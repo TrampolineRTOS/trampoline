@@ -1,5 +1,5 @@
 
-.extern % !handlerFunction %
+.extern % !handlerIRQ %
 .global tpl_direct_irq_handler_% !handlerSource %
 .type   tpl_direct_irq_handler_% !handlerSource %, \%function
 /*-----------------------------------------------------------------------------
@@ -9,15 +9,15 @@ tpl_direct_irq_handler_% !handlerSource %:
 /*-----------------------------------------------------------------------------
  * -1- Push volatile registers
  */
-  pushm.w       #5, r15
+  pushm.w   #5, r15
 /*-----------------------------------------------------------------------------
  * -2- Call the ISR1.
  */
-  call          % !handlerFunction %
+  call      % !handlerIRQ %
 /*-----------------------------------------------------------------------------
  * -3- Pop volatile registers
  */
-  popm.w       #5, r15
+  popm.w    #5, r15
 /*-----------------------------------------------------------------------------
  * -4- Return.
  */

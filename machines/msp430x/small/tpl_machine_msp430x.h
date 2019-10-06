@@ -5,6 +5,7 @@
 #include "tpl_machine.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
+#include "tpl_kern_stack.h"
 
 #define TPL_KERN_OFFSET_S_RUNNING     0
 #define TPL_KERN_OFFSET_S_ELECTED     2

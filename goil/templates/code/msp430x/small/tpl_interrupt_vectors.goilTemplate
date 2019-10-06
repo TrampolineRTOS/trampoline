@@ -36,140 +36,111 @@ foreach cnt in COUNTER do
   end if
 end foreach
 
-
-# Map ISR2s to an index for tpl_isr_stat_table
-let index := 0
-let mapOfISR2 := @[ ]
-foreach isr in ISRS2 do
-  let key := isr::SOURCE
-  let isr::INDEX := index
-  let mapOfISR2[key] := isr
-  let index := index + 1
-end foreach
-
 #------------------------------------------------------------------------------*
 %
 /* External handlers */
 %
-display INTERRUPT
+
+foreach int in INTERRUPT do
+  if exists int::LINKED then %
+extern FUNC(void, OS_CODE) % !int::LINKED % (P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+  end if
+end foreach
+
 foreach int in INTERRUPT do
   # Reach the declared interrupt in INTERRUPT 
   if exists objForIRQ[int::NAME] then
+    let obj := objForIRQ[int::NAME]
     let handlerIsEmpty := false
-    foreach obj in objForIRQ do
-      if KEY == int::NAME then
-        # We have found an interrupts to call
-        # check whether we have an ISR or a COUNTER
-        if obj::KIND == "ISR" then
-          if obj::CATEGORY == 1 then %
-extern FUNC(void, OS_CODE) % !KEY %_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
-          else
-            if obj::CATEGORY == 2 then %
-extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !KEY %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
-            else %
+    # We have found an interrupts to call
+    # Check if it is linked, aka reserved to the OS
+    if exists int::LINKED then
+      error int::NAME : "Reserved interrupt"
+    else
+      # check whether we have an ISR or a COUNTER
+      if obj::KIND == "ISR" then
+        if obj::CATEGORY == 1 then %
+extern FUNC(void, OS_CODE) tpl_direct_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+        elsif obj::CATEGORY == 2 then %
+extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+        else %
 #error unknown CATEGORY % !obj::CATEGORY
-            end if
-          end if
-        else # this is a counter
-%
-extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !KEY %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
         end if
+      else # this is a counter
+        %
+extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
       end if
-    end foreach
+    end if
   end if
 end foreach
 %
 
 /* Interrupt table vector */
 %
-loop ENTRY
-  from INTERRUPT_VECTOR_SPEC::ORIGIN
-  to INTERRUPT_VECTOR_SPEC::ORIGIN + (INTERRUPT_VECTOR_SPEC::SIZE - 1) * 2
+# Check there is no duplicate address in INTERRUPT list
+let maxNameWidth := 0
+let uniqueAddress := @! !
+foreach int in INTERRUPT do
+  if [int::NAME length] > maxNameWidth then
+    let maxNameWidth := [int::NAME length]
+  end if
+  if [uniqueAddress contains: int::ADDRESS] then
+    error int::ADDRESS : "ADDRESS already used"
+  else
+    let uniqueAddress += int::ADDRESS
+  end if
+end foreach
+unlet uniqueAddress
+let maxNameWidth += 14
+
+# Compute start address, end address and size of the vectors
+let start_address := 0xFFFE
+let end_address := 0x0000
+foreach vect in INTERRUPT do
+  if vect::ADDRESS < start_address then 
+    let start_address := vect::ADDRESS 
+  end if
+  if vect::ADDRESS > end_address then 
+    let end_address := vect::ADDRESS 
+  end if
+end foreach
+
+loop entry
+  from start_address
+  to end_address
   step 2
   before
 %
-__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_VECTOR_SPEC::SIZE %] = {
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !(end_address - start_address + 2) / 2 %] = {
 %
   do
     foreach int in INTERRUPT do
-      if int::ADDRESS == ENTRY then
+      if int::ADDRESS == entry then
+        if exists int::LINKED then %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)% ! int::LINKED
+        elsif exists objForIRQ[int::NAME] then
+          let obj := objForIRQ[int::NAME]
+          if obj::KIND == "ISR" then
+            if obj::CATEGORY == 1 then %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_direct_irq_handler_% ! int::NAME
+            elsif obj::CATEGORY == 2 then %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_primary_irq_handler_% ! int::NAME           
+            end if
+          else %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_primary_irq_handler_% ! int::NAME
+          end if
+        else %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth  % */ (tpl_it_handler)tpl_null_it%
+        end if
       end if
     end foreach
+  between %,%
+  after %
+};
+%
 end loop
-#    let handlerIsEmpty := true
-#    foreach int in INTERRUPT do
-#      # Reach the declared interrupt in INTERRUPT 
-#      if ENTRY == int::VECT then
-#        if exists objForIRQ[int::NAME] then
-#          let handlerIsEmpty := false
-#          foreach objList in objForIRQ do
-#            if KEY == int::NAME then
-#              # We have found the list of interrupts to call
-#              # How many ISR do we have for this SOURCE ?
-#              if [objList length] == 1 then
-#                let obj := [objList first]
-#                # check whether we have an ISR or a COUNTER
-#                if obj::KIND == "ISR" then
-#                  if obj::CATEGORY == 1 then
-#                    %(tpl_it_handler)% !KEY %_Handler%
-#                  else
-#                    if obj::CATEGORY == 2 then
-#                      %(tpl_it_handler)tpl_primary_irq_handler_% !KEY
-#                    else
-#                      %#error unknown CATEGORY % !obj::CATEGORY
-#                    end if
-#                  end if
-#                else # this is a counter
-#                  %(tpl_it_handler)tpl_primary_irq_handler_% !KEY
-#                end if
-#              else
-#                # check if we have only ISR1
-#                let onlyISR1 := true
-#                foreach obj in objList do
-#                  if ( (obj::KIND == "ISR" & obj::CATEGORY == 2) |
-#                       (obj::KIND == "COUNTER") ) then
-#                    let onlyISR1 := false
-#                  end if
-#                end foreach
-#                if onlyISR1 == true then
-#                  %(tpl_it_handler)% !KEY %_Handler%
-#                else
-#                  %(tpl_it_handler)tpl_primary_irq_handler_% !KEY
-#                end if
-#              end if
-#            end if
-#          end foreach
-#        else
-#          if int::EXCEPTION then
-#            let handlerIsEmpty := false
-#            if int::VECTOR_TYPE == "HANDLER" then
-#              if int::VECTOR_TYPE_S::NAME != "NONE" then
-#                %(tpl_it_handler)% !int::VECTOR_TYPE_S::NAME
-#              else
-#                %(tpl_it_handler)tpl_null_it%
-#              end if
-#            else
-#              if int::VECTOR_TYPE == "REFERENCE" then
-#                %(tpl_it_handler)% !int::VECTOR_TYPE_S::NAME
-#              end if
-#            end if
-#          end if
-#        end if
-#      end if
-#    end foreach
-#    if handlerIsEmpty then
-#      %(tpl_it_handler)tpl_null_it%
-#    end if
-##    % }%
-#  between %,
-#%
-#  after
-#%
-#};
-#%
-#end loop
-%
-%
 
-
+%
+/* End of file % !FILENAME % */
+%
 # vim:ft=goil_templates

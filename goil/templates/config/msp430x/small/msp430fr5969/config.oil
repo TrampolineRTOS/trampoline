@@ -10,16 +10,13 @@ IMPLEMENTATION msp430fr5969 {
   INTERRUPT [] {
     UINT32 ADDRESS;
     IDENTIFIER HANDLER;
+    STRING WITH_AUTO LINKED;
   };
   COUNTER [] {
     INTERRUPT_TYPE SOURCE;
   };
   ISR [] {
     INTERRUPT_TYPE SOURCE;
-  };
-  INTERRUPT_VECTOR_SPEC {
-    UINT32 ORIGIN;
-    UINT32 SIZE;
   };
 };
 
@@ -30,10 +27,9 @@ CPU msp430fr5969 {
   };
 
   PLATFORM_FILES msp430x {
-    PATH  =  "msp430/msp430x";
+    PATH  =  "msp430x/small";
     CFILE =  "tpl_machine_msp430x.c";
     CFILE =  "tpl_startup.c";
-    CFILE =  "tpl_vectors.c";
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
   };
@@ -54,12 +50,6 @@ CPU msp430fr5969 {
   //  PATH = "";
   //};
   
-  INTERRUPT_VECTOR_SPEC msp430fr5969_interrupt_vectors {
-    ORIGIN = 0xFFCC;
-    SIZE = 26;
-  };
-  
-
   INTERRUPT AES256_VECTOR    {
    ADDRESS = 0xFFCC;  /* AES256 */
    HANDLER = AES256_Handler;
@@ -183,11 +173,13 @@ CPU msp430fr5969 {
   INTERRUPT SYSNMI_VECTOR    {
    ADDRESS = 0xFFFC;  /* System Non-maskable */
    HANDLER = SYSNMI_Handler;
+   LINKED = "tpl_MPU_violation";
   };
   
   INTERRUPT RESET_VECTOR     {
    ADDRESS = 0xFFFE;  /* Reset [Highest Priority] */
    HANDLER = RESET_Handler;
+   LINKED = "tpl_reset_handler";
   };
 
   POSTCOMMAND flash {
