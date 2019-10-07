@@ -133,7 +133,11 @@ CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA)
  * If 0, it ia a call from the application
  * if 1, it is a call from a hook
  */
+#define OS_START_SEC_VAR_8BIT
+#include "tpl_memmap.h"
 volatile uint8 tpl_reentrancy_flag = 0;
+#define OS_STOP_SEC_VAR_8BIT
+#include "tpl_memmap.h"
 
 /* TODO Will not work, the GIE bit has to be changed in the saved SR */
 
