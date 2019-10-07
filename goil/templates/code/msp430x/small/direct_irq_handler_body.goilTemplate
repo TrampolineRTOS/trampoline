@@ -13,7 +13,7 @@ tpl_direct_irq_handler_% !handlerSource %:
 /*-----------------------------------------------------------------------------
  * -2- Call the ISR1.
  */
-  call      % !handlerIRQ %
+  call      #% !handlerIRQ %
 /*-----------------------------------------------------------------------------
  * -3- Pop volatile registers
  */

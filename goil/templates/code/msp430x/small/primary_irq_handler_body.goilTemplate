@@ -28,7 +28,7 @@ tpl_primary_irq_handler_% !handlerSource %:
 /*-----------------------------------------------------------------------------
  * -4- Call the underlying C function.
  */
-  call      % !handlerIRQ %
+  call      #% !handlerIRQ %
 /*-----------------------------------------------------------------------------
  * -5- Switch back to the process stack
  */
@@ -57,7 +57,7 @@ tpl_primary_irq_handler_% !handlerSource %:
  */
   mov       r13, r1        /* Switch back to the kernel stack           */
   mov       #1, REG_RETARG
-  call      tpl_run_elected
+  call      #tpl_run_elected
 /*-----------------------------------------------------------------------------
  * -10- tpl_run_elected has copied the elected process slot of tpl_kern to the
  * running slot. We load the stack pointer of the new running process.
