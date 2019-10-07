@@ -59,21 +59,5 @@ CPU blink {
       CYCLETIME = 50;
     };
   };
-  
-  ISR toto {
-    CATEGORY = 1;
-    SOURCE = AES256_VECTOR;
-    PRIORITY = 1;
-  };
-  ISR titi {
-    CATEGORY = 1;
-    SOURCE = RTC_VECTOR;
-    PRIORITY = 1;
-  };
-  ISR tata {
-    CATEGORY = 2;
-    SOURCE = SYSNMI_VECTOR;
-    PRIORITY = 1;
-  };
 };
 
