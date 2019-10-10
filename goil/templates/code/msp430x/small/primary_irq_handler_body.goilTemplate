@@ -24,11 +24,27 @@ tpl_primary_irq_handler_% !handlerSource %:
  */
   mov       #tpl_kern, r11
   mov.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-  mov.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
+  mov.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)%
+  
+#
+# Check the kind of function to call, ISR2 or Counter ?
+#
+if handlerIsACounter then%
 /*-----------------------------------------------------------------------------
  * -4- Call the underlying C function.
  */
-  call      #% !handlerIRQ %
+  call      #% !handlerIRQ
+
+else # handler is an ISR2
+%
+/*-----------------------------------------------------------------------------
+ * -4- Call tpl_fast_central_interrupt_handler with
+ * the id of % !handlerName % (% !isr2Id %) as argument. 
+ */
+  mov       #% !isr2Id %, REG_RETARG
+  call      #tpl_fast_central_interrupt_handler% 
+end if
+%
 /*-----------------------------------------------------------------------------
  * -5- Switch back to the process stack
  */

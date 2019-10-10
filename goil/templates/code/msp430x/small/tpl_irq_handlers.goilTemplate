@@ -38,16 +38,25 @@ foreach obj in objForIRQ do
   let anIrq := @{ }
   let anIrq::handlerSource := KEY
   let anIrq::handlerName := obj::NAME
-  let anIrq::generatePrimaryIrq := false
+  let anIrq::generatePrimaryIrq := true
+  let anIrq::isACounter := false
+  let anIrq::identifier := -1
   if obj::KIND == "ISR" then
     if obj::CATEGORY == 1 then
-      let anIrq::generatePrimaryIrq := true
+      let anIrq::generatePrimaryIrq := false
       let anIrq::function := obj::NAME + "_function"
     else # category 2
-      let anIrq::function := obj::NAME + "_isr2"
+      let anIrq::function := obj::NAME + "_function"
+      # get the id 
+      foreach proc in PROCESSES do
+        if proc::NAME == anIrq::handlerName then
+          let anIrq::identifier := INDEX
+        end if
+      end foreach
     end if
   elsif obj::KIND == "COUNTER" then
     let anIrq::function := "tpl_tick_" + KEY
+    let anIrq::isACounter := true
   end if
   let irqStageList += anIrq 
 end foreach
@@ -96,7 +105,9 @@ foreach irq in irqStageList
     let handlerSource := irq::handlerSource
     let handlerName := irq::handlerName
     let handlerIRQ := irq::function
-    if not irq::generatePrimaryIrq then
+    let handlerIsACounter := irq::isACounter
+    let isr2Id := irq::identifier
+    if irq::generatePrimaryIrq then
 %
 /*=============================================================================
  * IRQ Handler for IRQ % !handlerName % with source vector % !handlerSource %
