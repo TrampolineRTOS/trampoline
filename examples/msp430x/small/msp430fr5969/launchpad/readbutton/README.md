@@ -1,4 +1,4 @@
-|=-----=[ readbutton example ]=-----=|
+#readbutton example
 
 This application deals with alarms.
 There are two tasks : "blink" and ""read_button".
@@ -20,3 +20,17 @@ Configure the application with:
 ```sh
 goil --target=msp430x/small/msp430fr5969/launchpad --templates=../../../../../../goil/templates/ readbutton.oil
 ```
+
+then
+
+```sh
+./make.py
+```
+
+to compile the application
+
+```sh
+./make.py flash
+```
+
+To upload it to the board.

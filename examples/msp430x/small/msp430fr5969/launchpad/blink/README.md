@@ -3,7 +3,7 @@
 This application is a simple periodic example wich toggles the green led (LD3 - pin 13) of the board.
 Have a look into "blink.oil" file.
 
-The system is based scheduled with a 1ms SysTick "SystemCounter".
+The SystemCounter is at 1ms.
 
 The task "blink" toggles the GREEN led when executed.
 This is not scheduled when the program starts.

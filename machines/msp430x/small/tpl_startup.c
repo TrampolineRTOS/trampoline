@@ -78,10 +78,10 @@ void tpl_continue_reset_handler(void)
 	MPUSEGB1 = ADDR_LOW  >> 4; /* only 16 most significant bits.               */
 	MPUSAM   = 0x0353;         /* Seg3: -WR(3), seg2: X-R(5), seg1: -WR(3)     */
 	MPUCTL0  =
-		0xA500 |								 /* password to unlock MPU                       */
-		MPUSEGIE | 							 /* interrupt when MPU segment violation         */
-		MPULOCK |                /* lock the MPU                                 */
-		MPUENA;                  /* enable the MPU                               */
+	 	0xA500 |                 /* password to unlock MPU                       */
+	 	MPUSEGIE |               /* interrupt when MPU segment violation         */
+	 	MPULOCK |                /* lock the MPU                                 */
+	 	MPUENA;                  /* enable the MPU                               */
 
 /* Exec constructors for global variables */
   /*
