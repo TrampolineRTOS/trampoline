@@ -676,7 +676,7 @@ if make.errorCount() == 0:%
     commandLineTemplate = Template(commandLine)
     commandLine = commandLineTemplate.safe_substitute(postVariableMapping)
     if makefile.find_executable("% !cmd::COMMAND %") != None:
-      print(commandLine)
+      print("\033[1m\033[95m% !cmd::MESSAGE % % !OS::BUILD_S::APP_NAME % on % ! TARGET %\033[0m")
       subprocess.call(commandLine, shell=True)
     else:
       print("Command '% !cmd::COMMAND %' not in PATH")%
