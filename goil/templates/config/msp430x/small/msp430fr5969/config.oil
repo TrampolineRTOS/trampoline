@@ -185,10 +185,9 @@ CPU msp430fr5969 {
   POSTCOMMAND flash {
     COMMAND flash {
       MESSAGE = "Flashing";
-      COMMAND = "mspdebug";
+      COMMAND = "DSLite";
       INPUT = TARGET { EXT = ""; };
-      PREOPTION = "tilib \\\"load";
-      POSTOPTION = "\\\"";
+      PREOPTION = "load -c $ARCH_PATH/ccxml/MSP-EXP430FR5969LP.ccxml -f";
     };
   };
 };
