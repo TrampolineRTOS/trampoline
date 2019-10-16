@@ -42,7 +42,7 @@ tpl_reset_handler:
 
 	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
-	mov     #0x5a80, &__WDTCTL
+	mov     #0x5a80, &WDTCTL
 /* #else
 	mov.b	&__WDTCTL, r5
 	bis	#0x5a08, r5

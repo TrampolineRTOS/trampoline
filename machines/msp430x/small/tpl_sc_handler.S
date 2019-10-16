@@ -61,6 +61,7 @@ tpl_sc_handler_id_ok:
  * called from a hook and has to be processed differently.
  */
   dint
+  nop	                              /*required after dint instruction*/
   tst.b        &tpl_reentrancy_flag
   jnz          tpl_sc_handler_from_hook
 /*-----------------------------------------------------------------------------
