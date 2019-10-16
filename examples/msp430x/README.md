@@ -6,9 +6,9 @@ The easiest way is to download Energia from [https://energia.nu/download/](https
 
 ## Mac OS X
 
-Put Energia application in your Applications folder. The path is 
+Put Energia application in your Applications folder. The path is
 
-```
+```sh
 /Applications/Energia.app
 ```
 
@@ -16,7 +16,7 @@ Put Energia application in your Applications folder. The path is
 
 Starting from the path above, the toolchain binaries are located in ```Contents/Java/hardware/tools/msp430/bin```. Edit your ```~/.profile``` file and add this line:
 
-```
+```sh
 export PATH=$PATH:/Applications/Energia.app/Contents/Java/hardware/tools/msp430/bin
 ```
 
@@ -24,7 +24,7 @@ export PATH=$PATH:/Applications/Energia.app/Contents/Java/hardware/tools/msp430/
 
 DSLite is located in ```Contents/Java/hardware/tools/DSLite/DebugServer/bin```. Add this line in your ```~/.profile``` file:
 
-```
+```sh
 export PATH=$PATH:/Applications/Energia.app/Contents/Java/hardware/tools/DSLite/DebugServer/bin
 ```
 
@@ -33,3 +33,31 @@ export PATH=$PATH:/Applications/Energia.app/Contents/Java/hardware/tools/DSLite/
 mspdebug 0.25 is available through [homebrew](https://brew.sh) or [MacPorts](https://www.macports.org)
 
 ## Linux
+(tested on Ubuntu 18.04 - 64 bits)
+
+Extract the archive to your installation path (`/opt` for instance) and [set the udev rules](https://energia.nu/guide/install/linux/).
+
+### Toolchain
+
+Starting from the path above (`/opt`), the toolchain binaries are located in `/opt/energia/hardware/tools/msp430/bin/. Edit your ~/.bashrc` file and add these lines:
+
+```sh
+export LD_LIBRARY_PATH=/opt/energia/hardware/tools/DSLite/DebugServer/drivers:$LD_LIBRARY_PATH
+export PATH=/opt/energia/hardware/tools/msp430/bin:$PATH
+```
+### DSLite
+
+DSLite is located in `/opt/energia/hardware/tools/DSLite/DebugServer/bin/DSLite`. Add this line in your `~/.bashrc` file:
+
+```sh
+export PATH=/opt/energia/hardware/tools/DSLite/DebugServer/bin:$PATH
+```
+### mspdebug 0.25
+The mspdebug version provided with Energia does not work correctly with GDB at this time (10/2019). The best way is to compile it again [from sources on GitHub](https://github.com/dlbeer/mspdebug):
+
+```sh
+git clone https://github.com/dlbeer/mspdebug.git
+cd mspdebug/
+make
+sudo make install
+```
