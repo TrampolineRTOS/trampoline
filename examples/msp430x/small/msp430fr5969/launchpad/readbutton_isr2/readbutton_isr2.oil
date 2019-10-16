@@ -19,10 +19,10 @@ CPU readbutton {
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
-      APP_SRC = "readbutton_isr1.c";
-      APP_NAME = "readbutton_isr1_exe";
+      APP_SRC = "readbutton_isr2.c";
+      APP_NAME = "readbutton_isr2_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
-      LDFLAGS = "-Map=readbutton_isr1.map";
+      LDFLAGS = "-Map=readbutton_isr2.map";
       COMPILER = "msp430-gcc";
       ASSEMBLER = "msp430-gcc";
       LINKER = "msp430-ld";
@@ -60,7 +60,7 @@ CPU readbutton {
   };
   
   ISR buttonS1 {
-    CATEGORY = 1;
+    CATEGORY = 2;
     PRIORITY = 1;
     SOURCE = PORT4_VECTOR {
       BIT = 5;
