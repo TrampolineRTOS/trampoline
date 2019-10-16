@@ -19,8 +19,8 @@ foreach isr in ISR do
   if not exists objForIRQ[key] then
     let isr::KIND := "ISR"
     let objForIRQ[key] := isr
-  else
-    error isr::SOURCE : "Interrupt source already used"
+#  else
+#    error isr::SOURCE : "Interrupt source already used"
   end if
 end foreach
 
@@ -31,8 +31,8 @@ foreach cnt in COUNTER do
   if not exists objForIRQ[key] then
     let cnt::KIND := "COUNTER"
     let objForIRQ[key] := cnt
-  else
-    error cnt::SOURCE : "Interrupt source already used"
+#  else
+#    error cnt::SOURCE : "Interrupt source already used"
   end if
 end foreach
 

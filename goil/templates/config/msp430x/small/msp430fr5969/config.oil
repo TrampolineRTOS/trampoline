@@ -13,10 +13,10 @@ IMPLEMENTATION msp430fr5969 {
     STRING WITH_AUTO LINKED;
   };
   COUNTER [] {
-    INTERRUPT_TYPE SOURCE;
+    #include <interruptSources.oil>
   };
   ISR [] {
-    INTERRUPT_TYPE SOURCE;
+    #include <interruptSources.oil>
   };
 };
 

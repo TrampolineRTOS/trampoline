@@ -22,11 +22,12 @@ FUNC(void, OS_APPL_CODE) ioInit()
 	//set GPIO P4.6 (red LED1) as an output
 	P4DIR |= 1 << 6;
 	//set GPIO P4.5 (button S1) as an input, with internal pull-up
-	P4DIR &= ~(1<<5);	//input
-	P4REN |= 1<<5;		//pull-up/down resistor enable
-	P4OUT |= 1<<5;		//pull-up
-  P4IES |= 1<<5;    //high to low interrupt edge selection
-  P4IE  |= 1<<5;    //interrupt enabled for the button
+	P4DIR &= ~(1<<5);	// input
+	P4REN |= 1<<5;		// pull-up/down resistor enable
+	P4OUT |= 1<<5;		// pull-up
+  P4IES |= 1<<5;    // high to low interrupt edge selection
+  P4IE  |= 1<<5;    // interrupt enabled for the button
+  P4IV = 0;         // ack any pending interrupt
 }
 
 FUNC(int, OS_APPL_CODE) main(void)

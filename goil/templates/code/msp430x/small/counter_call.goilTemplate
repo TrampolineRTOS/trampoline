@@ -31,6 +31,9 @@ end foreach
 # Map COUNTER into objForIRQ
 foreach cnt in COUNTER do
   let key := cnt::SOURCE
+  if exists cnt::SOURCE_S::BIT then
+    let key := key + "_bit_" + [cnt::SOURCE_S::BIT string]
+  end if
   if not exists objForIRQ[key] then
     let objForIRQ[key] := @()
   end if
@@ -62,7 +65,11 @@ end foreach
 foreach objCounter in counterForIRQ do
   let obj_KEY := KEY
     %
-FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
+FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY 
+if exists objCounter::SOURCE_S::BIT then
+  %_% ! objCounter::SOURCE_S::BIT
+end if
+%(void)
 {
 %
   foreach obj in objCounter do
