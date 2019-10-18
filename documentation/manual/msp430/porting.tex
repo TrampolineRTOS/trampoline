@@ -975,6 +975,20 @@ tpl_TIMER3_A0_VECTOR_no_context_switch:
   reti
 \end{lstlisting}
 
+\section{MCU Clocks}
+The MCU clocks is set to \emph{1MHz} at startup (defined in \lstinline{tpl_startup.c}). It uses the DCO as input clock, and a user fonction is provided to update the frequency in \lstinline{tpl_clocks.h}:
+
+\begin{lstlisting}
+/* configure the frequency in MHz: 1,2,4,6,8,12,16,(21,24 overclock)
+ * set to 1MHz in case of bad input frequency.
+ **/
+
+FUNC(void,OS_CODE) tpl_set_mcu_clock(uint16_t freq);
+\end{lstlisting}
+
+When the CPU clock is updated, the Wait States for the FRAM access are set accordingly: 1 wait state above 8MHz, and 2 wait states above 16MHz.
+
+Note that the 21MHz and 24 MHz frequencies overclock the CPU capabilities and may not work.
 
 \bibliographystyle{plain}
 \bibliography{porting}
