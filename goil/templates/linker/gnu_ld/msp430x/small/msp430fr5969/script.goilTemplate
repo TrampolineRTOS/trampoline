@@ -23,7 +23,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 %
-template msp430fr5969_symbols
+template symbols
 template periph
 %
 
