@@ -16,6 +16,7 @@ IMPLEMENTATION trampoline {
 CPU readbutton {
   OS config {
     STATUS = EXTENDED;
+	CPU_FREQ_MHZ = 8;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";

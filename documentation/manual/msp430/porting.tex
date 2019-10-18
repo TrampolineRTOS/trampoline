@@ -976,7 +976,15 @@ tpl_TIMER3_A0_VECTOR_no_context_switch:
 \end{lstlisting}
 
 \section{MCU Clocks}
-The MCU clocks is set to \emph{1MHz} at startup (defined in \lstinline{tpl_startup.c}). It uses the DCO as input clock, and a user fonction is provided to update the frequency in \lstinline{tpl_clocks.h}:
+The MCU clocks uses the DCO as input clock. The CPU is limited to 16MHz. 
+
+\subsection{Startup}
+The MCU clocks can be defined in the .oil file directly in \texttt{CPU->OS->CPU\_FREQ\_MHZ}. Value should be in the set \emph{1,2,4,6,8,12,16,21 and 24} MHz.
+
+By default, the frequency is set to 1MHz.
+
+\subsection{Dynamic update}
+The MCU clocks can be updated with a user fonction to update the frequency in \lstinline{tpl_clocks.h}:
 
 \begin{lstlisting}
 /* configure the frequency in MHz: 1,2,4,6,8,12,16,(21,24 overclock)

@@ -1,0 +1,5 @@
+IMPLEMENTATION  msp430x {
+  OS {
+    UINT32 [1,2,4,6,8,12,16,21,24] CPU_FREQ_MHZ;
+  };
+};
