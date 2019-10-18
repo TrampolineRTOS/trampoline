@@ -30,6 +30,7 @@ CPU msp430fr5969 {
     PATH  =  "msp430x/small";
     CFILE =  "tpl_machine_msp430x.c";
     CFILE =  "tpl_startup.c";
+    CFILE =  "tpl_clocks.c";
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
   };
