@@ -14,6 +14,7 @@
  */
 
 #include "tpl_os.h"
+#include "tpl_clocks.h"
 #include "msp430.h"
 
 /* MPU basic configuration:
@@ -48,6 +49,8 @@ FUNC(void, OS_CODE) tpl_MPU_violation(void) {
 
 void tpl_continue_reset_handler(void)
 {
+	/* start clock: default to 1MHz*/
+	tpl_set_mcu_clock(1);
 	/* Init .bss section */
 	extern unsigned __bss_start__;
 	extern unsigned __bss_end__;

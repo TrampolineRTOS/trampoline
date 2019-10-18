@@ -53,7 +53,7 @@ tpl_reset_handler:
 	 * they will be enabled when the first task will start (including idle task)
 	*/
 	dint
-  nop
+	nop
 
 	/* init stack */
 	mov     #_estack-2, r1
