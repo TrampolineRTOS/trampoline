@@ -1,4 +1,6 @@
 *~
+## build dir for goil
+goil/build
 ## Vim...
 .*.swp
 ##python

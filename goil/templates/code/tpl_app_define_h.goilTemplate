@@ -49,6 +49,7 @@
 #define WITH_ERROR_HOOK                  % !yesNo(OS::ERRORHOOK) %
 #define WITH_PRE_TASK_HOOK               % !yesNo(OS::PRETASKHOOK) %
 #define WITH_POST_TASK_HOOK              % !yesNo(OS::POSTTASKHOOK) %
+#define WITH_ANY_HOOK                    % !yesNo(OS::STARTUPHOOK | OS::SHUTDOWNHOOK | OS::ERRORHOOK | OS::PRETASKHOOK | OS::POSTTASKHOOK) %
 #define WITH_PANIC_HOOK                  % !yesNo(OS::PANICHOOK) %
 #define WITH_USEGETSERVICEID             % !yesNo(OS::USEGETSERVICEID) %
 #define WITH_USEPARAMETERACCESS          % !yesNo(OS::USEPARAMETERACCESS) %

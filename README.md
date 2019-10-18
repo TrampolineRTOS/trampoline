@@ -16,6 +16,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 * ARM: ARM 32 bits instruction set
 * virt-v7
   * Cortex-A9 - Cortex-A7 virtualized instruction set. This port is used with the hypervisor XVisor
+* MSP430/CPUX which has been developed on MSP430FR5969 and MSP430FR6989 microcontrollers.
 
 And we welcome external contributors to extend this list.
 
@@ -34,8 +35,9 @@ Trampoline runs on the following platforms :
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
 | STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303               |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
+| MSP430FR5969                 | CPUX               | 1     | Launchpad MSP-EXP430FR5969                        |
 
-Some examples have been added (check examples):
+Some examples are available (check examples):
 
 * Cortex M4 with µC stm32f407: `cortex/armv7em/stm32f407/stf32f4discovery`
   * **blink**. Blinks a LED using an alarm and a task.
@@ -74,10 +76,15 @@ Some examples have been added (check examples):
   * **blink_2c_opticks**. Same as the two cores blink example but optimizes ticks.
   * **button_2c**. Waits for a button input to light a led. Switch it off using Timing Protection watchdog. Multicore example.
   * **spinlocks**. Producer/Consumer example.
-* PULPino : `riscv/pulpino`
+* PULPino: `riscv/pulpino`
   * **blink**. Has two tasks who alternate outputting on UART interface.
-* virt-v7 :
+* virt-v7:
   * **firmware**. Builds a firmware that can be used as a guest on XVisor.
+* MSP430 CPUX, 4 examples for Launchpad MSP-EXP430FR5969:
+  * **blink**. blink LED2 with a 100ms period.
+  * **readbutton**. blink LED2 with a 100ms period. Button S1 allows to start and stop the blinking.
+  * **readbutton_isr1**.  blink LED2 with a 100ms period. Button S1 triggers an ISR1 that swtches LED1.
+  * **readbutton_isr2**.  blink LED2 with a 100ms period. Button S1 triggers an ISR2 that swtches LED1.
 
 More examples are coming.
 

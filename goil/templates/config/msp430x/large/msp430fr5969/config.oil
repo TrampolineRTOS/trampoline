@@ -1,0 +1,187 @@
+#includeifexists <buildOptions.oil>
+
+/*
+ * MSP430 configuration file
+ */
+
+
+IMPLEMENTATION msp430fr5969 {
+
+  INTERRUPT [] {
+    UINT32 ADDRESS;
+    IDENTIFIER HANDLER;
+  };
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+};
+
+CPU msp430fr5969 {
+
+  COUNTER SystemCounter {
+    SOURCE = TIMER3_A0_VECTOR;
+  };
+
+  PLATFORM_FILES msp430x {
+    PATH  =  "msp430/msp430x";
+    CFILE =  "tpl_machine_msp430x.c";
+    CFILE =  "tpl_startup.c";
+    CFILE =  "tpl_vectors.c";
+    ASFILE = "tpl_startup.S";
+    ASFILE = "tpl_sc_handler.S";
+  };
+  
+  GENERATED_FILES msp430x {
+  };
+
+  /*
+   * Interrupts of MSP430FR5969. See page 58 of 
+   * MSP430FR596x, MSP430FR594x Mixed-Signal Microcontrollers
+   * generated from Energia include file:
+   * -> hardware/tools/msp430/msp430/include/msp430fr5969.h
+   */
+
+  //LIBRARY IO { //pinMode, digitalWrite, .. as in Arduino.
+  //  PATH = "";
+  //};
+
+  INTERRUPT AES256_VECTOR    {
+   ADDRESS = 0xFFCC;  /* AES256 */
+   HANDLER = AES256_Handler;
+  };
+  
+  INTERRUPT RTC_VECTOR       {
+   ADDRESS = 0xFFCE;  /* RTC */
+   HANDLER = RTC_Handler;
+  };
+  
+  INTERRUPT PORT4_VECTOR     {
+   ADDRESS = 0xFFD0;  /* Port 4 */
+   HANDLER = PORT4_Handler;
+  };
+  
+  INTERRUPT PORT3_VECTOR     {
+   ADDRESS = 0xFFD2;  /* Port 3 */
+   HANDLER = PORT3_Handler;
+  };
+  
+  INTERRUPT TIMER3_A1_VECTOR {
+   ADDRESS = 0xFFD4;  /* Timer3_A2 CC1, TA */
+   HANDLER = TIMER3_A1_Handler;
+  };
+  
+  INTERRUPT TIMER3_A0_VECTOR {
+   ADDRESS = 0xFFD6;  /* Timer3_A2 CC0 */
+   HANDLER = TIMER3_A0_Handler;
+  };
+  
+  INTERRUPT PORT2_VECTOR     {
+   ADDRESS = 0xFFD8;  /* Port 2 */
+   HANDLER = PORT2_Handler;
+  };
+  
+  INTERRUPT TIMER2_A1_VECTOR {
+   ADDRESS = 0xFFDA;  /* Timer2_A2 CC1, TA */
+   HANDLER = TIMER2_A1_Handler;
+  };
+  
+  INTERRUPT TIMER2_A0_VECTOR {
+   ADDRESS = 0xFFDC;  /* Timer2_A2 CC0 */
+   HANDLER = TIMER2_A0_Handler;
+  };
+  
+  INTERRUPT PORT1_VECTOR     {
+   ADDRESS = 0xFFDE;  /* Port 1 */
+   HANDLER = PORT1_Handler;
+  };
+  
+  INTERRUPT TIMER1_A1_VECTOR {
+   ADDRESS = 0xFFE0;  /* Timer1_A3 CC1-2, TA */
+   HANDLER = TIMER1_A1_Handler;
+  };
+  
+  INTERRUPT TIMER1_A0_VECTOR {
+   ADDRESS = 0xFFE2;  /* Timer1_A3 CC0 */
+   HANDLER = TIMER1_A0_Handler;
+  };
+  
+  INTERRUPT DMA_VECTOR       {
+   ADDRESS = 0xFFE4;  /* DMA */
+   HANDLER = DMA_Handler;
+  };
+  
+  INTERRUPT USCI_A1_VECTOR   {
+   ADDRESS = 0xFFE6;  /* USCI A1 Receive/Transmit */
+   HANDLER = USCI_A1_Handler;
+  };
+  
+  INTERRUPT TIMER0_A1_VECTOR {
+   ADDRESS = 0xFFE8;  /* Timer0_A3 CC1-2, TA */
+   HANDLER = TIMER0_A1_Handler;
+  };
+  
+  INTERRUPT TIMER0_A0_VECTOR {
+   ADDRESS = 0xFFEA;  /* Timer0_A3 CC0 */
+   HANDLER = TIMER0_A0_Handler;
+  };
+  
+  INTERRUPT ADC12_VECTOR     {
+   ADDRESS = 0xFFEC;  /* ADC */
+   HANDLER = ADC12_Handler;
+  };
+  
+  INTERRUPT USCI_B0_VECTOR   {
+   ADDRESS = 0xFFEE;  /* USCI B0 Receive/Transmit */
+   HANDLER = USCI_B0_Handler;
+  };
+  
+  INTERRUPT USCI_A0_VECTOR   {
+   ADDRESS = 0xFFF0;  /* USCI A0 Receive/Transmit */
+   HANDLER = USCI_A0_Handler;
+  };
+  
+  INTERRUPT WDT_VECTOR       {
+   ADDRESS = 0xFFF2;  /* Watchdog Timer */
+   HANDLER = WDT_Handler;
+  };
+  
+  INTERRUPT TIMER0_B1_VECTOR {
+   ADDRESS = 0xFFF4;  /* Timer0_B7 CC1-6, TB */
+   HANDLER = TIMER0_B1_Handler;
+  };
+  
+  INTERRUPT TIMER0_B0_VECTOR {
+   ADDRESS = 0xFFF6;  /* Timer0_B7 CC0 */
+   HANDLER = TIMER0_B0_Handler;
+  };
+  
+  INTERRUPT COMP_E_VECTOR    {
+   ADDRESS = 0xFFF8;  /* Comparator E */
+   HANDLER = COMP_E_Handler;
+  };
+  
+  INTERRUPT UNMI_VECTOR      {
+   ADDRESS = 0xFFFA;  /* User Non-maskable */
+   HANDLER = UNMI_Handler;
+  };
+  
+  INTERRUPT SYSNMI_VECTOR    {
+   ADDRESS = 0xFFFC;  /* System Non-maskable */
+   HANDLER = SYSNMI_Handler;
+  };
+  
+  INTERRUPT RESET_VECTOR     {
+   ADDRESS = 0xFFFE;  /* Reset [Highest Priority] */
+   HANDLER = RESET_Handler;
+  };
+
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "mspdebug";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "tilib \\\"load";
+      POSTOPTION = "\\\"";
+    };
+  };
+};

@@ -60,7 +60,9 @@ end if
 #---     produced. This is done by the build.py file.
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
+
 import sys, os, subprocess, string, distutils.spawn
+from string import Template
 
 #--- Add some function for Python3 support
 
@@ -301,15 +303,16 @@ if TARGET == "posix" then
 uname = os.uname()
 isLinux = False
 if hasattr(uname, 'sysname'): #Python 3.xx
-	if uname.sysname == 'Linux':
-		isLinux = True
-else: #Python 2.xx
-	if uname[0] == 'Linux':
-		isLinux = True
+  if uname.sysname == 'Linux':
+    isLinux = True
+  else:
+    #Python 2.xx
+    if uname[0] == 'Linux':
+      isLinux = True
 if isLinux:
-	#--- Add flags required to link the posix runtime
-	ldflags += ['-lrt']
-	ldflags += ['-lpthread']
+  #--- Add flags required to link the posix runtime
+  ldflags += ['-lrt']
+  ldflags += ['-lpthread']
 %
 end if
 
@@ -618,6 +621,14 @@ end foreach
 %
 
 make.runGoal(maxParallelJobs, maxParallelJobs == 1)
+
+postVariableMapping = dict(
+  MACHINE_PATH='% ! MACHINESPATH %',
+  ARCH_PATH='% ! MACHINESPATH + "/" + ARCH %',
+  BOARD_PATH='% ! MACHINESPATH + "/" + TARGET %',
+  TARGET='% ! TARGET %'
+)
+
 %
 foreach pc in exists POSTCOMMAND default ( @() )
   before%
@@ -662,8 +673,10 @@ if make.errorCount() == 0:%
     commandLine += "% !commandLine %"%
     end if
     %
+    commandLineTemplate = Template(commandLine)
+    commandLine = commandLineTemplate.safe_substitute(postVariableMapping)
     if makefile.find_executable("% !cmd::COMMAND %") != None:
-      print(commandLine)
+      print("\033[1m\033[95m% !cmd::MESSAGE % % !OS::BUILD_S::APP_NAME % on % ! TARGET %\033[0m")
       subprocess.call(commandLine, shell=True)
     else:
       print("Command '% !cmd::COMMAND %' not in PATH")%
