@@ -40,7 +40,7 @@ if [obj type] == @struct then%
 /*-----------------------------------------------------------------------------
  * -2b- Ackowledge the interrupt
  */
-  mov       #0,__P% ! [obj::SOURCE characterAtIndex: 4] %IV%
+  mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
   end if
 else
 %
