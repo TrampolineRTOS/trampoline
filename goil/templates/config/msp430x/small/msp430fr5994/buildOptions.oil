@@ -1,9 +1,9 @@
 /*
  * MSP430x build options for gcc
  */
-CPU msp430fr5969 {
+CPU msp430fr5994 {
 
-  BUILDOPTIONS buildOptionsForMsp430fr5969 {
+  BUILDOPTIONS buildOptionsForMsp430fr5994 {
 
     /*
      * Common flags for C and C++ compiling
@@ -17,8 +17,8 @@ CPU msp430fr5969 {
     COMMONFLAGS = "-Wno-unused-but-set-variable";
     // Struct initialized with incorrect number of fiels
     COMMONFLAGS = "-Wmissing-field-initializers";
-    // Compile for msp430fr5969
-    COMMONFLAGS = "-mmcu=msp430fr5969";
+    // Compile for msp430fr5994
+    COMMONFLAGS = "-mmcu=msp430fr5994";
     // Default startfiles (crt0.c) are not used
     COMMONFLAGS = "-nostartfiles";
     // Do not used built in gcc functions
@@ -58,8 +58,8 @@ CPU msp430fr5969 {
     ASFLAGS = "-g";
     // All warnings on
     ASFLAGS = "-Wall";
-    // Assemble for msp430fr5969
-    ASFLAGS = "-mmcu=msp430fr5969";
+    // Assemble for msp430fr5994
+    ASFLAGS = "-mmcu=msp430fr5994";
     // A warning is an error
     /* ASFLAGS = "--fatal-warnings"; */
 
