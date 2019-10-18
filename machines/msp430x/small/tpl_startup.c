@@ -16,6 +16,7 @@
 #include "tpl_os.h"
 #include "tpl_clocks.h"
 #include "msp430.h"
+#include "tpl_app_custom_types.h" //define default CPU frequency (CPU_FREQ_MHZ)
 
 /* MPU basic configuration:
  * The MPU uses 2 register to split the memory in 3 chunks:
@@ -50,7 +51,7 @@ FUNC(void, OS_CODE) tpl_MPU_violation(void) {
 void tpl_continue_reset_handler(void)
 {
 	/* start clock: default to 1MHz*/
-	tpl_set_mcu_clock(1);
+	tpl_set_mcu_clock(CPU_FREQ_MHZ);
 	/* Init .bss section */
 	extern unsigned __bss_start__;
 	extern unsigned __bss_end__;

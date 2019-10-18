@@ -5,6 +5,7 @@ CPU msp430fr5969 {
 
   BUILDOPTIONS buildOptionsForMsp430fr5969 {
 
+    CFLAGS = "-std=c99";
     /*
      * Common flags for C and C++ compiling
      */
