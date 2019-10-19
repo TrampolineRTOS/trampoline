@@ -62,8 +62,8 @@ CPU readbutton {
   ISR buttonS1 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = PORT4_VECTOR {
-      BIT = 5;
+      SOURCE = PORT5_VECTOR {
+      BIT = 6;
     }; /* Button S1 is on GPIO port 4, bit 5 */
   };
 };

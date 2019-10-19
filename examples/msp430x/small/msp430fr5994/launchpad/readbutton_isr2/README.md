@@ -12,7 +12,7 @@ The system is based scheduled with a 1ms SysTick ```SystemCounter```.
 Configure the application with:
 
 ```sh
-goil --target=msp430x/small/msp430fr5969/launchpad --templates=../../../../../../goil/templates/ readbutton_isr2.oil
+goil --target=msp430x/small/msp430fr5994/launchpad --templates=../../../../../../goil/templates/ readbutton_isr2.oil
 ```
 
 then
