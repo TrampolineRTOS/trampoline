@@ -16,7 +16,7 @@
 \newcommand{\sch}{\lstinline{tpl_sc_handler}}
 
 \title{MSP430X port - small memory model version}
-\author{Jean-Luc Béchennec}
+\author{Jean-Luc Béchennec, Mikaël Briday}
 %\date{}							% Activate to display a given date or no date
 
 \lstset{% general command to set parameter(s)
@@ -30,7 +30,9 @@
 
 This document describes the small version for the CPUX of the Trampoline port on MSP430, which assumes that the code is hosted in the first 64kB of memory and therefore the addresses are stored on 16-bit words. Instruction set of the MSP430X is available in \cite{slau208q} or \cite{slau367o}.
 
-\section{ABI}
+\section{Multitasking}
+
+\subsection{ABI}
 
 In \cite{slaa664} a change has been made in GCC so that it conforms to the ABI defined in \cite{slaa534} and becomes compatible with the proprietary Texas Instruments compiler. So there are two GCC compilers for MSP430: the one that does not conform to the ABI defined by Texas Instruments, \emph{MSPGCC}, and the one that does conform to the ABI, \emph{GCC compiler for MSP}. 
 
@@ -99,7 +101,7 @@ It can be noted that the arguments being passed through the low weight 16 bits o
 
 % Some Trampoline services use a pointer as an argument: \lstinline{GetTaskId}, \lstinline{GetTaskState}, \lstinline{GetAlarmBase}, \lstinline{GetAlarm}, \lstinline{GetEvent}, \lstinline{SendMessage}, \lstinline{ReceiveMessage}, \lstinline{GetCounterValue}, \lstinline{GetScheduleTableStatus} and \lstinline{GetApplica-}    \lstinline{tionState}. Since none of these services uses more than 2 arguments, a pointer to a high address will occupy 2 registers and the other argument only one. An AUTOSAR service is a problem: \lstinline{GetElapsedCounterValue}. This service takes 3 arguments, two of which are pointers. If the pointed data are in high addresses, some of the arguments will be passed through the stack. However, by forcing the storage of application data whose pointers have been passed to the OS in the lower memory, only 3 registers will be used. Not doing so would lead to unreasonable complexity of wrappers and of the services handler.
 
-\section{Stack}
+\subsection{Stack}
 %\subsection{}
 
 A service call is done using the \lstinline{br} instruction in the service call wrapper to prevent 2 nested call and fold the \lstinline{ret} instruction. The service identifier is passed to the service call handler through the \lstinline{REG_SID} register. So a service call wrapper is as shown in listing at figure \ref{lst:wrapper}.
@@ -160,7 +162,7 @@ When an interrupt is taken into account, the \lstinline{PC} and the \lstinline{S
 \label{fig:stackit}
 \end{figure}
 
-\subsection*{Preemption cases}
+\subsubsection*{Preemption cases}
 
 A preemption can be synchronous or asynchronous. A synchronous preemption (SP) happens when a service call is done, for instance when a task activates a higher priority task. An asynchronous preemption (AP) happens under interrupt, for instance when a higher priority task is activated by an alarm. A preempted task may resume its execution following a synchronous event (SR) : the running task calls \lstinline{TerminateTask}, \lstinline{ChainTask}, \lstinline{WaitEvent} or \lstinline{SetEvent} or following an asynchronous event (AR) : an alarm does a \lstinline{SetEvent}. So there are 4 cases:.
 
@@ -181,7 +183,7 @@ So \emph{the stack frame has to be normalized}. The normalized stack frame is th
 
 The normalized stack frame may be done only when a context is saved to prevent a normalization if there is no context switch. However, the load of the context is much complicated, as the restauration of \texttt{r2} (aka status register) in the \sch re-enable the interrupts before the end of the function.
 
-\section{The tpl\_sc\_handler}
+\subsection{The tpl\_sc\_handler}
 
 The background color of the code snippets depends on the current active stack:
 \begin{description}
@@ -378,7 +380,7 @@ Check the context switch condition in \lstinline{tpl_kern}.
     jz      tpl_sc_handler_no_context_switch
 \end{lstlisting}
 
-\subsection{Branch of context switching}
+\subsubsection{Branch of context switching}
 
 Prepare the call to \lstinline{tpl_run_elected} by setting \lstinline{REG_RETARG} to 0, aka no save.
 \begin{lstlisting}[backgroundcolor=\color{red!15}]
@@ -519,7 +521,7 @@ Now, the context of the new running process is loaded. At start it has the same 
 %\label{fig:processStackLoaded}
 %\end{figure}
 
-\subsection{Branch of No context switching}
+\subsubsection{Branch of No context switching}
 
 In case of no context switch, we have to get to the process stack, stored in r13
 
@@ -538,7 +540,7 @@ Here we have the stack shaped as shown at figure \ref{fig:stackShapeBeforeCallin
     reti                                   /* return with int enabled */
 \end{lstlisting}
 
-\subsection{Branch when the sc handler is called from hook}
+\subsubsection{Branch when the sc handler is called from hook}
 
 Here we are on the kernel stack already and the \lstinline{pc} has been pushed on the stack by the \lstinline{call}. \lstinline{REG_SID} contains the identifier of the service and the 3 other registers contain the arguments if any. We do not need to do complicated stuff here because we have no context switch to do. We only call the service then return and that's it.
 
@@ -997,6 +999,39 @@ FUNC(void,OS_CODE) tpl_set_mcu_clock(uint16_t freq);
 When the CPU clock is updated, the Wait States for the FRAM access are set accordingly: 1 wait state above 8MHz, and 2 wait states above 16MHz.
 
 Note that the 21MHz and 24 MHz frequencies overclock the CPU capabilities and may not work.
+
+\section{Memory mapping and memory protection}
+
+Memory organization of MSP430FR5969 is shown at figure \ref{fig:memorg}. 
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\centering
+\begin{tikzpicture}[scale=0.4, every node/.style={scale=1}]
+\draw (0,0) rectangle ++(16,4); \node at (8,2) {Peripherals - 4kB}; \node[anchor=south east] at (0,0) {\tiny 00000h}; \node[anchor=north east] at (0,4) {\tiny 00FFFh};
+\draw (0,4) rectangle ++(16,1); \node at (8,4.5) {\scriptsize Bootloader (ROM) - 1kB}; \node[anchor=south east] at (0,4) {\tiny 01000h}; \node[anchor=north east] at (0,6) {\tiny 017FFh};
+\draw[pattern=north west lines, pattern color=purple] (0,5) rectangle ++(16,1);
+\draw[fill=green!5] (0,6) rectangle ++(16,2); \node at (8,7) {SRAM - 2kB}; \node[anchor=south east] at (0,6) {\tiny 01C00h}; \node[anchor=north east] at (0,8) {\tiny 023FFh};
+%\draw (0,6) rectangle ++(16,.5); \node[anchor=north west] at (16.1,6.25) {Information (FRAM) - .5kB}; %\node[anchor=south east] at (0,6) {\tiny 01800h}; \node[anchor=north east] at (0,6.5) {\tiny 019FFh};
+%\draw (0,6.5) rectangle ++(16,.25); \node[anchor=south west] at (16.1,6.625) {Dev. Desc. (FRAM) - .25kB}; %\node[anchor=south east] at (0,6) {\tiny 01800h}; \node[anchor=north east] at (0,6.5) {\tiny 019FFh};
+\node at (8,9) {gap - 8kB};
+\draw[fill=orange!15] (0,10) -- ++(16,0) -- ++(0,5) -- ++(-3,-1) -- ++(-3,1) -- ++ (-4,-1) -- ++(-2,1) -- ++(-1,-1) -- ++(-3,1) -- ++(0,-5);
+\draw[fill=orange!15] (0,21) -- ++(16,0) -- ++(0,-5) -- ++(-3,-1) -- ++(-3,1) -- ++ (-4,-1) -- ++(-2,1) -- ++(-1,-1) -- ++(-3,1) -- ++(0,5);
+\node at (8,19) {FRAM - 46kB}; \node[anchor=south east] at (0,10) {\tiny 04400h}; \node[anchor=north east] at (0,21) {\tiny 0FF7Fh};
+
+\draw[pattern=north west lines, pattern color=blue] (0,21) rectangle ++(16,.5);
+
+\draw[fill=orange!15] (0,21.5) -- ++(16,0) -- ++(0,3) -- ++(-3,-1) -- ++(-3,1) -- ++ (-4,-1) -- ++(-2,1) -- ++(-1,-1) -- ++(-3,1) -- ++(0,-3);
+\draw[fill=orange!15] (0,28.5) -- ++(16,0) -- ++(0,-3) -- ++(-3,-1) -- ++(-3,1) -- ++ (-4,-1) -- ++(-2,1) -- ++(-1,-1) -- ++(-3,1) -- ++(0,3);
+\node at (8,27) {FRAM - 16kB}; \node[anchor=south east] at (0,21.5) {\tiny 10000h}; \node[anchor=north east] at (0,28.5) {\tiny 13FFFh};
+
+\draw[pattern=north west lines, pattern color=blue] (18,20.75) rectangle ++(2,1); \node[anchor=west] at (20,21.25) {Interrupt vectors. FRAM 0.75kB};
+\draw[pattern=north west lines, pattern color=purple] (18,5) rectangle ++(2,1); \node[anchor=west,text width=6cm] at (20,5.5) {Info memory + Device descriptor. FRAM 0.125kB};
+\end{tikzpicture}
+\caption{Memory organization of MSP430FR5969}
+\label{fig:memorg}
+\end{figure}
+
+The TI MSP430 uses a very simple memory protection scheme. The Memory Protection Unit allows to define 2 boundaries, SEGB1 and SEGB2 and the access right corresponding to 3 regions, the one below SEGB1 (excluded), the one between SEGB1 (included) and SEGB2 (excluded) and the one above SEGB2 (included). 
 
 \bibliographystyle{plain}
 \bibliography{porting}
