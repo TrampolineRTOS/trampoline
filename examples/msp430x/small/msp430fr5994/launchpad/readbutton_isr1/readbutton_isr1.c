@@ -8,32 +8,34 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-//init some I/Os of the board:
-//- red   led1  on P4.6
-//- green led2  on P1.0
-//- user button on P4.5
+/*
+ * init some I/Os of the board:
+ * - red   LED1  on P1.0
+ * - green LED2  on P1.1
+ * - S1 user button on P5.6
+ */
 FUNC(void, OS_APPL_CODE) ioInit()
 {
-	// Disable the GPIO power-on default high-impedance mode
-	// to activate previously configured port settings
-	PM5CTL0 &= ~LOCKLPM5;
-	//set GPIO P1.0 (green LED2) as an output
-	P1DIR |= 0x01;
-	//set GPIO P4.6 (red LED1) as an output
-	P4DIR |= 1 << 6;
-	//set GPIO P4.5 (button S1) as an input, with internal pull-up
-	P4DIR &= ~(1<<5);	//input
-	P4REN |= 1<<5;		//pull-up/down resistor enable
-	P4OUT |= 1<<5;		//pull-up
-  P4IES |= 1<<5;    //high to low interrupt edge selection
-  P4IE  |= 1<<5;    //interrupt enabled for the button
+  /*
+   * Disable the GPIO power-on default high-impedance mode
+   * to activate previously configured port settings
+   */
+  PM5CTL0 &= ~LOCKLPM5;
+  /* set GPIO P1.0 and 1.1 (red LED1 and green LED2) as an output */
+  P1DIR |= 0x03;
+  /* set GPIO P5.6 (button S1) as an input, with internal pull-up */
+  P5DIR &= ~(1<<6); /* input                                      */
+  P5REN |= 1<<6;    /* pull-up/down resistor enable               */
+  P5OUT |= 1<<6;    /* pull-up                                    */
+  P5IES |= 1<<6;    /* high to low interrupt edge selection       */
+  P5IE  |= 1<<6;    /* interrupt enabled for the button           */
 }
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
-	ioInit();
-	StartOS(OSDEFAULTAPPMODE);
-	return 0;
+  ioInit();
+  StartOS(OSDEFAULTAPPMODE);
+  return 0;
 }
 
 #define OS_STOP_SEC_CODE
@@ -47,7 +49,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(blink)
 {
-	P1OUT ^= 1; // toggle green led
+	P1OUT ^= 1 << 1;      /* toggle green led */
 	TerminateTask();
 }
 
@@ -62,7 +64,7 @@ TASK(blink)
 
 ISR(buttonS1)
 {
-	P4OUT ^= 1 << 6; //toggle red led
+	P1OUT ^= 1; //toggle red led
 }
 
 #define APP_ISR_buttonS1_STOP_SEC_CODE

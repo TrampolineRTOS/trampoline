@@ -79,7 +79,7 @@ TASK(read_button)
 #include "tpl_memmap.h"
 TASK(blink)
 {
-  P1OUT ^= 2;  /* toggle green LED2 */
+  P1OUT ^= 1 << 1;  /* toggle green LED2 */
   TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
