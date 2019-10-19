@@ -9,12 +9,3 @@
  */
 typedef uint16 tpl_tick;
 
-/**
- * set the CPU default frequency at startup in MHz.
- * Value defined with .oil key CPU->OS->CPU_FREQ_MHZ;
- *
- * This frequency may be overriden using at runtime with
- * void tpl_set_mcu_clock(uint16_t freqInMHz);
- * (defined in tpl_clocks.h)
- */
-#define CPU_FREQ_MHZ % !exists OS::CPU_FREQ_MHZ default (1) %

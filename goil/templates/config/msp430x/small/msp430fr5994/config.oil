@@ -1,43 +1,16 @@
-#includeifexists <buildOptions.oil>
-
 /*
  * MSP430FR5994 configuration file
  */
 
-
-IMPLEMENTATION msp430fr5994 {
-
-  INTERRUPT [] {
-    UINT32 ADDRESS;
-    IDENTIFIER HANDLER;
-    STRING WITH_AUTO LINKED;
-  };
-  COUNTER [] {
-    #include <interruptSources.oil>
-  };
-  ISR [] {
-    #include <interruptSources.oil>
-  };
-};
-
 CPU msp430fr5994 {
 
-  COUNTER SystemCounter {
-    SOURCE = TIMER3_A0_VECTOR;
-  };
-
-  PLATFORM_FILES msp430x {
-    PATH  =  "msp430x/small";
-    CFILE =  "tpl_machine_msp430x.c";
-    CFILE =  "tpl_startup.c";
-    CFILE =  "tpl_clocks.c";
-    ASFILE = "tpl_startup.S";
-    ASFILE = "tpl_sc_handler.S";
+  MPU_CONFIGURATION msp430fr5994 {
+    B1_BOUNDARY = 0x04000;
+    B2_BOUNDARY = 0x10000;
   };
   
-  GENERATED_FILES msp430x {
-    ASFILE = "tpl_irq_handlers.S";
-    CFILE  = "tpl_interrupt_vectors.c";
+  COUNTER SystemCounter {
+    SOURCE = TIMER3_A0_VECTOR;
   };
 
   /*

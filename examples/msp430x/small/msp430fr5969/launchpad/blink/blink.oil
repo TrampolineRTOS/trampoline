@@ -18,8 +18,6 @@ CPU blink {
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
     
-    CPU_FREQ_MHZ = 8;    
-
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
