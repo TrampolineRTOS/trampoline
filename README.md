@@ -35,7 +35,7 @@ Trampoline runs on the following platforms :
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
 | STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303               |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
-| MSP430FR5969                 | CPUX               | 1     | Launchpad MSP-EXP430FR5969                        |
+| MSP430FR5969, MSP430FR5994   | CPUX               | 1     | Launchpad MSP-EXP430FR5969, Launchpad MSP-EXP430FR5994                       |
 
 Some examples are available (check examples):
 
@@ -80,11 +80,11 @@ Some examples are available (check examples):
   * **blink**. Has two tasks who alternate outputting on UART interface.
 * virt-v7:
   * **firmware**. Builds a firmware that can be used as a guest on XVisor.
-* MSP430 CPUX, 4 examples for Launchpad MSP-EXP430FR5969:
+* MSP430 CPUX, 4 examples for Launchpad MSP-EXP430FR5969 and for MSP-EXP430FR5994:
   * **blink**. blink LED2 with a 100ms period.
-  * **readbutton**. blink LED2 with a 100ms period. Button S1 allows to start and stop the blinking.
-  * **readbutton_isr1**.  blink LED2 with a 100ms period. Button S1 triggers an ISR1 that swtches LED1.
-  * **readbutton_isr2**.  blink LED2 with a 100ms period. Button S1 triggers an ISR2 that swtches LED1.
+  * **readbutton**. blink LED2 with a 200ms period. Button S1 allows to start and stop the blinking.
+  * **readbutton_isr1**.  blink LED2 with a 200ms period. Button S1 triggers an ISR1 that swtches LED1.
+  * **readbutton_isr2**.  blink LED2 with a 200ms period. Button S1 triggers an ISR2 that swtches LED1.
 
 More examples are coming.
 
