@@ -18,7 +18,7 @@ At the beginning of the execution, the alarm "read_button_alarm" is started, and
 Configure the application with:
 
 ```sh
-goil --target=msp430x/small/msp430fr5969/launchpad --templates=../../../../../../goil/templates/ readbutton.oil
+goil --target=msp430x/small/msp430fr5994/launchpad --templates=../../../../../../goil/templates/ readbutton.oil
 ```
 
 then
