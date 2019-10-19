@@ -1,3 +1,15 @@
+%
+
+let handlerSource := ""
+let handlerIsACounter := false
+if [obj type] == @struct then
+  let handlerSource := obj::SOURCE
+  let handlerIsACounter := obj::KIND == "COUNTER"
+else
+  let handlerSource := obj[0]::SOURCE
+  let handlerIsACounter := obj[0]::KIND == "COUNTER"
+end if
+%
 .global tpl_primary_irq_handler_% !handlerSource %
 .type   tpl_primary_irq_handler_% !handlerSource %, \%function
 
@@ -24,14 +36,102 @@ tpl_primary_irq_handler_% !handlerSource %:
  */
   mov       #tpl_kern, r11
   mov.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-  mov.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
+  mov.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)%
+  
+#
+# Check the kind of function to call, ISR2 or Counter ?
+#
+if handlerIsACounter then
+  if [obj type] == @struct then
+%
 /*-----------------------------------------------------------------------------
  * -4- Call the underlying C function.
  */
-  call      % !handlerIRQ %
+  call      #tpl_tick_% !handlerSource
+    if [PORT_IRQ contains: obj::SOURCE] then
+      # PORT IRQ, ack the interrupt
+%
+/*-----------------------------------------------------------------------------
+ * -4b- Ackowledge the interrupt
+ */
+  mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
+    end if
+  else
+    # A set of handler is linked to the same port
+%
+/*-----------------------------------------------------------------------------
+ * -4- Get the highest priority interrupt of the port from P%
+  ! [handlerSource charAtIndex: 4] %IV 
+ * and jump to the handler
+ */
+  add       &__P% ! [handlerSource charAtIndex: 4] %IV, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    let bitMap := [obj mapBy: "BIT"]
+    loop bit from 0 to 7 do
+      if exists bitMap[[bit string]] then%
+  jmp       tpl_p% ! [obj[0]::SOURCE charAtIndex: 4] %_% ! bit %_handler%
+      else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+      end if
+    tab(60) %/* bit % ! bit % */%
+    end loop
+    foreach handler in bitMap do%
+tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
+  call      #tpl_tick_% ! handlerSource %_bit_% ! handler::BIT
+    between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+    end foreach    
+  end if
+else # handler is an ISR2
+  if [obj type] == @struct then
+%
+/*-----------------------------------------------------------------------------
+ * -4- Call tpl_fast_central_interrupt_handler with
+ * the id of % !obj::NAME % (% !obj::IDENT %) as argument. 
+ */
+  mov       #% !obj::IDENT + [TASKS length] %, REG_RETARG
+  call      #tpl_fast_central_interrupt_handler%
+    if [PORT_IRQ contains: obj::SOURCE] then
+      # PORT IRQ, ack the interrupt
+%
+/*-----------------------------------------------------------------------------
+ * -4b- Ackowledge the interrupt
+ */
+  mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
+    end if
+  else
+    # A set of handler is linked to the same port
+%
+/*-----------------------------------------------------------------------------
+ * -4- Get the highest priority interrupt of the port from P%
+  ! [handlerSource charAtIndex: 4] %IV 
+ * and jump to the handler
+ */
+  add       &__P% ! [handlerSource charAtIndex: 4] %IV, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    let bitMap := [obj mapBy: "BIT"]
+    loop bit from 0 to 7 do
+      if exists bitMap[[bit string]] then%
+  jmp       tpl_p% ! [obj[0]::SOURCE charAtIndex: 4] %_% ! bit %_handler%
+      else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+      end if
+    tab(60) %/* bit % ! bit % */%
+    end loop
+    foreach handler in bitMap do%
+tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
+  mov       #% !handler::IDENT + [TASKS length] %, REG_RETARG
+  call      #tpl_fast_central_interrupt_handler%
+    between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+    end foreach    
+  end if
+end if
+%
 /*-----------------------------------------------------------------------------
  * -5- Switch back to the process stack
  */
+tpl_direct_irq_handler_exit_% !handlerSource %:
   mov       r1, r13 /* get a copy of the KSP to restore it later        */
   add       #2, r13 /* and forget the pushed PSP (not useful anymore).  */
   pop       r1      /* get the saved process stack pointer back         */
@@ -57,7 +157,7 @@ tpl_primary_irq_handler_% !handlerSource %:
  */
   mov       r13, r1        /* Switch back to the kernel stack           */
   mov       #1, REG_RETARG
-  call      tpl_run_elected
+  call      #tpl_run_elected
 /*-----------------------------------------------------------------------------
  * -10- tpl_run_elected has copied the elected process slot of tpl_kern to the
  * running slot. We load the stack pointer of the new running process.

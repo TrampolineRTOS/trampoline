@@ -13,10 +13,10 @@ IMPLEMENTATION msp430fr5969 {
     STRING WITH_AUTO LINKED;
   };
   COUNTER [] {
-    INTERRUPT_TYPE SOURCE;
+    #include <interruptSources.oil>
   };
   ISR [] {
-    INTERRUPT_TYPE SOURCE;
+    #include <interruptSources.oil>
   };
 };
 
@@ -30,6 +30,7 @@ CPU msp430fr5969 {
     PATH  =  "msp430x/small";
     CFILE =  "tpl_machine_msp430x.c";
     CFILE =  "tpl_startup.c";
+    CFILE =  "tpl_clocks.c";
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
   };
@@ -185,10 +186,9 @@ CPU msp430fr5969 {
   POSTCOMMAND flash {
     COMMAND flash {
       MESSAGE = "Flashing";
-      COMMAND = "mspdebug";
+      COMMAND = "DSLite";
       INPUT = TARGET { EXT = ""; };
-      PREOPTION = "tilib \\\"load";
-      POSTOPTION = "\\\"";
+      PREOPTION = "load -c $ARCH_PATH/ccxml/MSP-EXP430FR5969LP.ccxml -f";
     };
   };
 };

@@ -34,7 +34,7 @@
     #define REG_RETARG r15
 /* The offset of this register once stored in the process stack */
     #define REG_RETARG_OFFSET 8
-#elif __GXX_ABI_VERSION == 1011
+#elif __GXX_ABI_VERSION == 1011 || __GXX_ABI_VERSION == 1013
 /* GCC compiler for MSP ABI, gcc compiler from TI */
     #define GCCFORMSP_ABI
 /* The register used to pass the id of the service is r15 */

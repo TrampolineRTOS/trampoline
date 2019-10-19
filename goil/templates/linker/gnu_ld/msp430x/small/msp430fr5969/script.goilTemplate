@@ -19,10 +19,11 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*                                   Peripheral registers definition		  */
+/*                                   Peripheral registers definition    */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 %
+template msp430fr5969_symbols
 template periph
 %
 
@@ -79,10 +80,10 @@ SECTIONS {
 /* init section for msp430. 
  * execution starts at the beginning of the fram. */
 SECTIONS {
-	.textInit : {
-		. = ALIGN(2);
-		KEEP(*(.init)) /* start here after reset */
-	} > FLASH
+  .textInit : {
+    . = ALIGN(2);
+    KEEP(*(.init)) /* start here after reset */
+  } > FLASH
 }
 
 /*

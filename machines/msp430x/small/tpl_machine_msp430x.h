@@ -82,9 +82,9 @@
  */
 #define MSP430X_SMALL_FRAME_SIZE ((uint16)30)
 
-#define SR_SMALL_IDX    24
-#define PC_SMALL_IDX    25
-#define CALL_SMALL_IDX  26 /* call to terminateTask/ISR2 */
+#define SR_SMALL_IDX    12
+#define PC_SMALL_IDX    13
+#define CALL_SMALL_IDX  14 /* call to terminateTask/ISR2 */
 
 #define GPR_ON_SMALL_FRAME  12 /* from r4 to r15 */
 

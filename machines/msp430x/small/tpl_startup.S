@@ -28,7 +28,6 @@
  * tpl_reset_handler
  *
  * tpl_reset_handler is the first function called after a cpu reset.
- * This function must be referenced at the index 1 of the vector table.
  *
  */
 
@@ -43,17 +42,18 @@ tpl_reset_handler:
 
 	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
-	mov     #0x5a80, &__WDTCTL 
-/* #else 
+	mov     #0x5a80, &WDTCTL
+/* #else
 	mov.b	&__WDTCTL, r5
 	bis	#0x5a08, r5
-	mov	r5, &__wdt_clear_value  
+	mov	r5, &__wdt_clear_value
 #endif */
 
 	/* disable interrupts at startup
-	 * they will be enabled when the first task wil start (including idle task)
+	 * they will be enabled when the first task will start (including idle task)
 	*/
 	dint
+	nop
 
 	/* init stack */
 	mov     #_estack-2, r1

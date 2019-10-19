@@ -61,6 +61,7 @@ tpl_sc_handler_id_ok:
  * called from a hook and has to be processed differently.
  */
   dint
+  nop	                              /*required after dint instruction*/
   tst.b        &tpl_reentrancy_flag
   jnz          tpl_sc_handler_from_hook
 /*-----------------------------------------------------------------------------
@@ -263,7 +264,7 @@ tpl_sc_handler_no_save_running_context:
  * Note: when getting there with a jump, we are coming from stage 11 where we
  * are on the kernel task. So no need to switch in this because
  */
-  call     tpl_run_elected
+  call     #tpl_run_elected
 /*-----------------------------------------------------------------------------
  * -15- tpl_run_elected has copied the elected process slot of tpl_kern to the
  * running slot. We load the stack pointer of the new running process.
