@@ -1582,6 +1582,50 @@ class GALGAS_impType callExtensionGetter_mergeWithType (const class cPtr_impType
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
+//                                Abstract extension getter '@attributeRange contains'                                 *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typedef class GALGAS_bool (*enterExtensionGetter_attributeRange_contains) (const class cPtr_attributeRange * inObject,
+                                                                           const class GALGAS_object_5F_t constinArgument0,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void enterExtensionGetter_contains (const int32_t inClassIndex,
+                                    enterExtensionGetter_attributeRange_contains inMethod) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_bool callExtensionGetter_contains (const class cPtr_attributeRange * inObject,
+                                                const GALGAS_object_5F_t constin_obj,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                 Abstract extension getter '@attributeRange string'                                  *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typedef class GALGAS_string (*enterExtensionGetter_attributeRange_string) (const class cPtr_attributeRange * inObject,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void enterExtensionGetter_string (const int32_t inClassIndex,
+                                  enterExtensionGetter_attributeRange_string inMethod) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_string callExtensionGetter_string (const class cPtr_attributeRange * inObject,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
 //                                             LEXIQUE options_5F_scanner                                              *
 //                                                                                                                     *
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -5271,6 +5315,101 @@ class cPtr_impEnumType : public cPtr_impAutoDefaultType {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_enumValues getter_valuesMap (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                                @impRangedType class                                                 *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_impRangedType : public GALGAS_impAutoDefaultType {
+//--- Constructor
+  public : GALGAS_impRangedType (void) ;
+
+//---
+  public : inline const class cPtr_impRangedType * ptr (void) const { return (const cPtr_impRangedType *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_impRangedType (const cPtr_impRangedType * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_impRangedType extractObject (const GALGAS_object & inObject,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_impRangedType constructor_new (const class GALGAS_locationList & inOperand0,
+                                                              const class GALGAS_dataType & inOperand1,
+                                                              const class GALGAS_lstring & inOperand2,
+                                                              const class GALGAS_bool & inOperand3,
+                                                              const class GALGAS_lstringlist & inOperand4,
+                                                              const class GALGAS_bool & inOperand5,
+                                                              const class GALGAS_object_5F_t & inOperand6,
+                                                              const class GALGAS_attributeRange & inOperand7
+                                                              COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_impRangedType & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_attributeRange getter_setOrRange (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_impRangedType class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impRangedType ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                       Pointer class for @impRangedType class                                        *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_impRangedType : public cPtr_impAutoDefaultType {
+//--- Attributes
+  public : GALGAS_attributeRange mProperty_setOrRange ;
+
+//--- Constructor
+  public : cPtr_impRangedType (const GALGAS_locationList & in_locations,
+                               const GALGAS_dataType & in_type,
+                               const GALGAS_lstring & in_name,
+                               const GALGAS_bool & in_multiple,
+                               const GALGAS_lstringlist & in_descs,
+                               const GALGAS_bool & in_withAuto,
+                               const GALGAS_object_5F_t & in_defaultValue,
+                               const GALGAS_attributeRange & in_setOrRange
+                               COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_attributeRange getter_setOrRange (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;

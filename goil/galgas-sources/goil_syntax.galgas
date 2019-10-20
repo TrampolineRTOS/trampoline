@@ -316,12 +316,24 @@ rule <oil_declaration>
         $uint_number$ ?value
         <description> ?var @lstring oil_desc
         val = checkAndGetIntegerNumber(!oil_desc ![type type] !value !sign)
+        cast type
+        case == @impRangedType rangedType:
+          if not [[rangedType setOrRange] contains !val] then
+            error value: "Integer out or range. Allowed values are: " + [[rangedType setOrRange] string]
+          end
+        else end
       or
         # Type is float
         @ldouble value
         $float_number$ ?value
         <description> ?var @lstring oil_desc
         val = checkAndGetFloatNumber(!oil_desc ![type type] !value !sign)
+        cast type
+        case == @impRangedType rangedType:
+          if not [[rangedType setOrRange] contains !val] then
+            error value: "Float out or range. Allowed values are: " + [[rangedType setOrRange] string]
+          end
+        else end
       end
     or
       # Type is bool

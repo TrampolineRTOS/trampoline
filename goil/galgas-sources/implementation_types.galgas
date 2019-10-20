@@ -140,8 +140,6 @@ func floatListWithNumberList ?let @numberList numbers ->@floatList result {
   end
 }
   
-#class @attributeRange;
-
 abstract class @attributeRange {
   @location location
 #  method check ??@object_t unused value:
@@ -840,7 +838,8 @@ func checkAndGetIntegerNumber
   ?let @dataType type
   ?let @luint64 number
   ?let @bool signed
-  ->@object_t value {
+  ->@object_t value
+{
   if signed then
     if type == @dataType. sint32Number then
       value = @sint32_class. new { !oil_desc ![number location] ![[number uint64] sint] * -1S}
@@ -1071,3 +1070,245 @@ getter @implementationObjectMap mergeImplementationObjectAttributesWith
     end
   end
 }
+
+####
+
+abstract getter @attributeRange contains
+  ?let @object_t obj
+  -> @bool
+  
+abstract getter @attributeRange string -> @string
+  
+override getter @noRange contains
+  ?let @object_t unused obj
+  -> @bool isInside
+{
+  isInside = true
+}
+
+override getter @noRange string -> @string desc
+{
+  desc = "?"
+}
+
+override getter @uint32AttributeSet contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @uint32_class intVal:
+    isInside = false
+    for () in valueList do
+      isInside = isInside | value == [intVal value]
+    end
+  else 
+    isInside = false
+    error obj: "UINT32 expected"
+  end
+}
+
+override getter @uint32AttributeSet string -> @string desc
+{
+  desc = ""
+  for () in valueList do
+    desc += [value string]
+  between
+    desc += ", "  
+  end
+}
+
+override getter @uint32AttributeMinMax contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @uint32_class intVal:
+    isInside = min <= [intVal value] && [intVal value] <= max
+  else 
+    isInside = false
+    error obj: "UINT32 expected"
+  end
+}
+
+override getter @uint32AttributeMinMax string -> @string desc
+{
+  desc = [min string] + ".." + [max string]
+}
+
+override getter @sint32AttributeSet contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @sint32_class intVal:
+    isInside = true
+    for () in valueList do
+      isInside = isInside & value == [intVal value]
+    end
+  else 
+    isInside = false
+    error obj: "SINT32 expected"
+  end
+}
+
+override getter @sint32AttributeSet string -> @string desc
+{
+  desc = ""
+  for () in valueList do
+    desc += [value string]
+  between
+    desc += ", "  
+  end
+}
+
+override getter @sint32AttributeMinMax contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @sint32_class intVal:
+    isInside = min <= [intVal value] && [intVal value] <= max
+  else 
+    isInside = false
+    error obj: "SINT32 expected"
+  end
+}
+
+override getter @sint32AttributeMinMax string -> @string desc
+{
+  desc = [min string] + ".." + [max string]
+}
+
+override getter @uint64AttributeSet contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @uint64_class intVal:
+    isInside = true
+    for () in valueList do
+      isInside = isInside & value == [intVal value]
+    end
+  else 
+    isInside = false
+    error obj: "UINT64 expected"
+  end
+}
+
+override getter @uint64AttributeSet string -> @string desc
+{
+  desc = ""
+  for () in valueList do
+    desc += [value string]
+  between
+    desc += ", "  
+  end
+}
+
+override getter @uint64AttributeMinMax contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @uint64_class intVal:
+    isInside = min <= [intVal value] && [intVal value] <= max
+  else 
+    isInside = false
+    error obj: "UINT64 expected"
+  end
+}
+
+override getter @uint64AttributeMinMax string -> @string desc
+{
+  desc = [min string] + ".." + [max string]
+}
+
+override getter @sint64AttributeSet contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @sint64_class intVal:
+    isInside = true
+    for () in valueList do
+      isInside = isInside & value == [intVal value]
+    end
+  else 
+    isInside = false
+    error obj: "SINT64 expected"
+  end
+}
+
+override getter @sint64AttributeSet string -> @string desc
+{
+  desc = ""
+  for () in valueList do
+    desc += [value string]
+  between
+    desc += ", "  
+  end
+}
+
+
+override getter @sint64AttributeMinMax contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @sint64_class intVal:
+    isInside = min <= [intVal value] && [intVal value] <= max
+  else 
+    isInside = false
+    error obj: "SINT64 expected"
+  end
+}
+
+override getter @sint64AttributeMinMax string -> @string desc
+{
+  desc = [min string] + ".." + [max string]
+}
+
+override getter @floatAttributeSet contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @float_class intVal:
+    isInside = true
+    for () in valueList do
+      isInside = isInside & value == [intVal value]
+    end
+  else 
+    isInside = false
+    error obj: "FLOAT expected"
+  end
+}
+
+override getter @floatAttributeSet string -> @string desc
+{
+  desc = ""
+  for () in valueList do
+    desc += [value string]
+  between
+    desc += ", "  
+  end
+}
+
+override getter @floatAttributeMinMax contains
+  ?let @object_t obj
+  -> @bool isInside
+{
+  cast obj
+  case == @float_class intVal:
+    isInside = min <= [intVal value] && [intVal value] <= max
+  else 
+    isInside = false
+    error obj: "FLOAT expected"
+  end
+}
+
+override getter @floatAttributeMinMax string -> @string desc
+{
+  desc = [min string] + ".." + [max string]
+}
+
