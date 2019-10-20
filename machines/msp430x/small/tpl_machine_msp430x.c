@@ -139,32 +139,44 @@ volatile uint8 tpl_reentrancy_flag = 0;
 #define OS_STOP_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /* TODO Will not work, the GIE bit has to be changed in the saved SR */
-
-void tpl_disable_interrupts() {
-	__disable_interrupt(); /* msp430 intrinsics.h */
+void tpl_disable_interrupts()
+{
+  __disable_interrupt(); /* msp430 intrinsics.h */
 }
-void tpl_enable_interrupts() {
-	__enable_interrupt();  /* msp430 intrinsics.h */
+void tpl_enable_interrupts()
+{
+  __enable_interrupt();  /* msp430 intrinsics.h */
 }
-void tpl_disable_os_interrupts() {
-	tpl_disable_interrupts();
+void tpl_disable_os_interrupts()
+{
+  tpl_disable_interrupts();
 }
-void tpl_enable_os_interrupts() {
-	tpl_enable_interrupts();
+void tpl_enable_os_interrupts()
+{
+  tpl_enable_interrupts();
 }
 
 void idle_function(void)
 {
-	//TODO: update to low power modes.
-	while(1);
+  while (1) {
+#if IDLE_POWER_MODE != ACTIVE_POWER_MODE
+    IDLE_LPM;
+#endif
+  }
 }
 
-void tpl_init_machine() {
-	tpl_init_machine_generic();
-	tpl_init_machine_specific();
+void tpl_init_machine()
+{
+  tpl_init_machine_generic();
+  tpl_init_machine_specific();
 }
 
-void tpl_shutdown() {
-	while(1);
+void tpl_shutdown()
+{
+  LPM4;
 }
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"

@@ -10,6 +10,7 @@
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{hyperref}
+\usepackage{anyfontsize}
 \usepackage{tikz}
 \usetikzlibrary{patterns,calc}
 
@@ -556,7 +557,7 @@ tpl_sc_handler_from_hook:
 The context that shoud be set during the task's initialisation (\lstinline{tpl_init_context}) is the one of the figure \ref{fig:context}, but with a call to either \lstinline{CallTerminateTask} or \lstinline{CallTerminateISR2} as return address of the task/ISR2 function, depending of the type of the process to init.
 
 \begin{figure}[h!]
-\caption{Context initialization}
+\caption{Context initialization}\label{fig:contextinit}
 \begin{center}
 \begin{tikzpicture}[xscale=0.6, yscale=-.6, every node/.style={scale=0.75}]
 \foreach \r in {4,5,...,10} {
@@ -716,7 +717,8 @@ Examples can be found in \lstinline[breaklines=true]{examples/msp430x/small/msp4
 
 The OIL compiler generates the vector table according to what \lstinline{SOURCE} are used in the OIL file. For instance here is the vector table generated for \lstinline[breaklines=true]{readbutton_isr1} example:
 
-\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+
+\begin{lstlisting}[basicstyle=\fontsize{7.5}{9}\selectfont\ttfamily]
 __attribute__ ((section(".isr_vector")))
 CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[26] = {
 
@@ -1000,6 +1002,48 @@ When the CPU clock is updated, the Wait States for the FRAM access are set accor
 
 Note that the 21MHz and 24 MHz frequencies overclock the CPU capabilities and may not work.
 
+\section{Low power in idle}
+
+When Trampoline runs the idle task, the MCU can be put in low power mode. This is done by setting the attribute \lstinline{IDLE_POWER_MODE} in the \lstinline{OS} object. Possible values are \lstinline{ACTIVE}, \lstinline{LPM0}, \lstinline{LPM1}, \lstinline{LPM2} and \lstinline{LPM3}. Default value, that is without setting this attribute, is \lstinline{ACTIVE}.
+
+\section{Stack size estimation}
+
+In the following, tasks and ISR2s are collectively referred to as processes. Stack size of a process depends on what function the process calls, the size of the local variables, the optimization level of the compiler and if at least one ISR1 is used by the application\footnote{ISR1 executes on the stack of the running task/ISR2}. So it is not something that is easy to compute. The minimum stack size of a process is the size needed to store an initialized context as shown at figure \ref{fig:contextinit}, i.e. 30 bytes.
+
+When the process runs, the context is popped and the only element left on the stack is the return address to \lstinline{CallTerminateTask} or \lstinline{CallTerminateISR2}, which leaves 28 bytes for local variables and function calls.
+
+Calling an OS service requires 14 bytes if the service does not lead to a context save and 28 bytes if it does not. Since the kernel runs on a dedicated stack, the stack depth required to run a service has no impact on the stack size of a process.
+
+\subsection*{Example of a trivial basic task}
+
+Let's take the blink task from the example \lstinline{readbutton_isr2}. Once compiled in \lstinline{-O0}, the generated code is as follow:
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+00006238 <blink_function>:
+    6238:       04 12           push    r4              
+    623a:       04 41           mov     r1,     r4      
+    623c:       24 53           incd    r4              
+    623e:       5f 42 02 02     mov.b   &0x0202,r15     /* read port  */
+    6242:       6f e3           xor.b   #2,     r15     /* toggle     */
+    6244:       c2 4f 02 02     mov.b   r15,    &0x0202 /* write port */
+    6248:       b0 12 54 61     call    #0x6154 /* Call TerminateTask */
+    624c:       34 41           pop     r4              
+    624e:       30 41           ret                     
+\end{lstlisting}
+
+By pushing \lstinline{r4} on the stack and calling \lstinline{TerminateTask}, the amount of stack consumed is 16 bytes out of the 28 bytes available. The minimum stack size is therefore sufficient. However, pressing the button at the time the task is executed leads to its pre-emption and the execution of ISR2. In this case, the stack must be able to contain the register \lstinline{r4} that has been pushed and the context of the task, namely 30 bytes. By adding the two bytes of the \lstinline{CallTerminateTask} address, the minimum stack is 32 bytes.
+
+When the application is compiled in \lstinline{-O3}, the blink task code is as follows:
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+00005d60 <blink_function>:
+    5d60:       e2 e3 02 02     xor.b   #2,     &0x0202 ;r3 As==10
+    5d64:       b0 12 7a 5c     call    #0x5c7a 
+    5d68:       30 41           ret                     
+\end{lstlisting}
+
+This time \lstinline{r4} is not pushed on the stack and its size can be 30 bytes. Given the time taken to complete this task, it is also questionable whether it would not be worthwhile to make it non-preemptible.
+
 \section{Memory mapping and memory protection}
 
 Memory organization of MSP430FR5969 is shown at figure \ref{fig:memorg}. 
@@ -1031,7 +1075,7 @@ Memory organization of MSP430FR5969 is shown at figure \ref{fig:memorg}.
 \label{fig:memorg}
 \end{figure}
 
-The TI MSP430 uses a very simple memory protection scheme. The Memory Protection Unit allows to define 2 boundaries, SEGB1 and SEGB2 and the access right corresponding to 3 regions, the one below SEGB1 (excluded), the one between SEGB1 (included) and SEGB2 (excluded) and the one above SEGB2 (included). 
+The TI MSP430 uses a very simple memory protection scheme. The Memory Protection Unit allows to define 2 boundaries, SEGB1 and SEGB2 and the access right corresponding to 3 regions, the one below SEGB1 (excluded), the one between SEGB1 (included) and SEGB2 (excluded) and the one above SEGB2 (included). Some addresses locations, the 16 bytes starting à \lstinline{0xFF80} contain the JTAG password. Writing random values at theses addresses bricks the MCU. To prevent that, Trampoline initialize the MPU so that addresses below the start of FRAM (peripherals and SRAM) may be read and written, addresses from start of FRAM to \lstinline{0x10000} may be read and executed and addresses from \lstinline{0x10000} to the end of the FRAM may be read and written.
 
 \bibliographystyle{plain}
 \bibliography{porting}
