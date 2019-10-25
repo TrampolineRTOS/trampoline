@@ -3,3 +3,10 @@
  * MSP430 Specific configuration file for Launchpad SDK
  */
 
+CPU launchpad {
+  LIBRARY serial {
+    PATH = "msp430x/small/msp430fr5969/launchpad/serial";
+    CHEADER = "serial.h";
+    CFILE   = "serial.c";
+  };
+};

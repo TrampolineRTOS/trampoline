@@ -27,8 +27,6 @@ FUNC(void, OS_CODE) tpl_MPU_violation(void) {
 
 void tpl_continue_reset_handler(void)
 {
-  /* start clock: default to 1MHz */
-  tpl_set_mcu_clock(CPU_FREQ_MHZ);
   /* Init .bss section */
   extern unsigned __bss_start__;
   extern unsigned __bss_end__;
@@ -48,6 +46,10 @@ void tpl_continue_reset_handler(void)
     pDest++;
     pSrc++;
   }
+  /* start clock: default to 1MHz 
+   * (at least .bss section should be initialized)
+   **/
+  tpl_set_mcu_clock(CPU_FREQ_MHZ);
 
 #if WITH_BASIC_MPU == YES
   /* MPU basic configuration:
