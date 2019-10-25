@@ -1002,6 +1002,35 @@ When the CPU clock is updated, the Wait States for the FRAM access are set accor
 
 Note that the 21MHz and 24 MHz frequencies overclock the CPU capabilities and may not work.
 
+A callback can be added each time the CPU clock is updated. This is done through the function:
+\begin{lstlisting}
+void tpl_add_freq_update_callback(tpl_freq_update_item *freqObs);
+\end{lstlisting}
+Where \lstinline{freqObs} is an item of a single linked list of function calls. This functionnality is implemented in the serial line driver (for debug purpose) of the launchpad like this:
+
+\begin{lstlisting}
+#include "tpl_clocks.h"
+
+tpl_freq_update_item tpl_serial_callback = {&tpl_serial_update_freq,NULL};
+
+void tpl_serial_begin()
+{
+	/* make sure we are informed of a clock update. */
+	tpl_add_freq_update_callback(&tpl_serial_callback);
+	..
+}
+
+void tpl_serial_update_freq()
+{
+	//callback that updates the serial baudrate configuration
+	//in function of the new input clock.
+}
+
+\end{lstlisting}
+
+The frequency of the MCU is defined using the DCO. The function \lstinline{uint32_t tpl_getDCOFrequency();} returns the DCO output frequency in Hz. This can be used in the function callback.
+
+
 \section{Low power in idle}
 
 When Trampoline runs the idle task, the MCU can be put in low power mode. This is done by setting the attribute \lstinline{IDLE_POWER_MODE} in the \lstinline{OS} object. Possible values are \lstinline{ACTIVE}, \lstinline{LPM0}, \lstinline{LPM1}, \lstinline{LPM2} and \lstinline{LPM3}. Default value, that is without setting this attribute, is \lstinline{ACTIVE}.
@@ -1076,6 +1105,23 @@ Memory organization of MSP430FR5969 is shown at figure \ref{fig:memorg}.
 \end{figure}
 
 The TI MSP430 uses a very simple memory protection scheme. The Memory Protection Unit allows to define 2 boundaries, SEGB1 and SEGB2 and the access right corresponding to 3 regions, the one below SEGB1 (excluded), the one between SEGB1 (included) and SEGB2 (excluded) and the one above SEGB2 (included). Some addresses locations, the 16 bytes starting à \lstinline{0xFF80} contain the JTAG password. Writing random values at theses addresses bricks the MCU. To prevent that, Trampoline initialize the MPU so that addresses below the start of FRAM (peripherals and SRAM) may be read and written, addresses from start of FRAM to \lstinline{0x10000} may be read and executed and addresses from \lstinline{0x10000} to the end of the FRAM may be read and written.
+
+\section{Libraries}
+\subsection{Serial line}
+The launchpad kits use a serial line over USB that can be used for debugging purpose. The configuration is 115200 bauds, 8N1.
+
+The library should be declared in the .oil file (so that dedicated files are included in the build process)
+\begin{lstlisting}
+    BUILD = TRUE {
+      LIBRARY = serial;
+    };
+\end{lstlisting}
+
+The library is quite limited at this date, and it can only send characters  (no reception). There is no ring buffer, and there is a waiting loop if the previous character is not yet sent. 
+
+An example is given for the msp430fr5969 launchpad.
+
+The library supports various MCU change frequencies, and the output frequency is updated (the current message may be corrupted!).
 
 \bibliographystyle{plain}
 \bibliography{porting}
