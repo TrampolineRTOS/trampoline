@@ -1052,10 +1052,10 @@ Let's take the blink task from the example \lstinline{readbutton_isr2}. Once com
     6238:       04 12           push    r4              
     623a:       04 41           mov     r1,     r4      
     623c:       24 53           incd    r4              
-    623e:       5f 42 02 02     mov.b   &0x0202,r15     /* read port  */
-    6242:       6f e3           xor.b   #2,     r15     /* toggle     */
-    6244:       c2 4f 02 02     mov.b   r15,    &0x0202 /* write port */
-    6248:       b0 12 54 61     call    #0x6154 /* Call TerminateTask */
+    623e:       5f 42 02 02     mov.b   &0x0202,r15         /* read port  */
+    6242:       6f e3           xor.b   #2,     r15         /* toggle     */
+    6244:       c2 4f 02 02     mov.b   r15,    &0x0202     /* write port */
+    6248:       b0 12 54 61     call    #0x6154     /* Call TerminateTask */
     624c:       34 41           pop     r4              
     624e:       30 41           ret                     
 \end{lstlisting}
@@ -1066,8 +1066,8 @@ When the application is compiled in \lstinline{-O3}, the blink task code is as f
 
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 00005d60 <blink_function>:
-    5d60:       e2 e3 02 02     xor.b   #2,     &0x0202 ;r3 As==10
-    5d64:       b0 12 7a 5c     call    #0x5c7a 
+    5d60:       e2 e3 02 02     xor.b   #2,     &0x0202     /* toggle     */
+    5d64:       b0 12 7a 5c     call    #0x5c7a     /* Call TerminateTask */ 
     5d68:       30 41           ret                     
 \end{lstlisting}
 

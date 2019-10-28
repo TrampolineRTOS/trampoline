@@ -23,7 +23,7 @@
 #  $URL$
 #
 #---------------------------------------------------------------------------*
-# 3.1.11   fix range checking of int
+# 3.1.11   fix range checking of int and float
 # 3.1.10   Updated to GTL 3.0.13
 # 3.1.9    Added in OIL strings within simple quote without escape
 #          This allow to specify Windows like full paths
