@@ -1,3 +1,17 @@
+IMPLEMENTATION pulpino {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          pulpino,string
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+
 CPU pulpino {
   LIBRARY pulpino {
     PATH = "riscv/libs/sys_lib/inc";

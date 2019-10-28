@@ -1,3 +1,16 @@
+IMPLEMENTATION arduinoDue {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          sam_arduino
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
 CPU atsam3x8e_arduino {
 
   PLATFORM_FILES atsam3x8e_arduino {

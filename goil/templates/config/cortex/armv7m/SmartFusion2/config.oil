@@ -1,3 +1,16 @@
+IMPLEMENTATION SmartFusion2 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          gpio,nvm,uart
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
 CPU SmartFusion2 {
     LIBRARY gpio {
       PATH = "cortex/armv7m/SmartFusion2/drivers/mss_gpio";

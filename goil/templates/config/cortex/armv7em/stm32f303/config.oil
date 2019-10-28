@@ -1,4 +1,14 @@
 IMPLEMENTATION stm32f303 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          gpt 
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
 
   DEVICE_KIND [] {
     STRUCT {

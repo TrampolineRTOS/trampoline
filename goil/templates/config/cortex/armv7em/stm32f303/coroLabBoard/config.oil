@@ -1,3 +1,16 @@
+IMPLEMENTATION stm32f303Coro {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          spi,tftDriver,coroPrint,tft,IOExpander,IO
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
 CPU coroLabBoard{
   LIBRARY spi {
     PATH = "cortex/armv7em/stm32f303/coroLabBoard";

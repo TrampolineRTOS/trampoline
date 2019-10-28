@@ -1,3 +1,16 @@
+IMPLEMENTATION avrArduino {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          advancedIO,serial,spi,i2c,eeprom,softwareSerial
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
 CPU avrArduino {
 
   BUILDOPTIONS buildOptionsForArduino {
