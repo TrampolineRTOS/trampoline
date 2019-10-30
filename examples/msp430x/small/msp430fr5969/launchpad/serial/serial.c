@@ -20,7 +20,20 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(serial)
 {
-	tpl_serial_print_string("Hello world!\n");
+	static uint16_t size = 0;
+	if(size != tpl_serial_available())
+	{
+		size = tpl_serial_available();
+		tpl_serial_print_string("chars in rx buffer: ");
+		tpl_serial_print_int(size,0);
+		tpl_serial_print_string("\r\n");
+
+		if(size >= 10)
+		{
+			while(tpl_serial_available())
+				tpl_serial_putchar(tpl_serial_read());
+		}
+	}
 	TerminateTask();
 }
 
