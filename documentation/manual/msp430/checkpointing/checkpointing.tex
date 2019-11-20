@@ -16,7 +16,7 @@
 
 \newcommand{\sch}{\lstinline{tpl_sc_handler}}
 
-\title{MSP430X port - checkpointing}
+\title{MSP430X port - basic checkpointing\\design documentation}
 \author{David Garriou, Jean-Luc Béchennec}
 %\date{}							% Activate to display a given date or no date
 
@@ -29,6 +29,47 @@
 \begin{document}
 \maketitle
 
+\section{MSP430X startup sequence}
 
+The MSP430X startup sequence is as follow:
+\begin{enumerate}
+\item After a reset, the \lstinline{tpl_reset_handler} executes (see \lstinline{tpl_startup.S} file). It:
+	\begin{enumerate}
+	\item stops the watchdog timer;
+	\item disables the interrupts;
+	\item sets up the stack;
+	\item calls \lstinline{tpl_continue_reset_handler} C function.
+	\end{enumerate}
+\item \lstinline{tpl_continue_reset_handler} (see \lstinline{tpl_startup.c} file) does:
+	\begin{enumerate}
+	\item initialization of the .bss section to 0 (uninitialized variables);
+	\item initialization of the .data section by copying the initial values from FRAM (initialized variables);
+	\item clock setup by calling \lstinline{tpl_set_mcu_clock};
+	\item initialization of the MPU; 
+	\item a call to \lstinline{main}.
+	\end{enumerate}
+\item \lstinline{main} is responsability of the user but usually it:
+	\begin{enumerate}
+	\item initializes application level devices;
+	\item calls \lstinline{StartOS}.
+	\end{enumerate}
+\item \lstinline{StartOS}:
+	\begin{enumerate}
+	\item calls \lstinline{tpl_init_machine} that calls;
+		\begin{enumerate}
+		\item \lstinline{tpl_init_machine_generic} that calls:
+			\begin{enumerate}
+				\item \lstinline{tpl_init_mpu} which is not implemented yet.
+			\end{enumerate}
+		\item \lstinline{tpl_init_machine_specific} that calls:
+			\begin{enumerate}
+				\item \lstinline{tpl_set_systick_timer}.
+			\end{enumerate}
+		\end{enumerate}
+	\item calls \lstinline{tpl_start_os} that does a system call to \lstinline{tpl_start_os_service}.
+	\end{enumerate}
+\end{enumerate}
+
+... to be continued 
 
 \end{document}  
