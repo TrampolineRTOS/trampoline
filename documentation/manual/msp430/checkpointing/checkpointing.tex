@@ -98,7 +98,7 @@ A boolean variable stored in FRAM, let's call it \lstinline{tpl_checkpoint_avail
 
 A new service is necessary, let's call it \lstinline{Hibernate}. When called, \lstinline{Hibernate}, terminates the caller. It copies the SRAM to the FRAM (checkpoint), stops the Systick, stops application interrupts (a user function shall be provided for that), programs the RTC to emit an interrupt every x seconds, enables interrupts and goes in LPM3. 
 
-The RTC ISR check the voltage of the MCU. If it is above a threshold (\lstinline{RESUME_FROM_}\-\lstinline{HIBERNATE_THRESHOLD}, 1.9\,V ?), it exists from LPM3. If this never happens, after a while, the MCU will power off. When in the future the MCU restart, what is described in section \ref{sec:checkpointrestore} applies.  
+The RTC ISR check the voltage of the MCU. If it is above a threshold (\lstinline{RESUME_FROM_}\-\lstinline{HIBERNATE_THRESHOLD}), it exists from LPM3. If this never happens, after a while, the MCU will power off. When in the future the MCU restart, what is described in section \ref{sec:checkpointrestore} applies.  
 
 If \lstinline{Hibernate} resumes because the RTC ISR exited from LPM3 then it disables interrupt, starts application interrupts, starts the Systick, stop the RTC. It calls \lstinline{tpl_start} to elect the highest priority task and returns.
 
@@ -119,4 +119,5 @@ TASK(energy_task)
 
 \lstinline{HIBERNATE_THRESHOLD} shall be chosen so that the worst voltage drop between 2 executions of \lstinline{energy_task} plus the voltage drop due to checkpointing is lower than the threshold.
 
+\lstinline{HIBERNATE_THRESHOLD} shall be lower than \lstinline{RESUME_FROM_}\-\lstinline{HIBERNATE_THRESHOLD}.
 \end{document}  
