@@ -29,7 +29,7 @@
 \begin{document}
 \maketitle
 
-\section{MSP430X startup sequence}
+\section{Normal MSP430X startup sequence}
 
 The MSP430X startup sequence is as follow:
 \begin{enumerate}
@@ -42,11 +42,10 @@ The MSP430X startup sequence is as follow:
 	\end{enumerate}
 \item \lstinline{tpl_continue_reset_handler} (see \lstinline{tpl_startup.c} file) does:
 	\begin{enumerate}
-	\item initialization of the .bss section to 0 (uninitialized variables);
-	\item initialization of the .data section by copying the initial values from FRAM (initialized variables);
-	\item clock setup by calling \lstinline{tpl_set_mcu_clock};
-	\item initialization of the MPU; 
-	\item a call to \lstinline{main}.
+	\item initialization of the .bss section to 0 (uninitialized variables) and initialization of the .data section by copying the initial values from FRAM (initialized variables)\label{item:bssdatainit}\footnote{Why not use the DMA to do that, it would use less energy};
+	\item clock setup by calling \lstinline{tpl_set_mcu_clock}\label{item:clockinit};
+	\item initialization of the MPU\label{item:mpuinit}; 
+	\item a call to \lstinline{main}\label{item:callmain}.
 	\end{enumerate}
 \item \lstinline{main} is responsability of the user but usually it:
 	\begin{enumerate}
@@ -59,17 +58,65 @@ The MSP430X startup sequence is as follow:
 		\begin{enumerate}
 		\item \lstinline{tpl_init_machine_generic} that calls:
 			\begin{enumerate}
-				\item \lstinline{tpl_init_mpu} which is not implemented yet.
+				\item \lstinline{tpl_init_mpu} which is not implemented yet (and would be redundant with \ref{item:mpuinit}).
 			\end{enumerate}
 		\item \lstinline{tpl_init_machine_specific} that calls:
 			\begin{enumerate}
 				\item \lstinline{tpl_set_systick_timer}.
 			\end{enumerate}
 		\end{enumerate}
-	\item calls \lstinline{tpl_start_os} that does a system call to \lstinline{tpl_start_os_service}.
+	\item calls \lstinline{tpl_start_os} that does a system call to \lstinline{tpl_start_os_service} that.
+		\begin{enumerate}
+		\item calls \lstinline{tpl_init_os};
+		\item calls \lstinline{tpl_enable_counters};
+		\item calls \lstinline{StartupHook} if any;
+		\item calls \lstinline{tpl_start_scheduling}.
+		\end{enumerate}
+		when returning a task is schedule.
 	\end{enumerate}
 \end{enumerate}
 
-... to be continued 
+\section{Modified sequence to restore a checkpoint}\label{sec:checkpointrestore}
+
+Following items shall be modified when restarting from a checkpoint:
+
+\begin{itemize}
+\item item \ref{item:bssdatainit} should be replaced by a copy from the checkpoint data in FRAM to SRAM.
+\item item \ref{item:clockinit} should use the replaced by an init with the clock frequency when the checkpoint was done. This can be done by having a variable (in .data segment) to store the clock frequency so that it would restored as part of the checkpoint data.
+\item item \ref{item:callmain} should be replaced by a call to a mandatory function used to initialize the devices for the application (UART for instance) and to a new service, let's call it \lstinline{RestartOS}. \lstinline{RestartOS} would:
+	\begin{enumerate}
+	\item Call \lstinline{tpl_init_machine};
+	\item Call \lstinline{tpl_restart_os} that does a system call to \lstinline{tpl_restart_os_service} that does a \lstinline{tpl_start}. \lstinline{tpl_start} moves the highest priority task from the ready list to the elected slot of \lstinline{tpl_kern}. Conditions shall be \lstinline{NEED_SWITCH} true and \lstinline{NEED_SAVE} false.  
+	\end{enumerate}
+\end{itemize}
+
+When returning from the \lstinline{RestartOS} service, the highest priority task is scheduled and the system continues execution.
+
+A boolean variable stored in FRAM, let's call it \lstinline{tpl_checkpoint_available}, shall be used to select, when true, the modified sequence instead of the normal one.
+
+\section{Checkpointing}\label{sec:checkpointing}
+
+A new service is necessary, let's call it \lstinline{Hibernate}. When called, \lstinline{Hibernate}, terminates the caller. It copies the SRAM to the FRAM (checkpoint), stops the Systick, stops application interrupts (a user function shall be provided for that), programs the RTC to emit an interrupt every x seconds, enables interrupts and goes in LPM3. 
+
+The RTC ISR check the voltage of the MCU. If it is above a threshold (\lstinline{RESUME_FROM_}\-\lstinline{HIBERNATE_THRESHOLD}, 1.9\,V ?), it exists from LPM3. If this never happens, after a while, the MCU will power off. When in the future the MCU restart, what is described in section \ref{sec:checkpointrestore} applies.  
+
+If \lstinline{Hibernate} resumes because the RTC ISR exited from LPM3 then it disables interrupt, starts application interrupts, starts the Systick, stop the RTC. It calls \lstinline{tpl_start} to elect the highest priority task and returns.
+
+In addition, a periodic basic task, \lstinline{energy_task} checks (every 5 seconds ? more ?) the voltage. If the voltage drops below a threshold (\lstinline{HIBERNATE_THRESHOLD}), \lstinline{energy_task} calls \lstinline{Hibernate} (and terminates):
+
+\begin{lstlisting}[language=C]
+TASK(energy_task)
+{
+  uint16 voltage = readPowerVoltage();
+  if (voltage < HIBERNATE_THRESHOLD) {
+    Hibernate();
+  }
+  else {
+    TerminateTask();
+  }
+}
+\end{lstlisting}
+
+\lstinline{HIBERNATE_THRESHOLD} shall be chosen so that the worst voltage drop between 2 executions of \lstinline{energy_task} plus the voltage drop due to checkpointing is lower than the threshold.
 
 \end{document}  
