@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "tpl_clocks.h"
 
-#define APP_Task_serial_START_SEC_CODE
+#define APP_Task_serial_TX_START_SEC_CODE
 #include "tpl_memmap.h"
 
 FUNC(int, OS_APPL_CODE) main(void)
@@ -18,7 +18,19 @@ FUNC(int, OS_APPL_CODE) main(void)
 	return 0;
 }
 
-TASK(serial)
+TASK(serial_TX)
+{
+	tpl_serial_print_string("Test using the serial communication over USB\r\n");
+	TerminateTask();
+}
+
+#define APP_Task_serial_TX_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_serial_RX_START_SEC_CODE
+#include "tpl_memmap.h"
+
+TASK(serial_RX)
 {
 	static uint16_t size = 0;
 	if(size != tpl_serial_available())
@@ -30,12 +42,14 @@ TASK(serial)
 
 		if(size >= 10)
 		{
+			tpl_serial_print_string("=> ");
 			while(tpl_serial_available())
 				tpl_serial_putchar(tpl_serial_read());
+		    tpl_serial_print_string("\r\n");
 		}
 	}
 	TerminateTask();
 }
 
-#define APP_Task_serial_STOP_SEC_CODE
+#define APP_Task_serial_RX_STOP_SEC_CODE
 #include "tpl_memmap.h"
