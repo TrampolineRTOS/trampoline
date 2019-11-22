@@ -29,6 +29,32 @@
 \begin{document}
 \maketitle
 
+\section{Goals and ideas}
+
+\subsection{Consistency}
+Our main goal is to keep a system within a coherent state even after a recovery from power loss.
+In other words, the kernel execution must be atomic with respect to power loss.
+
+\subsubsection{Consistency of kernel space and user space}
+
+When the system recovers all of its code, user space and kernel space, must be consistent.
+\lstinline{OS_VAR} section contains the kernel data structures.
+It means that we must not transfer \lstinline{OS_VAR} section to FRAM otherwise the system would recover with two differents (not consistent) states, the last user space state and the latest kernel space state.
+
+We have to save both kernel and user space variables at the same time (during a single checkpoint).
+
+\subsection{Big picture}
+
+Big picture of what to do:
+\begin{enumerate}
+\item A periodic task, let's call it \lstinline{energy_task}, will check for remaining energy in the supercapa;
+  \begin{enumerate}
+  \item user space execution;
+  \item remaining energy consists in mesuring VCC (aux bornes de la supercapa);
+  \item if the remaining energy is lower than a defined value (seuil), we must realize a checkpoint
+  \end{enumerate}
+\end{enumerate}
+
 \section{Normal MSP430X startup sequence}
 
 The MSP430X startup sequence is as follow:
