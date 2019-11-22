@@ -193,7 +193,7 @@ else {
 The 2 buffers are located above the 64kB limit, at the end of the FRAM for instance. The first one from 0x040000 to 0x041FFFh and the second one from 0x042000 to 0x043FFFh.
 The SRAM starts at address 0x001C00 and ends at address 0x003BFF.
 
-The function to save the SRAM to a buffer using the DMA has to be written in assembly because writing to start address and end address registers shall be done using extended instructions:
+The function to save the SRAM to a buffer using the DMA has to be written in assembly because writing to start address and end address registers shall be done using extended instructions when address is above the 64kB limit:
 
 \begin{lstlisting}
 #include "tpl_assembler.h"
