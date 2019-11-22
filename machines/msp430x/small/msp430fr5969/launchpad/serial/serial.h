@@ -5,6 +5,9 @@
 /* function that should be called each time 
  * the DCO frequency is changed to recalculate the
  * correct baud rate parameters.
+ *
+ * During init, this function is registered has a 
+ * callback that should be called for each clock update.
  **/
 void tpl_serial_update_freq();
 
