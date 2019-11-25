@@ -51,7 +51,7 @@ def exportTab(valList,name):
         i = i+1
     print('};')
 
-uartFreq = 115200
+uartFreq = 9600
 brw   = [] 
 mctlw = [] 
 for freq in DCOfreq:

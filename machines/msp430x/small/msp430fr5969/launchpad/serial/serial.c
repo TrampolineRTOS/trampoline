@@ -9,14 +9,14 @@
 /** these 2 tabulars are generated from the serial.py script
  *  that off-line compute the register values to configure
  *  UART timings (depending on both the input frequency (dco)
- *  and the uart frequency (115200 bauds)
+ *  and the uart frequency (9600 bauds)
  */  
 const uint16_t tpl_brwTab[] = {
-	0x8, 0x8, 0x1, 0x2, 0x1, 0x3, 0x2, 0x4, 
-	0x2, 0x8, 0x3, 0xb, 0x4, 0xd, 0x0, 0x0};
+	0x6, 0x6, 0x11, 0x22, 0x16, 0x2d, 0x1a, 0x34, 
+	0x22, 0x68, 0x2d, 0x88, 0x34, 0x9c, 0x0, 0x0};
 const uint16_t tpl_mctlwTab[] = {
-	0xd600, 0xd600, 0x1171, 0x44e1, 0x52e1, 0xddc1, 0xbb21, 0x5551, 
-	0x44e1, 0xf7a1, 0xddc1, 0x4461, 0x5551, 0x2501, 0x0, 0x0};
+	0x2081, 0x2081, 0x861, 0x11b1, 0x6bc1, 0x2091, 0xb601, 0x2511, 
+	0x11b1, 0xb621, 0x2091, 0x55b1, 0x2511, 0x41, 0x0, 0x0};
 
 #define OS_STOP_SEC_CONST_16BIT
 #include "tpl_memmap.h"
@@ -71,7 +71,7 @@ void tpl_serial_update_freq()
 	UCA0CTLW0 = UCSWRST;	
 	/* default 8N1, lsb first, uart, input clk SMCLK */
 	UCA0CTLW0 |= UCSSEL__SMCLK;
-	/* baud rates are pre-calculated for 115200. */
+	/* baud rates are pre-calculated for 9600. */
 	UCA0BRW   = tpl_brwTab[dcoConfig];
 	UCA0MCTLW = tpl_mctlwTab[dcoConfig];
 	/* get out of reset state */
@@ -148,7 +148,7 @@ void tpl_serial_begin()
 	P2SEL0 &= ~0x03;
 	P2SEL1 |=  0x03;
 	/** use USCI A0, that is connected to the USB target.
-	 *  connect using 115200 8N1
+	 *  connect using 9600 8N1
 	 *  set the initial frequency 
 	 **/
 	tpl_serial_update_freq();
@@ -189,10 +189,16 @@ char tpl_serial_read(void)
 /* ISR1 related to USCI_A0_VECTOR */
 void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_VECTOR()
 {
-#if SERIAL_TX_BUFFER_SIZE > 0
-	if(UCA0IFG & UCTXIFG) /* TX interrupt */
+#if (SERIAL_TX_BUFFER_SIZE > 0) && (SERIAL_TX_BUFFER_SIZE > 0)
+	uint8_t c;
+	switch(UCA0IV) 
 	{
-		const uint8_t c = tx_buffer.buffer[tx_buffer.tail];
+#if SERIAL_TX_BUFFER_SIZE > 0
+		case USCI_UART_UCTXIFG:
+	//if(UCA0IFG & UCTXIFG) /* TX interrupt */
+	//{
+	//	const uint8_t c = tx_buffer.buffer[tx_buffer.tail];
+		c = tx_buffer.buffer[tx_buffer.tail];
 		tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_TX_BUFFER_SIZE;
 		if(tx_buffer.tail == tx_buffer.head) /* empty */
 			UCA0IE &= ~UCTXIE; /* disable TX interrupt */
@@ -205,12 +211,14 @@ void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_V
 			UCA0IFG &= ~UCTXIFG;
 		UCA0TXBUF = c; /* send char */
 		LPM3_EXIT; /* if buffer is full, we entered in LPM */
-	}
+	//}
+	break;
 #endif
 
 #if SERIAL_RX_BUFFER_SIZE > 0
-	if(UCA0IFG & UCRXIFG) /* RX interrupt */
-	{
+		case USCI_UART_UCRXIFG:
+	//if(UCA0IFG & UCRXIFG) /* RX interrupt */
+	//{
 		rx_buffer.buffer[rx_buffer.head] = UCA0RXBUF;
 		rx_buffer.head = (rx_buffer.head + 1) % SERIAL_RX_BUFFER_SIZE;
 		if(rx_buffer.head == rx_buffer.tail) /* overflow */
@@ -219,8 +227,11 @@ void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_V
 			rx_buffer.tail = (rx_buffer.tail + 1) % SERIAL_RX_BUFFER_SIZE;
 		}
 		UCA0IFG &= ~UCRXIFG;
-	}
+	//}
+	break;
 #endif
+	}
+#endif //one buffer.
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
