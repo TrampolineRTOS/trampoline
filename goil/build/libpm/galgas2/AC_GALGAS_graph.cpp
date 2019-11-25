@@ -45,7 +45,7 @@ class cGraphNode {
   public : cGraphNode (cGraphNode * inNode) ;
 
 //--- Destructor
-  public : ~ cGraphNode (void) ;
+  public : virtual ~ cGraphNode (void) ;
 
 //--- No copy
   private : cGraphNode (const cGraphNode &) ;

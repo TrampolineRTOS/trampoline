@@ -1012,7 +1012,8 @@ GALGAS_binaryset GALGAS_binaryset::getter_transposedBy (const class GALGAS_uintl
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_uint inLeftShiftCount
+GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_uint inLeftShiftCount,
+                                                         class C_Compiler * /* inCompiler */
                                                          COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (isValid () && inLeftShiftCount.isValid ()) {
@@ -1023,11 +1024,44 @@ GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_uint inLef
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_uint inRightShiftCount
+GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_bigint inLeftShiftCount,
+                                                         class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) const {
+  GALGAS_binaryset result ;
+  if (isValid () && inLeftShiftCount.isValid ()) {
+    if (inLeftShiftCount.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@binaryset left shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_binaryset (mBDD.bddByLeftShifting (inLeftShiftCount.bigintValue().uint32 ())) ;
+    }
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_uint inRightShiftCount,
+                                                          class C_Compiler * /* inCompiler*/
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (isValid () && inRightShiftCount.isValid ()) {
     result = GALGAS_binaryset (mBDD.bddByRightShifting (inRightShiftCount.uintValue ())) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_bigint inRightShiftCount,
+                                                          class C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) const {
+  GALGAS_binaryset result ;
+  if (isValid () && inRightShiftCount.isValid ()) {
+    if (inRightShiftCount.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@binaryset right shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_binaryset (mBDD.bddByRightShifting (inRightShiftCount.bigintValue ().uint32 ())) ;
+    }
   }
   return result ;
 }

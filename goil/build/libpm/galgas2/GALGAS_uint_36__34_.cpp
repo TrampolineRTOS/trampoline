@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2006, ..., 2018 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2006, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -208,7 +208,8 @@ GALGAS_uint_36__34_ GALGAS_uint_36__34_::modulo_operation (const GALGAS_uint_36_
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_uint_36__34_ GALGAS_uint_36__34_::left_shift_operation (const GALGAS_uint inShiftOperand
+GALGAS_uint_36__34_ GALGAS_uint_36__34_::left_shift_operation (const GALGAS_uint inShiftOperand,
+                                                               class C_Compiler * /* inCompiler*/
                                                                COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
   if (isValid () && inShiftOperand.isValid ()) {
@@ -219,11 +220,44 @@ GALGAS_uint_36__34_ GALGAS_uint_36__34_::left_shift_operation (const GALGAS_uint
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_uint_36__34_ GALGAS_uint_36__34_::right_shift_operation (const GALGAS_uint inShiftOperand
+GALGAS_uint_36__34_ GALGAS_uint_36__34_::left_shift_operation (const GALGAS_bigint inShiftOperand,
+                                                               class C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) const {
+  GALGAS_uint_36__34_ result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@uint64 left shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_uint_36__34_ (mUInt64Value << (inShiftOperand.bigintValue ().uint32 () & 63)) ;
+    }
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_uint_36__34_ GALGAS_uint_36__34_::right_shift_operation (const GALGAS_uint inShiftOperand,
+                                                                class C_Compiler * /* inCompiler*/
                                                                 COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
   if (isValid () && inShiftOperand.isValid ()) {
     result = GALGAS_uint_36__34_ (mUInt64Value >> (inShiftOperand.uintValue () & 63)) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_uint_36__34_ GALGAS_uint_36__34_::right_shift_operation (const GALGAS_bigint inShiftOperand,
+                                                                class C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) const {
+  GALGAS_uint_36__34_ result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@uint64 right shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_uint_36__34_ (mUInt64Value >> (inShiftOperand.bigintValue ().uint32 () & 63)) ;
+    }
   }
   return result ;
 }

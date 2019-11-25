@@ -85,7 +85,7 @@ class C_Lexique : public C_Compiler {
   }
 
 //--- Syntax directed translation : accessing current token
-  public : C_String preceedingSeparatorString (void) const ;
+  public : virtual C_String separatorString (void) const ;
   public : C_String tokenString (void) const ;
 
 //--- Current character

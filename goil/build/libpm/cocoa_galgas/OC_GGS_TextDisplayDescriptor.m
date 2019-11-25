@@ -652,9 +652,9 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   if (NSMaxRange (inRange) >= mTextView.string.length) {
     range = NSMakeRange (mTextView.string.length, 0) ;
   }
-  [mTextView setSelectedRange:range] ;
-  [mTextView scrollRangeToVisible:range] ;
-  [mTextView.window makeFirstResponder:mTextView] ;
+  [mTextView setSelectedRange: range] ;
+  [mTextView scrollRangeToVisible: range] ;
+  [mTextView.window makeFirstResponder: mTextView] ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s:DONE", __PRETTY_FUNCTION__) ;
   #endif

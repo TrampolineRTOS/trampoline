@@ -1220,25 +1220,28 @@ static void extensionMethod_impAutoDefaultType_setDefault (const cPtr_impAutoDef
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_impAutoDefaultType * object = inObject ;
   macroValidSharedObject (object, cPtr_impAutoDefaultType) ;
-  const enumGalgasBool test_0 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 526)).getter_hasKey (object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 526)) COMMA_SOURCE_FILE ("implementation_types.galgas", 526)).operator_not (SOURCE_FILE ("implementation_types.galgas", 526)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    if (object->mProperty_defaultValue.isValid ()) {
-      if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_void) {
-      }else if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_auto) {
-        GALGAS_identifierMap var_attr_14431 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 530)) ;
-        {
-        var_attr_14431.setter_put (object->mProperty_name, object->mProperty_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 531)) ;
-        }
-        {
-        ioArgument_attributes.setter_setObjectParams (var_attr_14431 COMMA_SOURCE_FILE ("implementation_types.galgas", 532)) ;
-        }
-      }else{
-        GALGAS_identifierMap var_attr_14627 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 535)) ;
-        {
-        var_attr_14627.setter_put (object->mProperty_name, object->mProperty_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 536)) ;
-        }
-        {
-        ioArgument_attributes.setter_setObjectParams (var_attr_14627 COMMA_SOURCE_FILE ("implementation_types.galgas", 537)) ;
+    test_0 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 526)).getter_hasKey (object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 526)) COMMA_SOURCE_FILE ("implementation_types.galgas", 526)).operator_not (SOURCE_FILE ("implementation_types.galgas", 526)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      if (object->mProperty_defaultValue.isValid ()) {
+        if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_void) {
+        }else if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_auto) {
+          GALGAS_identifierMap var_attr_14431 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 530)) ;
+          {
+          var_attr_14431.setter_put (object->mProperty_name, object->mProperty_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 531)) ;
+          }
+          {
+          ioArgument_attributes.setter_setObjectParams (var_attr_14431 COMMA_SOURCE_FILE ("implementation_types.galgas", 532)) ;
+          }
+        }else{
+          GALGAS_identifierMap var_attr_14627 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 535)) ;
+          {
+          var_attr_14627.setter_put (object->mProperty_name, object->mProperty_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 536)) ;
+          }
+          {
+          ioArgument_attributes.setter_setObjectParams (var_attr_14627 COMMA_SOURCE_FILE ("implementation_types.galgas", 537)) ;
+          }
         }
       }
     }
@@ -2423,14 +2426,20 @@ static GALGAS_implementationObject extensionGetter_implementationObject_mergeImp
   GALGAS_implementationObject result_mergedObj ; // Returned variable
   const cPtr_implementationObject * object = inObject ;
   macroValidSharedObject (object, cPtr_implementationObject) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, object->mProperty_multiple.objectCompare (constinArgument_objToMerge.getter_multiple (SOURCE_FILE ("implementation_types.galgas", 1024)))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    const enumGalgasBool test_1 = GALGAS_bool (gOption_goil_5F_options_warnMultiple.getter_value ()).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      TC_Array <C_FixItDescription> fixItArray2 ;
-      inCompiler->emitSemanticWarning (constinArgument_objToMerge.getter_multiple (SOURCE_FILE ("implementation_types.galgas", 1026)).getter_location (SOURCE_FILE ("implementation_types.galgas", 1026)), GALGAS_string ("multiple redefinition"), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 1026)) ;
-      TC_Array <C_FixItDescription> fixItArray3 ;
-      inCompiler->emitSemanticWarning (object->mProperty_multiple.getter_location (SOURCE_FILE ("implementation_types.galgas", 1027)), GALGAS_string ("was defined here"), fixItArray3  COMMA_SOURCE_FILE ("implementation_types.galgas", 1027)) ;
+    test_0 = GALGAS_bool (kIsNotEqual, object->mProperty_multiple.objectCompare (constinArgument_objToMerge.getter_multiple (SOURCE_FILE ("implementation_types.galgas", 1024)))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      enumGalgasBool test_1 = kBoolTrue ;
+      if (kBoolTrue == test_1) {
+        test_1 = GALGAS_bool (gOption_goil_5F_options_warnMultiple.getter_value ()).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          TC_Array <C_FixItDescription> fixItArray2 ;
+          inCompiler->emitSemanticWarning (constinArgument_objToMerge.getter_multiple (SOURCE_FILE ("implementation_types.galgas", 1026)).getter_location (SOURCE_FILE ("implementation_types.galgas", 1026)), GALGAS_string ("multiple redefinition"), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 1026)) ;
+          TC_Array <C_FixItDescription> fixItArray3 ;
+          inCompiler->emitSemanticWarning (object->mProperty_multiple.getter_location (SOURCE_FILE ("implementation_types.galgas", 1027)), GALGAS_string ("was defined here"), fixItArray3  COMMA_SOURCE_FILE ("implementation_types.galgas", 1027)) ;
+        }
+      }
     }
   }
   result_mergedObj = GALGAS_implementationObject::constructor_new (object->mProperty_multiple, extensionGetter_mergeImplementationObjectAttributesWith (object->mProperty_attributes, constinArgument_objToMerge.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 1040)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1040))  COMMA_SOURCE_FILE ("implementation_types.galgas", 1040)) ;
@@ -7013,10 +7022,13 @@ static void extensionMethod_impType_verifyApplication (const cPtr_impType * inOb
   macroValidSharedObject (object, cPtr_impType) ;
   cEnumerator_identifierMap enumerator_1580 (constinArgument_attrs.getter_objectParams (SOURCE_FILE ("semantic_verification.galgas", 56)), kENUMERATION_UP) ;
   while (enumerator_1580.hasCurrentObject ()) {
-    const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_1580.current_lkey (HERE).getter_string (SOURCE_FILE ("semantic_verification.galgas", 57)).objectCompare (object->mProperty_name.getter_string (SOURCE_FILE ("semantic_verification.galgas", 57)))).boolEnum () ;
+    enumGalgasBool test_0 = kBoolTrue ;
     if (kBoolTrue == test_0) {
-      const GALGAS_impType temp_1 = object ;
-      callExtensionMethod_verifyMultipleType ((const cPtr_impType *) temp_1.ptr (), enumerator_1580.current_value (HERE), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 58)) ;
+      test_0 = GALGAS_bool (kIsEqual, enumerator_1580.current_lkey (HERE).getter_string (SOURCE_FILE ("semantic_verification.galgas", 57)).objectCompare (object->mProperty_name.getter_string (SOURCE_FILE ("semantic_verification.galgas", 57)))).boolEnum () ;
+      if (kBoolTrue == test_0) {
+        const GALGAS_impType temp_1 = object ;
+        callExtensionMethod_verifyMultipleType ((const cPtr_impType *) temp_1.ptr (), enumerator_1580.current_value (HERE), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 58)) ;
+      }
     }
     enumerator_1580.gotoNextObject () ;
   }
@@ -7649,17 +7661,20 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_include_5F_
   default:
     break ;
   }
-  GALGAS_bool test_0 = var_includeIfExists_1348.operator_not (SOURCE_FILE ("implementation_parser.galgas", 68)) ;
-  if (kBoolTrue != test_0.boolEnum ()) {
-    GALGAS_bool test_1 = var_includeIfExists_1348 ;
-    if (kBoolTrue == test_1.boolEnum ()) {
-      test_1 = var_file_5F_name_1456.getter_string (HERE).getter_fileExists (SOURCE_FILE ("implementation_parser.galgas", 68)) ;
+  enumGalgasBool test_0 = kBoolTrue ;
+  if (kBoolTrue == test_0) {
+    GALGAS_bool test_1 = var_includeIfExists_1348.operator_not (SOURCE_FILE ("implementation_parser.galgas", 68)) ;
+    if (kBoolTrue != test_1.boolEnum ()) {
+      GALGAS_bool test_2 = var_includeIfExists_1348 ;
+      if (kBoolTrue == test_2.boolEnum ()) {
+        test_2 = var_file_5F_name_1456.getter_string (HERE).getter_fileExists (SOURCE_FILE ("implementation_parser.galgas", 68)) ;
+      }
+      test_1 = test_2 ;
     }
-    test_0 = test_1 ;
-  }
-  const enumGalgasBool test_2 = test_0.boolEnum () ;
-  if (kBoolTrue == test_2) {
-    cGrammar_goil_5F_implementation_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name_1456, ioArgument_implementation  COMMA_SOURCE_FILE ("implementation_parser.galgas", 69)) ;
+    test_0 = test_1.boolEnum () ;
+    if (kBoolTrue == test_0) {
+      cGrammar_goil_5F_implementation_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name_1456, ioArgument_implementation  COMMA_SOURCE_FILE ("implementation_parser.galgas", 69)) ;
+    }
   }
 }
 
@@ -7721,17 +7736,20 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_include_5F_
   default:
     break ;
   }
-  GALGAS_bool test_0 = var_includeIfExists_1820.operator_not (SOURCE_FILE ("implementation_parser.galgas", 89)) ;
-  if (kBoolTrue != test_0.boolEnum ()) {
-    GALGAS_bool test_1 = var_includeIfExists_1820 ;
-    if (kBoolTrue == test_1.boolEnum ()) {
-      test_1 = var_file_5F_name_1928.getter_string (HERE).getter_fileExists (SOURCE_FILE ("implementation_parser.galgas", 89)) ;
+  enumGalgasBool test_0 = kBoolTrue ;
+  if (kBoolTrue == test_0) {
+    GALGAS_bool test_1 = var_includeIfExists_1820.operator_not (SOURCE_FILE ("implementation_parser.galgas", 89)) ;
+    if (kBoolTrue != test_1.boolEnum ()) {
+      GALGAS_bool test_2 = var_includeIfExists_1820 ;
+      if (kBoolTrue == test_2.boolEnum ()) {
+        test_2 = var_file_5F_name_1928.getter_string (HERE).getter_fileExists (SOURCE_FILE ("implementation_parser.galgas", 89)) ;
+      }
+      test_1 = test_2 ;
     }
-    test_0 = test_1 ;
-  }
-  const enumGalgasBool test_2 = test_0.boolEnum () ;
-  if (kBoolTrue == test_2) {
-    cGrammar_goil_5F_type_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name_1928, ioArgument_objectAttributes  COMMA_SOURCE_FILE ("implementation_parser.galgas", 90)) ;
+    test_0 = test_1.boolEnum () ;
+    if (kBoolTrue == test_0) {
+      cGrammar_goil_5F_type_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name_1928, ioArgument_objectAttributes  COMMA_SOURCE_FILE ("implementation_parser.galgas", 90)) ;
+    }
   }
 }
 
@@ -7787,13 +7805,17 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_implementat
   inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken__7D_ COMMA_SOURCE_FILE ("implementation_parser.galgas", 112)) ;
   GALGAS_implementationObject var_newObject_2697 = GALGAS_implementationObject::constructor_new (var_multiple_2375, var_objectAttributes_2592  COMMA_SOURCE_FILE ("implementation_parser.galgas", 114)) ;
   GALGAS_implementationObject var_object_2869 ;
-  const enumGalgasBool test_0 = callExtensionGetter_hasKey ((const cPtr_implementation *) ioArgument_implementation.ptr (), var_objectName_2335.getter_string (SOURCE_FILE ("implementation_parser.galgas", 119)), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 119)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    {
-    var_imp_2276.setter_del (var_objectName_2335, var_object_2869, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 120)) ;
+    test_0 = callExtensionGetter_hasKey ((const cPtr_implementation *) ioArgument_implementation.ptr (), var_objectName_2335.getter_string (SOURCE_FILE ("implementation_parser.galgas", 119)), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 119)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      {
+      var_imp_2276.setter_del (var_objectName_2335, var_object_2869, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 120)) ;
+      }
+      var_object_2869 = callExtensionGetter_mergeImplementationObjectWith ((const cPtr_implementationObject *) var_object_2869.ptr (), var_newObject_2697, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 121)) ;
     }
-    var_object_2869 = callExtensionGetter_mergeImplementationObjectWith ((const cPtr_implementationObject *) var_object_2869.ptr (), var_newObject_2697, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 121)) ;
-  }else if (kBoolFalse == test_0) {
+  }
+  if (kBoolFalse == test_0) {
     var_object_2869 = var_newObject_2697 ;
   }
   {
@@ -7835,77 +7857,103 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_implementat
       GALGAS_lstring var_attributeName_3301 ;
       GALGAS_impType var_type_3319 ;
       nt_implementation_5F_type_ (var_attributeName_3301, var_type_3319, inCompiler) ;
-      const enumGalgasBool test_1 = ioArgument_objectAttributes.getter_hasKey (var_attributeName_3301.getter_string (SOURCE_FILE ("implementation_parser.galgas", 139)) COMMA_SOURCE_FILE ("implementation_parser.galgas", 139)).boolEnum () ;
+      enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        GALGAS_impType var_previousType_3456 ;
-        ioArgument_objectAttributes.method_get (var_attributeName_3301, var_previousType_3456, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 141)) ;
-        const enumGalgasBool test_2 = var_previousType_3456.getter_multiple (SOURCE_FILE ("implementation_parser.galgas", 144)).boolEnum () ;
-        if (kBoolTrue == test_2) {
-          GALGAS_object_5F_t var_previousDefaultValue_3802 = callExtensionGetter_getDefaultValue ((const cPtr_impType *) var_previousType_3456.ptr (), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 147)) ;
-          GALGAS_object_5F_t var_defaultValue_3866 = callExtensionGetter_getDefaultValue ((const cPtr_impType *) var_type_3319.ptr (), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 148)) ;
-          GALGAS_bool var_oneIsMultiple_3919 = GALGAS_bool (false) ;
-          const enumGalgasBool test_3 = GALGAS_bool (var_previousDefaultValue_3802.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute).boolEnum () ;
-          if (kBoolTrue == test_3) {
-            var_oneIsMultiple_3919 = GALGAS_bool (true) ;
-          }else if (kBoolFalse == test_3) {
-            const enumGalgasBool test_4 = GALGAS_bool (var_defaultValue_3866.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute).boolEnum () ;
-            if (kBoolTrue == test_4) {
-              var_oneIsMultiple_3919 = GALGAS_bool (true) ;
+        test_1 = ioArgument_objectAttributes.getter_hasKey (var_attributeName_3301.getter_string (SOURCE_FILE ("implementation_parser.galgas", 139)) COMMA_SOURCE_FILE ("implementation_parser.galgas", 139)).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          GALGAS_impType var_previousType_3456 ;
+          ioArgument_objectAttributes.method_get (var_attributeName_3301, var_previousType_3456, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 141)) ;
+          enumGalgasBool test_2 = kBoolTrue ;
+          if (kBoolTrue == test_2) {
+            test_2 = var_previousType_3456.getter_multiple (SOURCE_FILE ("implementation_parser.galgas", 144)).boolEnum () ;
+            if (kBoolTrue == test_2) {
+              GALGAS_object_5F_t var_previousDefaultValue_3802 = callExtensionGetter_getDefaultValue ((const cPtr_impType *) var_previousType_3456.ptr (), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 147)) ;
+              GALGAS_object_5F_t var_defaultValue_3866 = callExtensionGetter_getDefaultValue ((const cPtr_impType *) var_type_3319.ptr (), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 148)) ;
+              GALGAS_bool var_oneIsMultiple_3919 = GALGAS_bool (false) ;
+              enumGalgasBool test_3 = kBoolTrue ;
+              if (kBoolTrue == test_3) {
+                test_3 = GALGAS_bool (var_previousDefaultValue_3802.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute).boolEnum () ;
+                if (kBoolTrue == test_3) {
+                  var_oneIsMultiple_3919 = GALGAS_bool (true) ;
+                }
+              }
+              if (kBoolFalse == test_3) {
+                enumGalgasBool test_4 = kBoolTrue ;
+                if (kBoolTrue == test_4) {
+                  test_4 = GALGAS_bool (var_defaultValue_3866.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute).boolEnum () ;
+                  if (kBoolTrue == test_4) {
+                    var_oneIsMultiple_3919 = GALGAS_bool (true) ;
+                  }
+                }
+              }
+              enumGalgasBool test_5 = kBoolTrue ;
+              if (kBoolTrue == test_5) {
+                test_5 = var_oneIsMultiple_3919.boolEnum () ;
+                if (kBoolTrue == test_5) {
+                  GALGAS_identifierList var_aList_4340 = GALGAS_identifierList::constructor_emptyList (SOURCE_FILE ("implementation_parser.galgas", 159)) ;
+                  GALGAS_lstring var_desc_4377 = function_emptyLString (inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 160)) ;
+                  GALGAS_location var_location_4423 = GALGAS_location::constructor_nowhere (SOURCE_FILE ("implementation_parser.galgas", 161)) ;
+                  if (var_previousDefaultValue_3802.isValid ()) {
+                    if (var_previousDefaultValue_3802.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute) {
+                      GALGAS_multipleAttribute cast_4555_multiAttribute ((cPtr_multipleAttribute *) var_previousDefaultValue_3802.ptr ()) ;
+                      var_aList_4340 = cast_4555_multiAttribute.getter_items (SOURCE_FILE ("implementation_parser.galgas", 166)) ;
+                      var_desc_4377 = cast_4555_multiAttribute.getter_oil_5F_desc (SOURCE_FILE ("implementation_parser.galgas", 167)) ;
+                      var_location_4423 = cast_4555_multiAttribute.getter_location (SOURCE_FILE ("implementation_parser.galgas", 168)) ;
+                    }
+                  }
+                  if (var_defaultValue_3866.isValid ()) {
+                    if (var_defaultValue_3866.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute) {
+                      GALGAS_multipleAttribute cast_4829_multiAttribute ((cPtr_multipleAttribute *) var_defaultValue_3866.ptr ()) ;
+                      var_aList_4340.plusAssign_operation(cast_4829_multiAttribute.getter_items (SOURCE_FILE ("implementation_parser.galgas", 174)), inCompiler  COMMA_SOURCE_FILE ("implementation_parser.galgas", 174)) ;
+                      enumGalgasBool test_6 = kBoolTrue ;
+                      if (kBoolTrue == test_6) {
+                        test_6 = GALGAS_bool (kIsEqual, var_desc_4377.getter_string (SOURCE_FILE ("implementation_parser.galgas", 175)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+                        if (kBoolTrue == test_6) {
+                          var_desc_4377 = cast_4829_multiAttribute.getter_oil_5F_desc (SOURCE_FILE ("implementation_parser.galgas", 176)) ;
+                        }
+                      }
+                      enumGalgasBool test_7 = kBoolTrue ;
+                      if (kBoolTrue == test_7) {
+                        test_7 = GALGAS_bool (kIsEqual, var_location_4423.objectCompare (GALGAS_location::constructor_nowhere (SOURCE_FILE ("implementation_parser.galgas", 178)))).boolEnum () ;
+                        if (kBoolTrue == test_7) {
+                          var_location_4423 = cast_4829_multiAttribute.getter_location (SOURCE_FILE ("implementation_parser.galgas", 179)) ;
+                        }
+                      }
+                    }
+                  }
+                  GALGAS_object_5F_t var_newDefault_5178 = GALGAS_multipleAttribute::constructor_new (var_desc_4377, var_location_4423, var_aList_4340  COMMA_SOURCE_FILE ("implementation_parser.galgas", 184)) ;
+                  {
+                  var_type_3319.insulate (HERE) ;
+                  cPtr_impType * ptr_5284 = (cPtr_impType *) var_type_3319.ptr () ;
+                  callExtensionSetter_setDefaultValue ((cPtr_impType *) ptr_5284, var_newDefault_5178, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 187)) ;
+                  }
+                  {
+                  GALGAS_impType joker_5365 ; // Joker input parameter
+                  ioArgument_objectAttributes.setter_del (var_attributeName_3301, joker_5365, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 189)) ;
+                  }
+                  {
+                  ioArgument_objectAttributes.setter_put (var_attributeName_3301, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 190)) ;
+                  }
+                }
+              }
             }
           }
-          const enumGalgasBool test_5 = var_oneIsMultiple_3919.boolEnum () ;
-          if (kBoolTrue == test_5) {
-            GALGAS_identifierList var_aList_4340 = GALGAS_identifierList::constructor_emptyList (SOURCE_FILE ("implementation_parser.galgas", 159)) ;
-            GALGAS_lstring var_desc_4377 = function_emptyLString (inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 160)) ;
-            GALGAS_location var_location_4423 = GALGAS_location::constructor_nowhere (SOURCE_FILE ("implementation_parser.galgas", 161)) ;
-            if (var_previousDefaultValue_3802.isValid ()) {
-              if (var_previousDefaultValue_3802.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute) {
-                GALGAS_multipleAttribute cast_4555_multiAttribute ((cPtr_multipleAttribute *) var_previousDefaultValue_3802.ptr ()) ;
-                var_aList_4340 = cast_4555_multiAttribute.getter_items (SOURCE_FILE ("implementation_parser.galgas", 166)) ;
-                var_desc_4377 = cast_4555_multiAttribute.getter_oil_5F_desc (SOURCE_FILE ("implementation_parser.galgas", 167)) ;
-                var_location_4423 = cast_4555_multiAttribute.getter_location (SOURCE_FILE ("implementation_parser.galgas", 168)) ;
+          enumGalgasBool test_8 = kBoolTrue ;
+          if (kBoolTrue == test_8) {
+            test_8 = function_checkNewTypeWithinPreviousType (var_attributeName_3301, var_previousType_3456, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 194)).boolEnum () ;
+            if (kBoolTrue == test_8) {
+              {
+              GALGAS_impType joker_5651 ; // Joker input parameter
+              ioArgument_objectAttributes.setter_del (var_attributeName_3301, joker_5651, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 197)) ;
               }
-            }
-            if (var_defaultValue_3866.isValid ()) {
-              if (var_defaultValue_3866.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute) {
-                GALGAS_multipleAttribute cast_4829_multiAttribute ((cPtr_multipleAttribute *) var_defaultValue_3866.ptr ()) ;
-                var_aList_4340.plusAssign_operation(cast_4829_multiAttribute.getter_items (SOURCE_FILE ("implementation_parser.galgas", 174)), inCompiler  COMMA_SOURCE_FILE ("implementation_parser.galgas", 174)) ;
-                const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_desc_4377.getter_string (SOURCE_FILE ("implementation_parser.galgas", 175)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
-                if (kBoolTrue == test_6) {
-                  var_desc_4377 = cast_4829_multiAttribute.getter_oil_5F_desc (SOURCE_FILE ("implementation_parser.galgas", 176)) ;
-                }
-                const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_location_4423.objectCompare (GALGAS_location::constructor_nowhere (SOURCE_FILE ("implementation_parser.galgas", 178)))).boolEnum () ;
-                if (kBoolTrue == test_7) {
-                  var_location_4423 = cast_4829_multiAttribute.getter_location (SOURCE_FILE ("implementation_parser.galgas", 179)) ;
-                }
+              {
+              ioArgument_objectAttributes.setter_put (var_attributeName_3301, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 198)) ;
               }
-            }
-            GALGAS_object_5F_t var_newDefault_5178 = GALGAS_multipleAttribute::constructor_new (var_desc_4377, var_location_4423, var_aList_4340  COMMA_SOURCE_FILE ("implementation_parser.galgas", 184)) ;
-            {
-            var_type_3319.insulate (HERE) ;
-            cPtr_impType * ptr_5284 = (cPtr_impType *) var_type_3319.ptr () ;
-            callExtensionSetter_setDefaultValue ((cPtr_impType *) ptr_5284, var_newDefault_5178, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 187)) ;
-            }
-            {
-            GALGAS_impType joker_5365 ; // Joker input parameter
-            ioArgument_objectAttributes.setter_del (var_attributeName_3301, joker_5365, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 189)) ;
-            }
-            {
-            ioArgument_objectAttributes.setter_put (var_attributeName_3301, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 190)) ;
             }
           }
         }
-        const enumGalgasBool test_8 = function_checkNewTypeWithinPreviousType (var_attributeName_3301, var_previousType_3456, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 194)).boolEnum () ;
-        if (kBoolTrue == test_8) {
-          {
-          GALGAS_impType joker_5651 ; // Joker input parameter
-          ioArgument_objectAttributes.setter_del (var_attributeName_3301, joker_5651, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 197)) ;
-          }
-          {
-          ioArgument_objectAttributes.setter_put (var_attributeName_3301, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 198)) ;
-          }
-        }
-      }else if (kBoolFalse == test_1) {
+      }
+      if (kBoolFalse == test_1) {
         {
         ioArgument_objectAttributes.setter_put (var_attributeName_3301, var_type_3319, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 201)) ;
         }
@@ -8115,11 +8163,15 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_objref_5F_o
                                                                                            C_Lexique_goil_5F_lexique * inCompiler) {
   outArgument_name.drop () ; // Release 'out' argument
   outArgument_options.drop () ; // Release 'out' argument
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, inArgument_ref.getter_string (SOURCE_FILE ("implementation_parser.galgas", 258)).getter_rightSubString (GALGAS_uint ((uint32_t) 5U) COMMA_SOURCE_FILE ("implementation_parser.galgas", 258)).objectCompare (GALGAS_string ("_TYPE"))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    TC_Array <C_FixItDescription> fixItArray1 ;
-    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("implementation_parser.galgas", 259)), GALGAS_string ("an object reference must end with _TYPE"), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 259)) ;
-  }else if (kBoolFalse == test_0) {
+    test_0 = GALGAS_bool (kIsNotEqual, inArgument_ref.getter_string (SOURCE_FILE ("implementation_parser.galgas", 258)).getter_rightSubString (GALGAS_uint ((uint32_t) 5U) COMMA_SOURCE_FILE ("implementation_parser.galgas", 258)).objectCompare (GALGAS_string ("_TYPE"))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      TC_Array <C_FixItDescription> fixItArray1 ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("implementation_parser.galgas", 259)), GALGAS_string ("an object reference must end with _TYPE"), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 259)) ;
+    }
+  }
+  if (kBoolFalse == test_0) {
     inArgument_ref = GALGAS_lstring::constructor_new (inArgument_ref.getter_string (HERE).getter_leftSubString (inArgument_ref.getter_string (HERE).getter_length (SOURCE_FILE ("implementation_parser.galgas", 261)).substract_operation (GALGAS_uint ((uint32_t) 5U), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 261)) COMMA_SOURCE_FILE ("implementation_parser.galgas", 261)), inArgument_ref.getter_location (SOURCE_FILE ("implementation_parser.galgas", 261))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 261)) ;
   }
   nt_identifier_5F_or_5F_attribute_ (outArgument_name, inCompiler) ;
@@ -8166,10 +8218,14 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_string_5F_o
       inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_string COMMA_SOURCE_FILE ("implementation_parser.galgas", 285)) ;
       nt_description_ (var_oil_5F_desc_7947, inCompiler) ;
       GALGAS_object_5F_t var_val_8066 = GALGAS_stringAttribute::constructor_new (var_oil_5F_desc_7947, var_stringValue_8016.getter_location (SOURCE_FILE ("implementation_parser.galgas", 287)), var_stringValue_8016.getter_string (SOURCE_FILE ("implementation_parser.galgas", 287))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 287)) ;
-      const enumGalgasBool test_0 = var_multiple_7879.boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        var_defaultValue_7927 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_7947, var_stringValue_8016.getter_location (SOURCE_FILE ("implementation_parser.galgas", 289)), GALGAS_identifierList::constructor_listWithValue (var_val_8066  COMMA_SOURCE_FILE ("implementation_parser.galgas", 289))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 289)) ;
-      }else if (kBoolFalse == test_0) {
+        test_0 = var_multiple_7879.boolEnum () ;
+        if (kBoolTrue == test_0) {
+          var_defaultValue_7927 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_7947, var_stringValue_8016.getter_location (SOURCE_FILE ("implementation_parser.galgas", 289)), GALGAS_identifierList::constructor_listWithValue (var_val_8066  COMMA_SOURCE_FILE ("implementation_parser.galgas", 289))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 289)) ;
+        }
+      }
+      if (kBoolFalse == test_0) {
         var_defaultValue_7927 = var_val_8066 ;
       }
     } break ;
@@ -8448,10 +8504,14 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_enum_5F_opt
       inCompiler->acceptTerminal (C_Lexique_goil_5F_lexique::kToken_idf COMMA_SOURCE_FILE ("implementation_parser.galgas", 389)) ;
       nt_description_ (var_oil_5F_desc_10617, inCompiler) ;
       GALGAS_object_5F_t var_val_10772 = GALGAS_enumAttribute::constructor_new (var_oil_5F_desc_10617, var_stringValue_10697.getter_location (SOURCE_FILE ("implementation_parser.galgas", 391)), var_stringValue_10697.getter_string (SOURCE_FILE ("implementation_parser.galgas", 391)), GALGAS_objectAttributes::constructor_new (GALGAS_identifierMap::constructor_emptyMap (SOURCE_FILE ("implementation_parser.galgas", 391))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 391))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 391)) ;
-      const enumGalgasBool test_1 = var_multiple_10574.boolEnum () ;
+      enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        var_defaultValue_10642 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_10617, var_stringValue_10697.getter_location (SOURCE_FILE ("implementation_parser.galgas", 393)), GALGAS_identifierList::constructor_listWithValue (var_val_10772  COMMA_SOURCE_FILE ("implementation_parser.galgas", 393))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 393)) ;
-      }else if (kBoolFalse == test_1) {
+        test_1 = var_multiple_10574.boolEnum () ;
+        if (kBoolTrue == test_1) {
+          var_defaultValue_10642 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_10617, var_stringValue_10697.getter_location (SOURCE_FILE ("implementation_parser.galgas", 393)), GALGAS_identifierList::constructor_listWithValue (var_val_10772  COMMA_SOURCE_FILE ("implementation_parser.galgas", 393))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 393)) ;
+        }
+      }
+      if (kBoolFalse == test_1) {
         var_defaultValue_10642 = var_val_10772 ;
       }
     } break ;
@@ -8561,10 +8621,14 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_number_5F_o
       GALGAS_object_5F_t var_val_11949 ;
       nt_int_5F_or_5F_float_ (var_val_11949, constinArgument_type, inCompiler) ;
       var_oil_5F_desc_11860 = var_val_11949.getter_oil_5F_desc (SOURCE_FILE ("implementation_parser.galgas", 431)) ;
-      const enumGalgasBool test_0 = var_multiple_11817.boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        var_defaultValue_11885 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_11860, var_val_11949.getter_location (SOURCE_FILE ("implementation_parser.galgas", 433)), GALGAS_identifierList::constructor_listWithValue (var_val_11949  COMMA_SOURCE_FILE ("implementation_parser.galgas", 433))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 433)) ;
-      }else if (kBoolFalse == test_0) {
+        test_0 = var_multiple_11817.boolEnum () ;
+        if (kBoolTrue == test_0) {
+          var_defaultValue_11885 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_11860, var_val_11949.getter_location (SOURCE_FILE ("implementation_parser.galgas", 433)), GALGAS_identifierList::constructor_listWithValue (var_val_11949  COMMA_SOURCE_FILE ("implementation_parser.galgas", 433))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 433)) ;
+        }
+      }
+      if (kBoolFalse == test_0) {
         var_defaultValue_11885 = var_val_11949 ;
       }
     } break ;
@@ -8655,10 +8719,14 @@ void cParser_implementation_5F_parser::rule_implementation_5F_parser_type_5F_opt
       nt_identifier_5F_or_5F_attribute_ (var_ident_12917, inCompiler) ;
       nt_description_ (var_oil_5F_desc_12868, inCompiler) ;
       GALGAS_object_5F_t var_val_13006 = GALGAS_stringAttribute::constructor_new (var_oil_5F_desc_12868, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("implementation_parser.galgas", 470)), var_ident_12917.getter_string (SOURCE_FILE ("implementation_parser.galgas", 470))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 470)) ;
-      const enumGalgasBool test_0 = var_multiple_12800.boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        var_defaultValue_12848 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_12868, var_val_13006.getter_location (SOURCE_FILE ("implementation_parser.galgas", 472)), GALGAS_identifierList::constructor_listWithValue (var_val_13006  COMMA_SOURCE_FILE ("implementation_parser.galgas", 472))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 472)) ;
-      }else if (kBoolFalse == test_0) {
+        test_0 = var_multiple_12800.boolEnum () ;
+        if (kBoolTrue == test_0) {
+          var_defaultValue_12848 = GALGAS_multipleAttribute::constructor_new (var_oil_5F_desc_12868, var_val_13006.getter_location (SOURCE_FILE ("implementation_parser.galgas", 472)), GALGAS_identifierList::constructor_listWithValue (var_val_13006  COMMA_SOURCE_FILE ("implementation_parser.galgas", 472))  COMMA_SOURCE_FILE ("implementation_parser.galgas", 472)) ;
+        }
+      }
+      if (kBoolFalse == test_0) {
         var_defaultValue_12848 = var_val_13006 ;
       }
     } break ;

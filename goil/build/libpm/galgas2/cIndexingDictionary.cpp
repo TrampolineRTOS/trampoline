@@ -47,7 +47,7 @@ class cIndexEntryNode {
   public : cIndexEntryNode (const C_String & inKey) ;
 
 //--- Destructor
-  public : ~ cIndexEntryNode (void) ;
+  public : virtual ~ cIndexEntryNode (void) ;
 
 //--- No copy
   private : cIndexEntryNode (const cIndexEntryNode &) ;
