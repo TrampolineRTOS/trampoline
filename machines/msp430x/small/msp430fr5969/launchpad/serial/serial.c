@@ -96,7 +96,7 @@ void tpl_serial_putchar(char c)
 #endif
 }
 
-void tpl_serial_print_string(char *str)
+void tpl_serial_print_string(const char *str)
 {
 	while(*str)	
 		tpl_serial_putchar(*str++);
