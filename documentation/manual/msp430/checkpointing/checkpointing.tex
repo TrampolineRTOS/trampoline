@@ -47,11 +47,11 @@ We have to save both kernel and user space variables at the same time (during a 
 
 Big picture of what to do:
 \begin{enumerate}
-\item A periodic task, let's call it \lstinline{energy_task}, will check for remaining energy in the supercapa;
+\item A periodic task, let's call it \lstinline{energy_task}, will check for remaining energy in the super capacitor;
   \begin{enumerate}
   \item user space execution;
-  \item remaining energy consists in mesuring VCC (aux bornes de la supercapa);
-  \item if the remaining energy is lower than a defined value (seuil), we must realize a checkpoint
+  \item remaining energy consists in mesuring VCC voltage (on the terminals of the super capacitor);
+  \item if the remaining energy is lower than a defined threshold, we must realize a checkpoint
   \end{enumerate}
 \end{enumerate}
 
@@ -296,6 +296,19 @@ cont:
 \node[comm] at (10,-4.4) {0001 = 1};
 \node[comm] at (14,-4.4) {0001 = 1};
 \end{tikzpicture}
+
+\section{New services}
+
+\subsection{Service \lstinline{RestartOS}}
+
+\subsection{Service \lstinline{Hibernate}}
+
+\section{Peripherals}
+
+Specific code for peripherals re-initialization.
+TODO
+They have to be re-initialized before main call.
+
 
 \end{document}  
 
