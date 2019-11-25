@@ -15,7 +15,7 @@ void tpl_serial_update_freq();
 void tpl_serial_putchar(char c);
 
 /** print a standard null terminated string on the serial line*/
-void tpl_serial_print_string(char *str);
+void tpl_serial_print_string(const char *str);
 
 /** print an integer to the serial line
  *  @param val value to be printed  
