@@ -2,7 +2,7 @@
 /*                                                                            */
 /*                                   Link script                              */
 /*                                                                            */
-/*                                   msp430fr5969                             */
+/*                                   msp430fr5994                             */
 /*                                                                            */
 /* <INIT_POLICY>                                                              */
 /* - NO_INIT :          used for variables that are never cleared and never   */

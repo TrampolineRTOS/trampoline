@@ -13,6 +13,7 @@
 \usepackage{anyfontsize}
 \usepackage{tikz}
 \usetikzlibrary{patterns,calc}
+\usepackage[backgroundcolor=orange!20]{todonotes}
 
 \newcommand{\sch}{\lstinline{tpl_sc_handler}}
 
@@ -122,13 +123,13 @@ A boolean variable stored in FRAM, let's call it \lstinline{tpl_checkpoint_avail
 
 \section{Checkpointing}\label{sec:checkpointing}
 
-A new service is necessary, let's call it \lstinline{Hibernate}. When called, \lstinline{Hibernate}, terminates the caller. It copies the SRAM to the FRAM (checkpoint), stops the Systick, stops application interrupts (a user function shall be provided for that), programs the RTC to emit an interrupt every x seconds, enables interrupts and goes in LPM3. 
+A new service is necessary, let's call it \lstinline{Hibernate}. When called, \lstinline{Hibernate}, terminates the caller. It copies the SRAM to the FRAM (checkpoint), stops the Systick, stops application interrupts (a user function shall be provided for that), programs the RTC to emit an interrupt every x seconds, enables interrupts and goes in LPM3 (Lowest power mode that preserves the RAM).
 
-The RTC ISR check the voltage of the MCU. If it is above a threshold (\lstinline{RESUME_FROM_}\-\lstinline{HIBERNATE_THRESHOLD}), it exists from LPM3. If this never happens, after a while, the MCU will power off. When in the future the MCU restart, what is described in section \ref{sec:checkpointrestore} applies.  
+The RTC ISR checks the voltage of the MCU. If it is above a threshold (\lstinline{RESUME_FROM_}\-\lstinline{HIBERNATE_THRESHOLD}), it exists from LPM3. If this never happens, after a while, the MCU will power off. When in the future the MCU restart, what is described in section \ref{sec:checkpointrestore} applies.  
 
 If \lstinline{Hibernate} resumes because the RTC ISR exited from LPM3 then it disables interrupt, starts application interrupts, starts the Systick, stop the RTC. It calls \lstinline{tpl_start} to elect the highest priority task and returns.
 
-In addition, a periodic basic task, \lstinline{energy_task} checks (every 5 seconds ? more ?) the voltage. If the voltage drops below a threshold (\lstinline{HIBERNATE_THRESHOLD}), \lstinline{energy_task} calls \lstinline{Hibernate} (and terminates):
+In addition, a periodic basic task, \lstinline{energy_task} checks (every 5 seconds ? more ?)\todo{MB: should be defined in the .oil, as it depends on both supercapacitor value, and application through external peripherals} the voltage. If the voltage drops below a threshold (\lstinline{HIBERNATE_THRESHOLD}), \lstinline{energy_task} calls \lstinline{Hibernate} (and terminates):
 
 \begin{lstlisting}[language=C]
 TASK(energy_task)
@@ -154,6 +155,15 @@ An OS attribute is added:
 \begin{lstlisting}
 BOOLEAN CHECKPOINT = FALSE;
 \end{lstlisting}
+
+If TRUE, some complementary information can be given:
+\begin{lstlisting}
+BOOLEAN CHECKPOINT = TRUE {
+  HIBERNATE_THRESHOLD = 1900; //in mV
+  ENERGY_TASK_PERIOD  = 5000; //in ms
+};
+\end{lstlisting}
+
 
 \subsection{DMA}
 
