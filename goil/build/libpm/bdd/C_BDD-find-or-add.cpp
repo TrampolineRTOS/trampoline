@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1999, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -285,14 +285,15 @@ void C_BDD::setHashMapMaxSize (const uint32_t inPowerOfTwoSize) {
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-static C_BDD gBDDinstancesListRoot ;
+static C_BDD * gFirstBDD = NULL ;
+static C_BDD * gLastBDD = NULL ;
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::getBDDinstancesCount (void) {
   uint32_t n = 0 ;
-  C_BDD * p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
+  C_BDD * p = gFirstBDD ;
+  while (p != NULL) {
     n ++ ;
     p = p->mPtrToNextBDD ;
   }
@@ -327,19 +328,13 @@ void C_BDD::markAllBDDnodes (void) {
 
 void C_BDD::markAndSweepUnusedNodes (void) {
   C_Timer timer ;
-/* printf ("mark and sweep\n") ; fflush (stdout) ;
-  for (uint32_t nodeIndex=2 ; nodeIndex<=gCurrentNodeCount ; nodeIndex++) {
-    for (uint32_t idx=1 ; idx<nodeIndex ; idx++) {
-      MF_Assert (gNodeArray [nodeIndex] != gNodeArray [idx], "(gNodeArray [nodeIndex]  (%lld) != gNodeArray [idx] [%lld]", nodeIndex, idx) ;
-    }
-  }*/
 //--- Clear operation caches
   clearANDOperationCache () ;
 //--- Effacer tous les champs marquage des elements BDD existants
   unmarkAllExistingBDDnodes () ;
 //--- Marquer tous les elements utilises
-  C_BDD * p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
+  C_BDD * p = gFirstBDD ;
+  while (p != NULL) {
     recursiveMarkBDDNodes (p->mBDDvalue) ;
     p = p->mPtrToNextBDD ;
   }
@@ -373,23 +368,17 @@ void C_BDD::markAndSweepUnusedNodes (void) {
       gNodeArray [newNodeCount].mELSE = newElseBranch ;
       gNodeArray [newNodeCount].mVariableIndex = var ;
       gNodeArray [nodeIndex].mAuxiliary = newNodeCount ;
-     // MF_Assert (node == newNode, "node [%lld] == newNode [%lld]", node, newNode) ;
-      //if (newNodeCount < 10) {
-      //  printf ("index %4u -> %4u, node %16llX -> %16llX\n", nodeIndex, newNodeCount, node, newNode) ;
-      // }
     }
   }
   // printf ("gCurrentNodeCount %u -> %u\n", gCurrentNodeCount, newNodeCount) ;
   const uint32_t previousNodeCount = gCurrentNodeCount ;
   if (gNodeArraySize > 0) {
     gCurrentNodeCount = newNodeCount ;
-    p = gBDDinstancesListRoot.mPtrToNextBDD ;
-    while (p != & gBDDinstancesListRoot) {
+    p = gFirstBDD ;
+    while (p != NULL) {
       const uint32_t previousValue = p->mBDDvalue ;
       MF_Assert ((gNodeArray [previousValue >> 1].mAuxiliary) <= (previousValue >> 1), "(elseBranch [%lld] >> 1) <= nodeIndex [%lld]", (gNodeArray [previousValue >> 1].mAuxiliary), previousValue >> 1) ;
       p->mBDDvalue = (gNodeArray [previousValue >> 1].mAuxiliary << 1) | (previousValue & 1) ;
-      // printf ("root %X -> %X\n", previousValue, p->mBDDvalue) ;
-     // MF_Assert (previousValue == p->mBDDvalue, "(previousValue [%lld] >> 1) == p->mBDDvalue [%lld]", previousValue, p->mBDDvalue) ;
       p = p->mPtrToNextBDD ;
     }
   }
@@ -464,23 +453,40 @@ mPtrToNextBDD (NULL) {
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::initLinks (void) {
-  mPtrToPreviousBDD = this ;
-  mPtrToNextBDD = this ;
-  C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
-  mPtrToPreviousBDD = & gBDDinstancesListRoot ;
-  suivantRacine->mPtrToPreviousBDD = this ;
-  mPtrToNextBDD = suivantRacine ;
-  gBDDinstancesListRoot.mPtrToNextBDD = this ;
+  if (gFirstBDD == NULL) {
+    gLastBDD = this ;
+  }else{
+    gFirstBDD->mPtrToPreviousBDD = this ;
+  }
+  mPtrToNextBDD = gFirstBDD ;
+  gFirstBDD = this ;
+
+//  mPtrToPreviousBDD = this ;
+//  C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
+//  mPtrToPreviousBDD = & gBDDinstancesListRoot ;
+//  suivantRacine->mPtrToPreviousBDD = this ;
+//  mPtrToNextBDD = suivantRacine ;
+//  gBDDinstancesListRoot.mPtrToNextBDD = this ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD::~C_BDD (void) {
   mBDDvalue = 0 ;
-  C_BDD * suivant = mPtrToNextBDD ;
-  C_BDD * precedent = mPtrToPreviousBDD ;
-  precedent->mPtrToNextBDD = suivant ;
-  suivant->mPtrToPreviousBDD = precedent ;
+  if (mPtrToPreviousBDD == NULL) {
+    gFirstBDD = gFirstBDD->mPtrToNextBDD ;
+  }else{
+    mPtrToPreviousBDD->mPtrToNextBDD = mPtrToNextBDD ;
+  }
+  if (mPtrToNextBDD == NULL) {
+    gLastBDD = gLastBDD->mPtrToPreviousBDD ;
+  }else{
+    mPtrToNextBDD->mPtrToPreviousBDD = mPtrToPreviousBDD ;
+  }
+//  C_BDD * suivant = mPtrToNextBDD ;
+//  C_BDD * precedent = mPtrToPreviousBDD ;
+//  precedent->mPtrToNextBDD = suivant ;
+//  suivant->mPtrToPreviousBDD = precedent ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -525,8 +531,8 @@ void C_BDD::checkAllBDDsAreWellFormed (LOCATION_ARGS) {
 //--- Unmark all nodes
   unmarkAllExistingBDDnodes () ;
 //--- Check BDDs
-  C_BDD * p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
+  C_BDD * p = gFirstBDD ;
+  while (p != NULL) {
     internalCheckBDDIsWellFormed (p->mBDDvalue, UINT16_MAX COMMA_THERE) ;
     p = p->mPtrToNextBDD ;
   }

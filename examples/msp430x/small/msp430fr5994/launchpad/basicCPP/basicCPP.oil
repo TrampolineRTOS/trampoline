@@ -1,0 +1,78 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+  /* This fix the default STACKSIZE of tasks */
+  TASK {
+    UINT32 STACKSIZE = 100 ;
+  } ;
+
+  /* This fix the default STACKSIZE of ISRs */
+  ISR {
+    UINT32 STACKSIZE = 100 ;
+  } ;
+};
+
+CPU basicCPP {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+	CPU_FREQ_MHZ = 24;
+    IDLE_POWER_MODE = LPM3;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_CPPSRC = "basicCPP.cpp";
+      APP_NAME = "basicCPP_exe";
+      CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
+      LDFLAGS = "-Map=basicCPP.map";
+      LIBRARY = serial {
+        TXBUFFER = 16;
+        RXBUFFER = 16;
+      };
+      //use either msp-gcc (provided with Energia)..
+      CPPCOMPILER  = "msp430-g++";
+      COMPILER  = "msp430-gcc";
+      ASSEMBLER = "msp430-gcc";
+      LINKER    = "msp430-ld";
+      COPIER    = "msp430-objcopy";
+      //or GCC for MSP (provided by TI)
+      //CPPCOMPILER  = "msp430-elf-g++";
+      //COMPILER  = "msp430-elf-gcc";
+      //ASSEMBLER = "msp430-elf-gcc";
+      //LINKER    = "msp430-elf-ld";
+      //COPIER    = "msp430-elf-objcopy";
+      //CFLAGS    = "-I/opt/ti/ccs920/ccs/ccs_base/msp430/include_gcc";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE Std {}; // Warning: std will make a problem iwth the namespace std!
+  
+  TASK serial_TX {
+    PRIORITY = 2;
+    AUTOSTART = TRUE {APPMODE = Std;};
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ALARM ALSerial_TX {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = serial_TX;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = Std;
+      ALARMTIME = 1000;
+      CYCLETIME = 1000;
+    };
+  };
+};
+

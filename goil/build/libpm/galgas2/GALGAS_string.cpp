@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1996, ..., 2016 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1996, ..., 2018 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -151,6 +151,22 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Constructors
 #endif
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_string GALGAS_string::constructor_stringByRepeatingString (const GALGAS_string & inString,
+                                                                  const GALGAS_uint & inCount
+                                                                  COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result ;
+  if (inString.isValid () && inCount.isValid ()) {
+    C_String s ;
+    for (uint32_t i=0 ; i<inCount.uintValue () ; i++) {
+      s << inString.stringValue () ;
+    }
+    result = GALGAS_string (s) ;
+  }
+  return result ;
+}
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
@@ -364,6 +380,13 @@ GALGAS_string GALGAS_string::constructor_retrieveAndResetTemplateString (C_Compi
   return inCompiler->retrieveAndResetTemplateString () ;
 }
 
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_string GALGAS_string::constructor_separatorString (C_Compiler * inCompiler
+                                                          COMMA_UNUSED_LOCATION_ARGS) {
+  return inCompiler->separatorString () ;
+}
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
@@ -991,7 +1014,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForRegularFiles (name,
                                             inRecursiveSearch,
@@ -1005,8 +1028,8 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -1038,7 +1061,7 @@ static void recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
       if ((strlen (current->d_name) > 1) && (current->d_name [0] == '.') && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForHiddenFiles (name,
                                            inRecursiveSearch,
@@ -1052,8 +1075,8 @@ static void recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -1085,7 +1108,7 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           const C_String relativePath = inRelativePath + current->d_name ;
           ioResult.addAssign_operation (GALGAS_string (relativePath) COMMA_HERE) ;
           if (inRecursiveSearch) {
@@ -1098,8 +1121,8 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -1134,7 +1157,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForRegularFiles (name,
                                             inExtensionList,
@@ -1158,8 +1181,8 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -1196,7 +1219,7 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
         //--- Look for extension
           const C_String extension = name.pathExtension () ;
           bool extensionFound = false ;
@@ -1221,8 +1244,8 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -2039,7 +2062,7 @@ static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) 
       if ((strcmp (current->d_name, ".") != 0) && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           recursiveRemoveDirectory (name) ;
         }else if (C_FileManager::fileExistsAtPath (name)) {
           result = C_FileManager::deleteFile (name) ;
@@ -2047,8 +2070,8 @@ static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) 
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
   if (result.length () == 0) {
     result = C_FileManager::removeDirectory (inUnixDirectoryPath) ;
   }

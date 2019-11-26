@@ -564,9 +564,10 @@ GALGAS_arxmlMetaClassGraph GALGAS_arxmlMetaClassGraph::extractObject (const GALG
 class cCollectionElement_arxmlMetaClasslist : public cCollectionElement {
   public : GALGAS_arxmlMetaClasslist_2D_element mObject ;
 
-//--- Constructor
+//--- Constructors
   public : cCollectionElement_arxmlMetaClasslist (const GALGAS_arxmlMetaClass & in_lClass
                                                   COMMA_LOCATION_ARGS) ;
+  public : cCollectionElement_arxmlMetaClasslist (const GALGAS_arxmlMetaClasslist_2D_element & inElement COMMA_LOCATION_ARGS) ;
 
 //--- Virtual method for comparing elements
   public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
@@ -587,6 +588,13 @@ cCollectionElement_arxmlMetaClasslist::cCollectionElement_arxmlMetaClasslist (co
                                                                               COMMA_LOCATION_ARGS) :
 cCollectionElement (THERE),
 mObject (in_lClass) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+cCollectionElement_arxmlMetaClasslist::cCollectionElement_arxmlMetaClasslist (const GALGAS_arxmlMetaClasslist_2D_element & inElement COMMA_LOCATION_ARGS) :
+cCollectionElement (THERE),
+mObject (inElement.mProperty_lClass) {
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -670,6 +678,21 @@ void GALGAS_arxmlMetaClasslist::addAssign_operation (const GALGAS_arxmlMetaClass
   if (isValid () && inOperand0.isValid ()) {
     cCollectionElement * p = NULL ;
     macroMyNew (p, cCollectionElement_arxmlMetaClasslist (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
+  }
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_arxmlMetaClasslist::setter_append (GALGAS_arxmlMetaClasslist_2D_element inElement,
+                                               C_Compiler * /* inCompiler */
+                                               COMMA_LOCATION_ARGS) {
+  if (isValid () && inElement.isValid ()) {
+    cCollectionElement * p = NULL ;
+    macroMyNew (p, cCollectionElement_arxmlMetaClasslist (inElement COMMA_THERE)) ;
     capCollectionElement attributes ;
     attributes.setPointer (p) ;
     macroDetachSharedObject (p) ;
@@ -924,9 +947,10 @@ GALGAS_arxmlMetaClasslist GALGAS_arxmlMetaClasslist::extractObject (const GALGAS
 class cCollectionElement_arxmlMetaElementList : public cCollectionElement {
   public : GALGAS_arxmlMetaElementList_2D_element mObject ;
 
-//--- Constructor
+//--- Constructors
   public : cCollectionElement_arxmlMetaElementList (const GALGAS_arxmlMetaElement & in_lElement
                                                     COMMA_LOCATION_ARGS) ;
+  public : cCollectionElement_arxmlMetaElementList (const GALGAS_arxmlMetaElementList_2D_element & inElement COMMA_LOCATION_ARGS) ;
 
 //--- Virtual method for comparing elements
   public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
@@ -947,6 +971,13 @@ cCollectionElement_arxmlMetaElementList::cCollectionElement_arxmlMetaElementList
                                                                                   COMMA_LOCATION_ARGS) :
 cCollectionElement (THERE),
 mObject (in_lElement) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+cCollectionElement_arxmlMetaElementList::cCollectionElement_arxmlMetaElementList (const GALGAS_arxmlMetaElementList_2D_element & inElement COMMA_LOCATION_ARGS) :
+cCollectionElement (THERE),
+mObject (inElement.mProperty_lElement) {
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -1030,6 +1061,21 @@ void GALGAS_arxmlMetaElementList::addAssign_operation (const GALGAS_arxmlMetaEle
   if (isValid () && inOperand0.isValid ()) {
     cCollectionElement * p = NULL ;
     macroMyNew (p, cCollectionElement_arxmlMetaElementList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
+  }
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_arxmlMetaElementList::setter_append (GALGAS_arxmlMetaElementList_2D_element inElement,
+                                                 C_Compiler * /* inCompiler */
+                                                 COMMA_LOCATION_ARGS) {
+  if (isValid () && inElement.isValid ()) {
+    cCollectionElement * p = NULL ;
+    macroMyNew (p, cCollectionElement_arxmlMetaElementList (inElement COMMA_THERE)) ;
     capCollectionElement attributes ;
     attributes.setPointer (p) ;
     macroDetachSharedObject (p) ;
@@ -1284,9 +1330,10 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaElementList::extractObject (const GA
 class cCollectionElement_arxmlMetaAttributeList : public cCollectionElement {
   public : GALGAS_arxmlMetaAttributeList_2D_element mObject ;
 
-//--- Constructor
+//--- Constructors
   public : cCollectionElement_arxmlMetaAttributeList (const GALGAS_arxmlMetaAttribute & in_lAttribute
                                                       COMMA_LOCATION_ARGS) ;
+  public : cCollectionElement_arxmlMetaAttributeList (const GALGAS_arxmlMetaAttributeList_2D_element & inElement COMMA_LOCATION_ARGS) ;
 
 //--- Virtual method for comparing elements
   public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
@@ -1307,6 +1354,13 @@ cCollectionElement_arxmlMetaAttributeList::cCollectionElement_arxmlMetaAttribute
                                                                                       COMMA_LOCATION_ARGS) :
 cCollectionElement (THERE),
 mObject (in_lAttribute) {
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+cCollectionElement_arxmlMetaAttributeList::cCollectionElement_arxmlMetaAttributeList (const GALGAS_arxmlMetaAttributeList_2D_element & inElement COMMA_LOCATION_ARGS) :
+cCollectionElement (THERE),
+mObject (inElement.mProperty_lAttribute) {
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -1390,6 +1444,21 @@ void GALGAS_arxmlMetaAttributeList::addAssign_operation (const GALGAS_arxmlMetaA
   if (isValid () && inOperand0.isValid ()) {
     cCollectionElement * p = NULL ;
     macroMyNew (p, cCollectionElement_arxmlMetaAttributeList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    appendObject (attributes) ;
+  }
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void GALGAS_arxmlMetaAttributeList::setter_append (GALGAS_arxmlMetaAttributeList_2D_element inElement,
+                                                   C_Compiler * /* inCompiler */
+                                                   COMMA_LOCATION_ARGS) {
+  if (isValid () && inElement.isValid ()) {
+    cCollectionElement * p = NULL ;
+    macroMyNew (p, cCollectionElement_arxmlMetaAttributeList (inElement COMMA_THERE)) ;
     capCollectionElement attributes ;
     attributes.setPointer (p) ;
     macroDetachSharedObject (p) ;
@@ -12483,66 +12552,114 @@ GALGAS_string extensionGetter_typeName (const GALGAS_type & inObject,
                                         C_Compiler * /* inCompiler */
                                         COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_typeName ; // Returned variable
-  const GALGAS_type temp_0 = inObject ;
-  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, temp_0.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlInt))).boolEnum () ;
-  if (kBoolTrue == test_1) {
-    result_typeName = GALGAS_string ("int") ;
-  }else if (kBoolFalse == test_1) {
-    const GALGAS_type temp_2 = inObject ;
-    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, temp_2.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlChar))).boolEnum () ;
-    if (kBoolTrue == test_3) {
-      result_typeName = GALGAS_string ("char") ;
-    }else if (kBoolFalse == test_3) {
-      const GALGAS_type temp_4 = inObject ;
-      const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, temp_4.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlFloat))).boolEnum () ;
-      if (kBoolTrue == test_5) {
-        result_typeName = GALGAS_string ("float") ;
-      }else if (kBoolFalse == test_5) {
-        const GALGAS_type temp_6 = inObject ;
-        const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, temp_6.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlString))).boolEnum () ;
-        if (kBoolTrue == test_7) {
-          result_typeName = GALGAS_string ("string") ;
-        }else if (kBoolFalse == test_7) {
-          const GALGAS_type temp_8 = inObject ;
-          const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, temp_8.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlBool))).boolEnum () ;
-          if (kBoolTrue == test_9) {
-            result_typeName = GALGAS_string ("bool") ;
-          }else if (kBoolFalse == test_9) {
-            const GALGAS_type temp_10 = inObject ;
-            const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, temp_10.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlStruct))).boolEnum () ;
-            if (kBoolTrue == test_11) {
-              result_typeName = GALGAS_string ("struct") ;
-            }else if (kBoolFalse == test_11) {
-              const GALGAS_type temp_12 = inObject ;
-              const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, temp_12.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlList))).boolEnum () ;
-              if (kBoolTrue == test_13) {
-                result_typeName = GALGAS_string ("list") ;
-              }else if (kBoolFalse == test_13) {
-                const GALGAS_type temp_14 = inObject ;
-                const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, temp_14.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlMap))).boolEnum () ;
-                if (kBoolTrue == test_15) {
-                  result_typeName = GALGAS_string ("map") ;
-                }else if (kBoolFalse == test_15) {
-                  const GALGAS_type temp_16 = inObject ;
-                  const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, temp_16.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlType))).boolEnum () ;
-                  if (kBoolTrue == test_17) {
-                    result_typeName = GALGAS_string ("type") ;
-                  }else if (kBoolFalse == test_17) {
-                    const GALGAS_type temp_18 = inObject ;
-                    const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, temp_18.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlEnum))).boolEnum () ;
-                    if (kBoolTrue == test_19) {
-                      result_typeName = GALGAS_string ("enum") ;
-                    }else if (kBoolFalse == test_19) {
-                      const GALGAS_type temp_20 = inObject ;
-                      const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, temp_20.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlSet))).boolEnum () ;
-                      if (kBoolTrue == test_21) {
-                        result_typeName = GALGAS_string ("set") ;
-                      }else if (kBoolFalse == test_21) {
-                        const GALGAS_type temp_22 = inObject ;
-                        const enumGalgasBool test_23 = GALGAS_bool (kIsEqual, temp_22.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlUnconstructed))).boolEnum () ;
-                        if (kBoolTrue == test_23) {
-                          result_typeName = GALGAS_string ("unconstructed") ;
-                        }else if (kBoolFalse == test_23) {
+  enumGalgasBool test_0 = kBoolTrue ;
+  if (kBoolTrue == test_0) {
+    const GALGAS_type temp_1 = inObject ;
+    test_0 = GALGAS_bool (kIsEqual, temp_1.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlInt))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      result_typeName = GALGAS_string ("int") ;
+    }
+  }
+  if (kBoolFalse == test_0) {
+    enumGalgasBool test_2 = kBoolTrue ;
+    if (kBoolTrue == test_2) {
+      const GALGAS_type temp_3 = inObject ;
+      test_2 = GALGAS_bool (kIsEqual, temp_3.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlChar))).boolEnum () ;
+      if (kBoolTrue == test_2) {
+        result_typeName = GALGAS_string ("char") ;
+      }
+    }
+    if (kBoolFalse == test_2) {
+      enumGalgasBool test_4 = kBoolTrue ;
+      if (kBoolTrue == test_4) {
+        const GALGAS_type temp_5 = inObject ;
+        test_4 = GALGAS_bool (kIsEqual, temp_5.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlFloat))).boolEnum () ;
+        if (kBoolTrue == test_4) {
+          result_typeName = GALGAS_string ("float") ;
+        }
+      }
+      if (kBoolFalse == test_4) {
+        enumGalgasBool test_6 = kBoolTrue ;
+        if (kBoolTrue == test_6) {
+          const GALGAS_type temp_7 = inObject ;
+          test_6 = GALGAS_bool (kIsEqual, temp_7.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlString))).boolEnum () ;
+          if (kBoolTrue == test_6) {
+            result_typeName = GALGAS_string ("string") ;
+          }
+        }
+        if (kBoolFalse == test_6) {
+          enumGalgasBool test_8 = kBoolTrue ;
+          if (kBoolTrue == test_8) {
+            const GALGAS_type temp_9 = inObject ;
+            test_8 = GALGAS_bool (kIsEqual, temp_9.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlBool))).boolEnum () ;
+            if (kBoolTrue == test_8) {
+              result_typeName = GALGAS_string ("bool") ;
+            }
+          }
+          if (kBoolFalse == test_8) {
+            enumGalgasBool test_10 = kBoolTrue ;
+            if (kBoolTrue == test_10) {
+              const GALGAS_type temp_11 = inObject ;
+              test_10 = GALGAS_bool (kIsEqual, temp_11.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlStruct))).boolEnum () ;
+              if (kBoolTrue == test_10) {
+                result_typeName = GALGAS_string ("struct") ;
+              }
+            }
+            if (kBoolFalse == test_10) {
+              enumGalgasBool test_12 = kBoolTrue ;
+              if (kBoolTrue == test_12) {
+                const GALGAS_type temp_13 = inObject ;
+                test_12 = GALGAS_bool (kIsEqual, temp_13.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlList))).boolEnum () ;
+                if (kBoolTrue == test_12) {
+                  result_typeName = GALGAS_string ("list") ;
+                }
+              }
+              if (kBoolFalse == test_12) {
+                enumGalgasBool test_14 = kBoolTrue ;
+                if (kBoolTrue == test_14) {
+                  const GALGAS_type temp_15 = inObject ;
+                  test_14 = GALGAS_bool (kIsEqual, temp_15.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlMap))).boolEnum () ;
+                  if (kBoolTrue == test_14) {
+                    result_typeName = GALGAS_string ("map") ;
+                  }
+                }
+                if (kBoolFalse == test_14) {
+                  enumGalgasBool test_16 = kBoolTrue ;
+                  if (kBoolTrue == test_16) {
+                    const GALGAS_type temp_17 = inObject ;
+                    test_16 = GALGAS_bool (kIsEqual, temp_17.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlType))).boolEnum () ;
+                    if (kBoolTrue == test_16) {
+                      result_typeName = GALGAS_string ("type") ;
+                    }
+                  }
+                  if (kBoolFalse == test_16) {
+                    enumGalgasBool test_18 = kBoolTrue ;
+                    if (kBoolTrue == test_18) {
+                      const GALGAS_type temp_19 = inObject ;
+                      test_18 = GALGAS_bool (kIsEqual, temp_19.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlEnum))).boolEnum () ;
+                      if (kBoolTrue == test_18) {
+                        result_typeName = GALGAS_string ("enum") ;
+                      }
+                    }
+                    if (kBoolFalse == test_18) {
+                      enumGalgasBool test_20 = kBoolTrue ;
+                      if (kBoolTrue == test_20) {
+                        const GALGAS_type temp_21 = inObject ;
+                        test_20 = GALGAS_bool (kIsEqual, temp_21.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlSet))).boolEnum () ;
+                        if (kBoolTrue == test_20) {
+                          result_typeName = GALGAS_string ("set") ;
+                        }
+                      }
+                      if (kBoolFalse == test_20) {
+                        enumGalgasBool test_22 = kBoolTrue ;
+                        if (kBoolTrue == test_22) {
+                          const GALGAS_type temp_23 = inObject ;
+                          test_22 = GALGAS_bool (kIsEqual, temp_23.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlUnconstructed))).boolEnum () ;
+                          if (kBoolTrue == test_22) {
+                            result_typeName = GALGAS_string ("unconstructed") ;
+                          }
+                        }
+                        if (kBoolFalse == test_22) {
                           result_typeName = GALGAS_string ("-unknown-") ;
                         }
                       }
@@ -12575,54 +12692,102 @@ GALGAS_type extensionGetter_gtlType (const GALGAS_lstring & inObject,
   GALGAS_type result_type ; // Returned variable
   const GALGAS_lstring temp_0 = inObject ;
   GALGAS_string var_typeName_2294 = temp_0.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 67)) ;
-  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("int"))).boolEnum () ;
+  enumGalgasBool test_1 = kBoolTrue ;
   if (kBoolTrue == test_1) {
-    result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlInt) ;
-  }else if (kBoolFalse == test_1) {
-    const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("char"))).boolEnum () ;
+    test_1 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("int"))).boolEnum () ;
+    if (kBoolTrue == test_1) {
+      result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlInt) ;
+    }
+  }
+  if (kBoolFalse == test_1) {
+    enumGalgasBool test_2 = kBoolTrue ;
     if (kBoolTrue == test_2) {
-      result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlChar) ;
-    }else if (kBoolFalse == test_2) {
-      const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("float"))).boolEnum () ;
+      test_2 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("char"))).boolEnum () ;
+      if (kBoolTrue == test_2) {
+        result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlChar) ;
+      }
+    }
+    if (kBoolFalse == test_2) {
+      enumGalgasBool test_3 = kBoolTrue ;
       if (kBoolTrue == test_3) {
-        result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlFloat) ;
-      }else if (kBoolFalse == test_3) {
-        const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("string"))).boolEnum () ;
+        test_3 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("float"))).boolEnum () ;
+        if (kBoolTrue == test_3) {
+          result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlFloat) ;
+        }
+      }
+      if (kBoolFalse == test_3) {
+        enumGalgasBool test_4 = kBoolTrue ;
         if (kBoolTrue == test_4) {
-          result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlString) ;
-        }else if (kBoolFalse == test_4) {
-          const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("bool"))).boolEnum () ;
+          test_4 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("string"))).boolEnum () ;
+          if (kBoolTrue == test_4) {
+            result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlString) ;
+          }
+        }
+        if (kBoolFalse == test_4) {
+          enumGalgasBool test_5 = kBoolTrue ;
           if (kBoolTrue == test_5) {
-            result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlBool) ;
-          }else if (kBoolFalse == test_5) {
-            const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("struct"))).boolEnum () ;
+            test_5 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("bool"))).boolEnum () ;
+            if (kBoolTrue == test_5) {
+              result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlBool) ;
+            }
+          }
+          if (kBoolFalse == test_5) {
+            enumGalgasBool test_6 = kBoolTrue ;
             if (kBoolTrue == test_6) {
-              result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlStruct) ;
-            }else if (kBoolFalse == test_6) {
-              const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("list"))).boolEnum () ;
+              test_6 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("struct"))).boolEnum () ;
+              if (kBoolTrue == test_6) {
+                result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlStruct) ;
+              }
+            }
+            if (kBoolFalse == test_6) {
+              enumGalgasBool test_7 = kBoolTrue ;
               if (kBoolTrue == test_7) {
-                result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlList) ;
-              }else if (kBoolFalse == test_7) {
-                const enumGalgasBool test_8 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("map"))).boolEnum () ;
+                test_7 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("list"))).boolEnum () ;
+                if (kBoolTrue == test_7) {
+                  result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlList) ;
+                }
+              }
+              if (kBoolFalse == test_7) {
+                enumGalgasBool test_8 = kBoolTrue ;
                 if (kBoolTrue == test_8) {
-                  result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlMap) ;
-                }else if (kBoolFalse == test_8) {
-                  const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("type"))).boolEnum () ;
+                  test_8 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("map"))).boolEnum () ;
+                  if (kBoolTrue == test_8) {
+                    result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlMap) ;
+                  }
+                }
+                if (kBoolFalse == test_8) {
+                  enumGalgasBool test_9 = kBoolTrue ;
                   if (kBoolTrue == test_9) {
-                    result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlType) ;
-                  }else if (kBoolFalse == test_9) {
-                    const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("enum"))).boolEnum () ;
+                    test_9 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("type"))).boolEnum () ;
+                    if (kBoolTrue == test_9) {
+                      result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlType) ;
+                    }
+                  }
+                  if (kBoolFalse == test_9) {
+                    enumGalgasBool test_10 = kBoolTrue ;
                     if (kBoolTrue == test_10) {
-                      result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlEnum) ;
-                    }else if (kBoolFalse == test_10) {
-                      const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("set"))).boolEnum () ;
+                      test_10 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("enum"))).boolEnum () ;
+                      if (kBoolTrue == test_10) {
+                        result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlEnum) ;
+                      }
+                    }
+                    if (kBoolFalse == test_10) {
+                      enumGalgasBool test_11 = kBoolTrue ;
                       if (kBoolTrue == test_11) {
-                        result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlSet) ;
-                      }else if (kBoolFalse == test_11) {
-                        const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("unconstructed"))).boolEnum () ;
+                        test_11 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("set"))).boolEnum () ;
+                        if (kBoolTrue == test_11) {
+                          result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlSet) ;
+                        }
+                      }
+                      if (kBoolFalse == test_11) {
+                        enumGalgasBool test_12 = kBoolTrue ;
                         if (kBoolTrue == test_12) {
-                          result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlUnconstructed) ;
-                        }else if (kBoolFalse == test_12) {
+                          test_12 = GALGAS_bool (kIsEqual, var_typeName_2294.objectCompare (GALGAS_string ("unconstructed"))).boolEnum () ;
+                          if (kBoolTrue == test_12) {
+                            result_type = GALGAS_type (& kTypeDescriptor_GALGAS_gtlUnconstructed) ;
+                          }
+                        }
+                        if (kBoolFalse == test_12) {
                           TC_Array <C_FixItDescription> fixItArray13 ;
                           inCompiler->emitSemanticError (inObject.mProperty_location, GALGAS_string ("unknown type"), fixItArray13  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 80)) ;
                           result_type.drop () ; // Release error dropped variable
@@ -15531,162 +15696,4 @@ static void freeExtensionMethod_gtlData_itemAtIndex (void) {
 
 C_PrologueEpilogue gMethod_gtlData_itemAtIndex (defineExtensionMethod_gtlData_itemAtIndex,
                                                 freeExtensionMethod_gtlData_itemAtIndex) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                     Extension getter '@gtlData hasItemAtIndex'                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static TC_UniqueArray <enterExtensionGetter_gtlData_hasItemAtIndex> gExtensionGetterTable_gtlData_hasItemAtIndex ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void enterExtensionGetter_hasItemAtIndex (const int32_t inClassIndex,
-                                          enterExtensionGetter_gtlData_hasItemAtIndex inGetter) {
-  gExtensionGetterTable_gtlData_hasItemAtIndex.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
-                                                const GALGAS_gtlInt in_index,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlData) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_gtlData_hasItemAtIndex f = NULL ;
-    if (classIndex < gExtensionGetterTable_gtlData_hasItemAtIndex.count ()) {
-      f = gExtensionGetterTable_gtlData_hasItemAtIndex (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_gtlData_hasItemAtIndex.count ()) {
-           f = gExtensionGetterTable_gtlData_hasItemAtIndex (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_gtlData_hasItemAtIndex.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_index, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static GALGAS_bool extensionGetter_gtlData_hasItemAtIndex (const cPtr_gtlData * /* inObject */,
-                                                           const GALGAS_gtlInt /* constinArgument_index */,
-                                                           C_Compiler * /* inCompiler */
-                                                           COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_result ; // Returned variable
-  result_result = GALGAS_bool (false) ;
-//---
-  return result_result ;
-}
-
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void defineExtensionGetter_gtlData_hasItemAtIndex (void) {
-  enterExtensionGetter_hasItemAtIndex (kTypeDescriptor_GALGAS_gtlData.mSlotID,
-                                       extensionGetter_gtlData_hasItemAtIndex) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void freeExtensionGetter_gtlData_hasItemAtIndex (void) {
-  gExtensionGetterTable_gtlData_hasItemAtIndex.free () ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-C_PrologueEpilogue gGetter_gtlData_hasItemAtIndex (defineExtensionGetter_gtlData_hasItemAtIndex,
-                                                   freeExtensionGetter_gtlData_hasItemAtIndex) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                     Extension setter '@gtlData setItemAtIndex'                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static TC_UniqueArray <extensionSetterSignature_gtlData_setItemAtIndex> gExtensionModifierTable_gtlData_setItemAtIndex ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
-                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) {
-  gExtensionModifierTable_gtlData_setItemAtIndex.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void callExtensionSetter_setItemAtIndex (cPtr_gtlData * inObject,
-                                         const GALGAS_gtlData constin_data,
-                                         const GALGAS_gtlInt constin_index,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlData) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_gtlData_setItemAtIndex f = NULL ;
-    if (classIndex < gExtensionModifierTable_gtlData_setItemAtIndex.count ()) {
-      f = gExtensionModifierTable_gtlData_setItemAtIndex (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_gtlData_setItemAtIndex.count ()) {
-           f = gExtensionModifierTable_gtlData_setItemAtIndex (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_gtlData_setItemAtIndex.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, constin_data, constin_index, inCompiler COMMA_THERE) ;
-  }
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void extensionSetter_gtlData_setItemAtIndex (cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData /* constinArgument_data */,
-                                                    const GALGAS_gtlInt constinArgument_index,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_gtlData * object = inObject ;
-  macroValidSharedObject (object, cPtr_gtlData) ;
-  const GALGAS_gtlData temp_0 = object ;
-  TC_Array <C_FixItDescription> fixItArray1 ;
-  inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlInt *) constinArgument_index.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 348)), GALGAS_string ("a ").add_operation (extensionGetter_typeName (temp_0.getter_dynamicType (SOURCE_FILE ("gtl_data_types.galgas", 348)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 348)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 348)).add_operation (GALGAS_string (" is not a list"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 348)), fixItArray1  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 348)) ;
-}
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void defineExtensionSetter_gtlData_setItemAtIndex (void) {
-  enterExtensionSetter_setItemAtIndex (kTypeDescriptor_GALGAS_gtlData.mSlotID,
-                                       extensionSetter_gtlData_setItemAtIndex) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void freeExtensionModifier_gtlData_setItemAtIndex (void) {
-  gExtensionModifierTable_gtlData_setItemAtIndex.free () ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-C_PrologueEpilogue gSetter_gtlData_setItemAtIndex (defineExtensionSetter_gtlData_setItemAtIndex,
-                                                   freeExtensionModifier_gtlData_setItemAtIndex) ;
 

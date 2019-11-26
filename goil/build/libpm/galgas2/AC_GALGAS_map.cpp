@@ -173,7 +173,7 @@ class cMapNode {
   public : cMapNode (cMapNode * inNode) ;
 
 //--- Destructor
-  public : ~ cMapNode (void) ;
+  public : virtual ~ cMapNode (void) ;
 
 //--- No copy
   private : cMapNode (const cMapNode &) ;
@@ -1088,7 +1088,6 @@ static void findNearestKeyForNode (const C_String & inKey,
   if (NULL != inCurrentNode) {
     macroValidPointer (inCurrentNode) ;
     const uint32_t distance = inCurrentNode->mKey.LevenshteinDistanceFromString (inKey) ;
-    // printf ("inCurrentNode->mKey '%s', distance %u\n", inCurrentNode->mKey.cString (HERE), distance) ;
     if (ioBestDistance > distance) {
       ioBestDistance = distance ;
       ioNearestKeyArray.setCountToZero () ;

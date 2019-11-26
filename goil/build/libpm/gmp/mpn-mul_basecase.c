@@ -77,7 +77,7 @@ mpn_mul_basecase (mp_ptr rp,
     }
 #else
   rp[un] = mpn_mul_1 (rp, up, un, vp[0]);
-  rp += 1, vp += 1, vn -= 1;
+  rp += 1 ; vp += 1 ; vn -= 1;
 #endif
 
   /* Now accumulate the product of up[] and the next higher limb (or depending
@@ -161,6 +161,6 @@ mpn_mul_basecase (mp_ptr rp,
       rp[un] = mpn_addmul_1 (rp, up, un, vp[0]);
       if (MAX_LEFT == 1)
 	return;
-      rp += 1, vp += 1, vn -= 1;
+      rp += 1 ; vp += 1 ; vn -= 1;
     }
 }

@@ -1108,21 +1108,23 @@ The TI MSP430 uses a very simple memory protection scheme. The Memory Protection
 
 \section{Libraries}
 \subsection{Serial line}
-The launchpad kits use a serial line over USB that can be used for debugging purpose. The configuration is 115200 bauds, 8N1.
+The launchpad kits use a serial line over USB that can be used for debugging purpose. The configuration is \emph{9600 bauds, 8N1}. The clock is the DCO, which is not precise enough to get a correct 115200 bauds communication.
 
-The library should be declared in the .oil file (so that dedicated files are included in the build process)
+The library should be declared in the .oil file (so that dedicated files are included in the build process), with 2 parameters:
 \begin{lstlisting}
-    BUILD = TRUE {
-      LIBRARY = serial;
+  BUILD = TRUE {
+    LIBRARY = serial {
+      TXBUFFER = 16;
+      RXBUFFER = 16;
     };
+  };
 \end{lstlisting}
 
-The library is quite limited at this date, and it can only send characters  (no reception). There is no ring buffer, and there is a waiting loop if the previous character is not yet sent. 
-
-An example is given for the msp430fr5969 launchpad.
+The buffers are ring buffers that are updated in the corresponding RX or TX interrupts. If the buffer size is set to 0, the corresponding interrupt is not enabled.
 
 The library supports various MCU change frequencies, and the output frequency is updated (the current message may be corrupted!).
 
+An example is given for the msp430fr5969 launchpad.
 \bibliographystyle{plain}
 \bibliography{porting}
 

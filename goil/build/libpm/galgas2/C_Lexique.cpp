@@ -1406,7 +1406,7 @@ int16_t C_Lexique::nextProductionIndex (void) {
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-C_String C_Lexique::preceedingSeparatorString (void) const {
+C_String C_Lexique::separatorString (void) const {
   C_String result ;
   if (mCurrentTokenPtr != NULL) {
     result = mCurrentTokenPtr->mSeparatorStringBeforeToken ;

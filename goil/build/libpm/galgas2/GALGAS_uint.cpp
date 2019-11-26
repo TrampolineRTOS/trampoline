@@ -718,7 +718,8 @@ GALGAS_uint GALGAS_uint::modulo_operation (const GALGAS_uint & inOperand,
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_uint GALGAS_uint::left_shift_operation (const GALGAS_uint inOperand
+GALGAS_uint GALGAS_uint::left_shift_operation (const GALGAS_uint inOperand,
+                                               class C_Compiler * /* inCompiler*/
                                                COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid () && inOperand.isValid ()) {
@@ -729,11 +730,44 @@ GALGAS_uint GALGAS_uint::left_shift_operation (const GALGAS_uint inOperand
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_uint GALGAS_uint::right_shift_operation (const GALGAS_uint inOperand
+GALGAS_uint GALGAS_uint::left_shift_operation (const GALGAS_bigint inShiftOperand,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) const {
+  GALGAS_uint result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@uint left shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_uint (mUIntValue << (inShiftOperand.bigintValue().uint32 () & 31)) ;
+    }
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_uint GALGAS_uint::right_shift_operation (const GALGAS_uint inOperand,
+                                                class C_Compiler * /* inCompiler*/
                                                 COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid () && inOperand.isValid ()) {
     result = GALGAS_uint (mUIntValue >> (inOperand.mUIntValue & 31)) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_uint GALGAS_uint::right_shift_operation (const GALGAS_bigint inShiftOperand,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) const {
+  GALGAS_uint result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@uint right shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_uint (mUIntValue >> (inShiftOperand.bigintValue().uint32 () & 31)) ;
+    }
   }
   return result ;
 }

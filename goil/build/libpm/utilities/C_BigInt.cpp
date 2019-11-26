@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2015, ..., 2016 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2015, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -95,6 +95,18 @@ bool C_BigInt::isMinusOne (void) const {
 
 int32_t C_BigInt::sign (void) const {
   return mpz_sgn (mGMPint) ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+bool C_BigInt::isNegative (void) const {
+  return sign () < 0 ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+bool C_BigInt::isPositive (void) const {
+  return sign () > 0 ;
 }
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -615,6 +627,17 @@ C_BigInt C_BigInt::operator << (const uint32_t inValue) const {
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
+C_BigInt C_BigInt::operator << (const C_BigInt inValue) const {
+  C_BigInt result = *this ;
+  if (inValue > C_BigInt (0)) {
+    const uint32_t v = inValue.uint32 () ;
+    result <<= v ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Shift right
 #endif
@@ -634,6 +657,17 @@ void C_BigInt::operator >>= (const uint32_t inValue) {
 C_BigInt C_BigInt::operator >> (const uint32_t inValue) const {
   C_BigInt result = *this ;
   result >>= inValue ;
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+C_BigInt C_BigInt::operator >> (const C_BigInt inValue) const {
+  C_BigInt result = *this ;
+  if (inValue > C_BigInt (0)) {
+    const uint32_t v = inValue.uint32 () ;
+    result >>= v ;
+  }
   return result ;
 }
 
