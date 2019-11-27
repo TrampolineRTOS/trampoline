@@ -40,6 +40,8 @@
 
 tpl_reset_handler:
 
+	mov #0xA500, &MPUCTL0 /* unlock MPU */
+	mov #0xA500, &MPUCTL0 /* unlock MPU */
 	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
 	mov     #0x5a80, &WDTCTL

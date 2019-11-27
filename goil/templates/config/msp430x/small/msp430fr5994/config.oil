@@ -4,11 +4,6 @@
 
 CPU msp430fr5994 {
 
-  MPU_CONFIGURATION msp430fr5994 {
-    B1_BOUNDARY = 0x04000;
-    B2_BOUNDARY = 0x10000;
-  };
-  
   COUNTER SystemCounter {
     SOURCE = TIMER3_A0_VECTOR;
   };

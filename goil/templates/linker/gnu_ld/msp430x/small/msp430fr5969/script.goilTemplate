@@ -77,11 +77,30 @@ SECTIONS {
 /*                                    Code                                    */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+
+/*
+ * Sections for Non Volatile variables. They should be inserted
+ * at the beginning of the FRAM, so that the MPU is easier to configure.
+ */
+SECTIONS {
+  . = ALIGN(2);
+  .osNVRAM : {
+      *(.osNVRAM)
+%
+foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%      *(.osNVRAM_% !DATA_SIZE %)
+%
+end foreach
+%  } >FLASH
+}
+
+
 /* init section for msp430. 
  * execution starts at the beginning of the fram. */
 SECTIONS {
   .textInit : {
-    . = ALIGN(2);
+    . = ALIGN(1024); /* MSP430 MPU minimal segment size */
+    TPL_MPU_B1_BOUNDARY = .; /* useful for MPU initialization - start of code */
     KEEP(*(.init)) /* start here after reset */
   } > FLASH
 }

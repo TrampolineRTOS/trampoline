@@ -7,9 +7,6 @@
  * (defined in tpl_clocks.h)
  */
 #define CPU_FREQ_MHZ    % ! exists OS::CPU_FREQ_MHZ default (1) %
-#define WITH_BASIC_MPU  % ! yesNo(exists MPU_CONFIGURATION) %
-#define B1_BOUNDARY     % ! [exists MPU_CONFIGURATION::B1_BOUNDARY default (0) hexString] %
-#define B2_BOUNDARY     % ! [exists MPU_CONFIGURATION::B2_BOUNDARY default (0) hexString] %
 
 /*
  * Power mode to be used in the idle task

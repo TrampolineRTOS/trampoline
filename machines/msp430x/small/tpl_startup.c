@@ -12,11 +12,15 @@
  *
  */
 
+#include <stdint.h>
 #include "tpl_os.h"
 #include "tpl_clocks.h"
 #include "msp430.h"
 
 extern int main (void);
+extern unsigned TPL_MPU_B1_BOUNDARY;           /*Lower MPU boundary defined in link script */
+/* This MPU boundary is hard coded for the small model, as we can't use pointers over 64kb */
+const  uint32_t TPL_MPU_B2_BOUNDARY = 0x10000; /*MPU upper boundary => end of 64k*/
 
 /* TODO put this in OS_CODE */
 
@@ -50,39 +54,44 @@ void tpl_continue_reset_handler(void)
    **/
   tpl_set_mcu_clock(CPU_FREQ_MHZ);
 
-#if WITH_BASIC_MPU == YES
   /* MPU basic configuration:
    * The MPU uses 2 register to split the memory in 3 chunks:
-   *  ------------
-   * |            |
-   * | RW FRAM    |  FRAM with R/W access
-   * |   (seg3)   |
-   *  ------------ => MPU Segment 2 limit
-   * |            |
-   * | R/X FRAM   |  FRAM with R/eXecute access => code, interrupts
-   * |   (seg2)   |  should include 0xFF80-FFFF to prevent to "secure" the chip!
-   * |            |
-   *  ------------ => MPU Segment 1 limit (start of FRAM)
-   * |     RAM    |
-   * |            |
-   * | peripheral |
-   * |   (seg1)   |
-   *  ------------
+   *  --------------- => high addr
+   * |               |
+   * |               |  Segment 3: RW
+   * | RW FRAM       |  FRAM with R/W access (checkpointing)
+   * |   (seg3)      |
+   *  --------------- => MPU Segment 2 limit -> 0x10000
+   * |               |  
+   * |               |  Segment 2: RX
+   * | R/X FRAM      |  FRAM with R/eXecute access => code, interrupts
+   * |   (seg2)      |  should include 0xFF80-FFFF not to "secure" the chip!
+   * |               |
+   *  -------------- => MPU Segment 1 limit (start of code in FRAM)
+   * | FRAM for vars |
+   * |   ---------   |
+   * |     RAM       |
+   * |   ---------   |  Segment 1: RW
+   * |  peripherals  |
+   * |    (seg1)     |
+   *  ------------ =>low addr
    * program the MPU so that FRAM between the end of the SRAM and below 0xFFFF
    * are not be overwritten. This prevent program / constant modification and
    * JTAG lock modification in order to not brick the board.
    */
-  MPUCTL0  = 0xA500;           /* password to unlock MPU                      */
-  MPUSEGB2 = B2_BOUNDARY >> 4; /* only 16 most significant bits               */
-  MPUSEGB1 = B1_BOUNDARY >> 4; /* only 16 most significant bits.              */
-  MPUSAM   = 0x0353;           /* Seg3: -WR(3), seg2: X-R(5), seg1: -WR(3)    */
+  MPUCTL0  = 0xA500;  /* password to unlock MPU                      */
+  /* for MPUSEGx registers, we only give the 16 Most significant bits
+   * but, the 6 lowest bits are not used. The minimal segment size is 1024 bytes
+   * */
+  MPUSEGB2 = (uint16_t)(TPL_MPU_B2_BOUNDARY >> 4);  /* high border (0x10000)  */
+  MPUSEGB1 = (uint16_t)(&TPL_MPU_B1_BOUNDARY) >> 4; /* low border before code */
+  MPUSAM   = 0x0353;  /* Seg3: -WR(3), seg2: X-R(5), seg1: -WR(3)    */
   MPUCTL0  =
-     0xA500 |                  /* password to unlock MPU                      */
-     MPUSEGIE |                /* interrupt when MPU segment violation        */
-     MPULOCK |                 /* lock the MPU                                */
-     MPUENA;                   /* enable the MPU                              */
+     0xA500 |         /* password to unlock MPU                      */
+     MPUSEGIE |       /* interrupt when MPU segment violation        */
+     MPUENA;          /* enable the MPU                              */
+  MPUCTL0_H = 0;      /* lock MPU (byte access required).pwd required */
 
-#endif
 
   /* Exec constructors for global objects (c++)*/
   extern void (* __ctors_start) (void) ;

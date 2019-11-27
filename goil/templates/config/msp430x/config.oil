@@ -19,12 +19,6 @@ IMPLEMENTATION  msp430x {
     #include <interruptSources.oil>
   };
   
-  /* Boundaries addresses for the MPU */
-  MPU_CONFIGURATION {
-    UINT32 B1_BOUNDARY;
-    UINT32 B2_BOUNDARY;
-  };
-  
   /* Additional OS attributes */
   OS {
     /* CPU frequency */
