@@ -17,9 +17,13 @@
 #define LPM2_POWER_MODE     2
 #define LPM3_POWER_MODE     3
 
-#define IDLE_POWER_MODE % ! OS::IDLE_POWER_MODE %_POWER_MODE
-#define IDLE_LPM        % ! OS::IDLE_POWER_MODE 
+#define IDLE_POWER_MODE   % ! OS::IDLE_POWER_MODE %_POWER_MODE
+#define IDLE_LPM          % ! OS::IDLE_POWER_MODE
 %
+
+/*
+ * If YES, init the .data section using the DMA
+ */
+#define WITH_INIT_WITH_DMA    % ! yesNo(OS::INIT_WITH_DMA) %
 %
 template if exists tpl_library_defines
-

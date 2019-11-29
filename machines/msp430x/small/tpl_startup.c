@@ -18,9 +18,16 @@
 #include "msp430.h"
 
 extern int main (void);
-extern unsigned TPL_MPU_B1_BOUNDARY;           /*Lower MPU boundary defined in link script */
-/* This MPU boundary is hard coded for the small model, as we can't use pointers over 64kb */
-const  uint32_t TPL_MPU_B2_BOUNDARY = 0x10000; /*MPU upper boundary => end of 64k*/
+
+/*
+ * Lower MPU boundary defined in link script
+ */
+extern unsigned TPL_MPU_B1_BOUNDARY;
+/*
+ * This MPU boundary is hard coded for the small model,
+ * as we can't use pointers over 64kb
+ */
+static const uint32_t TPL_MPU_B2_BOUNDARY = 0x10000;
 
 /* TODO put this in OS_CODE */
 
@@ -42,6 +49,23 @@ void tpl_continue_reset_handler(void)
   extern unsigned __data_start;
   extern unsigned __data_end;
   extern unsigned __data_load_start;
+#if WITH_INIT_WITH_DMA == YES
+#ifdef __MSP430_HAS_DMAX_3__
+  DMACTL0 = 0;                          /* DMA0 trigger is manual             */
+  DMA0SA = (uint16)&__data_load_start;  /* Source address for transfer        */
+  DMA0DA = (uint16)&__data_start;       /* Dest address for the transfer      */
+  DMA0SZ = &__data_end - &__data_start; /* Size for the transfer              */
+  DMA0CTL = DMADT_1       /* Block transfer mode                              */
+          | DMASRCINCR_3  /* Source address incremented                       */
+          | DMADSTINCR_3  /* Destination address incremented                  */
+          | DMASWDW       /* Word transfer                                    */
+          | DMAEN         /* Enable                                           */
+          | DMAREQ        /* Launch transfer                                  */
+          /* 0x1F11 */;
+#else
+#warning "INIT_WITH_DMA is TRUE but the target does not have the expected DMA"
+#endif
+#elif WITH_INIT_WITH_DMA == NO
   unsigned *pSrc = &__data_load_start;
   unsigned *pDest = &__data_start;
   while (pDest != &__data_end) {
@@ -49,7 +73,11 @@ void tpl_continue_reset_handler(void)
     pDest++;
     pSrc++;
   }
-  /* start clock: default to 1MHz 
+#else
+#error "Misconfiguration, WITH_INIT_WITH_DMA symbol is missing"
+#endif
+
+  /* start clock: default to 1MHz
    * (at least .bss section should be initialized)
    **/
   tpl_set_mcu_clock(CPU_FREQ_MHZ);
@@ -62,7 +90,7 @@ void tpl_continue_reset_handler(void)
    * | RW FRAM       |  FRAM with R/W access (checkpointing)
    * |   (seg3)      |
    *  --------------- => MPU Segment 2 limit -> 0x10000
-   * |               |  
+   * |               |
    * |               |  Segment 2: RX
    * | R/X FRAM      |  FRAM with R/eXecute access => code, interrupts
    * |   (seg2)      |  should include 0xFF80-FFFF not to "secure" the chip!
@@ -101,7 +129,7 @@ void tpl_continue_reset_handler(void)
     (* ptr) () ;
     ptr ++ ;
   }
-  
+
   /* Exec user program */
   main();
 

@@ -1073,6 +1073,10 @@ When the application is compiled in \lstinline{-O3}, the blink task code is as f
 
 This time \lstinline{r4} is not pushed on the stack and its size can be 30 bytes. Given the time taken to complete this task, it is also questionable whether it would not be worthwhile to make it non-preemptible.
 
+\section{Using the DMA to copy the initialized variable}
+
+It is possible to copy the initialized variable by using the DMA. This is done by adding a \lstinline{INIT_WITH_DMA = TRUE;} in the OS object.
+
 \section{Memory mapping and memory protection}
 
 Memory organization of MSP430FR5969 is shown at figure \ref{fig:memorg}. 
