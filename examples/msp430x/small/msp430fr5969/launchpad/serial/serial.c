@@ -48,6 +48,7 @@ TASK(serial_RX)
 		    tpl_serial_print_string("\r\n");
 		}
 	}
+  P1OUT ^= 0x01;
 	TerminateTask();
 }
 
