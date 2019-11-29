@@ -54,7 +54,8 @@ void tpl_continue_reset_handler(void)
   DMACTL0 = 0;                          /* DMA0 trigger is manual             */
   DMA0SA = (uint16)&__data_load_start;  /* Source address for transfer        */
   DMA0DA = (uint16)&__data_start;       /* Dest address for the transfer      */
-  DMA0SZ = ((uint16)&__data_end - (uint16)&__data_start) / 2;       /* Size for the transfer              */
+  /* Size for the transfer                                                    */
+  DMA0SZ = ((uint16)&__data_end - (uint16)&__data_start) / 2;
   DMA0CTL = DMADT_1       /* Block transfer mode                              */
           | DMASRCINCR_3  /* Source address incremented                       */
           | DMADSTINCR_3  /* Destination address incremented                  */
