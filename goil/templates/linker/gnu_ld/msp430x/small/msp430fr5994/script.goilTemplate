@@ -84,14 +84,27 @@ SECTIONS {
  */
 SECTIONS {
   . = ALIGN(2);
-  .osNVRAM : {
-      *(.osNVRAM)
+  .NVVar : {%
+foreach SECTION_KIND in @("_NON_VOLATILE_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
-foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
-%      *(.osNVRAM_% !DATA_SIZE %)
-%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
 end foreach
-%  } >FLASH
+
+foreach proc in PROCESSES do%
+
+    /* --- Non volatile variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_NON_VOLATILE_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE% )
+%
+    end foreach
+   end foreach
+  end foreach%
+
+  } >FLASH
 }
 
 
@@ -235,10 +248,17 @@ SECTIONS {
     __data_start = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
-    *(.osVar)
+
+    *(.osVar)%
+foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+  foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_" ) do
 %
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
 foreach proc in PROCESSES do
 %
+
 /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
@@ -362,6 +382,24 @@ foreach app in APPLICATIONS do
 %
 end foreach
 % 
+  } >RAM
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          OS unitialized data (useful?)                     */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SECTIONS {
+  . = ALIGN(4);
+  .osVarNoInit :
+  {%
+foreach SECTION_KIND in @("_NOINIT_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
+%
   } >RAM
 }
 
