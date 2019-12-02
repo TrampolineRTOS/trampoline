@@ -164,6 +164,34 @@ BOOLEAN CHECKPOINT = TRUE {
 };
 \end{lstlisting}
 
+\subsection{Non volatile data declaration}
+
+Non Volatile data is stored at the beginning of the FRAM. The MPU is configured at startup to let a section in R/W mode. However, limitations on the MPU hardware implementation require to use a memory area that is \emph{a multiple of 1024 bytes}. The code section just follows, with R/X rights.
+
+An OS variable in non volatile memory should be defined as:
+
+\begin{lstlisting}
+#define OS_START_SEC_NON_VOLATILE_VAR_16BIT
+#include "tpl_memmap.h"
+VAR(uint16, OS_VAR) nvdata = 0;
+#define OS_STOP_SEC_NON_VOLATILE_VAR_16BIT
+#include "tpl_memmap.h"
+\end{lstlisting}
+
+for a task related non volatile variable the definition is (task is \lstinline{serial_TX} here:
+
+\begin{lstlisting}
+#define APP_Task_serial_TX_START_SEC_VAR_NON_VOLATILE_32BIT
+#include "tpl_memmap.h"
+VAR(uint32_t,AUTOMATIC) dataFRAM = 100;
+#define APP_Task_serial_TX_STOP_SEC_VAR_NON_VOLATILE_32BIT
+#include "tpl_memmap.h"
+\end{lstlisting}
+
+\textbf{Note:}
+
+At this date, the non volatile data is initialized only when flashing the firmware. It should be updated so that the value can be updated on a non-restoring startup (no checkpoint).
+
 
 \subsection{DMA}
 
