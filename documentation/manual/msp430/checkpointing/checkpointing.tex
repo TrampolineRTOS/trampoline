@@ -164,6 +164,7 @@ BOOLEAN CHECKPOINT = TRUE {
 };
 \end{lstlisting}
 
+
 \subsection{Non volatile data declaration}
 
 Non Volatile data is stored at the beginning of the FRAM. The MPU is configured at startup to let a section in R/W mode. However, limitations on the MPU hardware implementation require to use a memory area that is \emph{a multiple of 1024 bytes}. The code section just follows, with R/X rights.
@@ -319,7 +320,7 @@ cont:
 \draw (7,.2) -- (3.2,-2.8) node[comm] {Increment\\src = 11};
 \draw (8.5,.2) -- (6.5,-1.8) node[comm] {Word\\transfer = 0};
 \draw (9.5,.2) -- (8,-2.8) node[comm] {Word\\transfer = 0};
-\draw (10.5,.2) -- (10,-1.8) node[comm] {D'ont care\\so = 0, I think};
+\draw (10.5,.2) -- (10,-1.8) node[comm] {Don't care\\so = 0, I think};
 \draw (11.5,.2) -- (11.5,-2.8) node[comm] {Enable = 1};
 \draw (12.5,.2) -- (12.5,-1.8) node[comm] {Interrupt\\flag = 0};
 \draw (13.5,.2) -- (13.5,-2.8) node[comm] {Interrupt\\Enable = 0};

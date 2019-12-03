@@ -62,10 +62,9 @@ template memory_map
 /*----------------------------------------------------------------------------*/
 
 SECTIONS {
-  /* The startup code goes first into FLASH */
   .isr_vector : {
     . = ALIGN(4);
-    KEEP(*(.isr_vector)) /* Startup code */
+    KEEP(*(.isr_vector)) /* vector table */
     . = ALIGN(4);
   } >VECTOR
 }
@@ -83,8 +82,10 @@ SECTIONS {
  * at the beginning of the FRAM, so that the MPU is easier to configure.
  */
 SECTIONS {
-  . = ALIGN(2);
-  .NVVar : {%
+  /*.NVVar : AT ( __nvdata_load_start ) { */
+  .NVVar : {
+    . = ALIGN(4);
+    __nvdata_start = .;        /* create a global symbol at non volatile data start */%
 foreach SECTION_KIND in @("_NON_VOLATILE_") do
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
@@ -104,6 +105,9 @@ foreach proc in PROCESSES do%
    end foreach
   end foreach%
 
+    . = ALIGN(4);
+    __nvdata_end = .;        /* define a global symbol at non volatile data end */
+    __nvdata_size = __nvdata_end - __nvdata_start;  /* define a global symbol at non volatile data end */
   } >FLASH
 }
 
@@ -282,6 +286,7 @@ end foreach
 %
     . = ALIGN(4);
     __data_end = .;        /* define a global symbol at data end */
+    __data_size = __data_end - __data_start;
   } >RAM
 }
 
