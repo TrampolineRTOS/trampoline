@@ -62,10 +62,9 @@ template memory_map
 /*----------------------------------------------------------------------------*/
 
 SECTIONS {
-  /* The startup code goes first into FLASH */
   .isr_vector : {
     . = ALIGN(4);
-    KEEP(*(.isr_vector)) /* Startup code */
+    KEEP(*(.isr_vector)) /* vector table */
     . = ALIGN(4);
   } >VECTOR
 }
@@ -83,26 +82,52 @@ SECTIONS {
  * at the beginning of the FRAM, so that the MPU is easier to configure.
  */
 SECTIONS {
-  . = ALIGN(2);
-  .osNVRAM : {
-      *(.osNVRAM)
+  .NVdata ORIGIN(FRAM) : AT ( __nvdata_load_start) {
+    . = ALIGN(4);
+    __nvdata_start = .; /* create a global symbol at non volatile data start */%
+foreach SECTION_KIND in @("_NON_VOLATILE_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
-foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
-%      *(.osNVRAM_% !DATA_SIZE %)
-%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
 end foreach
-%  } >FLASH
-}
 
+foreach proc in PROCESSES do%
+
+    /* --- Non volatile variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_NON_VOLATILE_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE% )
+%
+    end foreach
+   end foreach
+  end foreach%
+
+    . = ALIGN(2);
+    __nvdata_end = .;        /* define a global symbol at non volatile data end */
+    __nvdata_size = SIZEOF(.NVdata); /* define a global symbol at non volatile data end */
+  } >FRAM
+
+  .NVdataInit : {
+    . = ALIGN(1024);         /* MSP430 MPU minimal segment size */
+    TPL_MPU_B1_BOUNDARY = .; /* useful for MPU initialization - start of code */
+    __nvdata_load_start = .;
+    . += SIZEOF(.NVdata);    /* reserve space for NVdata init values*/
+	__nvdata_load_end = .;
+  } >FRAM
+}
 
 /* init section for msp430. 
  * execution starts at the beginning of the fram. */
 SECTIONS {
-  .textInit : {
-    . = ALIGN(1024); /* MSP430 MPU minimal segment size */
-    TPL_MPU_B1_BOUNDARY = .; /* useful for MPU initialization - start of code */
+	/* we make sure that both 
+	 * - VMA (virtual memory address) and 
+	 * - LMA (load memory address) 
+	 * are the same */
+  .textInit __nvdata_load_end : AT(__nvdata_load_end) {
     KEEP(*(.init)) /* start here after reset */
-  } > FLASH
+  } > FRAM
 }
 
 /*
@@ -118,13 +143,13 @@ SECTIONS {
     *(.osCode)
     *(.osApiCode)  /* API functions */
     *(.appCommonCode)
-  } >FLASH
+  } >FRAM
   . = ALIGN(4);
   /* --- const of OS --- */
   osconst : {
     *(.osConst)
     *(.osApiConst) /* API constants */
-  } >FLASH
+  } >FRAM
 }
 
 /*
@@ -150,7 +175,7 @@ foreach isr in ISRS1 do
 %
 end foreach
 %
-  } >FLASH
+  } >FRAM
   . = ALIGN(4);
   appconst : {
   /* --- Sections for application const --- */
@@ -166,7 +191,7 @@ foreach app in APPLICATIONS do
  end foreach
 end foreach
 %
-  } >FLASH
+  } >FRAM
 }
 
 /*
@@ -188,7 +213,7 @@ end foreach
     . = ALIGN(4);
     __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
     __PROGCONST_SECTION_STOP = . - 1;
-  } >FLASH
+  } >FRAM
 }
 
   /* remaining .text (ie no section given) */
@@ -221,13 +246,11 @@ SECTIONS {
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
     _exit = .;
-  } >FLASH
+  } >FRAM
 }
 
 /* used by the startup to initialize data */
 SECTIONS {
-  __data_load_start = .;
-
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : AT ( __data_load_start )
   {
@@ -235,10 +258,17 @@ SECTIONS {
     __data_start = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
-    *(.osVar)
+
+    *(.osVar)%
+foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+  foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_" ) do
 %
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
 foreach proc in PROCESSES do
 %
+
 /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
@@ -262,7 +292,15 @@ end foreach
 %
     . = ALIGN(4);
     __data_end = .;        /* define a global symbol at data end */
+    __data_size = SIZEOF(.data);
   } >RAM
+
+  .dataInit : {
+	. = ALIGN(16);
+    __data_load_start = .;
+	/* reserve space for data init value */
+    . += SIZEOF(.data);
+  } >FRAM
 }
 
   /*
@@ -362,6 +400,24 @@ foreach app in APPLICATIONS do
 %
 end foreach
 % 
+  } >RAM
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          OS unitialized data (useful?)                     */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SECTIONS {
+  . = ALIGN(4);
+  .osVarNoInit :
+  {%
+foreach SECTION_KIND in @("_NOINIT_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
+%
   } >RAM
 }
 

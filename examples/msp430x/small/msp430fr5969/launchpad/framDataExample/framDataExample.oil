@@ -19,6 +19,7 @@ CPU framDataExample {
     PAINT_REGISTERS = TRUE;
 	CPU_FREQ_MHZ = 8;
     IDLE_POWER_MODE = LPM3;
+	INIT_WITH_DMA = FALSE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";

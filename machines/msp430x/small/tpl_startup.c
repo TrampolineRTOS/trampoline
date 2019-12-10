@@ -89,8 +89,8 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   /* Init .data section */
   extern unsigned __data_load_start;
   extern unsigned __data_start;
-  extern unsigned __data_size;
-  memInit(&__data_load_start,&__data_start,__data_size);
+  extern unsigned __data_end;
+  memInit(&__data_load_start,&__data_start,(uint16_t)&__data_end-(uint16_t)&__data_start);
 
   /* start clock: default to 1MHz
    * (at least .bss section should be initialized)
@@ -109,9 +109,11 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
    * |               |  Segment 2: RX
    * | R/X FRAM      |  FRAM with R/eXecute access => code, interrupts
    * |   (seg2)      |  should include 0xFF80-FFFF not to "secure" the chip!
-   * |               |
-   *  -------------- => MPU Segment 1 limit (start of code in FRAM)
-   * | FRAM for vars |
+   * |               |  
+   * | code/const    |  start with initial value of FRAM vars (not to be updated)
+   * |               |  
+   *  -------------- => MPU Segment 1 limit
+   * | FRAM for vars | (if there are vars in FRAM, a multiple of 1024 bytes 
    * |   ---------   |
    * |     RAM       |
    * |   ---------   |  Segment 1: RW
