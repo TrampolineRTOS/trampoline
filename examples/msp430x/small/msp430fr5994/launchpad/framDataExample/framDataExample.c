@@ -3,17 +3,18 @@
 #include <stdint.h>
 #include "tpl_clocks.h"
 
+/* Warning, task data outside of POWER_ON_INIT section won't be initialized */
+#define APP_Task_serial_TX_START_SEC_VAR_POWER_ON_INIT_32BIT
+#include "tpl_memmap.h"
+VAR(uint32_t,AUTOMATIC) dataSRAM = 100;
+#define APP_Task_serial_TX_STOP_SEC_VAR_POWER_ON_INIT_32BIT
+#include "tpl_memmap.h"
 
-#define OS_START_SEC_VAR_32BIT
+/* At this date, NON_VOLATILE data is initialized only when flashing firmware */
+#define APP_Task_serial_TX_START_SEC_VAR_NON_VOLATILE_32BIT
 #include "tpl_memmap.h"
-VAR(uint32_t,OS_VAR) dataSRAM = 0;
-#define OS_STOP_SEC_VAR_32BIT
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_NON_VOLATILE_VAR_32BIT
-#include "tpl_memmap.h"
-VAR(uint32_t,OS_VAR) dataFRAM = 0;
-#define OS_STOP_SEC_NON_VOLATILE_VAR_32BIT
+VAR(uint32_t,AUTOMATIC) dataFRAM = 100;
+#define APP_Task_serial_TX_STOP_SEC_VAR_NON_VOLATILE_32BIT
 #include "tpl_memmap.h"
 
 

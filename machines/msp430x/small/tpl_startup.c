@@ -35,7 +35,48 @@ FUNC(void, OS_CODE) tpl_MPU_violation(void) {
   while(1);
 };
 
-void tpl_continue_reset_handler(void)
+/** copy a memory chunk of 'size' bytes 
+ *  from @ src (in FRAM)
+ *  to   @ dst (either SRAM or FRAM)
+ *  It uses the DMA if WITH_INIT_WITH_DMA is set.
+ */
+FUNC(void, OS_CODE) memInit(
+		P2VAR(void,AUTOMATIC,OS_CONST) src,
+		P2VAR(void,AUTOMATIC,OS_CONST) dst,
+		  VAR(uint16_t,AUTOMATIC)      size)
+{
+#if WITH_INIT_WITH_DMA == YES
+#ifdef __MSP430_HAS_DMAX_3__
+  DMACTL0 = 0;             /* DMA0 trigger is manual             */
+  DMA0SA = (uint16)src;    /* Source address for transfer        */
+  DMA0DA = (uint16)dst;    /* Dest address for the transfer      */
+  DMA0SZ = size >> 1;      /* transfer size (in 16-bit words)    */
+  DMA0CTL = DMADT_1        /* Block transfer mode                */
+          | DMASRCINCR_3   /* Source address incremented         */
+          | DMADSTINCR_3   /* Destination address incremented    */
+          | DMASWDW        /* Word transfer                      */
+          | DMAEN          /* Enable                             */
+          | DMAREQ         /* Launch transfer                    */
+          /* 0x1F11 */;
+#else
+#warning "INIT_WITH_DMA is TRUE but the target does not have the expected DMA"
+#endif
+#elif WITH_INIT_WITH_DMA == NO
+  unsigned *pSrc = src;
+  unsigned *pDest = dst;
+  unsigned *pDestMax = dst+size;
+  while (pDest != pDestMax) {
+    *pDest = *pSrc;
+    pDest++;
+    pSrc++;
+  }
+#else
+#error "Misconfiguration, WITH_INIT_WITH_DMA symbol is missing"
+#endif
+
+}
+
+FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
 {
   /* Init .bss section */
   extern unsigned __bss_start__;
@@ -46,37 +87,10 @@ void tpl_continue_reset_handler(void)
     p++;
   }
   /* Init .data section */
+  extern unsigned __data_load_start;
   extern unsigned __data_start;
   extern unsigned __data_end;
-  extern unsigned __data_load_start;
-#if WITH_INIT_WITH_DMA == YES
-#ifdef __MSP430_HAS_DMAX_3__
-  DMACTL0 = 0;                          /* DMA0 trigger is manual             */
-  DMA0SA = (uint16)&__data_load_start;  /* Source address for transfer        */
-  DMA0DA = (uint16)&__data_start;       /* Dest address for the transfer      */
-  /* Size for the transfer                                                    */
-  DMA0SZ = ((uint16)&__data_end - (uint16)&__data_start) / 2;
-  DMA0CTL = DMADT_1       /* Block transfer mode                              */
-          | DMASRCINCR_3  /* Source address incremented                       */
-          | DMADSTINCR_3  /* Destination address incremented                  */
-          | DMASWDW       /* Word transfer                                    */
-          | DMAEN         /* Enable                                           */
-          | DMAREQ        /* Launch transfer                                  */
-          /* 0x1F11 */;
-#else
-#warning "INIT_WITH_DMA is TRUE but the target does not have the expected DMA"
-#endif
-#elif WITH_INIT_WITH_DMA == NO
-  unsigned *pSrc = &__data_load_start;
-  unsigned *pDest = &__data_start;
-  while (pDest != &__data_end) {
-    *pDest = *pSrc;
-    pDest++;
-    pSrc++;
-  }
-#else
-#error "Misconfiguration, WITH_INIT_WITH_DMA symbol is missing"
-#endif
+  memInit(&__data_load_start,&__data_start,(uint16_t)&__data_end-(uint16_t)&__data_start);
 
   /* start clock: default to 1MHz
    * (at least .bss section should be initialized)
@@ -95,9 +109,11 @@ void tpl_continue_reset_handler(void)
    * |               |  Segment 2: RX
    * | R/X FRAM      |  FRAM with R/eXecute access => code, interrupts
    * |   (seg2)      |  should include 0xFF80-FFFF not to "secure" the chip!
-   * |               |
-   *  -------------- => MPU Segment 1 limit (start of code in FRAM)
-   * | FRAM for vars |
+   * |               |  
+   * | code/const    |  start with initial value of FRAM vars (not to be updated)
+   * |               |  
+   *  -------------- => MPU Segment 1 limit
+   * | FRAM for vars | (if there are vars in FRAM, a multiple of 1024 bytes 
    * |   ---------   |
    * |     RAM       |
    * |   ---------   |  Segment 1: RW

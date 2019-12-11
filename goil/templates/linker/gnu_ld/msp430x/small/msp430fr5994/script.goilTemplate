@@ -62,10 +62,9 @@ template memory_map
 /*----------------------------------------------------------------------------*/
 
 SECTIONS {
-  /* The startup code goes first into FLASH */
   .isr_vector : {
     . = ALIGN(4);
-    KEEP(*(.isr_vector)) /* Startup code */
+    KEEP(*(.isr_vector)) /* vector table */
     . = ALIGN(4);
   } >VECTOR
 }
@@ -83,15 +82,33 @@ SECTIONS {
  * at the beginning of the FRAM, so that the MPU is easier to configure.
  */
 SECTIONS {
-  . = ALIGN(2);
-  .osNVRAM : {
-      *(.osNVRAM)
+  /*.NVVar : AT ( __nvdata_load_start ) { */
+  .NVVar : {
+    . = ALIGN(4);
+    __nvdata_start = .;        /* create a global symbol at non volatile data start */%
+foreach SECTION_KIND in @("_NON_VOLATILE_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
-foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
-%      *(.osNVRAM_% !DATA_SIZE %)
-%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
 end foreach
-%  } >FLASH
+
+foreach proc in PROCESSES do%
+
+    /* --- Non volatile variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_NON_VOLATILE_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE% )
+%
+    end foreach
+   end foreach
+  end foreach%
+
+    . = ALIGN(4);
+    __nvdata_end = .;        /* define a global symbol at non volatile data end */
+    __nvdata_size = __nvdata_end - __nvdata_start;  /* define a global symbol at non volatile data end */
+  } >FLASH
 }
 
 
@@ -235,10 +252,17 @@ SECTIONS {
     __data_start = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
-    *(.osVar)
+
+    *(.osVar)%
+foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+  foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_" ) do
 %
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
 foreach proc in PROCESSES do
 %
+
 /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
@@ -262,6 +286,7 @@ end foreach
 %
     . = ALIGN(4);
     __data_end = .;        /* define a global symbol at data end */
+    __data_size = __data_end - __data_start;
   } >RAM
 }
 
@@ -362,6 +387,24 @@ foreach app in APPLICATIONS do
 %
 end foreach
 % 
+  } >RAM
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          OS unitialized data (useful?)                     */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SECTIONS {
+  . = ALIGN(4);
+  .osVarNoInit :
+  {%
+foreach SECTION_KIND in @("_NOINIT_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
+%
   } >RAM
 }
 

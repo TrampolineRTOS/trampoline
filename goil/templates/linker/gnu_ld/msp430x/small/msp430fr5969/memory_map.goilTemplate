@@ -1,6 +1,5 @@
 /* Specify the memory areas for msp430fr5969 
  * basic first version:
- * - FRAM used as flash only
  * - upper FRAM bank 0x10000 (16kb) not configured
  */
 %
@@ -36,6 +35,6 @@ MEMORY
    ! hex_end %, %
    ! size % bytes - %
    ! size / 2 % vectors */
-  FLASH (rx)  : ORIGIN = 0x04400, LENGTH = 0xBB80 /* ends at 0xff80. size is 46k */
+  FRAM (rx)   : ORIGIN = 0x04400, LENGTH = 0xBB80 /* ends at 0xff80. size is 46k */
   RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = 0x0800 /* size is 2k */
 }

@@ -57,7 +57,7 @@
 #endif
 
 %
-foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_NON_VOLATILE_","_" ) do
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef OS_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -67,7 +67,7 @@ foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
   #else
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".osVar")))
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".osVar%!SECTION_KIND !DATA_SIZE%")))
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -120,39 +120,6 @@ foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
   end foreach
 end foreach
 %
-
-/*
- * Non Volatile Memory related vars.
- */
-%
-foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
-%
-#ifdef OS_START_SEC_NON_VOLATILE_VAR_% !DATA_SIZE %
-  #undef OS_START_SEC_NON_VOLATILE_VAR_% !DATA_SIZE %
-  #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a .osNVRAM data section while a section is already started"
-  #else
-    #undef MEMMAP_ERROR
-    #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".osNVRAM")))
-    #define CURRENT_LINKER_DATA_SECTION
-  #endif
-#endif
-#ifdef OS_STOP_SEC_NON_VOLATILE_VAR_% !DATA_SIZE %
-  #undef OS_STOP_SEC_NON_VOLATILE_VAR_% !DATA_SIZE %
-  #ifdef CURRENT_LINKER_DATA_SECTION
-    #undef MEMMAP_ERROR
-    #undef CURRENT_LINKER_DATA_SECTION
-    #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME
-  #else
-    #error "No section started"
-  #endif
-#endif
-%
-end foreach
-%
-
 
 /*=============================================================================
  * API code and const memory mapping
@@ -370,6 +337,40 @@ foreach proc in PROCESSES do
  */
 %
   foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end foreach
+  end foreach
+%
+
+/*
+ * Non Volatile Variables sections
+ */
+%
+  foreach SECTION_KIND in @( "_NON_VOLATILE_") do
     foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
