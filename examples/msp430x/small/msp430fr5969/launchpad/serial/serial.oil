@@ -17,14 +17,15 @@ CPU serial {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-	CPU_FREQ_MHZ = 24;
+   CPU_FREQ_MHZ = 24;
     IDLE_POWER_MODE = LPM3;
+    INIT_WITH_DMA = TRUE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "serial.c";
       APP_NAME = "serial_exe";
-      CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
+      CFLAGS  = "-O3 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=serial.map";
       LIBRARY = serial {
         TXBUFFER = 16;
@@ -51,9 +52,9 @@ CPU serial {
       MEMORY_PROTECTION = FALSE;
     };
   };
-  
+
   APPMODE std {};
-  
+
   TASK serial_TX {
     PRIORITY = 2;
     AUTOSTART = TRUE {APPMODE = std;};
@@ -75,9 +76,8 @@ CPU serial {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 200;
-      CYCLETIME = 200;
+      ALARMTIME = 50;
+      CYCLETIME = 50;
     };
   };
 };
-
