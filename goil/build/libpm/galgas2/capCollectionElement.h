@@ -42,7 +42,7 @@ class capCollectionElement {
   public : capCollectionElement (void) ;
 
 //--- Destructor
-  public : ~ capCollectionElement (void) ;
+  public : virtual ~ capCollectionElement (void) ;
 
 //--- Handle copy
   public : capCollectionElement (const capCollectionElement & inSource) ;

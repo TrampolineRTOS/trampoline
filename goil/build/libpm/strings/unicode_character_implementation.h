@@ -184,7 +184,6 @@ utf32 unicodeToUpper (const utf32 inUnicodeCharacter) {
   utf32 result = inUnicodeCharacter ;
   // printf ("U+%X", inUnicodeCharacter) ;
   const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gToUpperPageSize ;
-  // printf (", pageIndex %u, lastPage %u", pageIndex, gLastToUpperPage) ;
   if (pageIndex <= gLastToUpperPage) {
     const uint32_t * page = gToUpperPages [pageIndex] ;
     if (page != NULL) {

@@ -113,7 +113,7 @@ class cStringsetNode {
   private : cStringsetNode & operator = (const cStringsetNode &) ;
 
 //--- Destructor
-  public : ~ cStringsetNode (void) ;
+  public : virtual ~ cStringsetNode (void) ;
 } ;
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

@@ -10,6 +10,362 @@
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
+//                                           @sint_36__34_AttributeSet class                                           *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_sint_36__34_AttributeSet : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_sint_36__34_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_sint_36__34_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_sint_36__34_AttributeSet * ptr (void) const { return (const cPtr_sint_36__34_AttributeSet *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_sint_36__34_AttributeSet (const cPtr_sint_36__34_AttributeSet * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_sint_36__34_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                 C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_sint_36__34_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                         const class GALGAS_sint_36__34_List & inOperand1
+                                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_sint_36__34_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_sint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_sint_36__34_AttributeSet class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                     Pointer class for @sint64AttributeSet class                                     *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_sint_36__34_AttributeSet : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_sint_36__34_List mProperty_valueList ;
+
+//--- Constructor
+  public : cPtr_sint_36__34_AttributeSet (const GALGAS_location & in_location,
+                                          const GALGAS_sint_36__34_List & in_valueList
+                                          COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_sint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                              @floatAttributeSet class                                               *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_floatAttributeSet : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_floatAttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_floatAttributeSet constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_floatAttributeSet * ptr (void) const { return (const cPtr_floatAttributeSet *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_floatAttributeSet (const cPtr_floatAttributeSet * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_floatAttributeSet extractObject (const GALGAS_object & inObject,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_floatAttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                  const class GALGAS_floatList & inOperand1
+                                                                  COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_floatAttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_floatList getter_valueList (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_floatAttributeSet class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatAttributeSet ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                     Pointer class for @floatAttributeSet class                                      *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_floatAttributeSet : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_floatList mProperty_valueList ;
+
+//--- Constructor
+  public : cPtr_floatAttributeSet (const GALGAS_location & in_location,
+                                   const GALGAS_floatList & in_valueList
+                                   COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_floatList getter_valueList (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                         @uint_33__32_AttributeMinMax class                                          *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_uint_33__32_AttributeMinMax : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_uint_33__32_AttributeMinMax (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_uint_33__32_AttributeMinMax constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_uint_33__32_AttributeMinMax * ptr (void) const { return (const cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_uint_33__32_AttributeMinMax (const cPtr_uint_33__32_AttributeMinMax * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_uint_33__32_AttributeMinMax extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_uint_33__32_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
+                                                                            const class GALGAS_uint & inOperand1,
+                                                                            const class GALGAS_uint & inOperand2
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_uint_33__32_AttributeMinMax & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_max (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_min (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_uint_33__32_AttributeMinMax class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_AttributeMinMax ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                   Pointer class for @uint32AttributeMinMax class                                    *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_uint_33__32_AttributeMinMax : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_uint mProperty_min ;
+  public : GALGAS_uint mProperty_max ;
+
+//--- Constructor
+  public : cPtr_uint_33__32_AttributeMinMax (const GALGAS_location & in_location,
+                                             const GALGAS_uint & in_min,
+                                             const GALGAS_uint & in_max
+                                             COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_min (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_max (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                         @uint_36__34_AttributeMinMax class                                          *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_uint_36__34_AttributeMinMax : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_uint_36__34_AttributeMinMax (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_uint_36__34_AttributeMinMax constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_uint_36__34_AttributeMinMax * ptr (void) const { return (const cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_uint_36__34_AttributeMinMax (const cPtr_uint_36__34_AttributeMinMax * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_uint_36__34_AttributeMinMax extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_uint_36__34_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
+                                                                            const class GALGAS_uint_36__34_ & inOperand1,
+                                                                            const class GALGAS_uint_36__34_ & inOperand2
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_uint_36__34_AttributeMinMax & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint_36__34_ getter_max (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint_36__34_ getter_min (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_uint_36__34_AttributeMinMax class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_AttributeMinMax ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                   Pointer class for @uint64AttributeMinMax class                                    *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_uint_36__34_AttributeMinMax : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_uint_36__34_ mProperty_min ;
+  public : GALGAS_uint_36__34_ mProperty_max ;
+
+//--- Constructor
+  public : cPtr_uint_36__34_AttributeMinMax (const GALGAS_location & in_location,
+                                             const GALGAS_uint_36__34_ & in_min,
+                                             const GALGAS_uint_36__34_ & in_max
+                                             COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_min (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_max (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
 //                                         @sint_33__32_AttributeMinMax class                                          *
 //                                                                                                                     *
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -333,6 +689,10 @@ class GALGAS_locationList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_locationList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_location constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -428,7 +788,7 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
   public : GALGAS_locationList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_locationList_2D_element (void) ;
+  public : virtual ~ GALGAS_locationList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_locationList_2D_element (const GALGAS_location & in_location) ;
@@ -685,7 +1045,7 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_implementationObjectMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_implementationObjectMap_2D_element (void) ;
+  public : virtual ~ GALGAS_implementationObjectMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_implementationObjectMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -893,7 +1253,7 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
   public : GALGAS_enumValues_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_enumValues_2D_element (void) ;
+  public : virtual ~ GALGAS_enumValues_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_enumValues_2D_element (const GALGAS_lstring & in_lkey,
@@ -1187,7 +1547,7 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_implementationMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_implementationMap_2D_element (void) ;
+  public : virtual ~ GALGAS_implementationMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_implementationMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -1897,7 +2257,7 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_identifierMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_identifierMap_2D_element (void) ;
+  public : virtual ~ GALGAS_identifierMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_identifierMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -2128,6 +2488,10 @@ class GALGAS_identifierList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_identifierList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_object_5F_t constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -2220,7 +2584,7 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
   public : GALGAS_identifierList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_identifierList_2D_element (void) ;
+  public : virtual ~ GALGAS_identifierList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_identifierList_2D_element (const GALGAS_object_5F_t & in_item) ;
@@ -2419,7 +2783,7 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_stringMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_stringMap_2D_element (void) ;
+  public : virtual ~ GALGAS_stringMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_stringMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -2622,7 +2986,7 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_lstringMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_lstringMap_2D_element (void) ;
+  public : virtual ~ GALGAS_lstringMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_lstringMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -2848,7 +3212,7 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
   public : GALGAS_prefix_5F_map_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_prefix_5F_map_2D_element (void) ;
+  public : virtual ~ GALGAS_prefix_5F_map_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_prefix_5F_map_2D_element (const GALGAS_lstring & in_lkey,
@@ -3060,7 +3424,7 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
   public : GALGAS_stringset_5F_map_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_stringset_5F_map_2D_element (void) ;
+  public : virtual ~ GALGAS_stringset_5F_map_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_stringset_5F_map_2D_element (const GALGAS_lstring & in_lkey,
@@ -3157,6 +3521,10 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_ident_5F_list_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_lstring constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -3252,7 +3620,7 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
   public : GALGAS_ident_5F_list_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_ident_5F_list_2D_element (void) ;
+  public : virtual ~ GALGAS_ident_5F_list_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_ident_5F_list_2D_element (const GALGAS_lstring & in_obj_5F_name) ;
@@ -3456,7 +3824,7 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
   public : GALGAS_ident_5F_list_5F_map_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_ident_5F_list_5F_map_2D_element (void) ;
+  public : virtual ~ GALGAS_ident_5F_list_5F_map_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_ident_5F_list_5F_map_2D_element (const GALGAS_lstring & in_lkey,
@@ -4363,7 +4731,7 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_objectsMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_objectsMap_2D_element (void) ;
+  public : virtual ~ GALGAS_objectsMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_objectsMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -4484,7 +4852,7 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_objectKindMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_objectKindMap_2D_element (void) ;
+  public : virtual ~ GALGAS_objectKindMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_objectKindMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -7880,7 +8248,7 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlAttributeMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlAttributeMap_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlAttributeMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlAttributeMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -7988,6 +8356,10 @@ class GALGAS_arxmlNodeList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlNodeList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlNode constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -8149,7 +8521,7 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlNodeList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlNodeList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlNodeList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlNodeList_2D_element (const GALGAS_arxmlNode & in_node) ;
@@ -8288,6 +8660,10 @@ class GALGAS_arxmlElementList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlElementNode constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -8581,7 +8957,7 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlElementList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlElementList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlElementList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlElementList_2D_element (const GALGAS_arxmlElementNode & in_node) ;
@@ -8898,6 +9274,10 @@ class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementValueList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlElementValue constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -9023,7 +9403,7 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlElementValueMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlElementValueMap_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlElementValueMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlElementValueMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -9194,7 +9574,7 @@ class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlElementValueList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlElementValueList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlElementValueList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlElementValueList_2D_element (const GALGAS_arxmlElementValue & in_value) ;

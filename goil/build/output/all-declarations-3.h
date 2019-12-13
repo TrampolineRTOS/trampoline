@@ -241,7 +241,7 @@ class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlMetaClassMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlMetaClassMap_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlMetaClassMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlMetaClassMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -350,6 +350,10 @@ class GALGAS_arxmlMetaAttributeList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlMetaAttributeList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlMetaAttribute constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -473,6 +477,10 @@ class GALGAS_arxmlMetaElementList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlMetaElementList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlMetaElement constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -1069,6 +1077,10 @@ class GALGAS_arxmlMetaClasslist : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlMetaClasslist_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlMetaClass constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -1164,7 +1176,7 @@ class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlMetaClasslist_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlMetaClasslist_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlMetaClasslist_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlMetaClasslist_2D_element (const GALGAS_arxmlMetaClass & in_lClass) ;
@@ -1229,7 +1241,7 @@ class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlMetaElementList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlMetaElementList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlMetaElementList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlMetaElementList_2D_element (const GALGAS_arxmlMetaElement & in_lElement) ;
@@ -1294,7 +1306,7 @@ class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlMetaAttributeList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlMetaAttributeList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlMetaAttributeList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlMetaAttributeList_2D_element (const GALGAS_arxmlMetaAttribute & in_lAttribute) ;
@@ -2833,52 +2845,4 @@ void callExtensionMethod_itemAtIndex (const class cPtr_gtlData * inObject,
                                       const GALGAS_gtlInt constin_index,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                     Extension getter '@gtlData hasItemAtIndex'                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlData_hasItemAtIndex) (const class cPtr_gtlData * inObject,
-                                                                          const class GALGAS_gtlInt constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void enterExtensionGetter_hasItemAtIndex (const int32_t inClassIndex,
-                                          enterExtensionGetter_gtlData_hasItemAtIndex inGetter) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-class GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
-                                                      const GALGAS_gtlInt constin_index,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                     Extension setter '@gtlData setItemAtIndex'                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-typedef void (*extensionSetterSignature_gtlData_setItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                 const class GALGAS_gtlData constinArgument0,
-                                                                 const class GALGAS_gtlInt constinArgument1,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
-                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
-                                         const GALGAS_gtlData constin_data,
-                                         const GALGAS_gtlInt constin_index,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
 

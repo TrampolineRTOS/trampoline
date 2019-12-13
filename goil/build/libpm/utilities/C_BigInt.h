@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2015, ..., 2015 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2015, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -82,8 +82,10 @@ class C_BigInt {
 
 //--- Shift
   public : C_BigInt operator << (const uint32_t inValue) const ;
+  public : C_BigInt operator << (const C_BigInt inValue) const ;
   public : void operator <<= (const uint32_t inValue) ;
   public : C_BigInt operator >> (const uint32_t inValue) const ;
+  public : C_BigInt operator >> (const C_BigInt inValue) const ;
   public : void operator >>= (const uint32_t inValue) ;
 
 //--- String

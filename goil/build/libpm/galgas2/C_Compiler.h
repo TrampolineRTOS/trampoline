@@ -122,6 +122,9 @@ class C_Compiler : public C_SharedObject {
     return mCurrentLocation.columnNumber () ;
   }
 
+//--- Get separator string
+  public : virtual C_String separatorString (void) const { return "" ; }
+
 //--- Init scanner from source file (for Cocoa GALGAS)
   public : void resetAndLoadSourceFromText (const C_SourceTextInString & inSourceText) ;
 

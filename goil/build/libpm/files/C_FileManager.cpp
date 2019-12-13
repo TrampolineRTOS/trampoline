@@ -736,12 +736,26 @@ bool C_FileManager::makeFileExecutable (const C_String & inFilePath) {
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool C_FileManager::directoryExists (const C_String & inDirectoryPath) {
-  const C_String nativePath = nativePathWithUnixPath (inDirectoryPath) ;
+  return directoryExistsWithNativePath (nativePathWithUnixPath (inDirectoryPath)) ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+bool C_FileManager::directoryExistsWithNativePath (const C_String & inDirectoryNativePath) {
+  #if COMPILE_FOR_WINDOWS == 1
+    const char dirSep = '\\' ;
+  #else
+    const char dirSep = '/' ;
+  #endif
+  C_String directoryNativePath = inDirectoryNativePath ;
+  while ((directoryNativePath.length () > 0) && (directoryNativePath.lastCharacter(HERE) == dirSep)) {
+    directoryNativePath = directoryNativePath.subString (0, directoryNativePath.length () - 1) ;
+  }
 //--- Get file properties
-  bool exists = nativePath.length () > 0 ;
+  bool exists = directoryNativePath.length () > 0 ;
   if (exists) {
     struct stat fileProperties ;
-    const int err = ::stat (nativePath.cString (HERE), & fileProperties) ;
+    const int err = ::stat (directoryNativePath.cString (HERE), & fileProperties) ;
     exists = (err == 0) && ((fileProperties.st_mode & S_IFDIR) != 0) ;
   }
  //--- Return result
@@ -1020,7 +1034,7 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
           C_String name = inStartSearchPath ;
           name.appendCString ("/") ;
           name.appendCString (current->d_name) ;
-          if (C_FileManager::directoryExists (name)) {
+          if (C_FileManager::directoryExistsWithNativePath (name)) {
             bool dirOk = true ;
             for (int32_t i=0 ; (i<inDirectoriesToExcludeCount) && dirOk ; i++) {
               if (UNICODE_VALUE (inDirectoriesToExclude (i COMMA_HERE) (0 COMMA_HERE)) == '.') {
@@ -1091,7 +1105,7 @@ static void recursiveFindAllFilesInDirectory (const C_String & inStartSearchPath
         C_String name = inStartSearchPath ;
         name.appendCString ("/") ;
         name.appendCString (current->d_name) ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           recursiveFindAllFilesInDirectory (name, inExtension, outFoundFilePathes) ;
         }else if (C_FileManager::fileExistsAtPath (name) && (name.pathExtension () == inExtension)) {
           outFoundFilePathes.appendObject (name) ;

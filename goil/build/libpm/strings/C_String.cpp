@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1997, ..., 2016 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1997, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -74,7 +74,7 @@ class cEmbeddedString : public C_SharedObject {
                             const uint32_t inCapacity
                             COMMA_LOCATION_ARGS) ;
 
-  public : ~cEmbeddedString (void) ;
+  public : virtual ~cEmbeddedString (void) ;
 
 //--- No copy
   private : cEmbeddedString (const cEmbeddedString &) ;
@@ -651,12 +651,12 @@ void C_String::suppress (const int32_t inLocation,
                     inLength, mEmbeddedString->mLength) ;
     const int32_t bytesToMove = 1 + ((int32_t) mEmbeddedString->mLength) - inLength - inLocation ;
     if ((inLocation >= 0) && (bytesToMove > 0)) {
-      ::memmove (& mEmbeddedString->mString [inLocation],
-                 & mEmbeddedString->mString [inLocation + inLength],
-                 ((size_t) bytesToMove) * sizeof (utf32)) ;
+      for (int32_t i=0 ; i<bytesToMove ; i++) {
+        mEmbeddedString->mString [inLocation + i] = mEmbeddedString->mString [inLocation + i + inLength] ;
+      }
       MF_Assert (mEmbeddedString->mLength >= (uint32_t) inLength,
-               "mLength (%lld) < inLength (%lld)",
-                mEmbeddedString->mLength, inLength) ;
+                 "mLength (%lld) < inLength (%lld)",
+                 mEmbeddedString->mLength, inLength) ;
       mEmbeddedString->mLength -= (uint32_t) inLength ;
       #ifndef DO_NOT_GENERATE_CHECKINGS
         checkString (HERE) ;
@@ -686,10 +686,8 @@ void C_String::insertCharacterAtIndex (const utf32 inChar,
                  "inIndex (%ld) > mLength (%ld)",
                   inIndex, mEmbeddedString->mLength) ;
   const int32_t bytesToMove = 1 + ((int32_t) mEmbeddedString->mLength) - inIndex ;
-  if (bytesToMove > 0) {
-    ::memmove (& mEmbeddedString->mString [inIndex + 1],
-               & mEmbeddedString->mString [inIndex],
-               ((size_t) bytesToMove) * sizeof (utf32)) ;
+  for (int32_t i=bytesToMove ; i>0 ; i--) {
+    mEmbeddedString->mString [inIndex + i] = mEmbeddedString->mString [inIndex + i - 1] ;
   }
   mEmbeddedString->mString [inIndex] = inChar ;
   mEmbeddedString->mLength += 1 ;
@@ -1459,7 +1457,7 @@ C_String C_String::assemblerRepresentation (void) const {
   const utf32 * ptr = utf32String (HERE) ;
   for (int32_t i=0 ; i<receiver_length ; i++) {
     const utf32 c = ptr [i] ;
-    if (isalnum ((int) UNICODE_VALUE (c)) || (UNICODE_VALUE (c) == '.') || (UNICODE_VALUE (c) == '$')) {
+    if (isalnum ((int) UNICODE_VALUE (c)) || (UNICODE_VALUE (c) == '.')  || (UNICODE_VALUE (c) == '-') || (UNICODE_VALUE (c) == '$')) {
       s.appendUnicodeCharacter (c COMMA_HERE) ;
     }else{
       s.appendUnicodeCharacter (TO_UNICODE ('_') COMMA_HERE) ;
