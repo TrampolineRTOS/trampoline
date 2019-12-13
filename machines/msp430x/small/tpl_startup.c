@@ -6,7 +6,6 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright DG for function and data structures documentation and THUMB2 port
  * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
@@ -85,28 +84,19 @@ void tpl_continue_reset_handler(void)
 
 #endif
 
-/* Exec constructors for global variables */
-  /*
-  extern void (* __preinit_array_start) (void) ;
-  extern void (* __preinit_array_end) (void) ;
-  void (** ptr) (void) = & __preinit_array_start ;
-  while (ptr != & __preinit_array_end) {
+  /* Exec constructors for global objects (c++)*/
+  extern void (* __ctors_start) (void) ;
+  extern void (* __ctors_end) (void) ;
+  void (** ptr) (void) = & __ctors_start ;
+  while (ptr != & __ctors_end) {
     (* ptr) () ;
     ptr ++ ;
   }
-  */
-  /* Exécuter les routines d'initialisation de la section init_routine_array */
-  /*
-  extern void (* __init_array_start) (void) ;
-  extern void (* __init_array_end) (void) ;
-  ptr = & __init_array_start ;
-  while (ptr != & __init_array_end) {
-    (* ptr) () ;
-    ptr ++ ;
-  }
-  */
+  
   /* Exec user program */
   main();
+
   /* should not get there */
+  /* so we don't call global destructors... */
   while(1);
 }
