@@ -66,5 +66,6 @@ CPU readbutton {
     SOURCE = PORT4_VECTOR {
       BIT = 5;
     }; /* Button S1 is on GPIO port 4, bit 5 */
+    EXIT_FROM_LPM = TRUE;
   };
 };
