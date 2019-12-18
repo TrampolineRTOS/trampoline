@@ -47,7 +47,11 @@ FUNC(int, OS_APPL_CODE) main(void)
       extern unsigned __nvdata_load_start;
       extern unsigned __nvdata_start;
       extern unsigned __nvdata_end;
-      memInit(&__nvdata_load_start,&__nvdata_start,(uint16_t)&__nvdata_end-(uint16_t)&__nvdata_start);
+      memInit(
+        &__nvdata_load_start,
+        &__nvdata_start,
+        (uint16_t)&__nvdata_end-(uint16_t)&__nvdata_start
+      );
 	}
 	tpl_serial_begin();
 	StartOS(OSDEFAULTAPPMODE);

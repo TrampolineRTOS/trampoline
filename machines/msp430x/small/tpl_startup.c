@@ -35,7 +35,7 @@ FUNC(void, OS_CODE) tpl_MPU_violation(void) {
   while(1);
 };
 
-/** copy a memory chunk of 'size' bytes 
+/** copy a memory chunk of 'size' bytes
  *  from @ src (in FRAM)
  *  to   @ dst (either SRAM or FRAM)
  *  It uses the DMA if WITH_INIT_WITH_DMA is set.
@@ -90,7 +90,11 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   extern unsigned __data_load_start;
   extern unsigned __data_start;
   extern unsigned __data_end;
-  memInit(&__data_load_start,&__data_start,(uint16_t)&__data_end-(uint16_t)&__data_start);
+  memInit(
+    &__data_load_start,
+    &__data_start,
+    (uint16_t)&__data_end-(uint16_t)&__data_start
+  );
 
   /* start clock: default to 1MHz
    * (at least .bss section should be initialized)
@@ -109,11 +113,11 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
    * |               |  Segment 2: RX
    * | R/X FRAM      |  FRAM with R/eXecute access => code, interrupts
    * |   (seg2)      |  should include 0xFF80-FFFF not to "secure" the chip!
-   * |               |  
+   * |               |
    * | code/const    |  start with initial value of FRAM vars (not to be updated)
-   * |               |  
+   * |               |
    *  -------------- => MPU Segment 1 limit
-   * | FRAM for vars | (if there are vars in FRAM, a multiple of 1024 bytes 
+   * | FRAM for vars | (if there are vars in FRAM, a multiple of 1024 bytes
    * |   ---------   |
    * |     RAM       |
    * |   ---------   |  Segment 1: RW

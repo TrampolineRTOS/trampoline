@@ -114,17 +114,17 @@ foreach proc in PROCESSES do%
     TPL_MPU_B1_BOUNDARY = .; /* useful for MPU initialization - start of code */
     __nvdata_load_start = .;
     . += SIZEOF(.NVdata);    /* reserve space for NVdata init values*/
-	__nvdata_load_end = .;
+ __nvdata_load_end = .;
   } >FRAM
 }
 
 /* init section for msp430. 
  * execution starts at the beginning of the fram. */
 SECTIONS {
-	/* we make sure that both 
-	 * - VMA (virtual memory address) and 
-	 * - LMA (load memory address) 
-	 * are the same */
+ /* we make sure that both 
+  * - VMA (virtual memory address) and 
+  * - LMA (load memory address) 
+  * are the same */
   .textInit __nvdata_load_end : AT(__nvdata_load_end) {
     KEEP(*(.init)) /* start here after reset */
   } > FRAM
@@ -227,7 +227,7 @@ SECTIONS {
 
     /* Constructors sections (list of pointers)
      * from https://gcc.gnu.org/onlinedocs/gccint/Initialization.html 
-	 * set in .text section to be effectively loaded in flash
+  * set in .text section to be effectively loaded in flash
      **/
     PROVIDE_HIDDEN (__ctors_start = .);
     KEEP (*(.ctors*))
@@ -236,7 +236,7 @@ SECTIONS {
 
     /* Destructors sections (list of pointers)
      * from https://gcc.gnu.org/onlinedocs/gccint/Initialization.html 
-	 * set in .text section to be effectively loaded in flash
+  * set in .text section to be effectively loaded in flash
      **/
     PROVIDE_HIDDEN (__dtors_start = .);
     KEEP (*(.dtors*))
@@ -251,6 +251,7 @@ SECTIONS {
 
 /* used by the startup to initialize data */
 SECTIONS {
+  _sramStartAddress = .;
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : AT ( __data_load_start )
   {
@@ -296,9 +297,9 @@ end foreach
   } >RAM
 
   .dataInit : {
-	. = ALIGN(16);
+ . = ALIGN(16);
     __data_load_start = .;
-	/* reserve space for data init value */
+ /* reserve space for data init value */
     . += SIZEOF(.data);
   } >FRAM
 }
