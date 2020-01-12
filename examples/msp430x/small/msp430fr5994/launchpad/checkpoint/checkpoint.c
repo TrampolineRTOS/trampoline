@@ -6,18 +6,18 @@
 //#include "ref_a.h"
 
 /* Warning, task data outside of POWER_ON_INIT section won't be initialized */
-#define APP_Task_serial_TX_START_SEC_VAR_POWER_ON_INIT_32BIT
+#define APP_Task_task_serial_TX_START_SEC_VAR_POWER_ON_INIT_32BIT
 #include "tpl_memmap.h"
 VAR(uint32_t,AUTOMATIC) dataSRAM = 100;
 VAR(uint16_t,AUTOMATIC) adc_conv_ready = 0;
-#define APP_Task_serial_TX_STOP_SEC_VAR_POWER_ON_INIT_32BIT
+#define APP_Task_task_serial_TX_STOP_SEC_VAR_POWER_ON_INIT_32BIT
 #include "tpl_memmap.h"
 
 /* At this date, NON_VOLATILE data is initialized only when flashing firmware */
-#define APP_Task_serial_TX_START_SEC_VAR_NON_VOLATILE_32BIT
+#define APP_Task_task_serial_TX_START_SEC_VAR_NON_VOLATILE_32BIT
 #include "tpl_memmap.h"
 VAR(uint32_t,AUTOMATIC) dataFRAM = 100;
-#define APP_Task_serial_TX_STOP_SEC_VAR_NON_VOLATILE_32BIT
+#define APP_Task_task_serial_TX_STOP_SEC_VAR_NON_VOLATILE_32BIT
 #include "tpl_memmap.h"
 
 
@@ -114,13 +114,13 @@ FUNC(int, OS_APPL_CODE) main(void)
 #define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#define APP_Task_serial_TX_START_SEC_CODE
+#define APP_Task_task_serial_TX_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*----------------------------------------------------------------------------*/
 /* TASK serial_TXt                                                            */
 /*----------------------------------------------------------------------------*/
-TASK(serial_TX)
+TASK(task_serial_TX)
 {
   //	tpl_serial_print_string("data in SRAM :");
   //	tpl_serial_print_int(dataSRAM,0);
@@ -135,15 +135,15 @@ TASK(serial_TX)
 	TerminateTask();
 }
 
-#define APP_Task_serial_TX_STOP_SEC_CODE
+#define APP_Task_task_serial_TX_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /*----------------------------------------------------------------------------*/
 /* TASK checkpoint                                                            */
 /*----------------------------------------------------------------------------*/
-#define APP_Task_checkpoint_START_SEC_CODE
+#define APP_Task_task_energy_START_SEC_CODE
 #include "tpl_memmap.h"
-TASK(checkpoint)
+TASK(task_energy)
 {
   uint16_t vccRaw;
   float vccPhy;
@@ -172,16 +172,16 @@ TASK(checkpoint)
 	tpl_serial_print_string("\r\n");
   tpl_serial_print_string("vccPhy = ");
 }
-#define APP_Task_checkpoint_STOP_SEC_CODE
+#define APP_Task_task_energy_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /*----------------------------------------------------------------------------*/
 /* ISR ADC12                                                                  */
 /*----------------------------------------------------------------------------*/
-#define APP_ISR_adc_end_conversion_START_SEC_CODE
+#define APP_ISR_handler_adc_end_conversion_START_SEC_CODE
 #include "tpl_memmap.h"
 
-ISR(adc_end_conversion)
+ISR(handler_adc_end_conversion)
 {
   adc_conv_ready = 1;
   ADC12_B_clearInterrupt(ADC12_B_BASE,
@@ -190,5 +190,5 @@ ISR(adc_end_conversion)
                          );
 }
 
-#define APP_ISR_adc_end_conversion_STOP_SEC_CODE
+#define APP_ISR_handler_adc_end_conversion_STOP_SEC_CODE
 #include "tpl_memmap.h"

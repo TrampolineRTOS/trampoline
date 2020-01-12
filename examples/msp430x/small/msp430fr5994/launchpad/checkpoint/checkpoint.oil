@@ -59,14 +59,14 @@ CPU checkpoint {
   APPMODE Std {}; // Warning: std will make a problem iwth the namespace std!
   
   /* TASKS */
-  TASK serial_TX {
+  TASK task_serial_TX {
     PRIORITY = 2;
     AUTOSTART = TRUE {APPMODE = Std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  TASK checkpoint {
+  TASK task_energy {
     PRIORITY = 6;
     AUTOSTART = TRUE {APPMODE = Std;};
     ACTIVATION = 1;
@@ -74,10 +74,10 @@ CPU checkpoint {
   };
 
   /* ALARMS */
-  ALARM ALcheckpoint {
+  ALARM Alarm_task_energy {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = checkpoint;
+      TASK = task_energy;
     };
     AUTOSTART = TRUE {
       APPMODE = Std;
@@ -86,10 +86,10 @@ CPU checkpoint {
     };
   };
 
-  ALARM ALSerial_TX {
+  ALARM Alarm_task_serial_TX {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = serial_TX;
+      TASK = task_serial_TX;
     };
     AUTOSTART = TRUE {
       APPMODE = Std;
@@ -99,7 +99,7 @@ CPU checkpoint {
   };
 
   /* ISR */
-  ISR adc_end_conversion {
+  ISR handler_adc_end_conversion {
     CATEGORY = 1;
     PRIORITY = 1;
     SOURCE = ADC12_VECTOR; /* */
