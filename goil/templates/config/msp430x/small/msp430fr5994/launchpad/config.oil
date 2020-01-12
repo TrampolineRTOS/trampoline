@@ -11,7 +11,9 @@ IMPLEMENTATION lauchpad {
           serial {
             UINT32 RXBUFFER = 32;
             UINT32 TXBUFFER = 16;
-          }
+          },
+          adc,
+          ref_a
         ] LIBRARY[];
       },
       FALSE
@@ -24,5 +26,15 @@ CPU launchpad {
     PATH = "msp430x/small/msp430fr5994/launchpad/serial";
     CHEADER = "serial.h";
     CFILE   = "serial.c";
+  };
+  LIBRARY adc {
+    PATH = "msp430x/small/msp430fr5994/launchpad/adc";
+    CHEADER = "adc12_b.h";
+    CFILE = "adc12_b.c";
+  };
+  LIBRARY ref_a {
+    PATH = "msp430x/small/msp430fr5994/launchpad/ref_a";
+    CHEADER = "ref_a.h";
+    CFILE = "ref_a.c";
   };
 };
