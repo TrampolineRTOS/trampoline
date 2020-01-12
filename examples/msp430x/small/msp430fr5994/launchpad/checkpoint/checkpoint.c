@@ -93,6 +93,25 @@ FUNC(void, OS_APPL_CODE) tpl_adc_init(void)
   Ref_A_enableReferenceVoltage(REF_A_BASE);
 }
 
+uint16 readPowerVoltage(void)
+{
+  // mesure tension
+  //Enable/Start sampling and conversion
+  /*
+   * Base address of ADC12B Module
+   * Start the conversion into memory buffer 0
+   * Use the single-channel, single-conversion mode
+   */
+  ADC12_B_startConversion(ADC12_B_BASE,
+                          ADC12_B_MEMORY_0,
+                          ADC12_B_SINGLECHANNEL);
+
+  while(adc_conv_ready != 1);
+  adc_conv_ready = 0;
+
+  return ADC12_B_getResults(ADC12_B_BASE, ADC12_B_MEMORY_0);
+}
+
 /*----------------------------------------------------------------------------*/
 /* main function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -150,20 +169,7 @@ TASK(task_energy)
   //  float vccThresholdPhy;
   //  uint16_t vccThresholdRaw;
 
-  // mesure tension
-  //Enable/Start sampling and conversion
-  /*
-   * Base address of ADC12B Module
-   * Start the conversion into memory buffer 0
-   * Use the single-channel, single-conversion mode
-   */
-  ADC12_B_startConversion(ADC12_B_BASE,
-                          ADC12_B_MEMORY_0,
-                          ADC12_B_SINGLECHANNEL);
-
-  while(adc_conv_ready != 1);
-  adc_conv_ready = 0;
-  vccRaw = ADC12_B_getResults(ADC12_B_BASE, ADC12_B_MEMORY_0);
+  vccRaw = readPowerVoltage();
   vccPhy = ((float) vccRaw / 1024);
 
 	tpl_serial_print_string("\r\n");
@@ -171,6 +177,12 @@ TASK(task_energy)
   tpl_serial_print_int(vccRaw,0);
 	tpl_serial_print_string("\r\n");
   tpl_serial_print_string("vccPhy = ");
+
+  //  if (vccRaw < HIBERNATE_THRESHOLD_RAW ) {
+  //    Hibernate();
+  //  } else {
+    TerminateTask ();
+    //  }
 }
 #define APP_Task_task_energy_STOP_SEC_CODE
 #include "tpl_memmap.h"
