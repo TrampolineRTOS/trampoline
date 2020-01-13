@@ -164,7 +164,7 @@ TASK(task_serial_TX)
 #include "tpl_memmap.h"
 TASK(task_energy)
 {
-  uint16_t vccRaw;
+  uint16 vccRaw;
   float vccPhy;
   //  float vccThresholdPhy;
   //  uint16_t vccThresholdRaw;
@@ -177,12 +177,14 @@ TASK(task_energy)
   tpl_serial_print_int(vccRaw,0);
 	tpl_serial_print_string("\r\n");
   tpl_serial_print_string("vccPhy = ");
-
-  //  if (vccRaw < HIBERNATE_THRESHOLD_RAW ) {
-  //    Hibernate();
-  //  } else {
+#define HIBERNATE_THRESHOLD_RAW (1600)
+  if (vccRaw < HIBERNATE_THRESHOLD_RAW ) {
+    Hibernate();
+  } else {
     TerminateTask ();
-    //  }
+  }
+  /* On ne doit jamais exécuter la ligne suivante */
+  TerminateTask ();
 }
 #define APP_Task_task_energy_STOP_SEC_CODE
 #include "tpl_memmap.h"

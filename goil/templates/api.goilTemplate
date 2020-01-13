@@ -30,6 +30,10 @@ if [MESSAGES length] > 0 then
   let APIUSED += APIMAP["message"]
 end if
 
+#if [] then
+  let APIUSED += APIMAP["checkpoint"]
+#end if
+
 if exists SEMAPHORE then
   if [SEMAPHORE length] > 0 then
     let APIUSED += APIMAP["semaphore"]

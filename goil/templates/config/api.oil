@@ -355,6 +355,20 @@ CPU api {
   };
 
   /*
+   * Checkpointing os
+   */
+  APICONFIG checkpoint {
+    ID_PREFIX = OS;
+    FILE = "tpl_chkpt_checkpoint_kernel";
+    DIRECTORY = "os";
+    SYSCALL Hibernate {
+      KERNEL = tpl_hibernate_os_service;
+      LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
+    } : "The user calls this system service to checkpoint the current status of the OS.";
+  };
+
+  /*
    * OSEK com
    */
   APICONFIG message {
