@@ -50,35 +50,103 @@ framUpRead8:
   movx.b @r15, r15
   ret
 
+
+/*
+ * Checkpointing functions
+ */
+.extern __data_start
+.extern __tpl_end_of_checkpointing_zone
+.extern DMA0SA
+.extern DMA0DA
+.extern DMA0SZ
+
+.set DMADT_1,       0x1000
+.set DMASRCINCR_3,  0x0300
+.set DMADSTINCR_3,  0x0C00
+.set DMASWDW,       0x0000
+.set DMAEN,         0x0010
+.set DMAREQ,        0x0001
+
 .global saveCheckpoint
 .type   saveCheckpoint, %function
 /*
  * Save a part of the SRAM in the FRAM as a checkpoint.
  * r15 contains the buffer to use for checkpoint (0 or 1)
+ *
+ * Checkpoint buffers are located at addresses 0x10000 and 0x10800 and
+ * are 2kB in size each
  */
-.extern __data_start
-.extern _end
-.extern DMA0SA
-
 saveCheckpoint:
-  cmp     #2, r15             /* check the buffer is valid (0 or 1)     */
+  cmp     #2, r15                 /* check the buffer is valid (0 or 1)     */
   jhs     exit_saveCheckPoint
-  swpb    r15                 /* 000000000000000x -> 0000000x00000000   */
-  rlam    #3, r15             /* 0000000x00000000 -> 0000x00000000000   */
-  addx.a  #0x10000, r15       /* 00010000x00000000000 start of FRAM buf */
-  mov     #_end, r13          /* end of the data in SRAM                */
-  mov     #__data_start, r14  /* origin of the SRAM                     */
-  sub     r14, r13            /* size in bytes                          */
-  tst     #1, r13             /* test odd                               */
-  jz      even_size
+  swpb    r15               /* 0000 0000 0000 000x -> 0000 000x 0000 0000   */
+  rlam    #3, r15           /* 0000 000x 0000 0000 -> 0000 x000 0000 0000   */
+  addx.a  #0x10000, r15     /* 0001 0000 x000 0000 0000 start of FRAM buf   */
+  mov     #__tpl_end_of_checkpointing_zone, r13 /* end of the data in SRAM  */
+  mov     #__data_start, r14      /* origin of the SRAM                     */
+  sub     r14, r13                /* size in bytes                          */
+  bit     #1, r13                 /* test odd                               */
+  jz      even_size_saveCheckpoint
   inc     r13
-even_size:
+even_size_saveCheckpoint:
   clrc
-  rrc     r13                 /* size in words                          */
+  rrc     r13                     /* size in words                          */
 
-  sub
-  mov     r14, &DMA0SA        /* source start address is SRAM origin    */
-  movx.a  r15, &DMA0DA        /* dest start address is FRAM buffer      */
+  mov     r14, &DMA0SA            /* source start address is SRAM origin    */
+  movx.a  r15, &DMA0DA            /* dest start address is FRAM buffer      */
+  mov     r13, &DMA0SZ            /* size of the transfer                   */
+  /*
+   * Launch the transfer:
+   * DMADT_1           Block transfer mode
+   * DMASRCINCR_3      Source address incremented
+   * DMADSTINCR_3      Destination address incremented
+   * DMASWDW           Word transfer
+   * DMAEN             Enable
+   * DMAREQ            Launch transfer
+   */
+  mov     #DMADT_1|DMASRCINCR_3|DMADSTINCR_3|DMASWDW|DMAEN|DMAREQ, &DMA0CTL
 
 exit_saveCheckPoint:
+  ret
+
+.global loadCheckpoint
+.type   loadCheckpoint, %function
+/*
+ * Load a part of the SRAM from the FRAM as a checkpoint.
+ * r15 contains the buffer to use for checkpoint (0 or 1)
+ *
+ * Checkpoint buffers are located at addresses 0x10000 and 0x10800 and
+ * are 2kB in size each
+ */
+loadCheckpoint:
+  cmp     #2, r15                 /* check the buffer is valid (0 or 1)     */
+  jhs     exit_loadCheckPoint
+  swpb    r15               /* 0000 0000 0000 000x -> 0000 000x 0000 0000   */
+  rlam    #3, r15           /* 0000 000x 0000 0000 -> 0000 x000 0000 0000   */
+  addx.a  #0x10000, r15     /* 0001 0000 x000 0000 0000 start of FRAM buf   */
+  mov     #__tpl_end_of_checkpointing_zone, r13 /* end of the data in SRAM  */
+  mov     #__data_start, r14      /* origin of the SRAM                     */
+  sub     r14, r13                /* size in bytes                          */
+  bit     #1, r13                 /* test odd                               */
+  jz      even_size_loadCheckPoint
+  inc     r13
+even_size_loadCheckPoint:
+  clrc
+  rrc     r13                     /* size in words                          */
+
+  movx.a  r15, &DMA0SA            /* source start address is FRAM buffer    */
+  mov     r14, &DMA0DA            /* dest start address is SRAM origin      */
+  mov     r13, &DMA0SZ            /* size of the transfer                   */
+  /*
+   * Launch the transfer:
+   * DMADT_1           Block transfer mode
+   * DMASRCINCR_3      Source address incremented
+   * DMADSTINCR_3      Destination address incremented
+   * DMASWDW           Word transfer
+   * DMAEN             Enable
+   * DMAREQ            Launch transfer
+   */
+  mov     #DMADT_1|DMASRCINCR_3|DMADSTINCR_3|DMASWDW|DMAEN|DMAREQ, &DMA0CTL
+
+exit_loadCheckPoint:
   ret
