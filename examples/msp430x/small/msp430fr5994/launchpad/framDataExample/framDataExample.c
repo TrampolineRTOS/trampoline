@@ -21,13 +21,42 @@ VAR(uint32_t,AUTOMATIC) dataFRAM = 100;
 #define APP_Task_serial_TX_START_SEC_CODE
 #include "tpl_memmap.h"
 
+/* debugging... */
+FUNC(void, OS_CODE) memInit(
+		P2VAR(void,AUTOMATIC,OS_CONST) src,
+		P2VAR(void,AUTOMATIC,OS_CONST) dst,
+		  VAR(uint16_t,AUTOMATIC)      size);
+
+void framStart()
+{
+    /* set GPIO P5.6 (button S1) as an input, with internal pull-up */
+    P5DIR &= ~(1<<6); /* input                        */
+    P5REN |= 1<<6;    /* pull-up/down resistor enable */
+    P5OUT |= 1<<6;    /* pull-up                      */
+
+    if(((P5IN >> 6) & 1) == 0) { //button pushed during startup ?
+		//ok button pushed => cold start
+		P1OUT |= 1;   /* set green led LED1   */
+		/* Init .nvdata section */
+		extern unsigned __nvdata_load_start;
+		extern unsigned __nvdata_start;
+		extern unsigned __nvdata_end;
+		memInit(
+		  &__nvdata_load_start,
+		  &__nvdata_start,
+		  (uint16_t)&__nvdata_end-(uint16_t)&__nvdata_start
+		);
+	}
+}
+
 FUNC(int, OS_APPL_CODE) main(void)
 {
 	// Disable the GPIO power-on default high-impedance mode
 	// to activate previously configured port settings
 	PM5CTL0 &= ~LOCKLPM5;
-	//set GPIO P1.0 (LED2) as an output
-	P1DIR = 0x01;
+	//set GPIO P1.0 and P1.1 (LED1 and 2) as an output
+	P1DIR |= 0x03;
+	framStart();
 	tpl_serial_begin();
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
