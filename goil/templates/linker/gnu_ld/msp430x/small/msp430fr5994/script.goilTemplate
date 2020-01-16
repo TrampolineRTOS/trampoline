@@ -485,5 +485,18 @@ SECTIONS {
     libgcc.a ( * )
   }
 }
+
+SECTIONS {
+  __tpl_end_of_checkpointing_zone = .;
+  /* Initialized data sections goes into RAM, load LMA copy after code */
+  .osVarKernStack :
+  {
+    . = ALIGN(2);
+    __os_kern_stack_start = .;	/* OS kernel stack symbol start */
+    *(.osVarKernStack)	        /* OS Kernel stack */
+    __os_kern_stack_end   = .;  /* OS kernel stack symbol start */
+  }
+}
+
 /* vim:ft=ld
  */

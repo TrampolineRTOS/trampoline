@@ -88,6 +88,34 @@ end foreach
 %
 
 /*
+ * OS Kernel stack
+ * The stack is separated from other data, as it should not
+ * be restored with a checkpoint
+ */
+#ifdef OS_START_SEC_KERN_STACK
+  #undef OS_START_SEC_KERN_STACK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a .osVarKernStack data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".osVarKernStack")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef OS_STOP_SEC_KERN_STACK
+  #undef OS_STOP_SEC_KERN_STACK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+/*
  * Const, Calibration, Carto, Configuration data sections
  */
 %

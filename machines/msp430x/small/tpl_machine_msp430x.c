@@ -119,12 +119,15 @@ FUNC(void, OS_CODE) tpl_set_systick_timer()
 
 /*
  * The kernel stack
+ * On MSP430, the kernel stack is separated from other data, as the
+ * kernel stack (in use during startup) should not be restored
+ * with a checkpoint: it would crash the system.
  */
-#define OS_START_SEC_VAR_NOINIT_16BIT
+#define OS_START_SEC_KERN_STACK
 #include "tpl_memmap.h"
 CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA)
   tpl_kern_stack[TPL_KERNEL_STACK_SIZE];
-#define OS_STOP_SEC_VAR_NOINIT_16BIT
+#define OS_STOP_SEC_KERN_STACK
 #include "tpl_memmap.h"
 
 /*
