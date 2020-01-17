@@ -70,8 +70,8 @@ framUpRead8:
 .set DMAEN,         0x0010
 .set DMAREQ,        0x0001
 
-.global saveCheckpoint
-.type   saveCheckpoint, %function
+.global tpl_save_checkpoint
+.type   tpl_save_checkpoint, %function
 /*
  * Save a part of the SRAM in the FRAM as a checkpoint.
  * r15 contains the buffer to use for checkpoint (0 or 1)
@@ -79,7 +79,7 @@ framUpRead8:
  * Checkpoint buffers are located at addresses 0x10000 and 0x11000 and
  * are 4kB in size each
  */
-saveCheckpoint:
+tpl_save_checkpoint:
   cmp     #2, r15                 /* check the buffer is valid (0 or 1)     */
   jhs     exit_saveCheckpoint
   swpb    r15               /* 0000 0000 0000 000x -> 0000 000x 0000 0000   */
@@ -112,8 +112,8 @@ even_size_saveCheckpoint:
 exit_saveCheckpoint:
   ret
 
-.global loadCheckpoint
-.type   loadCheckpoint, %function
+.global tpl_load_checkpoint
+.type   tpl_load_checkpoint, %function
 /*
  * Load a part of the SRAM from the FRAM as a checkpoint.
  * r15 contains the buffer to use for checkpoint (0 or 1)

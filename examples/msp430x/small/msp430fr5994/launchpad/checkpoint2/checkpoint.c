@@ -8,8 +8,8 @@ extern void framUpWrite8(const uint16 address, const uint8 data);
 extern void framUpWrite16(const uint16 address, const uint16 data);
 extern uint8 framUpRead8(const uint16 address);
 extern uint16 framUpRead16(const uint16 address);
-extern void saveCheckpoint(const uint16 buffer);
-extern void loadCheckpoint(const uint16 buffer);
+extern void tpl_save_checkpoint(const uint16 buffer);
+extern void tpl_load_checkpoint(const uint16 buffer);
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
@@ -41,7 +41,7 @@ FUNC(int, OS_APPL_CODE) main(void)
     framUpWrite8(0x0009, 2);
   }
   else if (((P5IN >> 5) & 1) == 0) { //button S2 pushed during startup ?
-    saveCheckpoint(0);
+    tpl_save_checkpoint(0);
   }
 
 	StartOS(OSDEFAULTAPPMODE);

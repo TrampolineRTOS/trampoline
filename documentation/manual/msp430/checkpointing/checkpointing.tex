@@ -196,7 +196,7 @@ At this date, the non volatile data is initialized only when flashing the firmwa
 
 \subsection{DMA}
 
-Both checkpoint save and checkpoint restore are done using the DMA. The MSP430FR5994 has 6 DMA channels. Channel 0 is used. The block transfer mode is used. DMA is triggered by software. It copies the whole content of the SRAM (8kB, from 0x1C00 to 0x3BFF) to the FRAM. It would be safer to use double buffering because if a checkpoint cannot complete before the loss of power for any reason, the previous checkpoint will not be corrupted. An int variable in FRAM with value equal to 0, 1 or -1 is used to select the buffer. Let's call it \lstinline{tpl_checkpoint_buffer}. If the value is -1, no checkpoint is saved. This is the initial value. If value is 0 a checkpoint is saved in buffer 0 and if value is 1, a checkpoint is saved in buffer 1. Saving a checkpoint would be as follow: 
+Both checkpoint save and checkpoint restore are done using the DMA. The MSP430FR5994 has 6 DMA channels. Channel 0 is used. The block transfer mode is used. DMA is triggered by software. It copies the content of the SRAM which is used by the software (4kB at most, from 0x1C00 to 0x2BFF) to the FRAM. It would be safer to use double buffering because if a checkpoint cannot complete before the loss of power for any reason, the previous checkpoint will not be corrupted. An int variable in FRAM with value equal to 0, 1 or -1 is used to select the buffer. Let's call it \lstinline{tpl_checkpoint_buffer}. If the value is -1, no checkpoint is saved. This is the initial value. If value is 0 a checkpoint is saved in buffer 0 and if value is 1, a checkpoint is saved in buffer 1. Saving a checkpoint would be as follow: 
 
 \begin{lstlisting}
 int buffer = (tpl_checkpoint_buffer + 1) & 1;
@@ -229,45 +229,46 @@ else {
 }
 \end{lstlisting}
 
-The 2 buffers are located above the 64kB limit, at the end of the FRAM for instance. The first one from 0x040000 to 0x041FFFh and the second one from 0x042000 to 0x043FFFh.
-The SRAM starts at address 0x001C00 and ends at address 0x003BFF.
+The 2 buffers are located above the 64kB limit. The first one from 0x010000 to 0x010FFFh and the second one from 0x011000 to 0x011FFFh.
 
-The function to save the SRAM to a buffer using the DMA has to be written in assembly because writing to start address and end address registers shall be done using extended instructions when address is above the 64kB limit:
+The SRAM starts at address 0x001C00 and ends at address 0x003BFF but we only use the first 4kB, from 0x001C00 to 0x002BFF.
 
-\begin{lstlisting}
-#include "tpl_assembler.h"
+The function to save the SRAM to a buffer using the DMA has to be written in assembly because writing to start address and end address registers shall be done using extended instructions when address is above the 64kB limit. See file \lstinline{framtr.S} in \lstinline{examples/msp430x/small/msp430fr5994/launchpad/checkpoint2}.
 
-.equ SRAM_START      0x1C00
-.equ BUFFER0_START   0x040000
-.equ BUFFER1_START   0x042000
-.equ CHECKPOINT_SIZE 0x1000 /* 4k words  */
-.equ START_TRANSFER  0x1F11 /* see below */
+%\begin{lstlisting}
+%#include "tpl_assembler.h"
+%
+%.equ SRAM_START      0x1C00
+%.equ BUFFER0_START   0x040000
+%.equ BUFFER1_START   0x042000
+%.equ CHECKPOINT_SIZE 0x1000 /* 4k words  */
+%.equ START_TRANSFER  0x1F11 /* see below */
+%
+%/*
+% * tpl_save_checkpoint
+% * Argument is the buffer: 0 or 1
+% */
+%.global tpl_save_checkpoint
+%.type   tpl_save_checkpoint, %function
+%
+%tpl_save_checkpoint:
+%
+%  mov    #0, &DMACTL0  /* DMA Channel 0 is triggered by software (DMAREQ) */
+%  mov    #SRAM_START, &DMA0SA      /* Source address is SRAM address      */
+%  tst    REG_RETARG
+%  jnz    buffer1
+%  movx.a #BUFFER0_START, &DMA0DA   /* Destination address is buffer 0     */
+%  jmp    cont
+%buffer1:
+%  movx.a #BUFFER1_START, &DMA0DA   /* Destination address is buffer 1     */
+%cont:
+%  mov    #CHECKPOINT_SIZE, &DMA0SZ /* Size of the transfer                */
+%  
+%  mov    #START_TRANSFER, &DMA0CTL /* Start the transfer                  */
+%  ret
+%\end{lstlisting}
 
-/*
- * tpl_save_checkpoint
- * Argument is the buffer: 0 or 1
- */
-.global tpl_save_checkpoint
-.type   tpl_save_checkpoint, %function
-
-tpl_save_checkpoint:
-
-  mov    #0, &DMACTL0  /* DMA Channel 0 is triggered by software (DMAREQ) */
-  mov    #SRAM_START, &DMA0SA      /* Source address is SRAM address      */
-  tst    REG_RETARG
-  jnz    buffer1
-  movx.a #BUFFER0_START, &DMA0DA   /* Destination address is buffer 0     */
-  jmp    cont
-buffer1:
-  movx.a #BUFFER1_START, &DMA0DA   /* Destination address is buffer 1     */
-cont:
-  mov    #CHECKPOINT_SIZE, &DMA0SZ /* Size of the transfer                */
-  
-  mov    #START_TRANSFER, &DMA0CTL /* Start the transfer                  */
-  ret
-\end{lstlisting}
-
-\subsubsection*{\lstinline{START_TRANSFER} explanation}
+\subsubsection*{\lstinline{DMA0CTL} programming explanation}
 
 \begin{tikzpicture}[scale=.75,every node/.style={scale=0.4}]
 \tikzstyle{comm}=[scale=1.5,anchor=north,align=center]
@@ -341,6 +342,8 @@ cont:
 \subsection{Service \lstinline{RestartOS}}
 
 \subsection{Service \lstinline{Hibernate}}
+
+
 
 \section{Peripherals}
 
