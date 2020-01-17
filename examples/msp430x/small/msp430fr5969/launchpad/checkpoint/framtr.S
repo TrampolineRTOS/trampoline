@@ -81,7 +81,7 @@ framUpRead8:
  */
 saveCheckpoint:
   cmp     #2, r15                 /* check the buffer is valid (0 or 1)     */
-  jhs     exit_saveCheckPoint
+  jhs     exit_saveCheckpoint
   swpb    r15               /* 0000 0000 0000 000x -> 0000 000x 0000 0000   */
   rlam    #3, r15           /* 0000 000x 0000 0000 -> 0000 x000 0000 0000   */
   addx.a  #0x10000, r15     /* 0001 0000 x000 0000 0000 start of FRAM buf   */
@@ -109,7 +109,7 @@ even_size_saveCheckpoint:
    */
   mov     #DMADT_1|DMASRCINCR_3|DMADSTINCR_3|DMASWDW|DMAEN|DMAREQ, &DMA0CTL
 
-exit_saveCheckPoint:
+exit_saveCheckpoint:
   ret
 
 .global loadCheckpoint
@@ -123,7 +123,7 @@ exit_saveCheckPoint:
  */
 loadCheckpoint:
   cmp     #2, r15                 /* check the buffer is valid (0 or 1)     */
-  jhs     exit_loadCheckPoint
+  jhs     exit_loadCheckpoint
   swpb    r15               /* 0000 0000 0000 000x -> 0000 000x 0000 0000   */
   rlam    #3, r15           /* 0000 000x 0000 0000 -> 0000 x000 0000 0000   */
   addx.a  #0x10000, r15     /* 0001 0000 x000 0000 0000 start of FRAM buf   */
@@ -131,9 +131,9 @@ loadCheckpoint:
   mov     #__data_start, r14      /* origin of the SRAM                     */
   sub     r14, r13                /* size in bytes                          */
   bit     #1, r13                 /* test odd                               */
-  jz      even_size_loadCheckPoint
+  jz      even_size_loadCheckpoint
   inc     r13
-even_size_loadCheckPoint:
+even_size_loadCheckpoint:
   clrc
   rrc     r13                     /* size in words                          */
 
@@ -151,7 +151,7 @@ even_size_loadCheckPoint:
    */
   mov     #DMADT_1|DMASRCINCR_3|DMADSTINCR_3|DMASWDW|DMAEN|DMAREQ, &DMA0CTL
 
-exit_loadCheckPoint:
+exit_loadCheckpoint:
   ret
 
 #define OS_STOP_SEC_CODE

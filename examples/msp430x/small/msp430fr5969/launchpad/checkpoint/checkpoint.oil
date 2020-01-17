@@ -20,11 +20,11 @@ CPU blink {
 
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
-      APP_SRC = "blink.c";
+      APP_SRC = "checkpoint.c";
       APP_SRC = "framtr.S";
-      APP_NAME = "blink_exe";
+      APP_NAME = "checkpoint_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
-      LDFLAGS = "-Map=blink.map";
+      LDFLAGS = "-Map=checkpoint.map";
       //use either msp-gcc (provided with Energia)..
       COMPILER  = "msp430-gcc";
       ASSEMBLER = "msp430-gcc";
