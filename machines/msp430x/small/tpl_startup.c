@@ -29,7 +29,8 @@ extern unsigned TPL_MPU_B1_BOUNDARY;
  */
 static const uint32_t TPL_MPU_B2_BOUNDARY = 0x10000;
 
-/* TODO put this in OS_CODE */
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_MPU_violation(void) {
   while(1);
@@ -158,3 +159,6 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   /* so we don't call global destructors... */
   while(1);
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"

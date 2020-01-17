@@ -1,3 +1,6 @@
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
+
 .global framUpWrite16
 .type   framUpWrite16, %function
 /*
@@ -150,3 +153,6 @@ even_size_loadCheckPoint:
 
 exit_loadCheckPoint:
   ret
+
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
