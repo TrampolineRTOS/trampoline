@@ -167,6 +167,19 @@ FUNC(int, OS_APPL_CODE) main(void)
 	return 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/* function called for a restart                                              */
+/* it initializes peripherals                                                 */
+/*----------------------------------------------------------------------------*/
+FUNC(int, OS_APPL_CODE) restart_main(void)
+{
+  io_init();
+	tpl_serial_begin();
+  tpl_adc_init();
+
+	RestartOS();
+	return 0;
+}
 
 #define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"

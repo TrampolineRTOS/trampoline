@@ -243,9 +243,29 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler_hot(void)
   while(1);
 }
 
-FUNC(void, OS_CODE) tpl_continue_reset_handler_(void)
+FUNC(void, OS_CODE) tpl_continue_reset_handler_cold(void)
 {
-  //  tpl_continue_reset_handler_cold();
+  /*
+   * Disable the GPIO power-on default high-impedance mode
+   * to activate previously configured port settings
+   */
+  PM5CTL0 &= ~LOCKLPM5;
+  /* set GPIO P1.0 and 1.1 (red LED1 and green LED2) as an output */
+  P1DIR |= 0x03;
+  P1OUT &= ~1;   /* light off red led */
+  P1OUT &= ~2;   /* light off green led */
+  /* set GPIO P5.6 (button S1) as an input, with internal pull-up */
+  P5DIR &= ~(1<<6); /* input                        */
+  P5REN |= 1<<6;    /* pull-up/down resistor enable */
+  P5OUT |= 1<<6;    /* pull-up                      */
+
+  if(((P5IN >> 6) & 1) == 0) { //button pushed during startup ?
+    tpl_continue_reset_handler_cold();
+  }
+  else {
+    P1OUT |= 1;   /* light on red led */
+    tpl_continue_reset_handler_hot();
+  }
 }
 
 #define OS_STOP_SEC_CODE
