@@ -160,5 +160,93 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   while(1);
 }
 
+FUNC(void, OS_CODE) tpl_continue_reset_handler_hot(void)
+{
+  /* Init .bss section */
+  extern unsigned __bss_start__;
+  extern unsigned __bss_end__;
+  unsigned *p = &__bss_start__;
+  while (p != &__bss_end__) {
+    *p = 0;
+    p++;
+  }
+  /* Init .data section */
+  extern unsigned __data_load_start;
+  extern unsigned __data_start;
+  extern unsigned __data_end;
+  memInit(
+    &__data_load_start,
+    &__data_start,
+    (uint16_t)&__data_end-(uint16_t)&__data_start
+  );
+
+  /* start clock: default to 1MHz
+   * (at least .bss section should be initialized)
+   **/
+  tpl_set_mcu_clock(CPU_FREQ_MHZ);
+
+  /* MPU basic configuration:
+   * The MPU uses 2 register to split the memory in 3 chunks:
+   *  --------------- => high addr
+   * |               |
+   * |               |  Segment 3: RW
+   * | RW FRAM       |  FRAM with R/W access (checkpointing)
+   * |   (seg3)      |
+   *  --------------- => MPU Segment 2 limit -> 0x10000
+   * |               |
+   * |               |  Segment 2: RX
+   * | R/X FRAM      |  FRAM with R/eXecute access => code, interrupts
+   * |   (seg2)      |  should include 0xFF80-FFFF not to "secure" the chip!
+   * |               |
+   * | code/const    |  start with initial value of FRAM vars (not to be updated)
+   * |               |
+   *  -------------- => MPU Segment 1 limit
+   * | FRAM for vars | (if there are vars in FRAM, a multiple of 1024 bytes
+   * |   ---------   |
+   * |     RAM       |
+   * |   ---------   |  Segment 1: RW
+   * |  peripherals  |
+   * |    (seg1)     |
+   *  ------------ =>low addr
+   * program the MPU so that FRAM between the end of the SRAM and below 0xFFFF
+   * are not be overwritten. This prevent program / constant modification and
+   * JTAG lock modification in order to not brick the board.
+   */
+  MPUCTL0  = 0xA500;  /* password to unlock MPU                      */
+  /* for MPUSEGx registers, we only give the 16 Most significant bits
+   * but, the 6 lowest bits are not used. The minimal segment size is 1024 bytes
+   * */
+  MPUSEGB2 = (uint16_t)(TPL_MPU_B2_BOUNDARY >> 4);  /* high border (0x10000)  */
+  MPUSEGB1 = (uint16_t)(&TPL_MPU_B1_BOUNDARY) >> 4; /* low border before code */
+  MPUSAM   = 0x0353;  /* Seg3: -WR(3), seg2: X-R(5), seg1: -WR(3)    */
+  MPUCTL0  =
+     0xA500 |         /* password to unlock MPU                      */
+     MPUSEGIE |       /* interrupt when MPU segment violation        */
+     MPUENA;          /* enable the MPU                              */
+  MPUCTL0_H = 0;      /* lock MPU (byte access required).pwd required */
+
+
+  /* Exec constructors for global objects (c++)*/
+  extern void (* __ctors_start) (void) ;
+  extern void (* __ctors_end) (void) ;
+  void (** ptr) (void) = & __ctors_start ;
+  while (ptr != & __ctors_end) {
+    (* ptr) () ;
+    ptr ++ ;
+  }
+
+  /* Exec user program */
+  main();
+
+  /* should not get there */
+  /* so we don't call global destructors... */
+  while(1);
+}
+
+FUNC(void, OS_CODE) tpl_continue_reset_handler_(void)
+{
+  //  tpl_continue_reset_handler_cold();
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
