@@ -121,7 +121,7 @@ exit_saveCheckpoint:
  * Checkpoint buffers are located at addresses 0x10000 and 0x11000 and
  * are 4kB in size each
  */
-loadCheckpoint:
+tpl_load_checkpoint:
   cmp     #2, r15                 /* check the buffer is valid (0 or 1)     */
   jhs     exit_loadCheckpoint
   swpb    r15               /* 0000 0000 0000 000x -> 0000 000x 0000 0000   */

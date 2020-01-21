@@ -16,8 +16,17 @@
 #include "tpl_os.h"
 #include "tpl_clocks.h"
 #include "msp430.h"
+#include "tpl_chkpt_checkpoint_kernel.h"
 
 extern int main (void);
+extern int restart_main (void);
+
+extern void framUpWrite8(const uint16 address, const uint8 data);
+extern void framUpWrite16(const uint16 address, const uint16 data);
+extern uint8 framUpRead8(const uint16 address);
+extern uint16 framUpRead16(const uint16 address);
+extern void tpl_save_checkpoint(const uint16 buffer);
+extern void tpl_load_checkpoint(const uint16 buffer);
 
 /*
  * Lower MPU boundary defined in link script
@@ -163,22 +172,24 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler_cold(void)
 FUNC(void, OS_CODE) tpl_continue_reset_handler_hot(void)
 {
   /* Init .bss section */
-  extern unsigned __bss_start__;
+  /*  extern unsigned __bss_start__;
   extern unsigned __bss_end__;
   unsigned *p = &__bss_start__;
   while (p != &__bss_end__) {
     *p = 0;
     p++;
-  }
+    }*/
   /* Init .data section */
-  extern unsigned __data_load_start;
+  /*  extern unsigned __data_load_start;
   extern unsigned __data_start;
   extern unsigned __data_end;
   memInit(
     &__data_load_start,
     &__data_start,
     (uint16_t)&__data_end-(uint16_t)&__data_start
-  );
+    );*/
+
+  tpl_load_checkpoint(tpl_checkpoint_buffer);
 
   /* start clock: default to 1MHz
    * (at least .bss section should be initialized)
@@ -236,7 +247,7 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler_hot(void)
   }
 
   /* Exec user program */
-  main();
+  restart_main();
 
   /* should not get there */
   /* so we don't call global destructors... */
@@ -259,7 +270,9 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   P5REN |= 1<<6;    /* pull-up/down resistor enable */
   P5OUT |= 1<<6;    /* pull-up                      */
 
-  if(((P5IN >> 6) & 1) == 0) { //button pushed during startup ?
+  if ((((P5IN >> 6) & 1) == 0) //button pushed during startup ?
+      || (tpl_checkpoint_buffer == NO_CHECKPOINT) // no checkpoint available ?
+      ) {
     tpl_continue_reset_handler_cold();
   }
   else {

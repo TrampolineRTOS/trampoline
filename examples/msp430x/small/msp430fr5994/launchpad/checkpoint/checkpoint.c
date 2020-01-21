@@ -243,7 +243,7 @@ TASK(task_energy)
   tpl_serial_print_string("vccPhy = ");*/
 #define HIBERNATE_THRESHOLD_RAW (900)
   if (vccRaw < HIBERNATE_THRESHOLD_RAW) {
-    //    Hibernate();
+    Hibernate();
   } else {
     TerminateTask ();
   }

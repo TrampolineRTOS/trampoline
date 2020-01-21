@@ -367,10 +367,13 @@ CPU api {
       CALLABLE_BY_ISR1 = FALSE;
     } : "The user calls this system service to checkpoint the current status of the OS.";
     SYSCALL RestartOS {
-      KERNEL = tpl_restartos_os_service;
-      LOCK_KERNEL = TRUE;
+      ACTUAL = tpl_restart_os;
+      KERNEL = tpl_restart_os_service;
+      LOCK_KERNEL = FALSE;
       CALLABLE_BY_ISR1 = FALSE;
-    } : "The user can call this system service to restart the operating system in case a checkpoint is available.";
+      ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
+        : "The application mode";
+    } : "The user can call this system service to start the operating system in case their exists a checkpoint.";
   };
 
   /*
