@@ -56,14 +56,14 @@ FUNC(void, OS_APPL_CODE) io_init()
   P5REN |= 1<<5;    /* pull-up/down resistor enable               */
   P5OUT |= 1<<5;    /* pull-up                                    */
   P5IES &= ~(0<<5); /* low to high interrupt edge selection       */
-  P5IE  |= 1<<5;    /* interrupt enabled for the button           */
+  //  P5IE  |= 1<<5;    /* interrupt enabled for the button           */
 
   /* set GPIO P5.6 (button S1) as an input, with internal pull-up */
   P5DIR &= ~(1<<6); /* input                                      */
   P5REN |= 1<<6;    /* pull-up/down resistor enable               */
   P5OUT |= 1<<6;    /* pull-up                                    */
   P5IES &= ~(0<<6); /* low to high interrupt edge selection       */
-  P5IE  |= 1<<6;    /* interrupt enabled for the button           */
+  //  P5IE  |= 1<<6;    /* interrupt enabled for the button           */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,6 @@ FUNC(int, OS_APPL_CODE) restart_main(void)
 
 #define APP_Task_task_serial_TX_START_SEC_CODE
 #include "tpl_memmap.h"
-
 /*----------------------------------------------------------------------------*/
 /* TASK serial_TX                                                             */
 /*----------------------------------------------------------------------------*/
@@ -205,6 +204,24 @@ TASK(task_serial_TX)
 	TerminateTask();
 }
 #define APP_Task_task_serial_TX_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_task_check_button_START_SEC_CODE
+#include "tpl_memmap.h"
+/*----------------------------------------------------------------------------*/
+/* TASK check button S2                                                       */
+/*----------------------------------------------------------------------------*/
+TASK(task_check_button)
+{
+  if(((P5IN >> 5) & 1) == 0) { //button S2 pushed ?
+    tpl_serial_print_string("\r\n");
+    tpl_serial_print_string("Hibernate");
+    Hibernate();
+  }
+
+	TerminateTask();
+}
+#define APP_Task_task_check_button_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /*----------------------------------------------------------------------------*/
@@ -280,17 +297,4 @@ ISR(handler_adc_end_conversion)
   ADC12_B_clearInterrupt(ADC12_B_BASE, 0, ADC12_B_IFG0);
 }
 #define APP_ISR_handler_adc_end_conversion_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-/*----------------------------------------------------------------------------*/
-/* ISR buttonS2                                                                  */
-/*----------------------------------------------------------------------------*/
-#define APP_ISR_handler_buttonS2_START_SEC_CODE
-#include "tpl_memmap.h"
-ISR(handler_buttonS2)
-{
-  P1OUT ^= 2; /* light on green led */
-  Hibernate();
-}
-#define APP_ISR_handler_buttonS2_STOP_SEC_CODE
 #include "tpl_memmap.h"

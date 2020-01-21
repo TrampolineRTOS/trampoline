@@ -81,6 +81,13 @@ CPU checkpoint {
     SCHEDULE = FULL;
   };
 
+  TASK task_check_button {
+    PRIORITY = 3;
+    AUTOSTART = TRUE {APPMODE = Std;};
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
   /* ALARMS */
   ALARM Alarm_task_energy {
     COUNTER = SystemCounter;
@@ -118,19 +125,23 @@ CPU checkpoint {
     };
   };
 
+  ALARM Alarm_task_check_button {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = task_check_button;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = Std;
+      ALARMTIME = 5000;
+      CYCLETIME = 2000;
+    };
+  };
+
   /* ISR */
   ISR handler_adc_end_conversion {
     CATEGORY = 1;
     PRIORITY = 1;
     SOURCE = ADC12_VECTOR; /* */
-  };
-
-  ISR handler_buttonS2 {
-    CATEGORY = 2;
-    PRIORITY = 1;
-    SOURCE = PORT5_VECTOR {
-      BIT = 5; /* Button S2 is on GPIO port 5, bit 5 */
-    };
   };
 
 };

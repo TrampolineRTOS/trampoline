@@ -61,10 +61,9 @@ extern void tpl_load_checkpoint(const uint16 buffer);
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-extern 
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
-  uint8 l_buffer;
+  sint16 l_buffer;
   GET_CURRENT_CORE_ID(core_id)
 
   /*  store information for error hook routine    */
