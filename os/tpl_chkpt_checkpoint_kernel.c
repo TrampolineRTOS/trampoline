@@ -59,8 +59,6 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_Hibernate)
 
-    tpl_serial_print_int(tpl_checkpoint_buffer,0);
-
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
   tpl_save_checkpoint(l_buffer);
   tpl_checkpoint_buffer = l_buffer;
