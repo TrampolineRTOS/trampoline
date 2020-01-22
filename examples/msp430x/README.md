@@ -117,3 +117,15 @@ Reading symbols from [...]examples/msp430x/small/msp430fr5994/launchpad/blink/bl
 (gdb) target remote localhost:2000
 (gdb)
 ```
+
+## Linux Fedora 31
+
+### Some problem with launching msp430-gdb:
+msp430-gdb: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory
+
+### Workaround
+https://forum.atollic.com/viewtopic.php?t=1643
+sudo ln -s /usr/lib64/libncurses++w.so.6.1 /usr/lib64/libtinfo.so.5
+sudo ln -s /usr/lib64/libncurses++w.so.6.1 /usr/lib64/libncurses.so.5
+sudo ldconfig
+
