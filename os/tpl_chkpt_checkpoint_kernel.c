@@ -54,10 +54,46 @@ VAR (sint16,OS_VAR) tpl_checkpoint_buffer = -1;
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
   sint16 l_buffer;
+
   GET_CURRENT_CORE_ID(core_id)
 
-  /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_Hibernate)
+  /* init the error to no error */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+
+  /* lock the kernel */
+  LOCK_KERNEL()
+  /* store information for error hook routine */
+  STORE_SERVICE(OSServiceId_TerminateTask)
+  /* check interrupts are not disabled by user */
+  CHECK_INTERRUPT_LOCK(result)
+  /* check we are at the task level */
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
+  /* check the task does not own a resource */
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /*  checks the task does not occupy spinlock(s)   */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
+
+#if TASK_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result)
+  {
+    /* the activate count is decreased */
+    TPL_KERN(core_id).running->activate_count--;
+
+    /* terminate the running task */
+    tpl_terminate();
+    /* task switching should occur */
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
+    /* start the highest priority process */
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
+
+    SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
+  }
+#endif
+
+  PROCESS_ERROR(result)
+
+  /*  unlock the kernel  */
+  UNLOCK_KERNEL()
 
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
   tpl_save_checkpoint(l_buffer);
@@ -120,10 +156,11 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
      * Call tpl_start_scheduling to elect the highest priority task
      * if such a task exists.
      */
-    tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
+
+  tpl_load_checkpoint(tpl_checkpoint_buffer);
 
     /* Posix */
-    SWITCH_CONTEXT_NOSAVE(core_id)
+  //    SWITCH_CONTEXT_NOSAVE(core_id)
       //  }
 
   PROCESS_ERROR(result)
