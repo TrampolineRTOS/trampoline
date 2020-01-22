@@ -23,6 +23,7 @@ CPU checkpoint {
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "checkpoint.c";
+      APP_SRC = "framtr.S";
       APP_NAME = "checkpoint_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=checkpoint.map";
@@ -73,6 +74,20 @@ CPU checkpoint {
     SCHEDULE = FULL;
   };
 
+  TASK task_fibo {
+    PRIORITY = 4;
+    AUTOSTART = TRUE {APPMODE = Std;};
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK task_check_button {
+    PRIORITY = 3;
+    AUTOSTART = TRUE {APPMODE = Std;};
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
   /* ALARMS */
   ALARM Alarm_task_energy {
     COUNTER = SystemCounter;
@@ -95,6 +110,30 @@ CPU checkpoint {
       APPMODE = Std;
       ALARMTIME = 2000;
       CYCLETIME = 1000;
+    };
+  };
+
+  ALARM Alarm_task_fibo {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = task_fibo;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = Std;
+      ALARMTIME = 2000;
+      CYCLETIME = 2000;
+    };
+  };
+
+  ALARM Alarm_task_check_button {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = task_check_button;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = Std;
+      ALARMTIME = 5000;
+      CYCLETIME = 2000;
     };
   };
 

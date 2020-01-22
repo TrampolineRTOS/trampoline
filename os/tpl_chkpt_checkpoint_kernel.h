@@ -29,14 +29,35 @@
 
 #include "tpl_os_kernel.h"
 
+extern void framUpWrite8(const uint16 address, const uint8 data);
+extern void framUpWrite16(const uint16 address, const uint16 data);
+extern uint8 framUpRead8(const uint16 address);
+extern uint16 framUpRead16(const uint16 address);
+extern void tpl_save_checkpoint(const uint16 buffer);
+extern void tpl_load_checkpoint(const uint16 buffer);
+
+#define OS_START_SEC_CONST_16BIT
+#include "tpl_memmap.h"
+static CONST (sint16,OS_CONST) NO_CHECKPOINT = -1;
+#define OS_STOP_SEC_CONST_16BIT
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_NON_VOLATILE_16BIT
+#include "tpl_memmap.h"
+extern VAR (sint16,OS_VAR) tpl_checkpoint_buffer;
+#define OS_STOP_SEC_VAR_NON_VOLATILE_16BIT
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void);
+
+FUNC(void, OS_CODE) tpl_restart_os_service(void);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /* TPL_OS_CHECKPOINT_H */
 #endif
-/* End of file tpl_os_checkpoint.h */
+/* End of file tpl_os_checkpoint_kernel.h */

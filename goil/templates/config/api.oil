@@ -363,9 +363,17 @@ CPU api {
     DIRECTORY = "os";
     SYSCALL Hibernate {
       KERNEL = tpl_hibernate_os_service;
-      LOCK_KERNEL = FALSE;
+      LOCK_KERNEL = TRUE;
       CALLABLE_BY_ISR1 = FALSE;
     } : "The user calls this system service to checkpoint the current status of the OS.";
+    SYSCALL RestartOS {
+      ACTUAL = tpl_restart_os;
+      KERNEL = tpl_restart_os_service;
+      LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
+      ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
+        : "The application mode";
+    } : "The user can call this system service to start the operating system in case their exists a checkpoint.";
   };
 
   /*
