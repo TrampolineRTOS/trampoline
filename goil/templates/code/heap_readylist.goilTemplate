@@ -31,13 +31,9 @@
 if OS::NUMBER_OF_CORES == 1 then
 %
 VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[% !READY_LIST_SIZE + 1 %];
-#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
-#define FPGA_STOP_SEC_DATA
-#include "tpl_memmap.h"
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-#endif
-VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[% !NUMBER_OF_PRIORITIES + 1%] = {
+
+
+VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[% !NUMBER_OF_PRIORITIES + 1%]  = {
 %
 loop i from 0 to NUMBER_OF_PRIORITIES - 1
 do
@@ -121,5 +117,9 @@ foreach core in CORES do
   end foreach
 end foreach
 %
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+#define FPGA_STOP_SEC_DATA
+#else
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#endif
 #include "tpl_memmap.h"

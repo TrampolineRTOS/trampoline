@@ -28,6 +28,7 @@
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_set_systick_timer()
 {
+	SystemCoreClockUpdate();
 	if (SysTick_Config(SystemCoreClock / 1000))
 	{
 		while(1);

@@ -664,6 +664,10 @@ FUNC(void, OS_CODE) tpl_dispatch_context_switch(void);
 
 #if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */
 	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions;
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_2;
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_3;
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_4;
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_5;
 #endif  
 
 #define OS_STOP_SEC_CODE

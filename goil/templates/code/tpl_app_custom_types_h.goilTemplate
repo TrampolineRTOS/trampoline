@@ -32,8 +32,11 @@ typedef uint% ! KEY_SIZE * 8 % tpl_heap_key;
  * tpl_rank_count is the datatype used to store the rank of an activation
  * It is the lower part of a tpl_heap_key
  */
+#if (LEVEL_KERNEL_MONITORING >= 5) /* with dynamic monitoring by fabric */
+typedef uint32 tpl_rank_count;
+#else
 typedef uint% ! [RANK_MASK numberOfBytes] * 8% tpl_rank_count;
-
+#endif
 /**
  * tpl_proc_id is used for task and isrs identifiers.
  *

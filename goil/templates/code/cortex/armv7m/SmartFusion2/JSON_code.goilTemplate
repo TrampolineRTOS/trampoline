@@ -72,7 +72,8 @@ write to PROJECT+"/info.json":
     do
       if(resource::NAME == "INTERNAL_RES_SCHEDULER") then 
         %  "InternalResource" : {\n%
-        %      "priority"   : %!resource::PRIORITY%,\n%
+	%      "priority"   : %!OS::RESSCHEDULERPRIORITY%,\n%
+        #%      "priority"   : %!resource::PRIORITY%,\n%
         foreach task in resource::TASKUSAGE
         before %      "taskUsage"  : [%
         do %"%!task::VALUE%"%
@@ -80,15 +81,18 @@ write to PROJECT+"/info.json":
         after %]\n%
         end foreach
       end if #exclude_INTERNAL_RES_SCHEDULER
-      %  },\n%
+     # %  },\n%
     end foreach
+    %  },\n%
   end if #RESOURCES
   #size_information
+%  "priority_shift" : %!(PRIORITY_SHIFT)%,\n%  
 %  "size_ReadyList" : %!(READY_LIST_SIZE + 1)%,\n%  
 %  "size_ReadyList_key" : %![(1 << ([NUMBER_OF_PRIORITIES numberOfBits] + [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBits]%,\n%  
-%  "size_Task_ID" : %! [[PROCESSES length] + 1 signedNumberOfBits]%,\n%  
+%  "size_Task_ID" : %! [[PROCESSES length] + 1 signedNumberOfBits]%,\n% 
+%  "size_Priority" : %![(1 << ([NUMBER_OF_PRIORITIES numberOfBits] + [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBits]%,\n%   
 %  "size_Prioritybis" : %! (KEY_SIZE*8) %,\n%  
-%  "size_Priority" : %! [NUMBER_OF_PRIORITIES signedNumberOfBits]%,\n% 
+%  "size_Priority_other" : %! [NUMBER_OF_PRIORITIES signedNumberOfBits]%,\n% 
 %  "size_Priorityter" : %! [task_max_priority signedNumberOfBits]%\n% 
 %}\n%
 end write

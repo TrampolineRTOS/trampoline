@@ -436,8 +436,8 @@ SECTIONS
     _sFpgaData = .;        /* create a global symbol at FPGA data start */
 
    *(.FPGA)
-   *(.FPGA.tplKern) 
    KEEP(*(.FPGA.OsInstru))
+   KEEP(*(.FPGA.tplKern))
 
    _eFpgaData = .;        /* create a global symbol at FPGA data end */
   } >fabric AT>rom

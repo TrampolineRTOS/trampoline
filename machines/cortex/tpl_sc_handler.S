@@ -38,10 +38,7 @@
 .equ  NEED_SWITCH, 1
 .equ  NEED_SAVE, 2
 
-.equ  __ID_CALL_HANDLER, ID_CALL_HANDLER
-.equ  __ID_CALL_SERVICE, ID_CALL_SERVICE
-.equ  __ID_CALL_CONTEXT, ID_CALL_CONTEXT
-.equ  __ID_CALL_SAVE, ID_CALL_SAVE
+
 .equ  __NO_SERVICE, NO_SERVICE
 
 /*-----------------------------------------------------------------------------
@@ -128,6 +125,9 @@ tpl_sc_handler:
      * So SP is MSP, not PSP                                                 *
      *-----------------------------------------------------------------------*/
 
+    mrs   r0,psp
+    ldmia r0,{r0, r1, r2, r3}	
+
     /*-------------------------------------------------------------------------
      * 1 - The service identifier is checked to prevent crashes if it has
      *     a wrong value
@@ -165,7 +165,7 @@ not_callable_by_isr1:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_HANDLER
+    ldr  r5,=ID_CALL_HANDLER_ENTER
     str   r5,[r4]
     #endif
 
@@ -201,7 +201,7 @@ not_callable_by_isr1:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_SERVICE
+    ldr  r5,=ID_CALL_SERVICE_ENTER
     str   r5,[r4]
     #endif
 
@@ -215,7 +215,7 @@ not_callable_by_isr1:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_SERVICE
+    ldr  r5,=ID_CALL_SERVICE_EXIT
     str   r5,[r4]
     #endif
 
@@ -253,7 +253,7 @@ not_callable_by_isr1:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r1,#__ID_CALL_CONTEXT
+    ldr  r1,=ID_CALL_CONTEXT_ENTER
     str   r1,[r4]
     #endif
 
@@ -273,8 +273,8 @@ not_callable_by_isr1:
      * 15b - inform the fabric we are executing a save context
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
-    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r1,#__ID_CALL_SAVE
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS_6
+    ldr  r1,=ID_CALL_SAVE_ENTER
     str   r1,[r4]
     #endif	
 	
@@ -290,8 +290,8 @@ not_callable_by_isr1:
      * 16b - inform the fabric we are finishinging a save context
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
-    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_SAVE
+    ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS_6
+    ldr   r5,=ID_CALL_SAVE_EXIT
     str   r5,[r4]
     #endif	
 	
@@ -323,7 +323,7 @@ tpl_sc_handler_no_save_running_context:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_CONTEXT
+    ldr  r5,=ID_CALL_CONTEXT_EXIT
     str   r5,[r4]
     #endif
 
@@ -349,7 +349,7 @@ tpl_sc_handler_no_context_switch:
      */
     #if (LEVEL_KERNEL_MONITORING >= 2)
     ldr   r4,=AD_REG_OS_INSTRU_KERNEL_FUNCTIONS
-    movs  r5,#__ID_CALL_HANDLER
+    ldr   r5,=ID_CALL_HANDLER_EXIT
     str   r5,[r4]
     #endif
 

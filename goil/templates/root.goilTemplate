@@ -1513,6 +1513,8 @@ template if exists custom_files in config
 
 template if exists custom_code in code
 
+template if exists JSON_code in code
+
 !PROJECT %/stm_structure.c
 %
 write to PROJECT+"/stm_structure.c":

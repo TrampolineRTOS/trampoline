@@ -139,6 +139,13 @@ FUNC(void, OS_CODE) tpl_action_setevent(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+
+
 #endif /*  TPL_OS_ACTION_H  */
+
+#if (LEVEL_KERNEL_MONITORING >= 3) /* whith kernel monitoring */
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_5;
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_6;
+#endif  
 
 /* End of file tpl_os_action.h */
