@@ -56,6 +56,10 @@ class GALGAS_gtlDataList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlDataList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlData constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -235,7 +239,7 @@ class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlDataList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlDataList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlDataList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlDataList_2D_element (const GALGAS_gtlData & in_data) ;
@@ -456,7 +460,7 @@ class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlVarMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlVarMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlVarMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlVarMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -734,7 +738,7 @@ class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlExpressionMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlExpressionMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlExpressionMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlExpressionMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -831,6 +835,10 @@ class GALGAS_gtlInstructionList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlInstructionList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlInstruction constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -1007,7 +1015,7 @@ class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlInstructionList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlInstructionList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlInstructionList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlInstructionList_2D_element (const GALGAS_gtlInstruction & in_instruction) ;
@@ -1264,7 +1272,7 @@ class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlTemplateMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlTemplateMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlTemplateMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlTemplateMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -1609,6 +1617,10 @@ class GALGAS_gtlBreakpointList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlBreakpointList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlBreakpoint constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -1732,6 +1744,10 @@ class GALGAS_gtlExpressionList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlExpressionList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlExpression constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -1858,6 +1874,10 @@ class GALGAS_gtlInstructionListContextStack : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlInstructionListContextStack_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_uint constinArgument0,
                                                        class GALGAS_gtlInstructionList constinArgument1,
                                                        class GALGAS_uint constinArgument2,
@@ -2421,6 +2441,10 @@ class GALGAS_gtlArgumentList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlArgumentList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_bool constinArgument0,
                                                        class GALGAS_type constinArgument1,
                                                        class GALGAS_lstring constinArgument2,
@@ -4382,7 +4406,7 @@ class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlFuncMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlFuncMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlFuncMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlFuncMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -4450,7 +4474,7 @@ class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlGetterMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlGetterMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlGetterMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlGetterMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -4518,7 +4542,7 @@ class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlSetterMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlSetterMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlSetterMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlSetterMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -4765,6 +4789,10 @@ class GALGAS_gtlVarPath : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlVarPath_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlVarItem constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -4950,7 +4978,7 @@ class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlVarPath_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlVarPath_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlVarPath_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlVarPath_2D_element (const GALGAS_gtlVarItem & in_item) ;
@@ -5208,7 +5236,7 @@ class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlExpressionList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlExpressionList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlExpressionList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlExpressionList_2D_element (const GALGAS_gtlExpression & in_expression) ;
@@ -5817,6 +5845,10 @@ class GALGAS_list : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_list_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlData constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -6628,6 +6660,10 @@ class GALGAS_gtlTypedArgumentList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlTypedArgumentList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_type constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -6720,7 +6756,7 @@ class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlTypedArgumentList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlTypedArgumentList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlTypedArgumentList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlTypedArgumentList_2D_element (const GALGAS_type & in_type) ;
@@ -6782,7 +6818,7 @@ class GALGAS_list_2D_element : public AC_GALGAS_root {
   public : GALGAS_list_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_list_2D_element (void) ;
+  public : virtual ~ GALGAS_list_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_list_2D_element (const GALGAS_gtlData & in_value) ;
@@ -6847,7 +6883,7 @@ class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
   public : GALGAS_lstringset_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_lstringset_2D_element (void) ;
+  public : virtual ~ GALGAS_lstringset_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_lstringset_2D_element (const GALGAS_lstring & in_lkey) ;
@@ -6913,7 +6949,7 @@ class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlArgumentList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlArgumentList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlArgumentList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlArgumentList_2D_element (const GALGAS_bool & in_typed,
@@ -7176,7 +7212,7 @@ class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlProcMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlProcMap_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlProcMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlProcMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -12344,6 +12380,10 @@ class GALGAS_gtlThenElsifStatementList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_gtlThenElsifStatementList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_gtlExpression constinArgument0,
                                                        class GALGAS_gtlInstructionList constinArgument1,
                                                        class GALGAS_uint constinArgument2,
@@ -12449,7 +12489,7 @@ class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlThenElsifStatementList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlThenElsifStatementList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlThenElsifStatementList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlThenElsifStatementList_2D_element (const GALGAS_gtlExpression & in_condition,
@@ -12731,6 +12771,10 @@ class GALGAS_sortingKeyList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_sortingKeyList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_lstring constinArgument0,
                                                        class GALGAS_lsint constinArgument1,
                                                        class GALGAS_uint constinArgument2,
@@ -12839,7 +12883,7 @@ class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
   public : GALGAS_sortingKeyList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_sortingKeyList_2D_element (void) ;
+  public : virtual ~ GALGAS_sortingKeyList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_sortingKeyList_2D_element (const GALGAS_lstring & in_key,
@@ -13754,7 +13798,7 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
   public : GALGAS_gtlBreakpointList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlBreakpointList_2D_element (void) ;
+  public : virtual ~ GALGAS_gtlBreakpointList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_gtlBreakpointList_2D_element (const GALGAS_gtlBreakpoint & in_breakpoint) ;
@@ -13797,75 +13841,4 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointList_2D_element ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  @gtlInstructionListContextStack_2D_element struct                                  *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-class GALGAS_gtlInstructionListContextStack_2D_element : public AC_GALGAS_root {
-//--------------------------------- Properties
-  public : GALGAS_uint mProperty_nextInstructionIndex ;
-
-  public : GALGAS_gtlInstructionList mProperty_instructionList ;
-
-//--------------------------------- Accessors
-  public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public : VIRTUAL_IN_DEBUG void drop (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlInstructionListContextStack_2D_element constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Default constructor
-  public : GALGAS_gtlInstructionListContextStack_2D_element (void) ;
-
-//--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_gtlInstructionListContextStack_2D_element (void) ;
-
-//--------------------------------- Native constructor
-  public : GALGAS_gtlInstructionListContextStack_2D_element (const GALGAS_uint & in_nextInstructionIndex,
-                                                             const GALGAS_gtlInstructionList & in_instructionList) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlInstructionListContextStack_2D_element extractObject (const GALGAS_object & inObject,
-                                                                                  C_Compiler * inCompiler
-                                                                                  COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlInstructionListContextStack_2D_element constructor_new (const class GALGAS_uint & inOperand0,
-                                                                                          const class GALGAS_gtlInstructionList & inOperand1
-                                                                                          COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Implementation of getter 'description'
-  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlInstructionListContextStack_2D_element & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionList getter_instructionList (LOCATION_ARGS) const ;
-
-  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_nextInstructionIndex (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlInstructionListContextStack_2D_element class
-
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInstructionListContextStack_2D_element ;
 

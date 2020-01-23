@@ -1,7 +1,19 @@
 /*
- * This configuration file defines the interrupt sources
+ * This configuration file defines the interrupt sources and libraries
  * of the Freescale mk20dx256 micro-controller
  */
+IMPLEMENTATION mk20dx256 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          pit,ftm,port
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
 
 
 CPU mk20dx256 {

@@ -76,6 +76,7 @@ class C_FileManager {
 //--- Directory handling
   public : static C_String currentDirectory (void) ;
   public : static bool directoryExists (const C_String & inDirectoryPath) ;
+  public : static bool directoryExistsWithNativePath (const C_String & inDirectoryNativePath) ;
   public : static bool makeDirectoryIfDoesNotExist (const C_String & inDirectoryPath) ;
 
 //--- Remove directory (returns an empty string on success, or a string describing the error)

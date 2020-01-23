@@ -66,7 +66,7 @@ class C_SourceTextInString {
                                  const bool inShowSourceOnDetailledErrorMessage) ;
 
 //--- Default constructor
-  public : ~ C_SourceTextInString (void) ;
+  public : virtual ~ C_SourceTextInString (void) ;
 
 //--- Handle copy
   public : C_SourceTextInString (const C_SourceTextInString & inSource) ;

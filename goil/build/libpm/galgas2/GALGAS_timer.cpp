@@ -34,7 +34,7 @@ mTimer () {
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_timer::description (C_String & ioString,
-                                    const int32_t /* inIndentation */) const {
+                                const int32_t /* inIndentation */) const {
   ioString << "<@timer: " ;
   if (!mIsValid) {
     ioString << "not built" ;

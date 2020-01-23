@@ -72,7 +72,23 @@ end if %
  * -3- Pop volatile registers
  */
 tpl_direct_irq_handler_exit_% !handlerSource %:
-  popm.w    #5, r15
+  popm.w    #5, r15%
+if [obj type] == @struct then
+  if obj::EXIT_FROM_LPM then %
+/*-----------------------------------------------------------------------------
+ * -3b- exit from LPM if required
+ */
+  bic   #0xF0, 0(SP)%
+  end if
+else
+  if obj[0]::EXIT_FROM_LPM then %
+/*-----------------------------------------------------------------------------
+ * -3b- exit from LPM if required
+ */
+  bic   #0xF0, 0(SP)%
+  end if
+end if
+% 
 /*-----------------------------------------------------------------------------
  * -4- Return.
  */

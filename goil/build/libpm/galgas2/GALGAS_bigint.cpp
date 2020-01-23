@@ -672,7 +672,7 @@ void GALGAS_bigint::method_floorDivideBy (GALGAS_bigint inDivisor,
   outRemainder.drop () ;
   if (isValid () && inDivisor.isValid ()) {
     if (inDivisor.mValue.isZero ()) {
-      inCompiler->onTheFlyRunTimeError ("@sint64 divide by zero in modulo operation" COMMA_THERE) ;
+      inCompiler->onTheFlyRunTimeError ("@bigint divide by zero in modulo operation" COMMA_THERE) ;
     }else{
       C_BigInt quotient ;
       C_BigInt remainder ;
@@ -740,7 +740,8 @@ GALGAS_bigint GALGAS_bigint::operator_tilde (UNUSED_LOCATION_ARGS) const {
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_bigint GALGAS_bigint::left_shift_operation (const GALGAS_uint inShiftOperand
+GALGAS_bigint GALGAS_bigint::left_shift_operation (const GALGAS_uint inShiftOperand,
+                                                   class C_Compiler * /* inCompiler*/
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
 
   GALGAS_bigint result ;
@@ -752,11 +753,46 @@ GALGAS_bigint GALGAS_bigint::left_shift_operation (const GALGAS_uint inShiftOper
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_bigint GALGAS_bigint::right_shift_operation (const GALGAS_uint inShiftOperand
+GALGAS_bigint GALGAS_bigint::left_shift_operation (const GALGAS_bigint inShiftOperand,
+                                                   class C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) const {
+
+  GALGAS_bigint result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.mValue.isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@bigint left shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_bigint (mValue << inShiftOperand.mValue) ;
+    }
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_bigint GALGAS_bigint::right_shift_operation (const GALGAS_uint inShiftOperand,
+                                                    class C_Compiler * /* inCompiler*/
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bigint result ;
   if (isValid () && inShiftOperand.isValid ()) {
     result = GALGAS_bigint (mValue >> inShiftOperand.uintValue ()) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_bigint GALGAS_bigint::right_shift_operation (const GALGAS_bigint inShiftOperand,
+                                                    class C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) const {
+
+  GALGAS_bigint result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.mValue.isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@bigint right shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_bigint (mValue >> inShiftOperand.mValue) ;
+    }
   }
   return result ;
 }

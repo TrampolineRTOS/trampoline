@@ -675,8 +675,10 @@ void C_Compiler::generateFileWithPatternFromPathes (
     C_String s = C_FileManager::stringWithContentOfFile (fullPathName) ;
     TC_UniqueArray <C_String> stringArray ;
     s.componentsSeparatedByString (kSTART_OF_USER_ZONE_1, stringArray) ;
+    C_String header ;
     bool ok = stringArray.count () == 2 ;
     if (ok) {
+      header = stringArray (0 COMMA_HERE) ;
       s = stringArray (1 COMMA_HERE) ;
       s.componentsSeparatedByString (kEND_OF_USER_ZONE_1, stringArray) ;
       ok = stringArray.count () == 2 ;
@@ -699,7 +701,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
     }
     if (! ok) {
       ggs_printError (this, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
-    }else if ((firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
+    }else if ((header == inHeader) && (firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
     }else if (performGeneration ()) {
       C_TextFileWrite f (fullPathName) ;
       ok = f.isOpened () ;

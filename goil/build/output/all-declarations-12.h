@@ -10,6 +10,100 @@
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
+//                                           Routine 'generate_signed_type'                                            *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_generate_5F_signed_5F_type (class GALGAS_uint_36__34_ inArgument0,
+                                         class GALGAS_string inArgument1,
+                                         class GALGAS_string & outArgument2,
+                                         class C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                          Routine 'generate_unsigned_type'                                           *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_generate_5F_unsigned_5F_type (class GALGAS_uint_36__34_ inArgument0,
+                                           class GALGAS_string inArgument1,
+                                           class GALGAS_string & outArgument2,
+                                           class C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                            Routine 'generate_mask_type'                                             *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_generate_5F_mask_5F_type (class GALGAS_uint_36__34_ inArgument0,
+                                       class GALGAS_string inArgument1,
+                                       class GALGAS_string & outArgument2,
+                                       class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                             Function 'emptyGoilContext'                                             *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_goilContext function_emptyGoilContext (class C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                              Routine 'nodeToClassRes'                                               *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_nodeToClassRes (class GALGAS_arxmlElementNode inArgument0,
+                             class GALGAS_arxmlMetaClassMap inArgument1,
+                             class GALGAS_arxmlElementValue & outArgument2,
+                             class C_Compiler * inCompiler
+                             COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                          Routine 'arxmlDefinitionPackage'                                           *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_arxmlDefinitionPackage (class GALGAS_implementation & ioArgument0,
+                                     class GALGAS_applicationDefinition & ioArgument1,
+                                     class GALGAS_arxmlElementValue inArgument2,
+                                     class GALGAS_lstring inArgument3,
+                                     class C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                        Routine 'arxmlImplementationPackage'                                         *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_arxmlImplementationPackage (class GALGAS_implementation & ioArgument0,
+                                         class GALGAS_arxmlElementValue inArgument1,
+                                         class GALGAS_lstring inArgument2,
+                                         class C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                          Routine 'arxmlImplementationRoot'                                          *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void routine_arxmlImplementationRoot (class GALGAS_implementation & ioArgument0,
+                                      class GALGAS_arxmlElementValue inArgument1,
+                                      class GALGAS_lstring inArgument2,
+                                      class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
 //                                            Routine 'arxmlGetDescription'                                            *
 //                                                                                                                     *
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

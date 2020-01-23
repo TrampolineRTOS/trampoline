@@ -6783,6 +6783,7 @@
       SDKROOT = macosx ;
       COPY_PHASE_STRIP = NO ;
       CLANG_ENABLE_OBJC_ARC = YES ;
+      MACOSX_DEPLOYMENT_TARGET = "10.10" ;
     };
     name = Default;
   };

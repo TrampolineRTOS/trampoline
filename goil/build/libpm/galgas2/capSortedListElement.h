@@ -42,7 +42,7 @@ class capSortedListElement {
   public : capSortedListElement (void) ;
 
 //--- Destructor
-  public : ~ capSortedListElement (void) ;
+  public : virtual ~ capSortedListElement (void) ;
 
 //--- Handle copy
   public : capSortedListElement (const capSortedListElement & inSource) ;

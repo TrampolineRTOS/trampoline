@@ -4,6 +4,20 @@
 #include "tpl_os_interrupt_kernel.h"
 #include "tpl_machine.h"
 %
+if exists OS::BUILD_S::LIBRARY then
+  let libMap := [OS::BUILD_S::LIBRARY mapBy: "VALUE"]
+  if exists libMap["serial"] then
+    let any_buffer := exists libMap["serial"]::VALUE_S::TXBUFFER default(16)+
+                      exists libMap["serial"]::VALUE_S::RXBUFFER default(32)
+    if any_buffer > 0 then
+      let ISR += @{
+        SOURCE : "USCI_A0_VECTOR",
+        CATEGORY : 1,
+        PRIORITY : 1
+      }
+    end if
+  end if
+end if
 
 #------------------------------------------------------------------------------*
 # Target specific initializations

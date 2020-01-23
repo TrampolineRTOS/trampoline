@@ -699,7 +699,7 @@ void displayAllocatedBlocksInfo (void) {
     }
     if (gPointersCurrentCount != 0) {
       printf ("*** Warning: %d block information datas (instead of 0):\n", gPointersCurrentCount) ;
-      printf ("  address  |   number   |     kind | source line | source file\n") ;  
+      printf ("  address | source line | source file\n") ;  
     }
     for (uint32_t i=0 ; i<ROOT_TABLE_SIZE ; i++) {
       recursiveDisplay (gPointerDescriptorTreeRoot [i]) ;

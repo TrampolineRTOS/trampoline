@@ -2,7 +2,7 @@
 /*                                                                            */
 /*                                   Link script                              */
 /*                                                                            */
-/*                                   stm32f407                                */
+/*                                   msp430fr5969                             */
 /*                                                                            */
 /* <INIT_POLICY>                                                              */
 /* - NO_INIT :          used for variables that are never cleared and never   */
@@ -17,6 +17,15 @@
 /*                      only after power on reset.                            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Peripheral registers definition    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+%
+template symbols
+template periph
+%
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -27,11 +36,11 @@
 ENTRY(tpl_reset_handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20020000;    /* end of 128K RAM on AHB bus*/
+_estack = 0x3C00;    /* end of 8K RAM */
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0;      /* required amount of heap  */
-_Min_Stack_Size = 0x400; /* required amount of stack */
+_Min_Stack_Size = 0x100; /* required amount of stack */
 
 /*----------------------------------------------------------------------------*/
 
@@ -68,6 +77,14 @@ SECTIONS {
 /*                                    Code                                    */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+/* init section for msp430. 
+ * execution starts at the beginning of the fram. */
+SECTIONS {
+  .textInit : {
+    . = ALIGN(2);
+    KEEP(*(.init)) /* start here after reset */
+  } > FLASH
+}
 
 /*
  * code and const of the operating system (Trampoline).
@@ -162,8 +179,6 @@ SECTIONS {
     . = ALIGN(4);
     *(.text)           /* .text sections (code) */
     *(.text*)          /* .text* sections (code) */
-    *(.glue_7)         /* glue arm to thumb code */
-    *(.glue_7t)        /* glue thumb to arm code */
  *(.eh_frame)
 
     KEEP (*(.init))
@@ -173,15 +188,6 @@ SECTIONS {
     _etext = .;        /* define a global symbols at end of code */
     _exit = .;
   } >FLASH
-}
-
-SECTIONS {
-   .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
-    .ARM : {
-    __exidx_start = .;
-      *(.ARM.exidx*)
-      __exidx_end = .;
-    } >FLASH
 }
 
 SECTIONS {
@@ -215,13 +221,13 @@ SECTIONS {
 
   /* used by the startup to initialize data */
 SECTIONS {
-  _sidata = .;
+  __data_load_start = .;
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
-  .data : AT ( _sidata )
+  .data : AT ( __data_load_start )
   {
     . = ALIGN(4);
-    _sdata = .;        /* create a global symbol at data start */
+    __data_start = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
     *(.osVar)
@@ -250,7 +256,7 @@ foreach app in APPLICATIONS do
 end foreach
 %
     . = ALIGN(4);
-    _edata = .;        /* define a global symbol at data end */
+    __data_end = .;        /* define a global symbol at data end */
   } >RAM
 }
 
@@ -262,7 +268,7 @@ SECTIONS {
 
 foreach proc in PROCESSES do
 %  .% !proc::KIND %_% !proc::NAME %_SEC_VAR : {
-    . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN);
+    /* . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN); TODO check alignment*/
     __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
   /* --- Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
@@ -296,7 +302,7 @@ SECTIONS {%
 foreach proc in PROCESSES do %
   /* --- Section of stack of % !proc::KIND % % !proc::NAME %  */
   .% !proc::KIND %_% !proc::NAME %_SEC_STACK : {
-    . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN);
+    /* . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN); TODO: check alignment */
     __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
     *(.% !proc::KIND %_% !proc::NAME %Stack)
     . = ALIGN(4);
@@ -328,7 +334,7 @@ SECTIONS {
    appvars : {
 %
 foreach app in APPLICATIONS do
-%    . = ALIGN(__SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN)
+%    /* . = ALIGN(__SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) TODO: check alignment */
     __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
   /* --- Initialized variables section of OS_APP % !app::NAME % */
 %
@@ -416,6 +422,6 @@ SECTIONS {
     libm.a ( * )
     libgcc.a ( * )
   }
-
-  .ARM.attributes 0 : { *(.ARM.attributes) }
 }
+/* vim:ft=ld
+ */

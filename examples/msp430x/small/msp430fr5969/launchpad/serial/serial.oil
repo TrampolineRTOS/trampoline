@@ -25,7 +25,10 @@ CPU serial {
       APP_NAME = "serial_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=serial.map";
-      LIBRARY = serial;
+      LIBRARY = serial {
+        TXBUFFER = 16;
+        RXBUFFER = 16;
+      };
       //use either msp-gcc (provided with Energia)..
       COMPILER  = "msp430-gcc";
       ASSEMBLER = "msp430-gcc";
@@ -50,17 +53,24 @@ CPU serial {
   
   APPMODE std {};
   
-  TASK serial {
-    PRIORITY = 3;
+  TASK serial_TX {
+    PRIORITY = 2;
+    AUTOSTART = TRUE {APPMODE = std;};
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK serial_RX {
+    PRIORITY = 4;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  ALARM serial_serial {
+  ALARM ALSerial_RX {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = serial;
+      TASK = serial_RX;
     };
     AUTOSTART = TRUE {
       APPMODE = std;

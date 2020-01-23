@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2004, ..., 2018 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2004, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
@@ -545,7 +545,8 @@ GALGAS_sint GALGAS_sint::operator_unary_minus_no_ovf (void) const {
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_sint GALGAS_sint::left_shift_operation (const GALGAS_uint inShiftOperand
+GALGAS_sint GALGAS_sint::left_shift_operation (const GALGAS_uint inShiftOperand,
+                                               class C_Compiler * /* inCompiler*/
                                                COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_sint result ;
   if (isValid () && inShiftOperand.isValid ()) {
@@ -556,11 +557,44 @@ GALGAS_sint GALGAS_sint::left_shift_operation (const GALGAS_uint inShiftOperand
 
 //—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-GALGAS_sint GALGAS_sint::right_shift_operation (const GALGAS_uint inShiftOperand
+GALGAS_sint GALGAS_sint::left_shift_operation (const GALGAS_bigint inShiftOperand,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) const {
+  GALGAS_sint result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@sint left shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_sint (mSIntValue << (inShiftOperand.bigintValue ().uint32 () & 31)) ;
+    }
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_sint GALGAS_sint::right_shift_operation (const GALGAS_uint inShiftOperand,
+                                                class C_Compiler * /* inCompiler*/
                                                 COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_sint result ;
   if (isValid () && inShiftOperand.isValid ()) {
     result = GALGAS_sint (mSIntValue >> (inShiftOperand.uintValue () & 31)) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_sint GALGAS_sint::right_shift_operation (const GALGAS_bigint inShiftOperand,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) const {
+  GALGAS_sint result ;
+  if (isValid () && inShiftOperand.isValid ()) {
+    if (inShiftOperand.bigintValue().isNegative ()) {
+      inCompiler->onTheFlyRunTimeError ("@sint right shift by a negative amount" COMMA_THERE) ;
+    }else{
+      result = GALGAS_sint (mSIntValue >> (inShiftOperand.bigintValue ().uint32 () & 31)) ;
+    }
   }
   return result ;
 }

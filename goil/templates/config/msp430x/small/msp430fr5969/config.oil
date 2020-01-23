@@ -1,5 +1,5 @@
 /*
- * MSP430 configuration file
+ * MSP430FR5969 configuration file
  */
 
 CPU msp430fr5969 {

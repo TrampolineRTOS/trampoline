@@ -1,3 +1,6 @@
+/*
+ * Interrupt sources for the MSP430FR5969 µC
+ */
 ENUM [
   AES256_VECTOR,
   RTC_VECTOR,
