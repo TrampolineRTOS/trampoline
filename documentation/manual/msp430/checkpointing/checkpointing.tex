@@ -108,7 +108,7 @@ The MSP430X startup sequence is as follow:
 Following items shall be modified when restarting from a checkpoint:
 
 \begin{itemize}
-\item item \ref{item:bssdatainit} should be replaced by a copy from the checkpoint data in FRAM to SRAM.
+	\item item \ref{item:bssdatainit} should be replaced by a copy from the checkpoint data in FRAM to SRAM. \todo[inline]{At this date, the .bss, .data and the constructor call to c++ global objects is done before the checkpoiting process. This is because some data should be initialized during the RestartOS() service call. Maybe a new section in the link script should be defined, not to initialize the SRAM twice in case of restart.}
 \item item \ref{item:clockinit} should use the replaced by an init with the clock frequency when the checkpoint was done. This can be done by having a variable (in .data segment) to store the clock frequency so that it would restored as part of the checkpoint data.
 \item item \ref{item:callmain} should be replaced by a call to a mandatory function used to initialize the devices for the application (UART for instance) and to a new service, let's call it \lstinline{RestartOS}. \lstinline{RestartOS} would:
 	\begin{enumerate}
@@ -129,7 +129,7 @@ The RTC ISR checks the voltage of the MCU. If it is above a threshold (\lstinlin
 
 If \lstinline{Hibernate} resumes because the RTC ISR exited from LPM3 then it disables interrupt, starts application interrupts, starts the Systick, stop the RTC. It calls \lstinline{tpl_start} to elect the highest priority task and returns.
 
-In addition, a periodic basic task, \lstinline{energy_task} checks (every 5 seconds ? more ?)\todo{MB: should be defined in the .oil, as it depends on both supercapacitor value, and application through external peripherals\\JLB: you are right} the voltage. If the voltage drops below a threshold (\lstinline{HIBERNATE_THRESHOLD}), \lstinline{energy_task} calls \lstinline{Hibernate} (and terminates):
+In addition, a periodic basic task, \lstinline{energy_task} checks (every 5 seconds ? more ?)\todo[inline]{MB: should be defined in the .oil, as it depends on both supercapacitor value, and application through external peripherals\\JLB: you are right} the voltage. If the voltage drops below a threshold (\lstinline{HIBERNATE_THRESHOLD}), \lstinline{energy_task} calls \lstinline{Hibernate} (and terminates):
 
 \begin{lstlisting}[language=C]
 TASK(energy_task)
