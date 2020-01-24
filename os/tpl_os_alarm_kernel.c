@@ -73,11 +73,19 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
    * This cast behaves correctly.
    */
   /*  Get the alarm descriptor                            */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
+    (tpl_alarm_static *)time_obj->stat_part;
+  /*  Get the action to perform from the alarm descriptor */
+  volatile CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
+    stat_alarm->action;
+#else
   P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
     (tpl_alarm_static *)time_obj->stat_part;
   /*  Get the action to perform from the alarm descriptor */
   CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
     stat_alarm->action;
+#endif
 
   TRACE_ALARM_EXPIRE(time_obj)
   /*  Call the action                                     */
@@ -90,10 +98,18 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
     P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info)
 {
   GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
 #if ALARM_COUNT > 0
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#endif
 #endif
 
   LOCK_KERNEL()
@@ -136,10 +152,18 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick)
 {
   GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
 #if ALARM_COUNT > 0
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#endif
 #endif
 
   LOCK_KERNEL()
@@ -206,12 +230,22 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   CONST(tpl_tick, AUTOMATIC)      cycle)
 {
   GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
 #if ALARM_COUNT > 0
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+  volatile VAR(tpl_tick, AUTOMATIC) date;
+#else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
   VAR(tpl_tick, AUTOMATIC) date;
+#endif
 #endif
 
   LOCK_KERNEL()
@@ -288,10 +322,18 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   CONST(tpl_tick, AUTOMATIC)      cycle)
 {
   GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
 #if ALARM_COUNT > 0
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#endif
 #endif
 
   LOCK_KERNEL()
@@ -360,10 +402,18 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
   CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
 {
   GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
 #if ALARM_COUNT > 0
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#endif
 #endif
 
   LOCK_KERNEL()

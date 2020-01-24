@@ -45,8 +45,13 @@ FUNC(void, OS_CODE) tpl_sem_enqueue(
 FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
   P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) sem)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(uint32, AUTOMATIC) read_index = sem->index - sem->size;
+  volatile VAR(tpl_task_id, AUTOMATIC) task_id;
+#else
   VAR(uint32, AUTOMATIC) read_index = sem->index - sem->size;
   VAR(tpl_task_id, AUTOMATIC) task_id;
+#endif
 
   if (sem->index < sem->size)
   {
@@ -66,9 +71,15 @@ FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
 #include "tpl_app_config.h"
 FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) sem_id)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+  volatile VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
+  volatile VAR(uint32, AUTOMATIC) count = sem->size;
+#else
   CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
   VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
   VAR(uint32, AUTOMATIC) count = sem->size;
+#endif
 
   printf("(%lu)", sem->token);
   if (sem->index < sem->size)
@@ -99,10 +110,17 @@ FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) sem_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  volatile VAR(tpl_task_id, AUTOMATIC) task_id;
+  volatile P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
+  volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   VAR(tpl_task_id, AUTOMATIC) task_id;
   P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
   CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+#endif
 
   LOCK_KERNEL()
 
@@ -135,8 +153,13 @@ FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) sem_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_task_id, AUTOMATIC) task_id;
+  volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+#else
   VAR(tpl_task_id, AUTOMATIC) task_id;
   CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+#endif
 
   LOCK_KERNEL()
 

@@ -58,7 +58,11 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
   LOCK_KERNEL()
 
@@ -107,7 +111,11 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
 {
   GET_CURRENT_CORE_ID(core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
   LOCK_KERNEL()
 
@@ -145,7 +153,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 {
   GET_CURRENT_CORE_ID(core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
   LOCK_KERNEL()
 
@@ -192,7 +204,11 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
   /* event mask of the caller */
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =

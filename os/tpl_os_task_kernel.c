@@ -59,7 +59,11 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
   /*  init the error to no error  */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+#else
   VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif
 
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -106,7 +110,11 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   GET_CURRENT_CORE_ID(core_id)
 
   /* init the error to no error */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+#else
   VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif
 
   /* lock the kernel */
   LOCK_KERNEL()
@@ -152,7 +160,11 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 { 
   GET_CURRENT_CORE_ID(core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(StatusType, AUTOMATIC)  result = E_OK;
+#else
   VAR(StatusType, AUTOMATIC)  result = E_OK;
+#endif
 
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -238,7 +250,11 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 { 
   GET_CURRENT_CORE_ID(core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+#else
   VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif
 
   /*  lock the task system    */
   LOCK_KERNEL()
@@ -289,7 +305,11 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
 {   
   GET_CURRENT_CORE_ID(core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+#else
   VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif
 
   LOCK_KERNEL()
 
@@ -333,7 +353,11 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 {  
   GET_CURRENT_CORE_ID(core_id)
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+#else
   VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif
 
   LOCK_KERNEL()
 

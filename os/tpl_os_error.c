@@ -79,7 +79,11 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 /**
  * This flag is used to avoid error hook call recursion
  */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile STATIC VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
+#else
     STATIC VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
+#endif
 
     if (!in_error_hook)
     {

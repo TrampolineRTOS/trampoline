@@ -87,7 +87,11 @@ extern CONST(tpl_enable_disable_func, OS_CONST) tpl_disable_table[];
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(tpl_bool, AUTOMATIC) result;
+#else
     VAR(tpl_bool, AUTOMATIC) result;
+#endif
 
     if ((TRUE == GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id)) ||
         (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) > 0) ||
@@ -234,7 +238,11 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   GET_CURRENT_CORE_ID(core_id)
 
   /* init the error to no error */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
   CHECK_INTERRUPT_LOCK(result)
 
@@ -285,8 +293,13 @@ FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
 STATIC FUNC(void, OS_CODE) tpl_activate_isr(
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr =
+    tpl_dyn_proc_table[isr_id];
+#else
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr =
     tpl_dyn_proc_table[isr_id];
+#endif
   /*
    * MISRA RULE 33 VIOLATION: the right statement does
    * not need to be executed if the first test fails
@@ -341,7 +354,11 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
 FUNC(void, OS_CODE) tpl_central_interrupt_handler(
   CONST(uint16, AUTOMATIC) isr_id)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+#else
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+#endif
   GET_CURRENT_CORE_ID(core_id)
 
 #if WITH_STACK_MONITORING == YES
@@ -405,7 +422,11 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
 FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(
   CONST(uint16, AUTOMATIC) isr_id)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+#else
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+#endif
   GET_CURRENT_CORE_ID(core_id)
 
 #if WITH_STACK_MONITORING == YES
@@ -463,8 +484,13 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, 
 FUNC(void, OS_CODE) tpl_mask_isr2_priority(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile CONST(tpl_priority, AUTOMATIC) index =
+    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+#else
   CONST(tpl_priority, AUTOMATIC) index =
     tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+#endif
   tpl_disable_table[index]();
 }
 
@@ -479,8 +505,13 @@ FUNC(void, OS_CODE) tpl_mask_isr2_priority(
 extern FUNC(void, OS_CODE) tpl_unmask_isr2_priority(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile CONST(tpl_priority, AUTOMATIC) index =
+    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+#else
   CONST(tpl_priority, AUTOMATIC) index =
     tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+#endif
   tpl_enable_table[index]();
 }
 

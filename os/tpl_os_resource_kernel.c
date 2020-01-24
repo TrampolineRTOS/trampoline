@@ -85,11 +85,20 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   /*  Get the resource pointer of the process */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
+  tpl_dyn_proc_table[proc_id]->resources;
+#else
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
   tpl_dyn_proc_table[proc_id]->resources;
+#endif
 #if WITH_TRACE == YES
   GET_CURRENT_CORE_ID(core_id)
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_resource_id, AUTOMATIC) res_id;
+#else
   VAR(tpl_resource_id, AUTOMATIC) res_id;
+#endif
 #endif /* WITH_TRACE */
 
   if (res != NULL)
@@ -131,10 +140,18 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /*  init the error to no error  */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
 #if RESOURCE_COUNT > 0
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+#else
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+#endif
 #endif
 
   LOCK_KERNEL()
@@ -217,9 +234,17 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 {
   GET_CURRENT_CORE_ID(core_id)
   /*  init the error to no error  */
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+#else
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#endif
 
+#ifdef VOLATILE_ARGS_AND_LOCALS
+  volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+#else
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+#endif
 
   LOCK_KERNEL()
 
