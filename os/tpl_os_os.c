@@ -40,8 +40,14 @@ extern FUNC(void, OS_CODE) tpl_start_os(CONST(AppModeType, AUTOMATIC) mode);
  * see paragraph 13.7.2.2 page 66 of OSEK/VDX 2.2.2 spec
  */
 FUNC(void, OS_CODE) StartOS(
-  CONST(AppModeType, AUTOMATIC) mode)
+  CONST(AppModeType, AUTOMATIC) _mode)
 {
+
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(AppModeType, AUTOMATIC) mode = _mode;
+  #else
+    #define mode _mode
+  #endif
   GET_CURRENT_CORE_ID(core_id)
 
   if (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) == OS_INIT)
@@ -67,6 +73,9 @@ FUNC(void, OS_CODE) StartOS(
    * if no other task is AUTOSTART except if it is called from
    * within a task or an ISR of (which is forbidden).
    */
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    #undef mode
+  #endif
 }
 
 #define API_STOP_SEC_CODE

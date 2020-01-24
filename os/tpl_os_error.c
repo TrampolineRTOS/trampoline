@@ -72,18 +72,20 @@ VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #PROCESS_ERROR
  */
 FUNC(void, OS_CODE) tpl_call_error_hook(
-    CONST(tpl_status, AUTOMATIC) error)
+    CONST(tpl_status, AUTOMATIC) _error)
 {
     GET_CURRENT_CORE_ID(core_id)
     GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 /**
  * This flag is used to avoid error hook call recursion
  */
-#ifdef VOLATILE_ARGS_AND_LOCALS
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_status, AUTOMATIC) error = _error;
     volatile STATIC VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
-#else
+  #else
+  	#define error _error
     STATIC VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
-#endif
+  #endif
 
     if (!in_error_hook)
     {
@@ -97,6 +99,9 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 #endif /* WITH_MEMORY_PROTECTION == YES */
         in_error_hook = FALSE;
     }
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef error
+  #endif
 }
 
 #define OS_STOP_SEC_CODE

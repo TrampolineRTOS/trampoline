@@ -53,17 +53,19 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
  * Kernel service for task activation
  */
 FUNC(StatusType, OS_CODE) tpl_activate_task_service(
-  CONST(tpl_task_id, AUTOMATIC) task_id)
+  CONST(tpl_task_id, AUTOMATIC) _task_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
   /*  init the error to no error  */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
+    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+  #else
+    #define task_id _task_id
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+  #endif
 
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -101,6 +103,9 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
   /*  unlock the kernel  */
   UNLOCK_KERNEL() 
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
   return result;
 }
 
@@ -110,11 +115,11 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   GET_CURRENT_CORE_ID(core_id)
 
   /* init the error to no error */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+  #else
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+  #endif
 
   /* lock the kernel */
   LOCK_KERNEL()
@@ -156,15 +161,17 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
 
 FUNC(StatusType, OS_CODE) tpl_chain_task_service(
-  CONST(tpl_task_id, AUTOMATIC) task_id)
+  CONST(tpl_task_id, AUTOMATIC) _task_id)
 { 
   GET_CURRENT_CORE_ID(core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC)  result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC)  result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
+    volatile VAR(StatusType, AUTOMATIC)  result = E_OK;
+  #else
+    #define task_id _task_id
+    VAR(StatusType, AUTOMATIC)  result = E_OK;
+  #endif
 
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -241,6 +248,9 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
 
   return result;
 }
@@ -250,11 +260,11 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 { 
   GET_CURRENT_CORE_ID(core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+  #else
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+  #endif
 
   /*  lock the task system    */
   LOCK_KERNEL()
@@ -301,15 +311,17 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 
 
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
-  CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id)
+  CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) _task_id)
 {   
   GET_CURRENT_CORE_ID(core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id = _task_id;
+    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+  #else
+    #define task_id _task_id
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+  #endif
 
   LOCK_KERNEL()
 
@@ -342,22 +354,29 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
 
   return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
-  CONST(tpl_task_id, AUTOMATIC)                        task_id,
-  CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state)
+  CONST(tpl_task_id, AUTOMATIC)                        _task_id,
+  CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  _state)
 {  
   GET_CURRENT_CORE_ID(core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
+    volatile CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state = _state;
+    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+  #else
+    #define task_id _task_id
+	/* conflict with symbol state (also struct member) */
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+  #endif
 
   LOCK_KERNEL()
 
@@ -367,7 +386,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetTaskState)
   STORE_TASK_ID(task_id)
-  STORE_TASK_STATE_REF(state)
+  STORE_TASK_STATE_REF(_state)
 
   /*  Check a task_id error       */
   CHECK_TASK_ID_ERROR(task_id,result)
@@ -376,18 +395,21 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
   /* check state is in an authorized memory region */
-  CHECK_DATA_LOCATION(core_id, state, result);
+  CHECK_DATA_LOCATION(core_id, _state, result);
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
-    *state = (tpl_dyn_proc_table[task_id]->state) & 0x3;
+    *_state = (tpl_dyn_proc_table[task_id]->state) & 0x3;
   }
 #endif
 
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
 
   return result;
 }

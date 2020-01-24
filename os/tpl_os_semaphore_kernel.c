@@ -30,9 +30,16 @@
 #include "tpl_machine_interface.h"
 
 FUNC(void, OS_CODE) tpl_sem_enqueue(
-  P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) sem,
-  CONST(tpl_task_id, AUTOMATIC)                 task_id)
+  P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) _sem,
+  CONST(tpl_task_id, AUTOMATIC)                 _task_id)
 {
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) sem = _sem;
+    volatile CONST(tpl_task_id, AUTOMATIC)                 task_id = _task_id;
+  #else
+    #define task_id _task_id
+    #define sem _sem
+  #endif
   sem->size++;
   sem->waiting_tasks[sem->index] = task_id;
   sem->index++;
@@ -40,18 +47,24 @@ FUNC(void, OS_CODE) tpl_sem_enqueue(
   {
     sem->index = 0;
   }
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef sem
+    #undef task_id
+  #endif
 }
 
 FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
-  P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) sem)
+  P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) _sem)
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint32, AUTOMATIC) read_index = sem->index - sem->size;
-  volatile VAR(tpl_task_id, AUTOMATIC) task_id;
-#else
-  VAR(uint32, AUTOMATIC) read_index = sem->index - sem->size;
-  VAR(tpl_task_id, AUTOMATIC) task_id;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) sem = _sem;
+    volatile VAR(uint32, AUTOMATIC) read_index = sem->index - sem->size;
+    volatile VAR(tpl_task_id, AUTOMATIC) task_id;
+  #else
+    #define sem _sem
+    VAR(uint32, AUTOMATIC) read_index = sem->index - sem->size;
+    VAR(tpl_task_id, AUTOMATIC) task_id;
+  #endif
 
   if (sem->index < sem->size)
   {
@@ -62,6 +75,9 @@ FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
 
   /* release the task */
   tpl_release(task_id);
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef sem
+  #endif
 
   return task_id;
 }
@@ -69,17 +85,19 @@ FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
 #if WITH_DOW == YES
 #include <stdio.h>
 #include "tpl_app_config.h"
-FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) sem_id)
+FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) _sem_id)
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
-  volatile VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
-  volatile VAR(uint32, AUTOMATIC) count = sem->size;
-#else
-  CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
-  VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
-  VAR(uint32, AUTOMATIC) count = sem->size;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(SemType, AUTOMATIC) sem_id = _sem_id;
+    volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+    volatile VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
+    volatile VAR(uint32, AUTOMATIC) count = sem->size;
+  #else
+    #define sem_id _sem_id
+    CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+    VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
+    VAR(uint32, AUTOMATIC) count = sem->size;
+  #endif
 
   printf("(%lu)", sem->token);
   if (sem->index < sem->size)
@@ -103,24 +121,29 @@ FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) sem_id)
     printf("[empty]");
   }
   printf("\n");
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef sem_id
+  #endif
 }
 #endif
 
-FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) sem_id)
+FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) _sem_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-  volatile VAR(tpl_task_id, AUTOMATIC) task_id;
-  volatile P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
-  volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-  VAR(tpl_task_id, AUTOMATIC) task_id;
-  P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
-  CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(SemType, AUTOMATIC) sem_id = _sem_id;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    volatile VAR(tpl_task_id, AUTOMATIC) task_id;
+    volatile P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
+    volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+  #else
+    #define sem_id _sem_id
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+    VAR(tpl_task_id, AUTOMATIC) task_id;
+    P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
+    CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+  #endif
 
   LOCK_KERNEL()
 
@@ -145,21 +168,26 @@ FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) sem_id)
   }
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef sem_id
+  #endif
 
   return result;
 }
 
-FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) sem_id)
+FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) _sem_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_task_id, AUTOMATIC) task_id;
-  volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
-#else
-  VAR(tpl_task_id, AUTOMATIC) task_id;
-  CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(SemType, AUTOMATIC) sem_id = _sem_id;
+    volatile VAR(tpl_task_id, AUTOMATIC) task_id;
+    volatile CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+  #else
+    #define sem_id _sem_id
+    VAR(tpl_task_id, AUTOMATIC) task_id;
+    CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+  #endif
 
   LOCK_KERNEL()
 
@@ -180,6 +208,9 @@ FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) sem_id)
   }
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef sem_id
+  #endif
 
   return E_OK;
 }

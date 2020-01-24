@@ -77,13 +77,13 @@ VAR(tpl_lock, OS_VAR) tpl_startos_sync_lock = UNLOCKED_LOCK;
 FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
   void)
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_application_mode, AUTOMATIC) app_mode;
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_application_mode, AUTOMATIC) app_mode;
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(tpl_application_mode, AUTOMATIC) app_mode;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    VAR(tpl_application_mode, AUTOMATIC) app_mode;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
   /*  lock the kernel    */
   LOCK_KERNEL()
 
@@ -107,17 +107,19 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
 }
 
 FUNC(void, OS_CODE) tpl_start_os_service(
-  CONST(tpl_application_mode, AUTOMATIC) mode)
+  CONST(tpl_application_mode, AUTOMATIC) _mode)
 {
   GET_CURRENT_CORE_ID(core_id)
 
 #if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES) | (WITH_ORTI == YES)
   /*  init the error to no error  */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_application_mode, AUTOMATIC) mode = _mode;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define mode _mode
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 #endif
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -178,6 +180,9 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef mode
+  #endif
 }
 
 FUNC(void, OS_CODE) tpl_call_shutdown_os(

@@ -52,17 +52,21 @@
  * tpl_set_event_service.
  */
 FUNC(tpl_status, OS_CODE) tpl_set_event_service(
-  CONST(tpl_task_id, AUTOMATIC)       task_id,
-  CONST(tpl_event_mask, AUTOMATIC)    event)
+  CONST(tpl_task_id, AUTOMATIC)       _task_id,
+  CONST(tpl_event_mask, AUTOMATIC)    _event)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC)       task_id = _task_id;
+    volatile CONST(tpl_event_mask, AUTOMATIC)    event = _event;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define task_id _task_id
+    #define event _event
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 
   LOCK_KERNEL()
 
@@ -98,6 +102,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+    #undef event
+  #endif
   
   return result;
 }
@@ -107,15 +115,17 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
  * tpl_clear_event_service
  */
 FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
-  CONST(tpl_event_mask, AUTOMATIC) event)
+  CONST(tpl_event_mask, AUTOMATIC) _event)
 {
   GET_CURRENT_CORE_ID(core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_event_mask, AUTOMATIC) event = _event;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define event _event
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 
   LOCK_KERNEL()
 
@@ -141,6 +151,9 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef event
+  #endif
   return result;
 }
 
@@ -148,16 +161,20 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
  * tpl_get_event_service
  */
 FUNC(tpl_status, OS_CODE) tpl_get_event_service(
-  CONST(tpl_task_id, AUTOMATIC)                       task_id,
-  CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
+  CONST(tpl_task_id, AUTOMATIC)                       _task_id,
+  CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) _event)
 {
   GET_CURRENT_CORE_ID(core_id)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
+    volatile CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event = _event;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define task_id _task_id
+    #define event _event
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 
   LOCK_KERNEL()
 
@@ -191,6 +208,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+    #undef event
+  #endif
   
   return result;
 }
@@ -199,16 +220,18 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
  * tpl_wait_event_service
  */
 FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
-  CONST(tpl_event_mask, AUTOMATIC) event)
+  CONST(tpl_event_mask, AUTOMATIC) _event)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_event_mask, AUTOMATIC) event = _event;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define event _event
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 
   /* event mask of the caller */
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =
@@ -267,6 +290,9 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef event
+  #endif
   
   return result;
 }

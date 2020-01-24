@@ -82,23 +82,25 @@ CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (tpl_resource_id)(-1);
  * No rescheduling is done.
  */
 FUNC(void, OS_CODE) tpl_release_all_resources(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+  CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
   /*  Get the resource pointer of the process */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
-  tpl_dyn_proc_table[proc_id]->resources;
-#else
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
-  tpl_dyn_proc_table[proc_id]->resources;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
+    volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
+    tpl_dyn_proc_table[proc_id]->resources;
+  #else
+    #define proc_id _proc_id
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
+    tpl_dyn_proc_table[proc_id]->resources;
+  #endif
 #if WITH_TRACE == YES
   GET_CURRENT_CORE_ID(core_id)
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_resource_id, AUTOMATIC) res_id;
-#else
-  VAR(tpl_resource_id, AUTOMATIC) res_id;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(tpl_resource_id, AUTOMATIC) res_id;
+  #else
+    VAR(tpl_resource_id, AUTOMATIC) res_id;
+  #endif
 #endif /* WITH_TRACE */
 
   if (res != NULL)
@@ -124,6 +126,9 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 	  res = next_res;
     } while (res != NULL);
   }
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef proc_id
+  #endif
 }
 
 /*
@@ -134,24 +139,26 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
  *  as the last item. This simplify tpl_get_resource_service.
  */
 FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
-    CONST(tpl_resource_id, AUTOMATIC) res_id)
+    CONST(tpl_resource_id, AUTOMATIC) _res_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /*  init the error to no error  */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_resource_id, AUTOMATIC) res_id = _res_id;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define res_id _res_id
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 
 #if RESOURCE_COUNT > 0
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-#else
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+  #else
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+  #endif
 #endif
 
   LOCK_KERNEL()
@@ -218,6 +225,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef res_id
+  #endif
 
   return result;
 }
@@ -230,21 +240,19 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
  *  as the last item. This simplify tpl_get_resource_service.
  */
 FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
-  CONST(tpl_resource_id, AUTOMATIC) res_id)
+  CONST(tpl_resource_id, AUTOMATIC) _res_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   /*  init the error to no error  */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
-
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-#else
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_resource_id, AUTOMATIC) res_id = _res_id;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+  #else
+    #define res_id _res_id
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+  #endif
 
   LOCK_KERNEL()
 
@@ -310,6 +318,9 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   PROCESS_ERROR(result)
 
   UNLOCK_KERNEL()
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef res_id
+  #endif
 
   return result;
 }

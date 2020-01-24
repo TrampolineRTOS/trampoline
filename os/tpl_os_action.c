@@ -42,8 +42,13 @@
  *  action function for action call back
  */
 FUNC(void, OS_CODE) tpl_action_callback(
-  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action)
 {
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action = _action;
+  #else
+    #define action _action
+  #endif
   /*
    * A tpl_action * is cast to a tpl_callback_action *
    * This violate MISRA rule 45. However, since the
@@ -51,6 +56,9 @@ FUNC(void, OS_CODE) tpl_action_callback(
    * This cast behaves correctly.
    */
   ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)->callback();
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef action
+  #endif
 }
 
 /**
@@ -60,15 +68,12 @@ FUNC(void, OS_CODE) tpl_action_activate_task(
   P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 )
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-	volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action = action;
-#else
-	#define _action action
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action = action;
+  #else
+    #define _action action
+  #endif
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-#else
-#endif
   /*
    * A tpl_action * is cast to a tpl_task_activation_action *
    * This violate MISRA rule 45. However, since the
@@ -96,9 +101,9 @@ FUNC(void, OS_CODE) tpl_action_activate_task(
 	reg_OS_instru_kernel_functions_5 = HW_FUNC_ACTION_ACTIVATE_TASK_EXIT;
 	#endif
 
-#ifndef VOLATILE_ARGS_AND_LOCALS
-	#undef _action
-#endif
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef _action
+  #endif
 }
 
 /**
@@ -107,7 +112,7 @@ FUNC(void, OS_CODE) tpl_action_activate_task(
 #if EVENT_COUNT > 0
 
 FUNC(void, OS_CODE) tpl_action_setevent(
-  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action)
 {
   /*
    * A tpl_action * is cast to a tpl_setevent_action *
@@ -119,9 +124,16 @@ FUNC(void, OS_CODE) tpl_action_setevent(
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_6 = HW_FUNC_ACTION_SETEVENT_ENTER;
 	#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action = _action;
+    /*  init the error to no error  */
+    volatile VAR(StatusType, AUTOMATIC) result_action = E_OK;
+  #else
+    #define action _action
+    /*  init the error to no error  */
+    VAR(StatusType, AUTOMATIC) result_action = E_OK;
+  #endif
    
-  /*  init the error to no error  */
-  VAR(StatusType, AUTOMATIC) result_action = E_OK;
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_SetEvent)
@@ -137,7 +149,10 @@ FUNC(void, OS_CODE) tpl_action_setevent(
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_6 = HW_FUNC_ACTION_SETEVENT_EXIT;
 	#endif  
-  
+
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef action
+  #endif
 }
 
 #endif

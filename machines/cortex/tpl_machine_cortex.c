@@ -161,57 +161,59 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 #define xPSR_IDX                7
 
 FUNC(void, OS_CODE) tpl_init_context(
-  CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
+  CONST(tpl_proc_id, OS_APPL_DATA) _proc_id)
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-#if WITH_PAINT_REGISTERS == YES || WITH_PAINT_STACK == YES
-  volatile VAR(int, AUTOMATIC) i;
-#endif
-
-  /* The pointer to the static descriptor of the process */
-  volatile CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc =
-    tpl_stat_proc_table[proc_id];
-
-  /* The pointer to the context of the process */
-  volatile CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
-    the_proc->context;
-
-  /* The pointer to the stack of the process */
-  volatile CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack =
-    the_proc->stack.stack_zone;
-
-  /* The size of the stack in 32 bits word above the esception frame */
-  volatile CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
-    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
-
-  /* The pointer to the exception frame */
-  volatile CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame =
-    stack + size_of_stack_above_exception_frame;
-#else
-#if WITH_PAINT_REGISTERS == YES || WITH_PAINT_STACK == YES
-  VAR(int, AUTOMATIC) i;
-#endif
-
-  /* The pointer to the static descriptor of the process */
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc =
-    tpl_stat_proc_table[proc_id];
-
-  /* The pointer to the context of the process */
-  CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
-    the_proc->context;
-
-  /* The pointer to the stack of the process */
-  CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack =
-    the_proc->stack.stack_zone;
-
-  /* The size of the stack in 32 bits word above the esception frame */
-  CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
-    (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
-
-  /* The pointer to the exception frame */
-  CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame =
-    stack + size_of_stack_above_exception_frame;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, OS_APPL_DATA) proc_id = _proc_id;
+    #if WITH_PAINT_REGISTERS == YES || WITH_PAINT_STACK == YES
+      volatile VAR(int, AUTOMATIC) i;
+    #endif
+  
+    /* The pointer to the static descriptor of the process */
+    volatile CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc =
+      tpl_stat_proc_table[proc_id];
+  
+    /* The pointer to the context of the process */
+    volatile CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
+      the_proc->context;
+  
+    /* The pointer to the stack of the process */
+    volatile CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack =
+      the_proc->stack.stack_zone;
+  
+    /* The size of the stack in 32 bits word above the esception frame */
+    volatile CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
+      (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
+  
+    /* The pointer to the exception frame */
+    volatile CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame =
+      stack + size_of_stack_above_exception_frame;
+  #else
+    #define proc_id _proc_id
+    #if WITH_PAINT_REGISTERS == YES || WITH_PAINT_STACK == YES
+      VAR(int, AUTOMATIC) i;
+    #endif
+  
+    /* The pointer to the static descriptor of the process */
+    CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc =
+      tpl_stat_proc_table[proc_id];
+  
+    /* The pointer to the context of the process */
+    CONSTP2VAR(arm_core_context, AUTOMATIC, OS_APPL_DATA) l_tpl_context =
+      the_proc->context;
+  
+    /* The pointer to the stack of the process */
+    CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack =
+      the_proc->stack.stack_zone;
+  
+    /* The size of the stack in 32 bits word above the esception frame */
+    CONST(uint32, AUTOMATIC) size_of_stack_above_exception_frame =
+      (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
+  
+    /* The pointer to the exception frame */
+    CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) exception_frame =
+      stack + size_of_stack_above_exception_frame;
+  #endif
 
 #if WITH_PAINT_REGISTERS == YES
   /*
@@ -300,6 +302,9 @@ FUNC(void, OS_CODE) tpl_init_context(
 #if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
   (*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
 #endif
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef proc_id
+  #endif
 }
 
 FUNC(uint8, OS_CODE) tpl_check_stack_footprint(CONST(tpl_proc_id, OS_APPL_DATA) proc_id)

@@ -234,24 +234,28 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
  * the priority of a job
  */
 FUNC(int, OS_CODE) tpl_compare_entries(
-  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry,
-  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry
+  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) _first_entry,
+  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) _second_entry
   TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
-	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions = HW_FUNC_COMPARE_ENTRIES_ENTER;
-	#endif		
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
-  volatile VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
-  volatile VAR(uint32, AUTOMATIC) first_tmp ;
-  volatile VAR(uint32, AUTOMATIC) second_tmp ;
-#else
-  VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
-  VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
-  VAR(uint32, AUTOMATIC) first_tmp ;
-  VAR(uint32, AUTOMATIC) second_tmp ;
-#endif
+  #endif		
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry = _first_entry;
+    volatile CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry = _second_entry;
+    volatile VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
+    volatile VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
+    volatile VAR(uint32, AUTOMATIC) first_tmp ;
+    volatile VAR(uint32, AUTOMATIC) second_tmp ;
+  #else
+    #define first_entry _first_entry
+    #define second_entry _second_entry
+    VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
+    VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
+    VAR(uint32, AUTOMATIC) first_tmp ;
+    VAR(uint32, AUTOMATIC) second_tmp ;
+  #endif
 
   first_tmp = ((first_key & RANK_MASK) -
     TAIL_FOR_PRIO(tail_for_prio)[first_key >> PRIORITY_SHIFT]);
@@ -268,8 +272,11 @@ FUNC(int, OS_CODE) tpl_compare_entries(
  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions = HW_FUNC_COMPARE_ENTRIES_EXIT;
 	#endif	 
-  
   return (first_key < second_key);
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef first_entry
+    #undef second_entry
+  #endif
 }
 
 /*
@@ -282,18 +289,22 @@ FUNC(int, OS_CODE) tpl_compare_entries(
  *
  */
 FUNC(void, OS_CODE) tpl_bubble_up(
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
-  VAR(uint32, AUTOMATIC)                        index
+  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) _heap,
+  VAR(uint32, AUTOMATIC)                        _index
   TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_UP_ENTER;
 	#endif	
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint32, AUTOMATIC) father = index >> 1;
-#else
-  VAR(uint32, AUTOMATIC) father = index >> 1;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap = _heap;
+    volatile VAR(uint32, AUTOMATIC)                        index = _index;
+    volatile VAR(uint32, AUTOMATIC) father = index >> 1;
+  #else
+    #define heap _heap
+    #define index _index
+    VAR(uint32, AUTOMATIC) father = index >> 1;
+  #endif
 
   while ((index > 1) &&
     (tpl_compare_entries(heap + father,
@@ -303,11 +314,11 @@ FUNC(void, OS_CODE) tpl_bubble_up(
     /*
      * if the father key is lower then the index key, swap them
      */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
-#else
-    VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
-#endif
+    #ifdef VOLATILE_ARGS_AND_LOCALS
+      volatile VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
+    #else
+      VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
+    #endif
     heap[index] = heap[father];
     heap[father] = tmp;
     index = father;
@@ -316,6 +327,10 @@ FUNC(void, OS_CODE) tpl_bubble_up(
   	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_UP_EXIT;
 	#endif	
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef heap
+    #undef index
+  #endif
 }
 
 /*
@@ -328,20 +343,24 @@ FUNC(void, OS_CODE) tpl_bubble_up(
  *
  */
 FUNC(void, OS_CODE) tpl_bubble_down(
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
-  VAR(uint32, AUTOMATIC)                        index
+  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) _heap,
+  VAR(uint32, AUTOMATIC)                        _index
   TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
   	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 		reg_OS_instru_kernel_functions_2 = HW_FUNC_BUBBLE_DOWN_ENTER;
 	#endif	
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONST(uint32, AUTOMATIC) size = heap[0].key;
-  volatile VAR(uint32, AUTOMATIC) child;
-#else
-  CONST(uint32, AUTOMATIC) size = heap[0].key;
-  VAR(uint32, AUTOMATIC) child;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap = _heap;
+    volatile VAR(uint32, AUTOMATIC)                        index = _index;
+    volatile CONST(uint32, AUTOMATIC) size = heap[0].key;
+    volatile VAR(uint32, AUTOMATIC) child;
+  #else
+    #define heap _heap
+    #define index _index
+    CONST(uint32, AUTOMATIC) size = heap[0].key;
+    VAR(uint32, AUTOMATIC) child;
+  #endif
 
   while ((child = index << 1) <= size) /* child = left */
   {
@@ -374,6 +393,10 @@ FUNC(void, OS_CODE) tpl_bubble_down(
     #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 		reg_OS_instru_kernel_functions_2 = HW_FUNC_BUBBLE_DOWN_EXIT;
 	#endif
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef heap
+    #undef index
+  #endif
 }
 
 /*
@@ -385,7 +408,7 @@ FUNC(void, OS_CODE) tpl_bubble_down(
  * is used to get the corresponding ready list.
  */
 FUNC(void, OS_CODE) tpl_put_new_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+  CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_2 = HW_FUNC_PUT_NEW_PROC_ENTER;
@@ -394,19 +417,21 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  volatile VAR(tpl_priority, AUTOMATIC) dyn_prio;
-  volatile CONST(tpl_priority, AUTOMATIC) prio =
-    tpl_stat_proc_table[proc_id]->base_priority;
-#else
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  VAR(tpl_priority, AUTOMATIC) dyn_prio;
-  CONST(tpl_priority, AUTOMATIC) prio =
-    tpl_stat_proc_table[proc_id]->base_priority;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
+    volatile VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+  
+    volatile VAR(tpl_priority, AUTOMATIC) dyn_prio;
+    volatile CONST(tpl_priority, AUTOMATIC) prio =
+      tpl_stat_proc_table[proc_id]->base_priority;
+  #else
+    #define proc_id _proc_id
+    VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+  
+    VAR(tpl_priority, AUTOMATIC) dyn_prio;
+    CONST(tpl_priority, AUTOMATIC) prio =
+      tpl_stat_proc_table[proc_id]->base_priority;
+  #endif
   /*
    * add the new entry at the end of the ready list
    */
@@ -425,6 +450,9 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   );
 
   DOW_DO(printrl("put_new_proc");)
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef proc_id
+  #endif
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_2 = HW_FUNC_PUT_NEW_PROC_EXIT;
 	#endif
@@ -439,7 +467,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
  * of the proc descriptor is used to get the corresponding ready list.
  */
 FUNC(void, OS_CODE) tpl_put_preempted_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+  CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_2 = HW_FUNC_PUT_PREEMPTED_PROC_ENTER;
@@ -449,17 +477,19 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  volatile CONST(tpl_priority, AUTOMATIC) dyn_prio =
-    tpl_dyn_proc_table[proc_id]->priority;
-#else
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  CONST(tpl_priority, AUTOMATIC) dyn_prio =
-    tpl_dyn_proc_table[proc_id]->priority;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
+    volatile VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+  
+    volatile CONST(tpl_priority, AUTOMATIC) dyn_prio =
+      tpl_dyn_proc_table[proc_id]->priority;
+  #else
+    #define proc_id _proc_id
+    VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+  
+    CONST(tpl_priority, AUTOMATIC) dyn_prio =
+      tpl_dyn_proc_table[proc_id]->priority;
+  #endif
 
   DOW_DO(printf("put preempted %s, %d\n",proc_name_table[proc_id],dyn_prio));
   /*
@@ -475,9 +505,12 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   );
 
   DOW_DO(printrl("put_preempted_proc"));
-	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef proc_id
+  #endif
+  #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_2 = HW_FUNC_PUT_PREEMPTED_PROC_EXIT;
-	#endif
+  #endif
 }
 
 /**
@@ -516,23 +549,23 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
    * Get the current size and update it (since the front element will be
    * removed)
    */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
-  volatile VAR(uint32, AUTOMATIC) index = 1;
-
-  /*
-  * Get the proc_id of the front proc
-  */
-  volatile VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
-#else
-  CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
-  VAR(uint32, AUTOMATIC) index = 1;
-
-  /*
-   * Get the proc_id of the front proc
-   */
-  VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
+    volatile VAR(uint32, AUTOMATIC) index = 1;
+  
+    /*
+    * Get the proc_id of the front proc
+    */
+    volatile VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
+  #else
+    CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
+    VAR(uint32, AUTOMATIC) index = 1;
+  
+    /*
+     * Get the proc_id of the front proc
+     */
+    VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
+  #endif
 
   /*
    * Put the last element in front
@@ -564,7 +597,7 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
  *
  * tpl_remove_proc removes all the process instances in the ready queue
  */
-FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
 	
   	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
@@ -575,13 +608,15 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint32, AUTOMATIC) index;
-  volatile VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
-#else
-  VAR(uint32, AUTOMATIC) index;
-  VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
+    volatile VAR(uint32, AUTOMATIC) index;
+    volatile VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
+  #else
+     #define proc_id _proc_id
+    VAR(uint32, AUTOMATIC) index;
+    VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
+  #endif
 
   DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
   DOW_DO(printrl("tpl_remove_proc - before");)
@@ -604,9 +639,12 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 
   DOW_DO(printrl("tpl_remove_proc - after");)
   
-    #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef proc_id
+  #endif
+  #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 		reg_OS_instru_kernel_functions_5 = HW_FUNC_REMOVE_PROC_EXIT;
-	#endif
+  #endif
   
 }
 
@@ -622,11 +660,11 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
   CORE_ID_OR_VOID(core_id))
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
-#else
-  VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
+  #else
+    VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
+  #endif
 
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -657,7 +695,7 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
  * @param task task from which internal resource is got
  */
 FUNC(void, OS_CODE) tpl_get_internal_resource(
-  CONST(tpl_proc_id, AUTOMATIC) task_id)
+  CONST(tpl_proc_id, AUTOMATIC) _task_id)
 {
 #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
   reg_OS_instru_kernel_functions_2 = HW_FUNC_GET_INTERNAL_RESOURCE_ENTER;
@@ -665,13 +703,15 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
   GET_PROC_CORE_ID(task_id, core_id)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
-#else
-  CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) task_id = _task_id;
+    volatile CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
+      tpl_stat_proc_table[task_id]->internal_resource;
+  #else
+    #define task_id _task_id
+    CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
+      tpl_stat_proc_table[task_id]->internal_resource;
+  #endif
 
   if ((NULL != rez) && (FALSE == rez->taken))
   {
@@ -680,6 +720,9 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
     tpl_dyn_proc_table[task_id]->priority =
       DYNAMIC_PRIO(rez->ceiling_priority, tail_for_prio);
   }
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
 #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
   reg_OS_instru_kernel_functions_2 = HW_FUNC_GET_INTERNAL_RESOURCE_EXIT;
 #endif
@@ -693,24 +736,29 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
  * @param task task from which internal resource is released
  */
 FUNC(void, OS_CODE) tpl_release_internal_resource(
-    CONST(tpl_proc_id, AUTOMATIC) task_id)
+    CONST(tpl_proc_id, AUTOMATIC) _task_id)
 {
 #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
   reg_OS_instru_kernel_functions_3 = HW_FUNC_RELEASE_INTERNAL_RESOURCE_ENTER;
 #endif
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
-#else
-  CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-    tpl_stat_proc_table[task_id]->internal_resource;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) task_id = _task_id;
+    volatile CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
+      tpl_stat_proc_table[task_id]->internal_resource;
+  #else
+    #define task_id _task_id
+    CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
+      tpl_stat_proc_table[task_id]->internal_resource;
+  #endif
 
   if ((NULL != rez) && (TRUE == rez->taken))
   {
     rez->taken = FALSE;
     tpl_dyn_proc_table[task_id]->priority = rez->owner_prev_priority;
   }
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
 #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
   reg_OS_instru_kernel_functions_3 = HW_FUNC_RELEASE_INTERNAL_RESOURCE_EXIT;
 #endif
@@ -760,7 +808,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
  *          that was running before the elected task replace it
  */
 FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
-  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
+  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) _save)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_3 = HW_FUNC_RUN_ELECTED_ENTER;
@@ -768,13 +816,15 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
-    save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
-#else
-  CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
-    save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_bool, AUTOMATIC) save = _save;
+    volatile CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
+      save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
+  #else
+  	#define save _save
+    CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
+      save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
+  #endif
 
   DOW_DO(print_kern("before tpl_run_elected"));
 
@@ -840,6 +890,9 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   CALL_PRE_TASK_HOOK()
 
   DOW_DO(print_kern("after tpl_run_elected"));
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef save
+  #endif
 
   	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_3 = HW_FUNC_RUN_ELECTED_EXIT;
@@ -860,13 +913,13 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 	#endif
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONST(tpl_heap_entry, AUTOMATIC) proc =
-    tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
-#else
-  CONST(tpl_heap_entry, AUTOMATIC) proc =
-    tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_heap_entry, AUTOMATIC) proc =
+      tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+  #else
+    CONST(tpl_heap_entry, AUTOMATIC) proc =
+      tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+  #endif
 
 #if NUMBER_OF_CORES > 1
   /*
@@ -926,11 +979,11 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
-#else
-  VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
+  #else
+    VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
+  #endif
 
   DOW_DO(print_kern("before tpl_schedule_from_running"));
   DOW_ASSERT((uint32)READY_LIST(ready_list)[1].key > 0)
@@ -1123,25 +1176,27 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
  * @param task_id   the identifier of the task
  */
 FUNC(tpl_status, OS_CODE) tpl_activate_task(
-  CONST(tpl_task_id, AUTOMATIC) task_id)
+  CONST(tpl_task_id, AUTOMATIC) _task_id)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_ACTIVATE_TASK_ENTER;
 	#endif	
 	
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
-  volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
-	tpl_dyn_proc_table[task_id];
-  volatile CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
-	tpl_stat_proc_table[task_id];
-#else
-  VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
-    tpl_dyn_proc_table[task_id];
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
-    tpl_stat_proc_table[task_id];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
+    volatile VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
+    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
+  	tpl_dyn_proc_table[task_id];
+    volatile CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
+  	tpl_stat_proc_table[task_id];
+  #else
+    #define task_id _task_id
+    VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
+    CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
+      tpl_dyn_proc_table[task_id];
+    CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
+      tpl_stat_proc_table[task_id];
+  #endif
 
   DOW_DO(printf("tpl_activate_task %s[%d](%d)\n",
     proc_name_table[task_id],
@@ -1206,6 +1261,9 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_ACTIVATE_TASK_EXIT;
 	#endif	  
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
   return result;
 }
 
@@ -1219,23 +1277,28 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
  *
  * @param task_id           id of the task
  */
-FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
+FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) _task_id)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_RELEASE_ENTER;
 	#endif	
   GET_PROC_CORE_ID(task_id, core_id)
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
-#else
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
+    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
+  #else
+    #define task_id _task_id
+    CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
+  #endif
   /*  set the state to READY  */
   task->state = (tpl_proc_state)READY;
   /*  put the task in the READY list          */
   tpl_put_new_proc(task_id);
   /*  notify a scheduling needs to be done    */
   TPL_KERN(core_id).need_schedule = TRUE;
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+  #endif
  	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_RELEASE_EXIT;
 	#endif	
@@ -1250,30 +1313,34 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
  * @param incoming_event    Event mask
  */
 FUNC(tpl_status, OS_CODE) tpl_set_event(
-  CONST(tpl_task_id, AUTOMATIC)     task_id,
-  CONST(tpl_event_mask, AUTOMATIC)  incoming_event)
+  CONST(tpl_task_id, AUTOMATIC)     _task_id,
+  CONST(tpl_event_mask, AUTOMATIC)  _incoming_event)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_SET_EVENT_ENTER;
 	#endif	
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_task_id, AUTOMATIC)     task_id = _task_id;
+    volatile CONST(tpl_event_mask, AUTOMATIC)  incoming_event = _incoming_event;
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    #define task_id _task_id
+    #define incoming_event _incoming_event
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 
 #if EXTENDED_TASK_COUNT > 0
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
-    tpl_dyn_proc_table[task_id];
-  volatile CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
-    tpl_task_events_table[task_id];
-#else
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
-    tpl_dyn_proc_table[task_id];
-  CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
-    tpl_task_events_table[task_id];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
+      tpl_dyn_proc_table[task_id];
+    volatile CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
+      tpl_task_events_table[task_id];
+  #else
+    CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
+      tpl_dyn_proc_table[task_id];
+    CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
+      tpl_task_events_table[task_id];
+  #endif
 
   if (task->state != (tpl_proc_state)SUSPENDED)
   {
@@ -1318,9 +1385,13 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
   }
 #endif
 
-	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef task_id
+    #undef incoming_event
+  #endif
+  #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_SET_EVENT_EXIT;
-	#endif	
+  #endif	
 
   return result;
 }
@@ -1338,18 +1409,20 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
  * @param exec_obj address of the executable object descriptor
  */
 FUNC(void, OS_CODE) tpl_init_proc(
-    CONST(tpl_proc_id, AUTOMATIC) proc_id)
+    CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_5 = HW_FUNC_INIT_PROC_ENTER;
 	#endif
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
-    tpl_dyn_proc_table[proc_id];
-#else
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
-    tpl_dyn_proc_table[proc_id];
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
+    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
+      tpl_dyn_proc_table[proc_id];
+  #else
+    #define proc_id _proc_id
+    CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
+      tpl_dyn_proc_table[proc_id];
+  #endif
 
   /*  set the resources list to NULL                                    */
   dyn->resources = NULL;
@@ -1359,6 +1432,9 @@ FUNC(void, OS_CODE) tpl_init_proc(
 	#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_5 = HW_FUNC_INIT_PROC_EXIT;
 	#endif
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef proc_id
+  #endif
 }
 
 /**
@@ -1366,40 +1442,42 @@ FUNC(void, OS_CODE) tpl_init_proc(
  *
  * Initialization of Trampoline
  */
-FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
+FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) _app_mode)
 {
 #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_5 = HW_FUNC_INIT_OS_ENTER;
 #endif
   GET_CURRENT_CORE_ID(core_id)
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint16, AUTOMATIC) i;
-  volatile CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
-#else
-  VAR(uint16, AUTOMATIC) i;
-  CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile CONST(tpl_application_mode, AUTOMATIC) app_mode = _app_mode;
+    volatile VAR(uint16, AUTOMATIC) i;
+    volatile CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
+  #else
+    #define app_mode _app_mode
+    VAR(uint16, AUTOMATIC) i;
+    CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
+  #endif
 #endif
-#endif
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-#else
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #else
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  #endif
 #if ALARM_COUNT > 0
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#else
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
+  #else
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
+  #endif
 #endif
 
 #if (WITH_AUTOSAR == YES) && (ALARM_COUNT == 0) && (SCHEDTABLE_COUNT > 0)
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#else
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
+  #else
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
+  #endif
 #endif
 
   /*  Start the idle task */
@@ -1499,9 +1577,12 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     }
   }
 #endif
-#if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
+  #ifndef VOLATILE_ARGS_AND_LOCALS
+    #undef app_mode
+  #endif
+  #if (LEVEL_KERNEL_MONITORING >= 4) /* whith kernel monitoring */
 	reg_OS_instru_kernel_functions_5 = HW_FUNC_INIT_OS_EXIT;
-#endif
+  #endif
 }
 
 #if TASK_COUNT > 0
@@ -1553,11 +1634,11 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /*  init the error to no error  */
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(StatusType, AUTOMATIC) result = E_OK;
-#else
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+  #else
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+  #endif
 
   /*  lock the task structures    */
   LOCK_KERNEL()
@@ -1600,11 +1681,11 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
  */
 FUNC(void, OS_CODE)tpl_multi_schedule(void)
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(int, AUTOMATIC) core;
-#else
-  VAR(int, AUTOMATIC) core;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(int, AUTOMATIC) core;
+  #else
+    VAR(int, AUTOMATIC) core;
+  #endif
 
   for (core = 0; core < NUMBER_OF_CORES; core++)
   {
@@ -1623,13 +1704,13 @@ FUNC(void, OS_CODE)tpl_multi_schedule(void)
  */
 FUNC(void, OS_CODE) tpl_dispatch_context_switch(void)
 {
-#ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
-  volatile VAR(int, AUTOMATIC) core;
-#else
-  VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
-  VAR(int, AUTOMATIC) core;
-#endif
+  #ifdef VOLATILE_ARGS_AND_LOCALS
+    volatile VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
+    volatile VAR(int, AUTOMATIC) core;
+  #else
+    VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
+    VAR(int, AUTOMATIC) core;
+  #endif
   for (core = 0; core < caller_core; core++)
   {
     REMOTE_SWITCH_CONTEXT(core);
