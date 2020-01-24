@@ -69,6 +69,31 @@ FUNC(void, OS_APPL_CODE) io_init()
 /*----------------------------------------------------------------------------*/
 /* tpl_adc_init                                                               */
 /*----------------------------------------------------------------------------*/
+FUNC(void, OS_APPL_CODE) tpl_adc_init_simple(void)
+{
+  static bool use1V2Ref = false;
+
+  ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
+  ADC12CTL0 = ADC12ON | ADC12SHT0_4;          // turn ADC ON; sample + hold @ 64 × ADC12CLKs
+  ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz) / 8
+  ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
+  ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling timer
+  ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
+  ADC12IFGR0 = 0;                             // Clear Flags
+  ADC12IER0 |= ADC12IE0;                      // Enable interrupts
+  while (REFCTL0 & REFGENBUSY);               // If ref generator busy, WAIT
+  if (use1V2Ref) {
+    REFCTL0 = REFON | REFVSEL_0;                // 1.2V reference
+    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+  }
+  else {
+    REFCTL0 = REFON | REFVSEL_1;                // 2V reference
+    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+  }
+
+  if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref generator ready
+}
+
 FUNC(void, OS_APPL_CODE) tpl_adc_init(void)
 {
 	//Initialize the ADC12B Module
@@ -154,15 +179,31 @@ uint16 readPowerVoltage(void)
   return ADC12_B_getResults(ADC12_B_BASE, ADC12_B_MEMORY_0);
 }
 
+uint16 readPowerVoltage_simple(void)
+{
+  ADC12CTL0 |= ADC12ENC | ADC12SC;        // enable ADC and start conversion
+  while(adc_conv_ready != 1);
+  adc_conv_ready = 0;
+
+  return ADC12MEM0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Initialisation of application                                              */
+/*----------------------------------------------------------------------------*/
+FUNC(int, OS_APPL_CODE) init_application(void)
+{
+  io_init();
+	tpl_serial_begin();
+  tpl_adc_init_simple();
+}
+
 /*----------------------------------------------------------------------------*/
 /* main function                                                              */
 /*----------------------------------------------------------------------------*/
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  io_init();
-	tpl_serial_begin();
-  tpl_adc_init();
-
+  init_application();
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }
@@ -173,10 +214,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 /*----------------------------------------------------------------------------*/
 FUNC(int, OS_APPL_CODE) restart_main(void)
 {
-  io_init();
-	tpl_serial_begin();
-  tpl_adc_init();
-
+  init_application();
 	RestartOS();
 	return 0;
 }
@@ -234,15 +272,16 @@ TASK(task_energy)
   uint16 vccRaw;
   //  uint16 vccThresholdRaw;
 
-  vccRaw = readPowerVoltage();
+  vccRaw = readPowerVoltage_simple();
 
-  /*	tpl_serial_print_string("\r\n");
+	tpl_serial_print_string("\r\n");
   tpl_serial_print_string("vccRaw = ");
   tpl_serial_print_int(vccRaw,0);
-	tpl_serial_print_string("\r\n");
+  /*	tpl_serial_print_string("\r\n");
   tpl_serial_print_string("vccPhy = ");*/
-#define HIBERNATE_THRESHOLD_RAW (900)
+#define HIBERNATE_THRESHOLD_RAW (2700)
   if (vccRaw < HIBERNATE_THRESHOLD_RAW) {
+    P1OUT |= 1; /* red led on */
     Hibernate();
   } else {
     TerminateTask ();

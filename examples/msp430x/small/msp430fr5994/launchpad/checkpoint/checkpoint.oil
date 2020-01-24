@@ -97,7 +97,7 @@ CPU checkpoint {
     AUTOSTART = TRUE {
       APPMODE = Std;
       ALARMTIME = 5000;
-      CYCLETIME = 2000;
+      CYCLETIME = 5000;
     };
   };
 
@@ -120,8 +120,8 @@ CPU checkpoint {
     };
     AUTOSTART = TRUE {
       APPMODE = Std;
-      ALARMTIME = 2000;
-      CYCLETIME = 2000;
+      ALARMTIME = 1000;
+      CYCLETIME = 200;
     };
   };
 
