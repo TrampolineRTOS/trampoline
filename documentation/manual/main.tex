@@ -29,6 +29,7 @@
 \definecolor{medium-gray}{gray}{0.5}
 \usepackage[colorlinks=true,linkcolor=seagreen,citecolor=darkpink]{hyperref}
 \usepackage{path}
+\usepackage{tikz}
 
 %
 % custom options
@@ -181,12 +182,12 @@
 \newcommand{\oilval}[1]{{\small\ttfamily #1}}
 \newcommand{\member}[1]{{\small\ttfamily #1}}
 \newcommand{\mem}{\small\ttfamily}
-\newcommand{\tool}[1]{{\em #1}}
+\newcommand{\tool}[1]{{\small\ttfamily #1}}
 
 %
 % Commands for other formatting
 %
-\newcommand{\file}[1]{{\ttfamily `#1'}}
+\newcommand{\file}[1]{{\small\ttfamily `#1'}}
 \newcommand{\envvar}[1]{{\footnotesize\sffamily #1}}
 \newcommand{\longprogramopt}[1]{{\ttfamily --#1}}
 \newcommand{\programopt}[1]{{\ttfamily -#1}}
@@ -397,6 +398,9 @@
 
 \begin{document}
 \begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+\node (background) at (0.55\textwidth,-0.7\textheight) {\includegraphics[scale=.5]{trampolineBeaver.jpg}};
+\end{tikzpicture}
 \begin{minipage}[t]{1.1\linewidth}
 \rule{\linewidth}{3pt}
 \fontsize{40}{42}\selectfont\raggedleft\sffamily\bfseries The Trampoline Handbook

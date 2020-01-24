@@ -4,7 +4,7 @@
 
 This chapter shows how to compile and run your first application. We are going to use the \textsc{Posix} port of Trampoline, Trampoline/\textsc{Posix}, that runs over a Linux or Mac OS X operating system. So we assume you are using a Linux or Mac OS X computer since Trampoline/Posix does not run over Windows\footnote{An API working like Unix signals is missing on Windows.}.
 
-OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the objects of the application, tasks, events, resources, \ldots, cannot be created or deleted during the execution of the application. All objects are statically defined and instead of forcing the user to describe the application in C, a work that can be error prone, a specific language is used, OIL or XML\footnote{for \textsc{Autosar}}. A compiler, \goil, is used to translate the description in the equivalent C structures. \goil\ performs verifications too.
+OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the objects of the application, tasks, events, resources, \ldots, cannot be created or deleted during the execution of the application. All objects are statically defined and instead of forcing the user to instantiate the OS objects related to the application in C language, a work that can be error prone, a specific language is used, OIL or XML\footnote{for \textsc{Autosar}}. A compiler, \goil, is used to translate the description in the equivalent C structures. \goil\ performs verifications too.
 
 \section{Compiling goil}
 
@@ -12,7 +12,7 @@ Before all, we need to compile \tool{goil}. \goil\ is located in the \file{goil}
 
 \begin{verbatim}
 alflolol:makefile-macosx jlb$ ./goil --version
-./goil : 3.1.1, build with GALGAS 3.2.12
+goil : 3.1.11, build with GALGAS 3.3.11
 No warning, no error.
 \end{verbatim}
 
