@@ -44,7 +44,8 @@ FUNC(void, OS_CODE) StartOS(
 {
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(AppModeType, AUTOMATIC) mode = _mode;
+    static volatile VAR(AppModeType, AUTOMATIC) mode ;
+    mode = _mode;
   #else
     #define mode _mode
   #endif

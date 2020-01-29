@@ -74,12 +74,13 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
    */
   /*  Get the alarm descriptor                            */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj = _time_obj;
-    volatile P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
-      (tpl_alarm_static *)time_obj->stat_part;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj ;
+	time_obj = _time_obj;
+    static volatile P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm ;
+	stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
     /*  Get the action to perform from the alarm descriptor */
-    volatile CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
-      stat_alarm->action;
+    static volatile P2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc ;
+    action_desc = stat_alarm->action;
   #else
    #define time_obj _time_obj
     P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
@@ -104,9 +105,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 {
   GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_alarm_id, AUTOMATIC) alarm_id = _alarm_id;
-    volatile P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info = _info;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_alarm_id, AUTOMATIC) alarm_id ;
+    alarm_id = _alarm_id;
+    static volatile P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info ;
+    info = _info;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define alarm_id _alarm_id
     #define info _info
@@ -115,7 +119,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 
 #if ALARM_COUNT > 0
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
@@ -166,9 +170,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 {
   GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_alarm_id, AUTOMATIC)              alarm_id = _alarm_id;
-    volatile P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick = _tick;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_alarm_id, AUTOMATIC)              alarm_id ;
+    alarm_id = _alarm_id;
+    static volatile P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick ;
+    tick = _tick;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define alarm_id _alarm_id
     #define tick _tick
@@ -177,7 +184,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 
 #if ALARM_COUNT > 0
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
@@ -252,10 +259,14 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 {
   GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_alarm_id, AUTOMATIC)  alarm_id = _alarm_id;
-    volatile CONST(tpl_tick, AUTOMATIC)      increment = _increment;
-    volatile CONST(tpl_tick, AUTOMATIC)      cycle = _cycle;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_alarm_id, AUTOMATIC)  alarm_id ;
+    alarm_id = _alarm_id;
+    static volatile VAR(tpl_tick, AUTOMATIC)      increment ;
+    increment = _increment;
+    static volatile VAR(tpl_tick, AUTOMATIC)      cycle ;
+    cycle = _cycle;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define alarm_id _alarm_id
     #define increment _increment
@@ -265,9 +276,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 
 #if ALARM_COUNT > 0
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
-  volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
-  volatile VAR(tpl_tick, AUTOMATIC) date;
+  static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+  static volatile VAR(tpl_tick, AUTOMATIC) date;
 #else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
@@ -355,10 +366,14 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
 {
   GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_alarm_id, AUTOMATIC)  alarm_id = _alarm_id;
-    volatile CONST(tpl_tick, AUTOMATIC)      start = _start;
-    volatile CONST(tpl_tick, AUTOMATIC)      cycle = _cycle;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_alarm_id, AUTOMATIC)  alarm_id ;
+    alarm_id = _alarm_id;
+    static volatile VAR(tpl_tick, AUTOMATIC)      start ;
+    start = _start;
+    static volatile VAR(tpl_tick, AUTOMATIC)      cycle ;
+    cycle = _cycle;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define alarm_id _alarm_id
     #define start _start
@@ -368,7 +383,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
 
 #if ALARM_COUNT > 0
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
@@ -446,8 +461,10 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 {
   GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_alarm_id, AUTOMATIC) alarm_id = _alarm_id;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_alarm_id, AUTOMATIC) alarm_id ;
+    alarm_id = _alarm_id;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define alarm_id _alarm_id
     VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -455,7 +472,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 
 #if ALARM_COUNT > 0
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #else
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif

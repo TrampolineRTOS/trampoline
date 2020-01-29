@@ -86,9 +86,10 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 {
   /*  Get the resource pointer of the process */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-    volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
-    tpl_dyn_proc_table[proc_id]->resources;
+    static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+    static volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res ;
+    res = tpl_dyn_proc_table[proc_id]->resources;
   #else
     #define proc_id _proc_id
     P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
@@ -97,7 +98,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 #if WITH_TRACE == YES
   GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_resource_id, AUTOMATIC) res_id;
+    static volatile VAR(tpl_resource_id, AUTOMATIC) res_id;
   #else
     VAR(tpl_resource_id, AUTOMATIC) res_id;
   #endif
@@ -146,8 +147,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 
   /*  init the error to no error  */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_resource_id, AUTOMATIC) res_id = _res_id;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_resource_id, AUTOMATIC) res_id ;
+    res_id = _res_id;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define res_id _res_id
     VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -155,7 +158,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 
 #if RESOURCE_COUNT > 0
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+    static volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
   #else
     P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
   #endif
@@ -245,9 +248,11 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   GET_CURRENT_CORE_ID(core_id)
   /*  init the error to no error  */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_resource_id, AUTOMATIC) res_id = _res_id;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
-    volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+    static volatile VAR(tpl_resource_id, AUTOMATIC) res_id ;
+    res_id = _res_id;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
+    static volatile P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
   #else
     #define res_id _res_id
     VAR(tpl_status, AUTOMATIC) result = E_OK;

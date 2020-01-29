@@ -60,8 +60,10 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
   /*  init the error to no error  */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
-    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_task_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile VAR(StatusType, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define task_id _task_id
     VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -116,7 +118,8 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
   /* init the error to no error */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+    static volatile VAR(StatusType, AUTOMATIC) result ;
+    result = E_OK;
   #else
     VAR(StatusType, AUTOMATIC) result = E_OK;
   #endif
@@ -166,8 +169,10 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   GET_CURRENT_CORE_ID(core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
-    volatile VAR(StatusType, AUTOMATIC)  result = E_OK;
+    static volatile VAR(tpl_task_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile VAR(StatusType, AUTOMATIC)  result ;
+    result = E_OK;
   #else
     #define task_id _task_id
     VAR(StatusType, AUTOMATIC)  result = E_OK;
@@ -261,7 +266,8 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   GET_CURRENT_CORE_ID(core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+    static volatile VAR(StatusType, AUTOMATIC) result ;
+    result = E_OK;
   #else
     VAR(StatusType, AUTOMATIC) result = E_OK;
   #endif
@@ -316,8 +322,10 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   GET_CURRENT_CORE_ID(core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id = _task_id;
-    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+    static volatile P2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id ;
+    task_id = _task_id;
+    static volatile VAR(StatusType, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define task_id _task_id
     VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -369,9 +377,12 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   GET_CURRENT_CORE_ID(core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
-    volatile CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state = _state;
-    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_task_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile P2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state ;
+    state = _state;
+    static volatile VAR(StatusType, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define task_id _task_id
 	/* conflict with symbol state (also struct member) */

@@ -42,9 +42,10 @@ FUNC(void, OS_CODE) tpl_trace_task_execute(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, AUTOMATIC) new_executed_task_id = _new_executed_task_id;
-    volatile VAR(tpl_status, AUTOMATIC) new_executed_task_old_status;
-    volatile VAR(tpl_priority, AUTOMATIC) new_executed_task_prio;
+    static volatile VAR(TaskType, AUTOMATIC) new_executed_task_id ;
+    new_executed_task_id = _new_executed_task_id;
+    static volatile VAR(tpl_status, AUTOMATIC) new_executed_task_old_status;
+    static volatile VAR(tpl_priority, AUTOMATIC) new_executed_task_prio;
   #else
     #define new_executed_task_id _new_executed_task_id
     VAR(tpl_status, AUTOMATIC) new_executed_task_old_status;
@@ -78,8 +79,9 @@ FUNC(void, OS_CODE) tpl_trace_task_preempt(
   CONST(TaskType, OS_VAR) _preempted_task_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, OS_VAR) preempted_task_id = _preempted_task_id;
-    volatile VAR(tpl_priority, AUTOMATIC) preempted_task_prio;
+    static volatile VAR(TaskType, OS_VAR) preempted_task_id ;
+    preempted_task_id = _preempted_task_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) preempted_task_prio;
   #else
     #define preempted_task_id _preempted_task_id
     VAR(tpl_priority, AUTOMATIC) preempted_task_prio;
@@ -110,8 +112,9 @@ FUNC(void, OS_CODE) tpl_trace_task_terminate(
   CONST(TaskType, AUTOMATIC) _dying_task_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, AUTOMATIC) dying_task_id = _dying_task_id;
-    volatile VAR(tpl_priority, AUTOMATIC) dying_task_prio;
+    static volatile VAR(TaskType, AUTOMATIC) dying_task_id ;
+    dying_task_id = _dying_task_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) dying_task_prio;
   #else
     #define dying_task_id _dying_task_id
     VAR(tpl_priority, AUTOMATIC) dying_task_prio;
@@ -139,9 +142,10 @@ FUNC(void, OS_CODE) tpl_trace_task_activate(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, AUTOMATIC) task_id = _task_id;
-    volatile VAR(tpl_status, AUTOMATIC) task_old_status;
-    volatile VAR(tpl_priority, AUTOMATIC) task_prio;
+    static volatile VAR(TaskType, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile VAR(tpl_status, AUTOMATIC) task_old_status;
+    static volatile VAR(tpl_priority, AUTOMATIC) task_prio;
   #else
     #define task_id _task_id
     VAR(tpl_status, AUTOMATIC) task_old_status;
@@ -173,9 +177,10 @@ FUNC(void, OS_CODE) tpl_trace_task_wait(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, AUTOMATIC) waiting_task_id = _waiting_task_id;
-    volatile VAR(tpl_status, AUTOMATIC) waiting_task_status;
-    volatile VAR(tpl_priority, AUTOMATIC) waiting_task_prio;
+    static volatile VAR(TaskType, AUTOMATIC) waiting_task_id ;
+    waiting_task_id = _waiting_task_id;
+    static volatile VAR(tpl_status, AUTOMATIC) waiting_task_status;
+    static volatile VAR(tpl_priority, AUTOMATIC) waiting_task_prio;
   #else
     #define waiting_task_id _waiting_task_id
     VAR(tpl_status, AUTOMATIC) waiting_task_status;
@@ -206,10 +211,12 @@ FUNC(void, OS_CODE) tpl_trace_task_released(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, AUTOMATIC) released_task_id, = _released_task_id;
-    volatile CONST(tpl_event_mask, AUTOMATIC) event_id = _event_id;
-    volatile VAR(tpl_status, AUTOMATIC) released_task_status;
-    volatile VAR(tpl_priority, AUTOMATIC) released_task_prio;
+    static volatile VAR(TaskType, AUTOMATIC) released_task_id;
+    released_task_id, = _released_task_id;
+    static volatile VAR(tpl_event_mask, AUTOMATIC) event_id ;
+    event_id = _event_id;
+    static volatile VAR(tpl_status, AUTOMATIC) released_task_status;
+    static volatile VAR(tpl_priority, AUTOMATIC) released_task_prio;
   #else
     #define released_task_id _released_task_id
     #define event_id _event_id
@@ -242,8 +249,9 @@ FUNC(void, OS_CODE) tpl_trace_task_change_priority(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(TaskType, AUTOMATIC) priority_changing_task_id = _priority_changing_task_id;
-    volatile VAR(tpl_priority, AUTOMATIC) priority_changing_task_new_prio;
+    static volatile VAR(TaskType, AUTOMATIC) priority_changing_task_id ;
+    priority_changing_task_id = _priority_changing_task_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) priority_changing_task_new_prio;
   #else
     #define priority_changing_task_id _priority_changing_task_id
     VAR(tpl_priority, AUTOMATIC) priority_changing_task_new_prio;
@@ -274,9 +282,11 @@ FUNC(void, OS_CODE) tpl_trace_res_get(
   CONST(TaskType, AUTOMATIC) _locking_entity_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_resource_id, AUTOMATIC) res_id = _res_id;
-    volatile CONST(TaskType, AUTOMATIC) locking_entity_id = _locking_entity_id;
-    volatile VAR(tpl_priority, AUTOMATIC) locking_entity_prio;
+    static volatile VAR(tpl_resource_id, AUTOMATIC) res_id ;
+    res_id = _res_id;
+    static volatile VAR(TaskType, AUTOMATIC) locking_entity_id ;
+    locking_entity_id = _locking_entity_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) locking_entity_prio;
   #else
     #define res_id _res_id
     #define locking_entity_id _locking_entity_id
@@ -302,7 +312,8 @@ FUNC(void, OS_CODE) tpl_trace_res_released(
   CONST(tpl_resource_id, AUTOMATIC) _res_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_resource_id, AUTOMATIC) res_id = _res_id;
+    static volatile VAR(tpl_resource_id, AUTOMATIC) res_id ;
+    res_id = _res_id;
   #else
     #define res_id _res_id
   #endif
@@ -326,8 +337,9 @@ FUNC(void, OS_CODE) tpl_trace_isr_run(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_isr_id, AUTOMATIC) running_isr_id = _running_isr_id;
-    volatile VAR(tpl_priority, AUTOMATIC) running_isr_prio;
+    static volatile VAR(tpl_isr_id, AUTOMATIC) running_isr_id ;
+    running_isr_id = _running_isr_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) running_isr_prio;
   #else
     #define running_isr_id _running_isr_id
     VAR(tpl_priority, AUTOMATIC) running_isr_prio;
@@ -354,8 +366,9 @@ FUNC(void, OS_CODE) tpl_trace_isr_preempt(
   CONST(tpl_isr_id, OS_VAR) _preempted_isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_isr_id, OS_VAR) preempted_isr_id = _preempted_isr_id;
-    volatile VAR(tpl_priority, AUTOMATIC) preempted_isr_prio;
+    static volatile VAR(tpl_isr_id, OS_VAR) preempted_isr_id ;
+    preempted_isr_id = _preempted_isr_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) preempted_isr_prio;
   #else
     #define preempted_isr_id _preempted_isr_id
     VAR(tpl_priority, AUTOMATIC) preempted_isr_prio;
@@ -381,8 +394,9 @@ FUNC(void, OS_CODE) tpl_trace_isr_terminate(
   CONST(tpl_isr_id, AUTOMATIC) _dying_isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_isr_id, AUTOMATIC) dying_isr_id = _dying_isr_id;
-    volatile VAR(tpl_priority, AUTOMATIC) dying_isr_prio;
+    static volatile VAR(tpl_isr_id, AUTOMATIC) dying_isr_id ;
+    dying_isr_id = _dying_isr_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) dying_isr_prio;
   #else
     #define dying_isr_id _dying_isr_id
     VAR(tpl_priority, AUTOMATIC) dying_isr_prio;
@@ -408,9 +422,10 @@ FUNC(void, OS_CODE) tpl_trace_isr_activate(
   CONST(tpl_isr_id, AUTOMATIC) _isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_isr_id, AUTOMATIC) isr_id = _isr_id;
-    volatile VAR(tpl_status, AUTOMATIC) isr_old_status;
-    volatile VAR(tpl_priority, AUTOMATIC) isr_prio;
+    static volatile VAR(tpl_isr_id, AUTOMATIC) isr_id ;
+    isr_id = _isr_id;
+    static volatile VAR(tpl_status, AUTOMATIC) isr_old_status;
+    static volatile VAR(tpl_priority, AUTOMATIC) isr_prio;
   #else
     #define isr_id _isr_id
     VAR(tpl_status, AUTOMATIC) isr_old_status;
@@ -440,8 +455,9 @@ FUNC(void, OS_CODE) tpl_trace_isr_change_priority(
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_isr_id, AUTOMATIC) priority_changing_isr_id = _priority_changing_isr_id;
-    volatile VAR(tpl_priority, AUTOMATIC) priority_changing_isr_new_prio;
+    static volatile VAR(tpl_isr_id, AUTOMATIC) priority_changing_isr_id ;
+    priority_changing_isr_id = _priority_changing_isr_id;
+    static volatile VAR(tpl_priority, AUTOMATIC) priority_changing_isr_new_prio;
   #else
     #define priority_changing_isr_id _priority_changing_isr_id
     VAR(tpl_priority, AUTOMATIC) priority_changing_isr_new_prio;
@@ -470,9 +486,10 @@ FUNC(void, OS_CODE) tpl_trace_alarm_scheduled(
 {
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) scheduled_alarm = _scheduled_alarm;
-    volatile VAR(tpl_tick, AUTOMATIC) scheduled_alarm_expir_date;
-    volatile VAR(tpl_timeobj_id, TYPEDEF) scheduled_alarm_id;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) scheduled_alarm ;
+    scheduled_alarm = _scheduled_alarm;
+    static volatile VAR(tpl_tick, AUTOMATIC) scheduled_alarm_expir_date;
+    static volatile VAR(tpl_timeobj_id, TYPEDEF) scheduled_alarm_id;
   #else
     #define scheduled_alarm _scheduled_alarm
     VAR(tpl_tick, AUTOMATIC) scheduled_alarm_expir_date;
@@ -498,9 +515,11 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
 {
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) expired_alarm = _expired_alarm;
-    volatile P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) expired_alarm_stat;
-    volatile VAR(tpl_action_func, TYPEDEF) expired_alarm_action;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) expired_alarm ;
+    expired_alarm = _expired_alarm;
+    static volatile P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) expired_alarm_stat;
+    expired_alarm_stat;
+    static volatile VAR(tpl_action_func, TYPEDEF) expired_alarm_action;
   #else
     #define expired_alarm _expired_alarm
     P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) expired_alarm_stat;
@@ -539,7 +558,8 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
 {
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_alarm_id, AUTOMATIC)cancelled_alarm_id = _cancelled_alarm_id;
+    static volatile VAR(tpl_alarm_id, AUTOMATIC)cancelled_alarm_id ;
+    cancelled_alarm_id = _cancelled_alarm_id;
   #else
     #define cancelled_alarm_id _cancelled_alarm_id
   #endif
@@ -560,10 +580,11 @@ FUNC(void, OS_CODE) tpl_trace_counter(
 {
   extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-      volatile CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc = _counter_desc;
-    volatile VAR(tpl_counter_id, AUTOMATIC) counter_id;
-    volatile tpl_counter_table[COUNTER_COUNT];
-    volatile VAR(tpl_task_id, AUTOMATIC) i;
+      static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc ;
+    counter_desc = _counter_desc;
+    static volatile VAR(tpl_counter_id, AUTOMATIC) counter_id;
+    static volatile tpl_counter_table[COUNTER_COUNT];
+    static volatile VAR(tpl_task_id, AUTOMATIC) i;
   #else
     #define counter_desc _counter_desc
     VAR(tpl_counter_id, AUTOMATIC) counter_id;

@@ -242,12 +242,16 @@ FUNC(int, OS_CODE) tpl_compare_entries(
 	reg_OS_instru_kernel_functions = HW_FUNC_COMPARE_ENTRIES_ENTER;
   #endif		
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry = _first_entry;
-    volatile CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry = _second_entry;
-    volatile VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
-    volatile VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
-    volatile VAR(uint32, AUTOMATIC) first_tmp ;
-    volatile VAR(uint32, AUTOMATIC) second_tmp ;
+    static volatile P2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry ;
+    first_entry = _first_entry;
+    static volatile P2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry ;
+    second_entry = _second_entry;
+    static volatile VAR(uint32, AUTOMATIC) first_key ;
+    first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
+    static volatile VAR(uint32, AUTOMATIC) second_key ;
+    second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
+    static volatile VAR(uint32, AUTOMATIC) first_tmp ;
+    static volatile VAR(uint32, AUTOMATIC) second_tmp ;
   #else
     #define first_entry _first_entry
     #define second_entry _second_entry
@@ -297,9 +301,12 @@ FUNC(void, OS_CODE) tpl_bubble_up(
 	reg_OS_instru_kernel_functions = HW_FUNC_BUBBLE_UP_ENTER;
 	#endif	
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap = _heap;
-    volatile VAR(uint32, AUTOMATIC)                        index = _index;
-    volatile VAR(uint32, AUTOMATIC) father = index >> 1;
+    static volatile P2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap ;
+    heap = _heap;
+    static volatile VAR(uint32, AUTOMATIC)                        index ;
+    index = _index;
+    static volatile VAR(uint32, AUTOMATIC) father ;
+    father = index >> 1;
   #else
     #define heap _heap
     #define index _index
@@ -315,7 +322,8 @@ FUNC(void, OS_CODE) tpl_bubble_up(
      * if the father key is lower then the index key, swap them
      */
     #ifdef VOLATILE_ARGS_AND_LOCALS
-      volatile VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
+      static volatile VAR(tpl_heap_entry, AUTOMATIC) tmp ;
+    tmp = heap[index];
     #else
       VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
     #endif
@@ -351,10 +359,13 @@ FUNC(void, OS_CODE) tpl_bubble_down(
 		reg_OS_instru_kernel_functions_2 = HW_FUNC_BUBBLE_DOWN_ENTER;
 	#endif	
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap = _heap;
-    volatile VAR(uint32, AUTOMATIC)                        index = _index;
-    volatile CONST(uint32, AUTOMATIC) size = heap[0].key;
-    volatile VAR(uint32, AUTOMATIC) child;
+    static volatile P2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap ;
+    heap = _heap;
+    static volatile VAR(uint32, AUTOMATIC)                        index ;
+    index = _index;
+    static volatile VAR(uint32, AUTOMATIC) size ;
+    size = heap[0].key;
+    static volatile VAR(uint32, AUTOMATIC) child;
   #else
     #define heap _heap
     #define index _index
@@ -418,12 +429,14 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-    volatile VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+    static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+    static volatile VAR(uint32, AUTOMATIC) index ;
+    index = (uint32)(++(READY_LIST(ready_list)[0].key));
   
-    volatile VAR(tpl_priority, AUTOMATIC) dyn_prio;
-    volatile CONST(tpl_priority, AUTOMATIC) prio =
-      tpl_stat_proc_table[proc_id]->base_priority;
+    static volatile VAR(tpl_priority, AUTOMATIC) dyn_prio;
+    static volatile VAR(tpl_priority, AUTOMATIC) prio ;
+    prio = tpl_stat_proc_table[proc_id]->base_priority;
   #else
     #define proc_id _proc_id
     VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
@@ -478,11 +491,13 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
 
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-    volatile VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+    static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+    static volatile VAR(uint32, AUTOMATIC) index ;
+    index = (uint32)(++(READY_LIST(ready_list)[0].key));
   
-    volatile CONST(tpl_priority, AUTOMATIC) dyn_prio =
-      tpl_dyn_proc_table[proc_id]->priority;
+    static volatile VAR(tpl_priority, AUTOMATIC) dyn_prio ;
+    dyn_prio = tpl_dyn_proc_table[proc_id]->priority;
   #else
     #define proc_id _proc_id
     VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
@@ -550,13 +565,16 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
    * removed)
    */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
-    volatile VAR(uint32, AUTOMATIC) index = 1;
+    static volatile VAR(uint32, AUTOMATIC) size ;
+    size = READY_LIST(ready_list)[0].key--;
+    static volatile VAR(uint32, AUTOMATIC) index ;
+    index = 1;
   
     /*
     * Get the proc_id of the front proc
     */
-    volatile VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
+    static volatile VAR(tpl_heap_entry, AUTOMATIC) proc ;
+    proc = READY_LIST(ready_list)[1];
   #else
     CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
     VAR(uint32, AUTOMATIC) index = 1;
@@ -609,9 +627,11 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) _proc_id)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-    volatile VAR(uint32, AUTOMATIC) index;
-    volatile VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
+    static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+    static volatile VAR(uint32, AUTOMATIC) index;
+    static volatile VAR(uint32, AUTOMATIC) size ;
+    size = (uint32)READY_LIST(ready_list)[0].key;
   #else
      #define proc_id _proc_id
     VAR(uint32, AUTOMATIC) index;
@@ -661,7 +681,8 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
   CORE_ID_OR_VOID(core_id))
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
+    static volatile VAR(tpl_os_state, OS_APPL_DATA) state ;
+    state = OS_UNKNOWN;
   #else
     VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
   #endif
@@ -704,9 +725,10 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) task_id = _task_id;
-    volatile CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-      tpl_stat_proc_table[task_id]->internal_resource;
+    static volatile VAR(tpl_proc_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile P2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez ;
+    rez = tpl_stat_proc_table[task_id]->internal_resource;
   #else
     #define task_id _task_id
     CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
@@ -742,9 +764,10 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
   reg_OS_instru_kernel_functions_3 = HW_FUNC_RELEASE_INTERNAL_RESOURCE_ENTER;
 #endif
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) task_id = _task_id;
-    volatile CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-      tpl_stat_proc_table[task_id]->internal_resource;
+    static volatile VAR(tpl_proc_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile P2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez ;
+    rez = tpl_stat_proc_table[task_id]->internal_resource;
   #else
     #define task_id _task_id
     CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
@@ -817,9 +840,10 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_bool, AUTOMATIC) save = _save;
-    volatile CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
-      save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
+    static volatile VAR(tpl_bool, AUTOMATIC) save ;
+    save = _save;
+    static volatile P2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context ;
+    old_context = save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
   #else
   	#define save _save
     CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
@@ -914,8 +938,8 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_heap_entry, AUTOMATIC) proc =
-      tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+    static volatile VAR(tpl_heap_entry, AUTOMATIC) proc ;
+    proc = tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
   #else
     CONST(tpl_heap_entry, AUTOMATIC) proc =
       tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
@@ -980,7 +1004,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
+    static volatile VAR(uint8, AUTOMATIC) need_switch ;
+    need_switch = NO_NEED_SWITCH;
   #else
     VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
   #endif
@@ -1183,12 +1208,14 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 	#endif	
 	
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
-    volatile VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
-    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
-  	tpl_dyn_proc_table[task_id];
-    volatile CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
-  	tpl_stat_proc_table[task_id];
+    static volatile VAR(tpl_task_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OS_LIMIT;
+    static volatile P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task ;
+    task = tpl_dyn_proc_table[task_id];
+    static volatile P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task ;
+    s_task = tpl_stat_proc_table[task_id];
   #else
     #define task_id _task_id
     VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
@@ -1284,8 +1311,10 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) _task_id)
 	#endif	
   GET_PROC_CORE_ID(task_id, core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
-    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
+    static volatile VAR(tpl_task_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task ;
+    task = tpl_dyn_proc_table[task_id];
   #else
     #define task_id _task_id
     CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
@@ -1320,9 +1349,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
 	reg_OS_instru_kernel_functions_4 = HW_FUNC_SET_EVENT_ENTER;
 	#endif	
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC)     task_id = _task_id;
-    volatile CONST(tpl_event_mask, AUTOMATIC)  incoming_event = _incoming_event;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_task_id, AUTOMATIC)     task_id ;
+    task_id = _task_id;
+    static volatile VAR(tpl_event_mask, AUTOMATIC)  incoming_event ;
+    incoming_event = _incoming_event;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define task_id _task_id
     #define incoming_event _incoming_event
@@ -1331,10 +1363,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
 
 #if EXTENDED_TASK_COUNT > 0
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
-      tpl_dyn_proc_table[task_id];
-    volatile CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
-      tpl_task_events_table[task_id];
+    static volatile P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task ;
+    task = tpl_dyn_proc_table[task_id];
+    static volatile P2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events ;
+    events = tpl_task_events_table[task_id];
   #else
     CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
       tpl_dyn_proc_table[task_id];
@@ -1415,9 +1447,10 @@ FUNC(void, OS_CODE) tpl_init_proc(
 	reg_OS_instru_kernel_functions_5 = HW_FUNC_INIT_PROC_ENTER;
 	#endif
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
-      tpl_dyn_proc_table[proc_id];
+    static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+    static volatile P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn ;
+    dyn = tpl_dyn_proc_table[proc_id];
   #else
     #define proc_id _proc_id
     CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
@@ -1450,9 +1483,11 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) _app_mode
   GET_CURRENT_CORE_ID(core_id)
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_application_mode, AUTOMATIC) app_mode = _app_mode;
-    volatile VAR(uint16, AUTOMATIC) i;
-    volatile CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
+    static volatile VAR(tpl_application_mode, AUTOMATIC) app_mode ;
+    app_mode = _app_mode;
+    static volatile VAR(uint16, AUTOMATIC) i;
+    static volatile VAR(tpl_appmode_mask, AUTOMATIC) app_mode_mask ;
+    app_mode_mask = 1 << app_mode;
   #else
     #define app_mode _app_mode
     VAR(uint16, AUTOMATIC) i;
@@ -1460,13 +1495,14 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) _app_mode
   #endif
 #endif
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     VAR(tpl_status, AUTOMATIC) result = E_OK;
   #endif
 #if ALARM_COUNT > 0
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
   #else
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
   #endif
@@ -1474,7 +1510,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) _app_mode
 
 #if (WITH_AUTOSAR == YES) && (ALARM_COUNT == 0) && (SCHEDTABLE_COUNT > 0)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
   #else
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
   #endif
@@ -1635,7 +1671,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 
   /*  init the error to no error  */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(StatusType, AUTOMATIC) result = E_OK;
+    static volatile VAR(StatusType, AUTOMATIC) result ;
+    result = E_OK;
   #else
     VAR(StatusType, AUTOMATIC) result = E_OK;
   #endif
@@ -1682,7 +1719,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 FUNC(void, OS_CODE)tpl_multi_schedule(void)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(int, AUTOMATIC) core;
+    static volatile VAR(int, AUTOMATIC) core;
   #else
     VAR(int, AUTOMATIC) core;
   #endif
@@ -1705,8 +1742,9 @@ FUNC(void, OS_CODE)tpl_multi_schedule(void)
 FUNC(void, OS_CODE) tpl_dispatch_context_switch(void)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
-    volatile VAR(int, AUTOMATIC) core;
+    static volatile VAR(uint16, AUTOMATIC) caller_core ;
+    caller_core = tpl_get_core_id();
+    static volatile VAR(int, AUTOMATIC) core;
   #else
     VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
     VAR(int, AUTOMATIC) core;

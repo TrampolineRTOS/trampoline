@@ -59,9 +59,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC)       task_id = _task_id;
-    volatile CONST(tpl_event_mask, AUTOMATIC)    event = _event;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_task_id, AUTOMATIC)       task_id ;
+    task_id = _task_id;
+    static volatile VAR(tpl_event_mask, AUTOMATIC)    event ;
+    event = _event;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define task_id _task_id
     #define event _event
@@ -120,8 +123,10 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   GET_CURRENT_CORE_ID(core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_event_mask, AUTOMATIC) event = _event;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_event_mask, AUTOMATIC) event ;
+    event = _event;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define event _event
     VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -167,9 +172,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   GET_CURRENT_CORE_ID(core_id)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_task_id, AUTOMATIC) task_id = _task_id;
-    volatile CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event = _event;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_task_id, AUTOMATIC) task_id ;
+    task_id = _task_id;
+    static volatile P2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event ;
+    event = _event;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define task_id _task_id
     #define event _event
@@ -226,8 +234,10 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_event_mask, AUTOMATIC) event = _event;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_event_mask, AUTOMATIC) event ;
+    event = _event;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define event _event
     VAR(tpl_status, AUTOMATIC) result = E_OK;

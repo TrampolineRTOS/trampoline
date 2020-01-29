@@ -78,8 +78,9 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
   void)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_application_mode, AUTOMATIC) app_mode;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_application_mode, AUTOMATIC) app_mode;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     VAR(tpl_application_mode, AUTOMATIC) app_mode;
     VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -114,8 +115,10 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 #if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES) | (WITH_ORTI == YES)
   /*  init the error to no error  */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_application_mode, AUTOMATIC) mode = _mode;
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_application_mode, AUTOMATIC) mode ;
+    mode = _mode;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     #define mode _mode
     VAR(tpl_status, AUTOMATIC) result = E_OK;

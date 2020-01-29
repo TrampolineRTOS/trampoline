@@ -88,7 +88,7 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     GET_CURRENT_CORE_ID(core_id)
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_bool, AUTOMATIC) result;
+    static volatile VAR(tpl_bool, AUTOMATIC) result;
   #else
     VAR(tpl_bool, AUTOMATIC) result;
   #endif
@@ -239,7 +239,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 
   /* init the error to no error */
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile VAR(tpl_status, AUTOMATIC) result = E_OK;
+    static volatile VAR(tpl_status, AUTOMATIC) result ;
+    result = E_OK;
   #else
     VAR(tpl_status, AUTOMATIC) result = E_OK;
   #endif
@@ -294,9 +295,10 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
   CONST(tpl_isr_id, AUTOMATIC) _isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(tpl_isr_id, AUTOMATIC) isr_id = _isr_id;
-    volatile CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr =
-      tpl_dyn_proc_table[isr_id];
+    static volatile VAR(tpl_isr_id, AUTOMATIC) isr_id ;
+    isr_id = _isr_id;
+    static volatile P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr ;
+    isr = tpl_dyn_proc_table[isr_id];
   #else
     #define isr_id _isr_id
     CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr =
@@ -360,8 +362,9 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
   CONST(uint16, AUTOMATIC) _isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(uint16, AUTOMATIC) isr_id = _isr_id;
-    volatile P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+    static volatile VAR(uint16, AUTOMATIC) isr_id ;
+    isr_id = _isr_id;
+    static volatile P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
   #else
     #define isr_id _isr_id
     P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
@@ -433,8 +436,9 @@ FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(
   CONST(uint16, AUTOMATIC) _isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile CONST(uint16, AUTOMATIC) isr_id = _isr_id;
-    volatile P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+    static volatile VAR(uint16, AUTOMATIC) isr_id ;
+    isr_id = _isr_id;
+    static volatile P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
   #else
     #define isr_id _isr_id
     P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
@@ -483,8 +487,9 @@ FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(
 FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) _isr_id)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2CONST(void, OS_APPL_DATA, AUTOMATIC) isr_id = _isr_id;
-    volatile uint32 tmp;
+    static volatile P2CONST(void, OS_APPL_DATA, AUTOMATIC) isr_id ;
+    isr_id = _isr_id;
+    static volatile uint32 tmp;
   #else
     #define isr_id _isr_id
     uint32 tmp;
@@ -509,9 +514,10 @@ FUNC(void, OS_CODE) tpl_mask_isr2_priority(
   CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-  volatile CONST(tpl_priority, AUTOMATIC) index =
-    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+  static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+  static volatile VAR(tpl_priority, AUTOMATIC) index ;
+    index = tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
 #else
    #define proc_id _proc_id
   CONST(tpl_priority, AUTOMATIC) index =
@@ -535,9 +541,10 @@ extern FUNC(void, OS_CODE) tpl_unmask_isr2_priority(
   CONST(tpl_proc_id, AUTOMATIC) _proc_id)
 {
 #ifdef VOLATILE_ARGS_AND_LOCALS
-  volatile CONST(tpl_proc_id, AUTOMATIC) proc_id = _proc_id;
-  volatile CONST(tpl_priority, AUTOMATIC) index =
-    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+  static volatile VAR(tpl_proc_id, AUTOMATIC) proc_id ;
+    proc_id = _proc_id;
+  static volatile VAR(tpl_priority, AUTOMATIC) index ;
+    index = tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
 #else
    #define proc_id _proc_id
   CONST(tpl_priority, AUTOMATIC) index =

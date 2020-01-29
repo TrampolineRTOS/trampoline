@@ -65,16 +65,17 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) _time_obj)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj = _time_obj;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj ;
+    time_obj = _time_obj;
     /*  get the counter                                                     */
-    volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)
-        counter = time_obj->stat_part->counter;
+    static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter ;
+    counter = time_obj->stat_part->counter;
     /*  initialize the current time object to the head                      */
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
-        current_to = counter->first_to;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) current_to ;
+    current_to = counter->first_to;
     /*  initialize the time object that precede the current one to NULL     */
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
-        prev_to = NULL_PTR;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) prev_to ;
+    prev_to = NULL_PTR;
   #else
   	#define time_obj _time_obj
     /*  get the counter                                                     */
@@ -163,8 +164,10 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
 {
 
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj = _time_obj;
-    volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = time_obj->stat_part->counter;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj ;
+    time_obj = _time_obj;
+    static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter ;
+    counter = time_obj->stat_part->counter;
   #else
   	#define time_obj _time_obj
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = time_obj->stat_part->counter;
@@ -213,9 +216,12 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) _counter)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = _counter;
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) first_to = counter->next_to;
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to = NULL;
+    static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter ;
+    counter = _counter;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) first_to ;
+    first_to = counter->next_to;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to ;
+    real_next_to = NULL;
   #else
     #define counter _counter
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) first_to = counter->next_to;
@@ -225,11 +231,13 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
   if (first_to != NULL)
   {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    last_to;
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    t_obj = first_to;
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    af_to;
-    volatile VAR(tpl_tick, AUTOMATIC)                        date = first_to->date;
-    volatile VAR(tpl_bool, AUTOMATIC) object = FALSE;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    last_to;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    t_obj ;
+    t_obj = first_to;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    af_to;
+    static volatile VAR(tpl_tick, AUTOMATIC)                        date ;
+    date = first_to->date;
+    static volatile VAR(tpl_bool, AUTOMATIC) object = FALSE;
   #else
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    last_to;
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    t_obj = first_to;
@@ -355,22 +363,23 @@ FUNC(void, OS_CODE) tpl_counter_tick(
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) _counter)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = _counter;
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
+    static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter ;
+    counter = _counter;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
     /* temporary pointeur to adjust the next object of a counter when the first time
        object at a date is a "BOOTSTRAP" time object (for schedule table only) */
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to_temp;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to_temp;
     /*
      * A non constant function pointer is used
      * This violate MISRA rule 104. This is used to call
      * the action on each alarm. The function pointed is know at conception time,
      * because only 3 function can be pointed to.
      */
-    volatile VAR(tpl_expire_func, AUTOMATIC)               expire;
-    volatile VAR(tpl_tick, AUTOMATIC)                      date;
+    static volatile VAR(tpl_expire_func, AUTOMATIC)               expire;
+    static volatile VAR(tpl_tick, AUTOMATIC)                      date;
     /* this variable is added because the same name was used twice in this function for
      2 different variables, this behavior was dependent on the compiler */
-    volatile VAR(tpl_tick, AUTOMATIC)                      new_date;
+    static volatile VAR(tpl_tick, AUTOMATIC)                      new_date;
   #else
     #define counter _counter
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
@@ -476,9 +485,10 @@ FUNC(tpl_tick, OS_CODE) tpl_time_before_next_tick(
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) _counter)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = _counter;
-    volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
-    volatile VAR(tpl_tick, AUTOMATIC)                      date;
+    static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter ;
+    counter = _counter;
+    static volatile P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
+    static volatile VAR(tpl_tick, AUTOMATIC)                      date;
   #else
     #define counter _counter
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
@@ -507,10 +517,12 @@ FUNC(void, OS_CODE) tpl_increment_counter(
   VAR(tpl_tick, AUTOMATIC) _ticks)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = _counter;
-    volatile VAR(tpl_tick, AUTOMATIC) ticks = _ticks;
-    volatile VAR(tpl_tick, AUTOMATIC) date;
-    volatile VAR(tpl_tick, AUTOMATIC) i;
+    static volatile P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter ;
+    counter = _counter;
+    static volatile VAR(tpl_tick, AUTOMATIC) ticks ;
+    ticks = _ticks;
+    static volatile VAR(tpl_tick, AUTOMATIC) date;
+    static volatile VAR(tpl_tick, AUTOMATIC) i;
   #else
     #define counter _counter
     #define ticks _ticks

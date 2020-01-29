@@ -45,7 +45,8 @@ FUNC(void, OS_CODE) tpl_action_callback(
   P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action)
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action = _action;
+    static volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action ;
+    action = _action;
   #else
     #define action _action
   #endif
@@ -69,7 +70,8 @@ FUNC(void, OS_CODE) tpl_action_activate_task(
 )
 {
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action = action;
+    static volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) _action ;
+    _action = action;
   #else
     #define _action action
   #endif
@@ -125,9 +127,11 @@ FUNC(void, OS_CODE) tpl_action_setevent(
 	reg_OS_instru_kernel_functions_6 = HW_FUNC_ACTION_SETEVENT_ENTER;
 	#endif
   #ifdef VOLATILE_ARGS_AND_LOCALS
-    volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action = _action;
+    static volatile P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action ;
+    action = _action;
     /*  init the error to no error  */
-    volatile VAR(StatusType, AUTOMATIC) result_action = E_OK;
+    static volatile VAR(StatusType, AUTOMATIC) result_action ;
+    result_action = E_OK;
   #else
     #define action _action
     /*  init the error to no error  */
