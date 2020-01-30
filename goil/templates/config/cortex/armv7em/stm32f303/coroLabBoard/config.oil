@@ -3,7 +3,7 @@ IMPLEMENTATION stm32f303Coro {
     BOOLEAN [
       TRUE {
         ENUM [
-          spi,tftDriver,coroPrint,tft,IOExpander,IO
+          spi,tftDriver,coroPrint,tft,IOExpander,IO,coroBoard
         ] LIBRARY[];
       },
       FALSE
@@ -59,5 +59,15 @@ CPU coroLabBoard{
 	CPPHEADER = "pinAccess.h";
 	CPPFILE   = "pinAccess.c";
   };
+
+  // all the stuff for the coro lab board.
+  LIBRARY coroBoard {
+    NEEDS = tft;
+    NEEDS = IOExpander;
+	NEEDS = IO;
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+	CPPHEADER = "coroBoard.h";
+	CPPFILE   = "coroBoard.cpp";
+  };
 };
-    
+

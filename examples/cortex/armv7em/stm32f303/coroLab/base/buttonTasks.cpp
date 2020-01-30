@@ -1,26 +1,7 @@
 #include "tpl_os.h"
 #include "mcp23s17.h"
 
-#ifdef __cplusplus
- extern "C" {
-#endif /* __cplusplus */
-
-void setupIOExtender()
-{
-	ioExt.begin();
-	//portA => leds.
-	for(int i=0; i<8;i++)
-		ioExt.pinMode(mcp23s17::PORTA,i,mcp23s17::OUTPUT);
-	//portB => push buttons
-	for(int i=0; i<8;i++)
-		ioExt.pinMode(mcp23s17::PORTB,i,mcp23s17::INPUT_PULLUP);
-	ioExt.attachInterrupt(mcp23s17::PORTB,4);
-	ioExt.attachInterrupt(mcp23s17::PORTB,5);
-	ioExt.attachInterrupt(mcp23s17::PORTB,6);
-	ioExt.attachInterrupt(mcp23s17::PORTB,7);
-}
-
-//ISR2 interrupt that activate tasks when a button is pressed
+//ISR2 interrupt that activates tasks when a button is pressed
 ISR(mcp23s17) {
 	//detect the button pushed, 
 	//and activate the associated task
@@ -66,6 +47,3 @@ TASK(TaskB7)
 	TerminateTask();
 }
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */

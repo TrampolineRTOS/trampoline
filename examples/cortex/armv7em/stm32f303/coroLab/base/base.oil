@@ -22,12 +22,9 @@ CPU blink {
 			TRAMPOLINE_BASE_PATH = "../../../../../..";
 			APP_CPPSRC = "./blink.cpp";
 			APP_CPPSRC = "./buttonTasks.cpp";
-			APP_CPPSRC = "./display.cpp";
 			APP_NAME = "base.elf";
 			CFLAGS	= "-Os -fstack-usage -Wno-strict-aliasing";
-			LIBRARY = tft;
-			LIBRARY = IOExpander;
-			LIBRARY = IO;
+			LIBRARY = coroBoard;
 			LDFLAGS = "-Map=blink.map";
 			COMPILER = "arm-none-eabi-gcc";
 			CPPCOMPILER = "arm-none-eabi-g++";

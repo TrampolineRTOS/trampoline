@@ -154,3 +154,14 @@ void __attribute__((section(".after_vectors"))) system_init()
 // is executed before all other initialisations.
 void* __attribute__((section(".preinit_array_sysinit")))
 p_system_init = (void*) system_init; // pointer to the above function
+
+/*
+ *  * This is necessary for ST libraries
+ *   */
+void assert_failed(uint8_t* file, uint32_t line)
+{
+}
+
+void __cxa_pure_virtual() { while (1); }
+
+
