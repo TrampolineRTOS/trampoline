@@ -3,7 +3,7 @@ IMPLEMENTATION stm32f303Coro {
     BOOLEAN [
       TRUE {
         ENUM [
-          spi,tftDriver,coroPrint,tft,IOExpander,IO,coroBoard
+          spi,tftDriver,coroPrint,tftFontDriver,tft,IOExpander,IO,coroBoard
         ] LIBRARY[];
       },
       FALSE
@@ -27,14 +27,14 @@ CPU coroLabBoard{
 	CPPFILE   = "Adafruit_ST77xx.cpp";
   };
 
-  LIBRARY coroPrint {
+  LIBRARY coroPrint { //get high level 'print' functions from Arduino
     PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/arduinoCore";
 	CPPHEADER = "Print.h";
 	CPPHEADER = "Printable.h";
 	CPPFILE   = "Print.cpp";
   };
 
-  LIBRARY tft {
+  LIBRARY tftFontDriver {	//font driver.
     NEEDS = tftDriver;
     NEEDS = coroPrint;
     PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/Adafruit-GFX-Library";
@@ -46,6 +46,12 @@ CPU coroLabBoard{
 	CPPFILE   = "Adafruit_SPITFT.cpp";
   };
 
+  LIBRARY tft { //all the tft stuff (low level, font, print and Tft object)
+    NEEDS = tftFontDriver;
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft";
+	CPPFILE   = "tft.cpp";
+	CPPHEADER = "tft.h";
+  };
 
   LIBRARY IOExpander {
     NEEDS = spi;
