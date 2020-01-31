@@ -24,11 +24,11 @@ class tft : public Adafruit_ST7735 {
 
 	/* return the width of the LCD as a number of chars
 	 */
-	unsigned int const getTextWidth();
+	unsigned int getTextWidth();
 
 	/* return the width of the LCD as a number of chars
 	 */
-	unsigned int const getTextHeight();
+	unsigned int getTextHeight();
 
 	/* erase n characters from current cursor position */
 	void eraseText(unsigned int n);

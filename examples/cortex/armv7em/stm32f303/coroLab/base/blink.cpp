@@ -13,6 +13,7 @@ TASK(blink)
 {
 	static uint32_t i=0;
 	digitalToggle(GPIOB,0);	 //toggle user led.
+	Tft.setTextCursor(0,0);
 	Tft.eraseText(7);        //up to 7 characters to print i
 	Tft.print(i);
 	i++;

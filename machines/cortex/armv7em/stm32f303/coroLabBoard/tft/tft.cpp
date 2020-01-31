@@ -39,12 +39,12 @@ void tft::setTextCursor(unsigned int col, unsigned int line)
 	setCursor(x,y);
 }
 
-unsigned int const tft::getTextWidth()
+unsigned int tft::getTextWidth()
 {
 	return width() / FONT_WIDTH;
 }
 
-unsigned int const tft::getTextHeight()
+unsigned int tft::getTextHeight()
 {
 	return height() / FONT_HEIGHT;
 }
@@ -56,7 +56,7 @@ void tft::eraseText(unsigned int n)
 {
 	int x = getCursorX();
 	int y = getCursorY();
-	for(int i=0;i<n;i++)
+	for(unsigned int i=0;i<n;i++)
 	{
 		if((x+FONT_WIDTH)>width())
 		{
