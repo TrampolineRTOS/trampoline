@@ -16,11 +16,11 @@ class tft : public Adafruit_ST7735 {
 	/* init the hardware */
     void setup();
 
-	/* set text cursor position 
+	/* set text cursor position
 	 * line 0 is at top
 	 * col 0 is at left
 	 * */
-	void setTextCursor(unsigned int col, unsigned int line);
+	void setTextCursor(const unsigned int col, const unsigned int line);
 
 	/* return the width of the LCD as a number of chars
 	 */
@@ -31,7 +31,7 @@ class tft : public Adafruit_ST7735 {
 	unsigned int getTextHeight();
 
 	/* erase n characters from current cursor position */
-	void eraseText(unsigned int n);
+	void eraseText(const unsigned int n);
 };
 
 extern tft Tft;

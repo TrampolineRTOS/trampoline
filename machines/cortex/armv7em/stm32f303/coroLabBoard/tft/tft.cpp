@@ -32,7 +32,7 @@ void tft::setup()
 	erase();
 }
 
-void tft::setTextCursor(unsigned int col, unsigned int line)
+void tft::setTextCursor(const unsigned int col, const unsigned int line)
 {
 	const unsigned x = (col % getTextWidth()) * FONT_WIDTH;
 	const unsigned y = ((line % getTextHeight())+1) * FONT_HEIGHT;
@@ -52,7 +52,7 @@ unsigned int tft::getTextHeight()
 //we can use getTextBounds() to get the bounds
 //of a text part. This is a simpler function for
 //fixed-space fonts.
-void tft::eraseText(unsigned int n)
+void tft::eraseText(const unsigned int n)
 {
 	int x = getCursorX();
 	int y = getCursorY();
