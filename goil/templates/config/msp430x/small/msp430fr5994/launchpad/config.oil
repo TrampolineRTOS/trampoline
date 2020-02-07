@@ -3,10 +3,6 @@
  * MSP430 Specific configuration file for Launchpad SDK
  */
 
-<<<<<<< HEAD
-IMPLEMENTATION checkpointing {
-  BOOLEAN CHECKPOINT = FALSE;
-=======
 IMPLEMENTATION lauchpad {
   OS {
     BOOLEAN [
@@ -29,5 +25,4 @@ CPU launchpad {
     CHEADER = "serial.h";
     CFILE   = "serial.c";
   };
->>>>>>> aa2cfefc28bce9914a5b40f7ed98950f13f090c1
 };
