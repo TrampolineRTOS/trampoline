@@ -2,13 +2,17 @@
 
 \chapter{Getting started}
 
-This chapter shows how to compile and run your first application. We are going to use the \textsc{Posix} port of Trampoline, Trampoline/\textsc{Posix}, that runs over a Linux or Mac OS X operating system. So we assume you are using a Linux or Mac OS X computer since Trampoline/Posix does not run over Windows\footnote{An API working like Unix signals is missing on Windows.}.
+This chapter shows how to compile and run your first application. We are going to use the \textsc{Posix} port of Trampoline, Trampoline/\textsc{Posix}, that runs over a Linux or Mac OS X operating system. So it is assumed you are using a Linux or Mac OS X computer since Trampoline/Posix does not run over Windows\footnote{An API working like Unix signals is missing on Windows.}. It is also assumed that you have a basic knowledge of using the command line and the Unix shell.
 
 OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the objects of the application, tasks, events, resources, \ldots, cannot be created or deleted during the execution of the application. All objects are statically defined and instead of forcing the user to instantiate the OS objects related to the application in C language, a work that can be error prone, a specific language is used, OIL or XML\footnote{for \textsc{Autosar}}. A compiler, \goil, is used to translate the description in the equivalent C structures. \goil\ performs verifications too.
 
-\section{Compiling goil}
+\section{Setting up the environment}
 
-Before all, we need to compile \tool{goil}. \goil\ is located in the \file{goil} subdirectory. To compile \goil, go in the directory corresponding to your operating system, \file{goil/makefile-macosx} for Mac OS X or \file{goil/makefile-unix}. Then type \tool{./build.py release}. If everything went well, a \tool{goil} executable is generated. You can test it by typing \tool{./goil --version}. At the time of writing, the command should output:
+Before compiling and running the first application, a few tools are required. The first tool needed is a development chain, compiler and linker, for the target platform. In our case, the native development chain, \tool{gcc} under Linux, \tool{clang} under Mac OS X will be used. The two other tools are respectively \goil\ and \tool{viper} that we will compile. In the following, all paths are relative to the Trampoline root directory. When setting up path environment variables, complete the relative path with the installation path of Trampoline.
+
+\subsection{Compiling goil}
+
+\goil\ is located in the \file{goil} subdirectory. To compile \goil, go in the directory corresponding to your operating system, \file{goil/makefile-macosx} for Mac OS X or \file{goil/makefile-unix} for Linux. Then type \com{./build.py release}. If everything went well, a \goil\ executable is generated. You can test it by typing \com{./goil --version}. At the time of writing, the command should output:
 
 \begin{verbatim}
 alflolol:makefile-macosx jlb$ ./goil --version
@@ -16,8 +20,59 @@ goil : 3.1.11, build with GALGAS 3.3.11
 No warning, no error.
 \end{verbatim}
 
-You can install \tool{goil} in \file{/usr/local/bin} by typing \tool{sudo ./build.py install-release} or adding to your \envvar{PATH} environment the location where \goil\ has been compiled.
+You can install \tool{goil} in \file{/usr/local/bin} by typing \com{sudo ./build.py install-release} or you can add to your \envvar{PATH} environment variable the location where \goil\ has been compiled.
+
+In addition you may want to set up the \envvar{GOIL_TEMPLATES} environment variable in your \file{.profile} or \file{.bashrc} so that you don't always have to set the \longprogramopt{templates=} option when calling \tool{goil}. This variable stores the path to the templates directory used by \tool{goil} and shall be \file{goil/templates}.
+
+\subsection{Compiling viper}
+
+Under Posix, Trampoline requires a runtime support that mimics the minimum behavior of a hardware, mainly timers. \tool{viper} is a separate application used by Trampoline for this purpose. Go in the \file{viper} directory. Type \com{make} to compile \tool{viper}. You must also set the environment variable \envvar{VIPER_PATH} to contain the path \file{viper}.
 
 \section{Playing with the \cdata{one_task} application}
 
-Go into the \file{examples/posix/one_task} directory.
+Go into the \file{examples/posix/one_task} directory. In this directory, two files are available: \file{one_task.oil} and \file{one_task.c}. Start by opening \file{one_task.oil}. The content of this file is reproduced below. 
+
+\begin{lstlisting}[language=OIL,numbers=left,escapechar=?]
+OIL_VERSION = "2.5"; 	?\label{onetask::oilversion}?
+
+CPU only_one_task {  	?\label{onetask::cpu}?
+  OS config {			?\label{onetask::cpu::os}?
+    STATUS = EXTENDED;
+    BUILD = TRUE { ?\label{onetask::cpu::os::build}?
+      APP_SRC = "one_task.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      LDFLAGS="-lrt -lpthread";
+      APP_NAME = "one_task_exe";
+      LINKER = "gcc";
+      SYSTEM = PYTHON;
+    };
+  };
+  
+  APPMODE stdAppmode {}; ?\label{onetask::cpu::appmode}?
+  
+  TASK my_only_task {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = stdAppmode; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+};
+\end{lstlisting}
+
+\lstinline[language=OIL]{OIL_VERSION = "2.5";} at line~\ref{onetask::oilversion} specifies which kind of application we are designing. Here it is an \osek\ application. For an \autosar\ application, \lstinline[language=OIL]{OIL_VERSION = "4.0";} would be used.
+
+OIL files consist of two sections, an \oilobj{IMPLEMENTATION} section that is not used here and a \oilobj{CPU} section that appears in the line \ref{onetask::cpu}. The objects describing the application are located inside the \oilobj{CPU} section.
+
+The first is the \oilobj{OS} object at the line~\ref{onetask::cpu::os}. This object is used to configure the operating system and, in the case of Trampoline, to specify how to compile it. The first attribute, \oilattr{STATUS}, indicates the fineness of verification of error conditions by the operating system services. Two values are possible: \oilval{STANDARD} and \oilval{EXTENDED}. Here, \oilval{EXTENDED} is used.
+
+The \oilattr{BUILD} attribute at line~\ref{onetask::cpu::os::build} is used to generate a build script. It contains several sub-attributes:
+\begin{itemize}
+\item \oilattr{APP_SRC} gives the C source code file of your application. If the application is split into several C files, use has many \oilattr{APP_SRC} as needed.
+\item \oilattr{TRAMPOLINE_BASE_PATH} gives the path to the Trampoline root directory.
+\item \oilattr{LDFLAGS} is additional flags to pass to the linker. Here we add the \emph{rt} and \emph{pthread} libraries that are needed for multitasking and communication with \tool{viper}. 
+\item \oilattr{APP_NAME} is the name of the resulting binary file that is directly executable for the Posix target.
+\item \oilattr{LINKER} specifies which command is used to invoke the linker.
+\item \oilattr{SYSTEM} specifies which build system is used. Here Python build scripts.
+\end{itemize}
+
+The second is the object \oilobj{APPMODE} at line~\ref{onetask::cpu::appmode}

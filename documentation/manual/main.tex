@@ -30,6 +30,8 @@
 \usepackage[colorlinks=true,linkcolor=seagreen,citecolor=darkpink]{hyperref}
 \usepackage{path}
 \usepackage{tikz}
+\usepackage[most]{tcolorbox}
+
 
 %
 % custom options
@@ -66,6 +68,20 @@
 \lstdefinelanguage{OIL}
 {
   morekeywords= {
+  	  APPMODE,
+	  BUILD,
+	  STATUS,
+	  APP_SRC, 
+	  TRAMPOLINE_BASE_PATH,
+	  LDFLAGS,
+	  APP_NAME,
+	  OIL_VERSION,
+	  SYSTEM,
+	  TRUE,
+	  EXTENDED,
+	  AUTOSTART,
+	  ACTIVATION,
+	  IMPLEMENTATION,
 	  RESOURCE, RESOURCEPROPERTY, STANDARD, INTERNAL, LINKED, LINKEDRESOURCE,
 	  TASK, SCHEDULE, FULL, NONE, PRIORITY, EVENT, ISR, CATEGORY, OS, CPU, MEMMAP,
 	  COMPILER, LINKER, SCRIPT, IOC, DATATYPENAME, DATATYPEPROPERTY, RECEIVER, SENDER, RCV_OSAPPLICATION, 	  RECEIVER_PULL_CB, ACTION, SENDER_ID, SND_OSAPPLICATION
@@ -147,6 +163,23 @@
   basicstyle=\ttfamily\small,
   morekeywords=\bfseries
 }
+
+% Inline color boxes
+
+\newtcbox{\inlinebox}[1][red]{
+	on line,
+	arc=0pt,
+	outer arc=0pt,
+	colback=#1!10!white,
+	colframe=#1!50!black,
+	boxsep=0pt,
+	left=2pt,
+	right=2pt,
+	top=1pt,
+	bottom=1pt,
+	boxrule=.25pt
+}
+
 %
 % Commands for paragraph types
 %
@@ -177,19 +210,20 @@
 \newcommand{\cfunction}[1]{{\ttfamily #1}}
 \newcommand{\cmacro}[1]{{\small\ttfamily #1}}
 \newcommand{\constant}[1]{{\small\ttfamily #1}}
-\newcommand{\oilobj}[1]{{\small\ttfamily #1}}
-\newcommand{\oilattr}[1]{{\small\ttfamily #1}}
-\newcommand{\oilval}[1]{{\small\ttfamily #1}}
+\newcommand{\oilobj}[1]{\lstinline[language=OIL]{#1}}
+\newcommand{\oilattr}[1]{\lstinline[language=OIL]{#1}}
+\newcommand{\oilval}[1]{\lstinline[language=OIL]{#1}}
 \newcommand{\member}[1]{{\small\ttfamily #1}}
 \newcommand{\mem}{\small\ttfamily}
-\newcommand{\tool}[1]{{\small\ttfamily #1}}
 
 %
 % Commands for other formatting
 %
+\newcommand{\tool}[1]{{\small\ttfamily #1}}
+\newcommand{\com}[1]{\inlinebox[blue]{\small\ttfamily #1}}
 \newcommand{\file}[1]{{\small\ttfamily `#1'}}
-\newcommand{\envvar}[1]{{\footnotesize\sffamily #1}}
-\newcommand{\longprogramopt}[1]{{\ttfamily --#1}}
+\newcommand{\envvar}[1]{{\scriptsize\sffamily #1}}
+\newcommand{\longprogramopt}[1]{{\small\ttfamily --#1}}
 \newcommand{\programopt}[1]{{\ttfamily -#1}}
 \newcommand{\strong}[1]{{\bf #1}}
 \newcommand{\ie}{i.e.}
@@ -200,7 +234,7 @@
 \newcommand{\idxconfflag}[1]{{\footnotesize\ttfamily #1}\index{Configuration macros!#1}\index{#1}}
 \newcommand{\toreplace}[1]{{\footnotesize $<$}#1{\footnotesize $>$}}
 %\newcommand{\figcaption}[2]{\textit{\caption{\small #1}}\label{#2}}
-\newcommand{\goil}{\tool{goil}\index{goil, The oil compiler of Trampoline}}
+\newcommand{\goil}{\tool{goil}\index{goil, The OIL/arXML compiler of Trampoline}}
 \newcommand{\process}{process\index{process, a task, basic or extended, or an ISR category 2}}
 \newcommand{\sysgen}{system generation tool\index{system generation tool, the tool that takes as an input a description of the system (in OIL or in XML) to generate the corresponding .c and .h files.}}
 \newcommand{\stringlit}[1]{{\small\ttfamily "{#1}"}}
