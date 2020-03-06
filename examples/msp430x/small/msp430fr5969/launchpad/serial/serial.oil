@@ -17,10 +17,8 @@ CPU serial {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-   CPU_FREQ_MHZ = 24;
-    IDLE_POWER_MODE = LPM3;
-    INIT_WITH_DMA = TRUE;
-    
+    CPU_FREQ_MHZ = 8;
+
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "serial.c";

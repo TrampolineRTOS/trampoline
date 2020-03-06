@@ -17,6 +17,7 @@ IMPLEMENTATION  msp430x {
   /* Add to ISR objects target interrupt sources */
   ISR [] {
     #include <interruptSources.oil>
+    BOOLEAN EXIT_FROM_LPM = FALSE;
   };
 
   /* Additional OS attributes */

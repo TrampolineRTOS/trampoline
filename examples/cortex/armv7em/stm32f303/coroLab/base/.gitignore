@@ -1,6 +1,6 @@
-blink
+base
 build
-*_exe
+*.elf
 *.bin
 *.map
 *.py

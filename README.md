@@ -3,7 +3,7 @@
 Trampoline is a static RTOS for small embedded systems.
 Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 
-6 platforms are supported by now :
+8 platforms are supported by now :
 
 * cortex
   * Cortex-M (M0+, M3 and M4 for now) instruction set
