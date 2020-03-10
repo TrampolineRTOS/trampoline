@@ -26,6 +26,7 @@
 #ifndef TPL_TRACE_H
 #define TPL_TRACE_H
 
+#include "tpl_app_define.h" /* WITH_TRACE */
 #include "tpl_os_types.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_timeobj_kernel.h"
@@ -280,6 +281,8 @@
 #  define TRACE_U_EVENT(event_id)
 #endif
 
+#if WITH_TRACE == YES
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -469,6 +472,9 @@ FUNC(void, OS_CODE) tpl_trace_tpl_terminate();
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#endif /* WITH_TRACE == YES */
+
 
 #endif /* TPL_TRACE_H */
 /* End of file tpl_trace.h */
