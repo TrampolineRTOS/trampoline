@@ -17,19 +17,13 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * @section infos File informations
- *
- * $Date: 2009-04-24 10:26:01 +0000 (ven. 24 avril 2009) $
- * $Rev: 735 $
- * $Author: ljunker $
- * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_trace.c $
  */
 
-#include "tpl_app_define.h"
+#include "tpl_app_define.h" /* WITH_TRACE */
 
 #if WITH_TRACE == YES
 
-#include "tpl_target_trace.h"
+#include "tpl_trace_posix.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
