@@ -23,7 +23,7 @@
 
 #if WITH_TRACE == YES
 
-#include "tpl_trace_posix.h"
+#include "tpl_trace_target.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
