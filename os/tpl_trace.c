@@ -41,7 +41,7 @@ FUNC(void, OS_CODE) tpl_trace_task_execute(
   CONST(TaskType, AUTOMATIC) new_executed_task_id)
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  VAR(tpl_status, AUTOMATIC) new_executed_task_old_status;
+  VAR(tpl_proc_state, AUTOMATIC) new_executed_task_previous_state;
   VAR(tpl_priority, AUTOMATIC) new_executed_task_prio;
 
   if(tpl_stat_proc_table[new_executed_task_id]->type != IS_ROUTINE)
@@ -49,8 +49,8 @@ FUNC(void, OS_CODE) tpl_trace_task_execute(
 /* This function is called just before the scheduling process,
     so we can get the status of the task before it changes.*/
 
-    tpl_trace_get_date();
-    new_executed_task_old_status = tpl_dyn_proc_table[new_executed_task_id]->state;
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
+    new_executed_task_previous_state = tpl_dyn_proc_table[new_executed_task_id]->state;
     new_executed_task_prio = tpl_dyn_proc_table[new_executed_task_id]->priority;
 
 /* record part*/
@@ -58,7 +58,7 @@ FUNC(void, OS_CODE) tpl_trace_task_execute(
     EVENT_BEGIN(TASK_RUN)
     EVENT_VALUE(new_executed_task_id)
     EVENT_VALUE(new_executed_task_prio)
-    EVENT_VALUE(new_executed_task_old_status)
+    EVENT_VALUE(new_executed_task_previous_state)
     EVENT_END()
     FORMAT_TRACE()
   }
@@ -76,7 +76,7 @@ FUNC(void, OS_CODE) tpl_trace_task_preempt(
      * from the currently running task, the scheduling process having
      * not already been applied
      */
-    tpl_trace_get_date();
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
     preempted_task_prio = tpl_dyn_proc_table[preempted_task_id]->priority;
 
     EVENT_BEGIN(TASK_PREEMPT)
@@ -95,7 +95,7 @@ FUNC(void, OS_CODE) tpl_trace_task_terminate(
   if (tpl_stat_proc_table[dying_task_id]->type != IS_ROUTINE)
   {
 
-    tpl_trace_get_date();
+    tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
     dying_task_prio = tpl_dyn_proc_table[dying_task_id]->priority;
 
     EVENT_BEGIN(TASK_TERMINATE)
@@ -110,20 +110,20 @@ FUNC(void, OS_CODE) tpl_trace_task_activate(
   CONST(TaskType, AUTOMATIC) task_id)
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  VAR(tpl_status, AUTOMATIC) task_old_status;
+  VAR(tpl_proc_state, AUTOMATIC) task_previous_state;
   VAR(tpl_priority, AUTOMATIC) task_prio;
 
   if(tpl_stat_proc_table[task_id]->type != IS_ROUTINE)
   {
-    tpl_trace_get_date();
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
 
-    task_old_status = tpl_dyn_proc_table[task_id]->state;
+    task_previous_state = tpl_dyn_proc_table[task_id]->state;
     task_prio = tpl_dyn_proc_table[task_id]->priority;
 
     EVENT_BEGIN(TASK_ACTIVATE)
     EVENT_VALUE(task_id)
     EVENT_VALUE(task_prio)
-    EVENT_VALUE(task_old_status)
+    EVENT_VALUE(task_previous_state)
     EVENT_END()
     FORMAT_TRACE()
   }
@@ -134,14 +134,14 @@ FUNC(void, OS_CODE) tpl_trace_task_wait(
   CONST(TaskType, AUTOMATIC) waiting_task_id)
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  VAR(tpl_status, AUTOMATIC) waiting_task_status;
+  VAR(tpl_proc_state, AUTOMATIC) waiting_task_state; /* TODO unused? */
   VAR(tpl_priority, AUTOMATIC) waiting_task_prio;
 
   if(tpl_stat_proc_table[waiting_task_id]->type != IS_ROUTINE)
   {
-    tpl_trace_get_date();
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
 
-    waiting_task_status = tpl_dyn_proc_table[waiting_task_id]->state;
+    waiting_task_state = tpl_dyn_proc_table[waiting_task_id]->state;
     waiting_task_prio = tpl_dyn_proc_table[waiting_task_id]->priority;
 
     EVENT_BEGIN(TASK_WAIT)
@@ -157,19 +157,19 @@ FUNC(void, OS_CODE) tpl_trace_task_released(
 event_id)
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  VAR(tpl_status, AUTOMATIC) released_task_status;
+  VAR(tpl_proc_state, AUTOMATIC) released_task_state;
   VAR(tpl_priority, AUTOMATIC) released_task_prio;
 
   if(tpl_stat_proc_table[released_task_id]->type != IS_ROUTINE)
   {
-    tpl_trace_get_date();
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
 
-    released_task_status = tpl_dyn_proc_table[released_task_id]->state;
+    released_task_state = tpl_dyn_proc_table[released_task_id]->state;
     released_task_prio = tpl_dyn_proc_table[released_task_id]->priority;
 
     EVENT_BEGIN(TASK_RELEASED)
     EVENT_VALUE(released_task_id)
-    EVENT_VALUE(released_task_status)
+    EVENT_VALUE(released_task_state)
     EVENT_VALUE(released_task_prio)
     EVENT_END()
     FORMAT_TRACE()
@@ -184,7 +184,7 @@ FUNC(void, OS_CODE) tpl_trace_task_change_priority(
 
   if(tpl_stat_proc_table[priority_changing_task_id]->type != IS_ROUTINE)
   {
-    tpl_trace_get_date();
+    tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
     priority_changing_task_new_prio = tpl_dyn_proc_table[TPL_KERN_REF(kern).running_id]->priority;
 
     EVENT_BEGIN(TASK_CHANGE_PRIORITY)
@@ -203,7 +203,7 @@ FUNC(void, OS_CODE) tpl_trace_res_get(
   CONST(tpl_resource_id, AUTOMATIC) res_id, CONST(TaskType, AUTOMATIC) locking_entity_id)
 {
   VAR(tpl_priority, AUTOMATIC) locking_entity_prio;
-  tpl_trace_get_date();
+  tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
 
   locking_entity_prio = tpl_dyn_proc_table[locking_entity_id]->priority;
 
@@ -218,7 +218,7 @@ FUNC(void, OS_CODE) tpl_trace_res_get(
 FUNC(void, OS_CODE) tpl_trace_res_released(
   CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
-  tpl_trace_get_date();
+  tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
 
   EVENT_BEGIN(RES_RELEASED)
   EVENT_VALUE(res_id)
@@ -233,12 +233,12 @@ FUNC(void, OS_CODE) tpl_trace_res_released(
 FUNC(void, OS_CODE) tpl_trace_isr_run(
   CONST(tpl_isr_id, AUTOMATIC) running_isr_id)
 {
-  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern) /* TODO useless? */
   VAR(tpl_priority, AUTOMATIC) running_isr_prio;
 
   if(tpl_stat_proc_table[running_isr_id]->type == IS_ROUTINE)
   {
-    tpl_trace_get_date();
+    tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
     running_isr_prio = tpl_dyn_proc_table[running_isr_id]->priority;
 
     EVENT_BEGIN(ISR_RUN)
@@ -257,7 +257,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_preempt(
 
   if (tpl_stat_proc_table[preempted_isr_id]->type == IS_ROUTINE)
   {
-    tpl_trace_get_date();
+    tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
     preempted_isr_prio = tpl_dyn_proc_table[preempted_isr_id]->priority;
 
     EVENT_BEGIN(ISR_PREEMPT)
@@ -276,7 +276,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_terminate(
   if (tpl_stat_proc_table[dying_isr_id]->type == IS_ROUTINE)
   {
     dying_isr_prio = tpl_dyn_proc_table[dying_isr_id]->priority;
-    tpl_trace_get_date();
+    tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
 
     EVENT_BEGIN(ISR_TERMINATE)
     EVENT_VALUE(dying_isr_id)
@@ -289,19 +289,19 @@ FUNC(void, OS_CODE) tpl_trace_isr_terminate(
 FUNC(void, OS_CODE) tpl_trace_isr_activate(
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  VAR(tpl_status, AUTOMATIC) isr_old_status;
+  VAR(tpl_proc_state, AUTOMATIC) isr_previous_state;
   VAR(tpl_priority, AUTOMATIC) isr_prio;
 
   if (tpl_stat_proc_table[isr_id]->type == IS_ROUTINE)
   {
-    tpl_trace_get_date();
-    isr_old_status = tpl_dyn_proc_table[isr_id]->state;
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
+    isr_previous_state = tpl_dyn_proc_table[isr_id]->state;
     isr_prio = tpl_dyn_proc_table[isr_id]->priority;
 
     EVENT_BEGIN(ISR_ACTIVATE)
     EVENT_VALUE(isr_id)
     EVENT_VALUE(isr_prio)
-    EVENT_VALUE(isr_old_status)
+    EVENT_VALUE(isr_previous_state)
     EVENT_END()
     FORMAT_TRACE()
   }
@@ -310,13 +310,13 @@ FUNC(void, OS_CODE) tpl_trace_isr_activate(
 FUNC(void, OS_CODE) tpl_trace_isr_change_priority(
   CONST(tpl_isr_id, AUTOMATIC) priority_changing_isr_id)
 {
-  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern) /* TODO useless? */
   VAR(tpl_priority, AUTOMATIC) priority_changing_isr_new_prio;
 
   if(tpl_stat_proc_table[priority_changing_isr_id]->type == IS_ROUTINE)
   {
 
-    tpl_trace_get_date();
+    tpl_trace_get_date(); /* TODO move to tpl_trace_event_begin */
     priority_changing_isr_new_prio = tpl_dyn_proc_table[TPL_KERN_REF(kern).running_id]->priority;
 
     EVENT_BEGIN(TASK_CHANGE_PRIORITY)
@@ -335,7 +335,7 @@ FUNC(void, OS_CODE) tpl_trace_alarm_scheduled(
   VAR(tpl_tick, AUTOMATIC) scheduled_alarm_expir_date;
   VAR(tpl_timeobj_id, TYPEDEF) scheduled_alarm_id;
 
-  tpl_trace_get_date();
+  tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
   scheduled_alarm_expir_date = scheduled_alarm->date;
   scheduled_alarm_id = scheduled_alarm->stat_part->timeobj_id;
 
@@ -346,6 +346,9 @@ FUNC(void, OS_CODE) tpl_trace_alarm_scheduled(
   FORMAT_TRACE()
 }
 
+/*
+ * FIXME smells buggy, need a detailed review + testing
+ */
 FUNC(void, OS_CODE) tpl_trace_alarm_expire(
   CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) expired_alarm)
 {
@@ -355,7 +358,7 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
 
   if(expired_alarm->stat_part->expire == tpl_raise_alarm){
 
-    tpl_trace_get_date();
+    tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
     expired_alarm_stat = (tpl_alarm_static *)expired_alarm->stat_part;
     expired_alarm_action = expired_alarm_stat->action->action;
 
@@ -383,12 +386,12 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
   CONST(tpl_alarm_id, AUTOMATIC)cancelled_alarm_id)
 {
 
-  tpl_trace_get_date();
+  tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
 
   EVENT_BEGIN(ALARM_CANCEL)
   EVENT_VALUE(cancelled_alarm_id)
   EVENT_END()
-    FORMAT_TRACE()
+  FORMAT_TRACE()
 }
 
 FUNC(void, OS_CODE) tpl_trace_counter(
@@ -404,7 +407,7 @@ FUNC(void, OS_CODE) tpl_trace_counter(
 
 FUNC(void, OS_CODE) tpl_trace_tpl_init()
 {
-  tpl_trace_get_date();
+  tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
   EVENT_BEGIN(TPL_INIT)
   EVENT_END()
   FORMAT_TRACE()
@@ -412,7 +415,7 @@ FUNC(void, OS_CODE) tpl_trace_tpl_init()
 
 FUNC(void, OS_CODE) tpl_trace_tpl_terminate()
 {
-  tpl_trace_get_date();
+  tpl_trace_get_date();/* TODO move to tpl_trace_event_begin */
 
   EVENT_BEGIN(TPL_TERMINATE)
   EVENT_END()
