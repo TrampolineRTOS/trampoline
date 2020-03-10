@@ -17,12 +17,6 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * @section infos File informations
- *
- * $Date: 2009-04-24 10:26:01 +0000 (ven. 24 avril 2009) $
- * $Rev: 735 $
- * $Author: ljunker $
- * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_trace.c $
  */
 
 /* This file describes proprieties of the posix plateform used for the trace*/
