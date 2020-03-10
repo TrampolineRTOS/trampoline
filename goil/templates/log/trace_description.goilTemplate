@@ -24,5 +24,11 @@ foreach alarm in ALARMS do %
 end foreach
 %
   </alarms>
+  <counters>%
+foreach counter in COUNTERS do %
+    <counter name="% !counter::NAME %" id="% !INDEX %"/>%
+end foreach
+%
+  </counters>
 </app>
 

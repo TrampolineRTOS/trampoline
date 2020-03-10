@@ -224,11 +224,11 @@ IMPLEMENTATION trampoline_common {
       TRUE {
         ENUM [ FILE { STRING NAME; } ] METHOD;
         ENUM [xml, txt, bin] FORMAT;
-        BOOLEAN TRACE_TASK = TRUE;
-        BOOLEAN TRACE_ISR = TRUE;
-        BOOLEAN TRACE_RESOURCE = TRUE;
-        BOOLEAN TRACE_ALARM = TRUE;
-        BOOLEAN TRACE_USER = TRUE;
+        BOOLEAN TASK = TRUE;
+        BOOLEAN ISR = TRUE;
+        BOOLEAN RESOURCE = TRUE;
+        BOOLEAN ALARM = TRUE;
+        BOOLEAN USER = TRUE;
         BOOLEAN DESCRIPTION = TRUE;
       },
       FALSE
