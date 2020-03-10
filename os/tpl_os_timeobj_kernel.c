@@ -342,7 +342,9 @@ FUNC(void, OS_CODE) tpl_counter_tick(
       counter->current_date = date;
       counter->current_tick = 0;
 
-      TRACE_COUNTER(counter)
+      /* id is defined only when traces are on but in the other case
+       macro TRACE_COUNTER expands to nil. */
+      TRACE_COUNTER(counter->id)
 
       /*  check if the counter has reached the
        next alarm activation date                  */

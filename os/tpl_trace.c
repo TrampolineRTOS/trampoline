@@ -393,9 +393,8 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
 
 #if ALARM_COUNT > 0
 FUNC(void, OS_CODE) tpl_trace_counter(
-    CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc)
+    CONST(tpl_trace_counter_id, AUTOMATIC) counter_id)
 {
-  counter_id = counter_desc->id;
   EVENT_BEGIN(COUNTER_INC)
   EVENT_VALUE(counter_id)
   EVENT_END()
