@@ -19,6 +19,13 @@ IMPLEMENTATION trampoline {
 CPU only_one_periodic_task {
   OS config {
     STATUS = EXTENDED;
+	TRACE = TRUE {
+		FORMAT = txt;
+		METHOD = FILE {
+			NAME = "foo.txt";
+		};
+		TRACE_TASK = TRUE;
+    };
     BUILD = TRUE {
       APP_SRC = "periodic.c";
       TRAMPOLINE_BASE_PATH = "../../..";

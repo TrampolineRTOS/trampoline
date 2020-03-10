@@ -337,6 +337,10 @@ foreach file in KERNEL_MAP["osek_kernel"]::FILE do
 cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
 end foreach
 
+if OS::TRACE then%
+cSourceList.append(projfile.ProjectFile("os/tpl_trace.c", trampoline_base_path))%
+end if
+
 if USECOM then
 %
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]
@@ -407,6 +411,7 @@ do
 %
 cSourceList.append(projfile.ProjectFile("% !src::VALUE %"))%
 end foreach
+
 foreach src in exists OS::BUILD_S::APP_CPPSRC default ( @() )
 before
 %
