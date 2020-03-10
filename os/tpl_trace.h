@@ -38,32 +38,32 @@
 * @def IDs of the different traces
 */
 
-#define TASK_RUN 0
-#define TASK_PREEMPT 1
-#define TASK_TERMINATE 2
-#define TASK_ACTIVATE 3
-#define TASK_WAIT 4
-#define TASK_RELEASED 5
+#define TASK_RUN             0
+#define TASK_PREEMPT         1
+#define TASK_TERMINATE       2
+#define TASK_ACTIVATE        3
+#define TASK_WAIT            4
+#define TASK_RELEASED        5
 #define TASK_CHANGE_PRIORITY 6
-#define RES_GET 7
-#define RES_RELEASED 8
-#define ISR_RUN 9
-#define ISR_PREEMPT 10
-#define ISR_TERMINATE 11
-#define ISR_ACTIVATE 12
+#define RES_GET              7
+#define RES_RELEASED         8
+#define ISR_RUN              9
+#define ISR_PREEMPT         10
+#define ISR_TERMINATE       11
+#define ISR_ACTIVATE        12
 #define ISR_CHANGE_PRIORITY 13
-#define ALARM_SCHEDULED 14
-#define ALARM_EXPIRE 15
-#define ALARM_CANCEL 16
-#define USER_EVENT 17
-#define TPL_INIT 18
-#define TPL_TERMINATE 19
-#define COUNTER_INC 20
+#define ALARM_SCHEDULED     14
+#define ALARM_EXPIRE        15
+#define ALARM_CANCEL        16
+#define USER_EVENT          17
+#define TPL_INIT            18
+#define TPL_TERMINATE       19
+#define COUNTER_INC         20
 
 /* define the alarm actions */
 
-#define TRACE_CALLBACK 0
-#define TRACE_ACT_TASK 1
+#define TRACE_CALLBACK  0
+#define TRACE_ACT_TASK  1
 #define TRACE_SET_EVENT 2
 
 /* define the trace output types */
