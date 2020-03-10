@@ -391,7 +391,6 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
     FORMAT_TRACE()
 }
 
-#if ALARM_COUNT > 0
 FUNC(void, OS_CODE) tpl_trace_counter(
     CONST(tpl_trace_counter_id, AUTOMATIC) counter_id)
 {
@@ -400,7 +399,6 @@ FUNC(void, OS_CODE) tpl_trace_counter(
   EVENT_END()
   FORMAT_TRACE()
 }
-#endif /* ALARM_COUNT */
 
 #endif /* WITH_TRACE*/
 
