@@ -1,0 +1,76 @@
+\chapter{Tracing the execution}
+
+\section{Introduction}
+
+\section{Events}
+
+The list of events that can be recorded is given below.
+All events are timestamped.
+Exact format and accuracy of the timestamp depends on the target specific
+backend (see section~\ref{sec:trace:targetbackend} below).
+
+\begin{description}
+  \item[PROC\_STATE\_CHANGE]: state of a process is changed.
+    \begin{itemize}
+      \item \texttt{proc_id}: identifier of the process.
+      \item \texttt{to_state}: target state.
+    \end{itemize}
+
+  \item[PROC\_PRIO\_CHANGE]: priority of a process is changed.
+    \begin{itemize}
+      \item \texttt{proc_id}: identifier of the process.
+      \item \texttt{to_priority}: target priority.
+    \end{itemize}
+
+  \item[RES_GET]: a process gets a resource.
+    \begin{itemize}
+      \item \texttt{proc_id}: identifier of the process.
+      \item \texttt{res_id}: identifier of the resource.
+    \end{itemize}
+
+  \item[RES_REL]: a process releases a resource.
+    \begin{itemize}
+      \item \texttt{proc_id}: identifier of the process.
+      \item \texttt{res_id}: identifier of the resource.
+    \end{itemize}
+
+  \item[EV_SET]: a process sets an event of another process.
+    \begin{itemize}
+      \item \texttt{src_proc_id}: identifier of the source process.
+      \item \texttt{tgt_proc_id}: identifier of the target process.
+      \item \texttt{ev_id}: identifier of the event set.
+      \item \texttt{pending}: set of pending events of the target process after.
+    \end{itemize}
+
+  \item[EV_RESET]: a process resets one of its events of another process.
+    \begin{itemize}
+      \item \texttt{src_proc_id}: identifier of the source process.
+      \item \texttt{tgt_proc_id}: identifier of the target process.
+      \item \texttt{pending}: set of pending events of the target process after.
+    \end{itemize}
+
+    % TODO: because of AUTOSTART, not straightforward to add proc_id here
+  \item[ALM_SET]: an alarm is set.
+    \begin{itemize}
+      \item \texttt{alarm_id}: identifier of the alarm.
+      \item \texttt{expiry_date}: next expiry date (in counter ticks).
+    \end{itemize}
+
+  \item[ALM_RESET]: an alarm is reset by a proc.
+    \begin{itemize}
+      \item \texttt{alarm_id}: identifier of the alarm.
+      \item \texttt{proc_id}: identifier of the proc resetting the alarm.
+    \end{itemize}
+
+  \item[ALM_EXPIRY]: an alarm reaches its expiry point.
+    \begin{itemize}
+      \item \texttt{alarm_id}: identifier of the alarm.
+    \end{itemize}
+
+    % COUNTERS? Other events?
+\end{description}
+
+\section{Implementation}
+
+\section{Implementing target specific backends}
+\label{sec:trace:targetbackend}
