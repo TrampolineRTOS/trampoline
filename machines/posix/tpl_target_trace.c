@@ -24,6 +24,11 @@
  * $Author: ljunker $
  * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_trace.c $
  */
+
+#include "tpl_app_define.h"
+
+#if WITH_TRACE == YES
+
 #include "tpl_target_trace.h"
 
 #define OS_START_SEC_CODE
@@ -42,8 +47,8 @@ VAR(char,OS_VAR) DATE[20];
 FILE* TRACE_FILE_PT;
 
 /**
-* DATE FUNCTION
-*/
+ * DATE FUNCTION
+ */
 
 FUNC(void, OS_CODE)tpl_trace_get_date()
 {
@@ -58,32 +63,32 @@ FUNC(void, OS_CODE)tpl_trace_get_date()
   sprintf(DATE,"%d%06d",sec,usec);
 
   /* get date depending SystemCounter 
-  extern VAR(tpl_counter, OS_VAR) Software_Counter_counter_desc;
-  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = &Software_Counter_counter_desc;
-  int dat_now = counter->current_date;
-  sprintf(DATE,"%d",dat_now); */
-  	
+     extern VAR(tpl_counter, OS_VAR) Software_Counter_counter_desc;
+     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = &Software_Counter_counter_desc;
+     int dat_now = counter->current_date;
+     sprintf(DATE,"%d",dat_now); */
+
 }
 
 /**
-* RECORD FUNCTIONS
-*/
+ * RECORD FUNCTIONS
+ */
 
 /** Function which start the record, memorizing the begin date of the event 
-* and the type of event traced 
-*/
+ * and the type of event traced
+ */
 
 FUNC(void, OS_CODE)tpl_trace_event_begin(
-    VAR(int, OS_VAR) trace_id)
+  VAR(int, OS_VAR) trace_id)
 {
- strncpy(trace.begin_date, DATE, sizeof(DATE));
- trace.trace_type = trace_id;
- trace.value[0] = -1;
+  strncpy(trace.begin_date, DATE, sizeof(DATE));
+  trace.trace_type = trace_id;
+  trace.value[0] = -1;
 }
 
 /** Function adding a value to the record. Knowing the event type of the trace, 
-* we can retrieve how much value this record must contain. 
-*/
+ * we can retrieve how much value this record must contain.
+ */
 
 FUNC(void, OS_CODE)tpl_trace_value(
   VAR(int, OS_VAR) value)
@@ -178,3 +183,5 @@ FUNC(void, OS_CODE)tpl_trace_format_bin(void)
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#endif /* WITH_TRACE == YES  */
