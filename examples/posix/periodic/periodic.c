@@ -23,5 +23,6 @@ TASK(stop)
 {
   CancelAlarm(one_second);
   printf("Terminaison\n");
+  ShutdownOS(E_OK);
   TerminateTask();
 }

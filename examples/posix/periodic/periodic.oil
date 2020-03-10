@@ -1,6 +1,3 @@
-//first compilation:
-//goil --target=posix  --templates=../../../goil/templates/ periodic.oil
-
 OIL_VERSION = "2.5";
 
 IMPLEMENTATION trampoline {
@@ -20,15 +17,21 @@ CPU only_one_periodic_task {
   OS config {
     STATUS = EXTENDED;
 	TRACE = TRUE {
-		FORMAT = txt;
+		FORMAT = bin;
 		METHOD = FILE {
-			NAME = "foo.txt";
+			NAME = "foo.bin";
 		};
-		TRACE_TASK = TRUE;
+		TASK = TRUE;
+        ISR = TRUE;
+        RESOURCE = TRUE;
+        ALARM = TRUE;
+        USER = TRUE;
+        DESCRIPTION = TRUE;
     };
     BUILD = TRUE {
       APP_SRC = "periodic.c";
       TRAMPOLINE_BASE_PATH = "../../..";
+      CFLAGS="-ggdb";
       LDFLAGS="-lrt -lpthread";
       APP_NAME = "periodic_exe";
       LINKER = "gcc";
