@@ -137,7 +137,7 @@ struct TPL_COUNTER {
   VAR(tpl_tick, TYPEDEF)
     current_date;       /**< current value of the counter                     */
 #if WITH_TRACE == YES
-  VAR(tpl_counter_id, TYPEDEF)
+  VAR(tpl_trace_counter_id, TYPEDEF)
     id;                /**< id of the counter used in the trace               */
 #endif
 #if WITH_AUTOSAR == YES
