@@ -369,9 +369,11 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
     if(expired_alarm_action == tpl_action_activate_task){
     EVENT_VALUE(TRACE_ACT_TASK)
     }
+#if EVENT_COUNT > 0
     if(expired_alarm_action == tpl_action_setevent){
-    EVENT_VALUE(TRACE_SET_EVENT)
+      EVENT_VALUE(TRACE_SET_EVENT)
     }
+#endif
     EVENT_END()
     FORMAT_TRACE()
   }
@@ -393,23 +395,11 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
 FUNC(void, OS_CODE) tpl_trace_counter(
     CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc)
 {
-  VAR(tpl_counter_id, AUTOMATIC) counter_id;
-  extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
-  tpl_counter_table[COUNTER_COUNT];
-  VAR(tpl_task_id, AUTOMATIC) i;
-
-  for (i = 0 ; i<COUNTER_COUNT ; i++)
-  {
-    if ( tpl_counter_table[i] == counter_desc)
-    {
-      counter_id = i;
-    }
-  }
-
+  counter_id = counter_desc->id;
   EVENT_BEGIN(COUNTER_INC)
-	EVENT_VALUE(counter_id)
-	EVENT_END()
-	FORMAT_TRACE()
+  EVENT_VALUE(counter_id)
+  EVENT_END()
+  FORMAT_TRACE()
 }
 #endif /* ALARM_COUNT */
 
