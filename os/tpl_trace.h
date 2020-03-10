@@ -239,6 +239,7 @@
 /**
 * @def TRACE_USER_EVENT
 */
+/* TODO implem missing for this function? */
 #    define TRACE_USER_EVENT(event_id)\
     tpl_trace_user_event(event_id);
 #  else

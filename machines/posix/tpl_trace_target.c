@@ -68,8 +68,7 @@ FUNC(void, OS_CODE)tpl_trace_get_date()
  * RECORD FUNCTIONS
  */
 
-/** Function which start the record, memorizing the begin date of the event 
- * and the type of event traced
+/** Starts the record of an event by the date.
  */
 
 FUNC(void, OS_CODE)tpl_trace_event_begin(
@@ -95,6 +94,7 @@ FUNC(void, OS_CODE)tpl_trace_value(
   trace.value[i] = value;
   trace.value[i+1] = -1;
 }
+
 
 /* Function ending the record, by adding the end date of the event traced. */
 

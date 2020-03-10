@@ -637,6 +637,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
      */
     CALL_POST_TASK_HOOK()
 
+      /* TODO refactor to one call */
     TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
     TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
 
@@ -693,9 +694,11 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   );
   DOW_DO(printrl("tpl_run_elected - after"));
 
+  /* TODO refactor to one call */
   /* the elected task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+
   TPL_KERN_REF(kern).running->state = RUNNING;
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
@@ -707,6 +710,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
    */
+  /* TODO check if event recording is needed here */
   tpl_get_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
   /*
