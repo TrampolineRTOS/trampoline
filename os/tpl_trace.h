@@ -147,7 +147,7 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
 * @param sheduled_alarm    data structure concerning the sheduled alarm
 */
 FUNC(void, OS_CODE) tpl_trace_time_obj_state_change(
-    CONST(tpl_time_obj, AUTOMATIC) time_obj,
+    CONST(tpl_time_obj, AUTOMATIC) time_obj_id,
     CONST(tpl_time_obj_state, AUTOMATIC) target_state);
 
 /**
