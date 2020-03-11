@@ -133,8 +133,6 @@ FUNC(void, OS_CODE) tpl_start_os_service(
     application_mode = mode;
 #endif
 
-    TRACE_TPL_INIT()
-
     tpl_init_os(mode);
 
     tpl_enable_counters();
@@ -186,8 +184,6 @@ FUNC(void, OS_CODE) tpl_call_shutdown_os(
 #if SPINLOCK_COUNT > 0
   RELEASE_ALL_SPINLOCKS(core_id);
 #endif
-
-  TRACE_TPL_TERMINATE()
 
   /* architecture dependant shutdown. */
   tpl_shutdown();
