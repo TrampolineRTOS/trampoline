@@ -296,8 +296,8 @@ functional_test()
     # if Makefile doesn't exist -> do goil
     #if ! [ -e Makefile ]
     #then
-      verbose_print "goil --target=$target ${i}.oil"
-      err=$(goil --target=$target ${i}.oil 2>&1)
+      verbose_print "goil --target=$target --templates=/Users/jlb/Develop/trampoline/goil/templates ${i}.oil"
+      err=$(goil --target=$target  --templates=/Users/jlb/Develop/trampoline/goil/templates ${i}.oil 2>&1)
       retval=$?
     #fi
 

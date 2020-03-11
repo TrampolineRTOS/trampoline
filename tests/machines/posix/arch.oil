@@ -42,7 +42,7 @@ IMPLEMENTATION archPosix
     UINT32 STACKSIZE = 32768;
     UINT32 PRIORITY = 1;
   };
-
+  
 };
 
 CPU archPosixDefault
@@ -57,10 +57,10 @@ CPU archPosixDefault
       LINKER = "gcc";
       CFLAGS = "-Werror -Wall -pedantic";
       CFLAGS = "-Wmissing-field-initializers";
-      CFLAGS = "-Wno-unused-but-set-variable";
+//      CFLAGS = "-Wno-unused-but-set-variable";
       LDFLAGS = "-L../../lib -lembUnit";
-      LDFLAGS = "-lrt";
-      LDFLAGS = "-lpthread";
+//      LDFLAGS = "-lrt";
+//      LDFLAGS = "-lpthread";
       SYSTEM = PYTHON;
       LIBRARY = archConfig;
     };
