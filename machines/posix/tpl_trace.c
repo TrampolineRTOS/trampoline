@@ -32,7 +32,7 @@
 * This function should be implemented in the machine dependant trace backend.
 *
 */
-FUNC(void, OS_CODE) tpl_trace_proc_state_change(
+FUNC(void, OS_CODE) tpl_trace_proc_change_state(
     CONST(tpl_proc_id,AUTOMATIC) proc_id,
     CONST(tpl_proc_state,AUTOMATIC) target_state)
 {
@@ -55,11 +55,11 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
 * trace the state of a time object (alarm/schedule tables)
 * @param sheduled_alarm    data structure concerning the sheduled alarm
 */
-FUNC(void, OS_CODE) tpl_trace_time_obj_state_change(
-    CONST(tpl_time_obj, AUTOMATIC) time_obj_id,
+FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
+    CONST(tpl_timeobj_id, AUTOMATIC) timeobj_id,
     CONST(tpl_time_obj_state, AUTOMATIC) target_state)
 {
-	printf("time obj %d change to state %d\n",time_obj_id ,target_state);
+	printf("time obj %d change to state %d\n",timeobj_id ,target_state);
 }
 
 /**
@@ -68,7 +68,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_state_change(
 * @param expired_alarm    data structure concerning the expired alarm
 */
 FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
-    CONST(tpl_time_obj,AUTOMATIC,OS_APPL_DATA) time_obj_id)
+    CONST(tpl_timeobj_id,AUTOMATIC) timeobj_id)
 {
 	printf("time obj %d expired!\n",timeobj_id);
 }

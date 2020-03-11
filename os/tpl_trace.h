@@ -36,11 +36,11 @@ typedef uint8 tpl_trace_resource_state;
 /**
 * @def IDs of the different traces
 */
-#define PROC_STATE_CHANGE    0
+#define PROC_CHANGE_STATE    0
 #define RES_CHANGE_STATE     1
 #define EVENT_SET            2
 #define EVENT_RESET          3
-#define TIMEOBJ_STATE_CHANGE 4 // ALARM_SLEEP or ALARM_ACTIVE
+#define TIMEOBJ_CHANGE_STATE 4 // ALARM_SLEEP or ALARM_ACTIVE
 #define TIMEOBJ_EXPIRE       5
 
 /* define the trace output types */
@@ -55,10 +55,10 @@ typedef uint8 tpl_trace_resource_state;
      * (RUNNING, WAITING, ..). See tpl_os_definitions.h and tpl_os_kernel.h
      * This function should be implemented in the machine dependant trace backend.
      */
-#    define TRACE_PROC_STATE_CHANGE(proc_id, target_state) \
-       tpl_trace_proc_state_change(proc_id, target_state);
+#    define TRACE_PROC_CHANGE_STATE(proc_id, target_state) \
+       tpl_trace_proc_change_state(proc_id, target_state);
 #  else
-#    define TRACE_PROC_STATE_CHANGE(proc_id, target_state) 
+#    define TRACE_PROC_CHANGE_STATE(proc_id, target_state) 
 #  endif
 
    /**
@@ -96,25 +96,25 @@ typedef uint8 tpl_trace_resource_state;
       * (ALARM_SLEEP, ALARM_ACTIVE or ALARM_AUTOSTART). See tpl_os_timeobj_kernel.h
       * This function should be implemented in the machine dependant trace backend.
       */
-#    define TRACE_TIMEOBJ_STATE_CHANGE(time_obj_id,target_state)\
-       tpl_trace_time_obj_state_change(time_obj_id,target_state);
+#    define TRACE_TIMEOBJ_CHANGE_STATE(timeobj_id,target_state)\
+       tpl_trace_time_obj_change_state(timeobj_id,target_state);
      /**
       * Trace that a time object (alarm or schedule table) expires
       * and performs its action.
       * This function should be implemented in the machine dependant trace backend.
       */
-#    define TRACE_TIMEOBJ_EXPIRE(time_obj_id)\
+#    define TRACE_TIMEOBJ_EXPIRE(timeobj_id)\
        tpl_trace_time_obj_expire(timeobj_id);
 #  else
-#    define TRACE_TIMEOBJ_STATE_CHANGE(time_obj_id,target_state)
-#    define TRACE_TIMEOBJ_EXPIRE(time_obj_id)
+#    define TRACE_TIMEOBJ_CHANGE_STATE(timeobj_id,target_state)
+#    define TRACE_TIMEOBJ_EXPIRE(timeobj_id)
 #  endif
 
 #else /* no trace at all */
-#    define TRACE_PROC_STATE_CHANGE(proc_id, target_state) 
+#    define TRACE_PROC_CHANGE_STATE(proc_id, target_state) 
 #    define TRACE_RES_CHANGE_STATE(res_id,target_state)
-#    define TRACE_TIMEOBJ_STATE_CHANGE(time_obj_id,target_state)
-#    define TRACE_TIMEOBJ_EXPIRE(time_obj_id)
+#    define TRACE_TIMEOBJ_CHANGE_STATE(timeobj_id,target_state)
+#    define TRACE_TIMEOBJ_EXPIRE(timeobj_id)
 #    define TRACE_EVENT_SET(task_target_id, event)
 #    define TRACE_EVENT_RESET(event)
 #endif
@@ -129,7 +129,7 @@ typedef uint8 tpl_trace_resource_state;
 * This function should be implemented in the machine dependant trace backend.
 *
 */
-FUNC(void, OS_CODE) tpl_trace_proc_state_change(
+FUNC(void, OS_CODE) tpl_trace_proc_change_state(
     CONST(tpl_proc_id,AUTOMATIC) proc_id,
     CONST(tpl_proc_state,AUTOMATIC) target_state);
 
@@ -146,8 +146,8 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
 * trace the state of a time object (alarm/schedule tables)
 * @param sheduled_alarm    data structure concerning the sheduled alarm
 */
-FUNC(void, OS_CODE) tpl_trace_time_obj_state_change(
-    CONST(tpl_time_obj, AUTOMATIC) time_obj_id,
+FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
+    CONST(tpl_timeobj_id, AUTOMATIC) timeobj_id,
     CONST(tpl_time_obj_state, AUTOMATIC) target_state);
 
 /**
@@ -156,7 +156,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_state_change(
 * @param expired_alarm    data structure concerning the expired alarm
 */
 FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
-    CONST(tpl_time_obj,AUTOMATIC,OS_APPL_DATA) expired_alarm);
+    CONST(tpl_timeobj_id,AUTOMATIC) timeobj_id);
 
 /**
 * trace the events:
