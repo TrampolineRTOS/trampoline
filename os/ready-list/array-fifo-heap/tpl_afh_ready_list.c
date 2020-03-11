@@ -32,7 +32,7 @@
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-extern VAR(tpl_list, OS_VAR) tpl_ready_list[];
+extern VAR(tpl_array_fifo_heap, OS_VAR) tpl_ready_list[];
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -40,9 +40,69 @@ extern VAR(tpl_list, OS_VAR) tpl_ready_list[];
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-extern VAR(tpl_list, OS_VAR) tpl_ready_list;
+extern VAR(tpl_array_fifo_heap, OS_VAR) tpl_ready_list;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+
+#endif
+
+#ifdef WITH_DOW
+
+FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC) message)
+{
+  printf("from %s\n", message);
+#if NUMBER_OF_CORES > 1
+  VAR(int, AUTOMATIC) core;
+  for (core = 0; core < NUMBER_OF_CORES; core++) {
+    printf("core %d:\n", core);
+    printf("  heap: (");
+    VAR(tpl_priority_index, AUTOMATIC) pindex;
+    for (pindex = 1; pindex <= tpl_ready_list[core].heap[0]; pindex++) {
+      printf("%d ", tpl_ready_list[core].heap[pindex]);
+    }
+    printf(")\n");
+    if (tpl_ready_list[core].heap[0]) > 0 {
+      VAR(tpl_priority, AUTOMATIC) priority;
+      for (priority = 0; priority <= tpl_ready_list[core].heap[1]; priority++) {
+        CONSTP2VAR(tpl_proc_fifo, AUTOMATIC) fifo = &(tpl_ready_list[core].fifos[priority]);
+        printf("  %d-[%d/%d,%d](", priority, fifo->actual_size, fifo->full_size, fifo->front_index);
+        VAR(tpl_index, AUTOMATIC) proc_index = fifo->front_index;
+        VAR(tpl_index, AUTOMATIC) proc_count;
+        for (proc_count = 0; proc_count < fifo->actual_size; proc_count++) {
+          printf("%d", fifo->buffer[proc_index++]);
+          if (proc_index >= fifo->full_size) {
+            proc_index = 0;
+          }
+        }
+        prinf(")\n");
+      }
+    }
+  }
+#else
+  printf("heap: (");
+  VAR(tpl_priority_index, AUTOMATIC) pindex;
+  for (pindex = 1; pindex <= tpl_ready_list.heap[0]; pindex++) {
+    printf("%d ", tpl_ready_list.heap[pindex]);
+  }
+  printf(")\n");
+  if (tpl_ready_list.heap[0]) > 0 {
+    VAR(tpl_priority, AUTOMATIC) priority;
+    for (priority = 0; priority <= tpl_ready_list.heap[1]; priority++) {
+      CONSTP2VAR(tpl_proc_fifo, AUTOMATIC) fifo = &(tpl_ready_list.fifos[priority]);
+      printf("%d-[%d/%d,%d](", priority, fifo->actual_size, fifo->full_size, fifo->front_index);
+      VAR(tpl_index, AUTOMATIC) proc_index = fifo->front_index;
+      VAR(tpl_index, AUTOMATIC) proc_count;
+      for (proc_count = 0; proc_count < fifo->actual_size; proc_count++) {
+        printf("%d", fifo->buffer[proc_index++]);
+        if (proc_index >= fifo->full_size) {
+          proc_index = 0;
+        }
+      }
+      prinf(")\n");
+    }
+  }
+#endif
+}
 
 #endif
 
@@ -204,12 +264,14 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
     if (fifo->front_index == fifo->full_size) {
       fifo->front_index = 0;
     }
-    if (--fifo->actual_size == 0) {
+    if (--(fifo->actual_size) == 0) {
       tpl_remove_priority(ready_list->heap);
     }
+    DOW_DO(printrl("remove_front_proc");)
     return fifo->buffer[index];
   }
   else {
+    DOW_DO(printrl("remove_front_proc");)
     return INVALID_PROC_ID;
   }
 }
@@ -261,4 +323,5 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
       }
     }
   }
+  DOW_DO(printrl("remove_proc");)
 }

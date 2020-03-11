@@ -41,6 +41,6 @@ typedef struct {
 typedef struct {
   CONSTP2VAR(tpl_proc_fifo, TYPEDEF, OS_VAR) fifos;
   CONSTP2VAR(tpl_priority, TYPEDEF, OS_VAR) heap;
-} tpl_list;
+} tpl_array_fifo_heap;
 
 #endif
