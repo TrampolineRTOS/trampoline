@@ -603,6 +603,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 
     /* The current elected task becomes READY */
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
+    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).elected_id, (tpl_proc_state)READY)
 
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
@@ -637,10 +638,6 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
      */
     CALL_POST_TASK_HOOK()
 
-      /* TODO refactor to one call */
-    TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-    TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-
     DOW_DO(printf(
       "tpl_run_elected preempt %s\n",
       proc_name_table[TPL_KERN_REF(kern).running_id])
@@ -648,6 +645,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 
     /* The current running task becomes READY */
     TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
+    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).running_id, (tpl_proc_state)READY)
 
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -694,12 +692,8 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   );
   DOW_DO(printrl("tpl_run_elected - after"));
 
-  /* TODO refactor to one call */
-  /* the elected task become RUNNING */
-  TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-  TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-
-  TPL_KERN_REF(kern).running->state = RUNNING;
+  TPL_KERN_REF(kern).running->state = (tpl_proc_state)RUNNING;
+  TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).running_id, (tpl_proc_state)RUNNING)
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  start the budget watchdog  */
@@ -710,7 +704,6 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
    */
-  /* TODO check if event recording is needed here */
   tpl_get_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
   /*
@@ -767,6 +760,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
 #if NUMBER_OF_CORES > 1
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
+    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).elected, (tpl_proc_state)READY)
 #endif
   }
 
@@ -854,7 +848,8 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      * way when the next instance will be prepared to run it will
      * be initialized.
      */
-    TPL_KERN_REF(kern).running->state = READY_AND_NEW;
+    TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY_AND_NEW;
+    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).running_id, (tpl_proc_state)READY_AND_NEW)
 
 #if EXTENDED_TASK_COUNT > 0
     /*  if the object is an extended task, init the events          */
@@ -873,7 +868,8 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      * there is no instance of the dying running object in the ready
      * list. So it is put in the SUSPENDED state.
      */
-    TPL_KERN_REF(kern).running->state = SUSPENDED;
+    TPL_KERN_REF(kern).running->state = (tpl_proc_state)SUSPENDED;
+    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).running_id, (tpl_proc_state)SUSPENDED)
   }
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
@@ -915,8 +911,8 @@ FUNC(void, OS_CODE) tpl_block(void)
   CALL_POST_TASK_HOOK()
 
   /* the task goes in the WAITING state */
-  TRACE_TASK_WAIT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-  TPL_KERN_REF(kern).running->state = WAITING;
+  TPL_KERN_REF(kern).running->state = (tpl_proc_state)WAITING;
+  TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).running_id, (tpl_proc_state)WAITING)
 
   /* The internal resource is released. */
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -985,9 +981,8 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 
         /*  the initialization is postponed to the time it will
             get the CPU as indicated by READY_AND_NEW state             */
-        TRACE_TASK_ACTIVATE(task_id)
-
         task->state = (tpl_proc_state)READY_AND_NEW;
+        TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).task_id, (tpl_proc_state)READY_AND_NEW)
 
 #if EXTENDED_TASK_COUNT > 0
         /*  if the object is an extended task, init the events          */
@@ -1043,6 +1038,8 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
   /*  set the state to READY  */
   task->state = (tpl_proc_state)READY;
+  TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).task_id, (tpl_proc_state)READY)
+
   /*  put the task in the READY list          */
   tpl_put_new_proc(task_id);
   /*  notify a scheduling needs to be done    */
@@ -1089,7 +1086,6 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
         if (tpl_tp_on_activate_or_release(task_id) == TRUE)
         {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-          TRACE_TASK_RELEASED(task_id,incoming_event)
           tpl_release(task_id);
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         }
