@@ -43,7 +43,7 @@ CPU posix {
     CFILE = "tpl_posix_autosar.c";
     CFILE = "tpl_posix_irq.c";
     CFILE = "tpl_posix_context.c";
-    CFILE = "tpl_trace_target.c";
+    CFILE = "tpl_trace.c";
   };
 
   PLATFORM_FILES viper {
