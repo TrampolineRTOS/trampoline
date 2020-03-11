@@ -1066,6 +1066,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
     tpl_task_events_table[task_id];
 
+  TRACE_EVENT_SET(task_id, incoming_event)
+
   if (task->state != (tpl_proc_state)SUSPENDED)
   {
     /*  merge the incoming event mask with the old one  */
