@@ -20,6 +20,7 @@
  *
  */
 
+#include "tpl_ready_list.h"
 #include "tpl_afh_ready_list.h"
 #include "tpl_os_kernel.h"
 
@@ -110,9 +111,9 @@ FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC) message)
 /**
  * @internal
  *
- * tpl_add_priority adds a new priority to a priority heap
+ * tpl_add_prio adds a new priority to a priority heap
  */
-FUNC(void, OS_CODE) tpl_add_priority(
+FUNC(void, OS_CODE) tpl_add_prio(
   CONSTP2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap
   CONST(tpl_priority, AUTOMATIC) priority)
 {
@@ -120,18 +121,18 @@ FUNC(void, OS_CODE) tpl_add_priority(
    * tpl_priority_index is always bigger or equal to tpl_priority datatype.
    * Both are unsigned.
    */
-  VAR(tpl_priority_index, AUTOMATIC) son = (tpl_priority_index)(++heap[0]);
-  VAR(tpl_priority_index, AUTOMATIC) father = son / 2;
+  VAR(tpl_priority_index, AUTOMATIC) child = (tpl_priority_index)(++heap[0]);
+  VAR(tpl_priority_index, AUTOMATIC) father = child / 2;
 
   /* Add the new priority to the heap */
-  heap[son] = priority;
+  heap[child] = priority;
   /* And bubble it up */
-  while (son > 1) {
-    if (heap[son] > heap[father]) {
-      CONST(tpl_priority, AUTOMATIC) tmp = heap[son];
-      heap[son] = heap[father];
+  while (child > 1) {
+    if (heap[child] > heap[father]) {
+      CONST(tpl_priority, AUTOMATIC) tmp = heap[child];
+      heap[child] = heap[father];
       heap[father] = tmp;
-      son = father;
+      child = father;
       father /= 2;
     }
     else {
@@ -145,7 +146,52 @@ FUNC(void, OS_CODE) tpl_add_priority(
  *
  * tpl_remove_priority removes the highest priority
  */
+ FUNC(void, OS_CODE) tpl_remove_highest_prio(
+   CONSTP2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap)
+{
+  if (heap[0] > 0) {
+    /* copy the last element of the heap into the first */
+    heap[1] = heap[heap[0]];
+    /* and bubble it down to its location */
+    VAR(tpl_priority_index, AUTOMATIC) size = heap[0];
+    VAR(tpl_priority_index, AUTOMATIC) father = 1;
+    VAR(tpl_priority_index, AUTOMATIC) child = father * 2;
+    while (child <= size) {
+      VAR(tpl_priority_index, AUTOMATIC) right_child = child + 1;
+      if (right_child <= size && heap[right_child] > heap[child]) {
+        /* The right child exists and is greater, go in this branch */
+        child = right_child;
+      }
+      if (heap[child] > heap[father]) {
+        /* child has a higher priority, swap them */
+        CONST(tpl_priority, AUTOMATIC) tmp = heap[father];
+        heap[father] = heap[child];
+        heap[child] = tmp;
+        /* and go down */
+        father = child;
+      }
+    }
+  }
+}
 
+/**
+ * @internal
+ *
+ * tpl_highest_ready_prio returns the priority of the highest priority task
+ * in the ready list
+ */
+FUNC(tpl_priority, OS_CODE) tpl_highest_ready_prio(CORE_ID_OR_VOID(core_id))
+{
+  /* Get a pointer to the ready list of the core */
+  GET_CORE_READY_LIST(core_id, ready_list)
+
+  if (ready_list->heap[0] > 0) {
+    return ready_list->heap[1];
+  }
+  else {
+    return -1;
+  }
+}
 
 /**
  * @internal
@@ -170,7 +216,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   /* Check whether the slot of the process priority is empty */
   if (fifo->actual_size == 0) {
     /* to add the priority to the heap */
-    tpl_add_priority(ready_list->heap, priority);
+    tpl_add_prio(ready_list->heap, priority);
   }
 
   /* Add the new process to the end of the fifo */
@@ -207,7 +253,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   /* Check whether the slot of the process priority is empty */
   if (fifo->actual_size == 0) {
     /* to add the priority to the heap */
-    tpl_add_priority(ready_list->heap, priority);
+    tpl_add_prio(ready_list->heap, priority);
   }
 
   /* Add the new process to the front of the fifo */
@@ -266,7 +312,7 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
       fifo->front_index = 0;
     }
     if (--(fifo->actual_size) == 0) {
-      tpl_remove_priority(ready_list->heap);
+      tpl_remove_highest_priority(ready_list->heap);
     }
     DOW_DO(printrl("remove_front_proc");)
     return fifo->buffer[index];
@@ -319,7 +365,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
         }
         fifo->actual_size = newsize;
         if (newsize > 0) {
-          tpl_add_priority(priority);
+          tpl_add_prio(priority);
         }
       }
     }
