@@ -374,6 +374,7 @@ FUNC(void, OS_CODE) tpl_counter_tick(
             /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
+            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
             expire(t_obj);
             /*  rearm the alarm if needed               */
 
