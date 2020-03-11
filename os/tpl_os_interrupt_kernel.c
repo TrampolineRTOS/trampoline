@@ -309,10 +309,10 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
         if (isr->state == (tpl_proc_state)SUSPENDED)
         {
           isr->state = (tpl_proc_state)READY_AND_NEW;
+          TRACE_PROC_CHANGE_STATE(isr_id, READY_AND_NEW)
         }
       }
       /*  put it in the list  */
-      TRACE_ISR_ACTIVATE(isr_id);
       tpl_put_new_proc(isr_id);
       /*  inc the isr activation count. When the isr will terminate
           it will dec this count and if not zero it will be reactivated   */

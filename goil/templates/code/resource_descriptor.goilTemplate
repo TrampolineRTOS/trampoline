@@ -39,8 +39,14 @@ if AUTOSAR then
   end if
 end if
 %
-#endif    
-  /* next resource in the list        */  NULL
+#endif
+%
+if USEID then
+%
+  /* id of the resource               */ % !INDEX %,
+end if
+%
+  /* next resource in the list        */  NULL%
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED

@@ -212,6 +212,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 					first_to = t_obj->next_to;
 					last_to = t_obj;
 					t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
+          TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, t_obj->state)
 				}
 				else
 				{
@@ -226,6 +227,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
           t_obj->next_to = first_to;
           t_obj->next_to->prev_to = t_obj;
           t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
+          TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, t_obj->state)
           t_obj = last_to;
 				}
 			}
@@ -393,6 +395,7 @@ FUNC(void, OS_CODE) tpl_counter_tick(
             }
             else {
               t_obj->state = TIME_OBJ_SLEEP;
+              TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, TIME_OBJ_SLEEP)
             }
             t_obj = next_to;
           } while (t_obj != NULL);

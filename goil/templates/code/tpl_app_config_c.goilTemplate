@@ -336,6 +336,13 @@ VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {%
 #if WITH_OSAPPLICATION == YES
   INVALID_OSAPPLICATION_ID, /*  OS Application id                           */
 #endif
+%
+if OS::USEID then
+%
+  0,                        /*  resource id                                 */
+%
+end if
+%
   NULL                      /*  next_res                                    */
 };
 #define OS_STOP_SEC_VAR_UNSPECIFIED
