@@ -23,6 +23,9 @@
 #ifndef __TPL_AFH_READY_LIST_H__
 #define __TPL_AFH_READY_LIST_H__
 
+#include "tpl_compiler.h"
+#include "tpl_os_custom_types.h"
+
 /**
  * @typedef tpl_proc_list
  * This type implements a FIFO list of tpl_proc_id

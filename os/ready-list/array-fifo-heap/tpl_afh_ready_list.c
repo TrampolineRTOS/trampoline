@@ -21,6 +21,7 @@
  */
 
 #include "tpl_afh_ready_list.h"
+#include "tpl_os_kernel.h"
 
 /**
  * @internal
