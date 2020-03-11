@@ -29,10 +29,6 @@
 #define RESOURCE_TAKEN 1
 typedef uint8 tpl_trace_resource_state;
 
-#if WITH_TRACE == YES
-#include "tpl_trace_target.h"
-#endif
-
 /**
 * @def IDs of the different traces
 */
@@ -79,9 +75,9 @@ typedef uint8 tpl_trace_resource_state;
      * Trace the events
      */
 #    define TRACE_EVENT_SET(task_target_id, event)\
-       tpl_event_set(task_target_id, event);
+       tpl_trace_event_set(task_target_id, event);
 #    define TRACE_EVENT_RESET(event)\
-       tpl_event_reset(event);
+       tpl_trace_event_reset(event);
 #  else
 #    define TRACE_EVENT_SET(task_target_id, event)
 #    define TRACE_EVENT_RESET(event)
@@ -164,11 +160,11 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
 * - when an event mask is reset 
 *
 */
-FUNC(void, OS_CODE) tpl_event_set(
+FUNC(void, OS_CODE) tpl_trace_event_set(
     CONST(tpl_task_id, AUTOMATIC)       task_target_id,
     CONST(tpl_event_mask, AUTOMATIC)    event);
 
-FUNC(void, OS_CODE) tpl_event_reset(
+FUNC(void, OS_CODE) tpl_trace_event_reset(
     CONST(tpl_event_mask, AUTOMATIC)    event);
        
 

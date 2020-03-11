@@ -222,14 +222,11 @@ IMPLEMENTATION trampoline_common {
     ] BUILD = FALSE;
     BOOLEAN [
       TRUE {
-        ENUM [ FILE { STRING NAME; } ] METHOD;
-        ENUM [xml, txt, bin] FORMAT;
-        BOOLEAN TASK = TRUE;
-        BOOLEAN ISR = TRUE;
-        BOOLEAN RESOURCE = TRUE;
-        BOOLEAN ALARM = TRUE;
-        BOOLEAN USER = TRUE;
-        BOOLEAN DESCRIPTION = TRUE;
+        ENUM [xml, txt, bin, json] FORMAT;
+        BOOLEAN PROC        = TRUE;
+        BOOLEAN RESOURCE    = TRUE;
+        BOOLEAN ALARM       = TRUE;
+        BOOLEAN EVENT       = TRUE;
       },
       FALSE
     ] TRACE = FALSE;

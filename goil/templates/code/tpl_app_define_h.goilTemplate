@@ -71,18 +71,11 @@ end if%
 #define WITH_OSAPPLICATION_SHUTDOWN_HOOK % !yesNo(OS::APPLICATIONSHUTDOWNHOOK > 0) %
 #define WITH_TRACE                       % !yesNo(OS::TRACE)
 if OS::TRACE then%
-#define TRACE_TASK                       % !yesNo(OS::TRACE_S::TASK) %
-#define TRACE_ISR                        % !yesNo(OS::TRACE_S::ISR) %
+#define TRACE_PROC                       % !yesNo(OS::TRACE_S::PROC) %
 #define TRACE_RES                        % !yesNo(OS::TRACE_S::RESOURCE) %
+#define TRACE_EVENT                      % !yesNo(OS::TRACE_S::EVENT) %
 #define TRACE_ALARM                      % !yesNo(OS::TRACE_S::ALARM) %
-#define TRACE_U_EVENT                    % !yesNo(OS::TRACE_S::USER) %
 #define TRACE_FORMAT()                   tpl_trace_format_% !OS::TRACE_S::FORMAT %();%
-  if exists OS::TRACE_S::METHOD then%
-#define TRACE_METHOD                     % !OS::TRACE_S::METHOD
-    if OS::TRACE_S::METHOD == "FILE" then%
-#define TRACE_FILE                       "%! OS::TRACE_S::METHOD_S::NAME %"%
-    end if
-  end if
 end if
 %
 #define WITH_IT_TABLE                    % !yesNo(OS::INTERRUPTTABLE)%

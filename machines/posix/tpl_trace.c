@@ -22,6 +22,7 @@
 #include "tpl_app_define.h" /* WITH_TRACE */
 
 #if WITH_TRACE == YES
+#include <stdio.h>
 
 #include "tpl_trace.h"
 
@@ -79,14 +80,14 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
 * - when an event mask is reset 
 *
 */
-FUNC(void, OS_CODE) tpl_event_set(
+FUNC(void, OS_CODE) tpl_trace_event_set(
     CONST(tpl_task_id, AUTOMATIC)       task_target_id,
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
 	printf("event set on proc %d, event mask 0x%x\n",task_target_id,event);
 }
 
-FUNC(void, OS_CODE) tpl_event_reset(
+FUNC(void, OS_CODE) tpl_trace_event_reset(
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
 	printf("mask event reset 0x%x\n",event);

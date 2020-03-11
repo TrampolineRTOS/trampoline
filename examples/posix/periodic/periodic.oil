@@ -18,15 +18,10 @@ CPU only_one_periodic_task {
     STATUS = EXTENDED;
 	TRACE = TRUE {
 		FORMAT = bin;
-		METHOD = FILE {
-			NAME = "foo.bin";
-		};
-		TASK = TRUE;
-        ISR = TRUE;
+		PROC = TRUE;
         RESOURCE = TRUE;
         ALARM = TRUE;
-        USER = TRUE;
-        DESCRIPTION = TRUE;
+        EVENT = TRUE;
     };
     BUILD = TRUE {
       APP_SRC = "periodic.c";
