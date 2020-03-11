@@ -760,7 +760,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
 #if NUMBER_OF_CORES > 1
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
-    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).elected, (tpl_proc_state)READY)
+    TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).elected_id, (tpl_proc_state)READY)
 #endif
   }
 
@@ -982,7 +982,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
         /*  the initialization is postponed to the time it will
             get the CPU as indicated by READY_AND_NEW state             */
         task->state = (tpl_proc_state)READY_AND_NEW;
-        TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).task_id, (tpl_proc_state)READY_AND_NEW)
+        TRACE_PROC_CHANGE_STATE(task_id, (tpl_proc_state)READY_AND_NEW)
 
 #if EXTENDED_TASK_COUNT > 0
         /*  if the object is an extended task, init the events          */
@@ -1038,7 +1038,7 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
   /*  set the state to READY  */
   task->state = (tpl_proc_state)READY;
-  TRACE_PROC_CHANGE_STATE(TPL_KERN_REF(kern).task_id, (tpl_proc_state)READY)
+  TRACE_PROC_CHANGE_STATE(task_id, (tpl_proc_state)READY)
 
   /*  put the task in the READY list          */
   tpl_put_new_proc(task_id);
