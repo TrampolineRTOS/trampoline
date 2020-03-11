@@ -41,6 +41,13 @@ typedef uint8 tpl_trace_resource_state;
 
 /* define the trace output types */
 #if WITH_TRACE == YES
+     /**
+      * Trace ends (close the file for instance). This event is sent by
+	  * ShutdownOS() system call
+      * This function should be implemented in the machine dependant trace backend.
+      */
+#  define TRACE_CLOSE()\
+       tpl_trace_close();
 
    /**
    *  function tracing the tasks or ISR sheduling
@@ -105,8 +112,8 @@ typedef uint8 tpl_trace_resource_state;
 #    define TRACE_TIMEOBJ_CHANGE_STATE(timeobj_id,target_state)
 #    define TRACE_TIMEOBJ_EXPIRE(timeobj_id)
 #  endif
-
 #else /* no trace at all */
+#    define TRACE_CLOSE()
 #    define TRACE_PROC_CHANGE_STATE(proc_id, target_state) 
 #    define TRACE_RES_CHANGE_STATE(res_id,target_state)
 #    define TRACE_TIMEOBJ_CHANGE_STATE(timeobj_id,target_state)
@@ -119,6 +126,13 @@ typedef uint8 tpl_trace_resource_state;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+/**
+* trace ends
+* This function should be implemented in the machine dependant trace backend.
+*
+*/
+FUNC(void, OS_CODE) tpl_trace_close();
 
 /**
 * trace the execution of a task or ISR

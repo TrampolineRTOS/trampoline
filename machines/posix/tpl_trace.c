@@ -35,6 +35,27 @@ FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
   tpl_tick timestamp = counter->current_date;
 }
 
+FUNC(void, OS_CODE) tpl_trace_start()
+{
+	static uint8 startDone = 0;
+	if(startDone == 0)
+	{
+		//first time run (open file in write mode)
+		printf("trace start\n");
+		startDone = 1;
+	}
+}
+
+/**
+ * Trace ends (close the file for instance). This event is sent by
+ * ShutdownOS() system call
+ * This function should be implemented in the machine dependant trace backend.
+*/
+FUNC(void, OS_CODE) tpl_trace_close()
+{
+	printf("trace ends\n");
+}
+
 /**
 * trace the execution of a task or ISR
 * ** Function defined in os/tpl_trace.h **
@@ -44,9 +65,11 @@ FUNC(void, OS_CODE) tpl_trace_proc_change_state(
     CONST(tpl_proc_id,AUTOMATIC) proc_id,
     CONST(tpl_proc_state,AUTOMATIC) target_state)
 {
+	tpl_trace_start();
 	const tpl_tick ts=tpl_trace_get_timestamp();
 	printf("[%9ld] ",ts);
 	printf("proc %d change to state %d\n",proc_id,target_state);
+
 }
 
 /**
@@ -59,6 +82,7 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
     CONST(tpl_resource_id, AUTOMATIC)   res_id,
     CONST(tpl_trace_resource_state,AUTOMATIC) target_state)
 {
+	tpl_trace_start();
 	const tpl_tick ts=tpl_trace_get_timestamp();
 	printf("[%9ld] ",ts);
 	printf("res %d change to state %d\n",res_id,target_state);
@@ -73,6 +97,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
     CONST(tpl_timeobj_id, AUTOMATIC) timeobj_id,
     CONST(tpl_time_obj_state, AUTOMATIC) target_state)
 {
+	tpl_trace_start();
 	const tpl_tick ts=tpl_trace_get_timestamp();
 	printf("[%9ld] ",ts);
 	printf("time obj %d change to state %d\n",timeobj_id ,target_state);
@@ -86,6 +111,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
 FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
     CONST(tpl_timeobj_id,AUTOMATIC) timeobj_id)
 {
+	tpl_trace_start();
 	const tpl_tick ts=tpl_trace_get_timestamp();
 	printf("[%9ld] ",ts);
 	printf("time obj %d expired!\n",timeobj_id);
@@ -101,6 +127,7 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
     CONST(tpl_task_id, AUTOMATIC)       task_target_id,
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
+	tpl_trace_start();
 	const tpl_tick ts=tpl_trace_get_timestamp();
 	printf("[%9ld] ",ts);
 	printf("event set on proc %d, event mask 0x%x\n",task_target_id,event);
@@ -115,6 +142,7 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 FUNC(void, OS_CODE) tpl_trace_event_reset(
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
+	tpl_trace_start();
 	const tpl_tick ts=tpl_trace_get_timestamp();
 	printf("[%9ld] ",ts);
 	printf("mask event reset 0x%x\n",event);
