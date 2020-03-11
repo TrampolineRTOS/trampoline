@@ -252,6 +252,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
       alarm->date = date;
       alarm->cycle = cycle;
       alarm->state = ALARM_ACTIVE;
+      TRACE_TIMEOBJ_CHANGE_STATE(alarm_id, alarm->state)
       tpl_insert_time_obj(alarm);
     }
     else
@@ -325,6 +326,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
       alarm->date = start;
       alarm->cycle = cycle;
       alarm->state = ALARM_ACTIVE;
+      TRACE_TIMEOBJ_CHANGE_STATE(alarm_id, alarm->state)
       tpl_insert_time_obj(alarm);
     }
     else
@@ -389,6 +391,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     {
       tpl_remove_time_obj(alarm);
       alarm->state = ALARM_SLEEP;
+      TRACE_TIMEOBJ_CHANGE_STATE(alarm_id, alarm->state)
     }
     else
     {

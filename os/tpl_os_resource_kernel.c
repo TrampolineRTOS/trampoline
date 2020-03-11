@@ -105,11 +105,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 
 	  /* find the id of the resource for the trace */
 #if WITH_TRACE == YES
-	  res_id = 0;
-	  while( TPL_RESOURCE_TABLE(core_id)[res_id] != res ){
-		  res_id++;
-	  }
-    TRACE_RES_CHANGE_STATE(res_id, (tpl_trace_resource_state)RESOURCE_FREE)
+    TRACE_RES_CHANGE_STATE(res->res_id, (tpl_trace_resource_state)RESOURCE_FREE)
 #endif /* WITH_TRACE */
 
 	  res = next_res;
