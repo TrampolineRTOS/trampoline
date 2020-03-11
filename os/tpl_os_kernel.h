@@ -29,6 +29,8 @@
 #include "tpl_compiler.h"
 #include "tpl_os_internal_types.h"
 
+#include "tpl_ready_list.h"
+
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 /* #include "tpl_as_st_kernel.h" */
@@ -276,18 +278,6 @@ typedef struct
 #endif /* WITH_MEMORY_PROTECTION */
 /*  VAR(tpl_priority, TYPEDEF)                  running_priority; */
 } tpl_kern_state;
-
-/**
- * @typedef tpl_heap_entry
- *
- * This type gather a key used to sort the heap and the identifier of
- * the process
- */
-typedef struct {
-  VAR(tpl_priority, TYPEDEF)  key;
-  VAR(tpl_proc_id, TYPEDEF)   id;
-} tpl_heap_entry;
-
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -566,8 +556,8 @@ FUNC(void, OS_CODE) tpl_init_proc(
 FUNC(void, OS_CODE) tpl_put_preempted_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_put_new_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+//FUNC(void, OS_CODE) tpl_put_new_proc(
+//  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 FUNC(void, OS_CODE) tpl_init_os(
   CONST(tpl_application_mode, AUTOMATIC) app_mode);
