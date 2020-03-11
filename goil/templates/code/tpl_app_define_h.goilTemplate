@@ -75,7 +75,7 @@ if OS::TRACE then%
 #define TRACE_RES                        % !yesNo(OS::TRACE_S::RESOURCE) %
 #define TRACE_EVENT                      % !yesNo(OS::TRACE_S::EVENT) %
 #define TRACE_ALARM                      % !yesNo(OS::TRACE_S::ALARM) %
-#define TRACE_FORMAT()                   tpl_trace_format_% !OS::TRACE_S::FORMAT %();%
+#define TRACE_FORMAT                     TRACE_FORMAT_% ![OS::TRACE_S::FORMAT uppercaseString]
 end if
 %
 #define WITH_IT_TABLE                    % !yesNo(OS::INTERRUPTTABLE)%

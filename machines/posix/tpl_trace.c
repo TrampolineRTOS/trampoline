@@ -18,16 +18,28 @@
  * This software is distributed under the Lesser GNU Public Licence
  *
  */
+#define TRACE_FILENAME "trace.txt"
+
 
 #include "tpl_app_define.h" /* WITH_TRACE */
 
 #if WITH_TRACE == YES
 #include <stdio.h>
+#include <stdlib.h> /* exit */
 
 #include "tpl_trace.h"
 
+#define OS_START_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
+#include "tpl_memmap.h"
+
+FILE *trace_file = NULL;
+
+#define OS_STOP_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
 
 FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
 {
@@ -35,15 +47,28 @@ FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
   tpl_tick timestamp = counter->current_date;
 }
 
-FUNC(void, OS_CODE) tpl_trace_start()
+/* return 1 when the file is opened (first time)*/
+FUNC(uint8, OS_CODE) tpl_trace_start()
 {
-	static uint8 startDone = 0;
-	if(startDone == 0)
-	{
-		//first time run (open file in write mode)
-		printf("trace start\n");
-		startDone = 1;
-	}
+  uint8 first = 0;
+  if(trace_file == NULL)
+  {
+    //first time run (open file in write mode)
+    trace_file = fopen(TRACE_FILENAME,"w");
+    if(trace_file == NULL) {
+      perror("[trace] unable to open trace file");
+      exit(1);
+    }
+	first = 1;
+#   if TRACE_FORMAT == TRACE_FORMAT_XML
+      fprintf(trace_file,
+        "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
+        "<trace>\n");
+#   elif TRACE_FORMAT == TRACE_FORMAT_JSON
+      fprintf(trace_file,"[\n");
+#   endif
+  }
+  return first;
 }
 
 /**
@@ -53,7 +78,13 @@ FUNC(void, OS_CODE) tpl_trace_start()
 */
 FUNC(void, OS_CODE) tpl_trace_close()
 {
-	printf("trace ends\n");
+#   if TRACE_FORMAT == TRACE_FORMAT_XML
+      fprintf(trace_file,
+        "</trace>\n");
+#   elif TRACE_FORMAT == TRACE_FORMAT_JSON
+      fprintf(trace_file,"]\n");
+#endif
+  if(trace_file) fclose(trace_file);
 }
 
 /**
@@ -65,11 +96,28 @@ FUNC(void, OS_CODE) tpl_trace_proc_change_state(
     CONST(tpl_proc_id,AUTOMATIC) proc_id,
     CONST(tpl_proc_state,AUTOMATIC) target_state)
 {
-	tpl_trace_start();
-	const tpl_tick ts=tpl_trace_get_timestamp();
-	printf("[%9ld] ",ts);
-	printf("proc %d change to state %d\n",proc_id,target_state);
-
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if   TRACE_FORMAT == TRACE_FORMAT_TXT
+  fprintf(trace_file,
+    "[%9ld] proc %d change to state %d\n",ts,proc_id,target_state);
+# elif TRACE_FORMAT == TRACE_FORMAT_XML
+  fprintf(trace_file,
+	"\t<proc ts=\"%ld\" proc_id=\"%d\" target_state=\"%d\"/>\n",ts,proc_id,target_state);
+# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"proc\":{\n"
+	"\t\t\t\"ts\":\"%ld\",\n"
+	"\t\t\t\"proc_id\":\"%d\",\n"
+	"\t\t\t\"target_state\":\"%d\"\n"
+	"\t\t}\n"
+	"\t}"
+	,ts,proc_id,target_state);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 
 /**
@@ -82,10 +130,28 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
     CONST(tpl_resource_id, AUTOMATIC)   res_id,
     CONST(tpl_trace_resource_state,AUTOMATIC) target_state)
 {
-	tpl_trace_start();
-	const tpl_tick ts=tpl_trace_get_timestamp();
-	printf("[%9ld] ",ts);
-	printf("res %d change to state %d\n",res_id,target_state);
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if   TRACE_FORMAT == TRACE_FORMAT_TXT
+  fprintf(trace_file,
+    "[%9ld] res %d change to state %d\n",ts,res_id,target_state);
+# elif TRACE_FORMAT == TRACE_FORMAT_XML
+  fprintf(trace_file,
+	"\t<resource ts=\"%ld\" res_id=\"%d\" target_state=\"%d\"/>\n",ts,res_id,target_state);
+# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"resource\":{\n"
+	"\t\t\t\"ts\":\"%ld\",\n"
+	"\t\t\t\"res_id\":\"%d\",\n"
+	"\t\t\t\"target_state\":\"%d\"\n"
+	"\t\t}\n"
+	"\t}"
+	,ts,res_id,target_state);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 
 /**
@@ -97,10 +163,28 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
     CONST(tpl_timeobj_id, AUTOMATIC) timeobj_id,
     CONST(tpl_time_obj_state, AUTOMATIC) target_state)
 {
-	tpl_trace_start();
-	const tpl_tick ts=tpl_trace_get_timestamp();
-	printf("[%9ld] ",ts);
-	printf("time obj %d change to state %d\n",timeobj_id ,target_state);
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if   TRACE_FORMAT == TRACE_FORMAT_TXT
+  fprintf(trace_file,
+    "[%9ld] timeobj %d change to state %d\n",ts,timeobj_id,target_state);
+# elif TRACE_FORMAT == TRACE_FORMAT_XML
+  fprintf(trace_file,
+	"\t<timeobj ts=\"%ld\" timeobj_id=\"%d\" target_state=\"%d\"/>\n",ts,timeobj_id,target_state);
+# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"timeobj\":{\n"
+	"\t\t\t\"ts\":\"%ld\",\n"
+	"\t\t\t\"timeobj_id\":\"%d\",\n"
+	"\t\t\t\"target_state\":\"%d\"\n"
+	"\t\t}\n"
+	"\t}"
+	,ts,timeobj_id,target_state);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 
 /**
@@ -111,10 +195,27 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
 FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
     CONST(tpl_timeobj_id,AUTOMATIC) timeobj_id)
 {
-	tpl_trace_start();
-	const tpl_tick ts=tpl_trace_get_timestamp();
-	printf("[%9ld] ",ts);
-	printf("time obj %d expired!\n",timeobj_id);
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if   TRACE_FORMAT == TRACE_FORMAT_TXT
+  fprintf(trace_file,
+    "[%9ld] timeobj %d expired\n",ts,timeobj_id);
+# elif TRACE_FORMAT == TRACE_FORMAT_XML
+  fprintf(trace_file,
+	"\t<timeobjExpire ts=\"%ld\" timeobj_id=\"%d\"/>\n",ts,timeobj_id);
+# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"timeobjExpire\":{\n"
+	"\t\t\t\"ts\":\"%ld\",\n"
+	"\t\t\t\"timeobj_id\":\"%d\",\n"
+	"\t\t}\n"
+	"\t}"
+	,ts,timeobj_id);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 
 /**
@@ -127,10 +228,28 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
     CONST(tpl_task_id, AUTOMATIC)       task_target_id,
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
-	tpl_trace_start();
-	const tpl_tick ts=tpl_trace_get_timestamp();
-	printf("[%9ld] ",ts);
-	printf("event set on proc %d, event mask 0x%x\n",task_target_id,event);
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if   TRACE_FORMAT == TRACE_FORMAT_TXT
+  fprintf(trace_file,
+    "[%9ld] set_event to %d mask 0x%x\n",ts,task_target_id,event);
+# elif TRACE_FORMAT == TRACE_FORMAT_XML
+  fprintf(trace_file,
+	"\t<set_event ts=\"%ld\" target_task_id=\"%d\" event=\"%d\"/>\n",ts,task_target_id,event);
+# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"set_event\":{\n"
+	"\t\t\t\"ts\":\"%ld\",\n"
+	"\t\t\t\"target_task_id\":\"%d\",\n"
+	"\t\t\t\"event\":\"%d\",\n"
+	"\t\t}\n"
+	"\t}"
+	,ts,task_target_id,event);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 
 /**
@@ -142,10 +261,27 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 FUNC(void, OS_CODE) tpl_trace_event_reset(
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
-	tpl_trace_start();
-	const tpl_tick ts=tpl_trace_get_timestamp();
-	printf("[%9ld] ",ts);
-	printf("mask event reset 0x%x\n",event);
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if   TRACE_FORMAT == TRACE_FORMAT_TXT
+  fprintf(trace_file,
+    "[%9ld] reset event mask 0x%x\n",ts,event);
+# elif TRACE_FORMAT == TRACE_FORMAT_XML
+  fprintf(trace_file,
+	"\t<reset_event ts=\"%ld\" event=\"%d\"/>\n",ts,event);
+# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"reset_event\":{\n"
+	"\t\t\t\"ts\":\"%ld\",\n"
+	"\t\t\t\"event\":\"%d\",\n"
+	"\t\t}\n"
+	"\t}"
+	,ts,event);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
