@@ -209,7 +209,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
 	"\n\t{\n"
 	"\t\t\"timeobjExpire\":{\n"
 	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"timeobj_id\":\"%d\",\n"
+	"\t\t\t\"timeobj_id\":\"%d\"\n"
 	"\t\t}\n"
 	"\t}"
 	,ts,timeobj_id);
@@ -243,7 +243,7 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 	"\t\t\"set_event\":{\n"
 	"\t\t\t\"ts\":\"%ld\",\n"
 	"\t\t\t\"target_task_id\":\"%d\",\n"
-	"\t\t\t\"event\":\"%d\",\n"
+	"\t\t\t\"event\":\"%d\"\n"
 	"\t\t}\n"
 	"\t}"
 	,ts,task_target_id,event);
@@ -275,7 +275,7 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 	"\n\t{\n"
 	"\t\t\"reset_event\":{\n"
 	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"event\":\"%d\",\n"
+	"\t\t\t\"event\":\"%d\"\n"
 	"\t\t}\n"
 	"\t}"
 	,ts,event);
