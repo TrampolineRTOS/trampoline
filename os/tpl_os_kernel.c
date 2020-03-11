@@ -38,6 +38,7 @@
 #include "tpl_os_interrupt_kernel.h"
 #include "tpl_os_resource_kernel.h"
 #include "tpl_os_task.h"
+#include "tpl_ready_list.h"
 
 #if WITH_STACK_MONITORING == YES
 #include "tpl_as_stack_monitor.h"
@@ -160,31 +161,6 @@ VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
 
 extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
 
-/*
- * MISRA RULE 13 VIOLATION: this function is only used for debug purpose,
- * so production release is not impacted by MISRA rules violated
- * in this function
- */
-FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
-{
-#if NUMBER_OF_CORES > 1
-  /* TODO */
-#else
-  uint32 i;
-  printf("ready list %s [%d]", msg, tpl_ready_list[0].key);
-  for (i = 1; i <= tpl_ready_list[0].key; i++)
-  {
-    printf(" {%d/%d,%s[%d](%d)}",
-           (int)(tpl_ready_list[i].key >> PRIORITY_SHIFT),
-           (int)(tpl_ready_list[i].key & RANK_MASK),
-           proc_name_table[tpl_ready_list[i].id],
-           (int)tpl_ready_list[i].id,
-           tpl_ready_list[i].key);
-  }
-  printf("\n");
-#endif
-}
-
 FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 {
 #if NUMBER_OF_CORES > 1
@@ -221,30 +197,6 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
  * PRIORITY_SHIFT is used to shift the part of the key used to store
  * the priority of a job
  */
-FUNC(int, OS_CODE) tpl_compare_entries(
-  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry,
-  CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry
-  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
-{
-  VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
-  VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
-  VAR(uint32, AUTOMATIC) first_tmp ;
-  VAR(uint32, AUTOMATIC) second_tmp ;
-
-  first_tmp = ((first_key & RANK_MASK) -
-    TAIL_FOR_PRIO(tail_for_prio)[first_key >> PRIORITY_SHIFT]);
-  first_tmp = first_tmp & RANK_MASK;
-  first_key = (first_key & PRIORITY_MASK);
-  first_key = first_key | first_tmp;
-
-  second_tmp = ((second_key & RANK_MASK) -
-    TAIL_FOR_PRIO(tail_for_prio)[second_key >> PRIORITY_SHIFT]);
-  second_tmp = second_tmp & RANK_MASK;
-  second_key = (second_key & PRIORITY_MASK);
-  second_key = second_key | second_tmp;
-
-  return (first_key < second_key);
-}
 
 /*
  * @internal
@@ -255,28 +207,6 @@ FUNC(int, OS_CODE) tpl_compare_entries(
  * @param  index  the place of the item to bubble up
  *
  */
-FUNC(void, OS_CODE) tpl_bubble_up(
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
-  VAR(uint32, AUTOMATIC)                        index
-  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
-{
-  VAR(uint32, AUTOMATIC) father = index >> 1;
-
-  while ((index > 1) &&
-    (tpl_compare_entries(heap + father,
-                         heap + index
-                         TAIL_FOR_PRIO_ARG(tail_for_prio))))
-  {
-    /*
-     * if the father key is lower then the index key, swap them
-     */
-    VAR(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
-    heap[index] = heap[father];
-    heap[father] = tmp;
-    index = father;
-    father >>= 1;
-  }
-}
 
 /*
  * @internal
@@ -287,43 +217,6 @@ FUNC(void, OS_CODE) tpl_bubble_up(
  * @param  index  the place of the item to bubble down
  *
  */
-FUNC(void, OS_CODE) tpl_bubble_down(
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
-  VAR(uint32, AUTOMATIC)                        index
-  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
-{
-  CONST(uint32, AUTOMATIC) size = heap[0].key;
-  VAR(uint32, AUTOMATIC) child;
-
-  while ((child = index << 1) <= size) /* child = left */
-  {
-    CONST(uint32, AUTOMATIC) right = child + 1;
-    if ((right <= size) &&
-      tpl_compare_entries(heap + child,
-                          heap + right
-                          TAIL_FOR_PRIO_ARG(tail_for_prio)))
-    {
-      /* the right child exists and is greater */
-      child = right;
-    }
-    if (tpl_compare_entries(heap + index,
-                            heap + child
-                            TAIL_FOR_PRIO_ARG(tail_for_prio)))
-    {
-      /* the father has a key <, swap */
-      CONST(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
-      heap[index] = heap[child];
-      heap[child] = tmp;
-      /* go down */
-      index = child;
-    }
-    else
-    {
-      /* went down to its place, stop the loop */
-      break;
-    }
-  }
-}
 
 /*
  * @internal
@@ -333,37 +226,8 @@ FUNC(void, OS_CODE) tpl_bubble_down(
  * a partitioned scheduler). So the core_id field of the proc descriptor
  * is used to get the corresponding ready list.
  */
-FUNC(void, OS_CODE) tpl_put_new_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  GET_PROC_CORE_ID(proc_id, core_id)
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  VAR(tpl_priority, AUTOMATIC) dyn_prio;
-  CONST(tpl_priority, AUTOMATIC) prio =
-    tpl_stat_proc_table[proc_id]->base_priority;
-  /*
-   * add the new entry at the end of the ready list
-   */
-  dyn_prio = (prio << PRIORITY_SHIFT) |
-             (--TAIL_FOR_PRIO(tail_for_prio)[prio] & RANK_MASK);
-
-  DOW_DO(printf("put new %s, %d\n",proc_name_table[proc_id],dyn_prio);)
-
-  READY_LIST(ready_list)[index].key = dyn_prio;
-  READY_LIST(ready_list)[index].id = proc_id;
-
-  tpl_bubble_up(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  DOW_DO(printrl("put_new_proc");)
-}
+//FUNC(void, OS_CODE) tpl_put_new_proc(
+//  CONST(tpl_proc_id, AUTOMATIC) proc_id)
 
 /*
  * @internal
@@ -373,34 +237,6 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
  * the ready list (for a partitioned scheduler). So the core_id field
  * of the proc descriptor is used to get the corresponding ready list.
  */
-FUNC(void, OS_CODE) tpl_put_preempted_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  GET_PROC_CORE_ID(proc_id, core_id)
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-
-
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
-
-  CONST(tpl_priority, AUTOMATIC) dyn_prio =
-    tpl_dyn_proc_table[proc_id]->priority;
-
-  DOW_DO(printf("put preempted %s, %d\n",proc_name_table[proc_id],dyn_prio));
-  /*
-   * add the new entry at the end of the ready list
-   */
-  READY_LIST(ready_list)[index].key = dyn_prio;
-  READY_LIST(ready_list)[index].id = proc_id;
-
-  tpl_bubble_up(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  DOW_DO(printrl("put_preempted_proc"));
-}
 
 /**
  * @internal
@@ -413,12 +249,6 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
  * tpl_front_proc returns the proc_id of the highest priority proc in the
  * ready list on the current core
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
-{
-  GET_CORE_READY_LIST(core_id, ready_list)
-
-  return (READY_LIST(ready_list)[1]);
-}
 
 /*
  * @internal
@@ -426,39 +256,6 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
  * tpl_remove_front_proc removes the highest priority proc from the
  * ready list on the specified core and returns the heap_entry
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
-{
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-
-  /*
-   * Get the current size and update it (since the front element will be
-   * removed)
-   */
-  CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
-  VAR(uint32, AUTOMATIC) index = 1;
-
-  /*
-   * Get the proc_id of the front proc
-   */
-  VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
-
-  /*
-   * Put the last element in front
-   */
-  READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size];
-
-  /*
-   * bubble down to the right place
-   */
-  tpl_bubble_down(
-    READY_LIST(ready_list),
-    index
-    TAIL_FOR_PRIO_ARG(tail_for_prio)
-  );
-
-  return proc;
-}
 
 
 
