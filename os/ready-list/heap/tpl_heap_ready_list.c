@@ -1,5 +1,5 @@
 /**
- * @file tpl_afh_ready_list.c
+ * @file tpl_heap_ready_list.c
  *
  * @section descr File description
  *
@@ -24,7 +24,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_dow.h"
 #include "tpl_os_multicore_macros.h"
-#include "tpl_ready_list.h"
+#include "tpl_heap_ready_list.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -330,4 +330,4 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/* End of file tpl_afh_ready_list.c */
+/* End of file tpl_heap_ready_list.c */

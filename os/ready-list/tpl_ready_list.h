@@ -30,17 +30,7 @@
 #include "tpl_os_multicore.h"
 #endif
 
-
-/**
- * @typedef tpl_heap_entry
- *
- * This type gather a key used to sort the heap and the identifier of
- * the process
- */
-typedef struct {
-  VAR(tpl_priority, TYPEDEF)  key;
-  VAR(tpl_proc_id, TYPEDEF)   id;
-} tpl_heap_entry;
+#include "tpl_heap_ready_list.h"
 
 /**
  * @internal
@@ -82,6 +72,7 @@ extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+extern FUNC(tpl_priority, OS_CODE) tpl_highest_ready_prio(CORE_ID_OR_VOID(core_id));
 /**
  * @internal
  *

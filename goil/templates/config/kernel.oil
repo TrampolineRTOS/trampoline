@@ -6,9 +6,13 @@ CPU kernel {
     FILE = "tpl_os_action.c";
     FILE = "tpl_os_error.c";
   };
-  KERNEL osek_kernel_afh_ready_list {
+/*  KERNEL osek_kernel_afh_ready_list {
     PATH = "os/ready-list/array-fifo-heap";   
     FILE = "tpl_afh_ready_list.c";
+  };*/
+  KERNEL osek_kernel_heap_ready_list {
+    PATH = "os/ready-list/heap";   
+    FILE = "tpl_heap_ready_list.c";
   };
   KERNEL com_kernel {
     PATH = "com";
