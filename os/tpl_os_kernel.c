@@ -39,7 +39,6 @@
 #include "tpl_os_resource_kernel.h"
 #include "tpl_os_task.h"
 #include "tpl_ready_list.h"
-#include "tpl_heap_ready_list.h"
 
 #if WITH_STACK_MONITORING == YES
 #include "tpl_as_stack_monitor.h"

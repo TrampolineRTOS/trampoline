@@ -30,8 +30,6 @@
 #include "tpl_os_multicore.h"
 #endif
 
-#include "tpl_heap_ready_list.h"
-
 /**
  * @internal
  *
