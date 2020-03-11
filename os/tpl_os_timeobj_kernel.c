@@ -30,9 +30,14 @@
 #include "tpl_os_definitions.h"
 #include "tpl_debug.h"
 #include "tpl_trace.h"
+#include "tpl_dow.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_definitions.h"
+#endif
+
+#ifdef WITH_DOW
+#include "tpl_ready_list.h"
 #endif
 
 #define OS_START_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
@@ -305,7 +310,6 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
  *  max_allowed_value. Now, the alarms at the same date are removed
  *  from the queue by tpl_remove_timeobj_set before being processed.
  */
-extern FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg);
 
 FUNC(void, OS_CODE) tpl_counter_tick(
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)

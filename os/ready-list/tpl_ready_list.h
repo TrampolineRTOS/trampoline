@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * Header file specifying the API of the ready list. 
+ * Header file specifying the API of the ready list.
  *
  * @section copyright Copyright
  *
@@ -25,6 +25,7 @@
 #include "tpl_compiler.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_multicore_macros.h"
+#include "tpl_dow.h"
 
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore.h"
@@ -49,26 +50,12 @@
  * to be declared as external in a header file
  */
 
-#if NUMBER_OF_CORES > 1
-
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-extern CONSTP2VAR(tpl_heap_entry, OS_CONST, OS_VAR) tpl_ready_list[];
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#else
-
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#endif
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+#ifdef WITH_DOW
+extern FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC, OS_CONST) message);
+#endif
 
 extern FUNC(tpl_priority, OS_CODE) tpl_highest_ready_prio(CORE_ID_OR_VOID(core_id));
 /**
@@ -76,13 +63,13 @@ extern FUNC(tpl_priority, OS_CODE) tpl_highest_ready_prio(CORE_ID_OR_VOID(core_i
  *
  * Get the highest priority READY process from the queue
  */
-extern FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
+extern FUNC(tpl_priority, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
 
 extern FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 extern FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-extern FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id));
+extern FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id));
 
 #if WITH_OSAPPLICATION == YES
 extern FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
@@ -90,6 +77,8 @@ extern FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#include "tpl_afh_ready_list.h"
 
 #endif /* TPL_READY_LIST_H */
 

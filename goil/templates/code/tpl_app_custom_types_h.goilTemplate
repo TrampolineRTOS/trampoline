@@ -54,6 +54,14 @@ typedef uint% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask
 typedef sint% ! [MAX_NUMBER_OF_PRIORITIES signedNumberOfBytes] * 8 % tpl_priority;
 
 /**
+ * tpl_priority_index represents a task's or a resource's priority index for
+ * ready list access.
+ *
+ * @warning This type must be signed.
+ */
+typedef sint% ! [MAX_NUMBER_OF_PRIORITIES signedNumberOfBytes] * 8 % tpl_priority_index;
+
+/**
  * tpl_activate_counter is used to count
  * how many time a task has been activated while
  * it was not suspended.

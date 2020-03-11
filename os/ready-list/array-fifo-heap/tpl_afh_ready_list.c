@@ -23,6 +23,7 @@
 #include "tpl_ready_list.h"
 #include "tpl_afh_ready_list.h"
 #include "tpl_os_kernel.h"
+#include "tpl_dow.h"
 
 /**
  * @internal
@@ -50,7 +51,7 @@ extern VAR(tpl_array_fifo_heap, OS_VAR) tpl_ready_list;
 
 #ifdef WITH_DOW
 
-FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC) message)
+FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC, OS_CONST) message)
 {
   printf("from %s\n", message);
 #if NUMBER_OF_CORES > 1
@@ -87,11 +88,11 @@ FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC) message)
     printf("%d ", tpl_ready_list.heap[pindex]);
   }
   printf(")\n");
-  if (tpl_ready_list.heap[0]) > 0 {
+  if (tpl_ready_list.heap[0] > 0) {
     VAR(tpl_priority, AUTOMATIC) priority;
-    for (priority = 0; priority <= tpl_ready_list.heap[1]; priority++) {
-      CONSTP2VAR(tpl_proc_fifo, AUTOMATIC) fifo = &(tpl_ready_list.fifos[priority]);
-      printf("%d-[%d/%d,%d](", priority, fifo->actual_size, fifo->full_size, fifo->front_index);
+    for (priority = 0; priority < NUMBER_OF_PRIORITY_LEVELS; priority++) {
+      CONSTP2VAR(tpl_proc_fifo, AUTOMATIC, OS_VAR) fifo = &(tpl_ready_list.fifos[priority]);
+      printf("%d-[%lu/%lu,%lu](", priority, fifo->actual_size, fifo->full_size, fifo->front_index);
       VAR(tpl_index, AUTOMATIC) proc_index = fifo->front_index;
       VAR(tpl_index, AUTOMATIC) proc_count;
       for (proc_count = 0; proc_count < fifo->actual_size; proc_count++) {
@@ -100,7 +101,7 @@ FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC) message)
           proc_index = 0;
         }
       }
-      prinf(")\n");
+      printf(")\n");
     }
   }
 #endif
@@ -114,7 +115,7 @@ FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC) message)
  * tpl_add_prio adds a new priority to a priority heap
  */
 FUNC(void, OS_CODE) tpl_add_prio(
-  CONSTP2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap
+  CONSTP2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap,
   CONST(tpl_priority, AUTOMATIC) priority)
 {
   /*
@@ -150,27 +151,32 @@ FUNC(void, OS_CODE) tpl_add_prio(
    CONSTP2VAR(tpl_priority, AUTOMATIC, OS_VAR) heap)
 {
   if (heap[0] > 0) {
-    /* copy the last element of the heap into the first */
-    heap[1] = heap[heap[0]];
-    /* and bubble it down to its location */
-    VAR(tpl_priority_index, AUTOMATIC) size = heap[0];
-    VAR(tpl_priority_index, AUTOMATIC) father = 1;
-    VAR(tpl_priority_index, AUTOMATIC) child = father * 2;
-    while (child <= size) {
-      VAR(tpl_priority_index, AUTOMATIC) right_child = child + 1;
-      if (right_child <= size && heap[right_child] > heap[child]) {
-        /* The right child exists and is greater, go in this branch */
-        child = right_child;
-      }
-      if (heap[child] > heap[father]) {
-        /* child has a higher priority, swap them */
-        CONST(tpl_priority, AUTOMATIC) tmp = heap[father];
-        heap[father] = heap[child];
-        heap[child] = tmp;
-        /* and go down */
-        father = child;
+    if (heap[0] > 1) {
+      /* copy the last element of the heap into the first */
+      heap[1] = heap[heap[0]];
+      /* and bubble it down to its location */
+      VAR(tpl_priority_index, AUTOMATIC) size = heap[0] - 1;
+      VAR(tpl_priority_index, AUTOMATIC) father = 1;
+      VAR(tpl_priority_index, AUTOMATIC) child = father * 2;
+      while (child <= size) {
+        VAR(tpl_priority_index, AUTOMATIC) right_child = child + 1;
+        if (right_child <= size && heap[right_child] > heap[child]) {
+          /* The right child exists and is greater, go in this branch */
+          child = right_child;
+        }
+        if (heap[child] > heap[father]) {
+          /* child has a higher priority, swap them */
+          CONST(tpl_priority, AUTOMATIC) tmp = heap[father];
+          heap[father] = heap[child];
+          heap[child] = tmp;
+          /* and go down */
+        }
+        else {
+          break;
+        }
       }
     }
+    heap[0]--;
   }
 }
 
@@ -211,7 +217,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   CONST(tpl_priority, AUTOMATIC) priority =
     tpl_stat_proc_table[proc_id]->base_priority;
   /* Get the fifo corresponding to the priority */
-  CONSTP2VAR(tpl_proc_fifo, AUTOMATIC) fifo = &(ready_list->fifos[priority]);
+  CONSTP2VAR(tpl_proc_fifo, AUTOMATIC, OS_VAR) fifo = &(ready_list->fifos[priority]);
 
   /* Check whether the slot of the process priority is empty */
   if (fifo->actual_size == 0) {
@@ -248,7 +254,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id
   CONST(tpl_priority, AUTOMATIC) priority =
     tpl_dyn_proc_table[proc_id]->priority;
   /* Get the fifo corresponding to the priority */
-  CONSTP2VAR(tpl_proc_fifo, AUTOMATIC) fifo = &(ready_list->fifos[priority]);
+  CONSTP2VAR(tpl_proc_fifo, AUTOMATIC, OS_VAR) fifo = &(ready_list->fifos[priority]);
 
   /* Check whether the slot of the process priority is empty */
   if (fifo->actual_size == 0) {
@@ -285,7 +291,7 @@ FUNC(tpl_proc_id, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 
   if (fifo->actual_size > 0)
   {
-    return proc_list->buffer[fifo->front_index];
+    return fifo->buffer[fifo->front_index];
   }
   else {
     return INVALID_PROC_ID;
@@ -312,7 +318,8 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
       fifo->front_index = 0;
     }
     if (--(fifo->actual_size) == 0) {
-      tpl_remove_highest_priority(ready_list->heap);
+      DOW_DO(printf("Removing the highest prio from the heap\n"));
+      tpl_remove_highest_prio(ready_list->heap);
     }
     DOW_DO(printrl("remove_front_proc");)
     return fifo->buffer[index];
@@ -344,7 +351,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
      * to the idle task that is alone in its slot.
      */
     for (int priority = highest_prio; priority > 0; priority--) {
-      CONSTP2VAR(tpl_proc_fifo, AUTOMATIC) fifo = &(ready_list->fifos[priority]);
+      CONSTP2VAR(tpl_proc_fifo, AUTOMATIC, OS_VAR) fifo = &(ready_list->fifos[priority]);
       /* Check if the fifo is empty */
       VAR(tpl_index, AUTOMATIC) size = fifo->actual_size;
       if (size > 0) {
@@ -365,7 +372,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
         }
         fifo->actual_size = newsize;
         if (newsize > 0) {
-          tpl_add_prio(priority);
+          tpl_add_prio(ready_list->heap, priority);
         }
       }
     }

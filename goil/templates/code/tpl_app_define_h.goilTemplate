@@ -152,14 +152,14 @@ end if
 #define ALARM_COUNT            % ![ALARMS length] %
 
 /*-----------------------------------------------------------------------------
- * Number of regular resources (standard and linked) plus RES_SCHEDULER if used 
+ * Number of regular resources (standard and linked) plus RES_SCHEDULER if used
  */
-#define RESOURCE_COUNT         % 
+#define RESOURCE_COUNT         %
 let rez_count := [REGULARRESOURCES length]
-if OS::USERESSCHEDULER then 
+if OS::USERESSCHEDULER then
   let rez_count := rez_count + 1
 end if
-!rez_count % 
+!rez_count %
 
 /*-----------------------------------------------------------------------------
  * Number of events
@@ -256,7 +256,7 @@ if OS::NUMBER_OF_CORES > 1 then
 
   loop id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
-#define IDLE_TASK_% ! id %_ID    TASK_COUNT + ISR_COUNT + % ! id 
+#define IDLE_TASK_% ! id %_ID    TASK_COUNT + ISR_COUNT + % ! id
   end loop
 else
 %
@@ -303,8 +303,13 @@ if OS::STATUS == "EXTENDED" then%
  *  Tick optimization
  */
 #define TPL_OPTIMIZE_TICKS % !yesNo(exists OS::OPTIMIZETICKS default (false)) %
+
+/*-----------------------------------------------------------------------------
+ * Metrics about the ready list
+ */
+#define NUMBER_OF_PRIORITY_LEVELS         % ![CORES["0"]::NUMBER_OF_JOBS_PER_PRIO length]
+%
 %
 template if exists custom_app_define_h
 %
 /* End of file TPL_APP_DEFINE_H */
-

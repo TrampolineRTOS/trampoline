@@ -211,7 +211,7 @@ if with_ioc:
   includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os/ready-list"]
-includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os/ready-list/heap"]
+includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os/ready-list/array-fifo-heap"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 includeDirs += ["-I", "% !PROJECT %"]
 cflags   += includeDirs
@@ -333,7 +333,6 @@ oilSourceList.append("% !OILFILENAME %")
 #--- Kernel files %
 
 let KERNEL_MAP := mapof KERNEL by NAME
-display KERNEL_MAP
 let path := KERNEL_MAP["osek_kernel"]::PATH+"/"
 foreach file in KERNEL_MAP["osek_kernel"]::FILE do
 %

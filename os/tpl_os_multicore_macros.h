@@ -52,7 +52,7 @@
  * with the ready list belonging to core core_id
  */
 #define GET_CORE_READY_LIST(a_core_id, a_ready_list) \
-  CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) a_ready_list = tpl_ready_list[a_core_id];
+  CONSTP2VAR(tpl_array_fifo_heap, AUTOMATIC, OS_VAR) a_ready_list = &tpl_ready_list[a_core_id];
 /*
  * CORE_ID_OR_VOID is defined as CONST(uint16, AUTOMATIC) core_id in multicore
  * kernel. it is used as an argument to the tpl_current_os_state function
@@ -105,7 +105,9 @@
 
 #define GET_PROC_CORE_ID(a_proc_id, a_core_id)
 #define GET_CURRENT_CORE_ID(a_core_id)
-#define GET_CORE_READY_LIST(a_core_id, a_ready_list)
+#define GET_CORE_READY_LIST(a_core_id, a_ready_list) \
+  CONSTP2VAR(tpl_array_fifo_heap, AUTOMATIC, OS_VAR) a_ready_list = &tpl_ready_list;
+
 
 /*
  * CORE_ID_OR_VOID is defined as void in monocore kernel since
@@ -127,8 +129,6 @@
  */
 #define TPL_KERN(a_core_id) \
   tpl_kern
-
-#define READY_LIST(a_ready_list) tpl_ready_list
 
 /*
  * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.

@@ -136,19 +136,6 @@ extern CONST(tpl_appmode_mask, OS_CONST)
 
 #endif
 
-/**
- * INTERNAL_RES_SCHEDULER is an internal resource with the higher task
- * priority in the application. A task is non preemptable when
- * INTERNAL_RES_SCHEDULER is set as internal resource.
- */
-VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
-    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the
-                                 maximum priority of the tasks of the
-                                 application */
-    0,
-    FALSE
-};
-
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -343,7 +330,6 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
   CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
   GET_PROC_CORE_ID(task_id, core_id)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
     tpl_stat_proc_table[task_id]->internal_resource;
@@ -352,8 +338,7 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
   {
     rez->taken = TRUE;
     rez->owner_prev_priority = tpl_dyn_proc_table[task_id]->priority;
-    tpl_dyn_proc_table[task_id]->priority =
-      DYNAMIC_PRIO(rez->ceiling_priority, tail_for_prio);
+    tpl_dyn_proc_table[task_id]->priority = rez->ceiling_priority;
   }
 }
 
@@ -526,7 +511,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  CONST(tpl_heap_entry, AUTOMATIC) proc =
+  CONST(tpl_proc_id, AUTOMATIC) proc_id =
     tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
 
 #if NUMBER_OF_CORES > 1
@@ -545,9 +530,9 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 
   DOW_DO(print_kern("before tpl_start"));
 
-  TPL_KERN_REF(kern).elected_id = (uint32)proc.id;
-  TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
-  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];
+  TPL_KERN_REF(kern).elected_id = (uint32)proc_id;
+  TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc_id];
+  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc_id];
 
   if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
   {
@@ -555,9 +540,8 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
-    DOW_DO(printf("%s is a new proc\n", proc_name_table[proc.id]));
-    tpl_init_proc(proc.id);
-    tpl_dyn_proc_table[proc.id]->priority = proc.key;
+    DOW_DO(printf("%s is a new proc\n", proc_name_table[proc_id]));
+    tpl_init_proc(proc_id);
 #if NUMBER_OF_CORES > 1
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
 #endif
@@ -578,21 +562,19 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
  */
 FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 {
-  GET_CORE_READY_LIST(core_id, ready_list)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
   DOW_DO(print_kern("before tpl_schedule_from_running"));
-  DOW_ASSERT((uint32)READY_LIST(ready_list)[1].key > 0)
 
 #if WITH_STACK_MONITORING == YES
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
 #endif /* WITH_STACK_MONITORING */
 
-  if ((READY_LIST(ready_list)[1].key) >
+  if (tpl_highest_ready_prio(CORE_ID_OR_NOTHING(core_id)) >
       (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
-        {
+  {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */

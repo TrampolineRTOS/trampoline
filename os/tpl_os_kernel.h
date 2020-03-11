@@ -402,38 +402,6 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 #endif
 
-/**
- * @internal
- *
- * In monocore implementation, tpl_tail_for_prio is a variable that stores
- * the last rank used to store a proc.
- *
- * In multicore implementation, tpl_tail_for_prio is an array of such
- * a variable.
- */
-#if NUMBER_OF_CORES > 1
-
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-extern CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR)
-  tpl_tail_for_prio[NUMBER_OF_CORES];
-
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#else
-
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-extern VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[];
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#endif
-
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 /**
