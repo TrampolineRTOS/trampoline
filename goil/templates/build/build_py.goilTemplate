@@ -340,8 +340,8 @@ foreach file in KERNEL_MAP["osek_kernel"]::FILE do
 cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
 end foreach
 
-let path := KERNEL_MAP["osek_kernel_heap_ready_list"]::PATH+"/"
-foreach file in KERNEL_MAP["osek_kernel_heap_ready_list"]::FILE do
+let path := KERNEL_MAP["osek_kernel_afh_ready_list"]::PATH+"/"
+foreach file in KERNEL_MAP["osek_kernel_afh_ready_list"]::FILE do
 %
 cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
 end foreach
