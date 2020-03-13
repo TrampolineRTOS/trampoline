@@ -51,6 +51,13 @@ extern VAR(tpl_array_fifo_heap, OS_VAR) tpl_ready_list;
 
 #ifdef WITH_DOW
 
+#define API_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
+#define API_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
 FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC, OS_CONST) message)
 {
   printf("from %s\n", message);
@@ -72,7 +79,7 @@ FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC, OS_CONST) message)
         VAR(tpl_index, AUTOMATIC) proc_index = fifo->front_index;
         VAR(tpl_index, AUTOMATIC) proc_count;
         for (proc_count = 0; proc_count < fifo->actual_size; proc_count++) {
-          printf("%d", fifo->buffer[proc_index++]);
+          printf("%s", proc_name_table[fifo->buffer[proc_index++]]);
           if (proc_index >= fifo->full_size) {
             proc_index = 0;
           }
@@ -96,7 +103,7 @@ FUNC(void, OS_CODE) printrl(CONSTP2CONST(char, AUTOMATIC, OS_CONST) message)
       VAR(tpl_index, AUTOMATIC) proc_index = fifo->front_index;
       VAR(tpl_index, AUTOMATIC) proc_count;
       for (proc_count = 0; proc_count < fifo->actual_size; proc_count++) {
-        printf("%d", fifo->buffer[proc_index++]);
+        printf("%s", proc_name_table[fifo->buffer[proc_index++]]);
         if (proc_index >= fifo->full_size) {
           proc_index = 0;
         }
@@ -330,6 +337,7 @@ FUNC(tpl_proc_id, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
   }
 }
 
+#if WITH_OSAPPLICATION == YES
 /**
  * @internal
  *
@@ -379,3 +387,6 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   }
   DOW_DO(printrl("remove_proc");)
 }
+#endif /* WITH_OSAPPLICATION == YES */
+
+/* End of file tpl_afh_ready_list.h */

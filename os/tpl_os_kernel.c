@@ -246,46 +246,6 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 
 
 
-#if WITH_OSAPPLICATION == YES
-
-/**
- * @internal
- *
- * tpl_remove_proc removes all the process instances in the ready queue
- */
-FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  GET_PROC_CORE_ID(proc_id, core_id)
-  GET_CORE_READY_LIST(core_id, ready_list)
-  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-
-  VAR(uint32, AUTOMATIC) index;
-  VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
-
-  DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
-  DOW_DO(printrl("tpl_remove_proc - before");)
-
-
-  for (index = 1; index <= size; index++)
-  {
-    if (READY_LIST(ready_list)[index].id == proc_id)
-    {
-      READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size--];
-      tpl_bubble_down(
-        READY_LIST(ready_list),
-        index
-        TAIL_FOR_PRIO_ARG(tail_for_prio)
-      );
-    }
-  }
-
-  READY_LIST(ready_list)[0].key = size;
-
-  DOW_DO(printrl("tpl_remove_proc - after");)
-}
-
-#endif /* WITH_OSAPPLICATION */
-
 /**
  * @internal
  *
