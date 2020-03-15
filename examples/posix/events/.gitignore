@@ -1,0 +1,8 @@
+events
+events.json
+build
+*.elf
+*.bin
+*.map
+make.py
+build.py
