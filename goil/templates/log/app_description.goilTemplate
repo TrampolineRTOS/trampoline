@@ -1,0 +1,186 @@
+%
+let extendedTasksSet := [EXTENDEDTASKS setBy: "NAME"]
+let resourceMap := [RESOURCES mapBy: "NAME"]
+
+#write to PROJECT+"/info.json":
+%{\n%
+  #tasks
+  if exists TASKS then
+    foreach task in TASKS 
+    before %  "task" : [\n    {\n%
+    do
+      %      "name"       : "%!task::NAME%",\n%
+      %      "id"         : "%!INDEX%",\n%
+      %      "priority"   : %!task::PRIORITY%,\n%
+      %      "autostart"  : "%![task::AUTOSTART trueOrFalse]%",\n%
+      if task::AUTOSTART then
+        foreach appmode in task::AUTOSTART_S::APPMODE 
+        before   %      "autostart_s": {"appmode":[%
+        do       %"%!appmode::VALUE%"%
+        between  %, %
+        after    %]},\n%
+        end foreach
+      end if
+      %      "activation" : %!task::ACTIVATION%,\n%
+      let maxPrio := task::PRIORITY
+      if exists task::RESOURCE then
+        foreach resource in task::RESOURCE
+        before %      "resource"   : [%
+        do
+          let resName := resource::VALUE
+          let resPrio := resourceMap[resName]::PRIORITY
+          %"%!resName%"%
+          if (resPrio > maxPrio) then let maxPrio := resPrio end if
+        between %, %
+        after %],\n%
+        end foreach
+      else
+        %      "resource"   : [],\n%
+      end if
+      %      "maxPriority": %!maxPrio%,\n%
+      %      "schedule"   : "%!task::SCHEDULE%",\n%
+      if exists task::EVENT then 
+        foreach ev in task::EVENT
+          before %      "event"      : [%
+          do %"%!ev::VALUE%"%
+          between %, %
+          after  %],\n%
+        end foreach
+      else
+        %      "event"      : [],\n%
+      end if #task events
+      %      "extended"   : "%![[extendedTasksSet contains: task::NAME] trueOrFalse]%",\n%
+      %      "stacksize"  : %!task::STACKSIZE%\n%
+    between %    },\n    {\n%
+    after #idle_task
+      %    },\n    {\n%
+      %      "name"       : "IDLE_TASK",\n%
+      %      "id"         : "%!([TASKS length]+[ISRS2 length])%",\n%
+      %      "priority"   : 0,\n%
+      %      "autostart"  : "true",\n%
+      %      "activation" : 1,\n% 
+      %      "resource"   : [],\n%
+      %      "maxPriority": 0,\n%
+      %      "event"      : [],\n%
+      %      "schedule"   : "FULL",\n%
+      %      "extended"   : "false"\n%
+      %    }\n  ]%
+    end foreach
+  end if #TASKS
+
+  #isrs
+  if exists ISRS then
+    foreach isr in ISRS 
+    before %,\n  "isr" : [\n    {\n%
+    do
+      %      "name"       : "%!isr::NAME%",\n%
+      %      "id"         : "%!INDEX%",\n%
+      %      "priority"   : %!isr::PRIORITY%,\n%
+      %      "category"   : %!isr::CATEGORY%,\n%
+      %      "stacksize"  : %!isr::STACKSIZE%\n%
+    between %    },\n    {\n%
+    after
+      %    }\n  ]%
+    end foreach
+  end if #TASKS
+
+  #resources
+  if exists RESOURCES then
+    %,\n%
+    foreach resource in RESOURCES
+      before %  "resources" : [\n    {\n%
+      do 
+        %      "name"       : "%!resource::NAME%",\n%
+        %      "id"         : "%!INDEX%",\n%
+        %      "priority"   : %!resource::PRIORITY%,\n%
+        foreach task in resource::TASKUSAGE
+          before %      "task_usage"  : [%
+          do %"%!task::VALUE%"%
+          between %, %
+          after %]\n%
+        end foreach
+        foreach isr in resource::ISRUSAGE
+          before %      "isr_usage"  : [%
+          do %"%!isr::VALUE%"%
+          between %, %
+          after %]\n%
+        end foreach
+      between %    },\n    {\n%
+      after %    }\n  ]%
+    end foreach
+  end if #RESOURCES
+
+  #EVENTS
+  if exists EVENTS then
+    %,\n%
+    foreach ev in EVENTS
+      before %  "events" : [\n    {\n%
+      do 
+        %      "name"       : "%!ev::NAME%",\n%
+        %      "id"         : "%!INDEX%",\n%
+        %      "mask"       : %!ev::MASK%,\n%
+        %      "ref"        : %!ev::REF%\n%
+      between %    },\n    {\n%
+      after %    }\n  ]%
+    end foreach
+  end if #EVENTS
+
+  #ALARM
+  if exists ALARMS then
+    %,\n%
+    foreach al in ALARMS
+      before %  "alarms" : [\n    {\n%
+      do 
+        %      "name"       : "%!al::NAME%",\n%
+        %      "id"         : "%!INDEX%",\n%
+        %      "action"     : "%!al::ACTION%",\n%
+        let oneElt := false # at east one elt.
+        %      "action_s"   : {%
+        if exists al::ACTION_S::EVENT then 
+          %\n        "event"   : "%!al::ACTION_S::EVENT%"%
+          let oneElt := true
+        end if
+        if exists al::ACTION_S::TASK then 
+          if oneElt then %,% end if
+          %\n        "task"    : "%!al::ACTION_S::TASK%"%
+          let oneElt := true
+        end if
+        if exists al::ACTION_S::ALARMCALLBACKNAME then 
+          if oneElt then %,% end if
+          %\n        "callback": "%!al::ACTION_S::ALARMCALLBACKNAME%"%
+          let oneElt := true
+        end if
+        %\n      },\n%
+        #AUTOSTART
+        %      "autostart"  : "%![al::AUTOSTART trueOrFalse]%"%
+        if al::AUTOSTART then
+          %,\n      "autostart_s": {\n%
+          foreach appmode in al::AUTOSTART_S::APPMODE 
+          before   %        "appmode"  :[%
+          do       %"%!appmode::VALUE%"%
+          between  %, %
+          after    %],\n%
+          end foreach
+          %        "alarmtime": %!al::AUTOSTART_S::ALARMTIME%,\n%
+          %        "cycletime": %!al::AUTOSTART_S::CYCLETIME%\n%
+          %      }\n%
+        else %\n%
+        end if
+      between %    },\n    {\n%
+      after %    }\n  ]%
+    end foreach
+  end if #ALARMS
+
+  #internal data type sizes.
+%,\n  "data_size":{\n%
+%    "priority_shift" : %!(PRIORITY_SHIFT)%,\n%  
+%    "size_ReadyList" : %!(READY_LIST_SIZE + 1)%,\n%  
+%    "size_ReadyList_key" : %![(1 << ([NUMBER_OF_PRIORITIES numberOfBits] + [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBits]%,\n%  
+%    "size_Task_ID" : %! [[PROCESSES length] + 1 signedNumberOfBits]%,\n% 
+%    "size_Priority" : %![(1 << ([NUMBER_OF_PRIORITIES numberOfBits] + [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBits]%,\n%   
+%    "size_Prioritybis" : %! (KEY_SIZE*8) %,\n%  
+%    "size_Priority_other" : %! [NUMBER_OF_PRIORITIES signedNumberOfBits]%,\n% 
+%    "size_Priorityter" : %! [task_max_priority signedNumberOfBits]%\n% 
+%  }\n%
+%}\n%
+#end write

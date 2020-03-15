@@ -60,11 +60,7 @@ FUNC(uint8, OS_CODE) tpl_trace_start()
       exit(1);
     }
 	first = 1;
-#   if TRACE_FORMAT == TRACE_FORMAT_XML
-      fprintf(trace_file,
-        "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-        "<trace>\n");
-#   elif TRACE_FORMAT == TRACE_FORMAT_JSON
+#   if TRACE_FORMAT == TRACE_FORMAT_JSON
       fprintf(trace_file,"[\n");
 #   endif
   }
@@ -78,10 +74,7 @@ FUNC(uint8, OS_CODE) tpl_trace_start()
 */
 FUNC(void, OS_CODE) tpl_trace_close()
 {
-#   if TRACE_FORMAT == TRACE_FORMAT_XML
-      fprintf(trace_file,
-        "</trace>\n");
-#   elif TRACE_FORMAT == TRACE_FORMAT_JSON
+#   if TRACE_FORMAT == TRACE_FORMAT_JSON
       fprintf(trace_file,"]\n");
 #endif
   if(trace_file) fclose(trace_file);
@@ -101,18 +94,14 @@ FUNC(void, OS_CODE) tpl_trace_proc_change_state(
 # if   TRACE_FORMAT == TRACE_FORMAT_TXT
   fprintf(trace_file,
     "[%9ld] proc %d change to state %d\n",ts,proc_id,target_state);
-# elif TRACE_FORMAT == TRACE_FORMAT_XML
-  fprintf(trace_file,
-	"\t<proc ts=\"%ld\" proc_id=\"%d\" target_state=\"%d\"/>\n",ts,proc_id,target_state);
 # elif TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"proc\":{\n"
-	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"proc_id\":\"%d\",\n"
-	"\t\t\t\"target_state\":\"%d\"\n"
-	"\t\t}\n"
+	"\t\t\"type\":\"proc\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"proc_id\":\"%d\",\n"
+	"\t\t\"target_state\":\"%d\"\n"
 	"\t}"
 	,ts,proc_id,target_state);
 # else
@@ -135,18 +124,14 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
 # if   TRACE_FORMAT == TRACE_FORMAT_TXT
   fprintf(trace_file,
     "[%9ld] res %d change to state %d\n",ts,res_id,target_state);
-# elif TRACE_FORMAT == TRACE_FORMAT_XML
-  fprintf(trace_file,
-	"\t<resource ts=\"%ld\" res_id=\"%d\" target_state=\"%d\"/>\n",ts,res_id,target_state);
 # elif TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"resource\":{\n"
-	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"res_id\":\"%d\",\n"
-	"\t\t\t\"target_state\":\"%d\"\n"
-	"\t\t}\n"
+	"\t\t\"type\":\"resource\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"res_id\":\"%d\",\n"
+	"\t\t\"target_state\":\"%d\"\n"
 	"\t}"
 	,ts,res_id,target_state);
 # else
@@ -168,18 +153,14 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
 # if   TRACE_FORMAT == TRACE_FORMAT_TXT
   fprintf(trace_file,
     "[%9ld] timeobj %d change to state %d\n",ts,timeobj_id,target_state);
-# elif TRACE_FORMAT == TRACE_FORMAT_XML
-  fprintf(trace_file,
-	"\t<timeobj ts=\"%ld\" timeobj_id=\"%d\" target_state=\"%d\"/>\n",ts,timeobj_id,target_state);
 # elif TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"timeobj\":{\n"
-	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"timeobj_id\":\"%d\",\n"
-	"\t\t\t\"target_state\":\"%d\"\n"
-	"\t\t}\n"
+	"\t\t\"type\":\"timeobj\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"timeobj_id\":\"%d\",\n"
+	"\t\t\"target_state\":\"%d\"\n"
 	"\t}"
 	,ts,timeobj_id,target_state);
 # else
@@ -200,17 +181,13 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
 # if   TRACE_FORMAT == TRACE_FORMAT_TXT
   fprintf(trace_file,
     "[%9ld] timeobj %d expired\n",ts,timeobj_id);
-# elif TRACE_FORMAT == TRACE_FORMAT_XML
-  fprintf(trace_file,
-	"\t<timeobjExpire ts=\"%ld\" timeobj_id=\"%d\"/>\n",ts,timeobj_id);
 # elif TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"timeobjExpire\":{\n"
-	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"timeobj_id\":\"%d\"\n"
-	"\t\t}\n"
+	"\t\t\"type\":\"timeobj_expire\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"timeobj_id\":\"%d\"\n"
 	"\t}"
 	,ts,timeobj_id);
 # else
@@ -233,18 +210,14 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 # if   TRACE_FORMAT == TRACE_FORMAT_TXT
   fprintf(trace_file,
     "[%9ld] set_event to %d mask 0x%x\n",ts,task_target_id,event);
-# elif TRACE_FORMAT == TRACE_FORMAT_XML
-  fprintf(trace_file,
-	"\t<set_event ts=\"%ld\" target_task_id=\"%d\" event=\"%d\"/>\n",ts,task_target_id,event);
 # elif TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"set_event\":{\n"
-	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"target_task_id\":\"%d\",\n"
-	"\t\t\t\"event\":\"%d\"\n"
-	"\t\t}\n"
+	"\t\t\"type\":\"set_event\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"target_task_id\":\"%d\",\n"
+	"\t\t\"event\":\"%d\"\n"
 	"\t}"
 	,ts,task_target_id,event);
 # else
@@ -266,17 +239,13 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 # if   TRACE_FORMAT == TRACE_FORMAT_TXT
   fprintf(trace_file,
     "[%9ld] reset event mask 0x%x\n",ts,event);
-# elif TRACE_FORMAT == TRACE_FORMAT_XML
-  fprintf(trace_file,
-	"\t<reset_event ts=\"%ld\" event=\"%d\"/>\n",ts,event);
 # elif TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"reset_event\":{\n"
-	"\t\t\t\"ts\":\"%ld\",\n"
-	"\t\t\t\"event\":\"%d\"\n"
-	"\t\t}\n"
+	"\t\t\"type\":\"reset_event\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"event\":\"%d\"\n"
 	"\t}"
 	,ts,event);
 # else

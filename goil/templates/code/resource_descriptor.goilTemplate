@@ -41,12 +41,13 @@ end if
 %
 #endif
 %
-if USEID then
+if OS::USEID then
 %
   /* id of the resource               */ % !INDEX %,
+%
 end if
 %
-  /* next resource in the list        */  NULL%
+  /* next resource in the list        */  NULL
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED

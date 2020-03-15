@@ -1505,10 +1505,10 @@ if OS::MEMMAP then
 end if
 
 if OS::TRACE then
-!PROJECT%.desc
+!PROJECT%.json
 %
-  write to PROJECT+".desc":
-    template trace_description in log
+  write to PROJECT+".json":
+    template app_description in log
   end write
 end if
 

@@ -40,9 +40,8 @@ typedef uint8 tpl_trace_resource_state;
 #define TIMEOBJ_EXPIRE       5
 
 #define TRACE_FORMAT_TXT     0
-#define TRACE_FORMAT_XML     1
-#define TRACE_FORMAT_JSON    2
-#define TRACE_FORMAT_BIN     3
+#define TRACE_FORMAT_JSON    1
+#define TRACE_FORMAT_BIN     2
 
 /* define the trace output types */
 #if WITH_TRACE == YES
