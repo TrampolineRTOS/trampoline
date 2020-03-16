@@ -1504,13 +1504,21 @@ if OS::MEMMAP then
   end if
 end if
 
-if OS::TRACE then
+#if OS::TRACE then
 !PROJECT%.json
 %
   write to PROJECT+".json":
-    template app_description in log
+    let obj := @[
+      "task"     : TASKS,
+      "isr"      : ISRS,
+      "event"    : EVENTS,
+      "resource" : RESOURCES,
+      "alarm"    : ALARMS
+    ]
+    let nbTab := 0
+    template export_json in log
   end write
-end if
+#end if
 
 template if exists custom_files in config
 

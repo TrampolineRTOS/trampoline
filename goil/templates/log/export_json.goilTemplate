@@ -1,0 +1,65 @@
+%# write an object (struct, map, list, set) TODO: 
+# parameters: obj   - the object to export
+#             nbTab - number of shifts
+
+let current := obj
+if [current type] ==  @struct then
+  let current := [obj map]
+end if
+
+#now, it's either a map, a list or a set
+if [current type] == @map then
+  foreach key, var in current
+  before 
+    %\n%
+    loop i from 1 to nbTab do %  % end loop 
+    %{\n%
+    let nbTab := nbTab + 1
+  do 
+    loop i from 1 to nbTab do %  % end loop 
+    %"% !key %" : %
+    if    [var type] == @string then %"% !var %"%
+    elsif [var type] == @int    then !var 
+    elsif [var type] == @bool   then %"% ![var trueOrFalse] %"%
+    else
+      let obj := var 
+      template export_json in log
+    end if
+  between %,\n%
+  after 
+    let nbTab := nbTab - 1
+    %\n%
+    loop i from 1 to nbTab do %  % end loop
+    %}%
+  end foreach
+elsif [current type] == @list | [current type] == @set then 
+  if [current length] == 0 then 
+      %[]% 
+  else
+    foreach var in current
+    before
+      %\n%
+      loop i from 1 to nbTab do %  % end loop 
+      %[\n%
+      let nbTab := nbTab + 1
+    do 
+      loop i from 1 to nbTab do %  % end loop 
+      if    [var type] == @string then %"% !var %"%
+      elsif [var type] == @int    then !var 
+      elsif [var type] == @bool   then %"% ![var trueOrFalse] %"%
+      else
+        let obj := var 
+        template export_json in log
+      end if
+    between %,%
+    after 
+      let nbTab := nbTab - 1
+      %\n%
+      loop i from 1 to nbTab do %  % end loop
+      %]%
+    end foreach
+  end if #empty list/set
+else
+  error current: "unsupported type for JSON export"
+end if
+# vim:ft=gtlCpp
