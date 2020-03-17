@@ -29,10 +29,10 @@ TASK(my_periodic_task)
     }
     if (received & ev_stop) {
       ClearEvent(ev_stop);
-      ShutdownOS(E_OK);
+      out = true;
     }
   }
-
+  ShutdownOS(E_OK);
   TerminateTask();
 }
 
