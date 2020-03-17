@@ -1,53 +1,107 @@
 \chapter{Tracing the execution}
 
-\section{Introduction}
+\section*{Introduction}
 
-\section{Events}
+The code of Trampoline RTOS embeds a tracing subsystem that can be activated at
+system configuration time.
+This toolkit sends a stream of events describing the execution of the
+application to a target specific backend.
+The resulting data can then be exploited to compute statistics on some
+performance figures of the system (such as execution times, jitters, etc.)
+and/or to feed a visualization tool.
+Please notice that, in the current implementation, the tracing toolkit has a small, albeit non null, overhead so
+the system from which traces are computed is not exactly the same than the
+system without traces.
 
-The list of events that can be recorded is given below.
-All events are timestamped.
-Exact format and accuracy of the timestamp depends on the target specific
+\section{Traced events}
+
+Events that can be traced during an execution are given below.
+Each event is described by its name and a set of attributes.
+These attributes are made available by the kernel to the platform specific
 backend (see section~\ref{sec:trace:targetbackend} below).
 
 \begin{description}
-  \item[PROC\_STATE\_CHANGE]: state of a process is changed.
+  \item[PROC\_CHANGE\_STATE]: state of a process (task or ISR) is changed.
     \begin{itemize}
       \item \texttt{proc_id}: identifier of the process.
       \item \texttt{target_state}: new state of the proc. %TODO: list states
     \end{itemize}
 
-  \item[RES\_STATE\_CHANGE]: state of a resource is changed.
+  \item[RES\_CHANGE\_STATE]: state of a resource is changed.
     \begin{itemize}
       \item \texttt{res_id}: identifier of the resource.
-      \item \texttt{target_state}: new state of the resource.
+      \item \texttt{target_state}: new state of the resource. %TODO: list states
     \end{itemize}
 
-  \item[EVENT_SET]: a process sets an event of another process.
+  \item[EVENT_SET]: a process sets one or more event to another process.
     \begin{itemize}
       \item \texttt{proc_id}: owner of the events.
-      \item \texttt{ev_id}: list of event set.
+      \item \texttt{ev_id}: list of events that have been set.
     \end{itemize}
 
-  \item[EVENT_RESET]: a process resets one of its events of another process.
+  \item[EVENT_RESET]: a process resets a subset of its events
     \begin{itemize}
-      \item \texttt{ev_id}: list of event reset.
+      \item \texttt{ev_id}: list of events that have been reset.
     \end{itemize}
 
-    % TODO: because of AUTOSTART, not straightforward to add proc_id here
-  \item[TIMEOBJ_STATE_CHANGE]: state of a timeobj is changed.
+  \item[TIMEOBJ\_CHANGE\_STATE]: state of a timeobj (alarm, schedule table
+    expiry point) is changed.
     \begin{itemize}
       \item \texttt{timeobj_id}: identifier of the timeobj.
       \item \texttt{target_state}: new state of the timeobj.
     \end{itemize}
 
-  \item[TIMEOBJ_EXPIRE]: an alarm reaches its expiry point.
+  \item[TIMEOBJ\_EXPIRE]: a timeobj expires.
     \begin{itemize}
-      \item \texttt{alarm_id}: identifier of the alarm.
+      \item \texttt{alarm_id}: identifier of the timeobj.
     \end{itemize}
 
 \end{description}
+
+Notice that each event contains the minimal set of informations that are needed
+to rebuild the whole state of the system.
+Hence, the running task is never used as an attribute because it can be deduced
+by analysing the sequence of \textbf{PROC\_CHANGE\_STATE} events.
+
+\section{Using the tracing subsystem}
+
+Activation of tracing is done at system configuration time through the OIL file.
+A boolean attribute \texttt{TRACE} is defined in the \texttt{OS} object. It has
+several subattributes has shown in the code below:
+
+\begin{lstlisting}[language=OIL]
+TRACE = TRUE {
+    FORMAT = bin;
+    PROC = TRUE;
+    RESOURCE = TRUE;
+    ALARM = TRUE;
+    EVENT = TRUE;
+};
+\end{lstlisting}
+
+\begin{description}
+  \item[FORMAT] specifies the output format of the trace. Currently, the
+    following values are accepted: \texttt{txt}, \texttt{bin}, and
+    \texttt{json}.
+
+  \item[PROC] controls the tracing of event \texttt{PROC\_CHANGE\_STATE};
+
+  \item[RESOURCE] controls the tracing of event \texttt{RES\_CHANGE\_STATE};
+
+  \item[ALARM] controls the tracing of events \texttt{TIMEOBJ\_CHANGE\_STATE}
+    and \texttt{TIMEOBJ\_EXPIRE};
+
+  \item[EVENT]  controls the tracing of events \texttt{EVENT\_SET}
+    and \texttt{EVENT\_RESET};
+\end{description}
+
 
 \section{Implementation}
 
 \section{Implementing target specific backends}
 \label{sec:trace:targetbackend}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
