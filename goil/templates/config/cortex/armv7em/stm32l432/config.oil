@@ -3,7 +3,7 @@ IMPLEMENTATION stm32l432 {
     BOOLEAN [
       TRUE {
         ENUM [
-          gpt 
+          IO
         ] LIBRARY[];
       },
       FALSE
@@ -42,7 +42,7 @@ CPU stm32l432 {
 
   CORTEX stm32fl432 {
     PRIO_BITS = 4;
-    CLOCK = 80000000; // max freq with no external oscillator...
+    CLOCK = 40000000; // init freq with no external oscillator...
   };
 
   BUILDOPTIONS buildOptions {
@@ -54,6 +54,7 @@ CPU stm32l432 {
   };
   
   INTERRUPT NMI          {SETPRIO = TRUE { NUMBER = -14; };};
+  INTERRUPT HardFault    {SETPRIO = TRUE { NUMBER = -13; };};
   INTERRUPT MemManage    {SETPRIO = TRUE { NUMBER = -12; };}; 
   INTERRUPT BusFault     {SETPRIO = TRUE { NUMBER = -11; };};
   INTERRUPT UsageFault   {SETPRIO = TRUE { NUMBER = -10; };};
@@ -62,7 +63,6 @@ CPU stm32l432 {
   INTERRUPT PendSV       {SETPRIO = TRUE { NUMBER = -2 ; };};
   INTERRUPT SysTick      {SETPRIO = TRUE { NUMBER = -1 ; };};
   
-  //*** TODO ***
   INTERRUPT WWDG_IRQ {
     VECT = 16;
     SETPRIO = TRUE { NUMBER = 0; };
@@ -207,29 +207,29 @@ CPU stm32l432 {
     };
   } : "DMA1 Channel 7 global Interrupt";
   
-  INTERRUPT ADC_IRQ {
+  INTERRUPT ADC1_IRQ {
     VECT = 34;
     SETPRIO = TRUE { NUMBER = 18; };
     VECTOR_TYPE = HANDLER {
-      NAME =  "ADC_IRQ_Handler";
+      NAME =  "ADC1_IRQ_Handler";
     };
-  } : "ADC1 and ADC2 global Interrupts";
+  } : "ADC1 global Interrupts";
   
   INTERRUPT CAN_TX_IRQ {
     VECT = 35;
     SETPRIO = TRUE { NUMBER = 19; };
     VECTOR_TYPE = HANDLER {
-      NAME =  "USB_CAN_TX_Handler";
+      NAME =  "CAN1_TX_Handler";
     };
-  } : "USB/HP and CAN TX Interrupt";
+  } : "CAN1 TX Interrupt";
   
   INTERRUPT CAN_RX0_IRQ {
     VECT = 36;
     SETPRIO = TRUE { NUMBER = 20; };
     VECTOR_TYPE = HANDLER {
-      NAME = "USB_CAN_RX0_Handler";
+      NAME = "CAN1_RX0_Handler";
     };
-  } : "USB/LP and CAN RX0 Interrupt";
+  } : "CAN1 RX0 Interrupt";
   
   INTERRUPT CAN_RX1_IRQ {
     VECT = 37;
@@ -237,15 +237,15 @@ CPU stm32l432 {
     VECTOR_TYPE = HANDLER {
       NAME = "CAN_RX1_Handler";
     };
-  } : "CAN1 RX Interrupt";
+  } : "CAN1 RX1 Interrupt";
   
   INTERRUPT CAN_SCE_IRQ {
     VECT = 38;
     SETPRIO = TRUE { NUMBER = 22; };
     VECTOR_TYPE = HANDLER {
-      NAME = "CAN_SCE_Handler";
+      NAME = "CAN1_SCE_Handler";
     };
-  } : "CAN SCE Interrupt";
+  } : "CAN1 SCE Interrupt";
   
   INTERRUPT EXTI9_5_IRQ {
     VECT = 39;
@@ -255,29 +255,29 @@ CPU stm32l432 {
     };
   } : "External Line[9:5] Interrupts";
   
-  INTERRUPT TIM1_BRK_TIM9_IRQ {
+  INTERRUPT TIM1_BRK_TIM15_IRQ {
     VECT = 40;
     SETPRIO = TRUE { NUMBER = 24; };
     VECTOR_TYPE = HANDLER {
-      NAME = "TIM1_BRK_TIM9_Handler";
+      NAME = "TIM1_BRK_TIM15_Handler";
     };
-  } : "TIM1 Break interrupt and TIM9 global interrupt";
+  } : "TIM1 Break interrupt and TIM15 global interrupt";
   
-  INTERRUPT TIM1_UP_TIM10_IRQ {
+  INTERRUPT TIM1_UP_TIM16_IRQ {
     VECT = 41;
     SETPRIO = TRUE { NUMBER = 25; };
     VECTOR_TYPE = HANDLER {
-      NAME = "TIM1_UP_TIM10_Handler";
+      NAME = "TIM1_UP_TIM16_Handler";
     };
-  } : "TIM1 Update Interrupt and TIM10 global interrupt";
+  } : "TIM1 Update Interrupt and TIM16 global interrupt";
   
-  INTERRUPT TIM1_TRG_COM_TIM11_IRQ {
+  INTERRUPT TIM1_TRG_COM_IRQ {
     VECT = 42;
     SETPRIO = TRUE { NUMBER = 26; };
     VECTOR_TYPE = HANDLER {
-      NAME =  "TIM1_TRG_COM_TIM11_Handler";
+      NAME =  "TIM1_TRG_COM_Handler";
     };
-  } : "TIM1 Trigger and Commutation Interrupt and TIM11 global interrupt";
+  } : "TIM1 Trigger and Commutation Interrupt";
   
   INTERRUPT TIM1_CC_IRQ {
     VECT = 43;
@@ -294,17 +294,9 @@ CPU stm32l432 {
       NAME = "TIM2_Handler";
     };
   } :"TIM2 global Interrupt";
-  
-  INTERRUPT TIM3_IRQ {
-    VECT = 45;
-    SETPRIO = TRUE { NUMBER = 29; };
-    VECTOR_TYPE = HANDLER {
-      NAME = "TIM3_Handler";
-    };
-  } : "TIM3 global Interrupt";
-  
-  // 30 reserved.
-  
+
+  // 29 and 30 reserved.
+ 
   INTERRUPT I2C1_EV_IRQ {
     VECT = 47;
     SETPRIO = TRUE { NUMBER = 31; };
@@ -353,15 +345,7 @@ CPU stm32l432 {
     };
   } : "USART2 global Interrupt";
   
-  INTERRUPT USART3_IRQ {
-    VECT = 55;
-    SETPRIO = TRUE { NUMBER = 39; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
-    VECTOR_TYPE = HANDLER {
-      NAME = "USART3_Handler";
-      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
-    };
-  } : "USART3 global Interrupt";
+  // 39 reserved.
   
   INTERRUPT EXTI15_10_IRQ {
     VECT = 56;
@@ -379,8 +363,18 @@ CPU stm32l432 {
     };
   } : "RTC Alarm (A and B) through EXTI Line Interrupt";
   
-  // 42 through 53 reserved.
-  
+  // 42 through 50 reserved.
+
+  INTERRUPT SPI3_IRQ {
+    VECT = 67;
+    SETPRIO = TRUE { NUMBER = 51; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI3_Handler";
+    };
+  } : "SPI1 global Interrupt";
+
+  // 52-53 reserved.
+
   INTERRUPT TIM6_DAC_IRQ {
     VECT = 70;
     SETPRIO = TRUE { NUMBER = 54; };
@@ -397,25 +391,163 @@ CPU stm32l432 {
     };
   } : "TIM7 global interrupt";
 
-  // 46 through 63 reserved.
+  INTERRUPT DMA2_Channel1_IRQ {
+    VECT = 72;
+    SETPRIO = TRUE { NUMBER = 56; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Channel1_IRQ_Handler";
+    };
+  } : "DMA2 Channel 1 global Interrupt";
+  
+  INTERRUPT DMA2_Channel2_IRQ {
+    VECT = 73;
+    SETPRIO = TRUE { NUMBER = 57; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Channel2_IRQ_Handler";
+    };
+  } : "DMA2 Channel 2 global Interrupt";
+  
+  INTERRUPT DMA2_Channel3_IRQ {
+    VECT = 74;
+    SETPRIO = TRUE { NUMBER = 58; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Channel3_IRQ_Handler";
+    };
+  } : "DMA2 Channel 3 global Interrupt";
+  
+  INTERRUPT DMA2_Channel4_IRQ {
+    VECT = 75;
+    SETPRIO = TRUE { NUMBER = 59; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "DMA2_Channel4_IRQ_Handler";
+    };
+  } : "DMA2 Channel 4 global Interrupt";
+  
+  INTERRUPT DMA2_Channel5_IRQ {
+    VECT = 76;
+    SETPRIO = TRUE { NUMBER = 60; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Channel5_IRQ_Handler";
+    };
+  } : "DMA2 Channel 5 global Interrupt";
 
-  INTERRUPT COMP2_IRQ {
+  // 61 through 63 reserved.
+
+  INTERRUPT COMP_IRQ {
     VECT = 80;
     SETPRIO = TRUE { NUMBER = 64; };
     VECTOR_TYPE = HANDLER {
-      NAME = "COMP2_Handler";
+      NAME = "COMP_Handler";
     };
-  } : "COMP2 interrupt combined with EXTI Lines 22 interrupt";
+  } : "COMP1 and COMP2 interrupt";
 
-  INTERRUPT COMP4_6_IRQ {
+  INTERRUPT LPTIM1_IRQ {
     VECT = 81;
     SETPRIO = TRUE { NUMBER = 65; };
     VECTOR_TYPE = HANDLER {
-      NAME = "COMP4_6_Handler";
+      NAME = "LPTIM1_Handler";
     };
-  } : "COMP4 and COMP6 interrupts combined with EXTI Lines 30 and 32 interrupts respectively.";
+  } : "LP TIM1 interrupt";
+
+  INTERRUPT LPTIM2_IRQ {
+    VECT = 82;
+    SETPRIO = TRUE { NUMBER = 66; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LPTIM2_Handler";
+    };
+  } : "LP TIM2 interrupt";
+
+  INTERRUPT USB_IRQ {
+    VECT = 83;
+    SETPRIO = TRUE { NUMBER = 67; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USB_Handler";
+    };
+  } : "USB event interrupt";
+
+  INTERRUPT DMA2_Channel6_IRQ {
+    VECT = 84;
+    SETPRIO = TRUE { NUMBER = 68; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "DMA2_Channel6_IRQ_Handler";
+    };
+  } : "DMA2 Channel 6 global Interrupt";
   
-  // 66 through 80 reserved.
+  INTERRUPT DMA2_Channel7_IRQ {
+    VECT = 85;
+    SETPRIO = TRUE { NUMBER = 69; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Channel7_IRQ_Handler";
+    };
+  } : "DMA2 Channel 7 global Interrupt";
+
+  INTERRUPT LPUART1_IRQ {
+    VECT = 86;
+    SETPRIO = TRUE { NUMBER = 70; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LPUART1_IRQ_Handler";
+    };
+  } : "LP UART1 interrupt";
+
+  INTERRUPT QUADSPI_IRQ {
+    VECT = 87;
+    SETPRIO = TRUE { NUMBER = 71; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "QUADSPI_IRQ_Handler";
+    };
+  } : "Quad SPI global interrupt";
+
+  INTERRUPT I2C3_EV_IRQ {
+    VECT = 88;
+    SETPRIO = TRUE { NUMBER = 72; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C3_EV_IRQ_Handler";
+    };
+  } : "I2C3 event interrupt";
+
+  INTERRUPT I2C3_ER_IRQ {
+    VECT = 89;
+    SETPRIO = TRUE { NUMBER = 73; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C3_ER_IRQ_Handler";
+    };
+  } : "I2C3 error interrupt";
+ 
+  INTERRUPT SAI1_IRQ {
+    VECT = 90;
+    SETPRIO = TRUE { NUMBER = 74; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SAI1_IRQ_Handler";
+    };
+  } : "Serial Audio Interface 1 global interrupt";
+
+  // 75 reserved.
+
+  INTERRUPT SWPMI1_IRQ {
+    VECT = 92;
+    SETPRIO = TRUE { NUMBER = 76; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SWPMI1_IRQ_Handler";
+    };
+  } : "Serial Wire Interface 1 global interrupt";
+
+  INTERRUPT TSC_IRQ {
+    VECT = 93;
+    SETPRIO = TRUE { NUMBER = 77; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TSC_IRQ_Handler";
+    };
+  } : "Touch Sense Controller global interrupt";
+
+  // 78-79 reserved.
+
+  INTERRUPT RNG_IRQ {
+    VECT = 96;
+    SETPRIO = TRUE { NUMBER = 80; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "RNG_IRQ_Handler";
+    };
+  } : "RNG global interrupt";
 
   INTERRUPT FPU_IRQ {
     VECT = 97;
@@ -425,30 +557,31 @@ CPU stm32l432 {
     };
   } : "FPU global interrupt";
 
-  PLATFORM_FILES stm32f303 {
-    PATH = "cortex/armv7em/stm32f303";
-  CFILE = "handlers_stm32f3xx.c";
-  CFILE = "startup_stm32f3xx.c";
-  CFILE = "system_stm32f30x.c";
-  CFILE = "tpl_machine_stm32f303.c";
-  CFILE = "tpl_memory_protection.c";
+  INTERRUPT CRS_IRQ {
+    VECT = 98;
+    SETPRIO = TRUE { NUMBER = 82; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CRS_Handler";
+    };
+  } : "CRS global interrupt";
+
+  PLATFORM_FILES stm32l432 {
+    PATH = "cortex/armv7em/stm32l432";
+    CFILE = "handlers_stm32l432.c";
+    CFILE = "startup_stm32l432.c";
+    CFILE = "system_stm32l4xx.c";
+    CFILE = "tpl_machine_stm32l432.c";
+    CFILE = "tpl_memory_protection.c";
   };
 
-  PLATFORM_FILES stm32f303_std_libs_includes {
-    PATH = "cortex/armv7em/stm32f303/STM32F30x_StdPeriph_Driver";
+  LIBRARY IO {
+    PATH = "cortex/armv7em/stm32l432/lib";
+	CHEADER = "pinAccess.h";
+	CFILE   = "pinAccess.c";
   };
 
-  PLATFORM_FILES stm32f303_cmsis {
-    PATH = "cortex/armv7em/stm32f303/CMSIS-ST/Device/ST/STM32F30x/Include";
-  };
-
-  PLATFORM_FILES stm32f303_std_libs_src {
-    PATH = "cortex/armv7em/stm32f303/STM32F30x_StdPeriph_Driver";
-    CFILE = "stm32f30x_gpio.c";
-    CFILE = "stm32f30x_rcc.c";
-    CFILE = "stm32f30x_exti.c";
-    CFILE = "stm32f30x_syscfg.c";
-    CFILE = "stm32f30x_misc.c";
+  PLATFORM_FILES stm32fl432_cmsis {
+    PATH = "cortex/armv7em/stm32l432/CMSIS-ST/Device/ST/STM32L4xx/Include";
   };
 
   POSTBUILD all {

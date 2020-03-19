@@ -55,5 +55,6 @@ FUNC(void, OS_CODE) tpl_set_systick_timer()
     while(1);
   }
 }
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
