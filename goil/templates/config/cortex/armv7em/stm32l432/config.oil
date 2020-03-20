@@ -41,7 +41,7 @@ CPU stm32l432 {
   };
 
   CORTEX stm32fl432 {
-    PRIO_BITS = 4;
+    PRIO_BITS = 4;    // used in tpl_cortex_definitions for NVIC config
     CLOCK = 40000000; // init freq with no external oscillator...
   };
 
