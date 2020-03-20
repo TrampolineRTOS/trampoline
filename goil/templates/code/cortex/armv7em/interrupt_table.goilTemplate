@@ -82,7 +82,6 @@ end foreach
 #
 let it_map := [INTERRUPT mapBy: "NAME"]
 
-let indexISR2 := 0
 foreach objList in objForIRQ do
   let objList_KEY := KEY
 %
@@ -133,9 +132,8 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
       do
       if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
-%  tpl_fast_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+%  tpl_fast_central_interrupt_handler(% !obj::NAME %_id);
 %
-        let indexISR2 := indexISR2 + 1
       end if
     end foreach
   end if

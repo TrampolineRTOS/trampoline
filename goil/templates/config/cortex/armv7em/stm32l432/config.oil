@@ -328,20 +328,16 @@ CPU stm32l432 {
   INTERRUPT USART1_IRQ {
     VECT = 53;
     SETPRIO = TRUE { NUMBER = 37; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART1_Handler";
-      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
     };
   } : "USART1 global Interrupt";
   
   INTERRUPT USART2_IRQ {
     VECT = 54;
     SETPRIO = TRUE { NUMBER = 38; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART2_Handler";
-      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
     };
   } : "USART2 global Interrupt";
   

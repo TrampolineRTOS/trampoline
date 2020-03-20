@@ -167,7 +167,7 @@ end foreach
 foreach pin in usedPortPin do
   let regId := [pin::NUMBER unsigned] >> 2
   %    SYSCFG->EXTICR[%!regId%] &= ~SYSCFG_EXTICR%!regId+1%_EXTI%!pin::NUMBER%_Msk; /*P%!pin::GPIO !pin::NUMBER%*/\n%
-  %    SYSCFG->EXTICR[%!regId%] |=  SYSCFG_EXTICR%!regId+1%_EXTI%!pin::NUMBER%_P%!pin::GPIO%;\n%
+  %    SYSCFG->EXTICR[%!regId%] |=  SYSCFG_EXTICR%!regId+1%_EXTI%!pin::NUMBER%_P%!pin::GPIO%; /* isr on P%!pin::GPIO !pin::NUMBER% */\n%
   between %\n%
 end foreach
 %
