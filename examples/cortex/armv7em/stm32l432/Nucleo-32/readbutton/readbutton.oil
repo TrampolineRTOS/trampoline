@@ -22,8 +22,8 @@ CPU readbutton {
       APP_SRC = "readbutton.c";
       APP_NAME = "readbutton_exe";
       CFLAGS  = "-O0"; 
-      LIBRARY = IO;
       LDFLAGS = "-Map=readbutton.map";
+      LIBRARY = IO;
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
