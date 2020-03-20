@@ -1,10 +1,10 @@
 /*
- * Interrupt sources for the STM23F303 micro-controller
+ * Interrupt sources for the STM23L432 micro-controller
  */
 ENUM [
   SysTick,
   WWDG_IRQ,
-  PVD_IRQ,
+  PVD_PVM_IRQ,
   TAMP_STAMP_IRQ,
   RTC_WKUP_IRQ,
   FLASH_IRQ,
@@ -81,11 +81,11 @@ ENUM [
   DMA1_Channel5_IRQ,
   DMA1_Channel6_IRQ,
   DMA1_Channel7_IRQ,
-  ADC_IRQ,
-  CAN_TX_IRQ,
-  CAN_RX0_IRQ,
-  CAN_RX1_IRQ,
-  CAN_SCE_IRQ,
+  ADC1_IRQ,
+  CAN1_TX_IRQ,
+  CAN1_RX0_IRQ,
+  CAN1_RX1_IRQ,
+  CAN1_SCE_IRQ,
   EXTI9_5_IRQ {
     ENUM [
       PA5 { #include <sensibility.oil> },
@@ -148,12 +148,11 @@ ENUM [
       NONE
     ] PINON9 = NONE;
   },
-  TIM1_BRK_TIM9_IRQ,
-  TIM1_UP_TIM10_IRQ,
-  TIM1_TRG_COM_TIM11_IRQ,
+  TIM1_BRK_TIM15_IRQ,
+  TIM1_UP_TIM16_IRQ,
+  TIM1_TRG_COM_IRQ,
   TIM1_CC_IRQ,
   TIM2_IRQ,
-  TIM3_IRQ,
   I2C1_EV_IRQ,
   I2C1_ER_IRQ,
   SPI1_IRQ,
@@ -161,9 +160,6 @@ ENUM [
     ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
   },
   USART2_IRQ {
-    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
-  },
-  USART3_IRQ {
     ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
   },
   EXTI15_10_IRQ {
@@ -237,9 +233,31 @@ ENUM [
     ] PINON15 = NONE;
   },
   RTC_Alarm_IRQ,
+  SPI3_IRQ,
   TIM6_DAC_IRQ,
   TIM7_IRQ,
-  COMP2_IRQ,
-  COMP4_6_IRQ,
-  FPU_IRQ
+  DMA2_Channel1_IRQ,
+  DMA2_Channel2_IRQ,
+  DMA2_Channel3_IRQ,
+  DMA2_Channel4_IRQ,
+  DMA2_Channel5_IRQ,
+  COMP_IRQ,
+  LPTIM1_IRQ,
+  LPTIM2_IRQ,
+  USB_IRQ,
+  DMA2_Channel6_IRQ,
+  DMA2_Channel7_IRQ,
+  LPUART1_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  QUADSPI_IRQ,
+  I2C3_EV_IRQ,
+  I2C3_ER_IRQ,
+  SAI1_IRQ,
+  SWPMI1_IRQ,
+  TSC_IRQ,
+  RNG_IRQ,
+  FPU_IRQ,
+  CRS_IRQ
 ] SOURCE;
+
