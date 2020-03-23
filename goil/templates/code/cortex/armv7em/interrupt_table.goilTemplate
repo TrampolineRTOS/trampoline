@@ -105,20 +105,17 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   foreach obj in objList do
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then 
-        if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
-          let isISR1 := true
-          template tpl_external_interrupt_call_and_ack
-          unlet isISR1
-          let ackDone    := true
-        else
-          if exists it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME then
-            template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
-              it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME or%
-  %!obj::NAME %_function();%
-            end template
-          else%
-  %!obj::NAME %_function();%
+        if obj::ACK then
+          if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+            let isISR1 := true
+            template tpl_external_interrupt_call_and_ack
+            unlet isISR1
+            let ackDone    := true
+          else #bit access?
+            error here: "not implemented yet"
           end if
+        else
+          %  %!obj::NAME %_function();\n%
         end if
       end if
     end if
@@ -157,10 +154,12 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
             template tpl_external_interrupt_call_and_ack
             unlet isISR2
             let ackDone := true
-          else
+          else #bit access?
+            error here: "not implemented yet"
+          end if
+        else
 %  tpl_fast_central_interrupt_handler(% !obj::NAME %_id);
 %
-          end if
         end if
       end if
     end foreach
@@ -172,16 +171,25 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   foreach objCounter in counterForIRQ do
     let objCounter_KEY := KEY
     if objCounter_KEY == objList_KEY then
-      %  tpl_tick_% !objCounter_KEY %();
-%
+      if it_map[objList_KEY]::ACK then
+        if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+          let isCounter := true
+          template tpl_external_interrupt_call_and_ack
+          unlet isCounter
+          let ackDone    := true
+        else #bit access?
+          error here: "not implemented yet"
+        end if
+      else
+        %  tpl_tick_% !objCounter_KEY %();\n%
+      end if
     end if
   end foreach
 
   # ACK
-  foreach obj in objList before
+  if not ackDone then
 %  /* ACK */
-% do
-    if not ackDone then
+%   foreach obj in objList do
       if obj::ACK then
         if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
           template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
@@ -192,8 +200,8 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %  %!objList_KEY%_ClearFlag();%
         end if        
       end if
-    end if
-  end foreach
+    end foreach
+  end if
 %
 }
 %
