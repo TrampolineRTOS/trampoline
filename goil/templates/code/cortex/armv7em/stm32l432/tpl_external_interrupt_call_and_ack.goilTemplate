@@ -1,0 +1,29 @@
+%#template for external interrupts.
+# This template is called from ../interrupt_table.goilTemplate
+# the objective is to generate to code snippet
+# - check if the external interrupt is set
+# - call the external interrupt handler
+# - acknowledge the interrut
+
+let pin := ""
+foreach src in [obj::SOURCE_S map] do
+  if typeof src == @string then
+    let pin := src
+  end if
+end foreach
+let num := [pin subString: 2, 2]
+
+if exists isISR2 then
+%  if(EXTI->PR1 & EXTI_PR1_PIF%!num%) {
+     tpl_fast_central_interrupt_handler(%!obj::NAME%_id);
+     EXTI->PR1 = EXTI_PR1_PIF%!num%; /* ack */
+  }
+%
+elsif exists isISR1 then
+%  if(EXTI->PR1 & EXTI_PR1_PIF%!num%) {
+     %!obj::NAME %_function();
+     EXTI->PR1 = EXTI_PR1_PIF%!num%; /* ack */
+  }
+%
+else #error here: "should not happen: either ISR1 or ISR2"
+end if

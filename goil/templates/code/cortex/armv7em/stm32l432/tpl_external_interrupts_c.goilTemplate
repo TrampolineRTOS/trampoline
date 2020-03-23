@@ -239,42 +239,7 @@ do%
 end foreach
 %
 }
-%
-# Generate all the ClearFlag functions.
-foreach src in USED_EXTI
-before%
-/* External Interrupt acknowledge functions */
-%
-do
-%
-/*
- * Interrupt acknowledge of % !KEY %
- */
-FUNC(void, OS_CODE) % !KEY %_ClearFlag(void)
-{
-    EXTI->PR1 = %
 
-  if exists src["PIN"] then
-    %EXTI_PR1_PIF% !usedPortPin[src["PIN"]]::NUMBER
-  else
-    let lineList := @( )
-    foreach pin in src do
-      if typeof pin == @string then
-        let lineList += "EXTI_PR1_PIF".usedPortPin[pin]::NUMBER
-      end if 
-    end foreach
-    foreach line in lineList
-    do
-      !line
-    between
-      % | %
-    end foreach
-  end if
-  
-%;  
-}%
-end foreach
-%
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

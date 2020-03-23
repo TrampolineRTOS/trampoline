@@ -114,6 +114,7 @@ CPU stm32l432 {
   INTERRUPT EXTI0_IRQ {
     VECT = 22;
     SETPRIO = TRUE { NUMBER = 6; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME =  "EXTI0_IRQ_Handler";
     };
@@ -122,6 +123,7 @@ CPU stm32l432 {
   INTERRUPT EXTI1_IRQ {
     VECT = 23;
     SETPRIO = TRUE { NUMBER = 7; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI1_IRQ_Handler";
     };
@@ -130,6 +132,7 @@ CPU stm32l432 {
   INTERRUPT EXTI2_IRQ {
     VECT = 24;
     SETPRIO = TRUE { NUMBER = 8; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI2_IRQ_Handler";
     };
@@ -138,6 +141,7 @@ CPU stm32l432 {
   INTERRUPT EXTI3_IRQ {
     VECT = 25;
     SETPRIO = TRUE { NUMBER = 9; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI3_IRQ_Handler";
     };
@@ -146,6 +150,7 @@ CPU stm32l432 {
   INTERRUPT EXTI4_IRQ {
     VECT = 26;
     SETPRIO = TRUE { NUMBER = 10; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI4_IRQ_Handler";
     };
@@ -250,6 +255,7 @@ CPU stm32l432 {
   INTERRUPT EXTI9_5_IRQ {
     VECT = 39;
     SETPRIO = TRUE { NUMBER = 23; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI9_5_Handler";
     };
@@ -346,6 +352,7 @@ CPU stm32l432 {
   INTERRUPT EXTI15_10_IRQ {
     VECT = 56;
     SETPRIO = TRUE { NUMBER = 40; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI15_10__Handler";
     };

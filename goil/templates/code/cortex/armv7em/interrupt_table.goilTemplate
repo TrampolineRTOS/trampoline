@@ -64,12 +64,20 @@ foreach objList in objForIRQ do
 %extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
 %
       end if
-      if obj::ACK then
+      let isExt := false
+      if exists obj::ACK_S::ACKTYPE then
+        let isExt := obj::ACK_S::ACKTYPE == "EXTERNAL"
+      end if
+      if obj::ACK & not isExt then
 %extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
 %
       end if
     elsif obj::KIND == "COUNTER" then
-      if obj::ACK then
+      let isExt := false
+      if exists obj::ACK_S::ACKTYPE then
+        let isExt := obj::ACK_S::ACKTYPE == "EXTERNAL"
+      end if
+      if obj::ACK & not isExt then
 %extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
 %
       end if      
@@ -88,18 +96,29 @@ foreach objList in objForIRQ do
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
+  #Ack for EXTERNAL ISR are a special case:
+  #  many lines can be associated to the same source.
+  let ackDone    := false
   # ISR1
-%  /* ISR1s */%
+%  /* ISR1s */
+%
   foreach obj in objList do
     if obj::KIND == "ISR" then
-      if obj::CATEGORY == 1 then
-        if exists it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME then
-          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
-            it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME or%
+      if obj::CATEGORY == 1 then 
+        if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+          let isISR1 := true
+          template tpl_external_interrupt_call_and_ack
+          unlet isISR1
+          let ackDone    := true
+        else
+          if exists it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME then
+            template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
+              it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME or%
   %!obj::NAME %_function();%
-          end template
-        else%
+            end template
+          else%
   %!obj::NAME %_function();%
+          end if
         end if
       end if
     end if
@@ -132,8 +151,17 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
       do
       if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
+        if obj::ACK then
+          if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+            let isISR2 := true
+            template tpl_external_interrupt_call_and_ack
+            unlet isISR2
+            let ackDone := true
+          else
 %  tpl_fast_central_interrupt_handler(% !obj::NAME %_id);
 %
+          end if
+        end if
       end if
     end foreach
   end if
@@ -150,13 +178,11 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   end foreach
 
   # ACK
+  foreach obj in objList before
 %  /* ACK */
-%
-  let ackDone := false
-  foreach obj in objList do
+% do
     if not ackDone then
       if obj::ACK then
-#        let ackDone := true
         if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
           template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
             it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
