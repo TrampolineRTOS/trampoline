@@ -35,6 +35,7 @@ IMPLEMENTATION thumb2_ressource {
       TRUE { 
         ENUM [
           BIT {STRING NAME;},
+          TEMPLATE {STRING NAME;},
           /* special case for external interrupts, as ACK field can be deduced. */
           EXTERNAL
         ] ACKTYPE;
