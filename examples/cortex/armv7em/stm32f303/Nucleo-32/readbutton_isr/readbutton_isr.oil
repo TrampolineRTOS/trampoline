@@ -22,7 +22,6 @@ CPU readbutton_isr {
       APP_NAME = "readbutton_isr_exe";
       CFLAGS  = "-O0"; 
       LDFLAGS = "-Map=readbutton_isr.map";
-      LIBRARY = IO;
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
@@ -78,32 +77,6 @@ CPU readbutton_isr {
     SOURCE = EXTI15_10_IRQ {
       PINON12 = PA12 {
         TRIGGER = FALLING;
-        PULL = UP;
-      };
-    };
-  };
-
-  ISR isr_button2 {
-    CATEGORY = 2;
-    PRIORITY = 4;
-    //CATEGORY = 1;
-    //PRIORITY = 10;
-    SOURCE = EXTI15_10_IRQ {
-      PINON14 = PC14 {
-        TRIGGER = BOTH;
-        PULL = NONE;
-      };
-    };
-  };
-
-  ISR isr_button3 {
-    CATEGORY = 2;
-    PRIORITY = 2;
-    //CATEGORY = 1;
-    //PRIORITY = 10;
-    SOURCE = EXTI15_10_IRQ {
-      PINON10 = PA10 {
-        TRIGGER = RISING;
         PULL = UP;
       };
     };

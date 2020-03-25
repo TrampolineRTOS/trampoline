@@ -57,7 +57,7 @@ foreach obj in ITOBJ do
   if exists obj::SOURCE then
     if [obj::SOURCE leftSubString: 4] == "EXTI" then
       if not exists obj::SOURCE_S then
-        error obj::SOURCE : "External Interrupt needs PIN (EXTI0_IRQ to EXTI4_IRQ) or PINONx (EXTI9_5_IRQ or EXTI15_10_IRQ) with x being the interrupt line number"
+        error obj::SOURCE : "External Interrupts need PIN (EXTI0_IRQ to EXTI4_IRQ) or PINONx (EXTI9_5_IRQ or EXTI15_10_IRQ) with x being the interrupt line number"
       else
         let filteredItObj += obj
       end if
@@ -113,7 +113,6 @@ foreach src in USED_EXTI do
     if typeof pin == @string then
       let portPin::TRIGGER := exists src[KEY+"_S"]::TRIGGER default ("RISING")
       let portPin::PULL := exists src[KEY+"_S"]::PULL default ("NONE")
-      #let portPin::NUMBER := [pin rightSubString: 1]
       let portPin::NUMBER := [pin subString: 2, 2]
       let portPin::GPIO := [pin subString: 1, 1]
       let usedPortPin[pin] := portPin

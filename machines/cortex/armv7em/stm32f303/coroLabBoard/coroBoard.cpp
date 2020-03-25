@@ -1,6 +1,4 @@
 #include "stm32f30x.h"
-#include "stm32f30x_rcc.h"
-#include "stm32f30x_gpio.h"
 #include "mcp23s17.h"
 #include "pinAccess.h"
 #include "tft.h"
