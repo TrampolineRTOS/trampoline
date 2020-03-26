@@ -1010,6 +1010,11 @@ CPU stm32f407 {
     CFILE = "misc.c";
   };
 
+  PLATFORM_FILES stm32f407IO {
+    PATH = "cortex/armv7em/stm32f407/lib";
+    CFILE = "pinAccess.c";
+  };
+
   POSTBUILD all {
     COMMAND buildbin {
       TYPE = COPIER;

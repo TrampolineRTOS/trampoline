@@ -111,6 +111,7 @@ CPU stm32f303 {
   INTERRUPT EXTI1_IRQ {
     VECT = 23;
     SETPRIO = TRUE { NUMBER = 7; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI1_IRQ_Handler";
     };

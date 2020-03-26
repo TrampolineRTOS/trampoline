@@ -191,9 +191,9 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %  /* ACK */
 %   foreach obj in objList do
       if obj::ACK then
-        if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
+        if obj::ACK_S::ACKTYPE == "TEMPLATE" then
           template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
-            it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
+            it_map[objList_KEY]::ACK_S::ACKTYPE_S::TEMPLATE_S::NAME or
 %  %!objList_KEY%_ClearFlag();%
           end template
         else
