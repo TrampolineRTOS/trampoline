@@ -1504,21 +1504,28 @@ if OS::MEMMAP then
   end if
 end if
 
-#if OS::TRACE then
-!PROJECT%.json
+!PROJECT%/tpl_static_info.json
 %
-  write to PROJECT+".json":
-    let obj := @[
-      "task"     : TASKS,
-      "isr"      : ISRS,
-      "event"    : EVENTS,
-      "resource" : RESOURCES,
-      "alarm"    : ALARMS
-    ]
-    let nbTab := 0
-    template export_json in log
+write to PROJECT+"/tpl_static_info.json":
+  let obj := @[
+    "task"     : TASKS,
+    "isr"      : ISRS,
+    "event"    : EVENTS,
+    "resource" : RESOURCES,
+    "alarm"    : ALARMS
+  ]
+  let nbTab := 0
+  template export_json in log
+end write
+
+#temporary => posix related
+if OS::TRACE then
+  %readTrace.py%
+  write to executable "readTrace.py":
+    template readTrace_py in log
   end write
-#end if
+end if
+#temporary
 
 template if exists custom_files in config
 
