@@ -18,7 +18,7 @@
  * This software is distributed under the Lesser GNU Public Licence
  *
  */
-#define TRACE_FILENAME "trace.txt"
+#define TRACE_FILENAME "trace.json"
 
 
 #include "tpl_app_define.h" /* WITH_TRACE */
