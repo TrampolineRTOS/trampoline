@@ -35,11 +35,11 @@ int main(void)
 }
 
 ISR(apushed) {
-  printf("a\n");
+  printf("a\r\n");
 }
 
 ISR (bpushed) {
-  printf("b\n");
+  printf("b\r\n");
 }
 
 TASK(background) {

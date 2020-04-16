@@ -25,7 +25,7 @@ TASK(my_periodic_task)
     if (received & ev_act) {
       ClearEvent(ev_act);
       occurence++;
-      printf("Activation #%d\n",occurence);
+      printf("Activation #%d\r\n",occurence);
     }
     if (received & ev_stop) {
       ClearEvent(ev_stop);
