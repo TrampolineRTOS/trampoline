@@ -47,6 +47,7 @@ CPU posix {
     CFILE = "tpl_posix_autosar.c";
     CFILE = "tpl_posix_irq.c";
     CFILE = "tpl_posix_context.c";
+    CFILE = "tpl_posixvp_irq_gen.c";
     CFILE = "tpl_trace.c";
   };
 
