@@ -70,7 +70,7 @@ for elt in trace:
         print('Event {0:>12} (id {1}) sent to task {2}'.format(
             evtName,
             int(elt['event']),
-            procNames[i]))
+            procNames[target]))
     elif elt['type'] == 'reset_event': #reset event
         target  = runningTask
         evtId   = int(elt['event'])-1
