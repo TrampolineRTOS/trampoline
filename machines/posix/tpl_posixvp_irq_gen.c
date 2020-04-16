@@ -101,6 +101,14 @@ void tpl_posixvp_irq_gen_init()
     // We restore the child handler to its default
     sigaction(SIGCHLD, &prev_chld_act, NULL);
     sigaction(SIGINT, &prev_int_act, NULL);
+
+    // Ignore SIGUSR2 and SIGTRAP. Modified later on if ISR are plugged.
+    struct sigaction ign_act;
+    memset(&ign_act, 0, sizeof(ign_act));
+    ign_act.sa_handler = SIG_IGN;
+    sigaction(SIGUSR2, &ign_act, NULL);
+    sigaction(SIGTRAP, &ign_act, NULL);
+
     return;
   }
   switch_to_cooked();
