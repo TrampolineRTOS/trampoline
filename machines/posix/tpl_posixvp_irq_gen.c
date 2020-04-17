@@ -3,6 +3,7 @@
 
 #define _XOPEN_SOURCE 500
 
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -134,10 +135,16 @@ void tpl_posixvp_irq_gen_init()
       switch(read_char)
       {
         case 'a' :
-          kill(tpl_pid, SIGUSR2);
+          if (kill(tpl_pid, SIGTERM) == -1)
+          {
+            fprintf(stderr, "posixvp:a:%s\r\n", strerror(errno));
+          }
           break;
         case 'b' :
-          kill(tpl_pid, SIGTRAP);
+          if(kill(tpl_pid, SIGTRAP) == -1)
+          {
+            fprintf(stderr, "posixvp:b:%s\r\n", strerror(errno));
+          }
           break;
         case 'q' :
           quit_vp = 1;
