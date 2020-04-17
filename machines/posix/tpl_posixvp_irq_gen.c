@@ -20,6 +20,59 @@ static bool mode_is_raw = false;
 static struct termios saved_mode;
 static volatile sig_atomic_t quit_vp = 0;
 
+static uint8_t tpl_posixvp_leds[4] = {0};
+static const char* tpl_posixvp_leds_on[4] = {"\033[41m \033[0m", "\033[42m \033[0m", "\033[44m \033[0m", "\033[43m \033[0m"};
+static const char* tpl_posixvp_leds_off= "_";
+
+void print_leds(void)
+{
+  char output_string[64] = {'\0'};
+  strcat(output_string, "LEDS: ");
+  for(uint8_t led = 0; led < 4; led++)
+  {
+    if (tpl_posixvp_leds[led])
+    {
+      strcat(output_string, tpl_posixvp_leds_on[led]);
+    }
+    else
+    {
+      strcat(output_string, tpl_posixvp_leds_off);
+    }
+  }
+  strcat(output_string, "\r\n");
+  printf(output_string);
+}
+
+void set_leds(uint8_t leds)
+{
+    size_t led = 0;
+    while (leds > 0 && led <4)
+    {
+      if (leds & 0x1)
+      {
+        tpl_posixvp_leds[led] = 0x1;
+      }
+      led++;
+      leds = leds >> 1;
+    }
+  print_leds();
+}
+
+void reset_leds(uint8_t leds)
+{
+    size_t led = 0;
+    while (leds > 0 && led < 4)
+    {
+      if (leds & 0x1)
+      {
+        tpl_posixvp_leds[led] = 0x0;
+      }
+      led++;
+      leds = leds >> 1;
+    }
+  print_leds();
+}
+
 void switch_to_raw()
 {
   struct termios new_mode;

@@ -36,13 +36,4 @@ CPU test {
      PRIORITY = 2;
   };
 
-  TASK background {
-    AUTOSTART = TRUE {
-    APPMODE = std;
-    };
-    PRIORITY = 2;
-    SCHEDULE  = FULL;
-    ACTIVATION = 1;
-  };
 };
-
