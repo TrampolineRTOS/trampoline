@@ -25,7 +25,7 @@ CPU test {
   };
 
   ISR apushed {
-     SOURCE = SIGUSR2;
+     SOURCE = SIGTERM;
      CATEGORY = 2;
      PRIORITY = 3;
   };
