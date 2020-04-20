@@ -41,16 +41,7 @@ void print_leds(void)
     }
   }
   strcat(output_string, "\r\n");
-  /* Gcc may generate a warning for a security pb with 
-   * the following printf line
-   */
-  #ifdef __GNUC__
-    #pragma GCC diagnostic ignored "-Wformat-security"
-  #endif //__GNUC__
-  printf(output_string);
-  #ifdef __GNUC__
-    #pragma GCC diagnostic warning "-Wformat-security"
-  #endif //__GNUC__
+  write(STDOUT_FILENO,output_string,64);
 }
 
 void set_leds(uint8_t leds)
