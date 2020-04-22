@@ -222,7 +222,7 @@ IMPLEMENTATION trampoline_common {
     ] BUILD = FALSE;
     BOOLEAN [
       TRUE {
-        ENUM [txt, bin, json] FORMAT;
+        /* FORMAT is target specific */
         BOOLEAN PROC        = TRUE;
         BOOLEAN RESOURCE    = TRUE;
         BOOLEAN ALARM       = TRUE;

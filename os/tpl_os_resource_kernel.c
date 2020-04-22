@@ -89,7 +89,6 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
   tpl_dyn_proc_table[proc_id]->resources;
 #if WITH_TRACE == YES
   GET_CURRENT_CORE_ID(core_id)
-  VAR(tpl_resource_id, AUTOMATIC) res_id;
 #endif /* WITH_TRACE */
 
   if (res != NULL)

@@ -16,6 +16,13 @@ IMPLEMENTATION posix {
       },
       FALSE
     ] BUILD = FALSE;
+
+    BOOLEAN [
+      TRUE {
+        ENUM [json] FORMAT = json;
+      },
+      FALSE
+    ] TRACE = FALSE;
   };
   
   TASK {

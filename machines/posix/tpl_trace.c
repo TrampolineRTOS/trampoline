@@ -45,6 +45,7 @@ FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
 {
   CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = &SystemCounter_counter_desc;
   tpl_tick timestamp = counter->current_date;
+  return timestamp;
 }
 
 /* return 1 when the file is opened (first time)*/
@@ -91,10 +92,7 @@ FUNC(void, OS_CODE) tpl_trace_proc_change_state(
 {
   const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if   TRACE_FORMAT == TRACE_FORMAT_TXT
-  fprintf(trace_file,
-    "[%9ld] proc %d change to state %d\n",ts,proc_id,target_state);
-# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
@@ -121,10 +119,7 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
 {
   const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if   TRACE_FORMAT == TRACE_FORMAT_TXT
-  fprintf(trace_file,
-    "[%9ld] res %d change to state %d\n",ts,res_id,target_state);
-# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
@@ -150,10 +145,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
 {
   const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if   TRACE_FORMAT == TRACE_FORMAT_TXT
-  fprintf(trace_file,
-    "[%9ld] timeobj %d change to state %d\n",ts,timeobj_id,target_state);
-# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
@@ -178,10 +170,7 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
 {
   const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if   TRACE_FORMAT == TRACE_FORMAT_TXT
-  fprintf(trace_file,
-    "[%9ld] timeobj %d expired\n",ts,timeobj_id);
-# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
@@ -207,10 +196,7 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 {
   const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if   TRACE_FORMAT == TRACE_FORMAT_TXT
-  fprintf(trace_file,
-    "[%9ld] set_event to %d mask 0x%x\n",ts,task_target_id,event);
-# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
@@ -236,10 +222,7 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 {
   const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if   TRACE_FORMAT == TRACE_FORMAT_TXT
-  fprintf(trace_file,
-    "[%9ld] reset event mask 0x%x\n",ts,event);
-# elif TRACE_FORMAT == TRACE_FORMAT_JSON
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"

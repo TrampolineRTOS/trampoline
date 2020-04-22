@@ -39,7 +39,6 @@ typedef uint8 tpl_trace_resource_state;
 #define TIMEOBJ_CHANGE_STATE 4 // ALARM_SLEEP or ALARM_ACTIVE
 #define TIMEOBJ_EXPIRE       5
 
-#define TRACE_FORMAT_TXT     0
 #define TRACE_FORMAT_JSON    1
 #define TRACE_FORMAT_BIN     2
 
