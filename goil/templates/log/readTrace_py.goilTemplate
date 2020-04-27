@@ -3,6 +3,13 @@
 import json
 import sys
 
+#convert event mask to index.
+def getEventName(staticInfo,task,mask):
+    for taskEvt in staticInfo['task'][target]['EVENT']:
+        for evt in staticInfo['event']:
+            if evt['MASK'] == mask and taskEvt['VALUE'] == evt['NAME']:
+                return evt['NAME']
+
 #---------------------------------
 #read static information JSON file
 #---------------------------------
@@ -65,17 +72,17 @@ for elt in trace:
             timeObjStates[int(elt['target_state'])]))
     elif elt['type'] == 'set_event': #send event
         target  = int(elt['target_task_id'])
-        evtId   = int(elt['event'])-1
-        evtName = staticInfo['task'][target]['EVENT'][evtId]['VALUE']
+        evtMask = int(elt['event'])
+        evtName = getEventName(staticInfo,target,evtMask)
         print('Event {0:>12} (id {1}) sent to task {2}'.format(
             evtName,
             int(elt['event']),
             procNames[target]))
     elif elt['type'] == 'reset_event': #reset event
         target  = runningTask
-        evtId   = int(elt['event'])-1
-        evtName = staticInfo['task'][target]['EVENT'][evtId]['VALUE']
-        print('task {0:>20} resets event {1:>10} (id {2})'.format(
+        evtMask = int(elt['event'])
+        evtName = getEventName(staticInfo,target,evtMask)
+        print('task {0:>20} resets event {1:>10} (mask {2})'.format(
             procNames[i],
             evtName,
             int(elt['event'])))
