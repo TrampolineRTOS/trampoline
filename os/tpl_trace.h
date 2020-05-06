@@ -31,6 +31,7 @@ typedef uint8 tpl_trace_resource_state;
 
 /**
 * @def IDs of the different traces
+* value used in the binary export implementation. do not modify.
 */
 #define PROC_CHANGE_STATE    0
 #define RES_CHANGE_STATE     1
@@ -38,9 +39,9 @@ typedef uint8 tpl_trace_resource_state;
 #define EVENT_RESET          3
 #define TIMEOBJ_CHANGE_STATE 4 // ALARM_SLEEP or ALARM_ACTIVE
 #define TIMEOBJ_EXPIRE       5
+/* special case sent by target when there is no more place*/
+#define OVERFLOW             6 
 
-#define TRACE_FORMAT_JSON    1
-#define TRACE_FORMAT_BIN     2
 
 /* define the trace output types */
 #if WITH_TRACE == YES

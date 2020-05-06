@@ -18,26 +18,20 @@
  * This software is distributed under the Lesser GNU Public Licence
  *
  */
-#define TRACE_FILENAME "trace.json"
 
-#define TRACE_FORMAT_JSON    1
-#define TRACE_FORMAT_BIN     2
+/* should be defined before including tpl_app_define.h */
+#define TRACE_FORMAT_SERIAL   0
+#define TRACE_FORMAT_FRAM     1
 
 #include "tpl_app_define.h" /* WITH_TRACE */
+#include <stdint.h>
 
 #if WITH_TRACE == YES
-#include <stdio.h>
-#include <stdlib.h> /* exit */
-
 #include "tpl_trace.h"
 
-#define OS_START_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
-#include "tpl_memmap.h"
-
-FILE *trace_file = NULL;
-
-#define OS_STOP_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
-#include "tpl_memmap.h"
+#if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+# include "serial.h"
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -50,24 +44,18 @@ FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
   return timestamp;
 }
 
-/* return 1 when the file is opened (first time)*/
-FUNC(uint8, OS_CODE) tpl_trace_start()
+FUNC(void, OS_CODE) tpl_trace_start()
 {
-  uint8 first = 0;
-  if(trace_file == NULL)
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  static char serialOk = 0;
+  if(serialOk == 0)
   {
-    //first time run (open file in write mode)
-    trace_file = fopen(TRACE_FILENAME,"w");
-    if(trace_file == NULL) {
-      perror("[trace] unable to open trace file");
-      exit(1);
-    }
-	first = 1;
-#   if TRACE_FORMAT == TRACE_FORMAT_JSON
-      fprintf(trace_file,"[\n");
-#   endif
+    tpl_serial_begin();
+	serialOk = 1;
   }
-  return first;
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif
 }
 
 /**
@@ -77,10 +65,7 @@ FUNC(uint8, OS_CODE) tpl_trace_start()
 */
 FUNC(void, OS_CODE) tpl_trace_close()
 {
-#   if TRACE_FORMAT == TRACE_FORMAT_JSON
-      fprintf(trace_file,"]\n");
-#endif
-  if(trace_file) fclose(trace_file);
+
 }
 
 /**
@@ -92,18 +77,27 @@ FUNC(void, OS_CODE) tpl_trace_proc_change_state(
     CONST(tpl_proc_id,AUTOMATIC) proc_id,
     CONST(tpl_proc_state,AUTOMATIC) target_state)
 {
-  const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if TRACE_FORMAT == TRACE_FORMAT_JSON
-  if(!first) fprintf(trace_file,",");
-  fprintf(trace_file,
-	"\n\t{\n"
-	"\t\t\"type\":\"proc\",\n"
-	"\t\t\"ts\":\"%ld\",\n"
-	"\t\t\"proc_id\":\"%d\",\n"
-	"\t\t\"target_state\":\"%d\"\n"
-	"\t}"
-	,ts,proc_id,target_state);
+  tpl_trace_start();
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT 00 SSS (Type, State) */
+  uint8_t byte = PROC_CHANGE_STATE<<5 | target_state;
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = proc_id & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
@@ -119,18 +113,27 @@ FUNC(void, OS_CODE) tpl_trace_res_change_state(
     CONST(tpl_resource_id, AUTOMATIC)   res_id,
     CONST(tpl_trace_resource_state,AUTOMATIC) target_state)
 {
-  const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if TRACE_FORMAT == TRACE_FORMAT_JSON
-  if(!first) fprintf(trace_file,",");
-  fprintf(trace_file,
-	"\n\t{\n"
-	"\t\t\"type\":\"resource\",\n"
-	"\t\t\"ts\":\"%ld\",\n"
-	"\t\t\"res_id\":\"%d\",\n"
-	"\t\t\"target_state\":\"%d\"\n"
-	"\t}"
-	,ts,res_id,target_state);
+  tpl_trace_start();
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT 00 SSS (Type, State) */
+  uint8_t byte = RES_CHANGE_STATE<<5 | target_state;
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = res_id & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
@@ -145,18 +148,27 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
     CONST(tpl_timeobj_id, AUTOMATIC) timeobj_id,
     CONST(tpl_time_obj_state, AUTOMATIC) target_state)
 {
-  const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if TRACE_FORMAT == TRACE_FORMAT_JSON
-  if(!first) fprintf(trace_file,",");
-  fprintf(trace_file,
-	"\n\t{\n"
-	"\t\t\"type\":\"timeobj\",\n"
-	"\t\t\"ts\":\"%ld\",\n"
-	"\t\t\"timeobj_id\":\"%d\",\n"
-	"\t\t\"target_state\":\"%d\"\n"
-	"\t}"
-	,ts,timeobj_id,target_state);
+  tpl_trace_start();
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT 00 SSS (Type, State) */
+  uint8_t byte = TIMEOBJ_CHANGE_STATE<<5 | target_state;
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = timeobj_id & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
@@ -170,17 +182,27 @@ FUNC(void, OS_CODE) tpl_trace_time_obj_change_state(
 FUNC(void, OS_CODE) tpl_trace_time_obj_expire(
     CONST(tpl_timeobj_id,AUTOMATIC) timeobj_id)
 {
-  const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if TRACE_FORMAT == TRACE_FORMAT_JSON
-  if(!first) fprintf(trace_file,",");
-  fprintf(trace_file,
-	"\n\t{\n"
-	"\t\t\"type\":\"timeobj_expire\",\n"
-	"\t\t\"ts\":\"%ld\",\n"
-	"\t\t\"timeobj_id\":\"%d\"\n"
-	"\t}"
-	,ts,timeobj_id);
+  tpl_trace_start();
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT 00000 (Type) */
+  uint8_t byte = TIMEOBJ_EXPIRE<<5;
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = timeobj_id & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
@@ -196,18 +218,27 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
     CONST(tpl_task_id, AUTOMATIC)       task_target_id,
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
-  const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if TRACE_FORMAT == TRACE_FORMAT_JSON
-  if(!first) fprintf(trace_file,",");
-  fprintf(trace_file,
-	"\n\t{\n"
-	"\t\t\"type\":\"set_event\",\n"
-	"\t\t\"ts\":\"%ld\",\n"
-	"\t\t\"target_task_id\":\"%d\",\n"
-	"\t\t\"event\":\"%d\"\n"
-	"\t}"
-	,ts,task_target_id,event);
+  tpl_trace_start();
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT EEEEE (Type, Event) */
+  uint8_t byte = EVENT_SET<<5 | (event & 0x1F);
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = task_target_id & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
@@ -222,21 +253,32 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 FUNC(void, OS_CODE) tpl_trace_event_reset(
     CONST(tpl_event_mask, AUTOMATIC)    event)
 {
-  const uint8 first = tpl_trace_start();
   const tpl_tick ts=tpl_trace_get_timestamp();
-# if TRACE_FORMAT == TRACE_FORMAT_JSON
-  if(!first) fprintf(trace_file,",");
-  fprintf(trace_file,
-	"\n\t{\n"
-	"\t\t\"type\":\"reset_event\",\n"
-	"\t\t\"ts\":\"%ld\",\n"
-	"\t\t\"event\":\"%d\"\n"
-	"\t}"
-	,ts,event);
+  tpl_trace_start();
+# if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT EEEEE (Type, Event) */
+  uint8_t byte = EVENT_RESET<<5 | (event & 0x1F);
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = 0;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
 }
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
