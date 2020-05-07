@@ -2,89 +2,49 @@
 # -*- coding: UTF-8 -*-
 import json
 import sys
+import argparse
 
-#convert event mask to index.
-def getEventName(staticInfo,task,mask):
-    for taskEvt in staticInfo['task'][target]['EVENT']:
-        for evt in staticInfo['event']:
-            if evt['MASK'] == mask and taskEvt['VALUE'] == evt['NAME']:
-                return evt['NAME']
+if __name__ == '__main__':
+    defaultTraceFile = 'trace.json'
+    #arguments (no default arg for -i and -o to get None if not defined)
+    parser = argparse.ArgumentParser(description='Use the trace tookit to get information on Trampoline behavior')
+    #options -i (or -o,-s), with nargs
+    #  * nothing => None
+    #  * -i      => default (trace.json, ...)
+    #  * -i file => file
+    parser.add_argument("-i", "--input", type=str, nargs='?', const=defaultTraceFile, metavar='inputFile', help='use JSON input file.')
+    parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultTraceFile, metavar='outputFile', help='Store the event list into a JSON format for later use.')
+    parser.add_argument("-s", "--serial", type=str, nargs='?', const='/dev/ttyACM1',metavar='serial', help='Use the serial line to get events.')
+    parser.add_argument("-l", "--length", type=int, default=0,metavar='length', help='Number of events before end. 0 means endless.') #useful?
+    args = parser.parse_args()
+    #first, get access to files.
+    traceToolFolder = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/extra/trace-tools"
+    sys.path.append(traceToolFolder)
+    try:
+        import StaticInfo
+        import TraceReader
+        import TraceEvaluate
+        import TraceExport
+    except ImportError:
+        print("I can't find trace tools scripts")
+        print("=> searched in '"+traceToolFolder+"'")
+        print("Maybe the TRAMPOLINE_BASE_PATH is not correctly set in your .oil file")
+        print("Correct it and run goil again.")
+        sys.exit(1)
+    #read static information
+    si = StaticInfo.StaticInfo('%!PROJECT%/tpl_static_info.json')
+    #reader    => getting raw events
+    if not args.input and not args.serial:
+        args.input = defaultTraceFile
+    reader   = TraceReader.TraceReader(args.input)
+    #evaluator => from raw events and Static info. Get events
+    evaluate = TraceEvaluate.TraceEvaluate(si)
+    #export    => font end (txt, gui)
+    export   = TraceExport.TraceExport()
+    evaluate.setExport(export)
 
-#---------------------------------
-#read static information JSON file
-#---------------------------------
-staticInfo = []
-try:
-    with open('%!PROJECT%/tpl_static_info.json') as staticInfoFile:
-        staticInfo = json.load(staticInfoFile)
-except OSError as e:
-    print('static information file not found (events.json). '
-          'You should enable the trace in the .oil file and '
-          'recompile your application.')
-    sys.exit(1)
-
-#---------------------------------
-#Ok, now trace JSON file
-#---------------------------------
-trace = []
-try:
-    with open('./trace.json')  as traceFile:
-        trace = json.load(traceFile)
-except OSError as e:
-    print('trace file not found (trace.json). '
-          'You should run your application.')
-    sys.exit(1)
-
-#---------------------------------
-#Now, we add some specific stuff for Trampoline
-#---------------------------------
-# proc (task+isr) names
-procNames = []
-for proc in staticInfo['task']:
-    procNames.append(proc['NAME'])
-procNames.append('idle') #idle task is the last one.
-# OS constant names (task states, alarm states)
-taskStates = ['SUSPENDED','READY','RUNNING','WAITING','AUTOSTART','READY_AND_NEW']
-timeObjStates = ['SUSPENDED','READY','RUNNING','WAITING','AUTOSTART','READY_AND_NEW']
-# track the running task (init to idle)
-runningTask = len(procNames)-1
+    for rawEvent in reader.getEvent():
+        evaluate.evaluate(rawEvent)
 
 
-#---------------------------------
-#Exploit the trace, chronologically
-#---------------------------------
-for elt in trace:
-    print('[{0: >10}] '.format(elt['ts']), end='')
-    if elt['type'] == 'proc':        #proc state udpdate
-        i = int(elt['proc_id'])
-        st=int(elt['target_state'])
-        print('proc {0: <20} change to state {1}'.format(procNames[i],taskStates[st]))
-        if taskStates[st]=='RUNNING': #//change to running
-            runningTask = i
-    elif elt['type'] == 'timeobj_expire': #alarm expire
-        i = int(elt['timeobj_id'])
-        to = staticInfo['alarm'][i]
-        print('time object expired: {0}'.format(to['NAME']))
-    elif elt['type'] == 'timeobj':   #alarm state update
-        i = int(elt['timeobj_id'])
-        print('time object "{0:>11}" change to state {1}'.format(
-            to['NAME'],
-            timeObjStates[int(elt['target_state'])]))
-    elif elt['type'] == 'set_event': #send event
-        target  = int(elt['target_task_id'])
-        evtMask = int(elt['event'])
-        evtName = getEventName(staticInfo,target,evtMask)
-        print('Event {0:>12} (id {1}) sent to task {2}'.format(
-            evtName,
-            int(elt['event']),
-            procNames[target]))
-    elif elt['type'] == 'reset_event': #reset event
-        target  = runningTask
-        evtMask = int(elt['event'])
-        evtName = getEventName(staticInfo,target,evtMask)
-        print('task {0:>20} resets event {1:>10} (mask {2})'.format(
-            procNames[i],
-            evtName,
-            int(elt['event'])))
-    else:
-        print('unhandled type: {0}'.format(elt['type']))
+

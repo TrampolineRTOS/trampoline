@@ -1,5 +1,7 @@
 events
-events.json
+events_exe
+trace.json
+readTrace.py
 build
 *.elf
 *.bin
