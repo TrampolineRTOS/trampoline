@@ -62,6 +62,7 @@ You have an example in the `serial/` example (both Arduino Uno and Mega).
 
 The definition is in file `goil/templates/config/avr/arduino/config.oil`
 
+
 ## adding your own libraries
 You may need to add your own libraries, it can be added in the file `goil/templates/config/avr/arduino/config.oil`. For the SPI library for instance:
 
@@ -72,6 +73,15 @@ You may need to add your own libraries, it can be added in the file `goil/templa
   };
 ```
 
+There may have dependencies between libraries. For instance, adding the `LiquidCrystal_I2C` depends on Wire (i2c). You can add this information directly in the `.oil` file, or the constraint in the `config.oil` file:
+
+```
+  LIBRARY lcd_i2c {
+    NEEDS   = i2c;
+    PATH    = "/avr/arduino/libraries/LiquidCrystal_I2C-1.1.2";
+    CPPFILE = "LiquidCrystal_I2C.cpp";
+  };
+```
 # Using Atmel Studio
 The Atmel Studio project allows to insert breakpoints and interactive debug. The generation of a project is not automatic, and should be based on the source files that are compiled in the classic `Makefile` based approach…
 
