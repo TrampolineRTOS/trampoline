@@ -29,6 +29,7 @@ if __name__ == '__main__':
     parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultTraceFile, metavar='outputFile', help='Store the event list into a JSON format for later use.')
     parser.add_argument("-v", "--verbose", default=False, action="store_true", help="verbose mode")
     args = parser.parse_args()
+
     #first, get access to files.
     traceToolFolder = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/extra/trace-tools"
     sys.path.append(traceToolFolder)
@@ -43,6 +44,7 @@ if __name__ == '__main__':
         print("Maybe the TRAMPOLINE_BASE_PATH is not correctly set in your .oil file")
         print("Correct it and run goil again.")
         sys.exit(1)
+
     #reader    => getting raw events
     if args.serial: #serial line?
         serialParams=args.serial.split(',')
@@ -52,13 +54,14 @@ if __name__ == '__main__':
             args.input = defaultTraceFile
         reader   = TraceReader.TraceReaderFile(args.input)
 
-    #export    => font end (txt, gui)
-    export   = TraceExport.TraceExport()
+    #output
     outputToFile = False
     if args.output:
         outputToFile = True
         rawEventList = []
     else:
+        #export    => front end (txt, gui)
+        export   = TraceExport.TraceExport()
         #read static information
         si = StaticInfo.StaticInfo('%!PROJECT%/tpl_static_info.json')
         #evaluator => from raw events and Static info. Get events
@@ -74,9 +77,9 @@ if __name__ == '__main__':
                 evaluate.evaluate(rawEvent)
     except KeyboardInterrupt:
         reader.stop()
-        if args.verbose:
-            print('save to '+args.output)
         if outputToFile:
+            if args.verbose:
+                print('save to '+args.output)
             with open(args.output, "w") as outfile:
                 json.dump(rawEventList, outfile, indent=2)
 
