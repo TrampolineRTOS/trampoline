@@ -3,19 +3,30 @@
 import json
 import sys
 import argparse
+import time
+import textwrap
 
 if __name__ == '__main__':
     defaultTraceFile = 'trace.json'
     #arguments (no default arg for -i and -o to get None if not defined)
-    parser = argparse.ArgumentParser(description='Use the trace tookit to get information on Trampoline behavior')
+    parser = argparse.ArgumentParser(description='Use the trace tookit to get information on Trampoline based application behavior. 2 input modes for now: json file or serial line.',
+    formatter_class=argparse.RawDescriptionHelpFormatter, epilog=textwrap.dedent(
+    '''\
+        --------------------------------
+        Example: 
+          {0} -i trace.json        # read a json trace file, output to stdout
+          {0} -s /dev/ttyACM0,9600 # read from serial line,  output to stdout
+
+        If no input argument given, same as '-i trace.json'.
+    '''.format(sys.argv[0])))
     #options -i (or -o,-s), with nargs
     #  * nothing => None
     #  * -i      => default (trace.json, ...)
     #  * -i file => file
     parser.add_argument("-i", "--input", type=str, nargs='?', const=defaultTraceFile, metavar='inputFile', help='use JSON input file.')
-    parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultTraceFile, metavar='outputFile', help='Store the event list into a JSON format for later use.')
-    parser.add_argument("-s", "--serial", type=str, nargs='?', const='/dev/ttyACM1',metavar='serial', help='Use the serial line to get events.')
-    parser.add_argument("-l", "--length", type=int, default=0,metavar='length', help='Number of events before end. 0 means endless.') #useful?
+    parser.add_argument("-s", "--serial", type=str, nargs='?', const='/dev/ttyACM1,9600',metavar='serial', help='Use the serial line to get events. Parameter is the device name and speed. For instance "/dev/ttyACM0,9600"')
+    #parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultTraceFile, metavar='outputFile', help='Store the event list into a JSON format for later use.')
+    parser.add_argument("-v", "--verbose", default=False, action="store_true", help="verbose mode")
     args = parser.parse_args()
     #first, get access to files.
     traceToolFolder = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/extra/trace-tools"
@@ -34,17 +45,24 @@ if __name__ == '__main__':
     #read static information
     si = StaticInfo.StaticInfo('%!PROJECT%/tpl_static_info.json')
     #reader    => getting raw events
-    if not args.input and not args.serial:
-        args.input = defaultTraceFile
-    reader   = TraceReader.TraceReader(args.input)
+    if args.serial: #serial line?
+        serialParams=args.serial.split(',')
+        reader   = TraceReader.TraceReaderSerial(serialParams,args.verbose)
+    else:           #then file.
+        if not args.input:
+            args.input = defaultTraceFile
+        reader   = TraceReader.TraceReaderFile(args.input)
     #evaluator => from raw events and Static info. Get events
     evaluate = TraceEvaluate.TraceEvaluate(si)
     #export    => font end (txt, gui)
     export   = TraceExport.TraceExport()
     evaluate.setExport(export)
 
-    for rawEvent in reader.getEvent():
-        evaluate.evaluate(rawEvent)
+    try:
+        for rawEvent in reader.getEvent():
+            evaluate.evaluate(rawEvent)
+    except KeyboardInterrupt:
+        reader.stop()
 
 
 
