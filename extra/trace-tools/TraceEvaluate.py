@@ -3,13 +3,13 @@
 
 import StaticInfo
 
-""" TraceEvaluate merges 'raw events' (aka events from the trace reader, with only ids)
-    with the staticInfo (extracted from the goil generated file).
-    It adjusts the current running task from events.
-    If there is an export object (TraceExport), it will call dedicated functions
-    to generate reports (text based or gui).
-"""
 class TraceEvaluate:
+    """ TraceEvaluate merges 'raw events' (aka events from the trace reader, with only ids)
+        with the staticInfo (extracted from the goil generated file).
+        It adjusts the current running task from events.
+        If there is an export object (TraceExport), it will call dedicated functions
+        to generate reports (text based or gui).
+    """
     def __init__(self,staticInfo):
         self.staticInfo = staticInfo
         self.runningTask = staticInfo.getIdleTaskId()
@@ -19,6 +19,7 @@ class TraceEvaluate:
         self.export = export
 
     def evaluate(self,rawEvent):
+        '''evaluate one raw event. Main function'''
         ts = rawEvent['ts']
         if rawEvent['type'] == 'proc':        #proc state udpdate
             i = int(rawEvent['proc_id'])

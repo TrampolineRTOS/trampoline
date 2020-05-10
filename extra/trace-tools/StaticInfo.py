@@ -7,6 +7,8 @@ import sys
 #read static information JSON file
 #---------------------------------
 class StaticInfo:
+    '''This class reads static information json file. The static information is produced by goil (tpl_static_info.json). This files helps to make the link between the ids (integers) and the name  of Trampoline objects (alarms, tasks, events, resources, …)
+    '''
     def __init__(self,filename):
         self.staticInfo    = [] #JSON raw data
 
@@ -48,9 +50,8 @@ class StaticInfo:
         #idle task is the last one.
         return len(self.procNames)-1
 
-    """ print basic debugging info
-    """
     def debug(self):
+        ''' print basic debugging info '''
         #procs
         print('Tasks  ('+str(len(self.procNames))+'):')
         for proc in self.procNames:
