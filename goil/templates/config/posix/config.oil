@@ -16,6 +16,13 @@ IMPLEMENTATION posix {
       },
       FALSE
     ] BUILD = FALSE;
+
+    BOOLEAN [
+      TRUE {
+        ENUM [json] FORMAT = json;
+      },
+      FALSE
+    ] TRACE = FALSE;
   };
   
   TASK {
@@ -25,6 +32,10 @@ IMPLEMENTATION posix {
   ISR {
     UINT32 STACKSIZE = 32768;
     ENUM [SIGTERM, SIGQUIT, SIGUSR2, SIGPIPE, SIGTRAP] SOURCE; 
+  };
+
+  COUNTER {
+    UINT32 MAXALLOWEDVALUE = 4294967295; /*32 bits unsigned value*/
   };
   
   SENSOR [] {
@@ -43,7 +54,8 @@ CPU posix {
     CFILE = "tpl_posix_autosar.c";
     CFILE = "tpl_posix_irq.c";
     CFILE = "tpl_posix_context.c";
-    CFILE = "tpl_trace_target.c";
+    CFILE = "tpl_posixvp_irq_gen.c";
+    CFILE = "tpl_trace.c";
   };
 
   PLATFORM_FILES viper {

@@ -131,6 +131,9 @@ if AUTOSAR then
   end foreach
 end if
 
+# Compute the OS::USEID
+let OS::USEID := OS::TRACE
+
 # Compute the OS:OSAPPLICATIONSTARTUPHOOK and OS:OSAPPLICATIONSHUTDOWNHOOK
 let OS::APPLICATIONSTARTUPHOOK := 0
 let OS::APPLICATIONSHUTDOWNHOOK := 0
@@ -1501,13 +1504,28 @@ if OS::MEMMAP then
   end if
 end if
 
-if OS::TRACE then
-!PROJECT%.desc
+!PROJECT%/tpl_static_info.json
 %
-  write to PROJECT+".desc":
-    template trace_description in log
+write to PROJECT+"/tpl_static_info.json":
+  let obj := @[
+    "task"     : TASKS,
+    "isr"      : ISRS,
+    "event"    : EVENTS,
+    "resource" : RESOURCES,
+    "alarm"    : ALARMS
+  ]
+  let nbTab := 0
+  template export_json in log
+end write
+
+#temporary => posix related
+if OS::TRACE then
+  %readTrace.py%
+  write to executable "readTrace.py":
+    template readTrace_py in log
   end write
 end if
+#temporary
 
 template if exists custom_files in config
 

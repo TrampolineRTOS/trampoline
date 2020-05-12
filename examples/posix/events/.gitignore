@@ -1,0 +1,10 @@
+events
+events_exe
+trace.json
+readTrace.py
+build
+*.elf
+*.bin
+*.map
+make.py
+build.py

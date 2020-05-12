@@ -24,11 +24,11 @@ CPU only_one_periodic_task {
         EVENT = TRUE;
     };
     BUILD = TRUE {
-      APP_SRC = "periodic.c";
+      APP_SRC = "events.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       CFLAGS="-ggdb";
       LDFLAGS="-lrt -lpthread";
-      APP_NAME = "periodic_exe";
+      APP_NAME = "events_exe";
       LINKER = "gcc";
       SYSTEM = PYTHON;
     };
@@ -38,7 +38,7 @@ CPU only_one_periodic_task {
   
   ALARM one_second {
     COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK { TASK = my_periodic_task; };
+    ACTION = SETEVENT { TASK = my_periodic_task; EVENT = ev_act; };
     AUTOSTART = TRUE { APPMODE = stdAppmode; ALARMTIME = 100; CYCLETIME = 100; };
   };
   
@@ -47,12 +47,24 @@ CPU only_one_periodic_task {
     ACTION = ACTIVATETASK { TASK = stop; };
     AUTOSTART = TRUE { APPMODE = stdAppmode; ALARMTIME = 1000; CYCLETIME = 0; };
   };
-    
+
+  EVENT ev_act {
+    MASK = AUTO;
+  };
+
+  EVENT ev_stop {
+    MASK = AUTO;
+  };
+
   TASK my_periodic_task {
     PRIORITY = 1;
-    AUTOSTART = FALSE;
+    AUTOSTART = TRUE {
+      APPMODE = stdAppmode;
+    };
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    EVENT = ev_act;
+    EVENT = ev_stop;
   };
 
   TASK stop {

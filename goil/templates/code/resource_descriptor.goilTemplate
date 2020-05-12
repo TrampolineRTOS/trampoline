@@ -39,7 +39,14 @@ if AUTOSAR then
   end if
 end if
 %
-#endif    
+#endif
+%
+if OS::USEID then
+%
+  /* id of the resource               */ % !INDEX %,
+%
+end if
+%
   /* next resource in the list        */  NULL
 };
 

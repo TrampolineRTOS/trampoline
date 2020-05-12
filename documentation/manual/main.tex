@@ -30,6 +30,8 @@
 \usepackage[colorlinks=true,linkcolor=seagreen,citecolor=darkpink]{hyperref}
 \usepackage{path}
 \usepackage{tikz}
+\usetikzlibrary{arrows,positioning,automata,shadows,shapes,snakes,patterns,decorations,calc} 
+\usepackage{adjustbox}
 \usepackage[most]{tcolorbox}
 
 
@@ -467,6 +469,10 @@ Florent Pavin\\
 \include{com}
 \include{ioc}
 \include{memmapping}
+\include{traces}
+
+\part{Trampoline RTOS internals}
+
 \include{compilation}
 \include{inside}
 \include{porting}
