@@ -1,5 +1,6 @@
-traces
+trace
 build
+readTrace.py
 *_exe
 *.bin
 *.map
