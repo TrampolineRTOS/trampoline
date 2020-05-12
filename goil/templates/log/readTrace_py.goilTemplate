@@ -61,7 +61,7 @@ if __name__ == '__main__':
         rawEventList = []
     else:
         #export    => front end (txt, gui)
-        export   = TraceExport.TraceExport()
+        export   = TraceExport.TraceExportTxt()
         #read static information
         si = StaticInfo.StaticInfo('%!PROJECT%/tpl_static_info.json')
         #evaluator => from raw events and Static info. Get events

@@ -5,6 +5,34 @@ class TraceExport:
     def __init__(self):
         pass
 
+    def handleEventProc(self,ev):
+        ''' called by the evaluator when there is a proc change event.'''
+        pass
+
+    def handleEventTOExpire(self,ev):
+        ''' called by the evaluator when a Time Object expires.'''
+        pass
+
+    def handleEventTOUpdate(self,ev):
+        ''' called by the evaluator when a Time Object updates.'''
+        pass
+
+    def handleEventSetEvent(self,ev):
+        ''' called by the evaluator when there is a Set Event.'''
+        pass
+
+    def handleEventResetEvent(self,ev):
+        ''' called by the evaluator when there is a Reset Event.'''
+        pass
+
+    def handleEventOverflow(self,ev):
+        ''' called by the evaluator when there is an overflow (i.e. communication is too slow)'''
+        pass
+
+class TraceExportTxt(TraceExport):
+    def __init__(self):
+        pass
+
     def timeStamp(self,ev):
         print('[{0: >10}] '.format(ev['ts']), end='')
 

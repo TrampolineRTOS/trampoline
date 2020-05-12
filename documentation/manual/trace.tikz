@@ -14,25 +14,34 @@ WPC/.style ={WPCColorLine,fill=WPCColor,thick},
 WPD/.style ={WPDColorLine,fill=WPDColor,thick},
 txt/.style = {font=\Large},
 boxTxt/.style = {txt,text width=3cm, text centered,text=black},
-box/.style ={draw,drop shadow={opacity=0.25},boxTxt,minimum height=2cm,minimum width=3.5cm},
+box/.style ={draw,drop shadow={opacity=0.25},boxTxt,minimum height=2cm,minimum width=3.8cm},
 cercle/.style ={draw,circle,drop shadow={opacity=0.25},boxTxt,minimum height=3cm,minimum width=3.5cm},
 boxLegende/.style={box,minimum width=1.5cm,text width = 0cm,minimum height=1cm},
 fleche/.style={->,>=stealth,line width=0.5mm},
-srcFile/.style={draw,tape,drop shadow={opacity=0.25},boxTxt, minimum height=2cm, tape bend top=out and in, tape bend bottom=out and in}
+srcFile/.style={draw,tape,drop shadow={opacity=0.25},boxTxt, minimum height=1.3cm, tape bend top=out and in, tape bend bottom=out and in}
 ]
 
-  \node[WPB,srcFile,text width = 3cm] (traceJson) at (0,0) {\texttt{trace.json}};
-  \node[WPA,srcFile,text width = 6cm] (traceStaticJson) at (-6,0) {\texttt{tpl\_static\_info.json}};
+  \node[WPB,srcFile,text width = 3cm] (traceJson) at (-5,3) {\texttt{trace.json}};
+  \node[WPA,srcFile,text width = 6cm] (traceStaticJson) at (-7,1) {\texttt{tpl\_static\_info.json}};
   \node[WPD,srcFile,text width = 3cm] (traceTarget) at (0,7) {compressed event list};
-  \node[fill=WPCColor,box,minimum height=1cm] (readBin) at (0,3) {\texttt{readBin.py}};
-  \node[fill=WPCColor,box,minimum height=1cm] (readTrace) at (-3,-3) {\texttt{readTrace.py}};
-  \draw[fleche] (traceStaticJson) -- (readTrace) node[midway,left] {id $\Leftrightarrow$ name}; 
-  \draw[fleche] (traceJson) -- (readTrace) node[midway,right] {event list with ids}; 
-  \draw[fleche] (readBin) -- (traceJson) node[midway,right] {event list}; 
-  \draw[fleche,<-] ($(readBin.north)+( 1,0)$) -- ($(traceTarget.south)+(+1,0)$) node[midway,right,text width = 2cm] {serial comm}; 
-  \draw[fleche,<-] ($(readBin.north)+(-1,0)$) -- ($(traceTarget.south)+(-1,0)$) node[midway,left ,text width = 2cm] {gdb binary dump}; 
-  \draw[fleche,<-] ($(readBin.north)+( 0,0)$) -- ($(traceTarget.south)+( 0,0)$) node[midway,left] {…}; 
+  \node[fill=WPCColor,box,minimum height=1cm] (TraceReader)   at (0,3) {\texttt{TraceReader}};
+  \node[fill=WPCColor,box,minimum height=1cm] (TraceEvaluate) at (0,0) {\texttt{TraceEvaluate}};
+  \node[fill=WPCColor,box,minimum height=1cm] (TraceExport)   at (0,-3) {\texttt{TraceExport}};
+
+  \draw[fleche] (traceJson) to[bend left] (TraceReader);
+  \draw[fleche] (TraceReader) to[bend left] (traceJson);
+  \draw[fleche] (TraceReader) -- (TraceEvaluate) node[midway,right] {event list with ids}; ;
+
+
+  \draw[fleche] (traceStaticJson) -- (TraceEvaluate) node[midway,below left] {id $\Leftrightarrow$ name}; 
+  \draw[fleche] (TraceEvaluate) -- (TraceExport) node[midway,right] {event list with names}; 
+ % \draw[fleche] (readBin) -- (traceJson) node[midway,right] {event list}; 
+
+  \draw[fleche,<-] ($(TraceReader.north)+( 1,0)$) -- ($(traceTarget.south)+(+1,0)$) node[midway,right,text width = 2cm] {serial comm}; 
+  \draw[fleche,<-] ($(TraceReader.north)+(-.4,0)$) -- ($(traceTarget.south)+(-.4,0)$) node[midway,left ,text width = 2cm] {gdb binary dump}; 
+  \draw[fleche,<-] ($(TraceReader.north)+(0.3,0)$) -- ($(traceTarget.south)+(0.3,0)$) node[midway,left] {…}; 
   \draw[line width=0.2mm,dashed] (-10,6.5) -- ++(0,-1) node[above right] {target}-- ++(13,0) -- ++(0,1);
   \draw[line width=0.2mm,dashed] (-10,3.3) -- ++(0,+1) node[below right] {host}-- ++(13,0) -- ++(0,-1);
-  \draw[fleche] (readTrace) -- ++(0,-1) node[below] {event list (text based, gui)};
+  \draw[fleche] (TraceExport) -- ++(0,-1) node[below] {event list (text based, gui)};
+
 \end{tikzpicture}
