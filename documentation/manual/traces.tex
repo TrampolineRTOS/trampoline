@@ -222,6 +222,38 @@ For each type, we define the specific bits:
 Due to frame size limits, the number of events is limited to 31, the number of procs (task/isr) to 255, as well as time objects (alarms, schedule tables) and resources.
 The state 
 
+\subsection{How to port \texttt{trace} to another target}
+
+The \texttt{tpl\_trace.c} is target specific. It should be defined in the \lstinline{machine} hierarchy. A good starting point is the msp430's version, with a SERIAL implementation. In the \texttt{avr/arduino} version, a C++ example is provided.
+
+Then, the goil templates should be updated. This is done in 2 steps:
+
+\begin{itemize}
+	\item Add the new file \texttt{tpl\_trace.c} (or \texttt{.cpp}) to be compiled in the project: in \texttt{config/\textit{target}/config.oil} \\
+\begin{lstlisting}
+  PLATFORM_FILES targetTrace {
+    PATH    = "target";        //path, starting from machine/
+    CFILE   = "tpl_trace.c";   // file name (cpp allowed)
+  };
+\end{lstlisting}
+
+	\item Add the definition of the trace type to be defined in the oil file: in section IMPLEMENTATION/OS in \texttt{config/\textit{target}/config.oil}:
+\begin{lstlisting}
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial
+        ] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
+\end{lstlisting}
+\end{itemize}
+
+In this example, only the serial type is allowed. You can have a look to the msp430 version, where other modes are available, and one have sub-attributes (for fram target).
+
+That's all!
 %\subsubsection{MSP430}
 %%% Local Variables:
 %%% mode: latex

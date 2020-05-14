@@ -8,6 +8,16 @@ IMPLEMENTATION avrArduino {
       },
       FALSE
     ] BUILD = FALSE;
+
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial
+        ] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
   };
 };
 
@@ -31,6 +41,11 @@ CPU avrArduino {
     CPPFILE = "WInterrupts.c";     // attachInterrupts, detachInterrupts (=> should not be used directly!)
     CPPFILE = "abi.cpp";           // some C++ stuff.
     CPPFILE = "new.cpp";           // some C++ stuff.
+  };
+
+  PLATFORM_FILES arduinoTrace {
+    PATH    = "avr/arduino/";
+    CPPFILE = "tpl_trace.cpp";     // trampoline trace Arduino specific stuff
   };
 
   GENERATED_FILES avrArduinoGenerated {
