@@ -20,6 +20,10 @@
 #ifndef TPL_TRACE_H
 #define TPL_TRACE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "tpl_app_define.h" /* WITH_TRACE */
 #include "tpl_os_types.h"
 #include "tpl_os_kernel.h"
@@ -191,6 +195,9 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 
 #endif /* WITH_TRACE == YES */
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TPL_TRACE_H */
 /* End of file tpl_trace.h */
