@@ -38,6 +38,8 @@ class StaticInfo:
         # proc (task+isr) names
         for proc in self.staticInfo['task']:
             self.procNames.append(proc['NAME'])
+        for proc in self.staticInfo['isr']:
+            self.procNames.append(proc['NAME'])
         self.procNames.append('idle') #idle task is the last one.
         #time objs
         for to in self.staticInfo['alarm']:
