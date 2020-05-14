@@ -32,16 +32,18 @@ class TraceReader:
     def readBinaryEvent(self):
         '''read a binary event. Common method for subclasses (private)'''
         frame = self.readData(5)
-        offset = 0
         while True:
             #checksum verif
-            if len(frame) >= 5  and (sum(frame[offset:offset+4]) & 0xff == frame[-1]):
+            if len(frame) == 5  and (sum(frame[:4]) & 0xff == frame[4]):
                 #ok => get back 4 bytes
-                return frame[offset:offset+4]
+                return frame[:4]
             else:
                 #nok, read one more byte, and check again
-                self.readData(1)
-                offset = offset + 1
+                d = self.readData(1)
+                if(len(frame) == 5):
+                    frame = frame[1:] + d
+                else:
+                    frame = frame + d
 
     #decode the event
     def decodeBinaryEvent(self,evtBin,ts):
@@ -135,7 +137,7 @@ class TraceReaderSerial(TraceReader):
         try:
             ser = serial.Serial(device, speed, timeout=1)
         except serial.serialutil.SerialException:
-            print('Serial line {0} not found'.format(serialLine))
+            print('Serial line {0} not found'.format(device))
             sys.exit(1)
         return ser
 

@@ -41,7 +41,7 @@ IMPLEMENTATION  msp430x {
             UINT32 ADDRESS = 0;
           },
           serial
-        ] FORMAT = FRAM;
+		] FORMAT = serial;
       },
       FALSE
     ] TRACE = FALSE;
