@@ -23,7 +23,7 @@
 
 #include "tpl_os.h"
 #include "tpl_os_interrupt_kernel.h"
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 #include "tpl_compiler.h"
 
 extern void tpl_primary_syscall_handler(void);

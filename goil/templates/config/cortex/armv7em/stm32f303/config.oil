@@ -22,6 +22,27 @@ IMPLEMENTATION stm32f303 {
     UINT32 ADDRESS;
     INTERRUPT_TYPE VECTOR;
   };
+
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial
+        ] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
+  };
 };
 
 CPU stm32f303 {
@@ -35,7 +56,7 @@ CPU stm32f303 {
   };
 
   BUILDOPTIONS buildOptions {
-     COMMONFLAGS = "-DSTM32F334x8"; //processor def includes STM32F303K8
+     COMMONFLAGS = "-DSTM32F303x8"; //processor def includes STM32F303K8
   };
 
   INTERRUPT_COUNT nb_it {
@@ -332,7 +353,6 @@ CPU stm32f303 {
     SETPRIO = TRUE { NUMBER = 37; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART1_Handler";
-      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
     };
   } : "USART1 global Interrupt";
   
@@ -341,7 +361,6 @@ CPU stm32f303 {
     SETPRIO = TRUE { NUMBER = 38; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART2_Handler";
-      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
     };
   } : "USART2 global Interrupt";
   
@@ -350,7 +369,6 @@ CPU stm32f303 {
     SETPRIO = TRUE { NUMBER = 39; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART3_Handler";
-      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
     };
   } : "USART3 global Interrupt";
   
@@ -426,13 +444,24 @@ CPU stm32f303 {
 	CFILE = "tpl_memory_protection.c";
   };
 
+  PLATFORM_FILES stm32f303_trace {
+    PATH = "cortex/armv7em/stm32f303";
+	CFILE = "tpl_trace.c";
+  };
+
   PLATFORM_FILES stm32f303_cmsis {
-    PATH = "cortex/armv7em/stm32f303/CMSIS-ST/Device/ST/STM32F30x/Include";
+    PATH = "cortex/armv7em/stm32f303/CMSIS-ST/Device/ST/STM32F3xx/Include";
   };
 
   PLATFORM_FILES stm32f303IO {
     PATH = "cortex/armv7em/stm32f303/lib";
     CFILE = "pinAccess.c";
+  };
+
+  LIBRARY serial {
+    PATH = "cortex/armv7em/stm32f303/lib";
+	CHEADER = "serial.h";
+	CFILE   = "serial.c";
   };
 
   POSTBUILD all {

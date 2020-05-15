@@ -1,7 +1,7 @@
 #ifndef __PIN_ACCESS_H__
 #define __PIN_ACCESS_H__
 
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 
 #ifdef __cplusplus
   extern "C" {
