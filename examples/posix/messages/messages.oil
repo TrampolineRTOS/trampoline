@@ -17,13 +17,12 @@ CPU messages {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-	TRACE = FALSE;
+ TRACE = FALSE;
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../";
       APP_SRC  = "messages.c";
       APP_NAME = "messages_exe";
       CFLAGS="-ggdb";
-      LDFLAGS="-lrt -lpthread";
       LINKER = "gcc";
       SYSTEM = PYTHON;
     };

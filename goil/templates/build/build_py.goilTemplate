@@ -266,7 +266,7 @@ foreach flags in exists OS::BUILD_S::PREASFLAGS default ( @() ) do
 preasflags += "% !flags::VALUE %".split()%
 end foreach
 
-if TARGET != "posix" then
+if [TARGET  leftSubString: 5] != "posix" then
 %
 
 #----------------------------------------------------------------------
@@ -295,24 +295,6 @@ if "gcc" in compiler:
     #--- Add both to linker flags
     ldflags += ['-L' + bytesdecode(libcPath), '-lc']
     ldflags += ['-L' + bytesdecode(libgccPath), '-lgcc']
-%
-end if
-
-if TARGET == "posix" then
-%
-uname = os.uname()
-isLinux = False
-if hasattr(uname, 'sysname'): #Python 3.xx
-  if uname.sysname == 'Linux':
-    isLinux = True
-  else:
-    #Python 2.xx
-    if uname[0] == 'Linux':
-      isLinux = True
-if isLinux:
-  #--- Add flags required to link the posix runtime
-  ldflags += ['-lrt']
-  ldflags += ['-lpthread']
 %
 end if
 
