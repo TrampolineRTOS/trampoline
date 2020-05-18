@@ -12,7 +12,7 @@ IMPLEMENTATION trampoline {
   };
 };
 
-CPU lab1 {
+CPU messages {
   OS config {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
@@ -37,12 +37,18 @@ CPU lab1 {
     };
   };
 
+  MESSAGE from_send {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "unsigned int";
+    };
+  };
+
   MESSAGE for_receive1 {
     MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
       SENDINGMESSAGE = from_send;
       FILTER = NEWISOUTSIDE {
-	MIN = 0x0000CAFE;
-	MAX = 0xCAFE0000;	
+        MIN = 0x0000CAFE;
+        MAX = 0xCAFE0000;
       };
       QUEUESIZE = 1;
     };
@@ -59,8 +65,8 @@ CPU lab1 {
     MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
       SENDINGMESSAGE = from_send;
       FILTER = NEWISWITHIN {
-	MIN = 0x0000CAFE;
-	MAX = 0xCAFE0000;	
+        MIN = 0x0000CAFE;
+        MAX = 0xCAFE0000;
       };
       INITIALVALUE = 0x00FEFE00; 
     };
@@ -76,11 +82,33 @@ CPU lab1 {
     AUTOSTART = TRUE { APPMODE = AppStd; ALARMTIME = 100; CYCLETIME = 100; };
   };
 
+  MESSAGE always_in {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "uint32_t";
+    };
+  };
+
+  MESSAGE never_out {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = always_in;
+      FILTER = NEWISOUTSIDE {
+        MIN = 0x00000000;
+        MAX = 0xFFFFFFFF;
+      };
+      INITIALVALUE = 0x00FEFE00;
+    };
+    NOTIFICATION = ACTIVATETASK {
+      TASK = dummy;
+    };
+  };
+
   TASK send {
     PRIORITY = 1;
     AUTOSTART = TRUE { APPMODE = AppStd; };
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    MESSAGE = from_send;
+    MESSAGE = always_in;
   };
 
   TASK receive1 {
@@ -98,5 +126,12 @@ CPU lab1 {
     EVENT = ev_new_message;
   };
 
+  TASK dummy {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = never_out;
+  };
 
 };
