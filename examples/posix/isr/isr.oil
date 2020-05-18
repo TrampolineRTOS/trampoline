@@ -15,7 +15,6 @@ CPU test {
     BUILD = TRUE {
         TRAMPOLINE_BASE_PATH = "/home/sfaucou/repos/projects/trampoline";
         SYSTEM = PYTHON;
-        LDFLAGS = "-lrt -lpthread";
         APP_SRC = "isr.c";
         APP_NAME = "isr_exe";
     };

@@ -27,7 +27,6 @@ CPU only_one_periodic_task {
       APP_SRC = "periodic.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       CFLAGS="-ggdb";
-      LDFLAGS="-lrt -lpthread";
       APP_NAME = "periodic_exe";
       LINKER = "gcc";
       SYSTEM = PYTHON;

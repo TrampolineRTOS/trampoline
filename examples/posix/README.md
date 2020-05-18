@@ -22,7 +22,12 @@ Examples are easy to run:
 The first time, goil should be called directly. It will generate the appropriate Makefile:
 
     $ cd examples/posix/periodic
-    $ goil --target=posix  --templates=../../../goil/templates/ periodic.oil
+    $ goil --target=posix/linux  --templates=../../../goil/templates/ periodic.oil
+
+Or if you run the example on OSX instead of Linux, 
+
+    $ cd examples/posix/periodic
+    $ goil --target=posix/darwin  --templates=../../../goil/templates/ periodic.oil
 
 Then, the makefile is generated, and it will call goil again when the .oil file is updated
 
