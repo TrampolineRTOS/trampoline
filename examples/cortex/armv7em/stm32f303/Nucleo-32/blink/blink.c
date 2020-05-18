@@ -10,7 +10,7 @@
 void initUserLed()
 {
   GPIO_InitTypeDef  GPIO_InitStructure;
-  
+
   /* Enable the GPIO_LED Clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 
@@ -25,7 +25,7 @@ void initUserLed()
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  initUserLed(); 
+  initUserLed();
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -37,15 +37,3 @@ TASK(blink)
 }
 #define APP_Task_blink_STOP_SEC_CODE
 #include "tpl_memmap.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-/*
- *  * This is necessary for ST libraries
- *   */
-FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
-{
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
