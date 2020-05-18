@@ -24,6 +24,9 @@
  * $URL$
  */
 
+#include <stdbool.h>
+#include <stdint.h>
+
 #include "tpl_app_config.h"
 
 #include "tpl_os_internal_types.h"
