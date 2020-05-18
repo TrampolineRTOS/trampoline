@@ -1066,11 +1066,16 @@ foreach message in MESSAGE do
   if message::MESSAGEPROPERTY == "SEND_ZERO_INTERNAL" |
      message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL"
   then
-    # the target message if the last message in the linked
+    # the target message is the last message in the linked
     # list of destination messages
-    let target_message := [receiver[message::NAME] last]
-    let message::TARGET := target_message::NAME
-    let SENDMESSAGES += message
+    if not exists receiver[message::NAME]
+    then
+      warning message::NAME : "Since message " + message::NAME + " has no receiver, it will not be used."
+    else
+      let target_message := [receiver[message::NAME] last]
+      let message::TARGET := target_message::NAME
+      let SENDMESSAGES += message
+    end if
   end if
 end foreach
 
