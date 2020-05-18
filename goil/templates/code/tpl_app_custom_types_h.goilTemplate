@@ -101,6 +101,13 @@ typedef uint% ![[REGULARRESOURCES length]  numberOfBytes] * 8 % tpl_resource_id;
  * This is used only for tracing
  */
 typedef uint% ![[ALARMS length] + [SCHEDULETABLES length] numberOfBytes] * 8 % tpl_timeobj_id;
+
+/**
+ * @internal
+ *
+ * one id for each counter.
+ */
+typedef uint% ![[COUNTER length] numberOfBytes] * 8 % tpl_trace_counter_id;
 #endif
 
 #ifdef WITH_AUTOSAR

@@ -222,14 +222,11 @@ IMPLEMENTATION trampoline_common {
     ] BUILD = FALSE;
     BOOLEAN [
       TRUE {
-        ENUM [ FILE { STRING NAME; } ] METHOD;
-        ENUM [xml, txt, bin] FORMAT;
-        BOOLEAN TRACE_TASK = TRUE;
-        BOOLEAN TRACE_ISR = TRUE;
-        BOOLEAN TRACE_RESOURCE = TRUE;
-        BOOLEAN TRACE_ALARM = TRUE;
-        BOOLEAN TRACE_USER = TRUE;
-        BOOLEAN DESCRIPTION = TRUE;
+        /* FORMAT is target specific */
+        BOOLEAN PROC        = TRUE;
+        BOOLEAN RESOURCE    = TRUE;
+        BOOLEAN ALARM       = TRUE;
+        BOOLEAN EVENT       = TRUE;
       },
       FALSE
     ] TRACE = FALSE;
@@ -264,7 +261,7 @@ IMPLEMENTATION trampoline_common {
 
   COUNTER [] {
     UINT32 MINCYCLE = 1;
-    UINT32 MAXALLOWEDVALUE = 32767;
+    UINT32 MAXALLOWEDVALUE = 65535;
     UINT32 TICKSPERBASE = 1;
   };
 

@@ -157,15 +157,9 @@ ENUM [
   I2C1_EV_IRQ,
   I2C1_ER_IRQ,
   SPI1_IRQ,
-  USART1_IRQ {
-    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
-  },
-  USART2_IRQ {
-    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
-  },
-  USART3_IRQ {
-    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
-  },
+  USART1_IRQ,
+  USART2_IRQ,
+  USART3_IRQ,
   EXTI15_10_IRQ {
     ENUM [
       PA10 { #include <sensibility.oil> },      

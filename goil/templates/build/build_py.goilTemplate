@@ -407,6 +407,7 @@ do
 %
 cSourceList.append(projfile.ProjectFile("% !src::VALUE %"))%
 end foreach
+
 foreach src in exists OS::BUILD_S::APP_CPPSRC default ( @() )
 before
 %

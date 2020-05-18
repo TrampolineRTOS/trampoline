@@ -89,7 +89,6 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
   tpl_dyn_proc_table[proc_id]->resources;
 #if WITH_TRACE == YES
   GET_CURRENT_CORE_ID(core_id)
-  VAR(tpl_resource_id, AUTOMATIC) res_id;
 #endif /* WITH_TRACE */
 
   if (res != NULL)
@@ -105,11 +104,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 
 	  /* find the id of the resource for the trace */
 #if WITH_TRACE == YES
-	  res_id = 0;
-	  while( TPL_RESOURCE_TABLE(core_id)[res_id] != res ){
-		  res_id++;
-	  }
-	  TRACE_RES_RELEASED(res_id)
+    TRACE_RES_CHANGE_STATE(res->res_id, (tpl_trace_resource_state)RESOURCE_FREE)
 #endif /* WITH_TRACE */
 
 	  res = next_res;
@@ -168,7 +163,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
     {
       /*  set the owner of the resource to the calling task     */
       res->owner = (tpl_proc_id)TPL_KERN_REF(kern).running_id;
-      TRACE_RES_GET(res_id, (tpl_proc_id)TPL_KERN_REF(kern).running_id)
+      TRACE_RES_CHANGE_STATE(res_id, (tpl_trace_resource_state)RESOURCE_TAKEN)
       /*  add the ressource at the beginning of the
           resource list stored in the task descriptor              */
       res->next_res = TPL_KERN_REF(kern).running->resources;
@@ -189,8 +184,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
             the task  */
         TPL_KERN_REF(kern).running->priority =
           DYNAMIC_PRIO(res->ceiling_priority, tail_for_prio);
-        TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-        TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
       }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /*    tpl_start_resource_monitor((tpl_proc_id)TPL_KERN_REF(kern).running_id, res_id); */
@@ -265,14 +258,12 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
              proc_name_table[TPL_KERN(core_id).running_id],
              TPL_KERN(core_id).running->priority));
 
-      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN(core_id).running_id)
-      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN(core_id).running_id)
       /*  remove the resource from the resource list  */
       TPL_KERN(core_id).running->resources = res->next_res;
       res->next_res = NULL;
       /*  remove the owner    */
       res->owner = INVALID_TASK;
-      TRACE_RES_RELEASED(res_id)
+      TRACE_RES_CHANGE_STATE(res_id, (tpl_trace_resource_state)RESOURCE_FREE)
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
 # if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /*    tpl_stop_resource_monitor((tpl_proc_id)TPL_KERN(core_id).running_id, res_id); */

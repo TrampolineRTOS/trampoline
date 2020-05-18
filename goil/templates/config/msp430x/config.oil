@@ -31,6 +31,20 @@ IMPLEMENTATION  msp430x {
     /* CPU frequency */
     UINT32 [1,2,4,6,8,12,16,21,24] CPU_FREQ_MHZ = 1;
     ENUM [ ACTIVE, LPM0, LPM1, LPM2, LPM3 ] IDLE_POWER_MODE = ACTIVE;
+
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          fram {
+            UINT32 SIZE = 16384;
+            UINT32 ADDRESS = 0;
+          },
+          serial
+		] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
   };
 
 };
@@ -38,12 +52,13 @@ IMPLEMENTATION  msp430x {
 CPU msp430x {
 
   PLATFORM_FILES msp430x {
-    PATH  =  "msp430x/small";
-    CFILE =  "tpl_machine_msp430x.c";
-    CFILE =  "tpl_startup.c";
-    CFILE =  "tpl_clocks.c";
+    PATH   = "msp430x/small";
+    CFILE  = "tpl_machine_msp430x.c";
+    CFILE  = "tpl_startup.c";
+    CFILE  = "tpl_clocks.c";
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
+    CFILE  = "tpl_trace.c";
   };
   
   GENERATED_FILES msp430x {

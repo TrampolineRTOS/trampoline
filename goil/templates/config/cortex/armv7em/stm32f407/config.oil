@@ -345,6 +345,7 @@ CPU stm32f407 {
   INTERRUPT EXTI0_IRQ {
     VECT = 22;
     SETPRIO = TRUE { NUMBER = 6; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME =  "EXTI0_IRQ_Handler";
     };
@@ -353,6 +354,7 @@ CPU stm32f407 {
   INTERRUPT EXTI1_IRQ {
     VECT = 23;
     SETPRIO = TRUE { NUMBER = 7; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI1_IRQ_Handler";
     };
@@ -361,6 +363,7 @@ CPU stm32f407 {
   INTERRUPT EXTI2_IRQ {
     VECT = 24;
     SETPRIO = TRUE { NUMBER = 8; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI2_IRQ_Handler";
     };
@@ -369,6 +372,7 @@ CPU stm32f407 {
   INTERRUPT EXTI3_IRQ {
     VECT = 25;
     SETPRIO = TRUE { NUMBER = 9; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI3_IRQ_Handler";
     };
@@ -377,6 +381,7 @@ CPU stm32f407 {
   INTERRUPT EXTI4_IRQ {
     VECT = 26;
     SETPRIO = TRUE { NUMBER = 10; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI4_IRQ_Handler";
     };
@@ -481,6 +486,7 @@ CPU stm32f407 {
   INTERRUPT EXTI9_5_IRQ {
     VECT = 39;
     SETPRIO = TRUE { NUMBER = 23; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI9_5_Handler";
     };
@@ -593,7 +599,9 @@ CPU stm32f407 {
   INTERRUPT USART1_IRQ {
     VECT = 53;
     SETPRIO = TRUE { NUMBER = 37; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART1_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -603,7 +611,8 @@ CPU stm32f407 {
   INTERRUPT USART2_IRQ {
     VECT = 54;
     SETPRIO = TRUE { NUMBER = 38; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART2_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -613,7 +622,8 @@ CPU stm32f407 {
   INTERRUPT USART3_IRQ {
     VECT = 55;
     SETPRIO = TRUE { NUMBER = 39; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART3_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -623,6 +633,7 @@ CPU stm32f407 {
   INTERRUPT EXTI15_10_IRQ {
     VECT = 56;
     SETPRIO = TRUE { NUMBER = 40; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
     VECTOR_TYPE = HANDLER {
       NAME = "EXTI15_10__Handler";
     };
@@ -719,11 +730,12 @@ CPU stm32f407 {
   INTERRUPT UART4_IRQ {
     VECT = 68;
     SETPRIO = TRUE { NUMBER = 52; };
-    ACK = TRUE {
-      TEMPLATE = TRUE {
-        NAME = "uart_ack";
-      };
-    };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE {
+    //  TEMPLATE = TRUE {
+    //    NAME = "uart_ack";
+    //  };
+    //};
     VECTOR_TYPE = HANDLER {
       NAME = "UART4_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -733,11 +745,12 @@ CPU stm32f407 {
   INTERRUPT UART5_IRQ {
     VECT = 69;
     SETPRIO = TRUE { NUMBER = 53; };
-    ACK = TRUE {
-      TEMPLATE = TRUE {
-        NAME = "uart_ack";
-      };
-    };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE {
+    //  TEMPLATE = TRUE {
+    //    NAME = "uart_ack";
+    //  };
+    //};
     VECTOR_TYPE = HANDLER {
       NAME =  "UART5_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -883,7 +896,8 @@ CPU stm32f407 {
   INTERRUPT USART6_IRQ {
     VECT = 87;
     SETPRIO = TRUE { NUMBER = 71; };
-    ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
     VECTOR_TYPE = HANDLER {
       NAME = "USART6_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -994,6 +1008,11 @@ CPU stm32f407 {
     CFILE = "stm32f4xx_exti.c";
     CFILE = "stm32f4xx_syscfg.c";
     CFILE = "misc.c";
+  };
+
+  PLATFORM_FILES stm32f407IO {
+    PATH = "cortex/armv7em/stm32f407/lib";
+    CFILE = "pinAccess.c";
   };
 
   POSTBUILD all {

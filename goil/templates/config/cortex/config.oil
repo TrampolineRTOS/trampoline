@@ -33,13 +33,15 @@ IMPLEMENTATION thumb2_ressource {
     ] VECTOR_TYPE;
     BOOLEAN [
       TRUE { 
-        BOOLEAN [
-          TRUE { STRING NAME; },
-          FALSE
-        ] TEMPLATE = FALSE;
+        ENUM [
+          BIT {STRING NAME;},
+          TEMPLATE {STRING NAME;},
+          /* special case for external interrupts, as ACK field can be deduced. */
+          EXTERNAL
+        ] ACKTYPE;
       },
       FALSE
-    ] ACK = TRUE;
+    ] ACK = FALSE;
     BOOLEAN [
       TRUE  { INT32 NUMBER; },
       FALSE

@@ -1,15 +1,12 @@
+#include "pinAccess.h"
 #include "tpl_os.h"
-#include "stm32f30x.h"
-#include "stm32f30x_rcc.h"
-#include "stm32f30x_gpio.h"
 
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"
 
-//init PB.3 as output (LED 1 on pin 13).
-void initUserLed()
-{
-  GPIO_InitTypeDef  GPIO_InitStructure;
+// init PB.3 as output (LED 1 on pin 13).
+void initUserLed() {
+  GPIO_InitTypeDef GPIO_InitStructure;
 
   /* Enable the GPIO_LED Clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
@@ -23,16 +20,14 @@ void initUserLed()
   GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
-FUNC(int, OS_APPL_CODE) main(void)
-{
+FUNC(int, OS_APPL_CODE) main(void) {
   initUserLed();
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
 
-TASK(blink)
-{
-  GPIOB->ODR ^= GPIO_Pin_3;	//toggle user led.
+TASK(blink) {
+  digitalToggle(GPIOB, 3);
   TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE

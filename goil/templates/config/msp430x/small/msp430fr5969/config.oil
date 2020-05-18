@@ -11,6 +11,7 @@ CPU msp430fr5969 {
 
   COUNTER SystemCounter {
     SOURCE = TIMER3_A0_VECTOR;
+    MAXALLOWEDVALUE = 65535;
   };
 
   /*

@@ -3,11 +3,21 @@ IMPLEMENTATION avrArduino {
     BOOLEAN [
       TRUE {
         ENUM [
-          advancedIO,serial,spi,i2c,eeprom,softwareSerial
+          advancedIO,serial,spi,i2c,eeprom,softwareSerial,print
         ] LIBRARY[];
       },
       FALSE
     ] BUILD = FALSE;
+
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial
+        ] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
   };
 };
 
@@ -16,7 +26,7 @@ CPU avrArduino {
   BUILDOPTIONS buildOptionsForArduino {
     PRELDFLAGS  = "-lm"; //math lib requied
     PREASFLAGS  = "-x assembler-with-cpp";
-    COMMONFLAGS = "-Wno-unused-but-set-variable";
+    COMMONFLAGS = "-DARDUINO=10809 -Wno-unused-but-set-variable";
   };
 
   PLATFORM_FILES arduinoBase {
@@ -33,6 +43,11 @@ CPU avrArduino {
     CPPFILE = "new.cpp";           // some C++ stuff.
   };
 
+  PLATFORM_FILES arduinoTrace {
+    PATH    = "avr/arduino/";
+    CPPFILE = "tpl_trace.cpp";     // trampoline trace Arduino specific stuff
+  };
+
   GENERATED_FILES avrArduinoGenerated {
     CFILE = "tpl_interrupts.c";
   };
@@ -44,11 +59,16 @@ CPU avrArduino {
     CPPFILE = "wiring_pulse.c";  // pulseIn, pulseInLong
     CPPFILE = "wiring_shift.c";  // shiftIn, shiftOut
   };
-  
-  LIBRARY serial {
+
+  LIBRARY print {
     PATH    = "avr/arduino/cores/arduino";
     CPPFILE = "Print.cpp";            //Stream inherits from Print
-    CPPFILE = "Stream.cpp";           //HardwareSerial inherits from Stream
+    CPPFILE = "Stream.cpp";           //HardwareSerial inherits from Stream 
+  };
+
+  LIBRARY serial {
+    NEEDS   = print;
+    PATH    = "avr/arduino/cores/arduino";
     CPPFILE = "HardwareSerial0.cpp";
     CPPFILE = "HardwareSerial1.cpp";
     CPPFILE = "HardwareSerial2.cpp";
@@ -72,6 +92,7 @@ CPU avrArduino {
   };
   
   LIBRARY softwareSerial {
+    NEEDS   = print;
     PATH    = "avr/arduino/libraries/SoftwareSerial/src";
     CPPFILE = "SoftwareSerial.cpp";
   };
