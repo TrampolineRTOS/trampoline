@@ -2,13 +2,13 @@
 
 \chapter{Getting started}
 
-This chapter shows how to compile and run your first application. We are going to use the \textsc{Posix} port of Trampoline, Trampoline/\textsc{Posix}, that runs over a Linux or Mac OS X operating system. So it is assumed you are using a Linux or Mac OS X computer since Trampoline/Posix does not run over Windows\footnote{An API working like Unix signals is missing on Windows.}. It is also assumed that you have a basic knowledge of using the command line and the Unix shell.
+This chapter shows how to compile and run your first application. We are going to use the \textsc{Posix} port of Trampoline, Trampoline/\textsc{Posix}, that runs over a Linux or Mac OS X operating system. So it is assumed you are using a Linux or Mac OS X computer since Trampoline/Posix does not run over Windows\footnote{An API working like Unix signals is missing on Windows. However it is possible to run Linux in a virtual machine like VirtualBox.}. It is also assumed that you have a basic knowledge of using the command line and the Unix shell.
 
 OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the objects of the application, tasks, events, resources, \ldots, cannot be created or deleted during the execution of the application. All objects are statically defined and instead of forcing the user to instantiate the OS objects related to the application in C language, a work that can be error prone, a specific language is used, OIL or XML\footnote{for \textsc{Autosar}}. A compiler, \goil, is used to translate the description in the equivalent C structures. \goil\ performs verifications too.
 
 \section{Setting up the environment}
 
-Before compiling and running the first application, a few tools are required. The first tool needed is a development chain, compiler and linker, for the target platform. In our case, the native development chain, \tool{gcc} under Linux, \tool{clang} under Mac OS X will be used. The two other tools are respectively \goil\ and \tool{viper} that we will compile. In the following, all paths are relative to the Trampoline root directory. When setting up path environment variables, complete the relative path with the installation path of Trampoline.
+Before compiling and running the first application, a few tools are required. The first tool needed is a development chain, compiler and linker, for the target platform. In our case, the native development chain, \tool{gcc} under Linux, \tool{clang} under Mac OS X will be used. The two other tools are respectively \goil\ and \tool{viper} that we will compile. In the following, all paths are relative to the Trampoline root directory. When setting up path environment variables, \textbf{complete the relative path with the installation path of Trampoline}.
 
 \subsection{Compiling goil}
 
