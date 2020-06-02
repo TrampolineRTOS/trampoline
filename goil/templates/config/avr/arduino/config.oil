@@ -27,6 +27,7 @@ CPU avrArduino {
     PRELDFLAGS  = "-lm"; //math lib requied
     PREASFLAGS  = "-x assembler-with-cpp";
     COMMONFLAGS = "-DARDUINO=10809 -Wno-unused-but-set-variable";
+    CPPFLAGS    = "-std=c++11";
   };
 
   PLATFORM_FILES arduinoBase {
