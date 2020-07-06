@@ -1,0 +1,179 @@
+/**
+ * @file te-example-ieeedt.oil 
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "3.1" : "autosar_st_s1" ;
+
+IMPLEMENTATION trampoline {
+
+    TASK {
+        UINT32 [1..10] PRIORITY = 1 ;
+        UINT32 STACKSIZE = 300;
+    };
+
+    ISR {
+        UINT32 STACKSIZE = 200;
+    };
+
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        SYSTEM_CALL = TRUE;
+        BUILD = TRUE {
+            APP_SRC = "te-example-ieeedt.c";
+            APP_SRC = "tpl_timing_protection.c";
+            APP_NAME = "autosar_tp_s1_exe";
+            TRAMPOLINE_BASE_PATH = "../../../../../../";
+            CFLAGS = "-O3";
+            LDFLAGS = "-Map=blink.map";
+            COMPILER = "arm-none-eabi-gcc";
+            ASSEMBLER = "arm-none-eabi-as";
+            LINKER = "arm-none-eabi-ld";
+            COPIER = "arm-none-eabi-objcopy";
+            SYSTEM = PYTHON;
+            LIBRARY = time_enforcement;
+            LIBRARY = gpt;
+        };
+        MEMMAP = TRUE {
+            COMPILER = gcc;
+            LINKER = gnu_ld { SCRIPT = "script.ld"; };
+            ASSEMBLER = gnu_as;
+            MEMORY_PROTECTION = FALSE;
+        };
+        USERSERVICEHOOK = TRUE;
+        TIMEENFORCEMENT = TRUE;
+        SHUTDOWNHOOK = TRUE;
+        STARTUPHOOK = TRUE;
+        PROTECTIONHOOK = TRUE;
+        PRETASKHOOK = TRUE;
+        POSTTASKHOOK = TRUE;
+    };
+
+    APPMODE std {};
+
+    TASK t1 {
+        AUTOSTART = TRUE {
+            APPMODE = std;
+        };
+        PRIORITY = 2;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        EVENT = e_t1_offset;
+        STATE s1 {
+            INITIAL = TRUE;
+            T = WaitEvent {
+                STATE = s2;
+                EFT = 0;
+            };
+        };
+        STATE s2 {
+            T = TerminateTask {
+                STATE = s1;
+                EFT = 0;
+//                EFT = 8000; /* 2 ms */
+            };
+        };
+    };
+
+    TASK t2 {
+        AUTOSTART = TRUE {
+            APPMODE = std;
+        };
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        TIMING_PROTECTION = TRUE {
+            EXECUTIONBUDGET = 7000; /* 7 ms */
+            TIMEFRAME = 1;
+        };
+        STATE s1 {
+            INITIAL = TRUE;
+            T = CancelAlarm {
+                STATE = s2;
+                EFT = 8000;
+            };
+        };
+        STATE s2 {
+            T = TerminateTask {
+                STATE = s1;
+                EFT = 0;
+//                EFT = 8000; /* 2 ms */
+            };
+        };
+    };
+
+    TASK t3 {
+        AUTOSTART = TRUE {
+            APPMODE = std;
+        };
+        PRIORITY = 4;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        EVENT = e_t2_timeout;
+    };
+
+    EVENT e_t1_offset {
+        MASK = AUTO;
+    };
+
+    EVENT e_t2_timeout {
+        MASK = AUTO;
+    };
+
+    ALARM a_t1_offset {
+        COUNTER = SystemCounter;
+        AUTOSTART = TRUE {
+            APPMODE = std;
+            ALARMTIME = 3;
+            CYCLETIME = 0;
+        };
+        ACTION = SETEVENT {
+            TASK = t1;
+            EVENT = e_t1_offset;
+        };
+    };
+
+    ALARM a_t2_timeout {
+        COUNTER = SystemCounter;
+        AUTOSTART = FALSE;
+        ACTION = SETEVENT {
+            TASK = t3;
+            EVENT = e_t2_timeout;
+        };
+    };
+};
+
+/* End of file te-example-ieeedt.oil */
