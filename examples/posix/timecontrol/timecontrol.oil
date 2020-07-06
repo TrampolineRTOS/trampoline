@@ -18,74 +18,81 @@ IMPLEMENTATION trampoline {
 
 CPU timecontrol {
     OS config {
-    STATUS = EXTENDED;
-    BUILD = TRUE {
-    APP_SRC = "timecontrol.c";
-    TRAMPOLINE_BASE_PATH = "../../..";
-    APP_NAME = "timecontrol_exe";
-    LDFLAGS = "-lpthread -lrt";
-    LINKER = "gcc";
-    SYSTEM = PYTHON;
+        STATUS = EXTENDED;
+        TEMPORALENFORCEMENT = TRUE;
+        BUILD = TRUE {
+            APP_SRC = "timecontrol.c";
+            TRAMPOLINE_BASE_PATH = "../../..";
+            APP_NAME = "timecontrol_exe";
+            LDFLAGS = "-lpthread -lrt";
+            LINKER = "gcc";
+            SYSTEM = PYTHON;
+        };
     };
-};
 
-APPMODE stdAppMode {};
+    APPMODE stdAppMode {};
 
-ALARM task1_alarm {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK { TASK = task1; };
-    AUTOSTART = TRUE {
-        APPMODE = stdAppMode;
-        ALARMTIME = 10;
-        CYCLETIME = 10;
+    ALARM task1_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task1; };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 10;
+            CYCLETIME = 10;
+        };
     };
-};
 
-ALARM task2_alarm {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK { TASK = task2; };
-    AUTOSTART = TRUE {
-        APPMODE = stdAppMode;
-        ALARMTIME = 15;
-        CYCLETIME = 15;
+    ALARM task2_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task2; };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 15;
+            CYCLETIME = 15;
+        };
     };
-};
 
-ALARM p2s_alarm {
-    COUNTER = SystemCounter;
-    ACTION = ALARMCALLBACK {
-        ALARMCALLBACKNAME = "empty_func";
+    ALARM task2_stratalarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task2; };
+        AUTOSTART = FALSE;
     };
-    AUTOSTART = TRUE {
-        APPMODE = stdAppMode;
-        ALARMTIME = 20;
-        CYCLETIME = 0;
-    };
-};
 
-TASK task1 {
-    PRIORITY = 3;
-    AUTOSTART = TRUE {
-        APPMODE = stdAppMode;
+    ALARM p2s_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "empty_func";
+        };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 20;
+            CYCLETIME = 0;
+        };
     };
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-};
 
-TASK task2 {
-    PRIORITY = 2;
-    AUTOSTART = TRUE {
-        APPMODE = stdAppMode;
+    TASK task1 {
+        PRIORITY = 3;
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+        };
+        ACTIVATION = 1;
+        SCHEDULE = NON;
     };
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-};
 
-TASK task3 {
-    PRIORITY = 1;
-    AUTOSTART = TRUE { APPMODE = stdAppMode; };
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-};
+    TASK task2 {
+        PRIORITY = 2;
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+        };
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+    TASK task3 {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = stdAppMode; };
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
 
 };

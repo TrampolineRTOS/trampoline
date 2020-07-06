@@ -10,8 +10,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -43,9 +43,9 @@ struct TPL_ACTION;
 **        pointer is considered at far and there is a stack pointer
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
-typedef P2FUNC(void, OS_APPL_CODE, tpl_action_func)(
-  P2CONST(struct TPL_ACTION, AUTOMATIC, OS_APPL_CONST)
-);
+typedef P2FUNC(void, OS_APPL_CODE,
+               tpl_action_func)(P2CONST(struct TPL_ACTION, AUTOMATIC,
+                                        OS_APPL_CONST));
 
 /**
  * @struct TPL_ACTION
@@ -57,7 +57,7 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_action_func)(
  * extended to add the action parameters.
  */
 struct TPL_ACTION {
-  VAR(tpl_action_func, TYPEDEF) action;    /**<  action function pointer   */
+  VAR(tpl_action_func, TYPEDEF) action; /**<  action function pointer   */
 };
 
 /**
@@ -77,13 +77,12 @@ typedef struct TPL_ACTION tpl_action;
  */
 struct TPL_CALLBACK_ACTION {
   /*  base action                 */
-  VAR(tpl_action, TYPEDEF)        b_desc;
+  VAR(tpl_action, TYPEDEF) b_desc;
   /*  callback function pointer   */
   VAR(tpl_callback_func, TYPEDEF) callback;
 };
 
-typedef struct TPL_CALLBACK_ACTION
-tpl_callback_action;
+typedef struct TPL_CALLBACK_ACTION tpl_callback_action;
 
 /**
  *  @struct TPL_TASK_ACTIVATION_ACTION
@@ -93,13 +92,17 @@ tpl_callback_action;
  */
 struct TPL_TASK_ACTIVATION_ACTION {
   /*  base action                 */
-  VAR(tpl_action, TYPEDEF)  b_desc;
+  VAR(tpl_action, TYPEDEF) b_desc;
   /*  task descriptor pointer     */
   VAR(tpl_task_id, TYPEDEF) task_id;
+
+  /* alarm id for time enforcement */
+#if WITH_TEMPORALENFORCEMENT == YES
+  VAR(tpl_alarm_id, TYPEDEF) alarm_id;
+#endif
 };
 
-typedef struct TPL_TASK_ACTIVATION_ACTION
-tpl_task_activation_action ;
+typedef struct TPL_TASK_ACTIVATION_ACTION tpl_task_activation_action;
 
 /*!
  *  @struct TPL_SETEVENT_ACTION
@@ -109,16 +112,19 @@ tpl_task_activation_action ;
  */
 struct TPL_SETEVENT_ACTION {
   /*  base action                 */
-  VAR(tpl_action, TYPEDEF)      b_desc;
+  VAR(tpl_action, TYPEDEF) b_desc;
   /*  task descriptor pointer     */
-  VAR(tpl_task_id, TYPEDEF)     task_id;
+  VAR(tpl_task_id, TYPEDEF) task_id;
   /*  event mask                  */
-  VAR(tpl_event_mask, TYPEDEF)  mask;
+  VAR(tpl_event_mask, TYPEDEF) mask;
+
+  /* alarm id for time enforcement */
+#if WITH_TEMPORALENFORCEMENT == YES
+  VAR(tpl_alarm_id, TYPEDEF) alarm_id;
+#endif
 };
 
-typedef struct TPL_SETEVENT_ACTION
-tpl_setevent_action;
-
+typedef struct TPL_SETEVENT_ACTION tpl_setevent_action;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -126,15 +132,12 @@ tpl_setevent_action;
 /*
  * Notification functions prototypes
  */
-FUNC(void, OS_CODE) tpl_action_callback(
-  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
-);
-FUNC(void, OS_CODE) tpl_action_activate_task(
-  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
-);
-FUNC(void, OS_CODE) tpl_action_setevent(
-  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
-);
+FUNC(void, OS_CODE)
+tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+FUNC(void, OS_CODE)
+tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+FUNC(void, OS_CODE)
+tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

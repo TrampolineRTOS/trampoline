@@ -9,6 +9,9 @@ CONST(tpl_task_activation_action, OS_CONST) % !action_name %_action = {
     /* action function  */  tpl_action_activate_task
   },
   /* task id            */  % !action_s::TASK %_id
+#if WITH_TEMPORALENFORCEMENT == YES
+  , /* alarm id         */  % !alarm::NAME %_id
+#endif
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
@@ -25,6 +28,9 @@ CONST(tpl_setevent_action, OS_CONST) % !action_name %_action = {
   },
   /* task id              */  % !action_s::TASK %_id,
   /* event mask           */  % !action_s::EVENT %_mask
+#if WITH_TEMPORALENFORCEMENT == YES
+  , /* alarm id         */  % !alarm::NAME %_id
+#endif
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
