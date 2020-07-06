@@ -1,4 +1,6 @@
 #include "tpl_os.h"
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 int main(void) {
@@ -8,27 +10,36 @@ int main(void) {
 
 static volatile bool elapsed = false;
 
-void alarm_callback_set_elapsed(void) { elapsed = true; }
+void empty_func_callback(void) { return; }
 
 TASK(task1) {
-  static int occurence = 0;
 
-  occurence++;
-  printf("Activation #%d\n", occurence);
-
+  for (volatile uint32_t i = 0; i < 100000; i++)
+    ;
   TerminateTask();
 }
 
-TASK(task2) {}
+TASK(task2) {
+  for (volatile uint32_t i = 0; i < 100000; i++)
+    ;
+  TerminateTask();
+}
 
 void primary(void) { printf("primary\r\n"); }
 
 void secondary(void) { printf("secondary\r\n"); }
 
-TASK(task 3) {
-  if (!elapsed) {
-    primary();
+TASK(task3) {
+
+  TickType count_to_20;
+  if (GetAlarm(p2s_alarm, &count_to_20) == E_OK) {
+    if (count_to_20 > 20 - 14) {
+      primary();
+    } else {
+      secondary();
+    }
   } else {
     secondary();
   }
+  TerminateTask();
 }

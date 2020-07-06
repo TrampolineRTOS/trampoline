@@ -13,54 +13,75 @@ IMPLEMENTATION trampoline {
     /* This fix the default STACKSIZE of ISRs */
     ISR {
         UINT32 STACKSIZE = 32768 ;
-    } ;
+        } ;
 };
 
 CPU timecontrol {
-  OS config {
+    OS config {
     STATUS = EXTENDED;
     BUILD = TRUE {
-      APP_SRC = "timecontrol.c";
-      TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "periodic_exe";
-      LINKER = "gcc";
-      SYSTEM = PYTHON;
+    APP_SRC = "timecontrol.c";
+    TRAMPOLINE_BASE_PATH = "../../..";
+    APP_NAME = "timecontrol_exe";
+    LDFLAGS = "-lpthread -lrt";
+    LINKER = "gcc";
+    SYSTEM = PYTHON;
     };
-  };
-  
-  APPMODE stdAppMode {};
-  
-  ALARM alarm_task1 {
+};
+
+APPMODE stdAppMode {};
+
+ALARM task1_alarm {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK { TASK = task1; };
-    AUTOSTART = TRUE { APPMODE = stdAppMode; ALARMTIME = 10; CYCLETIME = 10; };
-  };
+    AUTOSTART = TRUE {
+        APPMODE = stdAppMode;
+        ALARMTIME = 10;
+        CYCLETIME = 10;
+    };
+};
 
-  ALARM alarm_switch_to_secondary {
+ALARM task2_alarm {
     COUNTER = SystemCounter;
-    ACTION = ALARMCALLBACK { ALARMCALLBACKNAME = alarm_callback_set_elapsed;
-    AUTOSTART = TRUE { APPMODE = stdAppMode; ALARMTIME = 140; CYCLETIME = 0; };
-  };
+    ACTION = ACTIVATETASK { TASK = task2; };
+    AUTOSTART = TRUE {
+        APPMODE = stdAppMode;
+        ALARMTIME = 15;
+        CYCLETIME = 15;
+    };
+};
 
-  TASK task1 {
-    PRIORITY = 1;
+ALARM p2s_alarm {
+    COUNTER = SystemCounter;
+    ACTION = ALARMCALLBACK {
+        ALARMCALLBACKNAME = "empty_func";
+    };
+    AUTOSTART = TRUE {
+        APPMODE = stdAppMode;
+        ALARMTIME = 20;
+        CYCLETIME = 0;
+    };
+};
+
+TASK task1 {
+    PRIORITY = 3;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = NON;
-  };
+};
 
-  TASK task2 {
-    PRIORITY = 1;
+TASK task2 {
+    PRIORITY = 2;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = NON;
-  };
+};
 
-  TASK task3 {
+TASK task3 {
     PRIORITY = 1;
-    AUTOSTART = TRUE;
+    AUTOSTART = TRUE { APPMODE = stdAppMode; };
     ACTIVATION = 1;
     SCHEDULE = NON;
-  };
+};
 
 };
