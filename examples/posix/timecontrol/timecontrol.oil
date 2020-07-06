@@ -65,14 +65,18 @@ ALARM p2s_alarm {
 
 TASK task1 {
     PRIORITY = 3;
-    AUTOSTART = FALSE;
+    AUTOSTART = TRUE {
+        APPMODE = stdAppMode;
+    };
     ACTIVATION = 1;
     SCHEDULE = NON;
 };
 
 TASK task2 {
     PRIORITY = 2;
-    AUTOSTART = FALSE;
+    AUTOSTART = TRUE {
+        APPMODE = stdAppMode;
+    };
     ACTIVATION = 1;
     SCHEDULE = NON;
 };

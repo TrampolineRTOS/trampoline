@@ -20,8 +20,9 @@ TASK(task1) {
 }
 
 TASK(task2) {
-  for (volatile uint32_t i = 0; i < 100000; i++)
-    ;
+  /* for (volatile uint32_t i = 0; i < 100000; i++) */
+  /*   ; */
+  getchar();
   TerminateTask();
 }
 
