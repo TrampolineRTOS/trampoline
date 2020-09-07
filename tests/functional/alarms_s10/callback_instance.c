@@ -35,21 +35,22 @@
 /*Instance of callback*/
 
 #include "tpl_os.h"
+#include <stdio.h>
 
 DeclareTask(t2);
 
-/*test case:test the reaction of the system called with 
+/*test case:test the reaction of the system called with
 an activation of a task*/
 static void test_callback_instance(void)
 {
-	
+
 	StatusType result_inst_1;
-	
+
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = ActivateTask(t2);
 	SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_CALLEVEL, result_inst_1);
 
-	
+
 }
 
 /*create the test suite with all the test cases*/
