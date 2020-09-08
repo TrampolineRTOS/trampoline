@@ -80,100 +80,162 @@ CPU test {
         PROTECTIONHOOK = TRUE;
         PRETASKHOOK = TRUE;
         POSTTASKHOOK = TRUE;
-    };
+        STRATEGY trigger_secondary {
+            ACTION = ALARMDELAY {
+                ALARM = alarm_task2;
+                BEFORE Jitter2 {
+                    VAR Wait2 { VAL = 1; };
+                    CLOCK = x_Jitter2;
+                };
+               delay = NONE is the fallback case so it is not usefull
+               WHEN case1 {
+                   MARKING = VAR {
+                       VAR Wait2 {VAL = 1;};
+                   };
+                  MARKING = TASK {
+                      TASK task3 {STATE = ready_and_new; } ; // STATENOT = ready_and_new
+                  };
+                  MARKING = TIMER {
+                      TIMER task3_switch_to_secondary {STATE = s1; } ;
+                  };
+                  DO = IMMEDIATLY;
+               };
+                WHEN case2 {
+                   MARKING = VAR {
+                       VAR Wait2 {VAL = 1;};
+                   };
+                   MARKING = TASK {
+                       TASK task3 {STATE = ready_and_new; };
+                   };
+                   MARKING = TIMER {
+                       TIMER task3_switch_to_secondary {STATE = s2;};
+                   };
+                   DO = WAITUNTIL {  // or WAIT if no watchdog
+                       CLOCK = x_Jitter2;
+                       VALUE = 4;
+                   };
+                };
+                AFTER Jitter2 {
+                    VAR Wait2 { VAL = 0; };
+                };
+            };
+            // ACTION = EXECDELAY {
+            //    TASK = task1;
+            //    WHEN case1 {
+            //       MARKING = VAR {
+            //           VAR Wait2 {VAL = 1;};
+            //       };
+            //       MARKING = TASK {
+            //           TASK task3 {STATE = ready_and_new;} ;
+            //       };
+            //       DELAY = NONE;
+            //    };
+            //    WHEN case2 {
+            //        MARKING = VAR {
+            //            VAR Wait2 {VAL = 1;};
+            //        };
+            //        MARKING = TIMER {
+            //            TIMER task3_switch_to_secondary {STATE = s2;};
+            //        };
+            //        DELAY = WAIT {
+            //            CLOCK = x_Jitter2;
+            //            VALUE = 4;
+            //       };
+            //    };
+            // };
+         };
+      };
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE {
-            APPMODE = std;
-        };
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-        EVENT = e_t1_offset;
-        STATE s1 {
-            INITIAL = TRUE;
-            T = WaitEvent {
-                STATE = s2;
-                EFT = 0;
-            };
-        };
-        STATE s2 {
-            T = TerminateTask {
-                STATE = s1;
-                EFT = 0;
-//                EFT = 8000; /* 2 ms */
-            };
-        };
-    };
-
-    TASK t2 {
-        AUTOSTART = TRUE {
-            APPMODE = std;
-        };
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-        TIMING_PROTECTION = TRUE {
-            EXECUTIONBUDGET = 7000; /* 7 ms */
-            TIMEFRAME = 1;
-        };
-        STATE s1 {
-            INITIAL = TRUE;
-            T = CancelAlarm {
-                STATE = s2;
-                EFT = 8000;
-            };
-        };
-        STATE s2 {
-            T = TerminateTask {
-                STATE = s1;
-                EFT = 0;
-//                EFT = 8000; /* 2 ms */
-            };
-        };
-    };
-
-    TASK t3 {
-        AUTOSTART = TRUE {
-            APPMODE = std;
-        };
-        PRIORITY = 4;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-        EVENT = e_t2_timeout;
-    };
-
-    EVENT e_t1_offset {
-        MASK = AUTO;
-    };
-
-    EVENT e_t2_timeout {
-        MASK = AUTO;
-    };
-
-    ALARM a_t1_offset {
+    ALARM task1_alarm {
         COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task1; };
         AUTOSTART = TRUE {
-            APPMODE = std;
-            ALARMTIME = 3;
+            APPMODE = stdAppMode;
+            ALARMTIME = 1;
+            CYCLETIME = 10;
+       };
+    };
+
+    ALARM task2_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK {
+            TASK = task2;
+        };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 1;
+            CYCLETIME = 15;
+        };
+    };
+
+    ALARM task3_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task3; };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 1;
             CYCLETIME = 0;
         };
-        ACTION = SETEVENT {
-            TASK = t1;
-            EVENT = e_t1_offset;
-        };
     };
 
-    ALARM a_t2_timeout {
-        COUNTER = SystemCounter;
-        AUTOSTART = FALSE;
-        ACTION = SETEVENT {
-            TASK = t3;
-            EVENT = e_t2_timeout;
-        };
+    TIMER task3_switch_to_secondary {
+      AUTOSTART = TRUE {
+        APPMODE = stdAppMode;
+      };
+      STATE s1 {
+          INITIAL = TRUE;
+          T = {
+              TIMERTIME = 15; // 14 + 1 because the system starts after an offset of 1 ms
+              STATE = s2;
+          };
+       };
+       STATE s2;
     };
+
+    // ALARM task2_stratalarm {
+    //     COUNTER = SystemCounter;
+    //     ACTION = ACTIVATETASK {
+    //         TASK = task2;
+    //         CONTROL = TRUE { SET = Wait2; };
+    //     };
+    //     AUTOSTART = FALSE;
+    // };
+
+    // ALARM p2s_alarm {
+    //     COUNTER = SystemCounter;
+    //     ACTION = ALARMCALLBACK {
+    //         ALARMCALLBACKNAME = "empty_func";
+    //     };
+    //     AUTOSTART = TRUE {
+    //         APPMODE = stdAppMode;
+    //         ALARMTIME = 20;
+    //         CYCLETIME = 0;
+    //     };
+    // };
+
+    TASK task1 {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+    TASK task2 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+    TASK task3 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
 };
 
 /* End of file te-example-ieeedt.oil */
