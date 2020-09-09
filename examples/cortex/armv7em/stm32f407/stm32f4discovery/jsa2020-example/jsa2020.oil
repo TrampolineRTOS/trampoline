@@ -1,5 +1,5 @@
 /**
- * @file te-example-ieeedt.oil
+ * @file jsa2020.oil
  *
  * @section desc File description
  *
@@ -67,20 +67,17 @@ IMPLEMENTATION trampoline {
                 STRUCT {
                   ENUM [
                       VAR {
-                          STRUCT {
-                            INT32 VALUE;
-                          } VAR [];
+                          IDENTIFIER VAR;
+                          INT32 VALUE;
                       },
                       TASK {
-                          STRUCT {
-                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
-                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
-                          } TASK [];
+                          TASK_TYPE TASK;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
                       },
                       TIMER {
-                          STRUCT {
-                              IDENTIFIER STATE;
-                          } TIMER [];
+                          TIMER_TYPE TIMER;
+                          IDENTIFIER STATE;
                       }
                   ] MARKING[];
                   ENUM [
@@ -103,20 +100,17 @@ IMPLEMENTATION trampoline {
                 STRUCT {
                   ENUM [
                       VAR {
-                          STRUCT {
-                            INT32 VALUE;
-                          } VAR [];
+                          IDENTIFIER VAR;
+                          INT32 VALUE;
                       },
                       TASK {
-                          STRUCT {
-                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
-                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
-                          } TASK [];
+                          TASK_TYPE TASK;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
                       },
                       TIMER {
-                          STRUCT {
-                              IDENTIFIER STATE;
-                          } TIMER [];
+                          TIMER_TYPE TIMER;
+                          IDENTIFIER STATE;
                       }
                   ] MARKING[];
                   ENUM [
@@ -135,7 +129,7 @@ IMPLEMENTATION trampoline {
         } STRATEGY;
     };
 
-    TIMER {
+    TIMER[] {
         BOOLEAN [
             TRUE { APPMODE_TYPE APPMODE[]; },
             FALSE
@@ -148,7 +142,7 @@ IMPLEMENTATION trampoline {
     };
 };
 
-CPU test {
+CPU jsa2020 {
 
     OS config {
         STATUS = EXTENDED;
@@ -190,25 +184,31 @@ CPU test {
                 };
                 WHEN case1 {
                     MARKING = VAR {
-                        VAR Wait2 { VALUE = 1; };
+                        VAR = Wait2;
+                        VALUE = 1;
                     };
                     MARKING = TASK {
-                        TASK task3 { STATE = READY_AND_NEW; } ; // STATENOT = READY_AND_NEW
+                        TASK = task3;
+                        STATE = READY_AND_NEW;  // STATENOT = READY_AND_NEW
                     };
                     MARKING = TIMER {
-                        TIMER task3_switch_to_secondary { STATE = s1; } ;
+                        TIMER = task3_switch_to_secondary;
+                        STATE = s1;
                     };
                     DO = IMMEDIATLY;
                 };
                 WHEN case2 {
                     MARKING = VAR {
-                        VAR Wait2 {VALUE = 1;};
+                        VAR = Wait2;
+                        VALUE = 1;
                     };
                     MARKING = TASK {
-                        TASK task3 {STATE = READY_AND_NEW; };
+                        TASK = task3;
+                        STATE = READY_AND_NEW;
                     };
                     MARKING = TIMER {
-                        TIMER task3_switch_to_secondary {STATE = s2;};
+                        TIMER = task3_switch_to_secondary;
+                        STATE = s2;
                     };
                     DO = WAITUNTIL {  // or WAIT if no watchdog
                         CLOCK = x_Jitter2;
@@ -223,7 +223,8 @@ CPU test {
             //    TASK = task1;
             //    WHEN case1 {
             //       MARKING = VAR {
-            //           VAR Wait2 { VALUE = 1; };
+            //           VAR = Wait2;
+            //           VALUE = 1;
             //       };
             //       MARKING = TASK {
             //           TASK task3 {STATE = ready_and_new;} ;
@@ -232,10 +233,12 @@ CPU test {
             //    };
             //    WHEN case2 {
             //        MARKING = VAR {
-            //            VAR Wait2 { VALUE = 1 ;};
+            //            VAR = Wait2;
+            //            VALUE = 1 ;
             //        };
             //        MARKING = TIMER {
-            //            TIMER task3_switch_to_secondary { STATE = s2;};
+            //            TIMER = task3_switch_to_secondary;
+            //            STATE = s2;
             //        };
             //        DELAY = WAIT {
             //            CLOCK = x_Jitter2;
@@ -281,15 +284,16 @@ CPU test {
     };
 
     TIMER task3_switch_to_secondary {
-      AUTOSTART = TRUE {
-        APPMODE = stdAppMode;
-      };
-      STATE s1 {
-          INITIAL = TRUE;
-          DATE = 15; // 14 + 1 because the system starts after an offset of 1 ms
-          STATE = s2;
-       };
-       STATE s2 {};
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+        };
+        STATE s1 {
+            INITIAL = TRUE;
+            DATE = 15; // 14 + 1 because the system starts after an offset of 1 ms
+            STATE = s2;
+        };
+        STATE s2 { DATE = 11; STATE = s3; };
+        STATE s3 {};
     };
 
     // ALARM task2_stratalarm {

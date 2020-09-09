@@ -4,7 +4,7 @@
 # @section desc File description
 #
 # Root template file for goil
-# 
+#
 # @section copyright Copyright
 #
 # Trampoline OS
@@ -20,7 +20,7 @@
 # $Rev$
 # $Author$
 # $URL$
-# 
+#
 
 write to PROJECT+"/tpl_vectors.c":
  let EXTENSIONINTERRUPTVECTORS := "c"
@@ -53,5 +53,12 @@ end write
 if OS::TIMEENFORCEMENT then
   write to PROJECT+"/tpl_time_enforcement_data.c":
     template if exists tpl_time_enforcement_data_c in code
+  end write
+end if
+
+if exists OS::STRATEGY then
+  println "Computing STRATEGY " + OS::STRATEGY::NAME
+  write to PROJECT+"/tpl_time_control.c":
+    template if exists tpl_time_control_c in code
   end write
 end if
