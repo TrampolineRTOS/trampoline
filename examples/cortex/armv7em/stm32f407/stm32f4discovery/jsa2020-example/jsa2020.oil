@@ -1,5 +1,5 @@
 /**
- * @file te-example-ieeedt.oil 
+ * @file te-example-ieeedt.oil
  *
  * @section desc File description
  *
@@ -45,6 +45,107 @@ IMPLEMENTATION trampoline {
         UINT32 STACKSIZE = 200;
     };
 
+    OS {
+        STRUCT {
+          ENUM [
+            /*
+             * ALARMDELAY is the possible postponing of an alarm ACTION
+             */
+            ALARMDELAY {
+                ALARM_TYPE ALARM;
+                STRUCT {
+                  IDENTIFIER CLOCK;
+                  STRUCT {
+                    INT32 VALUE;
+                  } VAR [];
+                } BEFORE;
+                STRUCT {
+                  STRUCT {
+                    INT32 VALUE;
+                  } VAR [];
+                } AFTER;
+                STRUCT {
+                  ENUM [
+                      VAR {
+                          STRUCT {
+                            INT32 VALUE;
+                          } VAR [];
+                      },
+                      TASK {
+                          STRUCT {
+                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
+                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
+                          } TASK [];
+                      },
+                      TIMER {
+                          STRUCT {
+                              IDENTIFIER STATE;
+                          } TIMER [];
+                      }
+                  ] MARKING[];
+                  ENUM [
+                      IMMEDIATLY,
+                      WAITUNTIL {
+                        IDENTIFIER CLOCK;
+                        UINT32 VALUE;
+                      },
+                      WAIT {
+                        IDENTIFIER CLOCK;
+                      }
+                  ] DO;
+                } WHEN [];
+            },
+            /*
+             * EXECDELAY is the possible insertion of an additional execution time when a task terminates
+             */
+            EXECDELAY {
+                TASK_TYPE TASK;
+                STRUCT {
+                  ENUM [
+                      VAR {
+                          STRUCT {
+                            INT32 VALUE;
+                          } VAR [];
+                      },
+                      TASK {
+                          STRUCT {
+                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
+                              ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
+                          } TASK [];
+                      },
+                      TIMER {
+                          STRUCT {
+                              IDENTIFIER STATE;
+                          } TIMER [];
+                      }
+                  ] MARKING[];
+                  ENUM [
+                      IMMEDIATLY,
+                      WAITUNTIL {
+                        IDENTIFIER CLOCK;
+                        UINT32 VALUE;
+                      },
+                      WAIT {
+                        IDENTIFIER CLOCK;
+                      }
+                  ] DO;
+                } WHEN [];
+            }
+          ] ACTION [];
+        } STRATEGY;
+    };
+
+    TIMER {
+        BOOLEAN [
+            TRUE { APPMODE_TYPE APPMODE[]; },
+            FALSE
+        ] AUTOSTART = FALSE;
+        STRUCT {
+            BOOLEAN INITIAL = FALSE;
+            UINT32 DATE;
+            IDENTIFIER STATE;
+        } STATE [];
+    };
 };
 
 CPU test {
@@ -82,48 +183,47 @@ CPU test {
         POSTTASKHOOK = TRUE;
         STRATEGY trigger_secondary {
             ACTION = ALARMDELAY {
-                ALARM = alarm_task2;
+                ALARM = task2_alarm;
                 BEFORE Jitter2 {
-                    VAR Wait2 { VAL = 1; };
+                    VAR Wait2 { VALUE = 1; };
                     CLOCK = x_Jitter2;
                 };
-               delay = NONE is the fallback case so it is not usefull
-               WHEN case1 {
-                   MARKING = VAR {
-                       VAR Wait2 {VAL = 1;};
-                   };
-                  MARKING = TASK {
-                      TASK task3 {STATE = ready_and_new; } ; // STATENOT = ready_and_new
-                  };
-                  MARKING = TIMER {
-                      TIMER task3_switch_to_secondary {STATE = s1; } ;
-                  };
-                  DO = IMMEDIATLY;
-               };
+                WHEN case1 {
+                    MARKING = VAR {
+                        VAR Wait2 { VALUE = 1; };
+                    };
+                    MARKING = TASK {
+                        TASK task3 { STATE = READY_AND_NEW; } ; // STATENOT = READY_AND_NEW
+                    };
+                    MARKING = TIMER {
+                        TIMER task3_switch_to_secondary { STATE = s1; } ;
+                    };
+                    DO = IMMEDIATLY;
+                };
                 WHEN case2 {
-                   MARKING = VAR {
-                       VAR Wait2 {VAL = 1;};
-                   };
-                   MARKING = TASK {
-                       TASK task3 {STATE = ready_and_new; };
-                   };
-                   MARKING = TIMER {
-                       TIMER task3_switch_to_secondary {STATE = s2;};
-                   };
-                   DO = WAITUNTIL {  // or WAIT if no watchdog
-                       CLOCK = x_Jitter2;
-                       VALUE = 4;
-                   };
+                    MARKING = VAR {
+                        VAR Wait2 {VALUE = 1;};
+                    };
+                    MARKING = TASK {
+                        TASK task3 {STATE = READY_AND_NEW; };
+                    };
+                    MARKING = TIMER {
+                        TIMER task3_switch_to_secondary {STATE = s2;};
+                    };
+                    DO = WAITUNTIL {  // or WAIT if no watchdog
+                        CLOCK = x_Jitter2;
+                        VALUE = 4;
+                    };
                 };
                 AFTER Jitter2 {
-                    VAR Wait2 { VAL = 0; };
+                    VAR Wait2 { VALUE = 0; };
                 };
             };
             // ACTION = EXECDELAY {
             //    TASK = task1;
             //    WHEN case1 {
             //       MARKING = VAR {
-            //           VAR Wait2 {VAL = 1;};
+            //           VAR Wait2 { VALUE = 1; };
             //       };
             //       MARKING = TASK {
             //           TASK task3 {STATE = ready_and_new;} ;
@@ -132,10 +232,10 @@ CPU test {
             //    };
             //    WHEN case2 {
             //        MARKING = VAR {
-            //            VAR Wait2 {VAL = 1;};
+            //            VAR Wait2 { VALUE = 1 ;};
             //        };
             //        MARKING = TIMER {
-            //            TIMER task3_switch_to_secondary {STATE = s2;};
+            //            TIMER task3_switch_to_secondary { STATE = s2;};
             //        };
             //        DELAY = WAIT {
             //            CLOCK = x_Jitter2;
@@ -146,7 +246,7 @@ CPU test {
          };
       };
 
-    APPMODE std {};
+    APPMODE stdAppMode {};
 
     ALARM task1_alarm {
         COUNTER = SystemCounter;
@@ -186,12 +286,10 @@ CPU test {
       };
       STATE s1 {
           INITIAL = TRUE;
-          T = {
-              TIMERTIME = 15; // 14 + 1 because the system starts after an offset of 1 ms
-              STATE = s2;
-          };
+          DATE = 15; // 14 + 1 because the system starts after an offset of 1 ms
+          STATE = s2;
        };
-       STATE s2;
+       STATE s2 {};
     };
 
     // ALARM task2_stratalarm {
