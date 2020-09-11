@@ -24,26 +24,6 @@
 
 let timerMap := [TIMER mapBy: "NAME"]
 
-# Check the states of the TIMER that appear in the strategy exist
-foreach action in OS::STRATEGY::ACTION do
-  foreach when in action::VALUE_S::WHEN do
-    foreach mark in when::MARKING do
-      if mark::VALUE == "TIMER" then
-        let timer := timerMap[mark::VALUE_S::TIMER]
-        let found := false
-        foreach state in timer::STATE do
-          if state::NAME == mark::VALUE_S::STATE then
-            let found := true
-          end if
-        end foreach
-        if not found then
-          error mark::VALUE_S::STATE : "TIMER state does not exist"
-        end if
-      end if
-    end foreach 
-  end foreach
-end foreach
-
 # Output variables
 # first gather all used variables
 let varSet := @! !
@@ -81,70 +61,82 @@ end foreach
 
 # Output the TIMERs
 
+%
+
+typedef struct {
+  tpl_time_obj          *alarm;
+  tpl_tick              time;
+  tpl_application_mode  mode;
+} TimerType;
+
+FUNC(void, OS_CODE) tpl_start_timer(TimerType *timer)
+{
+   if (timer->alarm->state != ALARM_ACTIVE) {
+     timer->alarm->alarm_time = timer->time;
+     timer->alarm->cycle_time = 0;
+     tpl_insert_time_obj(alarm);
+   }
+}
+%
+
 if exists TIMER then
-  # first check states are all listed
   foreach tim in TIMER do
-    let stateSet := @! !
-    foreach state in tim::STATE do
-      [!stateSet add: state::NAME]
-    end foreach
-    foreach state in tim::STATE do
-      if exists state::STATE then
-        if not [stateSet contains: state::STATE] then
-          error state : "State " + state::STATE + " does not exist"
-        end if 
-      end if
-    end foreach
-  end foreach
-
-  foreach tim in TIMER do
-    let stateList := @( )
-    foreach state in tim::STATE do
-      if exists state::DATE then
-        let stateList += state
-      end if
-    end foreach
-
-    sort stateList by DATE <
 
 %
+
+TimerType timer_% !tim::NAME % = { timer_%  !tim::NAME %_alarm, % !tim::TIME % };
+
 /*
  * Callback for timer % !tim::NAME %
- * Each time the timer reaches a new listed date, it is relaunched
- * with the next date
  */
 FUNC(void, OS_CODE) % !tim::NAME %_callback()
-{
-  typedef enum { %
-    foreach state in tim::STATE do
-      %state_%!state::NAME
-      between %, %
-    end foreach
-  % } states;
-  STATIC CONST(tpl_tick, AUTOMATIC) dates[] = { % 
-    foreach state in stateList do
-      !state::DATE
-      between %, %
-    end foreach
-  % };
-  STATIC CONST(uint32, AUTOMATIC) datesCount = % ![stateList length]%;
-  STATIC VAR(states, AUTOMATIC) state = %
-    foreach state in stateList do
-      if exists state::INITIAL default (false) then
-        %state_%!state::NAME
-      end if
-    end foreach
-  %;
-  
-  switch (state) {%
-    foreach state in stateList do
-%
-    case state_% !state::NAME % : 
-    %
-    end foreach
-%
-  }
+{%
+    # output the call to the functions implementing the WHEN
+    if exists OS::STRATEGY::ACTION then
+      foreach action in OS::STRATEGY::ACTION do
+        if exists action::VALUE_S::WHEN then
+          foreach when in action::VALUE_S::WHEN do
+            if exists when::MARKING then
+              foreach mark in when::MARKING do
+                if mark::VALUE == "TIMER" then
+                  if mark::VALUE_S::TIMER == tim::NAME then
+          %
+  strategy_% !OS::STRATEGY::NAME %_when_% !when::NAME %_mark_% !mark::VALUE_S::TIMER %();%
+                  end if
+                end if
+              end foreach
+            end if
+          end foreach
+        end if
+      end foreach
+    end if%
 }
 %
   end foreach
 end if
+
+%
+FUNC(void, OS_CODE) tpl_init_strategy_timer(
+  CONST(tpl_application_mode, AUTOMATIC) mode)
+{%
+
+if exists TIMER then
+  foreach tim in TIMER do
+    if tim::AUTOSTART then
+%
+  if (mode & (%
+  
+      foreach am in tim::AUTOSTART_S::APPMODE do
+        %(1 << % !am::VALUE %)%
+      between % | %
+      end foreach
+      %)) {
+    tpl_start_timers(&timer_% !tim::NAME %);
+  }%
+    end if
+  end foreach
+end if
+
+%
+}
+%

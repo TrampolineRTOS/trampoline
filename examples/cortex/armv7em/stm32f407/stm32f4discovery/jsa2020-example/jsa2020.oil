@@ -131,14 +131,12 @@ IMPLEMENTATION trampoline {
 
     TIMER[] {
         BOOLEAN [
-            TRUE { APPMODE_TYPE APPMODE[]; },
+            TRUE {
+                APPMODE_TYPE APPMODE[]; 
+            },
             FALSE
         ] AUTOSTART = FALSE;
-        STRUCT {
-            BOOLEAN INITIAL = FALSE;
-            UINT32 DATE;
-            IDENTIFIER STATE;
-        } STATE [];
+        UINT32 TIME;
     };
 };
 
@@ -287,13 +285,7 @@ CPU jsa2020 {
         AUTOSTART = TRUE {
             APPMODE = stdAppMode;
         };
-        STATE s1 {
-            INITIAL = TRUE;
-            DATE = 15; // 14 + 1 because the system starts after an offset of 1 ms
-            STATE = s2;
-        };
-        STATE s2 { DATE = 11; STATE = s3; };
-        STATE s3 {};
+        TIME = 15; // 14 + 1 because the system starts after an offset of 1 ms
     };
 
     // ALARM task2_stratalarm {

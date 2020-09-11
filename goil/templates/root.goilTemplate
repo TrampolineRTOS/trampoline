@@ -4,7 +4,7 @@
 # @section desc File description
 #
 # Root template file for goil
-# 
+#
 # @section copyright Copyright
 #
 # Trampoline OS
@@ -20,7 +20,7 @@
 # $Rev$
 # $Author$
 # $URL$
-# 
+#
 
 import "vectors"
 
@@ -54,7 +54,7 @@ end if
 # Compute the AUTOSAR flag
 #
 # AUTOSAR is true if OIL_VERSION is 3.1
-# 
+#
 let AUTOSAR := (OILVERSION == "3.1"  | OILVERSION == "4.0")
 
 #------------------------------------------------------------------------------*
@@ -192,7 +192,7 @@ if exists OS::SCALABILITYCLASS then
     else
       error OS::SCALABILITYCLASS : "Inconsistent value for SCALABILITYCLASS, should be AUTO"
     end if
-  else 
+  else
     let AUTOSCALABILITYCLASS := false
   end if
 else
@@ -302,7 +302,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       end if
       let alarm_map[alarm::VALUE] += app::NAME
     end foreach
-    
+
     # Gather all resources referenced in all Applications
     foreach resource in exists app::RESOURCE default (@()) do
       if not exists resource_map[resource::VALUE] then
@@ -310,7 +310,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       end if
       let resource_map[resource::VALUE] += app::NAME
     end foreach
-    
+
     # Gather all messages referenced in all Applications
     foreach message in exists app::MESSAGE default (@()) do
       if not exists message_map[message::VALUE] then
@@ -318,7 +318,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       end if
       let message_map[message::VALUE] += app::NAME
     end foreach
-    
+
     # Gather all scheduletables referenced in all Applications
     foreach scheduletable in exists app::SCHEDULETABLE default (@()) do
       if not exists scheduletable_map[scheduletable::VALUE] then
@@ -327,74 +327,74 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       let scheduletable_map[scheduletable::VALUE] += app::NAME
     end foreach
   end foreach
-  
+
   # if the lists have more than one app then an object belongs to more than
   # one application
   foreach task in task_map do
-    if [task length] > 1 then 
+    if [task length] > 1 then
       error KEY : "TASK " + KEY + " belong to more than one Application"
       foreach app in task do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   foreach isr in isr_map do
-    if [isr length] > 1 then 
+    if [isr length] > 1 then
       error KEY : "ISR "+KEY+" belong to more than one Application"
       foreach app in isr do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   foreach counter in counter_map do
-    if [counter length] > 1 then 
+    if [counter length] > 1 then
       error KEY : "COUNTER "+KEY+" belong to more than one Application"
       foreach app in counter do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   foreach alarm in alarm_map do
-    if [alarm length] > 1 then 
+    if [alarm length] > 1 then
       error KEY : "ALARM "+KEY+" belong to more than one Application"
       foreach app in task do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   foreach resource in resource_map do
-    if [resource length] > 1 then 
+    if [resource length] > 1 then
       error KEY : "RESOURCE "+KEY+" belong to more than one Application"
       foreach app in resource do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   foreach message in message_map do
-    if [message length] > 1 then 
+    if [message length] > 1 then
       error KEY : "MESSAGE "+KEY+" belong to more than one Application"
       foreach app in message do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   foreach scheduletable in scheduletable_map do
-    if [scheduletable length] > 1 then 
+    if [scheduletable length] > 1 then
       error KEY : "SCHEDULETABLE "+KEY+" belong to more than one Application"
       foreach app in scheduletable do
         error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
-  
+
   # Check all tasks belong to an Application and add the APPLICATION attribute
-  let app_map := mapof APPLICATION by NAME 
+  let app_map := mapof APPLICATION by NAME
   let task_with_app := @()
   foreach task in TASK do
     if not exists task_map[task::NAME] then
@@ -407,7 +407,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     end if
   end foreach
   let TASK := task_with_app
-    
+
   let isr_with_app := @()
   foreach isr in ISR do
     if not exists isr_map[isr::NAME] then
@@ -420,7 +420,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     end if
   end foreach
   let ISR := isr_with_app
-  
+
   let counter_with_app := @()
   foreach counter in COUNTER do
     if not exists counter_map[counter::NAME] then
@@ -432,7 +432,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     end if
   end foreach
   let COUNTER := counter_with_app
-  
+
   let alarm_with_app := @()
   foreach alarm in ALARM do
     if not exists alarm_map[alarm::NAME] then
@@ -444,7 +444,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     end if
   end foreach
   let ALARM := alarm_with_app
-  
+
   # Normally a resource should not be in any application. Fix that.
   let rez_with_app := @()
   foreach resource in RESOURCE do
@@ -457,7 +457,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     end if
   end foreach
   let RESOURCE := rez_with_app
-  
+
   let mess_with_app := @()
   foreach message in MESSAGE do
     if not exists message_map[message::NAME] then
@@ -469,7 +469,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     end if
   end foreach
   let MESSAGE := mess_with_app
-  
+
   let st_with_app := @()
   foreach scheduletable in SCHEDULETABLE do
     if not exists scheduletable_map[scheduletable::NAME] then
@@ -546,7 +546,7 @@ foreach task in TASK do
   else
     let task::NONPREEMPTABLE := false
   end if
-  
+
   let task::KIND := "Task"
   let TASKS += task
 end foreach
@@ -660,7 +660,7 @@ foreach obj in PRIO2 do
     end if
     let number_of_jobs_in_current_priority := 0
   end if
-  if obj::KIND == "Task" then 
+  if obj::KIND == "Task" then
     let number_of_jobs_in_current_priority := number_of_jobs_in_current_priority + obj::ACTIVATION
     let READY_LIST_SIZE := READY_LIST_SIZE + obj::ACTIVATION
   else
@@ -876,7 +876,7 @@ foreach sel_event (sel_INDEX) in USEREVENTS do
   if sel_event::MASK == 0 then
     error sel_event::MASK : "0 is not allowed in MASK"
   end if
-  
+
   #
   # Warn if a MASK has more than one bit
   #
@@ -891,7 +891,7 @@ foreach sel_event (sel_INDEX) in USEREVENTS do
   if more_than_one_bit then
     warning sel_event::MASK : "Event " + sel_event::NAME + " uses more than one bit"
   end if
-  
+
   #
   # Having 2 mask with common bits is an error if the events are
   # used by the same task
@@ -916,7 +916,7 @@ foreach sel_event (sel_INDEX) in USEREVENTS do
       end if
     end if
   end foreach
-  
+
 end foreach
 
 #
@@ -943,7 +943,7 @@ let EVENTS := USEREVENTS
 
 #
 # build a data structure to sort events by the number of tasks
-# that reference them. This is to allocate the bits for 
+# that reference them. This is to allocate the bits for
 # events that are used by the greatest number of tasks first
 #
 let events_by_ref := @()
@@ -962,7 +962,7 @@ sort events_by_ref by REF >
 
 #
 # Fourth, AUTO events are put in the holes
-# of the event mask. 
+# of the event mask.
 #
 foreach event in events_by_ref do
   # Compute the available bits for the task using the event by doing a or
@@ -1028,7 +1028,7 @@ foreach alarm in ALARMS do
   if exists alarm::ACTION then
     if alarm::ACTION == "INCREMENTCOUNTER" then
       if counterMap[alarm::ACTION_S::COUNTER]::TYPE != "SOFTWARE" then
-        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter ("+alarm::ACTION_S::COUNTER+" is not a software counter)." 
+        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter ("+alarm::ACTION_S::COUNTER+" is not a software counter)."
       end if
     elsif alarm::ACTION == "SETEVENT" then
       if not exists taskMap[alarm::ACTION_S::TASK]::EVENT then
@@ -1162,7 +1162,7 @@ let SCHEDULETABLES := SCHEDULETABLE
 # Compute the TRUSTEDFUNCTIONS
 #
 let TRUSTEDFUNCTIONS := @()
- 
+
 
 #------------------------------------------------------------------------------*
 # Compute the APPLICATIONS
