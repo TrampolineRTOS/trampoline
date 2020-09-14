@@ -101,7 +101,7 @@ FUNC(void, OS_CODE) % !tim::NAME %_callback()
                 if mark::VALUE == "TIMER" then
                   if mark::VALUE_S::TIMER == tim::NAME then
           %
-  strategy_% !OS::STRATEGY::NAME %_when_% !when::NAME %_mark_% !mark::VALUE_S::TIMER %();%
+  tpl_% !OS::STRATEGY::NAME %_action_% !action::VALUE %_% !action::VALUE_S::ALARM %_when_% !when::NAME  %();%
                   end if
                 end if
               end foreach
@@ -140,3 +140,17 @@ end if
 %
 }
 %
+
+foreach action in exists OS::STRATEGY::ACTION default ( @( ) ) do
+  let actionName := action::VALUE
+  if    actionName == "ALARMDELAY" then let actionName += "_" + action::VALUE_S::ALARM
+  elsif actionName == "EXECDELAY" then let actionName += "_" + action::VALUE_S::TASK
+  end if
+  foreach when in exists action::VALUE_S::WHEN default ( @( ) ) do
+%
+FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %()
+{
+}
+%
+  end foreach
+end foreach
