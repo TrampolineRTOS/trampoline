@@ -110,7 +110,7 @@ IMPLEMENTATION trampoline {
                       },
                       TIMER {
                           TIMER_TYPE TIMER;
-                          IDENTIFIER STATE;
+                          ENUM [ SLEEP, ACTIVE ] STATE;
                       }
                   ] MARKING[];
                   ENUM [
@@ -191,7 +191,7 @@ CPU jsa2020 {
                     };
                     MARKING = TIMER {
                         TIMER = task3_switch_to_secondary;
-                        STATE = s1;
+                        STATE = SLEEP;
                     };
                     DO = IMMEDIATLY;
                 };
@@ -206,7 +206,7 @@ CPU jsa2020 {
                     };
                     MARKING = TIMER {
                         TIMER = task3_switch_to_secondary;
-                        STATE = s2;
+                        STATE = ACTIVE;
                     };
                     DO = WAITUNTIL {  // or WAIT if no watchdog
                         CLOCK = x_Jitter2;

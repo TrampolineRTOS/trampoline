@@ -101,7 +101,16 @@ FUNC(void, OS_CODE) % !tim::NAME %_callback()
                 if mark::VALUE == "TIMER" then
                   if mark::VALUE_S::TIMER == tim::NAME then
           %
-  tpl_% !OS::STRATEGY::NAME %_action_% !action::VALUE %_% !action::VALUE_S::ALARM %_when_% !when::NAME  %();%
+  if (tpl_% !OS::STRATEGY::NAME %_action_% !action::VALUE %_% !action::VALUE_S::ALARM %_when_% !when::NAME  %())
+  {%
+                    if exists when::DO then
+                      if    when::DO == "IMMEDIATLY" then
+                      elsif when::DO == "WAITUNTIL" then
+                      elsif when::DO == "WAIT" then 
+                      end if
+                    end if
+%
+  }%
                   end if
                 end if
               end foreach
@@ -130,7 +139,8 @@ if exists TIMER then
         %(1 << % !am::VALUE %)%
       between % | %
       end foreach
-      %)) {
+      %))
+  {
     tpl_start_timers(&timer_% !tim::NAME %);
   }%
     end if
@@ -150,6 +160,29 @@ foreach action in exists OS::STRATEGY::ACTION default ( @( ) ) do
 %
 FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %()
 {
+  return %
+    if exists when::MARKING then
+    %
+    (%
+      foreach mark in exists when::MARKING default ( @( ) ) do
+        if    mark::VALUE == "VAR" then 
+          %(% !mark::VALUE_S::VAR % == % !mark::VALUE_S::VALUE %)% 
+        elsif mark::VALUE == "TASK" then
+          %(% !mark::VALUE_S::TASK %_task_desc.state % 
+          if exists mark::VALUE_S::STATE then %== % !mark::VALUE_S::STATE %)%
+          elsif exists mark::VALUE_S::NOTSTATE then %!= % !mark::VALUE_S::NOTSTATE %)%
+          end if
+        elsif mark::VALUE == "TIMER" then
+          %(timer_% !mark::VALUE_S::TIMER %.alarm->state == ALARM_% !mark::VALUE_S::STATE %)%
+        end if
+      between % &&
+     %
+      end foreach
+      %);%
+    else 
+      %TRUE;%
+    end if
+%
 }
 %
   end foreach
