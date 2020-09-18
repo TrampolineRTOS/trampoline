@@ -81,7 +81,7 @@ IMPLEMENTATION trampoline {
                       }
                   ] MARKING[];
                   ENUM [
-                      IMMEDIATLY,
+                      IMMEDIATELY,
                       WAITUNTIL {
                         IDENTIFIER CLOCK;
                         UINT32 VALUE;
@@ -110,11 +110,11 @@ IMPLEMENTATION trampoline {
                       },
                       TIMER {
                           TIMER_TYPE TIMER;
-                          ENUM [ SLEEP, ACTIVE ] STATE;
+                          ENUM [ OFF, ON, EXPIRED ] STATE;
                       }
                   ] MARKING[];
                   ENUM [
-                      IMMEDIATLY,
+                      IMMEDIATELY,
                       WAITUNTIL {
                         IDENTIFIER CLOCK;
                         UINT32 VALUE;
@@ -191,9 +191,9 @@ CPU jsa2020 {
                     };
                     MARKING = TIMER {
                         TIMER = task3_switch_to_secondary;
-                        STATE = SLEEP;
+                        STATE = EXPIRED;
                     };
-                    DO = IMMEDIATLY;
+                    DO = IMMEDIATELY;
                 };
                 WHEN case2 {
                     MARKING = VAR {
@@ -206,7 +206,7 @@ CPU jsa2020 {
                     };
                     MARKING = TIMER {
                         TIMER = task3_switch_to_secondary;
-                        STATE = ACTIVE;
+                        STATE = ON ;
                     };
                     DO = WAITUNTIL {  // or WAIT if no watchdog
                         CLOCK = x_Jitter2;

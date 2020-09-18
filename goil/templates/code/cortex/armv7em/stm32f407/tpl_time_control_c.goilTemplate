@@ -23,6 +23,8 @@
 %
 
 let timerMap := [TIMER mapBy: "NAME"]
+let alarmMap := [ALARMS mapBy: "NAME"]
+
 
 # Output variables
 # first gather all used variables
@@ -63,19 +65,51 @@ end foreach
 
 %
 
+FUNC(tpl_bool, OS_CODE) tpl_start_alarm(
+  CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm,
+  CONST(tpl_tick, AUTOMATIC) delay)
+{
+  if (alarm->state == ALARM_SLEEP) {
+    CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt = alarm->stat_part->counter;
+    VAR(tpl_tick, AUTOMATIC) date = cnt->current_date + delay;
+    if (date > cnt->max_allowed_value)
+    {
+        date -= (cnt->max_allowed_value + 1);
+    }
+    alarm->date = date;
+    alarm->cycle = 0 ;
+    alarm->state = ALARM_ACTIVE;
+    tpl_insert_time_obj(alarm);
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+FUNC(void, OS_CODE) tpl_stop_alarm(
+  CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm)
+{
+  if (alarm->state == ALARM_ACTIVE)
+  {
+    tpl_remove_time_obj(alarm);
+    alarm->state = ALARM_SLEEP;
+  }
+}
+
 typedef struct {
-  tpl_time_obj          *alarm;
-  tpl_tick              time;
-  tpl_application_mode  mode;
+  tpl_time_obj                                *alarm;
+  tpl_tick                                    time;
+  enum { TIMER_OFF, TIMER_ON, TIMER_EXPIRED } state;
 } TimerType;
 
 FUNC(void, OS_CODE) tpl_start_timer(TimerType *timer)
 {
-   if (timer->alarm->state != ALARM_ACTIVE) {
-     timer->alarm->alarm_time = timer->time;
-     timer->alarm->cycle_time = 0;
-     tpl_insert_time_obj(alarm);
-   }
+  CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm = timer->alarm;
+
+  if (tpl_start_alarm(alarm, timer->time)) {
+    timer->state = TIMER_ON;
+  }
 }
 %
 
@@ -84,47 +118,56 @@ if exists TIMER then
 
 %
 
-TimerType timer_% !tim::NAME % = { timer_%  !tim::NAME %_alarm, % !tim::TIME % };
+TimerType timer_% !tim::NAME % = { timer_%  !tim::NAME %_alarm, % !tim::TIME %, TIMER_OFF };
 
 /*
  * Callback for timer % !tim::NAME %
  */
 FUNC(void, OS_CODE) % !tim::NAME %_callback()
-{%
-    # output the call to the functions implementing the WHEN
-    if exists OS::STRATEGY::ACTION then
-      foreach action in OS::STRATEGY::ACTION do
-        if exists action::VALUE_S::WHEN then
-          foreach when in action::VALUE_S::WHEN do
-            if exists when::MARKING then
-              foreach mark in when::MARKING do
-                if mark::VALUE == "TIMER" then
-                  if mark::VALUE_S::TIMER == tim::NAME then
-          %
+{
+  timer_% !tim::NAME %.state = TIMER_EXPIRED;%
+    # Look in the strategy to find cases that use the time
+    foreach action in exists OS::STRATEGY::ACTION default (@()) do
+      if action::VALUE == "ALARMDELAY" then
+        foreach when in action::VALUE_S::WHEN do
+          foreach mark in exists when::MARKING default (@()) do
+            if mark::VALUE == "TIMER" then
+              if mark::VALUE_S::TIMER == tim::NAME & mark::VALUE_S::STATE == "EXPIRED" then%
   if (tpl_% !OS::STRATEGY::NAME %_action_% !action::VALUE %_% !action::VALUE_S::ALARM %_when_% !when::NAME  %())
   {%
-                    if exists when::DO then
-                      if    when::DO == "IMMEDIATLY" then
-                      elsif when::DO == "WAITUNTIL" then
-                      elsif when::DO == "WAIT" then 
-                      end if
-                    end if
-%
-  }%
+                if when::DO == "IMMEDIATELY" then %
+    /* IMMEDIATELY */%
+                  let act := alarmMap[action::VALUE_S::ALARM]::ACTION
+                  let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
+                  if act == "ACTIVATETASK" then %
+    tpl_activate_task(% !act_s::TASK %);%
+                  elsif act == "SETEVENT" then %
+    tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
                   end if
-                end if
-              end foreach
+                  foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
+    % !var::NAME % = % !var::VALUE %;%
+                  end foreach
+                  # kill the delayed alarm if any
+                  %
+    tpl_stop_alarm(delayed_% !action::VALUE_S::ALARM %);%
+                end if%
+  }%
+              end if
             end if
           end foreach
-        end if
-      end foreach
-    end if%
+        end foreach
+      end if
+    end foreach
+%
 }
 %
   end foreach
 end if
 
 %
+/*
+ * To be called in StartOS
+ */
 FUNC(void, OS_CODE) tpl_init_strategy_timer(
   CONST(tpl_application_mode, AUTOMATIC) mode)
 {%
@@ -173,7 +216,7 @@ FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_
           elsif exists mark::VALUE_S::NOTSTATE then %!= % !mark::VALUE_S::NOTSTATE %)%
           end if
         elsif mark::VALUE == "TIMER" then
-          %(timer_% !mark::VALUE_S::TIMER %.alarm->state == ALARM_% !mark::VALUE_S::STATE %)%
+          %(timer_% !mark::VALUE_S::TIMER %.alarm->state == TIMER_% !mark::VALUE_S::STATE %)%
         end if
       between % &&
      %
@@ -186,4 +229,135 @@ FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_
 }
 %
   end foreach
+end foreach
+
+#
+# output callback of ALARMDELAY actions
+#
+foreach action in exists OS::STRATEGY::ACTION default ( @() ) do
+  if action::VALUE == "ALARMDELAY" then
+    if exists action::VALUE_S::ALARM then%
+/*
+ * Callback for alarm % !action::VALUE_S::ALARM %
+ */
+FUNC(void, OS_CODE) % !action::VALUE_S::ALARM %_callback()
+{%
+      # BEFORE setup
+      if exists action::VALUE_S::BEFORE::CLOCK then%
+  % !action::VALUE_S::BEFORE::CLOCK % = tpl_time_counter;%
+      end if
+      foreach var in exists action::VALUE_S::BEFORE::VAR default (@()) do%
+  % !var::NAME % = % !var::VALUE %;%
+      end foreach
+      # WHEN evaluation and DO execution
+      foreach when in exists action::VALUE_S::WHEN default (@()) do
+%
+  if (tpl_% !OS::STRATEGY::NAME %_action_% !action::VALUE %_% !action::VALUE_S::ALARM %_when_% !when::NAME  %())
+  {%
+        if when::DO == "IMMEDIATELY" then %
+    /* IMMEDIATELY */%
+          let act := alarmMap[action::VALUE_S::ALARM]::ACTION
+          let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
+          if act == "ACTIVATETASK" then %
+    tpl_activate_task(% !act_s::TASK %);%
+          elsif act == "SETEVENT" then %
+    tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
+          end if
+          foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
+    % !var::NAME % = % !var::VALUE %;%
+          end foreach
+        elsif when::DO == "WAITUNTIL" then %
+    /* WAITUNTIL = % !when::DO_S::VALUE % */
+    tpl_start_alarm(delayed_% !action::VALUE_S::ALARM %, % !when::DO_S::VALUE %);%
+        end if %
+  }%
+      end foreach
+%
+}
+
+/*
+ * Delayed callback for alarm delayed_% !action::VALUE_S::ALARM %
+ */
+FUNC(void, OS_CODE) delayed_% !action::VALUE_S::ALARM %_callback()
+{
+  /* for delayed alarms, the action is done here */%
+      foreach when in exists action::VALUE_S::WHEN default (@()) do
+        if when::DO == "WAITUNTIL" then 
+          let act := alarmMap[action::VALUE_S::ALARM]::ACTION
+          let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
+          if act == "ACTIVATETASK" then %
+  tpl_activate_task(% !act_s::TASK %);%
+          elsif act == "SETEVENT" then %
+  tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
+          end if
+          foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
+  % !var::NAME % = % !var::VALUE %;%
+          end foreach
+        end if 
+      end foreach
+%
+}
+
+/*
+ * Delayed alarm delayed_% !action::VALUE_S::ALARM %
+ */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONST(tpl_callback_action, OS_CONST) delayed_% !action::VALUE_S::ALARM %_action = {
+  {
+    /* action function    */  tpl_action_callback
+  },
+  /* callback function  */  delayed_% !action::VALUE_S::ALARM %_callback
+#if WITH_TEMPORALENFORCEMENT == YES
+  , /* alarm id         */  -1
+#endif
+};
+
+CONST(tpl_alarm_static, OS_CONST) delayed_% !action::VALUE_S::ALARM %_static = {
+  {
+    /* pointer to counter           */  &SystemCounter_counter_desc,
+    /* pointer to the expiration    */  tpl_raise_alarm
+#if (WITH_TRACE == YES)
+    /* id of the alarm for tracing  */  , -1
+#endif
+#if WITH_OSAPPLICATION == YES
+    /* OS application id            */  , 
+#endif
+  },
+  /* action of the alarm  */  (tpl_action *)&delayed_% !action::VALUE_S::ALARM %_action
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+VAR(tpl_time_obj, OS_VAR) delayed_delayed_% !action::VALUE_S::ALARM %_alarm_desc = {
+    /* pointer to the static part   */  (tpl_time_obj_static *)&delayed_% !action::VALUE_S::ALARM %_static,
+    /* next alarm                   */  NULL,
+    /* prev alarm                   */  NULL,
+    /* cycle                        */  0,
+    /* date                         */  0,
+    /* State of the alarm           */  ALARM_SLEEP};
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/*
+ * Function to cancel the delayed alarm delayed_% !action::VALUE_S::ALARM %
+ */
+FUNC(void, OS_CODE) tpl_cancel_delayed_% !action::VALUE_S::ALARM %()
+{
+  if (delayed_% !action::VALUE_S::ALARM %.state == ALARM_ACTIVE)
+  {
+    tpl_remove_time_obj(&delayed_% !action::VALUE_S::ALARM %);
+    alarm.state = ALARM_SLEEP;
+  }
+}
+
+%
+    end if
+  end if
 end foreach
