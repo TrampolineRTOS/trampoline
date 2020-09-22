@@ -21,6 +21,9 @@
  */
 
 %
+# TODO : AJOUTER L'INSTANTIATION DES CLOCKS - DONE
+# TODO : Générer des fonctions pour les DO 
+
 
 let timerMap := [TIMER mapBy: "NAME"]
 let alarmMap := [ALARMS mapBy: "NAME"]
@@ -29,13 +32,15 @@ let alarmMap := [ALARMS mapBy: "NAME"]
 # Output variables
 # first gather all used variables
 let varSet := @! !
+let clockSet := @! !
 
 if exists OS::STRATEGY::ACTION then
   foreach action in OS::STRATEGY::ACTION do
-    if exists action::VALUE_S::BEFORE::VAR then
-      foreach var in action::VALUE_S::BEFORE::VAR do
-        [!varSet add: var::NAME]
-      end foreach
+    foreach var in exists action::VALUE_S::BEFORE::VAR default (@()) do
+      [!varSet add: var::NAME]
+    end foreach
+    if exists action::VALUE_S::BEFORE::CLOCK then
+      [!clockSet add: action::VALUE_S::BEFORE::CLOCK]
     end if
     if exists action::VALUE_S::AFTER::VAR then
       foreach var in action::VALUE_S::BEFORE::VAR do
@@ -59,6 +64,11 @@ end if
 foreach var in varSet do
 %
 STATIC VAR(uint32, OS_VAR) % !OS::STRATEGY::NAME %_% !var % = 0;%
+end foreach
+
+foreach clock in clockSet do
+%
+STATIC VAR(uint32, OS_VAR) % !OS::STRATEGY::NAME %_clock_% !clock % = 0;%
 end foreach
 
 # Output the TIMERs
@@ -126,7 +136,7 @@ TimerType timer_% !tim::NAME % = { timer_%  !tim::NAME %_alarm, % !tim::TIME %, 
 FUNC(void, OS_CODE) % !tim::NAME %_callback()
 {
   timer_% !tim::NAME %.state = TIMER_EXPIRED;%
-    # Look in the strategy to find cases that use the time
+    # Look in the strategy to find cases that use the timer
     foreach action in exists OS::STRATEGY::ACTION default (@()) do
       if action::VALUE == "ALARMDELAY" then
         foreach when in action::VALUE_S::WHEN do
@@ -223,7 +233,7 @@ FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_
       end foreach
       %);%
     else 
-      %TRUE;%
+      %FALSE;%
     end if
 %
 }
@@ -241,7 +251,8 @@ foreach action in exists OS::STRATEGY::ACTION default ( @() ) do
  * Callback for alarm % !action::VALUE_S::ALARM %
  */
 FUNC(void, OS_CODE) % !action::VALUE_S::ALARM %_callback()
-{%
+{
+  /* BEFORE statement */%
       # BEFORE setup
       if exists action::VALUE_S::BEFORE::CLOCK then%
   % !action::VALUE_S::BEFORE::CLOCK % = tpl_time_counter;%
@@ -262,7 +273,8 @@ FUNC(void, OS_CODE) % !action::VALUE_S::ALARM %_callback()
     tpl_activate_task(% !act_s::TASK %);%
           elsif act == "SETEVENT" then %
     tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
-          end if
+          end if%
+    /* AFTER statement because we are in immediately branch */%
           foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
     % !var::NAME % = % !var::VALUE %;%
           end foreach
@@ -289,7 +301,8 @@ FUNC(void, OS_CODE) delayed_% !action::VALUE_S::ALARM %_callback()
   tpl_activate_task(% !act_s::TASK %);%
           elsif act == "SETEVENT" then %
   tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
-          end if
+          end if%
+  /* AFTER statement */%
           foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
   % !var::NAME % = % !var::VALUE %;%
           end foreach
