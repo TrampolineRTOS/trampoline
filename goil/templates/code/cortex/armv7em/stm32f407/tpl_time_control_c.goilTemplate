@@ -260,7 +260,7 @@ foreach action in exists OS::STRATEGY::ACTION default ( @() ) do
 /*
  * Callback for alarm % !action::VALUE_S::ALARM %
  */
-FUNC(void, OS_CODE) % OS::STRATEGY::NAME %_% !action::VALUE_S::ALARM %_callback()
+FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !action::VALUE_S::ALARM %_callback()
 {
   /* BEFORE statement */%
       # BEFORE setup

@@ -9,7 +9,11 @@ foreach strat_action in exists OS::STRATEGY::ACTION default ( @( ) ) do
   end if
 end foreach
 
-if delayed_alarm then%
+if delayed_alarm then
+
+println "Delayed alarm"
+
+%
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
