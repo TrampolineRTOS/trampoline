@@ -181,7 +181,21 @@ FUNC(void, OS_CODE) tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !
     tpl_time_counter + (% !max32bitsUnsignedInt() %UL - % !clock %) + 1;
   if (elapsed < % !when::DO_S::VALUE %)
   {
+    tpl_stop_alarm(delayed_% !action::VALUE_S::ALARM %);
     tpl_start_alarm(delayed_% !action::VALUE_S::ALARM %, % !when::DO_S::VALUE % - elapsed);
+  }
+  else if (elapsed == % !when::DO_S::VALUE %)
+  {%
+      let act := alarmMap[action::VALUE_S::ALARM]::ACTION
+      let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
+      if act == "ACTIVATETASK" then %
+    tpl_activate_task(% !act_s::TASK %);%
+      elsif act == "SETEVENT" then %
+    tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
+      end if
+      foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
+    % !OS::STRATEGY::NAME %_var_% !var::NAME % = % !var::VALUE %;%
+      end foreach%
   }
   else
   {
