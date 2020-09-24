@@ -292,6 +292,18 @@ CPU jsa2020 {
         TIME = 15; // 14 + 1 because the system starts after an offset of 1 ms
     };
 
+    ALARM task3_switch_to_secondary {
+        COUNTER = SystemCounter;
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 15;
+            CYCLETIME = 0;
+        };
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "execute_secondary";
+        };
+    };
+
     // ALARM task2_stratalarm {
     //     COUNTER = SystemCounter;
     //     ACTION = ACTIVATETASK {
