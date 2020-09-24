@@ -151,7 +151,7 @@ CPU jsa2020 {
             APP_SRC = "jsa2020.c";
             // APP_SRC = "te-example-ieeedt.c";
             // APP_SRC = "tpl_timing_protection.c";
-            APP_NAME = "autosar_tp_s1_exe";
+            APP_NAME = "jsa2020_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
             CFLAGS = "-O3";
             LDFLAGS = "-Map=blink.map";
@@ -176,7 +176,7 @@ CPU jsa2020 {
 //        STARTUPHOOK = TRUE;
 //        PROTECTIONHOOK = TRUE;
 //        PRETASKHOOK = TRUE;
-        POSTTASKHOOK = TRUE;
+//        POSTTASKHOOK = TRUE;
         STRATEGY trigger_secondary {
             ACTION = ALARMDELAY {
                 ALARM = task2_alarm;

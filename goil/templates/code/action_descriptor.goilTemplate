@@ -1,5 +1,38 @@
 %
-if action == "ACTIVATETASK" then
+
+let delayed_alarm := false
+foreach strat_action in exists OS::STRATEGY::ACTION default ( @( ) ) do
+  if strat_action::VALUE == "ALARMDELAY" then
+    if strat_action::VALUE_S::ALARM == alarm::NAME then
+      let delayed_alarm := true
+    end if
+  end if
+end foreach
+
+if delayed_alarm then%
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+extern FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback();
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONST(tpl_callback_action, OS_CONST) % !action_name %_action = {
+  {
+    /* action function  */    tpl_action_callback
+  },
+  /* callback function    */  % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+else
+  if action == "ACTIVATETASK" then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -9,15 +42,13 @@ CONST(tpl_task_activation_action, OS_CONST) % !action_name %_action = {
     /* action function  */  tpl_action_activate_task
   },
   /* task id            */  % !action_s::TASK %_id
-#if WITH_TEMPORALENFORCEMENT == YES
-  , /* alarm id         */  % !alarm::NAME %_id
-#endif
+
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif action == "SETEVENT" then
+  elsif action == "SETEVENT" then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -28,15 +59,12 @@ CONST(tpl_setevent_action, OS_CONST) % !action_name %_action = {
   },
   /* task id              */  % !action_s::TASK %_id,
   /* event mask           */  % !action_s::EVENT %_mask
-#if WITH_TEMPORALENFORCEMENT == YES
-  , /* alarm id         */  % !alarm::NAME %_id
-#endif
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif action == "ALARMCALLBACK" then
+  elsif action == "ALARMCALLBACK" then
 %
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -59,7 +87,7 @@ CONST(tpl_callback_action, OS_CONST) % !action_name %_action = {
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif action == "COMCALLBACK" then
+  elsif action == "COMCALLBACK" then
 %
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -82,7 +110,7 @@ CONST(tpl_callback_action, OS_CONST) % !action_name %_action = {
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif action == "FLAG" then
+  elsif action == "FLAG" then
 %
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -107,7 +135,7 @@ CONST(tpl_callback_action, OS_CONST) % !action_name %_action = {
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif action == "INCREMENTCOUNTER" then
+  elsif action == "INCREMENTCOUNTER" then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -122,7 +150,7 @@ CONST(tpl_increment_counter_action, OS_CONST) % !action_name %_action = {
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif action == "FINALIZESCHEDULETABLE" then
+  elsif action == "FINALIZESCHEDULETABLE" then
 %
 tpl_schedule_table % !action_s::SCHEDULETABLE %_st_dyn;
 
@@ -139,4 +167,5 @@ tpl_finalize_schedule_table_action % !action_name %_action = {
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
+  end if
 end if

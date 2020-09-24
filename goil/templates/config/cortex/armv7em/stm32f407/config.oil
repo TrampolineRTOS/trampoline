@@ -86,7 +86,6 @@ CPU stm32f407 {
   };
 
   GENERATED_FILES time_enforcement {
-    CFILE = "tpl_time_enforcement_data.c";
     CFILE = "tpl_time_control.c";
   };
   
