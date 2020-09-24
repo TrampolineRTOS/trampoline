@@ -20,7 +20,7 @@ TASK(task1) { TerminateTask(); }
 
 TASK(task2) { TerminateTask(); }
 
-#define APP_Task_back_STOP_SEC_CODE
+#define APP_Task_task2_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define APP_Task_task3_START_SEC_CODE
@@ -28,7 +28,7 @@ TASK(task2) { TerminateTask(); }
 
 TASK(task3) { TerminateTask(); }
 
-#define APP_Task_back_STOP_SEC_CODE
+#define APP_Task_task3_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
