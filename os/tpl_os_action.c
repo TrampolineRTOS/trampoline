@@ -48,12 +48,6 @@ tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
   ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)->callback();
 }
 
-#if WITH_TEMPORALENFORCEMENT == YES
-extern FUNC(StatusType, OS_CODE)
-    tpl_apply_strategy(CONST(tpl_task_id, AUTOMATIC),
-                       CONST(tpl_alarm_id, AUTOMATIC));
-#endif
-
 /**
  *  action function for action by task activation
  */
@@ -77,17 +71,9 @@ tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
 
   /* call alarm action and save return value to launch error hook if alarm
    * action goes wrong */
-#if WITH_TEMPORALENFORCEMENT == NO
   result_action = tpl_activate_task(
       ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
           ->task_id);
-#else
-  result_action = tpl_apply_strategy(
-      ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
-          ->task_id,
-      ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
-          ->alarm_id);
-#endif
   PROCESS_ERROR(result_action)
 }
 

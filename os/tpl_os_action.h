@@ -112,11 +112,6 @@ struct TPL_SETEVENT_ACTION {
   VAR(tpl_task_id, TYPEDEF) task_id;
   /*  event mask                  */
   VAR(tpl_event_mask, TYPEDEF) mask;
-
-  /* alarm id for time enforcement */
-#if WITH_TEMPORALENFORCEMENT == YES
-  VAR(tpl_alarm_id, TYPEDEF) alarm_id;
-#endif
 };
 
 typedef struct TPL_SETEVENT_ACTION tpl_setevent_action;
