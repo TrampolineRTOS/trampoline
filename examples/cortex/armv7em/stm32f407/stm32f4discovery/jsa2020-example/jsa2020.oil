@@ -148,8 +148,9 @@ CPU jsa2020 {
         STATUS = EXTENDED;
         SYSTEM_CALL = TRUE;
         BUILD = TRUE {
-            APP_SRC = "te-example-ieeedt.c";
-            APP_SRC = "tpl_timing_protection.c";
+            APP_SRC = "jsa2020.c";
+            // APP_SRC = "te-example-ieeedt.c";
+            // APP_SRC = "tpl_timing_protection.c";
             APP_NAME = "autosar_tp_s1_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
             CFLAGS = "-O3";
@@ -159,7 +160,7 @@ CPU jsa2020 {
             LINKER = "arm-none-eabi-ld";
             COPIER = "arm-none-eabi-objcopy";
             SYSTEM = PYTHON;
-            LIBRARY = time_enforcement;
+//            LIBRARY = time_enforcement;
             LIBRARY = gpt;
         };
         MEMMAP = TRUE {
@@ -168,12 +169,13 @@ CPU jsa2020 {
             ASSEMBLER = gnu_as;
             MEMORY_PROTECTION = FALSE;
         };
-        USERSERVICEHOOK = TRUE;
-        TIMEENFORCEMENT = TRUE;
-        SHUTDOWNHOOK = TRUE;
-        STARTUPHOOK = TRUE;
-        PROTECTIONHOOK = TRUE;
-        PRETASKHOOK = TRUE;
+//        USERSERVICEHOOK = TRUE;
+//        TIMEENFORCEMENT = TRUE;
+        TEMPORALENFORCEMENT = TRUE;
+//        SHUTDOWNHOOK = TRUE;
+//        STARTUPHOOK = TRUE;
+//        PROTECTIONHOOK = TRUE;
+//        PRETASKHOOK = TRUE;
         POSTTASKHOOK = TRUE;
         STRATEGY trigger_secondary {
             ACTION = ALARMDELAY {
