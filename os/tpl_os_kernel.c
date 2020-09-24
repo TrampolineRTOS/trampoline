@@ -865,6 +865,13 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id)) {
   tpl_start(CORE_ID_OR_NOTHING(core_id));
 }
 
+#if WITH_TEMPORALENFORCEMENT == YES
+/*  Forward declaration: temporal enforcement strategy entry function
+ *  for newly activated tasks. */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_ready_and_new(CONST(tpl_task_id, AUTOMATIC) task_id);
+#endif
+
 /**
  * @internal
  *
