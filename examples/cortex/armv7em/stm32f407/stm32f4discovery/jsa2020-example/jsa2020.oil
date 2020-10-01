@@ -221,33 +221,34 @@ CPU jsa2020 {
                     VAR Wait2 { VALUE = 0; };
                 };
             };
-            // ACTION = EXECDELAY {
-            //    TASK = task1;
-            //    WHEN case1 {
-            //       MARKING = VAR {
-            //           VAR = Wait2;
-            //           VALUE = 1;
-            //       };
-            //       MARKING = TASK {
-            //           TASK task3 {STATE = ready_and_new;} ;
-            //       };
-            //       DELAY = NONE;
-            //    };
-            //    WHEN case2 {
-            //        MARKING = VAR {
-            //            VAR = Wait2;
-            //            VALUE = 1 ;
-            //        };
-            //        MARKING = TIMER {
-            //            TIMER = task3_switch_to_secondary;
-            //            STATE = s2;
-            //        };
-            //        DELAY = WAIT {
-            //            CLOCK = x_Jitter2;
-            //            VALUE = 4;
-            //       };
-            //    };
-            // };
+            ACTION = EXECDELAY {
+                TASK = task1;
+                WHEN case1 {
+                   MARKING = VAR {
+                       VAR = Wait2;
+                       VALUE = 1;
+                   };
+                   MARKING = TASK {
+                       TASK = task3;
+                       STATE = READY_AND_NEW;
+                   };
+                   DO = IMMEDIATELY;
+                };
+                WHEN case2 {
+                    MARKING = VAR {
+                        VAR = Wait2;
+                        VALUE = 1 ;
+                    };
+                    MARKING = TIMER {
+                        TIMER = task3_switch_to_secondary;
+                        STATE = EXPIRED;
+                    };
+                    DO = WAITUNTIL {
+                        CLOCK = x_Jitter2;
+                        VALUE = 4;
+                   };
+                };
+             };
          };
       };
 

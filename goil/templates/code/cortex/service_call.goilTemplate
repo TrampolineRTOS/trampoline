@@ -17,7 +17,9 @@
     
     movs r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME 
 
-if OS::USERSERVICEHOOK then%
+if OS::USERSERVICEHOOK then
+    # this is old stuff (IEEE DT)
+%
     /*-------------------------------------------------------------------------
      * Call the PreUserServiceHook.
      * The PreUserServiceHook is only called if we are in user mode
@@ -26,6 +28,26 @@ if OS::USERSERVICEHOOK then%
     bl   PreUserServiceHook
     ldmfd sp,{r0-r3,lr}%
 end if
+
+if exists api_func::TIMECONTROL default (false) then
+  let controlExecDelay := false
+  foreach action in exists OS::STRATEGY::ACTION default (@()) do
+    if action::VALUE == "EXECDELAY" then
+      let controlExecDelay := true
+    end if
+  end foreach
+  
+  if controlExecDelay then
+%
+    /*-------------------------------------------------------------------------
+     * Call the function that add delay to the task according to strategy
+     * % ! OS::STRATEGY::NAME %.
+     */
+    push {r0-r3,lr}
+    bl   tpl_delay_task_if_needed
+    ldmfd sp,{r0-r3,lr}%
+  end if
+end if
 %
     /*-------------------------------------------------------------------------
      * We are in thread mode so we set r3 to the identifier of the service
@@ -33,7 +55,9 @@ end if
      */
     svc  #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME
     
-if OS::USERSERVICEHOOK then%
+if OS::USERSERVICEHOOK then
+    # this is old stuff (IEEE DT)
+%
     /*-------------------------------------------------------------------------
      * Call the PostUserServiceHook.
      * The PostUserServiceHook is only called if we are in user mode

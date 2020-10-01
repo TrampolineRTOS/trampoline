@@ -107,6 +107,8 @@ CPU api {
     } : "Activate a task";
     SYSCALL TerminateTask {
       KERNEL = tpl_terminate_task_service;
+      /* For JSA 2020 */
+      TIMECONTROL = TRUE;
       LOCK_KERNEL = TRUE;
       CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType

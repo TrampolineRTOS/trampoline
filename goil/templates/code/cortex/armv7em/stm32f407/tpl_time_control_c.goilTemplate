@@ -38,7 +38,7 @@ let timerMap := [TIMER mapBy: "NAME"]
 let alarmMap := [ALARMS mapBy: "NAME"]
 
 
-# Gather the references to task in marking
+# Gather the references to task in ALARMDELAY or EXECDELAY action marking
 let taskSet := @! !
 foreach action in exists OS::STRATEGY::ACTION default (@()) do
   foreach when in exists action::VALUE_S::WHEN default (@()) do
@@ -50,7 +50,7 @@ foreach action in exists OS::STRATEGY::ACTION default (@()) do
   end foreach
 end foreach
 
-# Output extern declaration of task descriptors
+# Output extern declarations of task descriptors referenced in ALARMDELAY actions marking
 foreach task in taskSet do
 %
 extern VAR(tpl_proc, OS_VAR) % !task %_task_desc;%
@@ -248,7 +248,7 @@ TimerType timer_% !tim::NAME % = { &timer_%  !tim::NAME %_alarm_alarm_desc, % !t
 end if
 
 #
-# output callback of ALARMDELAY actions
+# output callback of ALARMDELAY actions 
 #
 foreach action in exists OS::STRATEGY::ACTION default ( @() ) do
   let actionName := action::VALUE
@@ -256,6 +256,9 @@ foreach action in exists OS::STRATEGY::ACTION default ( @() ) do
   elsif actionName == "EXECDELAY" then let actionName += "_" + action::VALUE_S::TASK
   end if
   if action::VALUE == "ALARMDELAY" then
+    #
+    # output callback of ALARMDELAY actions 
+    #
     if exists action::VALUE_S::ALARM then%
 /*
  * Callback for alarm % !action::VALUE_S::ALARM %
@@ -351,6 +354,8 @@ VAR(tpl_time_obj, OS_VAR) delayed_% !action::VALUE_S::ALARM %_alarm_desc = {
 
 %
     end if
+  elsif action::VALUE == "EXECDELAY" then
+    # Output the strategy function called in TerminateTask service wrapper
   end if
 end foreach
 
@@ -388,25 +393,28 @@ FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_
 %
 }
 
+%
+    if action::VALUE == "ALARMDELAY" then
+%
 FUNC(void, OS_CODE) tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !when::NAME %()
 {
   /* DO = % !when::DO % */%
-    if when::DO == "IMMEDIATELY" then
-      let act := alarmMap[action::VALUE_S::ALARM]::ACTION
-      let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
-      if act == "ACTIVATETASK" then %
+      if when::DO == "IMMEDIATELY" then
+        let act := alarmMap[action::VALUE_S::ALARM]::ACTION
+        let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
+        if act == "ACTIVATETASK" then %
   tpl_activate_task(% !act_s::TASK %);%
-      elsif act == "SETEVENT" then %
+        elsif act == "SETEVENT" then %
   tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
-      end if
-      foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
+        end if
+        foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
   % !OS::STRATEGY::NAME %_var_% !var::NAME % = % !var::VALUE %;%
-      end foreach
+        end foreach
   # kill the delayed alarm if any
   %
   tpl_stop_alarm(&delayed_% !action::VALUE_S::ALARM %_alarm_desc);%
-    elsif when::DO == "WAITUNTIL" then
-      let clock := OS::STRATEGY::NAME + "_clock_" + when::DO_S::CLOCK
+      elsif when::DO == "WAITUNTIL" then
+        let clock := OS::STRATEGY::NAME + "_clock_" + when::DO_S::CLOCK
 %
   CONST(uint32, AUTOMATIC) elapsed = (tpl_time_counter >= % !clock %) ?
     tpl_time_counter - % !clock % :
@@ -418,24 +426,25 @@ FUNC(void, OS_CODE) tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !
   }
   else if (elapsed == % !when::DO_S::VALUE %)
   {%
-      let act := alarmMap[action::VALUE_S::ALARM]::ACTION
-      let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
-      if act == "ACTIVATETASK" then %
+        let act := alarmMap[action::VALUE_S::ALARM]::ACTION
+        let act_s := alarmMap[action::VALUE_S::ALARM]::ACTION_S
+        if act == "ACTIVATETASK" then %
     tpl_activate_task(% !act_s::TASK %);%
-      elsif act == "SETEVENT" then %
+        elsif act == "SETEVENT" then %
     tpl_set_event(% !act_s::TASK %, % !act_s::EVENT %);%
-      end if
-      foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
+        end if
+        foreach var in exists action::VALUE_S::AFTER::VAR default (@()) do%
     % !OS::STRATEGY::NAME %_var_% !var::NAME % = % !var::VALUE %;%
-      end foreach%
+        end foreach%
   }
   else
   {
     DOW_DO(printf("Strategy error : \%s \%s\\n", __FILE__, __LINE__);)
   }%      
-    end if%
+      end if%
 }
 %
+    end if
   end foreach
 end foreach
 
@@ -484,23 +493,79 @@ do %(task_id == % !task %)
     if    actionName == "ALARMDELAY" then let actionName += "_" + action::VALUE_S::ALARM
     elsif actionName == "EXECDELAY" then let actionName += "_" + action::VALUE_S::TASK
     end if
-    foreach when in exists action::VALUE_S::WHEN default (@()) do
-      foreach mark in exists when::MARKING default (@()) do
-        if mark::VALUE == "TASK" then
-          if mark::VALUE_S::TASK == task & mark::VALUE_S::STATE == "READY_AND_NEW" then
+    if action::VALUE == "ALARMDELAY" then
+      foreach when in exists action::VALUE_S::WHEN default (@()) do
+        foreach mark in exists when::MARKING default (@()) do
+          if mark::VALUE == "TASK" then
+            if mark::VALUE_S::TASK == task & mark::VALUE_S::STATE == "READY_AND_NEW" then
 %
     if (tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %())
     {
       tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !when::NAME %();
     }%
+            end if
           end if
-        end if
+        end foreach
       end foreach
-    end foreach
+    end if
   end foreach%
   }%
 between%
   else if %
+end foreach
+%
+}
+
+/*
+ * Function to be called in the TerminateTask wrapper
+ */
+FUNC(void, OS_CODE) tpl_delay_task_if_needed()
+{%
+foreach action in exists OS::STRATEGY::ACTION default (@()) do
+  if action::VALUE == "EXECDELAY" then %
+  if (tpl_kern.running_id == % !action::VALUE_S::TASK %)
+  {
+    while (1) {%
+    let actionName := action::VALUE + "_" + action::VALUE_S::TASK
+    # Get action for DO == IMMEDIATELY
+    let whenImmediately := @()
+    let whenUntil := @()
+    foreach when in exists action::VALUE_S::WHEN default (@()) do
+      if when::DO == "IMMEDIATELY" then
+        let whenImmediately += when
+      elsif when::DO == "WAITUNTIL" then
+        let whenUntil += when
+      end if
+    end foreach
+    foreach when in whenImmediately
+    before%
+      if (%
+    do
+      %tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %()%
+    between % ||
+          %
+    after %)
+      {
+        break;
+      }%
+    end foreach
+    foreach when in whenUntil do
+      let clock := OS::STRATEGY::NAME + "_clock_" + when::DO_S::CLOCK
+%
+      if (tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %())
+      {
+        CONST(uint32, AUTOMATIC) elapsed = (tpl_time_counter >= % !clock %) ?
+          tpl_time_counter - % !clock % :
+          tpl_time_counter + (% !max32bitsUnsignedInt() %UL - % !clock %) + 1;
+        if (elapsed >= % !when::DO_S::VALUE %)
+        {
+          break;
+        }
+      }%
+    end foreach%
+    }
+  }%
+  end if
 end foreach
 %
 }
