@@ -16,6 +16,11 @@ FUNC(int, OS_APPL_CODE) main(void) {
   return 0;
 }
 
+/**
+ * Must not be called from a preemptive task.  When called from a non preemptive
+ * task, loops until tpl_time_counter has ticked ticks time.
+ */
+
 FUNC(void, OS_APPL_CODE) take_time(CONST(uint32, AUTOMATIC) ticks) {
   CONST(uint32, AUTOMATIC) deadline = tpl_time_counter + ticks;
   if (ticks > 0) {
@@ -24,8 +29,27 @@ FUNC(void, OS_APPL_CODE) take_time(CONST(uint32, AUTOMATIC) ticks) {
   }
 }
 
+/**
+ * PseudoRNG based on xorshift32.
+ * Code adapted from https://en.wikipedia.org/wiki/Xorshift
+ */
+
+VAR(uint32, OS_APPL_DATA) rgen_task1 = 42;
+
+FUNC(uint32, OS_APPL_CODE) xorshift32(uint32 *state) {
+  /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
+  uint32 x = *state;
+  x ^= x << 13;
+  x ^= x >> 17;
+  x ^= x << 5;
+  *state = x;
+  return x;
+}
+
 TASK(task1) {
-  take_time(4);
+  /*  exectime is 4, 5 or 6 */
+  uint32 exectime = 4 + (xorshift32(&rgen_task1) % 3);
+  take_time(exectime);
   TerminateTask();
 }
 
@@ -36,7 +60,6 @@ TASK(task1) {
 #include "tpl_memmap.h"
 
 TASK(task2) {
-
   take_time(7);
   TerminateTask();
 }
