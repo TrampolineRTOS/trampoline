@@ -100,6 +100,9 @@ IMPLEMENTATION trampoline {
             EXECDELAY {
                 TASK_TYPE TASK;
                 STRUCT {
+                  IDENTIFIER CLOCK;
+                } RUNNING;
+                STRUCT {
                   ENUM [
                       VAR {
                           IDENTIFIER VAR;
@@ -223,6 +226,9 @@ CPU jsa2020 {
             };
             ACTION = EXECDELAY {
                 TASK = task1;
+                RUNNING task1_exec_delay {
+                  CLOCK = x_task1_running;
+                };
                 WHEN case1 {
                    MARKING = VAR {
                        VAR = Wait2;
@@ -244,7 +250,7 @@ CPU jsa2020 {
                         STATE = EXPIRED;
                     };
                     DO = WAITUNTIL {
-                        CLOCK = x_Jitter2;
+                        CLOCK = x_task1_running;
                         VALUE = 4;
                    };
                 };

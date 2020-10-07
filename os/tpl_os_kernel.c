@@ -165,13 +165,15 @@ extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
  * so production release is not impacted by MISRA rules violated
  * in this function
  */
-FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg) {
+FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
+{
 #if NUMBER_OF_CORES > 1
   /* TODO */
 #else
   uint32 i;
   printf("ready list %s [%d]", msg, tpl_ready_list[0].key);
-  for (i = 1; i <= tpl_ready_list[0].key; i++) {
+  for (i = 1; i <= tpl_ready_list[0].key; i++)
+  {
     printf(" {%d/%d,%s[%d](%d)}",
            (int)(tpl_ready_list[i].key >> PRIORITY_SHIFT),
            (int)(tpl_ready_list[i].key & RANK_MASK),
@@ -182,7 +184,8 @@ FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg) {
 #endif
 }
 
-FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg) {
+FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
+{
 #if NUMBER_OF_CORES > 1
   /* TODO */
 #else
@@ -223,7 +226,8 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg) {
 FUNC(int, OS_CODE)
 tpl_compare_entries(CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry,
                     CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR)
-                        second_entry TAIL_FOR_PRIO_ARG_DECL(tail_for_prio)) {
+                        second_entry TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
+{
   VAR(uint32, AUTOMATIC)
   first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
   VAR(uint32, AUTOMATIC)
@@ -258,12 +262,14 @@ tpl_compare_entries(CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry,
 FUNC(void, OS_CODE)
 tpl_bubble_up(CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
               VAR(uint32, AUTOMATIC)
-                  index TAIL_FOR_PRIO_ARG_DECL(tail_for_prio)) {
+                  index TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
+{
   VAR(uint32, AUTOMATIC) father = index >> 1;
 
   while ((index > 1) &&
          (tpl_compare_entries(heap + father,
-                              heap + index TAIL_FOR_PRIO_ARG(tail_for_prio)))) {
+                              heap + index TAIL_FOR_PRIO_ARG(tail_for_prio))))
+  {
     /*
      * if the father key is lower then the index key, swap them
      */
@@ -287,7 +293,8 @@ tpl_bubble_up(CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
 FUNC(void, OS_CODE)
 tpl_bubble_down(CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
                 VAR(uint32, AUTOMATIC)
-                    index TAIL_FOR_PRIO_ARG_DECL(tail_for_prio)) {
+                    index TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
+{
   CONST(uint32, AUTOMATIC) size = heap[0].key;
   VAR(uint32, AUTOMATIC) child;
 
@@ -296,19 +303,23 @@ tpl_bubble_down(CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
     CONST(uint32, AUTOMATIC) right = child + 1;
     if ((right <= size) &&
         tpl_compare_entries(heap + child,
-                            heap + right TAIL_FOR_PRIO_ARG(tail_for_prio))) {
+                            heap + right TAIL_FOR_PRIO_ARG(tail_for_prio)))
+    {
       /* the right child exists and is greater */
       child = right;
     }
     if (tpl_compare_entries(heap + index,
-                            heap + child TAIL_FOR_PRIO_ARG(tail_for_prio))) {
+                            heap + child TAIL_FOR_PRIO_ARG(tail_for_prio)))
+    {
       /* the father has a key <, swap */
       CONST(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
       heap[index] = heap[child];
       heap[child] = tmp;
       /* go down */
       index = child;
-    } else {
+    }
+    else
+    {
       /* went down to its place, stop the loop */
       break;
     }
@@ -323,7 +334,8 @@ tpl_bubble_down(CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
  * a partitioned scheduler). So the core_id field of the proc descriptor
  * is used to get the corresponding ready list.
  */
-FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
+FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
@@ -358,7 +370,8 @@ FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
  * of the proc descriptor is used to get the corresponding ready list.
  */
 FUNC(void, OS_CODE)
-tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
+tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
@@ -391,7 +404,8 @@ tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
  * tpl_front_proc returns the proc_id of the highest priority proc in the
  * ready list on the current core
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id)) {
+FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
+{
   GET_CORE_READY_LIST(core_id, ready_list)
 
   return (READY_LIST(ready_list)[1]);
@@ -403,7 +417,8 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id)) {
  * tpl_remove_front_proc removes the highest priority proc from the
  * ready list on the specified core and returns the heap_entry
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id)) {
+FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
+{
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
@@ -440,7 +455,8 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id)) {
  *
  * tpl_remove_proc removes all the process instances in the ready queue
  */
-FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
+FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
@@ -451,8 +467,10 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
   DOW_DO(printf("\n**** remove proc %d ****\n", proc_id);)
   DOW_DO(printrl("tpl_remove_proc - before");)
 
-  for (index = 1; index <= size; index++) {
-    if (READY_LIST(ready_list)[index].id == proc_id) {
+  for (index = 1; index <= size; index++)
+  {
+    if (READY_LIST(ready_list)[index].id == proc_id)
+    {
       READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size--];
       tpl_bubble_down(READY_LIST(ready_list),
                       index TAIL_FOR_PRIO_ARG(tail_for_prio));
@@ -473,18 +491,26 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
  *
  * @see #tpl_os_state
  */
-FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id)) {
+FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id))
+{
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
 
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID) {
+  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID)
+  {
     state = OS_INIT;
-  } else if (TPL_KERN_REF(kern).running_id >= (TASK_COUNT + ISR_COUNT)) {
+  }
+  else if (TPL_KERN_REF(kern).running_id >= (TASK_COUNT + ISR_COUNT))
+  {
     state = OS_IDLE;
-  } else if (TPL_KERN_REF(kern).running_id < TASK_COUNT) {
+  }
+  else if (TPL_KERN_REF(kern).running_id < TASK_COUNT)
+  {
     state = OS_TASK;
-  } else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT)) {
+  }
+  else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT))
+  {
     state = OS_ISR2;
   }
 
@@ -499,14 +525,16 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id)) {
  * @param task task from which internal resource is got
  */
 FUNC(void, OS_CODE)
-tpl_get_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id) {
+tpl_get_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id)
+{
   GET_PROC_CORE_ID(task_id, core_id)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA)
   rez = tpl_stat_proc_table[task_id]->internal_resource;
 
-  if ((NULL != rez) && (FALSE == rez->taken)) {
+  if ((NULL != rez) && (FALSE == rez->taken))
+  {
     rez->taken = TRUE;
     rez->owner_prev_priority = tpl_dyn_proc_table[task_id]->priority;
     tpl_dyn_proc_table[task_id]->priority =
@@ -522,11 +550,13 @@ tpl_get_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id) {
  * @param task task from which internal resource is released
  */
 FUNC(void, OS_CODE)
-tpl_release_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id) {
+tpl_release_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id)
+{
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA)
   rez = tpl_stat_proc_table[task_id]->internal_resource;
 
-  if ((NULL != rez) && (TRUE == rez->taken)) {
+  if ((NULL != rez) && (TRUE == rez->taken))
+  {
     rez->taken = FALSE;
     tpl_dyn_proc_table[task_id]->priority = rez->owner_prev_priority;
   }
@@ -537,10 +567,12 @@ tpl_release_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id) {
  *
  * Preempt the running process.
  */
-FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id)) {
+FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
+{
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id) {
+  if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
+  {
     /*
      * since running and elected are different, the elected proc
      * is preempted but has not yet run. so it is put
@@ -569,7 +601,8 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id)) {
  *          that was running before the elected task replace it
  */
 FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
-tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save) {
+tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
+{
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -578,7 +611,8 @@ tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save) {
 
   DOW_DO(print_kern("before tpl_run_elected"));
 
-  if ((save) && (TPL_KERN_REF(kern).running->state != WAITING)) {
+  if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
+  {
     /*
      * The running task is preempted, so it is time to call the
      * PostTaskHook while the soon descheduled task is running
@@ -610,12 +644,14 @@ tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save) {
 
 #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
   /* if the running process is an ISR2, unmask lower ISR2 interrupts */
-  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE) {
+  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
+  {
     tpl_unmask_isr2_priority(TPL_KERN_REF(kern).running_id);
   }
 
   /* if the elected process is an ISR2, mask lower ISR2 interrupts */
-  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE) {
+  if (TPL_KERN_REF(kern).s_running->type == IS_ROUTINE)
+  {
     tpl_mask_isr2_priority(TPL_KERN_REF(kern).elected_id);
   }
 #endif /* WITH_ISR2_PRIORITY_MASKING */
@@ -662,12 +698,30 @@ tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save) {
   return old_context;
 }
 
+#if WITH_TEMPORALENFORCEMENT == YES
+/*
+ * Declaration of temporal enforcement strategy function
+ * for newly activated tasks.
+ */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_ready_and_new(CONST(tpl_task_id, AUTOMATIC) task_id);
+
+/*
+ * Declaration of temporal enforcement strategy function
+ * for tasks gloing to running state for the first time.
+ */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_running_first_time(CONST(tpl_task_id, AUTOMATIC) task_id);
+
+#endif
+
 /**
  * @internal
  *
  * Start the highest priority READY process
  */
-FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id)) {
+FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
+{
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   CONST(tpl_heap_entry, AUTOMATIC)
@@ -681,7 +735,8 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id)) {
    * is elected. This has to be done if the running_id is !=
    * from the elected_id when start is called
    */
-  if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id) {
+  if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
+  {
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
 #endif
@@ -692,7 +747,8 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id)) {
   TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
   TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];
 
-  if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW) {
+  if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
+  {
     /*
      * the object has not be preempted. So its
      * descriptor must be initialized
@@ -700,8 +756,18 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id)) {
     DOW_DO(printf("%s is a new proc\n", proc_name_table[proc.id]));
     tpl_init_proc(proc.id);
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
+
 #if NUMBER_OF_CORES > 1
+    /*
+     * In multicore, since the started proc could be put back in
+     * ready list, its state is updated to mark it has been
+     * initialized.
+     */
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
+#endif
+
+#if WITH_TEMPORALENFORCEMENT == YES
+    tpl_task_state_running_first_time(proc.id);
 #endif
   }
 
@@ -718,7 +784,8 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id)) {
  * and ActivateTask services
  *
  */
-FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id)) {
+FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
+{
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -732,7 +799,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id)) {
 #endif /* WITH_STACK_MONITORING */
 
   if ((READY_LIST(ready_list)[1].key) >
-      (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority)) {
+      (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
+  {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
@@ -753,7 +821,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id)) {
  * and by the function TerminateISR
  *
  */
-FUNC(void, OS_CODE) tpl_terminate(void) {
+FUNC(void, OS_CODE) tpl_terminate(void)
+{
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -778,7 +847,8 @@ FUNC(void, OS_CODE) tpl_terminate(void) {
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
   /* and checked to compute its state. */
-  if (TPL_KERN_REF(kern).running->activate_count > 0) {
+  if (TPL_KERN_REF(kern).running->activate_count > 0)
+  {
     /*
      * there is at least one instance of the dying running object in
      * the ready list. So it is put in the READY_AND_NEW state. This
@@ -791,14 +861,16 @@ FUNC(void, OS_CODE) tpl_terminate(void) {
 
 #if EXTENDED_TASK_COUNT > 0
     /*  if the object is an extended task, init the events          */
-    if (TPL_KERN_REF(kern).running_id < EXTENDED_TASK_COUNT) {
+    if (TPL_KERN_REF(kern).running_id < EXTENDED_TASK_COUNT)
+    {
       CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
       events = tpl_task_events_table[TPL_KERN_REF(kern).running_id];
       events->evt_set = events->evt_wait = 0;
     }
 #endif
-
-  } else {
+  }
+  else
+  {
     /*
      * there is no instance of the dying running object in the ready
      * list. So it is put in the SUSPENDED state.
@@ -821,7 +893,8 @@ FUNC(void, OS_CODE) tpl_terminate(void) {
  * This function is called by the OSEK/VDX WaitEvent
  *
  */
-FUNC(void, OS_CODE) tpl_block(void) {
+FUNC(void, OS_CODE) tpl_block(void)
+{
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -858,19 +931,13 @@ FUNC(void, OS_CODE) tpl_block(void) {
  *
  * TODO: document this
  */
-FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id)) {
+FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
+{
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
   tpl_start(CORE_ID_OR_NOTHING(core_id));
 }
-
-#if WITH_TEMPORALENFORCEMENT == YES
-/*  Forward declaration: temporal enforcement strategy entry function
- *  for newly activated tasks. */
-extern FUNC(void, OS_CODE)
-    tpl_task_state_ready_and_new(CONST(tpl_task_id, AUTOMATIC) task_id);
-#endif
 
 /**
  * @internal
@@ -886,7 +953,8 @@ extern FUNC(void, OS_CODE)
  * @param task_id   the identifier of the task
  */
 FUNC(tpl_status, OS_CODE)
-tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id) {
+tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id)
+{
   VAR(tpl_status, AUTOMATIC) result = E_OS_LIMIT;
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
   task = tpl_dyn_proc_table[task_id];
@@ -896,13 +964,16 @@ tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id) {
   DOW_DO(printf("tpl_activate_task %s[%d](%d)\n", proc_name_table[task_id],
                 task_id, task->priority));
 
-  if (task->activate_count < s_task->max_activate_count) {
+  if (task->activate_count < s_task->max_activate_count)
+  {
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /* a new instance is about to be activated: we need the agreement
      of the timing protection mechanism                                */
-    if (tpl_tp_on_activate_or_release(task_id) == TRUE) {
+    if (tpl_tp_on_activate_or_release(task_id) == TRUE)
+    {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-      if (task->activate_count == 0) {
+      if (task->activate_count == 0)
+      {
         GET_PROC_CORE_ID(task_id, core_id)
 
         /*  the initialization is postponed to the time it will
@@ -911,7 +982,8 @@ tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id) {
 
 #if EXTENDED_TASK_COUNT > 0
         /*  if the object is an extended task, init the events          */
-        if (task_id < EXTENDED_TASK_COUNT) {
+        if (task_id < EXTENDED_TASK_COUNT)
+        {
           CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
           events = tpl_task_events_table[task_id];
           events->evt_set = events->evt_wait = 0;
@@ -936,7 +1008,8 @@ tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id) {
 #endif
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    } else /* timing protection forbids the activation of the instance   */
+    }
+    else /* timing protection forbids the activation of the instance   */
     {
       /*  OS466: If an attempt is made to activate a task before the
        end of an OsTaskTimeFrame then the Operating System module
@@ -960,7 +1033,8 @@ tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id) {
  *
  * @param task_id           id of the task
  */
-FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id) {
+FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
+{
   GET_PROC_CORE_ID(task_id, core_id)
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
   task = tpl_dyn_proc_table[task_id];
@@ -982,7 +1056,8 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id) {
  */
 FUNC(tpl_status, OS_CODE)
 tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
-              CONST(tpl_event_mask, AUTOMATIC) incoming_event) {
+              CONST(tpl_event_mask, AUTOMATIC) incoming_event)
+{
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if EXTENDED_TASK_COUNT > 0
@@ -991,26 +1066,31 @@ tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
   events = tpl_task_events_table[task_id];
 
-  if (task->state != (tpl_proc_state)SUSPENDED) {
+  if (task->state != (tpl_proc_state)SUSPENDED)
+  {
     /*  merge the incoming event mask with the old one  */
     events->evt_set |= incoming_event;
     /*  cross check the event the task is
         waiting for and the incoming event              */
-    if ((events->evt_wait & incoming_event) != 0) {
+    if ((events->evt_wait & incoming_event) != 0)
+    {
       /*  the task was waiting for at least one of the
           event set the wait mask is reset to 0         */
       events->evt_wait = (tpl_event_mask)0;
       /*  anyway check it is in the WAITING state       */
-      if (task->state == (tpl_proc_state)WAITING) {
+      if (task->state == (tpl_proc_state)WAITING)
+      {
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         /* a new instance is about to be activated: we need the agreement
          of the timing protection mechanism                                */
-        if (tpl_tp_on_activate_or_release(task_id) == TRUE) {
+        if (tpl_tp_on_activate_or_release(task_id) == TRUE)
+        {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
           TRACE_TASK_RELEASED(task_id, incoming_event)
           tpl_release(task_id);
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-        } else /* timing protection forbids the activation of the instance   */
+        }
+        else /* timing protection forbids the activation of the instance   */
         {
           /* OS467: If an attempt is made to release a task before the
            end of an OsTaskTimeFrame then the Operating System module
@@ -1022,7 +1102,9 @@ tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
       }
     }
-  } else {
+  }
+  else
+  {
     result = E_OS_STATE;
   }
 #endif
@@ -1042,7 +1124,8 @@ tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
  *
  * @param exec_obj address of the executable object descriptor
  */
-FUNC(void, OS_CODE) tpl_init_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
+FUNC(void, OS_CODE) tpl_init_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
   dyn = tpl_dyn_proc_table[proc_id];
 
@@ -1066,7 +1149,8 @@ FUNC(void, OS_CODE) tpl_init_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id) {
  * Initialization of Trampoline
  */
 FUNC(void, OS_CODE)
-tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode) {
+tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
+{
   GET_CURRENT_CORE_ID(core_id)
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   VAR(uint16, AUTOMATIC) i;
@@ -1101,9 +1185,11 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode) {
 
 #if TASK_COUNT > 0
   /*  Look for autostart tasks    */
-  for (i = 0; i < TASK_COUNT; i++) {
+  for (i = 0; i < TASK_COUNT; i++)
+  {
     /*  each AUTOSTART task is activated if it belong to the  */
-    if (tpl_task_app_mode[i] & app_mode_mask) {
+    if (tpl_task_app_mode[i] & app_mode_mask)
+    {
 #if NUMBER_OF_CORES > 1
       /* In multicore, we must check if the task belongs to the core */
       if (tpl_stat_proc_table[i]->core_id == core_id)
@@ -1118,8 +1204,10 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode) {
 
   /*  Look for autostart alarms    */
 
-  for (i = 0; i < ALARM_COUNT; i++) {
-    if (tpl_alarm_app_mode[i] & app_mode_mask) {
+  for (i = 0; i < ALARM_COUNT; i++)
+  {
+    if (tpl_alarm_app_mode[i] & app_mode_mask)
+    {
       auto_time_obj =
           (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
 #if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
@@ -1137,8 +1225,10 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode) {
 #if (WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)
   /*  Look for autostart schedule tables  */
 
-  for (i = 0; i < SCHEDTABLE_COUNT; i++) {
-    if (tpl_scheduletable_app_mode[i] & app_mode_mask) {
+  for (i = 0; i < SCHEDTABLE_COUNT; i++)
+  {
+    if (tpl_scheduletable_app_mode[i] & app_mode_mask)
+    {
       auto_time_obj =
           (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
 #if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
@@ -1148,19 +1238,25 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode) {
 #endif
       {
         if (auto_time_obj->state ==
-            (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE) {
+            (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
+        {
           auto_time_obj->state = SCHEDULETABLE_STOPPED;
           result = tpl_start_schedule_table_rel(i, auto_time_obj->date);
-        } else {
+        }
+        else
+        {
           if (auto_time_obj->state ==
-              (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE) {
+              (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
+          {
             auto_time_obj->state = SCHEDULETABLE_STOPPED;
             result = tpl_start_schedule_table_abs(i, auto_time_obj->date);
           }
 #if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
-          else {
+          else
+          {
             if (auto_time_obj->state ==
-                (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON) {
+                (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
+            {
               auto_time_obj->state = SCHEDULETABLE_STOPPED;
               result = tpl_start_schedule_table_synchron(i);
             }
@@ -1174,14 +1270,16 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode) {
 }
 
 #if TASK_COUNT > 0
-FUNC(void, OS_CODE) tpl_call_terminate_task_service(void) {
+FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
+{
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /* lock the kernel */
   LOCK_KERNEL()
 
-  if (FALSE != tpl_get_interrupt_lock_status()) {
+  if (FALSE != tpl_get_interrupt_lock_status())
+  {
     /* enable interrupts :*/
     tpl_reset_interrupt_lock_status();
     /*
@@ -1197,7 +1295,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void) {
 
 #if RESOURCE_COUNT > 0
   /* release resources if held */
-  if ((TPL_KERN_REF(kern).running->resources) != NULL) {
+  if ((TPL_KERN_REF(kern).running->resources) != NULL)
+  {
     tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   }
 #endif
@@ -1213,7 +1312,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void) {
 }
 #endif
 
-FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void) {
+FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
+{
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
@@ -1224,7 +1324,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void) {
   LOCK_KERNEL()
 
   /* enable interrupts if disabled */
-  if (FALSE != tpl_get_interrupt_lock_status()) {
+  if (FALSE != tpl_get_interrupt_lock_status())
+  {
     tpl_reset_interrupt_lock_status();
     /*
      * tpl_enable_interrupts(); now ?? or wait until TerminateISR
@@ -1236,7 +1337,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void) {
 
 #if RESOURCE_COUNT > 0
   /* release resources if held */
-  if ((TPL_KERN_REF(kern).running->resources) != NULL) {
+  if ((TPL_KERN_REF(kern).running->resources) != NULL)
+  {
     tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     result = E_OS_RESOURCE;
   }
@@ -1257,11 +1359,14 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void) {
  * Does as many as rescheduling as indicated by need_schedule member of
  * TPL_KERN structures
  */
-FUNC(void, OS_CODE) tpl_multi_schedule(void) {
+FUNC(void, OS_CODE) tpl_multi_schedule(void)
+{
   VAR(int, AUTOMATIC) core;
 
-  for (core = 0; core < NUMBER_OF_CORES; core++) {
-    if (TPL_KERN(core).need_schedule) {
+  for (core = 0; core < NUMBER_OF_CORES; core++)
+  {
+    if (TPL_KERN(core).need_schedule)
+    {
       tpl_schedule_from_running(core);
     }
   }
@@ -1273,13 +1378,16 @@ FUNC(void, OS_CODE) tpl_multi_schedule(void) {
  * Does the context switch notification to other cores. Returns TRUE
  * if the caller has to switch the context
  */
-FUNC(void, OS_CODE) tpl_dispatch_context_switch(void) {
+FUNC(void, OS_CODE) tpl_dispatch_context_switch(void)
+{
   VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
   VAR(int, AUTOMATIC) core;
-  for (core = 0; core < caller_core; core++) {
+  for (core = 0; core < caller_core; core++)
+  {
     REMOTE_SWITCH_CONTEXT(core);
   }
-  for (core = caller_core + 1; core < NUMBER_OF_CORES; core++) {
+  for (core = caller_core + 1; core < NUMBER_OF_CORES; core++)
+  {
     REMOTE_SWITCH_CONTEXT(core);
   }
 }
