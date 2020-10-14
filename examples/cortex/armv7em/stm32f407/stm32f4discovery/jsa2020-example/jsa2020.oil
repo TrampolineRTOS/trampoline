@@ -223,6 +223,24 @@ CPU jsa2020 {
                 AFTER Jitter2 {
                     VAR Wait2 { VALUE = 0; };
                 };
+                WHEN case3 {
+                    MARKING = VAR {
+                        VAR = Wait2;
+                        VALUE = 1;
+                    };
+                    MARKING = TASK {
+                        TASK = task3;
+                        STATE = RUNNING;
+                    };
+                    MARKING = TIMER {
+                        TIMER = task3_switch_to_secondary;
+                        STATE = ON ;
+                    };
+                    DO = IMMEDIATELY;
+                };
+                AFTER Jitter2 {
+                    VAR Wait2 { VALUE = 0; };
+                };
             };
             ACTION = EXECDELAY {
                 TASK = task1;
