@@ -43,6 +43,8 @@ let taskSet := @! !
 let taskSetRunning := @! !
 let taskSetSuspended := @! !
 let taskSetReadyAndNew := @! !
+let taskSetReady := @! !
+let taskSetWaiting := @! !
 
 foreach action in exists OS::STRATEGY::ACTION default (@()) do
   foreach when in exists action::VALUE_S::WHEN default (@()) do
@@ -55,6 +57,10 @@ foreach action in exists OS::STRATEGY::ACTION default (@()) do
           let taskSetSuspended += mark::VALUE_S::TASK
         elsif mark::VALUE_S::STATE == "READY_AND_NEW" then
           let taskSetReadyAndNew += mark::VALUE_S::TASK
+        elsif mark::VALUE_S::STATE == "WAITING" then
+          let taskSetWaiting += mark::VALUE_S::TASK
+        elsif mark::VALUE_S::STATE == "READY" then
+          let taskSetReady += mark::VALUE_S::TASK
         end if
       end if
     end foreach
