@@ -676,16 +676,21 @@ tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
   TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   TPL_KERN_REF(kern).running->state = RUNNING;
 
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /*  start the budget watchdog  */
-  tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-
   /*
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
    */
   tpl_get_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /*  start the budget watchdog  */
+  tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
+#if WITH_TEMPORALENFORCEMENT == YES
+  /* notify the strategy that a task is now in the running state */
+  tpl_task_state_running(TPL_KERN_REF(kern).running_id);
+#endif
 
   /*
    * A new task has been started. It is time to call
@@ -883,6 +888,10 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
   tpl_tp_reset_watchdogs(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
+#if WITH_TEMPORALENFORCEMENT == YES
+  tpl_task_state_suspended(TPL_KERN_REF(kern).running_id);
+#endif
 }
 
 /**

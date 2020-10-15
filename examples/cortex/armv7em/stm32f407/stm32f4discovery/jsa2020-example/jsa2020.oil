@@ -220,6 +220,31 @@ CPU jsa2020 {
                         VALUE = 4;
                     };
                 };
+                WHEN case3 {
+                    MARKING = TASK {
+                        TASK = task2;
+                        STATE = SUSPENDED;
+                    };
+                    DO = WAITUNTIL {  // or WAIT if no watchdog
+                        CLOCK = x_Jitter2;
+                        VALUE = 2;
+                    };
+                };
+                WHEN case4 {
+                    MARKING = VAR {
+                        VAR = Wait2;
+                        VALUE = 0;
+                    };
+                    MARKING = TASK {
+                        TASK = task1;
+                        STATE = RUNNING;
+                    };
+                    MARKING = TIMER {
+                        TIMER = task3_switch_to_secondary;
+                        STATE = ON ;
+                    };
+                    DO = IMMEDIATELY;
+                };
                 AFTER Jitter2 {
                     VAR Wait2 { VALUE = 0; };
                 };

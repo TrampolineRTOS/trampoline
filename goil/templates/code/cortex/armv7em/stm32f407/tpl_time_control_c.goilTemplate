@@ -519,6 +519,84 @@ end foreach
 %
 }
 
+
+/*
+ * Function to be called when a task goes to state RUNNING
+ */
+FUNC(void, OS_CODE) tpl_task_state_running(CONST(tpl_task_id, AUTOMATIC) task_id)
+{%
+foreach task in taskSet
+before %
+  if %
+do %(task_id == % !task %)
+  {%
+  foreach action in exists OS::STRATEGY::ACTION default (@()) do
+    let actionName := action::VALUE
+    if    actionName == "ALARMDELAY" then let actionName += "_" + action::VALUE_S::ALARM
+    elsif actionName == "EXECDELAY" then let actionName += "_" + action::VALUE_S::TASK
+    end if
+    if action::VALUE == "ALARMDELAY" then
+      foreach when in exists action::VALUE_S::WHEN default (@()) do
+        foreach mark in exists when::MARKING default (@()) do
+          if mark::VALUE == "TASK" then
+            if mark::VALUE_S::TASK == task & mark::VALUE_S::STATE == "RUNNING" then
+%
+    if (tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %())
+    {
+      tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !when::NAME %();
+    }%
+            end if
+          end if
+        end foreach
+      end foreach
+    end if
+  end foreach%
+  }%
+between%
+  else if %
+end foreach
+%
+}
+
+
+/*
+ * Function to be called when a task goes to state SUSPENDED
+ */
+FUNC(void, OS_CODE) tpl_task_state_suspended(CONST(tpl_task_id, AUTOMATIC) task_id)
+{%
+foreach task in taskSet
+before %
+  if %
+do %(task_id == % !task %)
+  {%
+  foreach action in exists OS::STRATEGY::ACTION default (@()) do
+    let actionName := action::VALUE
+    if    actionName == "ALARMDELAY" then let actionName += "_" + action::VALUE_S::ALARM
+    elsif actionName == "EXECDELAY" then let actionName += "_" + action::VALUE_S::TASK
+    end if
+    if action::VALUE == "ALARMDELAY" then
+      foreach when in exists action::VALUE_S::WHEN default (@()) do
+        foreach mark in exists when::MARKING default (@()) do
+          if mark::VALUE == "TASK" then
+            if mark::VALUE_S::TASK == task & mark::VALUE_S::STATE == "SUSPENDED" then
+%
+    if (tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %())
+    {
+      tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !when::NAME %();
+    }%
+            end if
+          end if
+        end foreach
+      end foreach
+    end if
+  end foreach%
+  }%
+between%
+  else if %
+end foreach
+%
+}
+
 /*
  * Function to be called in the TerminateTask wrapper
  */
