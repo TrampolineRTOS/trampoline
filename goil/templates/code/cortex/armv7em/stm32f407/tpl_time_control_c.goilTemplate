@@ -69,6 +69,9 @@ if exists OS::STRATEGY::ACTION then
     if exists action::VALUE_S::BEFORE::CLOCK then
       [!clockSet add: action::VALUE_S::BEFORE::CLOCK]
     end if
+    if exists action::VALUE_S::RUNNING_FIRST::CLOCK then
+      [!clockSet add: action::VALUE_S::RUNNING_FIRST::CLOCK]
+    end if
     if exists action::VALUE_S::AFTER::VAR then
       foreach var in action::VALUE_S::BEFORE::VAR do
         [!varSet add: var::NAME]
@@ -568,5 +571,31 @@ foreach action in exists OS::STRATEGY::ACTION default (@()) do
   end if
 end foreach
 %
+}
+
+/*
+ * Function to be called when a task goes
+ * in the RUNNING state for the first time.
+ */
+FUNC(void, OS_CODE) tpl_task_state_running_first_time(CONST(tpl_task_id, AUTOMATIC) task_id)
+{%
+let clockInitActions := @()
+foreach action in exists OS::STRATEGY::ACTION default (@()) do
+  if action::VALUE == "EXECDELAY" then
+    let clockInitActions += action
+  end if
+end foreach
+foreach action in clockInitActions 
+  before %
+  if (task_id == %
+  do 
+    !action::VALUE_S::TASK %)
+  {
+    %
+    ! OS::STRATEGY::NAME + "_clock_" + action::VALUE_S::RUNNING_FIRST::CLOCK% = tpl_time_counter;    
+  }%
+  between %
+  else if (task_id == %
+end foreach%
 }
 

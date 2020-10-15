@@ -101,7 +101,7 @@ IMPLEMENTATION trampoline {
                 TASK_TYPE TASK;
                 STRUCT {
                   IDENTIFIER CLOCK;
-                } RUNNING;
+                } RUNNING_FIRST;
                 STRUCT {
                   ENUM [
                       VAR {
@@ -226,7 +226,7 @@ CPU jsa2020 {
             };
             ACTION = EXECDELAY {
                 TASK = task1;
-                RUNNING task1_exec_delay {
+                RUNNING_FIRST task1_exec_delay {
                   CLOCK = x_task1_running;
                 };
                 WHEN case1 {
