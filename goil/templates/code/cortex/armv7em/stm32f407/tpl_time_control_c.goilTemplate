@@ -40,11 +40,22 @@ let alarmMap := [ALARMS mapBy: "NAME"]
 
 # Gather the references to task in ALARMDELAY or EXECDELAY action marking
 let taskSet := @! !
+let taskSetRunning := @! !
+let taskSetSuspended := @! !
+let taskSetReadyAndNew := @! !
+
 foreach action in exists OS::STRATEGY::ACTION default (@()) do
   foreach when in exists action::VALUE_S::WHEN default (@()) do
     foreach mark in exists when::MARKING default (@()) do
       if mark::VALUE == "TASK" then
         let taskSet += mark::VALUE_S::TASK
+        if mark::VALUE_S::STATE == "RUNNING" then
+          let taskSetRunning += mark::VALUE_S::TASK
+        elsif mark::VALUE_S::STATE == "SUSPENDED" then
+          let taskSetSuspended += mark::VALUE_S::TASK
+        elsif mark::VALUE_S::STATE == "READY_AND_NEW" then
+          let taskSetReadyAndNew += mark::VALUE_S::TASK
+        end if
       end if
     end foreach
   end foreach
@@ -486,7 +497,7 @@ end if
  */
 FUNC(void, OS_CODE) tpl_task_state_ready_and_new(CONST(tpl_task_id, AUTOMATIC) task_id)
 {%
-foreach task in taskSet
+foreach task in taskSetReadyAndNew
 before %
   if %
 do %(task_id == % !task %)
@@ -525,7 +536,7 @@ end foreach
  */
 FUNC(void, OS_CODE) tpl_task_state_running(CONST(tpl_task_id, AUTOMATIC) task_id)
 {%
-foreach task in taskSet
+foreach task in taskSetRunning
 before %
   if %
 do %(task_id == % !task %)
@@ -564,7 +575,7 @@ end foreach
  */
 FUNC(void, OS_CODE) tpl_task_state_suspended(CONST(tpl_task_id, AUTOMATIC) task_id)
 {%
-foreach task in taskSet
+foreach task in taskSetSuspended
 before %
   if %
 do %(task_id == % !task %)
