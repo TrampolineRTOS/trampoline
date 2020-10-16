@@ -1,0 +1,295 @@
+/**
+ * @file jsa2020.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ *
+ * Compile with : goil --target=cortex/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ jsa2020.oil
+ */
+
+OIL_VERSION = "3.1" : "autosar_st_s1" ;
+
+IMPLEMENTATION trampoline {
+
+    TASK {
+        UINT32 [1..10] PRIORITY = 1 ;
+        UINT32 STACKSIZE = 300;
+    };
+
+    ISR {
+        UINT32 STACKSIZE = 200;
+    };
+
+    OS {
+        STRUCT {
+          ENUM [
+            /*
+             * ALARMDELAY is the possible postponing of an alarm ACTION
+             */
+            ALARMDELAY {
+                ALARM_TYPE ALARM;
+                STRUCT {
+                  IDENTIFIER CLOCK;
+                  STRUCT {
+                    INT32 VALUE;
+                  } VAR [];
+                } BEFORE;
+                STRUCT {
+                  STRUCT {
+                    INT32 VALUE;
+                  } VAR [];
+                } AFTER;
+                STRUCT {
+                  ENUM [
+                      VAR {
+                          IDENTIFIER VAR;
+                          INT32 VALUE;
+                      },
+                      TASK {
+                          TASK_TYPE TASK;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
+                      },
+                      TIMER {
+                          TIMER_TYPE TIMER;
+                          IDENTIFIER STATE;
+                      }
+                  ] MARKING[];
+                  ENUM [
+                      IMMEDIATELY,
+                      WAITUNTIL {
+                        IDENTIFIER CLOCK;
+                        UINT32 VALUE;
+                      },
+                      WAIT {
+                        IDENTIFIER CLOCK;
+                      }
+                  ] DO;
+                } WHEN [];
+            },
+            /*
+             * EXECDELAY is the possible insertion of an additional execution time when a task terminates
+             */
+            EXECDELAY {
+                TASK_TYPE TASK;
+                STRUCT {
+                  IDENTIFIER CLOCK;
+                } RUNNING;
+                STRUCT {
+                  ENUM [
+                      VAR {
+                          IDENTIFIER VAR;
+                          INT32 VALUE;
+                      },
+                      TASK {
+                          TASK_TYPE TASK;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATE;
+                          ENUM [ SUSPENDED, READY, READY_AND_NEW, RUNNING, WAITING ] STATENOT;
+                      },
+                      TIMER {
+                          TIMER_TYPE TIMER;
+                          ENUM [ OFF, ON, EXPIRED ] STATE;
+                      }
+                  ] MARKING[];
+                  ENUM [
+                      IMMEDIATELY,
+                      WAITUNTIL {
+                        IDENTIFIER CLOCK;
+                        UINT32 VALUE;
+                      },
+                      WAIT {
+                        IDENTIFIER CLOCK;
+                      }
+                  ] DO;
+                } WHEN [];
+            }
+          ] ACTION [];
+        } STRATEGY;
+    };
+
+    TIMER[] {
+        BOOLEAN [
+            TRUE {
+                APPMODE_TYPE APPMODE[]; 
+            },
+            FALSE
+        ] AUTOSTART = FALSE;
+        UINT32 TIME;
+    };
+};
+
+CPU jsa2020 {
+
+    OS config {
+        STATUS = EXTENDED;
+        SYSTEM_CALL = TRUE;
+        BUILD = TRUE {
+            APP_SRC = "jsa2020.c";
+            // APP_SRC = "te-example-ieeedt.c";
+            // APP_SRC = "tpl_timing_protection.c";
+            APP_NAME = "jsa2020_exe";
+            TRAMPOLINE_BASE_PATH = "../../../../../../";
+            CFLAGS = "-O3";
+            LDFLAGS = "-Map=blink.map";
+            COMPILER = "arm-none-eabi-gcc";
+            ASSEMBLER = "arm-none-eabi-as";
+            LINKER = "arm-none-eabi-ld";
+            COPIER = "arm-none-eabi-objcopy";
+            SYSTEM = PYTHON;
+            LIBRARY = gpt;
+        };
+        MEMMAP = TRUE {
+            COMPILER = gcc;
+            LINKER = gnu_ld { SCRIPT = "script.ld"; };
+            ASSEMBLER = gnu_as;
+            MEMORY_PROTECTION = FALSE;
+        };
+        TEMPORALENFORCEMENT = TRUE;
+        STRATEGY trigger_secondary {
+            ACTION = ALARMDELAY {
+                ALARM = task2_alarm;
+                BEFORE Jitter2 {
+                    VAR Wait2 { VALUE = 1; };
+                    CLOCK = x_Jitter2;
+                };
+                WHEN case1 {
+                    MARKING = VAR {
+                        VAR = Wait2;
+                        VALUE = 1;
+                    };
+                    MARKING = TASK {
+                        TASK = task3;
+                        STATE = READY_AND_NEW;
+                    };
+                    MARKING = TIMER {
+                        TIMER = task3_switch_to_secondary;
+                        STATE = ON;
+                    };
+                    DO = IMMEDIATELY;
+                };
+                WHEN case2 {
+                    MARKING = VAR {
+                        VAR = Wait2;
+                        VALUE = 1;
+                    };
+                    MARKING = TASK {
+                        TASK = task3;
+                        STATE = READY_AND_NEW;
+                    };
+                    MARKING = TIMER {
+                        TIMER = task3_switch_to_secondary;
+                        STATE = EXPITRED;
+                    };
+                    DO = WAITUNTIL {
+                        CLOCK = x_Jitter2;
+                        VALUE = 4;
+                    };
+                };
+         };
+      };
+    };
+
+    APPMODE stdAppMode {};
+
+    ALARM task1_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task1; };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 1;
+            CYCLETIME = 10;
+       };
+    };
+
+    ALARM task2_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK {
+            TASK = task2;
+        };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 1;
+            CYCLETIME = 15;
+        };
+    };
+
+    ALARM task3_alarm {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK { TASK = task3; };
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 1;
+            CYCLETIME = 0;
+        };
+    };
+
+    TIMER task3_switch_to_secondary {
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+        };
+        TIME = 15; // 14 + 1 because the system starts after an offset of 1 ms
+    };
+
+    ALARM task3_switch_to_secondary {
+        COUNTER = SystemCounter;
+        AUTOSTART = TRUE {
+            APPMODE = stdAppMode;
+            ALARMTIME = 15;
+            CYCLETIME = 0;
+        };
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "execute_secondary";
+        };
+    };
+
+    TASK task1 {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+    TASK task2 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+    TASK task3 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+};
+
+/* End of file te-example-ieeedt.oil */
