@@ -155,6 +155,41 @@ INTERNAL_RES_SCHEDULER = {
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#if WITH_TEMPORALENFORCEMENT == YES
+
+extern FUNC(void, OS_CODE)
+    tpl_init_strategy_timer(CONST(tpl_application_mode, AUTOMATIC) mode);
+
+/*
+ * Declaration of temporal enforcement strategy function
+ * for newly activated tasks.
+ */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_ready_and_new(CONST(tpl_task_id, AUTOMATIC) task_id);
+
+/*
+ * Declaration of temporal enforcement strategy function
+ * for task going in RUNNING state.
+ */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_running(CONST(tpl_task_id, AUTOMATIC) task_id);
+
+/*
+ * Declaration of temporal enforcement strategy function
+ * for task going in SUSPENDED state.
+ */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_suspended(CONST(tpl_task_id, AUTOMATIC) task_id);
+
+/*
+ * Declaration of temporal enforcement strategy function
+ * for tasks gloing to running state for the first time.
+ */
+extern FUNC(void, OS_CODE)
+    tpl_task_state_running_first_time(CONST(tpl_task_id, AUTOMATIC) task_id);
+
+#endif
+
 #ifdef WITH_DOW
 #include <stdio.h>
 
@@ -703,23 +738,6 @@ tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
   return old_context;
 }
 
-#if WITH_TEMPORALENFORCEMENT == YES
-/*
- * Declaration of temporal enforcement strategy function
- * for newly activated tasks.
- */
-extern FUNC(void, OS_CODE)
-    tpl_task_state_ready_and_new(CONST(tpl_task_id, AUTOMATIC) task_id);
-
-/*
- * Declaration of temporal enforcement strategy function
- * for tasks gloing to running state for the first time.
- */
-extern FUNC(void, OS_CODE)
-    tpl_task_state_running_first_time(CONST(tpl_task_id, AUTOMATIC) task_id);
-
-#endif
-
 /**
  * @internal
  *
@@ -1231,6 +1249,11 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   }
 
 #endif
+
+#if WITH_TIMEENFORCEMENT == YES
+  tpl_init_strategy_timer(CONST(app_mode);
+#endif
+
 #if (WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)
   /*  Look for autostart schedule tables  */
 

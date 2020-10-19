@@ -184,10 +184,10 @@ CPU jsa2020 {
                         VAR = Wait2;
                         VALUE = 1;
                     };
-                    MARKING = TASK {
-                        TASK = task3;
-                        STATE = READY_AND_NEW;
-                    };
+//                    MARKING = TASK {
+//                        TASK = task3;
+//                        STATE = READY_AND_NEW;
+//                    };
                     MARKING = TIMER {
                         TIMER = task3_switch_to_secondary;
                         STATE = ON;
@@ -199,13 +199,13 @@ CPU jsa2020 {
                         VAR = Wait2;
                         VALUE = 1;
                     };
-                    MARKING = TASK {
-                        TASK = task3;
-                        STATE = READY_AND_NEW;
-                    };
+//                    MARKING = TASK {
+//                        TASK = task3;
+//                        STATE = READY_AND_NEW;
+//                    };
                     MARKING = TIMER {
                         TIMER = task3_switch_to_secondary;
-                        STATE = EXPITRED;
+                        STATE = EXPIRED;
                     };
                     DO = WAITUNTIL {
                         CLOCK = x_Jitter2;
@@ -240,7 +240,7 @@ CPU jsa2020 {
         };
     };
 
-    ALARM task3_alarm {
+    ALARM atask3_alarm {
         COUNTER = SystemCounter;
         ACTION = ACTIVATETASK { TASK = task3; };
         AUTOSTART = TRUE {

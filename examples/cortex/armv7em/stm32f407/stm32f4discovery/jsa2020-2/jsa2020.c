@@ -10,7 +10,8 @@ extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
 #define APP_Task_task1_START_SEC_CODE
 
 #include "tpl_memmap.h"
-FUNC(int, OS_APPL_CODE) main(void) {
+FUNC(int, OS_APPL_CODE) main(void)
+{
   initBoard();
   StartOS(OSDEFAULTAPPMODE);
   return 0;
@@ -21,9 +22,11 @@ FUNC(int, OS_APPL_CODE) main(void) {
  * task, loops until tpl_time_counter has ticked ticks time.
  */
 
-FUNC(void, OS_APPL_CODE) take_time(CONST(uint32, AUTOMATIC) ticks) {
+FUNC(void, OS_APPL_CODE) take_time(CONST(uint32, AUTOMATIC) ticks)
+{
   CONST(uint32, AUTOMATIC) deadline = tpl_time_counter + ticks;
-  if (ticks > 0) {
+  if (ticks > 0)
+  {
     while (tpl_time_counter != deadline)
       ;
   }
@@ -36,7 +39,8 @@ FUNC(void, OS_APPL_CODE) take_time(CONST(uint32, AUTOMATIC) ticks) {
 
 VAR(uint32, OS_APPL_DATA) rgen_task1 = 42;
 
-FUNC(uint32, OS_APPL_CODE) xorshift32(uint32 *state) {
+FUNC(uint32, OS_APPL_CODE) xorshift32(uint32 *state)
+{
   /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
   uint32 x = *state;
   x ^= x << 13;
@@ -46,10 +50,12 @@ FUNC(uint32, OS_APPL_CODE) xorshift32(uint32 *state) {
   return x;
 }
 
-TASK(task1) {
+TASK(task1)
+{
   /*  exectime is 4, 5 or 6 */
   uint32 exectime = 4 + (xorshift32(&rgen_task1) % 3);
   take_time(exectime);
+  ledOn(RED);
   TerminateTask();
 }
 
@@ -59,8 +65,10 @@ TASK(task1) {
 #define APP_Task_task2_START_SEC_CODE
 #include "tpl_memmap.h"
 
-TASK(task2) {
+TASK(task2)
+{
   take_time(7);
+  ledOn(BLUE);
   TerminateTask();
 }
 
@@ -75,11 +83,15 @@ static volatile VAR(tpl_bool, OS_APPL_DATA) switch_to_secondary = FALSE;
 
 ALARMCALLBACK(execute_secondary) { switch_to_secondary = TRUE; }
 
-TASK(task3) {
-  if (switch_to_secondary) {
+TASK(task3)
+{
+  if (switch_to_secondary)
+  {
     ledOn(ORANGE);
     take_time(10);
-  } else {
+  }
+  else
+  {
     ledOn(GREEN);
     take_time(16);
     // execute primary
