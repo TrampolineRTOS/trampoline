@@ -1250,8 +1250,8 @@ tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 
 #endif
 
-#if WITH_TIMEENFORCEMENT == YES
-  tpl_init_strategy_timer(CONST(app_mode);
+#if WITH_TEMPORALENFORCEMENT == YES
+  tpl_init_strategy_timer(app_mode);
 #endif
 
 #if (WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)

@@ -156,7 +156,7 @@ CPU jsa2020 {
             // APP_SRC = "tpl_timing_protection.c";
             APP_NAME = "jsa2020_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
-            CFLAGS = "-O3";
+            CFLAGS = "-O1";
             LDFLAGS = "-Map=blink.map";
             COMPILER = "arm-none-eabi-gcc";
             ASSEMBLER = "arm-none-eabi-as";

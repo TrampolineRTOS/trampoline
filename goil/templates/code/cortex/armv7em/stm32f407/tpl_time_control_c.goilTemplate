@@ -480,7 +480,7 @@ if exists TIMER then
   foreach tim in TIMER do
     if tim::AUTOSTART then
 %
-  if (mode & (%
+  if ((1 << mode) & (%
   
       foreach am in tim::AUTOSTART_S::APPMODE do
         %(1 << % !am::VALUE %)%
