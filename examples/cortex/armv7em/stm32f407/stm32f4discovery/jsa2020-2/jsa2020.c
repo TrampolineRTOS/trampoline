@@ -54,8 +54,9 @@ TASK(task1)
 {
   /*  exectime is 4, 5 or 6 */
   uint32 exectime = 4 + (xorshift32(&rgen_task1) % 3);
+  ledOn(RED);
   take_time(exectime);
-  ledToggle(RED);
+  ledOff(RED);
   TerminateTask();
 }
 
@@ -67,8 +68,9 @@ TASK(task1)
 
 TASK(task2)
 {
-  take_time(7);
   ledOn(BLUE);
+  take_time(7);
+  ledOff(BLUE);
   TerminateTask();
 }
 
@@ -90,12 +92,14 @@ TASK(task3)
     // execute secondary
     ledOn(ORANGE);
     take_time(10);
+    ledOff(ORANGE);
   }
   else
   {
     // execute primary
     ledOn(GREEN);
     take_time(16);
+    ledOff(GREEN);
   }
   TerminateTask();
 }
