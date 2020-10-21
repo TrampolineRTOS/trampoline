@@ -54,6 +54,33 @@ tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
   }
 }
 
+#if WITH_TEMPORALENFORCEMENT == YES
+/**
+ *  action function for 2 pass action call back
+ */
+FUNC(void, OS_CODE)
+tpl_2pass_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                          CONST(tpl_bool, AUTOMATIC) pass)
+{
+  /*
+   * A tpl_action * is cast to a tpl_callback_action *
+   * This violate MISRA rule 45. However, since the
+   * first member of tpl_callback_action is a tpl_action
+   * This cast behaves correctly.
+   */
+  if (pass == FALSE)
+  {
+    ((P2CONST(tpl_two_pass_callback_action, AUTOMATIC, OS_APPL_CONST))action)
+        ->callback();
+  }
+  else
+  {
+    ((P2CONST(tpl_two_pass_callback_action, AUTOMATIC, OS_APPL_CONST))action)
+        ->callback_2nd_pass();
+  }
+}
+#endif
+
 /**
  *  action function for action by task activation
  */

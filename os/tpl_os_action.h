@@ -109,7 +109,7 @@ typedef struct TPL_CALLBACK_ACTION tpl_callback_action;
 /**
  *  @struct TPL_TWO_PASS_ACTION_CALLBACK
  *
- *  This structure add a callback function pointer to the action base
+ *  This structure add 2 callback function pointer to the action base
  *  structure.
  */
 struct TPL_TWO_PASS_CALLBACK_ACTION
@@ -122,7 +122,7 @@ struct TPL_TWO_PASS_CALLBACK_ACTION
   VAR(tpl_callback_func, TYPEDEF) callback_2nd_pass;
 };
 
-typedef struct TPL_CALLBACK_ACTION tpl_two_pass_callback_action;
+typedef struct TPL_TWO_PASS_CALLBACK_ACTION tpl_two_pass_callback_action;
 
 #endif
 
