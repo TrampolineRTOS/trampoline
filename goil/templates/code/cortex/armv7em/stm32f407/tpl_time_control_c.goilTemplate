@@ -401,7 +401,7 @@ FUNC(tpl_bool, OS_CODE) tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_
           elsif exists mark::VALUE_S::NOTSTATE then %!= % !mark::VALUE_S::NOTSTATE %)%
           end if
         elsif mark::VALUE == "TIMER" then
-          %(timer_% !mark::VALUE_S::TIMER %.alarm->state == TIMER_% !mark::VALUE_S::STATE %)%
+          %(timer_% !mark::VALUE_S::TIMER %.state == TIMER_% !mark::VALUE_S::STATE %)%
         end if
       between % &&
      %
