@@ -27,6 +27,7 @@
 #ifndef TPL_OS_ACTION_H
 #define TPL_OS_ACTION_H
 
+#include "tpl_app_define.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_task_kernel.h"
 
@@ -43,9 +44,27 @@ struct TPL_ACTION;
 **        pointer is considered at far and there is a stack pointer
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
+
+#if WITH_TEMPORALENFORCEMENT == YES
+
+/*
+ * With temporal enforcement, a second argument tells if
+ * the action is called in the first pass or in the second pass.
+ * if false, it is the first pass.
+ * if true, it is the second pass.
+ */
+typedef P2FUNC(void, OS_APPL_CODE,
+               tpl_action_func)(P2CONST(struct TPL_ACTION, AUTOMATIC,
+                                        OS_APPL_CONST),
+                                CONST(tpl_bool, AUTOMATIC));
+
+#else
+
 typedef P2FUNC(void, OS_APPL_CODE,
                tpl_action_func)(P2CONST(struct TPL_ACTION, AUTOMATIC,
                                         OS_APPL_CONST));
+
+#endif
 
 /**
  * @struct TPL_ACTION
@@ -56,7 +75,8 @@ typedef P2FUNC(void, OS_APPL_CODE,
  * It is the common part for the action descriptor structures and is
  * extended to add the action parameters.
  */
-struct TPL_ACTION {
+struct TPL_ACTION
+{
   VAR(tpl_action_func, TYPEDEF) action; /**<  action function pointer   */
 };
 
@@ -75,7 +95,8 @@ typedef struct TPL_ACTION tpl_action;
  *  This structure add a callback function pointer to the action base
  *  structure.
  */
-struct TPL_CALLBACK_ACTION {
+struct TPL_CALLBACK_ACTION
+{
   /*  base action                 */
   VAR(tpl_action, TYPEDEF) b_desc;
   /*  callback function pointer   */
@@ -84,13 +105,35 @@ struct TPL_CALLBACK_ACTION {
 
 typedef struct TPL_CALLBACK_ACTION tpl_callback_action;
 
+#if WITH_TEMPORALENFORCEMENT == YES
+/**
+ *  @struct TPL_TWO_PASS_ACTION_CALLBACK
+ *
+ *  This structure add a callback function pointer to the action base
+ *  structure.
+ */
+struct TPL_TWO_PASS_CALLBACK_ACTION
+{
+  /*  base action                 */
+  VAR(tpl_action, TYPEDEF) b_desc;
+  /*  callback function pointer   */
+  VAR(tpl_callback_func, TYPEDEF) callback;
+  /*  callback function pointer   */
+  VAR(tpl_callback_func, TYPEDEF) callback_2nd_pass;
+};
+
+typedef struct TPL_CALLBACK_ACTION tpl_two_pass_callback_action;
+
+#endif
+
 /**
  *  @struct TPL_TASK_ACTIVATION_ACTION
  *
  *  This structure add a task descriptor pointer to the action base
  *  structure.
  */
-struct TPL_TASK_ACTIVATION_ACTION {
+struct TPL_TASK_ACTIVATION_ACTION
+{
   /*  base action                 */
   VAR(tpl_action, TYPEDEF) b_desc;
   /*  task descriptor pointer     */
@@ -105,7 +148,8 @@ typedef struct TPL_TASK_ACTIVATION_ACTION tpl_task_activation_action;
  *  This structure add a task descriptor pointer to the action base
  *  structure and an event mask
  */
-struct TPL_SETEVENT_ACTION {
+struct TPL_SETEVENT_ACTION
+{
   /*  base action                 */
   VAR(tpl_action, TYPEDEF) b_desc;
   /*  task descriptor pointer     */
@@ -123,11 +167,14 @@ typedef struct TPL_SETEVENT_ACTION tpl_setevent_action;
  * Notification functions prototypes
  */
 FUNC(void, OS_CODE)
-tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                    CONST(tpl_bool, AUTOMATIC) pass);
 FUNC(void, OS_CODE)
-tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                         CONST(tpl_bool, AUTOMATIC) pass);
 FUNC(void, OS_CODE)
-tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                    CONST(tpl_bool, AUTOMATIC) pass);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

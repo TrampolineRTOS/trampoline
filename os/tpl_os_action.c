@@ -38,21 +38,29 @@
  *  action function for action call back
  */
 FUNC(void, OS_CODE)
-tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
+tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                    CONST(tpl_bool, AUTOMATIC) pass)
+{
   /*
    * A tpl_action * is cast to a tpl_callback_action *
    * This violate MISRA rule 45. However, since the
    * first member of tpl_callback_action is a tpl_action
    * This cast behaves correctly.
    */
-  ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)->callback();
+  if (pass == FALSE)
+  {
+    ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)
+        ->callback();
+  }
 }
 
 /**
  *  action function for action by task activation
  */
 FUNC(void, OS_CODE)
-tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
+tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                         CONST(tpl_bool, AUTOMATIC) pass)
+{
   /*
    * A tpl_action * is cast to a tpl_task_activation_action *
    * This violate MISRA rule 45. However, since the
@@ -63,17 +71,21 @@ tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result_action = E_OK;
 
-  /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_ActivateTask)
-  STORE_TASK_ID(
-      ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
-          ->task_id)
+  if (pass == FALSE)
+  {
 
-  /* call alarm action and save return value to launch error hook if alarm
-   * action goes wrong */
-  result_action = tpl_activate_task(
-      ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
-          ->task_id);
+    /*  store information for error hook routine    */
+    STORE_SERVICE(OSServiceId_ActivateTask)
+    STORE_TASK_ID(
+        ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
+            ->task_id)
+
+    /* call alarm action and save return value to launch error hook if alarm
+     * action goes wrong */
+    result_action = tpl_activate_task(
+        ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)
+            ->task_id);
+  }
   PROCESS_ERROR(result_action)
 }
 
@@ -83,7 +95,9 @@ tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
 #if EVENT_COUNT > 0
 
 FUNC(void, OS_CODE)
-tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
+tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                    CONST(tpl_bool, AUTOMATIC) pass)
+{
   /*
    * A tpl_action * is cast to a tpl_setevent_action *
    * This violate MISRA rule 45. However, since the
@@ -94,18 +108,22 @@ tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action) {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result_action = E_OK;
 
-  /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_SetEvent)
-  STORE_TASK_ID(
-      ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
-  STORE_EVENT_MASK(
-      ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask)
-  /* call alarm action and save return value to launch error hook if alarm
-   * action goes wrong */
-  result_action = tpl_set_event(
-      ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id,
-      ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask);
-
+  if (pass == FALSE)
+  {
+    /*  store information for error hook routine    */
+    STORE_SERVICE(OSServiceId_SetEvent)
+    STORE_TASK_ID(
+        ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)
+            ->task_id)
+    STORE_EVENT_MASK(
+        ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask)
+    /* call alarm action and save return value to launch error hook if alarm
+     * action goes wrong */
+    result_action = tpl_set_event(
+        ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)
+            ->task_id,
+        ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask);
+  }
   PROCESS_ERROR(result_action);
 }
 

@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -26,8 +26,8 @@
 #ifndef TPL_OS_ALARM_KERNEL_H
 #define TPL_OS_ALARM_KERNEL_H
 
-#include "tpl_os_timeobj_kernel.h"
 #include "tpl_os_action.h"
+#include "tpl_os_timeobj_kernel.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -38,7 +38,8 @@
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT];
+extern CONSTP2VAR(tpl_time_obj, AUTOMATIC,
+                  OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT];
 #endif
 
 /**
@@ -50,11 +51,14 @@ extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_C
  *
  * @see #TPL_TIME_OBJ_STATIC
  */
-struct TPL_ALARM_STATIC {
-  VAR(tpl_time_obj_static, TYPEDEF)         b_desc;   /**< common part of all objects that
-                                                             derive from tpl_time_obj.          */
-  P2VAR(tpl_action, TYPEDEF, OS_APPL_DATA)  action;   /**< action to be done when the alarm
-                                                             expires                            */
+struct TPL_ALARM_STATIC
+{
+  VAR(tpl_time_obj_static, TYPEDEF)
+  b_desc; /**< common part of all objects that
+                 derive from tpl_time_obj.          */
+  P2VAR(tpl_action, TYPEDEF, OS_APPL_DATA)
+  action; /**< action to be done when the alarm
+                 expires                            */
 };
 
 /**
@@ -74,8 +78,14 @@ typedef struct TPL_ALARM_STATIC tpl_alarm_static;
  *
  * @param time_obj  The alarm to raise.
  */
-FUNC(void, OS_CODE) tpl_raise_alarm(
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
+#if WITH_TEMPORALENFORCEMENT == YES
+FUNC(void, OS_CODE)
+tpl_raise_alarm(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj,
+                CONST(tpl_bool, AUTOMATIC) pass);
+#else
+FUNC(void, OS_CODE)
+tpl_raise_alarm(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
+#endif
 
 /**
  * @internal
@@ -89,10 +99,9 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
  * @retval E_OK no error
  * @retval E_OS_ID (extended error only) alarm_id is invalid
  */
-FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
-    CONST(tpl_alarm_id, AUTOMATIC)                  alarm_id,
-    P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info);
-
+FUNC(tpl_status, OS_CODE)
+tpl_get_alarm_base_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                           P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA) info);
 
 /**
  * @internal
@@ -106,10 +115,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
  * @retval E_OS_NOFUNC alarm_id is not used
  * @retval E_OS_ID (extended error only) alarm_id is invalid
  */
-FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
-    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick);
-
+FUNC(tpl_status, OS_CODE)
+tpl_get_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                      P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA) tick);
 
 /**
  * @internal
@@ -126,11 +134,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
  * @retval E_OS_VALUE (extended error only) increment or cycle is outside of
  * limits
  */
-FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
-    CONST(tpl_tick, AUTOMATIC)      increment,
-    CONST(tpl_tick, AUTOMATIC)      cycle);
-
+FUNC(tpl_status, OS_CODE)
+tpl_set_rel_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                          CONST(tpl_tick, AUTOMATIC) increment,
+                          CONST(tpl_tick, AUTOMATIC) cycle);
 
 /**
  * @internal
@@ -148,11 +155,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
  * @retval E_OS_VALUE (extended error only) start or cycle is outside of
  * limits
  */
-FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
-    CONST(tpl_tick, AUTOMATIC)      start,
-    CONST(tpl_tick, AUTOMATIC)      cycle);
-
+FUNC(tpl_status, OS_CODE)
+tpl_set_abs_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                          CONST(tpl_tick, AUTOMATIC) start,
+                          CONST(tpl_tick, AUTOMATIC) cycle);
 
 /**
  * Cancels the alarm
@@ -163,8 +169,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
  * @retval E_OS_NOFUNC alarm is not in use
  * @retval E_OS_ID (extended error only) alarm_id is invalid
  */
-FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC) alarm_id);
+FUNC(tpl_status, OS_CODE)
+tpl_cancel_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
