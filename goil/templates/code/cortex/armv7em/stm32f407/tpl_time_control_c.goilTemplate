@@ -189,11 +189,18 @@ if exists TIMER then
 extern TimerType timer_% !tim::NAME %;
 
 /*
- * Callback for timer % !tim::NAME %
+ * First pass callback for timer % !tim::NAME %
  */
 FUNC(void, OS_CODE) timer_% !tim::NAME %_callback()
 {
-  timer_% !tim::NAME %.state = TIMER_EXPIRED;%
+  timer_% !tim::NAME %.state = TIMER_EXPIRED;
+}
+
+/*
+ * Second pass callback for timer % !tim::NAME %
+ */
+FUNC(void, OS_CODE) timer_% !tim::NAME %_callback_2nd_pass()
+{%
     # Look in the strategy to find cases that use the timer
     foreach action in exists OS::STRATEGY::ACTION default (@()) do
       let actionName := action::VALUE
@@ -224,11 +231,12 @@ FUNC(void, OS_CODE) timer_% !tim::NAME %_callback()
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-CONST(tpl_callback_action, OS_CONST) timer_% !tim::NAME %_alarm_action = {
+CONST(tpl_two_pass_callback_action, OS_CONST) timer_% !tim::NAME %_alarm_action = {
   {
-    /* action function    */  tpl_action_callback
+    /* action function    */  tpl_2pass_action_callback
   },
-  /* callback function  */  timer_% !tim::NAME %_callback
+  timer_% !tim::NAME %_callback,         /* 1st pass callback function  */  
+  timer_% !tim::NAME %_callback_2nd_pass /* 2nd callback function       */  
 };
 
 CONST(tpl_alarm_static, OS_CONST) timer_% !tim::NAME %_alarm_static = {
@@ -281,7 +289,7 @@ foreach action in exists OS::STRATEGY::ACTION default ( @() ) do
     #
     if exists action::VALUE_S::ALARM then%
 /*
- * Callback for alarm % !action::VALUE_S::ALARM %
+ * Callback first pass for alarm % !action::VALUE_S::ALARM %
  */
 FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !action::VALUE_S::ALARM %_callback()
 {
@@ -293,6 +301,15 @@ FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !action::VALUE_S::ALARM %_callback
       foreach var in exists action::VALUE_S::BEFORE::VAR default (@()) do%
   % !OS::STRATEGY::NAME %_var_% !var::NAME % = % !var::VALUE %;%
       end foreach
+%
+}
+
+/*
+ * Callback second pass for alarm % !action::VALUE_S::ALARM %
+ */
+FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !action::VALUE_S::ALARM %_callback_2nd_pass()
+{
+  /* state check and related actions */%
       # WHEN evaluation and DO execution
       foreach when in exists action::VALUE_S::WHEN default (@()) do
 %

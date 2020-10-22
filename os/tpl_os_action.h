@@ -176,6 +176,15 @@ FUNC(void, OS_CODE)
 tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
                     CONST(tpl_bool, AUTOMATIC) pass);
 
+#if WITH_TEMPORALENFORCEMENT == YES
+/**
+ *  action function for 2 pass action call back
+ */
+FUNC(void, OS_CODE)
+tpl_2pass_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
+                          CONST(tpl_bool, AUTOMATIC) pass);
+#endif
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

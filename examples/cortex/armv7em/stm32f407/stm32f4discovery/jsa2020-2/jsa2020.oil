@@ -240,7 +240,7 @@ CPU jsa2020 {
         };
     };
 
-    ALARM atask3_alarm {
+    ALARM task3_alarm {
         COUNTER = SystemCounter;
         ACTION = ACTIVATETASK { TASK = task3; };
         AUTOSTART = TRUE {

@@ -15,6 +15,7 @@ if delayed_alarm then
 #include "tpl_memmap.h"
 
 extern FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback();
+extern FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback_2nd_pass();
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -22,11 +23,12 @@ extern FUNC(void, OS_CODE) % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback();
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-CONST(tpl_callback_action, OS_CONST) % !action_name %_action = {
+CONST(tpl_two_pass_callback_action, OS_CONST) % !action_name %_action = {
   {
-    /* action function  */    tpl_action_callback
+    /* action function  */    tpl_2pass_action_callback
   },
-  /* callback function    */  % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback
+  % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback,         /* callback function          */
+  % !OS::STRATEGY::NAME %_% !alarm::NAME %_callback_2nd_pass /* callback function 2nd pass */  
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
