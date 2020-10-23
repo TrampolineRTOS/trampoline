@@ -163,6 +163,8 @@ typedef struct TPL_SETEVENT_ACTION tpl_setevent_action;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#if WITH_TEMPORALENFORCEMENT == YES
+
 /*
  * Notification functions prototypes
  */
@@ -175,14 +177,25 @@ tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
 FUNC(void, OS_CODE)
 tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
                     CONST(tpl_bool, AUTOMATIC) pass);
-
-#if WITH_TEMPORALENFORCEMENT == YES
 /**
  *  action function for 2 pass action call back
  */
 FUNC(void, OS_CODE)
 tpl_2pass_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action,
                           CONST(tpl_bool, AUTOMATIC) pass);
+
+#else
+
+/*
+ * Notification functions prototypes
+ */
+FUNC(void, OS_CODE)
+tpl_action_callback(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+FUNC(void, OS_CODE)
+tpl_action_activate_task(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+FUNC(void, OS_CODE)
+tpl_action_setevent(P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
+
 #endif
 
 #define OS_STOP_SEC_CODE
