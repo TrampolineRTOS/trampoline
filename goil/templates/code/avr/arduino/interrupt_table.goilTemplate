@@ -1,0 +1,36 @@
+%#note: included by tpl_app_config_c.goilTemplate in tpl_app_config_c file
+%
+#include "tpl_machine.h"
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+//function defined in avr assembly files.
+FUNC(void, OS_CODE) tpl_avr_ISR2_handler(CONST(uint16, AUTOMATIC) id);
+
+%
+
+foreach isr in ISR do
+  if isr::CATEGORY == 1 then # ISR 1
+    %void % !isr::NAME %_function();\n%
+  end if
+%
+FUNC(void, OS_CODE) % !isr::SOURCE %_Handler(void)
+{
+%
+  if isr::CATEGORY == 1 then # ISR 1
+    %  % !isr::NAME %_function();\n%
+  elsif isr::CATEGORY == 2 then # ISR2
+    %  tpl_avr_ISR2_handler(% !isr::NAME %_id);\n%
+  else
+    error isr::CATEGORY : "This interrupt category "+isr::CATEGORY+" does not exist"
+  end if
+%}
+%
+end foreach
+
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+# vim:ft=goil_templates

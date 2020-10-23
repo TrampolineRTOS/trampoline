@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'AC_FileHandleForWriting' : an abstract class for handling file write                                              *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2012, ..., 2012 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,16 +18,15 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-#ifndef ABSTRACT_CLASS_FOR_FILE_HANDLE_FOR_WRITING
-#define ABSTRACT_CLASS_FOR_FILE_HANDLE_FOR_WRITING
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "files/AC_FileHandle.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class AC_FileHandleForWriting : public AC_FileHandle {
 //--- Constructor
@@ -38,6 +37,4 @@ class AC_FileHandleForWriting : public AC_FileHandle {
   public : virtual ~ AC_FileHandleForWriting (void) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#endif
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

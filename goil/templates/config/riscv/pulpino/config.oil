@@ -1,0 +1,207 @@
+IMPLEMENTATION pulpino {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          pulpino,string
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+
+CPU pulpino {
+  LIBRARY pulpino {
+    PATH = "riscv/libs/sys_lib/inc";
+    CFILE = "../src/exceptions.c";
+    CFILE = "../src/gpio.c";
+    CFILE = "../src/i2c.c";
+    CFILE = "../src/int.c";
+    CFILE = "../src/spi.c";
+    CFILE = "../src/timer.c";
+    CFILE = "../src/uart.c";
+    CFILE = "../src/utils.c";
+  };
+
+  GENERATED_FILES pulpino {
+    CFILE = "tpl_vectors.c";
+    CFILE = "tpl_primary_irq.S";
+  };
+
+  LIBRARY string {
+    PATH = "riscv/libs/string_lib/inc";
+    CFILE = "../src/qprintf.c";
+  };
+
+  INTERRUPT I2C {
+    VECT = 23;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_I2C";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT UART {
+    VECT = 24;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_UART";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT GPIO {
+    VECT = 25;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_GPIO";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SPIM0 {
+    VECT = 26;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_SPIM0";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT SPIM1 {
+    VECT = 27;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_SPIM1";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TA_CMP {
+    VECT = 28;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_TA_CMP";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TA_OVF {
+    VECT = 29;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_TA_OVF";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TB_CMP {
+    VECT = 30;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_TB_CMP";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT TB_OVF {
+    VECT = 31;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ISR_TB_OVF";
+      TEMPLATE = FALSE;
+    };
+    ACK = TRUE;
+  };
+
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 32;
+  };
+
+  PLATFORM_FILES pulpino {
+    PATH = "riscv/pulpino";
+    CFILE = "crt0.riscv.S";
+    CFILE = "tpl_sc_handler.S";
+    CFILE = "tpl_machine_riscv.c";
+  };
+
+  POSTCOMMAND all {
+    COMMAND mkdir {
+      MESSAGE = "Creating";
+      COMMAND = "mkdir";
+      INPUT = INTERMEDIATE {
+        SOURCE = "slm_files vectors stdout";
+      };
+      PREOPTION = "-p";
+    };
+
+    COMMAND rms {
+      MESSAGE = "Removing";
+      COMMAND = "rm";
+      INPUT = INTERMEDIATE {
+        SOURCE = "modelsim.ini tcl_files waves work";
+      };
+      PREOPTION = "-rf";
+    };
+    COMMAND lns {
+      MESSAGE = "Creating";
+      COMMAND = "ln";
+      INPUT = INTERMEDIATE {
+        SOURCE = "${PULPINO_PATH}/vsim/modelsim.ini ${PULPINO_PATH}/vsim/tcl_files ${PULPINO_PATH}/vsim/waves ${PULPINO_PATH}/vsim/work";
+      };
+      PREOPTION = "-s";
+      POSTOPTION = ".";
+    };
+
+    COMMAND s19 {
+      MESSAGE = "Creating";
+      COMMAND = "riscv32-unknown-elf-objcopy";
+      INPUT = TARGET {
+        EXT = "";
+      };
+      PREOPTION = "--srec-len 1 --output-target=srec";
+      POSTOPTION = "build.s19";
+    };
+    COMMAND s19toslm {
+      MESSAGE = "Entering";
+      COMMAND = "python";
+      PREOPTION = "${PULPINO_PATH}/sw/utils/s19toslm.py";
+      INPUT = INTERMEDIATE {
+        SOURCE = "build.s19";
+      };
+    };
+    COMMAND mv {
+      MESSAGE = "Creating";
+      COMMAND = "mv";
+      INPUT = INTERMEDIATE {
+        SOURCE = "flash_stim.slm l2_ram_cut0_hi.slm l2_ram_cut0_lo.slm l2_stim.slm spi_stim.txt tcdm_bank0.slm";
+      };
+      POSTOPTION = "slm_files/";
+    };
+
+    COMMAND stim {
+      MESSAGE = "Creating";
+      COMMAND = "perl";
+      INPUT = INTERMEDIATE {
+        SOURCE = "${PULPINO_PATH}/sw/utils/parse_s19.pl ./build.s19";
+      };
+      PREOPTION = "-w";
+      POSTOPTION = "> ./vectors/stim.txt";
+    };
+
+    
+  }; 
+};
+
+

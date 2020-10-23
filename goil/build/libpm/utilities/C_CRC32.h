@@ -1,13 +1,12 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'C_CRC32' : a class for computing CRC32                                                                            *
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
 //  Copyright (C) 1997 Pierre Molinaro.                                                                                *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, Ecole Centrale de Nantes                                                                                      *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it                                            *
 //  under the terms of the GNU Lesser General Public License as published                                              *
@@ -19,16 +18,15 @@
 //  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-#ifndef CLASS_CRC32_DEFINED
-#define CLASS_CRC32_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "utilities/M_machine.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_CRC32 {
 //--- Valeur initiale de la somme
@@ -43,6 +41,4 @@ class C_CRC32 {
   public : static void addStringToChecksum (const char * chaine, uint32_t & somme) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#endif
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

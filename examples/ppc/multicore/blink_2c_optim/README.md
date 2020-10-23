@@ -1,4 +1,4 @@
-#Trampoline examples for PowerPC target
+# Trampoline examples for PowerPC target
 
 This is a dualcore blink example, tested and working for MPC5643L target using
 Cosmic Software compiler.
@@ -7,7 +7,7 @@ This example uses two synchronized cores, with one task and one alarm per core.
 When an alarm is triggered, the core to whose it belongs activates the task of
 the other core and ask for a context switch through an intercore interruption.
 
-##How to build the example
+## How to build the example
 To compile the example, one can use the bash script "run.sh" in this directory.
 The -c option cleans the directory from outputs and generated files.
 The -g option generate C files using goil.
@@ -19,7 +19,7 @@ The -l option sets the compilation as to be done locally.
 The -a option does everything (except setting the compilation as local, so one
 needs to use ./run.sh -al if its wants to do everything locally).
 
-##Using Cosmic Software tools
+## Using Cosmic Software tools
 The build process uses Cosmic Software's compilation tools (property set in
 blink.oil file). The call of these tools are made by the cxvle_auto.py and
 clnk_auto.py python scripts located in ../../tools directory. These scripts, by
@@ -30,7 +30,7 @@ one can set the environment variables COSMIC_CXPPC, COSMIC_CAPPC, COSMIC_CPPPC,
 COSMIC_CLNK and COSMIC_CVDWARF to use these commands instead (so something like
 'export COSMIC_CXPPC="wine ~/path/to/cosmic/tools/cxvle.exe"').
 
-##Execute the program through T32 (Lauterbach)
+## Execute the program through T32 (Lauterbach)
 
 SH $  : Command in shell
 T32 & : Command in T32

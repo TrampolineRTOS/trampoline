@@ -42,6 +42,7 @@
 #include <sys/wait.h>
 
 #include "tpl_machine_posix.h"
+#include "tpl_posixvp_irq_gen.h"
 
 extern volatile int tpl_locking_depth;
 extern char tpl_user_task_lock;
@@ -193,6 +194,10 @@ void quit(int n)
  */
 void tpl_init_machine(void)
 {
+
+    // TODO: invert control flow between these 2 functions
+    tpl_posixvp_irq_gen_init();
+
     tpl_proc_id proc_id;
 
     /* create the context of each tpl_proc */
@@ -203,6 +208,7 @@ void tpl_init_machine(void)
         tpl_create_context(proc_id);
     }
 
+    // TODO: replace with posix sigaction
     signal(SIGINT, quit);
     signal(SIGHUP, quit);
 

@@ -1,0 +1,86 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 300 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 200 ;
+    } ;
+};
+
+CPU blink {
+  OS config {
+    STATUS = EXTENDED;
+    
+  BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_SRC = "blink.c";
+      APP_NAME = "blink_exe";
+      CFLAGS  = "-O3";
+      ASFLAGS = "-march=RVIMAFD";
+      LDFLAGS = "-Wl,-Map=build.map";
+      LDFLAGS = "-L../../ -nostartfiles";
+      COMPILER = "riscv32-unknown-elf-gcc";
+      ASSEMBLER = "riscv32-unknown-elf-as";
+      LINKER = "riscv32-unknown-elf-gcc";
+      COPIER = "riscv32-unknown-elf-objcopy";
+      SYSTEM = PYTHON;
+      LIBRARY = pulpino;
+      LIBRARY = string;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE std {};
+  
+  TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ALARM alarm_blink {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = blink;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 2;
+      CYCLETIME = 2;
+    };
+  };
+
+  TASK sleeping {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ALARM alarm_sleeping {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = sleeping;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 4;
+      CYCLETIME = 4;
+    };
+  };
+
+};
+

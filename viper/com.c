@@ -40,7 +40,7 @@ static sem_t *synchro_sem = NULL;
 static int sh_mem = -1; /*  Shared memory id	*/
 vp_command *command = NULL;
 
-pid_t osek_app_pid;
+pid_t osek_com_app_pid;
 
 void viper_log(char *);
 
@@ -48,13 +48,13 @@ void init_com(void)
 {
     viper_log("Initializing the communication");
     
-    osek_app_pid = getppid();
+    osek_com_app_pid = getppid();
     
     /*  built the shared memory and semaphore paths */
-    sprintf(data_file_path, DATA_FILE_PATH, osek_app_pid);
-    sprintf(r_sem_file_path, R_SEM_FILE_PATH, osek_app_pid);
-    sprintf(w_sem_file_path, W_SEM_FILE_PATH, osek_app_pid);
-    sprintf(synchro_sem_file_path, W_SEM_FILE_PATH, osek_app_pid);
+    sprintf(data_file_path, DATA_FILE_PATH, osek_com_app_pid);
+    sprintf(r_sem_file_path, R_SEM_FILE_PATH, osek_com_app_pid);
+    sprintf(w_sem_file_path, W_SEM_FILE_PATH, osek_com_app_pid);
+    sprintf(synchro_sem_file_path, W_SEM_FILE_PATH, osek_com_app_pid);
     
 	/*  create the shared memory object  */
 	sh_mem = shm_open(data_file_path, O_RDWR, S_IRUSR | S_IWUSR);

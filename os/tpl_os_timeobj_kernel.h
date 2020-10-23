@@ -82,9 +82,9 @@ struct TPL_TIME_OBJ_STATIC
   CONST(tpl_expire_func, TYPEDEF)
   expire; /**<  expiration processing to be done when the time object
             expires                                                   */
-#if (WITH_TRACE == YES)
+#if (WITH_ID == YES)
   CONST(tpl_timeobj_id, TYPEDEF)
-  timeobj_id; /**<  the id of the alarm or schedule table. This id
+  id; /**<  the id of the alarm or schedule table. This id
                     is used for tracing the kernel                        */
 #endif
 #if WITH_OSAPPLICATION == YES
@@ -154,9 +154,13 @@ struct TPL_COUNTER
   current_tick; /**< current tick value of the counter                */
   VAR(tpl_tick, TYPEDEF)
   current_date; /**< current value of the counter                     */
+#if WITH_TRACE == YES
+  CONST(tpl_trace_counter_id, TYPEDEF)
+  id; /**< id of the counter used in the trace               */
+#endif
 #if WITH_AUTOSAR == YES
   CONST(tpl_counter_kind, TYPEDEF)
-  kind; /**< kind (hardware or software) of the counter       */
+  kind; /**< kind (hardware or software) of the counter */
 #endif
 #if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)

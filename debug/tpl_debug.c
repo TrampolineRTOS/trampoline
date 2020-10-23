@@ -26,6 +26,7 @@
 
 #include "tpl_debug.h"
 #include "tpl_os_resource_kernel.h"
+#include "tpl_os_multicore_macros.h"
 #include <stdio.h>
 
 #define OS_START_SEC_CODE

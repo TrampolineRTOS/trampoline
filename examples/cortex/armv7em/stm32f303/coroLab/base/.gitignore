@@ -1,0 +1,6 @@
+base
+build
+*.elf
+*.bin
+*.map
+*.py

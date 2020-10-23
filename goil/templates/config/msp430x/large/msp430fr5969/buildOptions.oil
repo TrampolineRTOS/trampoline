@@ -1,0 +1,80 @@
+/*
+ * MSP430x build options for gcc
+ */
+CPU msp430fr6989 {
+
+  BUILDOPTIONS buildOptionsForMsp430fr6989 {
+
+    /*
+     * Common flags for C and C++ compiling
+     */
+     
+    // Produce debugging information
+    COMMONFLAGS = "-g";
+    // All warnings on
+    COMMONFLAGS = "-Wall";
+    // Except unused variables                        
+    COMMONFLAGS = "-Wno-unused-but-set-variable";
+    // Struct initialized with incorrect number of fiels
+    COMMONFLAGS = "-Wmissing-field-initializers";
+    // Compile for msp430fr5969
+    COMMONFLAGS = "-mmcu=msp430fr5969";
+    // Default startfiles (crt0.c) are not used
+    COMMONFLAGS = "-nostartfiles";
+    // Do not used built in gcc functions
+    COMMONFLAGS = "-fno-builtin";
+    // No exceptions managed
+    COMMONFLAGS = "-fno-exceptions";
+    // Do not used implicitely the standard libraries to link
+    COMMONFLAGS = "-nostdlib";
+    // Each function is put in its own section. Required to deleted unused code
+    COMMONFLAGS = "-ffunction-sections";
+    // Each data is put in its own section. Required to deleted unused data
+    COMMONFLAGS = "-fdata-sections";
+    
+    /*
+     * C++ compiler flags
+     */
+
+    // No information for runtime (run time type information) - reduce exe size
+    CPPFLAGS = "-fno-rtti";
+    // Optimization to omit creating temporary object when used to initialize 
+    // another object
+    CPPFLAGS = "-felide-constructors";
+    // No thread safe init of local static variables - reduce code size
+    CPPFLAGS = "-fno-threadsafe-statics";
+    // Don't use the __cxa_get_exception_ptr runtime routine
+    // (no exception anyway)
+    CPPFLAGS = "-fno-use-cxa-get-exception-ptr";
+    // Don't generate code to check for violation of exception specifications
+    // at runtime (no exception anyway)
+    CPPFLAGS = "-fno-enforce-eh-specs";
+    
+    /*
+     * Assembler flags
+     */
+
+    // Produce debugging information     
+    ASFLAGS = "-g";
+    // All warnings on
+    ASFLAGS = "-Wall";
+    // Assemble for msp430fr5969
+    ASFLAGS = "-mmcu=msp430fr5969";
+    // A warning is an error
+    ASFLAGS = "--fatal-warnings";
+
+    /*
+     * Linker flags
+     */
+
+    // A warning is an error
+    LDFLAGS = "--fatal-warnings";
+    // Warn when a common symbol is combined with another common symbol
+    LDFLAGS = "--warn-common";
+    // Report unresolved symbol references
+    LDFLAGS = "--no-undefined";
+    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
+    LDFLAGS = "--gc-sections";
+
+  };
+};

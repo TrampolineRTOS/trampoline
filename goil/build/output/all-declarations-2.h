@@ -1,19 +1,374 @@
-#ifndef all_2D_declarations_2D__32__ENTITIES_DEFINED
-#define all_2D_declarations_2D__32__ENTITIES_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-predefined-types.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-declarations-1.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                           @sint_36__34_AttributeSet class                                           *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_sint_36__34_AttributeSet : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_sint_36__34_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_sint_36__34_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_sint_36__34_AttributeSet * ptr (void) const { return (const cPtr_sint_36__34_AttributeSet *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_sint_36__34_AttributeSet (const cPtr_sint_36__34_AttributeSet * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_sint_36__34_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                 C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_sint_36__34_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                         const class GALGAS_sint_36__34_List & inOperand1
+                                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_sint_36__34_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_sint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_sint_36__34_AttributeSet class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                     Pointer class for @sint64AttributeSet class                                     *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_sint_36__34_AttributeSet : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_sint_36__34_List mProperty_valueList ;
+
+//--- Constructor
+  public : cPtr_sint_36__34_AttributeSet (const GALGAS_location & in_location,
+                                          const GALGAS_sint_36__34_List & in_valueList
+                                          COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_sint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                              @floatAttributeSet class                                               *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_floatAttributeSet : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_floatAttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_floatAttributeSet constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_floatAttributeSet * ptr (void) const { return (const cPtr_floatAttributeSet *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_floatAttributeSet (const cPtr_floatAttributeSet * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_floatAttributeSet extractObject (const GALGAS_object & inObject,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_floatAttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                  const class GALGAS_floatList & inOperand1
+                                                                  COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_floatAttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_floatList getter_valueList (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_floatAttributeSet class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatAttributeSet ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                     Pointer class for @floatAttributeSet class                                      *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_floatAttributeSet : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_floatList mProperty_valueList ;
+
+//--- Constructor
+  public : cPtr_floatAttributeSet (const GALGAS_location & in_location,
+                                   const GALGAS_floatList & in_valueList
+                                   COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_floatList getter_valueList (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                         @uint_33__32_AttributeMinMax class                                          *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_uint_33__32_AttributeMinMax : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_uint_33__32_AttributeMinMax (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_uint_33__32_AttributeMinMax constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_uint_33__32_AttributeMinMax * ptr (void) const { return (const cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_uint_33__32_AttributeMinMax (const cPtr_uint_33__32_AttributeMinMax * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_uint_33__32_AttributeMinMax extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_uint_33__32_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
+                                                                            const class GALGAS_uint & inOperand1,
+                                                                            const class GALGAS_uint & inOperand2
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_uint_33__32_AttributeMinMax & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_max (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_min (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_uint_33__32_AttributeMinMax class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_AttributeMinMax ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                   Pointer class for @uint32AttributeMinMax class                                    *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_uint_33__32_AttributeMinMax : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_uint mProperty_min ;
+  public : GALGAS_uint mProperty_max ;
+
+//--- Constructor
+  public : cPtr_uint_33__32_AttributeMinMax (const GALGAS_location & in_location,
+                                             const GALGAS_uint & in_min,
+                                             const GALGAS_uint & in_max
+                                             COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_min (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_max (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                         @uint_36__34_AttributeMinMax class                                          *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_uint_36__34_AttributeMinMax : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_uint_36__34_AttributeMinMax (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_uint_36__34_AttributeMinMax constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_uint_36__34_AttributeMinMax * ptr (void) const { return (const cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_uint_36__34_AttributeMinMax (const cPtr_uint_36__34_AttributeMinMax * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_uint_36__34_AttributeMinMax extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_uint_36__34_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
+                                                                            const class GALGAS_uint_36__34_ & inOperand1,
+                                                                            const class GALGAS_uint_36__34_ & inOperand2
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_uint_36__34_AttributeMinMax & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint_36__34_ getter_max (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint_36__34_ getter_min (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_uint_36__34_AttributeMinMax class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_AttributeMinMax ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                   Pointer class for @uint64AttributeMinMax class                                    *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_uint_36__34_AttributeMinMax : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_uint_36__34_ mProperty_min ;
+  public : GALGAS_uint_36__34_ mProperty_max ;
+
+//--- Constructor
+  public : cPtr_uint_36__34_AttributeMinMax (const GALGAS_location & in_location,
+                                             const GALGAS_uint_36__34_ & in_min,
+                                             const GALGAS_uint_36__34_ & in_max
+                                             COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_min (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_max (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @sint_33__32_AttributeMinMax class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_sint_33__32_AttributeMinMax : public GALGAS_attributeRange {
 //--- Constructor
@@ -64,15 +419,15 @@ class GALGAS_sint_33__32_AttributeMinMax : public GALGAS_attributeRange {
 } ; // End of GALGAS_sint_33__32_AttributeMinMax class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_AttributeMinMax ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Pointer class for @sint32AttributeMinMax class                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_sint_33__32_AttributeMinMax : public cPtr_attributeRange {
 //--- Attributes
@@ -101,11 +456,11 @@ class cPtr_sint_33__32_AttributeMinMax : public cPtr_attributeRange {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @sint_36__34_AttributeMinMax class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_sint_36__34_AttributeMinMax : public GALGAS_attributeRange {
 //--- Constructor
@@ -156,15 +511,15 @@ class GALGAS_sint_36__34_AttributeMinMax : public GALGAS_attributeRange {
 } ; // End of GALGAS_sint_36__34_AttributeMinMax class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_AttributeMinMax ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Pointer class for @sint64AttributeMinMax class                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_sint_36__34_AttributeMinMax : public cPtr_attributeRange {
 //--- Attributes
@@ -193,11 +548,11 @@ class cPtr_sint_36__34_AttributeMinMax : public cPtr_attributeRange {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @floatAttributeMinMax class                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_floatAttributeMinMax : public GALGAS_attributeRange {
 //--- Constructor
@@ -248,15 +603,15 @@ class GALGAS_floatAttributeMinMax : public GALGAS_attributeRange {
 } ; // End of GALGAS_floatAttributeMinMax class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatAttributeMinMax ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Pointer class for @floatAttributeMinMax class                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_floatAttributeMinMax : public cPtr_attributeRange {
 //--- Attributes
@@ -285,11 +640,11 @@ class cPtr_floatAttributeMinMax : public cPtr_attributeRange {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @locationList list                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_locationList : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -334,6 +689,10 @@ class GALGAS_locationList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_locationList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_location constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -390,9 +749,9 @@ class GALGAS_locationList : public AC_GALGAS_list {
  
 } ; // End of GALGAS_locationList class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_locationList : public cGenericAbstractEnumerator {
   public : cEnumerator_locationList (const GALGAS_locationList & inEnumeratedObject,
@@ -404,15 +763,15 @@ class cEnumerator_locationList : public cGenericAbstractEnumerator {
   public : class GALGAS_locationList_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_locationList ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @locationList_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_locationList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -429,7 +788,7 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
   public : GALGAS_locationList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_locationList_2D_element (void) ;
+  public : virtual ~ GALGAS_locationList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_locationList_2D_element (const GALGAS_location & in_location) ;
@@ -469,23 +828,23 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_locationList_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_locationList_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @implementationObjectMap map                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_implementationObjectMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_implementationObjectMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationObjectMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -563,9 +922,9 @@ class GALGAS_implementationObjectMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_implementationObjectMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_implementationObjectMap : public cGenericAbstractEnumerator {
   public : cEnumerator_implementationObjectMap (const GALGAS_implementationObjectMap & inEnumeratedObject,
@@ -578,15 +937,15 @@ class cEnumerator_implementationObjectMap : public cGenericAbstractEnumerator {
   public : class GALGAS_implementationObjectMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationObjectMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @impType class                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impType : public AC_GALGAS_class {
 //--- Constructor
@@ -634,15 +993,15 @@ class GALGAS_impType : public AC_GALGAS_class {
 } ; // End of GALGAS_impType class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Class for element of '@implementationObjectMap' map                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_implementationObjectMap : public cMapElement {
 //--- Map attributes
@@ -666,11 +1025,11 @@ class cMapElement_implementationObjectMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     @implementationObjectMap_2D_element struct                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -686,7 +1045,7 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_implementationObjectMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_implementationObjectMap_2D_element (void) ;
+  public : virtual ~ GALGAS_implementationObjectMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_implementationObjectMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -730,23 +1089,23 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_implementationObjectMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationObjectMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @enumValues map                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_enumValues ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_enumValues_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_enumValues : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -824,9 +1183,9 @@ class GALGAS_enumValues : public AC_GALGAS_map {
  
 } ; // End of GALGAS_enumValues class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_enumValues : public cGenericAbstractEnumerator {
   public : cEnumerator_enumValues (const GALGAS_enumValues & inEnumeratedObject,
@@ -839,15 +1198,15 @@ class cEnumerator_enumValues : public cGenericAbstractEnumerator {
   public : class GALGAS_enumValues_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_enumValues ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Class for element of '@enumValues' map                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_enumValues : public cMapElement {
 //--- Map attributes
@@ -871,11 +1230,11 @@ class cMapElement_enumValues : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @enumValues_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -894,7 +1253,7 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
   public : GALGAS_enumValues_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_enumValues_2D_element (void) ;
+  public : virtual ~ GALGAS_enumValues_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_enumValues_2D_element (const GALGAS_lstring & in_lkey,
@@ -938,45 +1297,45 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_enumValues_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_enumValues_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Extension getter '@enumValues mergeWithEnum' (as function)                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_enumValues extensionGetter_mergeWithEnum (const class GALGAS_enumValues & inObject,
                                                        const class GALGAS_enumValues & constinArgument0,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //          Extension getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationObjectMap extensionGetter_mergeImplementationObjectAttributesWith (const class GALGAS_implementationObjectMap & inObject,
                                                                                               const class GALGAS_implementationObjectMap & constinArgument0,
                                                                                               class C_Compiler * inCompiler
                                                                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @implementationMap map                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_implementationMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_implementationMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -1054,9 +1413,9 @@ class GALGAS_implementationMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_implementationMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_implementationMap : public cGenericAbstractEnumerator {
   public : cEnumerator_implementationMap (const GALGAS_implementationMap & inEnumeratedObject,
@@ -1069,15 +1428,15 @@ class cEnumerator_implementationMap : public cGenericAbstractEnumerator {
   public : class GALGAS_implementationMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @implementationObject class                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationObject : public AC_GALGAS_class {
 //--- Constructor
@@ -1133,15 +1492,15 @@ class GALGAS_implementationObject : public AC_GALGAS_class {
 } ; // End of GALGAS_implementationObject class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationObject ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Class for element of '@implementationMap' map                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_implementationMap : public cMapElement {
 //--- Map attributes
@@ -1165,11 +1524,11 @@ class cMapElement_implementationMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @implementationMap_2D_element struct                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -1188,7 +1547,7 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_implementationMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_implementationMap_2D_element (void) ;
+  public : virtual ~ GALGAS_implementationMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_implementationMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -1232,15 +1591,15 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_implementationMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @implementation class                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementation : public AC_GALGAS_class {
 //--- Constructor
@@ -1290,15 +1649,15 @@ class GALGAS_implementation : public AC_GALGAS_class {
 } ; // End of GALGAS_implementation class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementation ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @implementation class                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_implementation : public acPtr_class {
 //--- Attributes
@@ -1324,80 +1683,80 @@ class cPtr_implementation : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Extension getter '@implementation hasKey'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_bool (*enterExtensionGetter_implementation_hasKey) (const class cPtr_implementation * inObject,
                                                                          const class GALGAS_string constinArgument0,
                                                                          C_Compiler * inCompiler
                                                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_hasKey (const int32_t inClassIndex,
                                   enterExtensionGetter_implementation_hasKey inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bool callExtensionGetter_hasKey (const cPtr_implementation * inObject,
                                               const GALGAS_string constin_key,
                                               class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension getter '@implementation hasLKey'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_bool (*enterExtensionGetter_implementation_hasLKey) (const class cPtr_implementation * inObject,
                                                                           const class GALGAS_lstring constinArgument0,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_hasLKey (const int32_t inClassIndex,
                                    enterExtensionGetter_implementation_hasLKey inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
                                                const GALGAS_lstring constin_key,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension getter '@implementation impObject'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_implementationObject (*enterExtensionGetter_implementation_impObject) (const class cPtr_implementation * inObject,
                                                                                             const class GALGAS_string constinArgument0,
                                                                                             C_Compiler * inCompiler
                                                                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_impObject (const int32_t inClassIndex,
                                      enterExtensionGetter_implementation_impObject inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_implementationObject callExtensionGetter_impObject (const cPtr_implementation * inObject,
                                                                  const GALGAS_string constin_objKind,
                                                                  class C_Compiler * inCompiler
                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Pointer class for @implementationObject class                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_implementationObject : public acPtr_class {
 //--- Attributes
@@ -1427,21 +1786,21 @@ class cPtr_implementationObject : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               Function 'lstringWith'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstring function_lstringWith (class GALGAS_string inArgument0,
                                            class C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@implementation checkTypeForKind'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_implementation_checkTypeForKind) (const class cPtr_implementation * inObject,
                                                                           const class GALGAS_string constinArgument0,
@@ -1450,12 +1809,12 @@ typedef void (*extensionMethodSignature_implementation_checkTypeForKind) (const 
                                                                           class C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_checkTypeForKind (const int32_t inClassIndex,
                                             extensionMethodSignature_implementation_checkTypeForKind inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_checkTypeForKind (const class cPtr_implementation * inObject,
                                            const GALGAS_string constin_objKind,
@@ -1464,11 +1823,11 @@ void callExtensionMethod_checkTypeForKind (const class cPtr_implementation * inO
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           Routine 'checkTypeForAttribute'                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void routine_checkTypeForAttribute (const class GALGAS_implementationObjectMap constinArgument0,
                                     const class GALGAS_string constinArgument1,
@@ -1476,32 +1835,32 @@ void routine_checkTypeForAttribute (const class GALGAS_implementationObjectMap c
                                     class C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension method '@implementation checkObjectReferences'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_implementation_checkObjectReferences) (const class cPtr_implementation * inObject,
                                                                                class C_Compiler * inCompiler
                                                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_checkObjectReferences (const int32_t inClassIndex,
                                                  extensionMethodSignature_implementation_checkObjectReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_checkObjectReferences (const class cPtr_implementation * inObject,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          Pointer class for @impType class                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_impType : public acPtr_class {
 //--- Attributes
@@ -1535,71 +1894,115 @@ class cPtr_impType : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension method '@impType checkAttributeReferences'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_impType_checkAttributeReferences) (const class cPtr_impType * inObject,
                                                                            const class GALGAS_implementation constinArgument0,
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_checkAttributeReferences (const int32_t inClassIndex,
                                                     extensionMethodSignature_impType_checkAttributeReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_checkAttributeReferences (const class cPtr_impType * inObject,
                                                    const GALGAS_implementation constin_imp,
                                                    C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Abstract extension getter '@impType mergeWithType'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_impType (*enterExtensionGetter_impType_mergeWithType) (const class cPtr_impType * inObject,
                                                                             class GALGAS_impType inArgument0,
                                                                             class C_Compiler * inCompiler
                                                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_mergeWithType (const int32_t inClassIndex,
                                          enterExtensionGetter_impType_mergeWithType inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impType callExtensionGetter_mergeWithType (const class cPtr_impType * inObject,
                                                         GALGAS_impType in_typeToMerge,
                                                         C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                Abstract extension getter '@attributeRange contains'                                 *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typedef class GALGAS_bool (*enterExtensionGetter_attributeRange_contains) (const class cPtr_attributeRange * inObject,
+                                                                           const class GALGAS_object_5F_t constinArgument0,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void enterExtensionGetter_contains (const int32_t inClassIndex,
+                                    enterExtensionGetter_attributeRange_contains inMethod) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_bool callExtensionGetter_contains (const class cPtr_attributeRange * inObject,
+                                                const GALGAS_object_5F_t constin_obj,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                 Abstract extension getter '@attributeRange string'                                  *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typedef class GALGAS_string (*enterExtensionGetter_attributeRange_string) (const class cPtr_attributeRange * inObject,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void enterExtensionGetter_string (const int32_t inClassIndex,
+                                  enterExtensionGetter_attributeRange_string inMethod) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_string callExtensionGetter_string (const class cPtr_attributeRange * inObject,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             LEXIQUE options_5F_scanner                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_Lexique.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                    E X T E R N    R O U T I N E S                                                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                    E X T E R N    F U N C T I O N S                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                       T O K E N    C L A S S                                                                        *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cTokenFor_options_5F_scanner : public cToken {
   public : double mLexicalAttribute_floatNumber ;
@@ -1611,9 +2014,9 @@ class cTokenFor_options_5F_scanner : public cToken {
   public : cTokenFor_options_5F_scanner (void) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                     S C A N N E R    C L A S S                                                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_Lexique_options_5F_scanner : public C_Lexique {
 //--- Constructors
@@ -1697,19 +2100,19 @@ class C_Lexique_options_5F_scanner : public C_Lexique {
   protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @identifierMap map                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_identifierMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_identifierMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_identifierMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -1787,9 +2190,9 @@ class GALGAS_identifierMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_identifierMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_identifierMap : public cGenericAbstractEnumerator {
   public : cEnumerator_identifierMap (const GALGAS_identifierMap & inEnumeratedObject,
@@ -1802,15 +2205,15 @@ class cEnumerator_identifierMap : public cGenericAbstractEnumerator {
   public : class GALGAS_identifierMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_identifierMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Class for element of '@identifierMap' map                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_identifierMap : public cMapElement {
 //--- Map attributes
@@ -1834,11 +2237,11 @@ class cMapElement_identifierMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @identifierMap_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -1854,7 +2257,7 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_identifierMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_identifierMap_2D_element (void) ;
+  public : virtual ~ GALGAS_identifierMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_identifierMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -1898,15 +2301,15 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_identifierMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_identifierMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @objectAttributes class                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectAttributes : public AC_GALGAS_class {
 //--- Constructor
@@ -1956,15 +2359,15 @@ class GALGAS_objectAttributes : public AC_GALGAS_class {
 } ; // End of GALGAS_objectAttributes class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectAttributes ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Pointer class for @objectAttributes class                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_objectAttributes : public acPtr_class {
 //--- Attributes
@@ -1990,57 +2393,57 @@ class cPtr_objectAttributes : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension setter '@objectAttributes mergeAttributes'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_objectAttributes_mergeAttributes) (class cPtr_objectAttributes * inObject,
                                                                            class GALGAS_objectAttributes inArgument0,
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_mergeAttributes (const int32_t inClassIndex,
                                            extensionSetterSignature_objectAttributes_mergeAttributes inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_mergeAttributes (class cPtr_objectAttributes * inObject,
                                           GALGAS_objectAttributes in_withAttributes,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension setter '@object_t mergeSubAttributes'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_object_5F_t_mergeSubAttributes) (class cPtr_object_5F_t * inObject,
                                                                          class GALGAS_object_5F_t inArgument0,
                                                                          class C_Compiler * inCompiler
                                                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_mergeSubAttributes (const int32_t inClassIndex,
                                               extensionSetterSignature_object_5F_t_mergeSubAttributes inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_mergeSubAttributes (class cPtr_object_5F_t * inObject,
                                              GALGAS_object_5F_t in_withObject,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @identifierList list                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_identifierList : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -2085,6 +2488,10 @@ class GALGAS_identifierList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_identifierList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_object_5F_t constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -2141,9 +2548,9 @@ class GALGAS_identifierList : public AC_GALGAS_list {
  
 } ; // End of GALGAS_identifierList class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_identifierList : public cGenericAbstractEnumerator {
   public : cEnumerator_identifierList (const GALGAS_identifierList & inEnumeratedObject,
@@ -2155,15 +2562,15 @@ class cEnumerator_identifierList : public cGenericAbstractEnumerator {
   public : class GALGAS_identifierList_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_identifierList ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @identifierList_2D_element struct                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -2177,7 +2584,7 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
   public : GALGAS_identifierList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_identifierList_2D_element (void) ;
+  public : virtual ~ GALGAS_identifierList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_identifierList_2D_element (const GALGAS_object_5F_t & in_item) ;
@@ -2217,23 +2624,23 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_identifierList_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_identifierList_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @stringMap map                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_stringMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_stringMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -2306,9 +2713,9 @@ class GALGAS_stringMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_stringMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_stringMap : public cGenericAbstractEnumerator {
   public : cEnumerator_stringMap (const GALGAS_stringMap & inEnumeratedObject,
@@ -2321,15 +2728,15 @@ class cEnumerator_stringMap : public cGenericAbstractEnumerator {
   public : class GALGAS_stringMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Class for element of '@stringMap' map                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_stringMap : public cMapElement {
 //--- Map attributes
@@ -2353,11 +2760,11 @@ class cMapElement_stringMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @stringMap_2D_element struct                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -2376,7 +2783,7 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_stringMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_stringMap_2D_element (void) ;
+  public : virtual ~ GALGAS_stringMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_stringMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -2420,23 +2827,23 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_stringMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @lstringMap map                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_lstringMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_lstringMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstringMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -2509,9 +2916,9 @@ class GALGAS_lstringMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_lstringMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_lstringMap : public cGenericAbstractEnumerator {
   public : cEnumerator_lstringMap (const GALGAS_lstringMap & inEnumeratedObject,
@@ -2524,15 +2931,15 @@ class cEnumerator_lstringMap : public cGenericAbstractEnumerator {
   public : class GALGAS_lstringMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Class for element of '@lstringMap' map                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_lstringMap : public cMapElement {
 //--- Map attributes
@@ -2556,11 +2963,11 @@ class cMapElement_lstringMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @lstringMap_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -2579,7 +2986,7 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_lstringMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_lstringMap_2D_element (void) ;
+  public : virtual ~ GALGAS_lstringMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_lstringMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -2623,23 +3030,23 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_lstringMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @prefix_map map                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_prefix_5F_map ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_prefix_5F_map_prefix ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_prefix_5F_map : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -2730,9 +3137,9 @@ class GALGAS_prefix_5F_map : public AC_GALGAS_map {
  
 } ; // End of GALGAS_prefix_5F_map class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_prefix_5F_map : public cGenericAbstractEnumerator {
   public : cEnumerator_prefix_5F_map (const GALGAS_prefix_5F_map & inEnumeratedObject,
@@ -2746,15 +3153,15 @@ class cEnumerator_prefix_5F_map : public cGenericAbstractEnumerator {
   public : class GALGAS_prefix_5F_map_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_prefix_5F_map ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Class for element of '@prefix_map' map                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_prefix_5F_map : public cMapElement {
 //--- Map attributes
@@ -2780,11 +3187,11 @@ class cMapElement_prefix_5F_map : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @prefix_5F_map_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -2805,7 +3212,7 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
   public : GALGAS_prefix_5F_map_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_prefix_5F_map_2D_element (void) ;
+  public : virtual ~ GALGAS_prefix_5F_map_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_prefix_5F_map_2D_element (const GALGAS_lstring & in_lkey,
@@ -2853,23 +3260,23 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_prefix_5F_map_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_prefix_5F_map_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @stringset_map map                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_stringset_5F_map ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_stringset_5F_map_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringset_5F_map : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -2947,9 +3354,9 @@ class GALGAS_stringset_5F_map : public AC_GALGAS_map {
  
 } ; // End of GALGAS_stringset_5F_map class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_stringset_5F_map : public cGenericAbstractEnumerator {
   public : cEnumerator_stringset_5F_map (const GALGAS_stringset_5F_map & inEnumeratedObject,
@@ -2962,15 +3369,15 @@ class cEnumerator_stringset_5F_map : public cGenericAbstractEnumerator {
   public : class GALGAS_stringset_5F_map_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringset_5F_map ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Class for element of '@stringset_map' map                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_stringset_5F_map : public cMapElement {
 //--- Map attributes
@@ -2994,11 +3401,11 @@ class cMapElement_stringset_5F_map : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @stringset_5F_map_2D_element struct                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -3017,7 +3424,7 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
   public : GALGAS_stringset_5F_map_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_stringset_5F_map_2D_element (void) ;
+  public : virtual ~ GALGAS_stringset_5F_map_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_stringset_5F_map_2D_element (const GALGAS_lstring & in_lkey,
@@ -3061,15 +3468,15 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_stringset_5F_map_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringset_5F_map_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @ident_list list                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_ident_5F_list : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -3114,6 +3521,10 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_ident_5F_list_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_lstring constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -3170,9 +3581,9 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
  
 } ; // End of GALGAS_ident_5F_list class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_ident_5F_list : public cGenericAbstractEnumerator {
   public : cEnumerator_ident_5F_list (const GALGAS_ident_5F_list & inEnumeratedObject,
@@ -3184,15 +3595,15 @@ class cEnumerator_ident_5F_list : public cGenericAbstractEnumerator {
   public : class GALGAS_ident_5F_list_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_ident_5F_list ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @ident_5F_list_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -3209,7 +3620,7 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
   public : GALGAS_ident_5F_list_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_ident_5F_list_2D_element (void) ;
+  public : virtual ~ GALGAS_ident_5F_list_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_ident_5F_list_2D_element (const GALGAS_lstring & in_obj_5F_name) ;
@@ -3249,23 +3660,23 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_ident_5F_list_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_ident_5F_list_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @ident_list_map map                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_ident_5F_list_5F_map ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_ident_5F_list_5F_map_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_ident_5F_list_5F_map : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -3343,9 +3754,9 @@ class GALGAS_ident_5F_list_5F_map : public AC_GALGAS_map {
  
 } ; // End of GALGAS_ident_5F_list_5F_map class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_ident_5F_list_5F_map : public cGenericAbstractEnumerator {
   public : cEnumerator_ident_5F_list_5F_map (const GALGAS_ident_5F_list_5F_map & inEnumeratedObject,
@@ -3358,15 +3769,15 @@ class cEnumerator_ident_5F_list_5F_map : public cGenericAbstractEnumerator {
   public : class GALGAS_ident_5F_list_5F_map_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_ident_5F_list_5F_map ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Class for element of '@ident_list_map' map                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_ident_5F_list_5F_map : public cMapElement {
 //--- Map attributes
@@ -3390,11 +3801,11 @@ class cMapElement_ident_5F_list_5F_map : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       @ident_5F_list_5F_map_2D_element struct                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -3413,7 +3824,7 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
   public : GALGAS_ident_5F_list_5F_map_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_ident_5F_list_5F_map_2D_element (void) ;
+  public : virtual ~ GALGAS_ident_5F_list_5F_map_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_ident_5F_list_5F_map_2D_element (const GALGAS_lstring & in_lkey,
@@ -3457,15 +3868,15 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_ident_5F_list_5F_map_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_ident_5F_list_5F_map_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @autostart_5F_obj class                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_autostart_5F_obj : public AC_GALGAS_class {
 //--- Constructor
@@ -3505,15 +3916,15 @@ class GALGAS_autostart_5F_obj : public AC_GALGAS_class {
 } ; // End of GALGAS_autostart_5F_obj class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_autostart_5F_obj ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @autostart_obj class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_autostart_5F_obj : public acPtr_class {
 //--- Attributes
@@ -3535,11 +3946,11 @@ class cPtr_autostart_5F_obj : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @autostart_5F_void class                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_autostart_5F_void : public GALGAS_autostart_5F_obj {
 //--- Constructor
@@ -3584,15 +3995,15 @@ class GALGAS_autostart_5F_void : public GALGAS_autostart_5F_obj {
 } ; // End of GALGAS_autostart_5F_void class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_autostart_5F_void ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @autostart_void class                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_autostart_5F_void : public cPtr_autostart_5F_obj {
 //--- Attributes
@@ -3615,11 +4026,11 @@ class cPtr_autostart_5F_void : public cPtr_autostart_5F_obj {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @autostart_5F_false class                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_autostart_5F_false : public GALGAS_autostart_5F_obj {
 //--- Constructor
@@ -3664,15 +4075,15 @@ class GALGAS_autostart_5F_false : public GALGAS_autostart_5F_obj {
 } ; // End of GALGAS_autostart_5F_false class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_autostart_5F_false ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Pointer class for @autostart_false class                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_autostart_5F_false : public cPtr_autostart_5F_obj {
 //--- Attributes
@@ -3695,32 +4106,32 @@ class cPtr_autostart_5F_false : public cPtr_autostart_5F_obj {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension getter '@objectAttributes fieldMap'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_gtlData (*enterExtensionGetter_objectAttributes_fieldMap) (const class cPtr_objectAttributes * inObject,
                                                                                 C_Compiler * inCompiler
                                                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_fieldMap (const int32_t inClassIndex,
                                     enterExtensionGetter_objectAttributes_fieldMap inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlData callExtensionGetter_fieldMap (const cPtr_objectAttributes * inObject,
                                                    class C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          Extension method '@object_t set'                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_object_5F_t_set) (const class cPtr_object_5F_t * inObject,
                                                           const class GALGAS_lstring constinArgument0,
@@ -3728,12 +4139,12 @@ typedef void (*extensionMethodSignature_object_5F_t_set) (const class cPtr_objec
                                                           class C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_set (const int32_t inClassIndex,
                                extensionMethodSignature_object_5F_t_set inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_set (const class cPtr_object_5F_t * inObject,
                               const GALGAS_lstring constin_name,
@@ -3741,54 +4152,54 @@ void callExtensionMethod_set (const class cPtr_object_5F_t * inObject,
                               C_Compiler * inCompiler
                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension getter '@string trimLeft' (as function)                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string extensionGetter_trimLeft (const class GALGAS_string & inObject,
                                               class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension getter '@string trimRight' (as function)                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string extensionGetter_trimRight (const class GALGAS_string & inObject,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension method '@implementation verifyApplication'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_implementation_verifyApplication) (const class cPtr_implementation * inObject,
                                                                            const class GALGAS_applicationDefinition constinArgument0,
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
                                              extensionMethodSignature_implementation_verifyApplication inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_verifyApplication (const class cPtr_implementation * inObject,
                                             const GALGAS_applicationDefinition constin_appDef,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @applicationDefinition class                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_applicationDefinition : public AC_GALGAS_class {
 //--- Constructor
@@ -3862,15 +4273,15 @@ class GALGAS_applicationDefinition : public AC_GALGAS_class {
 } ; // End of GALGAS_applicationDefinition class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_applicationDefinition ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @objectKind class                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectKind : public AC_GALGAS_class {
 //--- Constructor
@@ -3920,23 +4331,23 @@ class GALGAS_objectKind : public AC_GALGAS_class {
 } ; // End of GALGAS_objectKind class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectKind ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @objectsMap map                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_objectsMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_objectsMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectsMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -4014,9 +4425,9 @@ class GALGAS_objectsMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_objectsMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_objectsMap : public cGenericAbstractEnumerator {
   public : cEnumerator_objectsMap (const GALGAS_objectsMap & inEnumeratedObject,
@@ -4029,15 +4440,15 @@ class cEnumerator_objectsMap : public cGenericAbstractEnumerator {
   public : class GALGAS_objectsMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectsMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Class for element of '@objectsMap' map                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_objectsMap : public cMapElement {
 //--- Map attributes
@@ -4061,11 +4472,11 @@ class cMapElement_objectsMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Pointer class for @applicationDefinition class                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_applicationDefinition : public acPtr_class {
 //--- Attributes
@@ -4107,19 +4518,19 @@ class cPtr_applicationDefinition : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @objectKindMap map                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_objectKindMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_objectKindMap_get ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectKindMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -4197,9 +4608,9 @@ class GALGAS_objectKindMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_objectKindMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_objectKindMap : public cGenericAbstractEnumerator {
   public : cEnumerator_objectKindMap (const GALGAS_objectKindMap & inEnumeratedObject,
@@ -4212,15 +4623,15 @@ class cEnumerator_objectKindMap : public cGenericAbstractEnumerator {
   public : class GALGAS_objectKindMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectKindMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Class for element of '@objectKindMap' map                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_objectKindMap : public cMapElement {
 //--- Map attributes
@@ -4244,11 +4655,11 @@ class cMapElement_objectKindMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Pointer class for @objectKind class                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_objectKind : public acPtr_class {
 //--- Attributes
@@ -4274,34 +4685,34 @@ class cPtr_objectKind : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Extension method '@implementationObject verifyApplication'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_implementationObject_verifyApplication) (const class cPtr_implementationObject * inObject,
                                                                                  const class GALGAS_objectKind constinArgument0,
                                                                                  class C_Compiler * inCompiler
                                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
                                              extensionMethodSignature_implementationObject_verifyApplication inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_verifyApplication (const class cPtr_implementationObject * inObject,
                                             const GALGAS_objectKind constin_objectsOfKind,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @objectsMap_2D_element struct                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -4320,7 +4731,7 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_objectsMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_objectsMap_2D_element (void) ;
+  public : virtual ~ GALGAS_objectsMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_objectsMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -4364,15 +4775,15 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_objectsMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectsMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Extension method '@objectAttributes verifyCrossReferences'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_objectAttributes_verifyCrossReferences) (const class cPtr_objectAttributes * inObject,
                                                                                  const class GALGAS_objectsMap constinArgument0,
@@ -4380,12 +4791,12 @@ typedef void (*extensionMethodSignature_objectAttributes_verifyCrossReferences) 
                                                                                  class C_Compiler * inCompiler
                                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
                                                  extensionMethodSignature_objectAttributes_verifyCrossReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_verifyCrossReferences (const class cPtr_objectAttributes * inObject,
                                                 const GALGAS_objectsMap constin_allObjects,
@@ -4393,11 +4804,11 @@ void callExtensionMethod_verifyCrossReferences (const class cPtr_objectAttribute
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@object_t verifyCrossReferences'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_object_5F_t_verifyCrossReferences) (const class cPtr_object_5F_t * inObject,
                                                                             const class GALGAS_objectsMap constinArgument0,
@@ -4405,12 +4816,12 @@ typedef void (*extensionMethodSignature_object_5F_t_verifyCrossReferences) (cons
                                                                             class C_Compiler * inCompiler
                                                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
                                                  extensionMethodSignature_object_5F_t_verifyCrossReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_verifyCrossReferences (const class cPtr_object_5F_t * inObject,
                                                 const GALGAS_objectsMap constin_allObjects,
@@ -4418,11 +4829,11 @@ void callExtensionMethod_verifyCrossReferences (const class cPtr_object_5F_t * i
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @objectKindMap_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -4441,7 +4852,7 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_objectKindMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_objectKindMap_2D_element (void) ;
+  public : virtual ~ GALGAS_objectKindMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_objectKindMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -4485,15 +4896,15 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_objectKindMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectKindMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Parser class 'goil_syntax' declaration                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cParser_goil_5F_syntax {
 //--- Virtual destructor
@@ -4715,11 +5126,11 @@ class cParser_goil_5F_syntax {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                     @auto class                                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_auto : public GALGAS_object_5F_t {
 //--- Constructor
@@ -4765,15 +5176,15 @@ class GALGAS_auto : public GALGAS_object_5F_t {
 } ; // End of GALGAS_auto class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_auto ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            Pointer class for @auto class                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_auto : public cPtr_object_5F_t {
 //--- Attributes
@@ -4797,11 +5208,11 @@ class cPtr_auto : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @boolAttribute class                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_boolAttribute : public GALGAS_object_5F_t {
 //--- Constructor
@@ -4856,15 +5267,15 @@ class GALGAS_boolAttribute : public GALGAS_object_5F_t {
 } ; // End of GALGAS_boolAttribute class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_boolAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @boolAttribute class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_boolAttribute : public cPtr_object_5F_t {
 //--- Attributes
@@ -4895,11 +5306,11 @@ class cPtr_boolAttribute : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @enumAttribute class                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_enumAttribute : public GALGAS_object_5F_t {
 //--- Constructor
@@ -4951,15 +5362,15 @@ class GALGAS_enumAttribute : public GALGAS_object_5F_t {
 } ; // End of GALGAS_enumAttribute class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_enumAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @enumAttribute class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_enumAttribute : public cPtr_object_5F_t {
 //--- Attributes
@@ -4989,11 +5400,11 @@ class cPtr_enumAttribute : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @impAutoDefaultType class                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impAutoDefaultType : public GALGAS_impType {
 //--- Constructor
@@ -5045,15 +5456,15 @@ class GALGAS_impAutoDefaultType : public GALGAS_impType {
 } ; // End of GALGAS_impAutoDefaultType class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impAutoDefaultType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Pointer class for @impAutoDefaultType class                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_impAutoDefaultType : public cPtr_impType {
 //--- Attributes
@@ -5086,11 +5497,11 @@ class cPtr_impAutoDefaultType : public cPtr_impType {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @impBoolType class                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impBoolType : public GALGAS_impAutoDefaultType {
 //--- Constructor
@@ -5144,15 +5555,15 @@ class GALGAS_impBoolType : public GALGAS_impAutoDefaultType {
 } ; // End of GALGAS_impBoolType class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impBoolType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Pointer class for @impBoolType class                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_impBoolType : public cPtr_impAutoDefaultType {
 //--- Attributes
@@ -5187,11 +5598,11 @@ class cPtr_impBoolType : public cPtr_impAutoDefaultType {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @impEnumType class                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impEnumType : public GALGAS_impAutoDefaultType {
 //--- Constructor
@@ -5242,15 +5653,15 @@ class GALGAS_impEnumType : public GALGAS_impAutoDefaultType {
 } ; // End of GALGAS_impEnumType class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impEnumType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Pointer class for @impEnumType class                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_impEnumType : public cPtr_impAutoDefaultType {
 //--- Attributes
@@ -5282,11 +5693,106 @@ class cPtr_impEnumType : public cPtr_impAutoDefaultType {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                                @impRangedType class                                                 *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_impRangedType : public GALGAS_impAutoDefaultType {
+//--- Constructor
+  public : GALGAS_impRangedType (void) ;
+
+//---
+  public : inline const class cPtr_impRangedType * ptr (void) const { return (const cPtr_impRangedType *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_impRangedType (const cPtr_impRangedType * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_impRangedType extractObject (const GALGAS_object & inObject,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_impRangedType constructor_new (const class GALGAS_locationList & inOperand0,
+                                                              const class GALGAS_dataType & inOperand1,
+                                                              const class GALGAS_lstring & inOperand2,
+                                                              const class GALGAS_bool & inOperand3,
+                                                              const class GALGAS_lstringlist & inOperand4,
+                                                              const class GALGAS_bool & inOperand5,
+                                                              const class GALGAS_object_5F_t & inOperand6,
+                                                              const class GALGAS_attributeRange & inOperand7
+                                                              COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_impRangedType & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_attributeRange getter_setOrRange (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_impRangedType class
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impRangedType ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                       Pointer class for @impRangedType class                                        *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class cPtr_impRangedType : public cPtr_impAutoDefaultType {
+//--- Attributes
+  public : GALGAS_attributeRange mProperty_setOrRange ;
+
+//--- Constructor
+  public : cPtr_impRangedType (const GALGAS_locationList & in_locations,
+                               const GALGAS_dataType & in_type,
+                               const GALGAS_lstring & in_name,
+                               const GALGAS_bool & in_multiple,
+                               const GALGAS_lstringlist & in_descs,
+                               const GALGAS_bool & in_withAuto,
+                               const GALGAS_object_5F_t & in_defaultValue,
+                               const GALGAS_attributeRange & in_setOrRange
+                               COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_attributeRange getter_setOrRange (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @impStructType class                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impStructType : public GALGAS_impType {
 //--- Constructor
@@ -5335,15 +5841,15 @@ class GALGAS_impStructType : public GALGAS_impType {
 } ; // End of GALGAS_impStructType class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impStructType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @impStructType class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_impStructType : public cPtr_impType {
 //--- Attributes
@@ -5373,11 +5879,11 @@ class cPtr_impStructType : public cPtr_impType {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   @impVoid class                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_impVoid : public GALGAS_impType {
 //--- Constructor
@@ -5423,15 +5929,15 @@ class GALGAS_impVoid : public GALGAS_impType {
 } ; // End of GALGAS_impVoid class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impVoid ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          Pointer class for @impVoid class                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_impVoid : public cPtr_impType {
 //--- Attributes
@@ -5458,11 +5964,11 @@ class cPtr_impVoid : public cPtr_impType {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @multipleAttribute class                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_multipleAttribute : public GALGAS_object_5F_t {
 //--- Constructor
@@ -5511,15 +6017,15 @@ class GALGAS_multipleAttribute : public GALGAS_object_5F_t {
 } ; // End of GALGAS_multipleAttribute class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_multipleAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Pointer class for @multipleAttribute class                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_multipleAttribute : public cPtr_object_5F_t {
 //--- Attributes
@@ -5546,11 +6052,11 @@ class cPtr_multipleAttribute : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @objectRefAttribute class                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectRefAttribute : public GALGAS_object_5F_t {
 //--- Constructor
@@ -5599,15 +6105,15 @@ class GALGAS_objectRefAttribute : public GALGAS_object_5F_t {
 } ; // End of GALGAS_objectRefAttribute class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectRefAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Pointer class for @objectRefAttribute class                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_objectRefAttribute : public cPtr_object_5F_t {
 //--- Attributes
@@ -5634,11 +6140,11 @@ class cPtr_objectRefAttribute : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @stringAttribute class                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringAttribute : public GALGAS_object_5F_t {
 //--- Constructor
@@ -5687,15 +6193,15 @@ class GALGAS_stringAttribute : public GALGAS_object_5F_t {
 } ; // End of GALGAS_stringAttribute class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_stringAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Pointer class for @stringAttribute class                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_stringAttribute : public cPtr_object_5F_t {
 //--- Attributes
@@ -5722,11 +6228,11 @@ class cPtr_stringAttribute : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @string_5F_class class                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string_5F_class : public GALGAS_object_5F_t {
 //--- Constructor
@@ -5775,15 +6281,15 @@ class GALGAS_string_5F_class : public GALGAS_object_5F_t {
 } ; // End of GALGAS_string_5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_string_5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Pointer class for @string_class class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_string_5F_class : public cPtr_object_5F_t {
 //--- Attributes
@@ -5810,11 +6316,11 @@ class cPtr_string_5F_class : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @structAttribute class                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_structAttribute : public GALGAS_object_5F_t {
 //--- Constructor
@@ -5866,15 +6372,15 @@ class GALGAS_structAttribute : public GALGAS_object_5F_t {
 } ; // End of GALGAS_structAttribute class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_structAttribute ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Pointer class for @structAttribute class                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_structAttribute : public cPtr_object_5F_t {
 //--- Attributes
@@ -5904,22 +6410,22 @@ class cPtr_structAttribute : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           Function 'allTemplateFilePaths'                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_stringlist function_allTemplateFilePaths (const class GALGAS_string & constinArgument0,
                                                        const class GALGAS_string & constinArgument1,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          Function 'checkAndGetFloatNumber'                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_object_5F_t function_checkAndGetFloatNumber (const class GALGAS_lstring & constinArgument0,
                                                           const class GALGAS_dataType & constinArgument1,
@@ -5928,11 +6434,11 @@ class GALGAS_object_5F_t function_checkAndGetFloatNumber (const class GALGAS_lst
                                                           class C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Function 'checkAndGetIntegerNumber'                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_object_5F_t function_checkAndGetIntegerNumber (const class GALGAS_lstring & constinArgument0,
                                                             const class GALGAS_dataType & constinArgument1,
@@ -5941,121 +6447,121 @@ class GALGAS_object_5F_t function_checkAndGetIntegerNumber (const class GALGAS_l
                                                             class C_Compiler * inCompiler
                                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Function 'emptyApplicationDefinition'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_applicationDefinition function_emptyApplicationDefinition (class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               Function 'emptyLString'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstring function_emptyLString (class C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               Function 'emptyObject'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_objectAttributes function_emptyObject (class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               Function 'stringLBool'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string function_stringLBool (const class GALGAS_lbool & constinArgument0,
                                           class C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                Function 'valueList'                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string function_valueList (const class GALGAS_enumValues & constinArgument0,
                                         class C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension getter '@applicationDefinition templateData'                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_gtlData (*enterExtensionGetter_applicationDefinition_templateData) (const class cPtr_applicationDefinition * inObject,
                                                                                          const class GALGAS_implementation constinArgument0,
                                                                                          C_Compiler * inCompiler
                                                                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_templateData (const int32_t inClassIndex,
                                         enterExtensionGetter_applicationDefinition_templateData inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlData callExtensionGetter_templateData (const cPtr_applicationDefinition * inObject,
                                                        const GALGAS_implementation constin_imp,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Extension getter '@impType autoAllowed'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_bool (*enterExtensionGetter_impType_autoAllowed) (const class cPtr_impType * inObject,
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_autoAllowed (const int32_t inClassIndex,
                                        enterExtensionGetter_impType_autoAllowed inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bool callExtensionGetter_autoAllowed (const cPtr_impType * inObject,
                                                    class C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension getter '@impType getDefaultValue'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_object_5F_t (*enterExtensionGetter_impType_getDefaultValue) (const class cPtr_impType * inObject,
                                                                                   C_Compiler * inCompiler
                                                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_getDefaultValue (const int32_t inClassIndex,
                                            enterExtensionGetter_impType_getDefaultValue inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_object_5F_t callExtensionGetter_getDefaultValue (const cPtr_impType * inObject,
                                                               class C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //  GRAMMAR goil_cpu_level_include
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'OIL_version' non terminal
@@ -6255,12 +6761,12 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
   public : virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Parser class 'implementation_parser' declaration                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cParser_implementation_5F_parser {
 //--- Virtual destructor
@@ -6612,9 +7118,9 @@ class cParser_implementation_5F_parser {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //  GRAMMAR goil_file_level_include
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
                                                   public cParser_implementation_5F_parser {
@@ -7068,10 +7574,10 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
   public : virtual int32_t select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //  GRAMMAR goil_object_level_include
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'OIL_version' non terminal
@@ -7267,13 +7773,13 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
   public : virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Bool options                                                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern C_BoolCommandLineOption gOption_goil_5F_options_arxmlDisplayOil ;
 
@@ -7283,17 +7789,17 @@ extern C_BoolCommandLineOption gOption_goil_5F_options_pierreOption ;
 
 extern C_BoolCommandLineOption gOption_goil_5F_options_warnMultiple ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               UInt options                                                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              String options                                                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern C_StringCommandLineOption gOption_goil_5F_options_config ;
 
@@ -7307,61 +7813,61 @@ extern C_StringCommandLineOption gOption_goil_5F_options_target_5F_platform ;
 
 extern C_StringCommandLineOption gOption_goil_5F_options_template_5F_dir ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              String List options                                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               Routine 'file_in_path'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void routine_file_5F_in_5F_path (class GALGAS_lstring & ioArgument0,
                                  class C_Compiler * inCompiler
                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               Routine 'generate_all'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void routine_generate_5F_all (class GALGAS_gtlData inArgument0,
                               class C_Compiler * inCompiler
                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                Routine 'setDefaults'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void routine_setDefaults (const class GALGAS_implementation constinArgument0,
                           class GALGAS_applicationDefinition & ioArgument1,
                           class C_Compiler * inCompiler
                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 Routine 'verifyAll'                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void routine_verifyAll (const class GALGAS_implementation constinArgument0,
                         const class GALGAS_applicationDefinition constinArgument1,
                         class C_Compiler * inCompiler
                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Parser class 'options_parser' declaration                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cParser_options_5F_parser {
 //--- Virtual destructor
@@ -7444,21 +7950,21 @@ class cParser_options_5F_parser {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 Function 'lstring'                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstring function_lstring (class GALGAS_string inArgument0,
                                        class C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension setter '@gtlData setStructField'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_gtlData_setStructField) (class cPtr_gtlData * inObject,
                                                                  const class GALGAS_lstring constinArgument0,
@@ -7466,12 +7972,12 @@ typedef void (*extensionSetterSignature_gtlData_setStructField) (class cPtr_gtlD
                                                                  class C_Compiler * inCompiler
                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_setStructField (const int32_t inClassIndex,
                                           extensionSetterSignature_gtlData_setStructField inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_setStructField (class cPtr_gtlData * inObject,
                                          const GALGAS_lstring constin_name,
@@ -7479,25 +7985,25 @@ void callExtensionSetter_setStructField (class cPtr_gtlData * inObject,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              LEXIQUE arxml_5F_scanner                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_Lexique.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                    E X T E R N    R O U T I N E S                                                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                    E X T E R N    F U N C T I O N S                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                       T O K E N    C L A S S                                                                        *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cTokenFor_arxml_5F_scanner : public cToken {
   public : C_String mLexicalAttribute_tokenString ;
@@ -7505,9 +8011,9 @@ class cTokenFor_arxml_5F_scanner : public cToken {
   public : cTokenFor_arxml_5F_scanner (void) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                     S C A N N E R    C L A S S                                                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_Lexique_arxml_5F_scanner : public C_Lexique {
 //--- Constructors
@@ -7587,19 +8093,19 @@ class C_Lexique_arxml_5F_scanner : public C_Lexique {
   protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlAttributeMap map                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_arxmlAttributeMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_arxmlAttributeMap_searchKey ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlAttributeMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -7672,9 +8178,9 @@ class GALGAS_arxmlAttributeMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_arxmlAttributeMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_arxmlAttributeMap : public cGenericAbstractEnumerator {
   public : cEnumerator_arxmlAttributeMap (const GALGAS_arxmlAttributeMap & inEnumeratedObject,
@@ -7687,15 +8193,15 @@ class cEnumerator_arxmlAttributeMap : public cGenericAbstractEnumerator {
   public : class GALGAS_arxmlAttributeMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlAttributeMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Class for element of '@arxmlAttributeMap' map                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_arxmlAttributeMap : public cMapElement {
 //--- Map attributes
@@ -7719,11 +8225,11 @@ class cMapElement_arxmlAttributeMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @arxmlAttributeMap_2D_element struct                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -7742,7 +8248,7 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlAttributeMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlAttributeMap_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlAttributeMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlAttributeMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -7786,26 +8292,26 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_arxmlAttributeMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlAttributeMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension method '@arxmlAttributeMap print'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_print (const class GALGAS_arxmlAttributeMap inObject,
                             const class GALGAS_uint constin_indentation,
                             class C_Compiler * inCompiler
                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                 @arxmlNodeList list                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlNodeList : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -7850,6 +8356,10 @@ class GALGAS_arxmlNodeList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlNodeList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlNode constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -7906,9 +8416,9 @@ class GALGAS_arxmlNodeList : public AC_GALGAS_list {
  
 } ; // End of GALGAS_arxmlNodeList class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_arxmlNodeList : public cGenericAbstractEnumerator {
   public : cEnumerator_arxmlNodeList (const GALGAS_arxmlNodeList & inEnumeratedObject,
@@ -7920,15 +8430,15 @@ class cEnumerator_arxmlNodeList : public cGenericAbstractEnumerator {
   public : class GALGAS_arxmlNodeList_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlNodeList ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @arxmlNode class                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlNode : public AC_GALGAS_class {
 //--- Constructor
@@ -7966,15 +8476,15 @@ class GALGAS_arxmlNode : public AC_GALGAS_class {
 } ; // End of GALGAS_arxmlNode class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlNode ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Pointer class for @arxmlNode class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_arxmlNode : public acPtr_class {
 //--- Attributes
@@ -7993,11 +8503,11 @@ class cPtr_arxmlNode : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @arxmlNodeList_2D_element struct                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -8011,7 +8521,7 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlNodeList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlNodeList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlNodeList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlNodeList_2D_element (const GALGAS_arxmlNode & in_node) ;
@@ -8051,49 +8561,49 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_arxmlNodeList_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlNodeList_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Extension method '@arxmlNodeList print'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_print (const class GALGAS_arxmlNodeList inObject,
                             const class GALGAS_uint constin_indentation,
                             class C_Compiler * inCompiler
                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Abstract extension method '@arxmlNode print'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_arxmlNode_print) (const class cPtr_arxmlNode * inObject,
                                                           const class GALGAS_uint constinArgument0,
                                                           class C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_print (const int32_t inClassIndex,
                                  extensionMethodSignature_arxmlNode_print inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_print (const class cPtr_arxmlNode * inObject,
                                 const GALGAS_uint constin_indentation,
                                 C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension method '@arxmlNodeList getElementsFromName'                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_getElementsFromName (const class GALGAS_arxmlNodeList inObject,
                                           const class GALGAS_string constin_nodeName,
@@ -8101,11 +8611,11 @@ void extensionMethod_getElementsFromName (const class GALGAS_arxmlNodeList inObj
                                           class C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlElementList list                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementList : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -8150,6 +8660,10 @@ class GALGAS_arxmlElementList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlElementNode constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -8206,9 +8720,9 @@ class GALGAS_arxmlElementList : public AC_GALGAS_list {
  
 } ; // End of GALGAS_arxmlElementList class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_arxmlElementList : public cGenericAbstractEnumerator {
   public : cEnumerator_arxmlElementList (const GALGAS_arxmlElementList & inEnumeratedObject,
@@ -8220,15 +8734,15 @@ class cEnumerator_arxmlElementList : public cGenericAbstractEnumerator {
   public : class GALGAS_arxmlElementList_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementList ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Abstract extension method '@arxmlNode getElementsFromName'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_arxmlNode_getElementsFromName) (const class cPtr_arxmlNode * inObject,
                                                                         const class GALGAS_string constinArgument0,
@@ -8236,12 +8750,12 @@ typedef void (*extensionMethodSignature_arxmlNode_getElementsFromName) (const cl
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getElementsFromName (const int32_t inClassIndex,
                                                extensionMethodSignature_arxmlNode_getElementsFromName inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getElementsFromName (const class cPtr_arxmlNode * inObject,
                                               const GALGAS_string constin_nodeName,
@@ -8249,11 +8763,11 @@ void callExtensionMethod_getElementsFromName (const class cPtr_arxmlNode * inObj
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension method '@arxmlNodeList getSubElementsFromName'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_getSubElementsFromName (const class GALGAS_arxmlNodeList inObject,
                                              const class GALGAS_string constin_nodeName,
@@ -8261,11 +8775,11 @@ void extensionMethod_getSubElementsFromName (const class GALGAS_arxmlNodeList in
                                              class C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                            Abstract extension method '@arxmlNode getSubElementsFromName'                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_arxmlNode_getSubElementsFromName) (const class cPtr_arxmlNode * inObject,
                                                                            const class GALGAS_string constinArgument0,
@@ -8273,12 +8787,12 @@ typedef void (*extensionMethodSignature_arxmlNode_getSubElementsFromName) (const
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getSubElementsFromName (const int32_t inClassIndex,
                                                   extensionMethodSignature_arxmlNode_getSubElementsFromName inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getSubElementsFromName (const class cPtr_arxmlNode * inObject,
                                                  const GALGAS_string constin_nodeName,
@@ -8286,11 +8800,11 @@ void callExtensionMethod_getSubElementsFromName (const class cPtr_arxmlNode * in
                                                  C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension method '@arxmlNodeList getProperty'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_getProperty (const class GALGAS_arxmlNodeList inObject,
                                   const class GALGAS_string constin_nodeName,
@@ -8299,11 +8813,11 @@ void extensionMethod_getProperty (const class GALGAS_arxmlNodeList inObject,
                                   class C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Abstract extension method '@arxmlNode getProperty'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_arxmlNode_getProperty) (const class cPtr_arxmlNode * inObject,
                                                                 const class GALGAS_string constinArgument0,
@@ -8312,12 +8826,12 @@ typedef void (*extensionMethodSignature_arxmlNode_getProperty) (const class cPtr
                                                                 class C_Compiler * inCompiler
                                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_getProperty (const int32_t inClassIndex,
                                        extensionMethodSignature_arxmlNode_getProperty inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_getProperty (const class cPtr_arxmlNode * inObject,
                                       const GALGAS_string constin_nodeName,
@@ -8326,11 +8840,11 @@ void callExtensionMethod_getProperty (const class cPtr_arxmlNode * inObject,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                               @arxmlElementNode class                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementNode : public GALGAS_arxmlNode {
 //--- Constructor
@@ -8383,15 +8897,15 @@ class GALGAS_arxmlElementNode : public GALGAS_arxmlNode {
 } ; // End of GALGAS_arxmlElementNode class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementNode ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Pointer class for @arxmlElementNode class                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_arxmlElementNode : public cPtr_arxmlNode {
 //--- Attributes
@@ -8422,11 +8936,11 @@ class cPtr_arxmlElementNode : public cPtr_arxmlNode {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @arxmlElementList_2D_element struct                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -8443,7 +8957,7 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlElementList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlElementList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlElementList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlElementList_2D_element (const GALGAS_arxmlElementNode & in_node) ;
@@ -8483,15 +8997,15 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_arxmlElementList_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementList_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension method '@arxmlElementList getElementsFromName'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_getElementsFromName (const class GALGAS_arxmlElementList inObject,
                                           const class GALGAS_string constin_nodeName,
@@ -8499,11 +9013,11 @@ void extensionMethod_getElementsFromName (const class GALGAS_arxmlElementList in
                                           class C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Extension method '@arxmlElementList getSubElementsFromName'                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_getSubElementsFromName (const class GALGAS_arxmlElementList inObject,
                                              const class GALGAS_string constin_nodeName,
@@ -8511,11 +9025,11 @@ void extensionMethod_getSubElementsFromName (const class GALGAS_arxmlElementList
                                              class C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension method '@arxmlElementList getProperty'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void extensionMethod_getProperty (const class GALGAS_arxmlElementList inObject,
                                   const class GALGAS_string constin_nodeName,
@@ -8524,11 +9038,11 @@ void extensionMethod_getProperty (const class GALGAS_arxmlElementList inObject,
                                   class C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                @arxmlDocument class                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlDocument : public AC_GALGAS_class {
 //--- Constructor
@@ -8572,15 +9086,15 @@ class GALGAS_arxmlDocument : public AC_GALGAS_class {
 } ; // End of GALGAS_arxmlDocument class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlDocument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Pointer class for @arxmlDocument class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_arxmlDocument : public acPtr_class {
 //--- Attributes
@@ -8602,19 +9116,19 @@ class cPtr_arxmlDocument : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @arxmlElementValueMap map                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_arxmlElementValueMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const char * kSearchErrorMessage_arxmlElementValueMap_searchKey ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementValueMap : public AC_GALGAS_map {
 //--------------------------------- Default constructor
@@ -8692,9 +9206,9 @@ class GALGAS_arxmlElementValueMap : public AC_GALGAS_map {
  
 } ; // End of GALGAS_arxmlElementValueMap class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_arxmlElementValueMap : public cGenericAbstractEnumerator {
   public : cEnumerator_arxmlElementValueMap (const GALGAS_arxmlElementValueMap & inEnumeratedObject,
@@ -8707,15 +9221,15 @@ class cEnumerator_arxmlElementValueMap : public cGenericAbstractEnumerator {
   public : class GALGAS_arxmlElementValueMap_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueMap ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                             @arxmlElementValueList list                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
 //--------------------------------- Default constructor
@@ -8760,6 +9274,10 @@ class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
 
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_append (class GALGAS_arxmlElementValueList_2D_element inArgument0,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_insertAtIndex (class GALGAS_arxmlElementValue constinArgument0,
                                                        class GALGAS_uint constinArgument1,
                                                        C_Compiler * inCompiler
@@ -8816,9 +9334,9 @@ class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
  
 } ; // End of GALGAS_arxmlElementValueList class
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //   Enumerator declaration                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cEnumerator_arxmlElementValueList : public cGenericAbstractEnumerator {
   public : cEnumerator_arxmlElementValueList (const GALGAS_arxmlElementValueList & inEnumeratedObject,
@@ -8830,15 +9348,15 @@ class cEnumerator_arxmlElementValueList : public cGenericAbstractEnumerator {
   public : class GALGAS_arxmlElementValueList_2D_element current (LOCATION_ARGS) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueList ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Class for element of '@arxmlElementValueMap' map                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cMapElement_arxmlElementValueMap : public cMapElement {
 //--- Map attributes
@@ -8862,11 +9380,11 @@ class cMapElement_arxmlElementValueMap : public cMapElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       @arxmlElementValueMap_2D_element struct                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -8885,7 +9403,7 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlElementValueMap_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlElementValueMap_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlElementValueMap_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlElementValueMap_2D_element (const GALGAS_lstring & in_lkey,
@@ -8929,15 +9447,15 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_arxmlElementValueMap_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueMap_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @arxmlElementValue class                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementValue : public AC_GALGAS_class {
 //--- Constructor
@@ -8993,15 +9511,15 @@ class GALGAS_arxmlElementValue : public AC_GALGAS_class {
 } ; // End of GALGAS_arxmlElementValue class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValue ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Pointer class for @arxmlElementValue class                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_arxmlElementValue : public acPtr_class {
 //--- Attributes
@@ -9035,11 +9553,11 @@ class cPtr_arxmlElementValue : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      @arxmlElementValueList_2D_element struct                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Properties
@@ -9056,7 +9574,7 @@ class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
   public : GALGAS_arxmlElementValueList_2D_element (void) ;
 
 //--------------------------------- Virtual destructor (in debug mode)
-  public : VIRTUAL_IN_DEBUG ~ GALGAS_arxmlElementValueList_2D_element (void) ;
+  public : virtual ~ GALGAS_arxmlElementValueList_2D_element (void) ;
 
 //--------------------------------- Native constructor
   public : GALGAS_arxmlElementValueList_2D_element (const GALGAS_arxmlElementValue & in_value) ;
@@ -9096,29 +9614,29 @@ class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
 } ; // End of GALGAS_arxmlElementValueList_2D_element class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueList_2D_element ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         LEXIQUE arxmlmetaparser_5F_scanner                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "galgas2/C_Lexique.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                    E X T E R N    R O U T I N E S                                                                   *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                    E X T E R N    F U N C T I O N S                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                       T O K E N    C L A S S                                                                        *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cTokenFor_arxmlmetaparser_5F_scanner : public cToken {
   public : C_String mLexicalAttribute_tokenString ;
@@ -9126,9 +9644,9 @@ class cTokenFor_arxmlmetaparser_5F_scanner : public cToken {
   public : cTokenFor_arxmlmetaparser_5F_scanner (void) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                     S C A N N E R    C L A S S                                                                      *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_Lexique_arxmlmetaparser_5F_scanner : public C_Lexique {
 //--- Constructors
@@ -9277,4 +9795,3 @@ class C_Lexique_arxmlmetaparser_5F_scanner : public C_Lexique {
   protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
 } ;
 
-#endif

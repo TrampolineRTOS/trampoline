@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'C_SourceTextInString'                                                                                             *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 1996, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,21 +18,20 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-#ifndef GALGAS_SOURCE_TEXT_IN_STRING_CLASS_DEFINED
-#define GALGAS_SOURCE_TEXT_IN_STRING_CLASS_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "strings/C_String.h"
 #include "utilities/C_SharedObject.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                 Classes for handling source text                                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cSourceTextInString : public C_SharedObject {
 //--- Constructor
@@ -55,7 +54,7 @@ class cSourceTextInString : public C_SharedObject {
   private : cSourceTextInString & operator = (const cSourceTextInString &) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class C_SourceTextInString {
 //--- Default constructor
@@ -67,7 +66,7 @@ class C_SourceTextInString {
                                  const bool inShowSourceOnDetailledErrorMessage) ;
 
 //--- Default constructor
-  public : ~ C_SourceTextInString (void) ;
+  public : virtual ~ C_SourceTextInString (void) ;
 
 //--- Handle copy
   public : C_SourceTextInString (const C_SourceTextInString & inSource) ;
@@ -106,6 +105,4 @@ class C_SourceTextInString {
   public : void appendSourceContents (C_String & ioMessage) const ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#endif
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

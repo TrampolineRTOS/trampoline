@@ -114,8 +114,6 @@ getter @gtlContext fullTemplateFileName
   @string hierarchicalPath
   @string rootPath
 
-#  message "###################\n"
-
   #
   # First search in the user template directory
   #
@@ -134,7 +132,7 @@ getter @gtlContext fullTemplateFileName
         !simpleName
        ]
     )
-#    message "Search in " + fullPath + "... \n"    
+#    message "Search in " + fullPath + "... "    
     if [fullPath fileExists] then
 #      message "found\n"
       rootPath = fullPath
@@ -166,7 +164,7 @@ getter @gtlContext fullTemplateFileName
           !simpleName
          ]
       )
-#      message "Search in " + fullPath + "... \n"    
+  #    message "Search in " + fullPath + "... "    
       if [fullPath fileExists] then
   #      message "found\n"
         rootPath = fullPath

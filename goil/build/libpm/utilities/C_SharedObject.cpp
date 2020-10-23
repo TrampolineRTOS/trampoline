@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  C_SharedObject : Base class for GALGAS object handling                                                             *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2009, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,20 +18,20 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "utilities/C_SharedObject.h"
 #include "utilities/MF_MemoryControl.h"
 #include "streams/C_ConsoleOut.h"
 #include "strings/C_String.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Validity Checking (only in Debug Mode)
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static uint32_t gCreationIndex ;
 static uint32_t gObjectCurrentCount ;
@@ -42,7 +42,7 @@ static uint32_t gObjectCurrentCount ;
   static C_SharedObject * gLastObject ;
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_SharedObject::C_SharedObject (LOCATION_ARGS) :
 #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -69,7 +69,7 @@ mRetainCount (1) {
   #endif
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_SharedObject::~ C_SharedObject (void) {
 //--- Remove object from instance list
@@ -91,7 +91,7 @@ C_SharedObject::~ C_SharedObject (void) {
   gObjectCurrentCount -- ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_SharedObject::retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) {
   if (inObject != NULL) {
@@ -100,7 +100,7 @@ void C_SharedObject::retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_SharedObject::release (const C_SharedObject * inObject COMMA_LOCATION_ARGS) {
   if (inObject != NULL) {
@@ -113,7 +113,7 @@ void C_SharedObject::release (const C_SharedObject * inObject COMMA_LOCATION_ARG
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_SharedObject::retainRelease (const C_SharedObject * inObjectToRetain,
                                     const C_SharedObject * inObjectToRelease
@@ -122,13 +122,13 @@ void C_SharedObject::retainRelease (const C_SharedObject * inObjectToRetain,
   release (inObjectToRelease COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Collect unused Objects
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void C_SharedObject::checkAllObjectsHaveBeenReleased (void) {
@@ -153,4 +153,4 @@ void C_SharedObject::retainRelease (const C_SharedObject * inObjectToRetain,
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

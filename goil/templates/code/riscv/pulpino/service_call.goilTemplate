@@ -1,0 +1,9 @@
+% 
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+  .global % !api_func::FUNC_NAME %
+% !api_func::FUNC_NAME %:
+  li a7,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME%  /* load the service id in a7 */
+  ecall                          /* system call               */
+  ret                            /* returns                   */
+  

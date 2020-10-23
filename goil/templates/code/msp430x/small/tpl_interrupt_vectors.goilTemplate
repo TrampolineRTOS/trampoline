@@ -1,0 +1,160 @@
+/* Interrupt table vector */
+#include "tpl_compiler.h"
+#include "tpl_os.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_machine.h"
+%
+if exists OS::BUILD_S::LIBRARY then
+  let libMap := [OS::BUILD_S::LIBRARY mapBy: "VALUE"]
+  if exists libMap["serial"] then
+    let any_buffer := exists libMap["serial"]::VALUE_S::TXBUFFER default(16)+
+                      exists libMap["serial"]::VALUE_S::RXBUFFER default(32)
+    if any_buffer > 0 then
+      let ISR += @{
+        SOURCE : "USCI_A0_VECTOR",
+        CATEGORY : 1,
+        PRIORITY : 1
+      }
+    end if
+  end if
+end if
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+# On MSP430 only one Counter or ISR may be connected to an interrupt vector
+#
+let objForIRQ := @[ ]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let isr::KIND := "ISR"
+    let objForIRQ[key] := isr
+#  else
+#    error isr::SOURCE : "Interrupt source already used"
+  end if
+end foreach
+
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let cnt::KIND := "COUNTER"
+    let objForIRQ[key] := cnt
+#  else
+#    error cnt::SOURCE : "Interrupt source already used"
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+%
+/* External handlers */
+%
+
+foreach int in INTERRUPT do
+  if exists int::LINKED then %
+extern FUNC(void, OS_CODE) % !int::LINKED % (P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+  end if
+end foreach
+
+foreach int in INTERRUPT do
+  # Reach the declared interrupt in INTERRUPT 
+  if exists objForIRQ[int::NAME] then
+    let obj := objForIRQ[int::NAME]
+    let handlerIsEmpty := false
+    # We have found an interrupts to call
+    # Check if it is linked, aka reserved to the OS
+    if exists int::LINKED then
+      error int::NAME : "Reserved interrupt"
+    else
+      # check whether we have an ISR or a COUNTER
+      if obj::KIND == "ISR" then
+        if obj::CATEGORY == 1 then %
+extern FUNC(void, OS_CODE) tpl_direct_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+        elsif obj::CATEGORY == 2 then %
+extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+        else %
+#error unknown CATEGORY % !obj::CATEGORY
+        end if
+      else # this is a counter
+        %
+extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+      end if
+    end if
+  end if
+end foreach
+%
+
+/* Interrupt table vector */
+%
+# Check there is no duplicate address in INTERRUPT list
+let maxNameWidth := 0
+let uniqueAddress := @! !
+foreach int in INTERRUPT do
+  if [int::NAME length] > maxNameWidth then
+    let maxNameWidth := [int::NAME length]
+  end if
+  if [uniqueAddress contains: int::ADDRESS] then
+    error int::ADDRESS : "ADDRESS already used"
+  else
+    let uniqueAddress += int::ADDRESS
+  end if
+end foreach
+unlet uniqueAddress
+let maxNameWidth += 14
+
+# Compute start address, end address and size of the vectors
+let start_address := 0xFFFE
+let end_address := 0x0000
+foreach vect in INTERRUPT do
+  if vect::ADDRESS < start_address then 
+    let start_address := vect::ADDRESS 
+  end if
+  if vect::ADDRESS > end_address then 
+    let end_address := vect::ADDRESS 
+  end if
+end foreach
+
+loop entry
+  from start_address
+  to end_address
+  step 2
+  before
+%
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !(end_address - start_address + 2) / 2 %] = {
+%
+  do
+    foreach int in INTERRUPT do
+      if int::ADDRESS == entry then
+        if exists int::LINKED then %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)% ! int::LINKED
+        elsif exists objForIRQ[int::NAME] then
+          let obj := objForIRQ[int::NAME]
+          if obj::KIND == "ISR" then
+            if obj::CATEGORY == 1 then %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_direct_irq_handler_% ! int::NAME
+            elsif obj::CATEGORY == 2 then %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_primary_irq_handler_% ! int::NAME           
+            end if
+          else %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_primary_irq_handler_% ! int::NAME
+          end if
+        else %
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth  % */ (tpl_it_handler)tpl_null_it%
+        end if
+      end if
+    end foreach
+  between %,%
+  after %
+};
+%
+end loop
+
+%
+/* End of file % !FILENAME % */
+%
+# vim:ft=goil_templates

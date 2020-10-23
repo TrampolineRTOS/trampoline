@@ -1,65 +1,112 @@
-#ifndef all_2D_declarations_2D__34__ENTITIES_DEFINED
-#define all_2D_declarations_2D__34__ENTITIES_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-predefined-types.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-declarations-3.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                     Extension getter '@gtlData hasItemAtIndex'                                      *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typedef class GALGAS_bool (*enterExtensionGetter_gtlData_hasItemAtIndex) (const class cPtr_gtlData * inObject,
+                                                                          const class GALGAS_gtlInt constinArgument0,
+                                                                          C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void enterExtensionGetter_hasItemAtIndex (const int32_t inClassIndex,
+                                          enterExtensionGetter_gtlData_hasItemAtIndex inGetter) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+class GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
+                                                      const GALGAS_gtlInt constin_index,
+                                                      class C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//                                                                                                                     *
+//                                     Extension setter '@gtlData setItemAtIndex'                                      *
+//                                                                                                                     *
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+typedef void (*extensionSetterSignature_gtlData_setItemAtIndex) (class cPtr_gtlData * inObject,
+                                                                 const class GALGAS_gtlData constinArgument0,
+                                                                 const class GALGAS_gtlInt constinArgument1,
+                                                                 class C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
+                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
+                                         const GALGAS_gtlData constin_data,
+                                         const GALGAS_gtlInt constin_index,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension setter '@gtlData deleteItemAtIndex'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_gtlData_deleteItemAtIndex) (class cPtr_gtlData * inObject,
                                                                     const class GALGAS_gtlInt constinArgument0,
                                                                     class C_Compiler * inCompiler
                                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteItemAtIndex (const int32_t inClassIndex,
                                              extensionSetterSignature_gtlData_deleteItemAtIndex inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteItemAtIndex (class cPtr_gtlData * inObject,
                                             const GALGAS_gtlInt constin_index,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Extension setter '@gtlData appendItem'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_gtlData_appendItem) (class cPtr_gtlData * inObject,
                                                              const class GALGAS_gtlData constinArgument0,
                                                              class C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_appendItem (const int32_t inClassIndex,
                                       extensionSetterSignature_gtlData_appendItem inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_appendItem (class cPtr_gtlData * inObject,
                                      const GALGAS_gtlData constin_item,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension method '@gtlExecutableEntity checkArguments'                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_gtlExecutableEntity_checkArguments) (const class cPtr_gtlExecutableEntity * inObject,
                                                                              const class GALGAS_location constinArgument0,
@@ -69,12 +116,12 @@ typedef void (*extensionMethodSignature_gtlExecutableEntity_checkArguments) (con
                                                                              class C_Compiler * inCompiler
                                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_checkArguments (const int32_t inClassIndex,
                                           extensionMethodSignature_gtlExecutableEntity_checkArguments inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_checkArguments (const class cPtr_gtlExecutableEntity * inObject,
                                          const GALGAS_location constin_fromLocation,
@@ -84,11 +131,11 @@ void callExtensionMethod_checkArguments (const class cPtr_gtlExecutableEntity * 
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Pointer class for @gtlProcedure class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlProcedure : public cPtr_gtlExecutableEntity {
 //--- Attributes
@@ -114,11 +161,11 @@ class cPtr_gtlProcedure : public cPtr_gtlExecutableEntity {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Extension method '@gtlProcedure call'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_gtlProcedure_call) (const class cPtr_gtlProcedure * inObject,
                                                             class GALGAS_gtlContext & ioArgument0,
@@ -129,12 +176,12 @@ typedef void (*extensionMethodSignature_gtlProcedure_call) (const class cPtr_gtl
                                                             class C_Compiler * inCompiler
                                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_call (const int32_t inClassIndex,
                                 extensionMethodSignature_gtlProcedure_call inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_call (const class cPtr_gtlProcedure * inObject,
                                GALGAS_gtlContext & io_context,
@@ -145,11 +192,11 @@ void callExtensionMethod_call (const class cPtr_gtlProcedure * inObject,
                                C_Compiler * inCompiler
                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        Extension getter '@gtlFunction call'                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_gtlData (*enterExtensionGetter_gtlFunction_call) (const class cPtr_gtlFunction * inObject,
                                                                        const class GALGAS_location constinArgument0,
@@ -159,12 +206,12 @@ typedef class GALGAS_gtlData (*enterExtensionGetter_gtlFunction_call) (const cla
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_call (const int32_t inClassIndex,
                                 enterExtensionGetter_gtlFunction_call inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlData callExtensionGetter_call (const cPtr_gtlFunction * inObject,
                                                const GALGAS_location constin_fromLocation,
@@ -174,11 +221,11 @@ class GALGAS_gtlData callExtensionGetter_call (const cPtr_gtlFunction * inObject
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Extension getter '@gtlGetter callGetter'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_gtlData (*enterExtensionGetter_gtlGetter_callGetter) (const class cPtr_gtlGetter * inObject,
                                                                            const class GALGAS_location constinArgument0,
@@ -189,12 +236,12 @@ typedef class GALGAS_gtlData (*enterExtensionGetter_gtlGetter_callGetter) (const
                                                                            C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_callGetter (const int32_t inClassIndex,
                                       enterExtensionGetter_gtlGetter_callGetter inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlData callExtensionGetter_callGetter (const cPtr_gtlGetter * inObject,
                                                      const GALGAS_location constin_fromLocation,
@@ -205,32 +252,32 @@ class GALGAS_gtlData callExtensionGetter_callGetter (const cPtr_gtlGetter * inOb
                                                      class C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Extension getter '@gtlGetter typedName'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_lstring (*enterExtensionGetter_gtlGetter_typedName) (const class cPtr_gtlGetter * inObject,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_typedName (const int32_t inClassIndex,
                                      enterExtensionGetter_gtlGetter_typedName inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstring callExtensionGetter_typedName (const cPtr_gtlGetter * inObject,
                                                     class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                      Extension method '@gtlSetter callSetter'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_gtlSetter_callSetter) (const class cPtr_gtlSetter * inObject,
                                                                const class GALGAS_location constinArgument0,
@@ -241,12 +288,12 @@ typedef void (*extensionMethodSignature_gtlSetter_callSetter) (const class cPtr_
                                                                class C_Compiler * inCompiler
                                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_callSetter (const int32_t inClassIndex,
                                       extensionMethodSignature_gtlSetter_callSetter inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_callSetter (const class cPtr_gtlSetter * inObject,
                                      const GALGAS_location constin_fromLocation,
@@ -257,32 +304,32 @@ void callExtensionMethod_callSetter (const class cPtr_gtlSetter * inObject,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                       Extension getter '@gtlSetter typedName'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_lstring (*enterExtensionGetter_gtlSetter_typedName) (const class cPtr_gtlSetter * inObject,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_typedName (const int32_t inClassIndex,
                                      enterExtensionGetter_gtlSetter_typedName inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_lstring callExtensionGetter_typedName (const cPtr_gtlSetter * inObject,
                                                     class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                  @gtlModule class                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlModule : public AC_GALGAS_class {
 //--- Constructor
@@ -335,15 +382,15 @@ class GALGAS_gtlModule : public AC_GALGAS_class {
 } ; // End of GALGAS_gtlModule class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlModule ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         Pointer class for @gtlModule class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlModule : public acPtr_class {
 //--- Attributes
@@ -374,11 +421,11 @@ class cPtr_gtlModule : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                              @gtlEmitInstruction class                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlEmitInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -424,15 +471,15 @@ class GALGAS_gtlEmitInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlEmitInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlEmitInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Pointer class for @gtlEmitInstruction class                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlEmitInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -459,11 +506,11 @@ class cPtr_gtlEmitInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlWriteToInstruction class                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlWriteToInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -515,15 +562,15 @@ class GALGAS_gtlWriteToInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlWriteToInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlWriteToInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Pointer class for @gtlWriteToInstruction class                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlWriteToInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -556,11 +603,11 @@ class cPtr_gtlWriteToInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                            @gtlTemplateInstruction class                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlTemplateInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -621,15 +668,15 @@ class GALGAS_gtlTemplateInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlTemplateInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTemplateInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Pointer class for @gtlTemplateInstruction class                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlTemplateInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -671,11 +718,11 @@ class cPtr_gtlTemplateInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @gtlForeachStatementInstruction class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlForeachStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -742,15 +789,15 @@ class GALGAS_gtlForeachStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlForeachStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlForeachStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Pointer class for @gtlForeachStatementInstruction class                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlForeachStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -798,11 +845,11 @@ class cPtr_gtlForeachStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                           Extension method '@gtlForeachStatementInstruction iterateOnMap'                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnMap) (const class cPtr_gtlForeachStatementInstruction * inObject,
                                                                                       class GALGAS_gtlContext & ioArgument0,
@@ -813,12 +860,12 @@ typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOn
                                                                                       class C_Compiler * inCompiler
                                                                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_iterateOnMap (const int32_t inClassIndex,
                                         extensionMethodSignature_gtlForeachStatementInstruction_iterateOnMap inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_iterateOnMap (const class cPtr_gtlForeachStatementInstruction * inObject,
                                        GALGAS_gtlContext & io_context,
@@ -829,11 +876,11 @@ void callExtensionMethod_iterateOnMap (const class cPtr_gtlForeachStatementInstr
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                          Extension method '@gtlForeachStatementInstruction iterateOnList'                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnList) (const class cPtr_gtlForeachStatementInstruction * inObject,
                                                                                        class GALGAS_gtlContext & ioArgument0,
@@ -844,12 +891,12 @@ typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOn
                                                                                        class C_Compiler * inCompiler
                                                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_iterateOnList (const int32_t inClassIndex,
                                          extensionMethodSignature_gtlForeachStatementInstruction_iterateOnList inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_iterateOnList (const class cPtr_gtlForeachStatementInstruction * inObject,
                                         GALGAS_gtlContext & io_context,
@@ -860,11 +907,11 @@ void callExtensionMethod_iterateOnList (const class cPtr_gtlForeachStatementInst
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                           Extension method '@gtlForeachStatementInstruction iterateOnSet'                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnSet) (const class cPtr_gtlForeachStatementInstruction * inObject,
                                                                                       class GALGAS_gtlContext & ioArgument0,
@@ -875,12 +922,12 @@ typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOn
                                                                                       class C_Compiler * inCompiler
                                                                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_iterateOnSet (const int32_t inClassIndex,
                                         extensionMethodSignature_gtlForeachStatementInstruction_iterateOnSet inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_iterateOnSet (const class cPtr_gtlForeachStatementInstruction * inObject,
                                        GALGAS_gtlContext & io_context,
@@ -891,11 +938,11 @@ void callExtensionMethod_iterateOnSet (const class cPtr_gtlForeachStatementInstr
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @gtlForStatementInstruction class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlForStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -953,15 +1000,15 @@ class GALGAS_gtlForStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlForStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlForStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Pointer class for @gtlForStatementInstruction class                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlForStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -997,11 +1044,11 @@ class cPtr_gtlForStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @gtlLoopStatementInstruction class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlLoopStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -1071,15 +1118,15 @@ class GALGAS_gtlLoopStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlLoopStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLoopStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Pointer class for @gtlLoopStatementInstruction class                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlLoopStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -1130,11 +1177,11 @@ class cPtr_gtlLoopStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @gtlRepeatStatementInstruction class                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlRepeatStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -1189,15 +1236,15 @@ class GALGAS_gtlRepeatStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlRepeatStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlRepeatStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Pointer class for @gtlRepeatStatementInstruction class                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlRepeatStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -1233,11 +1280,11 @@ class cPtr_gtlRepeatStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @gtlErrorStatementInstruction class                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlErrorStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -1289,15 +1336,15 @@ class GALGAS_gtlErrorStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlErrorStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlErrorStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Pointer class for @gtlErrorStatementInstruction class                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlErrorStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -1330,11 +1377,11 @@ class cPtr_gtlErrorStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                        @gtlWarningStatementInstruction class                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlWarningStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -1386,15 +1433,15 @@ class GALGAS_gtlWarningStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlWarningStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlWarningStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Pointer class for @gtlWarningStatementInstruction class                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlWarningStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -1427,11 +1474,11 @@ class cPtr_gtlWarningStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                         @gtlSortStatementInstruction class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlSortStatementInstruction : public GALGAS_gtlAbstractSortInstruction {
 //--- Constructor
@@ -1481,15 +1528,15 @@ class GALGAS_gtlSortStatementInstruction : public GALGAS_gtlAbstractSortInstruct
 } ; // End of GALGAS_gtlSortStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSortStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Pointer class for @gtlSortStatementInstruction class                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlSortStatementInstruction : public cPtr_gtlAbstractSortInstruction {
 //--- Attributes
@@ -1517,11 +1564,11 @@ class cPtr_gtlSortStatementInstruction : public cPtr_gtlAbstractSortInstruction 
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                          @gtlTabStatementInstruction class                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlTabStatementInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -1567,15 +1614,15 @@ class GALGAS_gtlTabStatementInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlTabStatementInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTabStatementInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Pointer class for @gtlTabStatementInstruction class                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlTabStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -1602,11 +1649,11 @@ class cPtr_gtlTabStatementInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                           @gtlSetterCallInstruction class                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_gtlSetterCallInstruction : public GALGAS_gtlInstruction {
 //--- Constructor
@@ -1661,15 +1708,15 @@ class GALGAS_gtlSetterCallInstruction : public GALGAS_gtlInstruction {
 } ; // End of GALGAS_gtlSetterCallInstruction class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSetterCallInstruction ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Pointer class for @gtlSetterCallInstruction class                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class cPtr_gtlSetterCallInstruction : public cPtr_gtlInstruction {
 //--- Attributes
@@ -1702,99 +1749,99 @@ class cPtr_gtlSetterCallInstruction : public cPtr_gtlInstruction {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                            Extension setter '@debuggerContext appendInstructionToStepDo'                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_appendInstructionToStepDo) (class cPtr_debuggerContext * inObject,
                                                                                     class GALGAS_gtlInstruction inArgument0,
                                                                                     class C_Compiler * inCompiler
                                                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_appendInstructionToStepDo (const int32_t inClassIndex,
                                                      extensionSetterSignature_debuggerContext_appendInstructionToStepDo inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_appendInstructionToStepDo (class cPtr_debuggerContext * inObject,
                                                     GALGAS_gtlInstruction in_instruction,
                                                     C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Extension setter '@debuggerContext deleteStepDoInstruction'                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_deleteStepDoInstruction) (class cPtr_debuggerContext * inObject,
                                                                                   const class GALGAS_lbigint constinArgument0,
                                                                                   class C_Compiler * inCompiler
                                                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteStepDoInstruction (const int32_t inClassIndex,
                                                    extensionSetterSignature_debuggerContext_deleteStepDoInstruction inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteStepDoInstruction (class cPtr_debuggerContext * inObject,
                                                   const GALGAS_lbigint constin_numToDelete,
                                                   C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                           Extension setter '@debuggerContext deleteAllStepDoInstructions'                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_deleteAllStepDoInstructions) (class cPtr_debuggerContext * inObject,
                                                                                       class C_Compiler * inCompiler
                                                                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteAllStepDoInstructions (const int32_t inClassIndex,
                                                        extensionSetterSignature_debuggerContext_deleteAllStepDoInstructions inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteAllStepDoInstructions (class cPtr_debuggerContext * inObject,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                             Extension method '@debuggerContext listStepDoInstructions'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_debuggerContext_listStepDoInstructions) (const class cPtr_debuggerContext * inObject,
                                                                                  class C_Compiler * inCompiler
                                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_listStepDoInstructions (const int32_t inClassIndex,
                                                   extensionMethodSignature_debuggerContext_listStepDoInstructions inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_listStepDoInstructions (const class cPtr_debuggerContext * inObject,
                                                  C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension setter '@debuggerContext setBreakpoint'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_setBreakpoint) (class cPtr_debuggerContext * inObject,
                                                                         const class GALGAS_string constinArgument0,
@@ -1802,12 +1849,12 @@ typedef void (*extensionSetterSignature_debuggerContext_setBreakpoint) (class cP
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_setBreakpoint (const int32_t inClassIndex,
                                          extensionSetterSignature_debuggerContext_setBreakpoint inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_setBreakpoint (class cPtr_debuggerContext * inObject,
                                         const GALGAS_string constin_fileName,
@@ -1815,187 +1862,187 @@ void callExtensionSetter_setBreakpoint (class cPtr_debuggerContext * inObject,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@debuggerContext listBreakpoints'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_debuggerContext_listBreakpoints) (const class cPtr_debuggerContext * inObject,
                                                                           class C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_listBreakpoints (const int32_t inClassIndex,
                                            extensionMethodSignature_debuggerContext_listBreakpoints inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_listBreakpoints (const class cPtr_debuggerContext * inObject,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension setter '@debuggerContext deleteBreakpoint'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_deleteBreakpoint) (class cPtr_debuggerContext * inObject,
                                                                            const class GALGAS_lbigint constinArgument0,
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteBreakpoint (const int32_t inClassIndex,
                                             extensionSetterSignature_debuggerContext_deleteBreakpoint inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteBreakpoint (class cPtr_debuggerContext * inObject,
                                            const GALGAS_lbigint constin_numToDelete,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension setter '@debuggerContext deleteAllBreakpoints'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_deleteAllBreakpoints) (class cPtr_debuggerContext * inObject,
                                                                                class C_Compiler * inCompiler
                                                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteAllBreakpoints (const int32_t inClassIndex,
                                                 extensionSetterSignature_debuggerContext_deleteAllBreakpoints inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteAllBreakpoints (class cPtr_debuggerContext * inObject,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                  Extension setter '@debuggerContext setWatchpoint'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_setWatchpoint) (class cPtr_debuggerContext * inObject,
                                                                         const class GALGAS_gtlExpression constinArgument0,
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_setWatchpoint (const int32_t inClassIndex,
                                          extensionSetterSignature_debuggerContext_setWatchpoint inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_setWatchpoint (class cPtr_debuggerContext * inObject,
                                         const GALGAS_gtlExpression constin_watchExpression,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                 Extension method '@debuggerContext listWatchpoints'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_debuggerContext_listWatchpoints) (const class cPtr_debuggerContext * inObject,
                                                                           class C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_listWatchpoints (const int32_t inClassIndex,
                                            extensionMethodSignature_debuggerContext_listWatchpoints inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_listWatchpoints (const class cPtr_debuggerContext * inObject,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                Extension setter '@debuggerContext deleteWatchpoint'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_deleteWatchpoint) (class cPtr_debuggerContext * inObject,
                                                                            const class GALGAS_lbigint constinArgument0,
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteWatchpoint (const int32_t inClassIndex,
                                             extensionSetterSignature_debuggerContext_deleteWatchpoint inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteWatchpoint (class cPtr_debuggerContext * inObject,
                                            const GALGAS_lbigint constin_numToDelete,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Extension setter '@debuggerContext deleteAllWatchpoints'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_deleteAllWatchpoints) (class cPtr_debuggerContext * inObject,
                                                                                class C_Compiler * inCompiler
                                                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_deleteAllWatchpoints (const int32_t inClassIndex,
                                                 extensionSetterSignature_debuggerContext_deleteAllWatchpoints inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_deleteAllWatchpoints (class cPtr_debuggerContext * inObject,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension getter '@debuggerContext breakOn'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_bool (*enterExtensionGetter_debuggerContext_breakOn) (const class cPtr_debuggerContext * inObject,
                                                                            const class GALGAS_gtlInstruction constinArgument0,
                                                                            C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_breakOn (const int32_t inClassIndex,
                                    enterExtensionGetter_debuggerContext_breakOn inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bool callExtensionGetter_breakOn (const cPtr_debuggerContext * inObject,
                                                const GALGAS_gtlInstruction constin_instruction,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                     Extension getter '@debuggerContext watchOn'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_bool (*enterExtensionGetter_debuggerContext_watchOn) (const class cPtr_debuggerContext * inObject,
                                                                            const class GALGAS_gtlContext constinArgument0,
@@ -2004,12 +2051,12 @@ typedef class GALGAS_bool (*enterExtensionGetter_debuggerContext_watchOn) (const
                                                                            C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_watchOn (const int32_t inClassIndex,
                                    enterExtensionGetter_debuggerContext_watchOn inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_bool callExtensionGetter_watchOn (const cPtr_debuggerContext * inObject,
                                                const GALGAS_gtlContext constin_context,
@@ -2018,133 +2065,132 @@ class GALGAS_bool callExtensionGetter_watchOn (const cPtr_debuggerContext * inOb
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                    Extension method '@debuggerContext hereWeAre'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionMethodSignature_debuggerContext_hereWeAre) (const class cPtr_debuggerContext * inObject,
                                                                     const class GALGAS_uint constinArgument0,
                                                                     class C_Compiler * inCompiler
                                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionMethod_hereWeAre (const int32_t inClassIndex,
                                      extensionMethodSignature_debuggerContext_hereWeAre inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionMethod_hereWeAre (const class cPtr_debuggerContext * inObject,
                                     const GALGAS_uint constin_window,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   Function 'bold'                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string function_bold (class C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                                   Function 'red'                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string function_red (class C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension setter '@debuggerContext pushInstructionList'                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_pushInstructionList) (class cPtr_debuggerContext * inObject,
                                                                               const class GALGAS_gtlInstructionList constinArgument0,
                                                                               class C_Compiler * inCompiler
                                                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_pushInstructionList (const int32_t inClassIndex,
                                                extensionSetterSignature_debuggerContext_pushInstructionList inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_pushInstructionList (class cPtr_debuggerContext * inObject,
                                               const GALGAS_gtlInstructionList constin_instructions,
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                               Extension setter '@debuggerContext popInstructionList'                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_popInstructionList) (class cPtr_debuggerContext * inObject,
                                                                              class C_Compiler * inCompiler
                                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_popInstructionList (const int32_t inClassIndex,
                                               extensionSetterSignature_debuggerContext_popInstructionList inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_popInstructionList (class cPtr_debuggerContext * inObject,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                                   Extension setter '@debuggerContext getCommand'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef void (*extensionSetterSignature_debuggerContext_getCommand) (class cPtr_debuggerContext * inObject,
                                                                      class GALGAS_string & outArgument0,
                                                                      class C_Compiler * inCompiler
                                                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionSetter_getCommand (const int32_t inClassIndex,
                                       extensionSetterSignature_debuggerContext_getCommand inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void callExtensionSetter_getCommand (class cPtr_debuggerContext * inObject,
                                      GALGAS_string & out_command,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                              Abstract extension getter '@gtlData stringRepresentation'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typedef class GALGAS_string (*enterExtensionGetter_gtlData_stringRepresentation) (const class cPtr_gtlData * inObject,
                                                                                   class C_Compiler * inCompiler
                                                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
                                                 enterExtensionGetter_gtlData_stringRepresentation inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlData * inObject,
                                                               C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) ;
 
-#endif

@@ -25,7 +25,7 @@ CONST(tpl_alarm_static, OS_CONST) % !alarm::NAME %_static = {
   {
     /* pointer to counter           */  &% !alarm::COUNTER %_counter_desc,
     /* pointer to the expiration    */  tpl_raise_alarm
-#if (WITH_TRACE == YES)
+#if (WITH_ID == YES)
     /* id of the alarm for tracing  */  , % !alarm::NAME %_id
 #endif
 #if WITH_OSAPPLICATION == YES

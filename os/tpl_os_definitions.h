@@ -15,12 +15,6 @@
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
  *
- * @section infos File informations
- *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #ifndef TPL_OS_DEFINITIONS_H

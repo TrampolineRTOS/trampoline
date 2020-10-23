@@ -14,18 +14,13 @@
  * Trampoline is copyright (c) IRCCyN 2005-2007
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence v2
  *
- * @section infos File informations
- *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #include "tpl_machine.h"
 #include "tpl_cortex_definitions.h"
+#include "pinAccess.h"
 
 %
 #
@@ -39,7 +34,7 @@
  * External Interrupts initialization for the STM32F407 Microcontroller
  *
  * Interrupt vectors are EXTI0_IRQ, EXTI1_IRQ, EXTI2_IRQ, EXTI3_IRQ, EXTI4_IRQ
- * EXTI9_9_IRQ and EXTI15_10_IRQ
+ * EXTI5_9_IRQ and EXTI15_10_IRQ
  *
  * Inits are done according to the source(s) pin(s) selected for an interrupt
  * vector corresponding to an or a set of interrupt(s) line(s)
@@ -118,7 +113,7 @@ foreach src in USED_EXTI do
     if typeof pin == @string then
       let portPin::TRIGGER := exists src[KEY+"_S"]::TRIGGER default ("RISING")
       let portPin::PULL := exists src[KEY+"_S"]::PULL default ("NONE")
-      let portPin::NUMBER := [pin rightSubString: 1]
+      let portPin::NUMBER := [pin subString: 2, 2]
       let portPin::GPIO := [pin subString: 1, 1]
       let usedPortPin[pin] := portPin
       let gpio := [pin subString: 1, 1]
@@ -130,81 +125,70 @@ foreach src in USED_EXTI do
   end foreach
 end foreach
 
-if [usedPortPin length] > 0 then%
-  GPIO_InitTypeDef GPIO_InitDef;
-  EXTI_InitTypeDef EXTI_InitDef;
-  NVIC_InitTypeDef NVIC_InitDef;
 %
-end if
-
-# activate clock for each port GPIO used
-foreach gpio in usedGPIO
-before
+// ---
 %
-  /*
-   * Program the clocks for the input used in the interrupt sources
-   */%
+foreach pin in usedPortPin
+before%
+    /* Program the pins of the GPIO */
+%
 do
+%    pinMode(GPIO%!pin::GPIO%,%!pin::NUMBER%,%
+    if    pin::PULL == "NONE" then %INPUT%
+    elsif pin::PULL == "UP"   then %INPUT_PULLUP%
+    elsif pin::PULL == "DOWN" then %INPUT_PULLDOWN%
+    else error here: "error: invalid pin pull up/down mode!"
+    end if
+    %);
 %
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIO% !KEY %, ENABLE);%
 end foreach
+%
+    /* Set the clock for SYSCFG */
+    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+    RCC->APB2ENR; /* force read access */
 
-# Program each input pin
-
+    /* Set Interrupt Mask Register */
+%
+let pinSet := @! ! #set of pin numbers
 foreach pin in usedPortPin
-before%
-
-  /*
-   * Program the pins of the GPIO
-   */%
-do
-%
-  GPIO_InitDef.GPIO_Pin = GPIO_Pin_% !pin::NUMBER %;
-  GPIO_InitDef.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitDef.GPIO_PuPd = GPIO_PuPd_%
-  if pin::PULL == "NONE" then !"NOPULL"
-  else !pin::PULL
-  end if%;
-  GPIO_InitDef.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_Init(GPIO% !pin::GPIO %, &GPIO_InitDef);%
-between%
-%
+  do let pinSet += pin::NUMBER
 end foreach
-
-# Program the external interrupt lines
-foreach pin in usedPortPin
-before%
-
-  /*
-   * Set the EXTI line to the corresponding pin
-   */
-   
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-%
-do%
-  SYSCFG_EXTILineConfig(EXTI_PortSourceGPIO% !pin::GPIO %, EXTI_PinSource% !pin::NUMBER %);%
+foreach pin in pinSet
+  before %    EXTI->IMR |= %
+  do %EXTI_IMR_MR%!pin
+  between %\n               |  %
+  after %;%
 end foreach
-
-# Program each external interrupt line
-foreach pin in usedPortPin
-before%
-
-  /*
-   * Program each EXTI line
-   */%
-do%  
-  EXTI_InitDef.EXTI_Line = EXTI_Line% !pin::NUMBER %;% tab 60 %/* % !KEY % connected to line % !pin::NUMBER tab 88%*/
-  EXTI_InitDef.EXTI_LineCmd = ENABLE;% tab 60 %/* Interrupt enabled% tab 88 %*/
-  EXTI_InitDef.EXTI_Mode = EXTI_Mode_Interrupt;% tab 60 %/* Interrupt mode% tab 88 %*/
-  EXTI_InitDef.EXTI_Trigger = EXTI_Trigger_%
-  if    pin::TRIGGER == "RISING" then %Rising%
-  elsif pin::TRIGGER == "FALLING" then %Falling%
-  else  %Rising_Falling%
-  end if %;% tab 60 %/* Trigger on % ![[pin::TRIGGER lowercaseString] capitalized]% edge% tab 88 %*/
-  EXTI_Init(&EXTI_InitDef);% tab 60 %/* Add to EXTI% tab 88 %*/%
-between%
 %
+
+    /* select port associated to each interrupt */
+%
+foreach pin in usedPortPin do
+  let regId := [pin::NUMBER unsigned] >> 2
+  %    SYSCFG->EXTICR[%!regId%] &= ~SYSCFG_EXTICR%!regId+1%_EXTI%!pin::NUMBER%; /*P%!pin::GPIO !pin::NUMBER%*/\n%
+  %    SYSCFG->EXTICR[%!regId%] |=  SYSCFG_EXTICR%!regId+1%_EXTI%!pin::NUMBER%_P%!pin::GPIO%; /* isr on P%!pin::GPIO !pin::NUMBER% */\n%
+  between %\n%
 end foreach
+%
+    /* select trigger mode - RISING, FALLIN, BOTH */
+%
+foreach pin in usedPortPin do
+  if pin::TRIGGER == "RISING" | pin::TRIGGER == "BOTH" then
+    %    EXTI->RTSR |=  EXTI_RTSR_TR%!pin::NUMBER%;%
+  else
+    %    EXTI->RTSR &= ~EXTI_RTSR_TR%!pin::NUMBER%;%
+  end if
+  % /* P%!pin::GPIO !pin::NUMBER% : %!pin::TRIGGER% */\n%
+  if pin::TRIGGER == "FALLING" | pin::TRIGGER == "BOTH" then
+    %    EXTI->FTSR |=  EXTI_FTSR_TR%!pin::NUMBER%;\n%
+  else
+    %    EXTI->FTSR &= ~EXTI_FTSR_TR%!pin::NUMBER%;\n%
+  end if
+  between %\n%
+end foreach
+%
+// -------------------------------------------------------------------------------------
+%
 
 # Program the NVIC. The priority depends on the kind of object. For counters,
 # and ISR2, priority is set to OS_ISR_PRIO_UNSHIFTED and for ISR1, it is set
@@ -245,59 +229,16 @@ end foreach
 
 foreach src in USED_EXTI
 before%
-
-  /*
-   * Program the NVIC
-   */
+  /* Program the NVIC */
 %
 do%
-  NVIC_InitDef.NVIC_IRQChannel = % !KEY %n;
-  NVIC_InitDef.NVIC_IRQChannelPreemptionPriority =
-    % !prioForChannel[KEY]%;% tab 60 %/* Set priority% tab 88 %*/
-  NVIC_InitDef.NVIC_IRQChannelSubPriority = 0x00;% tab 60 %/* Set sub priority% tab 88 %*/
-  NVIC_InitDef.NVIC_IRQChannelCmd = ENABLE;% tab 60 %/* Enable interrupt% tab 88 %*/
-  NVIC_Init(&NVIC_InitDef);% tab 60 %/* Add to NVIC% tab 88 %*/%
+    NVIC_SetPriority(%!KEY%n,%!prioForChannel[KEY]%);
+    NVIC_EnableIRQ(%!KEY%n);
+%
 end foreach
 %
 }
-%
-# Generate all the ClearFlag functions.
-foreach src in USED_EXTI
-before%
-/*
- * External Interrupt acknowledge functions
- */
-%
-do
-%
-/*
- * Interrupt acknowledge of % !KEY %
- */
-FUNC(void, OS_CODE) % !KEY %_ClearFlag(void)
-{
-  EXTI_ClearFlag(%
 
-  if exists src["PIN"] then
-    %EXTI_Line% !usedPortPin[src["PIN"]]::NUMBER
-  else
-    let lineList := @( )
-    foreach pin in src do
-      if typeof pin == @string then
-        let lineList += "EXTI_Line".usedPortPin[pin]::NUMBER
-      end if 
-    end foreach
-    foreach line in lineList
-    do
-      !line
-    between
-      % | %
-    end foreach
-  end if
-  
-%);  
-}%
-end foreach
-%
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

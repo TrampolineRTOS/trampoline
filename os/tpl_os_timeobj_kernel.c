@@ -210,6 +210,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE)
           first_to = t_obj->next_to;
           last_to = t_obj;
           t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
+          TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, t_obj->state)
         }
         else
         {
@@ -225,6 +226,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE)
           t_obj->next_to = first_to;
           t_obj->next_to->prev_to = t_obj;
           t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
+          TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, t_obj->state)
           t_obj = last_to;
         }
       }
@@ -342,8 +344,6 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
       counter->current_date = date;
       counter->current_tick = 0;
 
-      TRACE_COUNTER(counter)
-
       /*  check if the counter has reached the
        next alarm activation date                  */
       t_obj = counter->next_to;
@@ -379,6 +379,7 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 #if WITH_TEMPORALENFORCEMENT == YES
             /* First pass, FALSE second argument */
             expire(t_obj, FALSE);
+            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 #else
             expire(t_obj);
 #endif
@@ -403,6 +404,7 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
             else
             {
               t_obj->state = TIME_OBJ_SLEEP;
+              TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, TIME_OBJ_SLEEP)
             }
             t_obj = next_to;
           } while (t_obj != NULL);
@@ -417,6 +419,7 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
             expire(t_obj, TRUE);
+            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 
             t_obj = next_to;
           } while (t_obj != NULL);
@@ -475,8 +478,6 @@ tpl_increment_counter(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter,
         }
         counter->current_date = date;
         counter->current_tick = 0;
-
-        TRACE_COUNTER(counter)
       }
     }
   }

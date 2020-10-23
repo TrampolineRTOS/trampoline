@@ -1,0 +1,97 @@
+%
+
+#
+# This template applies to ISR category 1 
+#
+let handlerSource := ""
+if [obj type] == @struct then
+  let handlerSource := obj::SOURCE
+%
+.extern % ! obj::NAME %_function
+%
+else
+  let handlerSource := obj[0]::SOURCE
+  foreach item in obj do
+%
+.extern % ! item::NAME %_function%
+  after %
+%
+  end foreach
+end if
+%
+.global tpl_direct_irq_handler_% !handlerSource %
+.type   tpl_direct_irq_handler_% !handlerSource %, \%function
+/*-----------------------------------------------------------------------------
+ */
+tpl_direct_irq_handler_% !handlerSource %:
+
+/*-----------------------------------------------------------------------------
+ * -1- Push volatile registers
+ */
+  pushm.w   #5, r15%
+if [obj type] == @struct then%
+/*-----------------------------------------------------------------------------
+ * -2- Call the ISR1.
+ */
+  call      #% ! obj::NAME + "_function"
+  if [PORT_IRQ contains: obj::SOURCE] then
+    # PORT IRQ, ack the interrupt
+%
+/*-----------------------------------------------------------------------------
+ * -2b- Ackowledge the interrupt
+ */
+  mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
+  end if
+else
+%
+/*-----------------------------------------------------------------------------
+ * -2- Get the highest priority interrupt of the port from P%
+  ! [obj[0]::SOURCE charAtIndex: 4] %IV 
+ * and jump to the handler
+ */
+  add       &__P% ! [obj[0]::SOURCE charAtIndex: 4] %IV, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  # A set of handler is linked to the same port
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 7 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_p% ! [obj[0]::SOURCE charAtIndex: 4] %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+  foreach handler in bitMap do%
+tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+end if %
+/*-----------------------------------------------------------------------------
+ * -3- Pop volatile registers
+ */
+tpl_direct_irq_handler_exit_% !handlerSource %:
+  popm.w    #5, r15%
+if [obj type] == @struct then
+  if obj::EXIT_FROM_LPM then %
+/*-----------------------------------------------------------------------------
+ * -3b- exit from LPM if required
+ */
+  bic   #0xF0, 0(SP)%
+  end if
+else
+  if obj[0]::EXIT_FROM_LPM then %
+/*-----------------------------------------------------------------------------
+ * -3b- exit from LPM if required
+ */
+  bic   #0xF0, 0(SP)%
+  end if
+end if
+% 
+/*-----------------------------------------------------------------------------
+ * -4- Return.
+ */
+  reti
+/*-----------------------------------------------------------------------------
+*/

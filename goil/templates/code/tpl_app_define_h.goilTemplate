@@ -49,6 +49,7 @@
 #define WITH_ERROR_HOOK                  % !yesNo(OS::ERRORHOOK) %
 #define WITH_PRE_TASK_HOOK               % !yesNo(OS::PRETASKHOOK) %
 #define WITH_POST_TASK_HOOK              % !yesNo(OS::POSTTASKHOOK) %
+#define WITH_ANY_HOOK                    % !yesNo(OS::STARTUPHOOK | OS::SHUTDOWNHOOK | OS::ERRORHOOK | OS::PRETASKHOOK | OS::POSTTASKHOOK) %
 #define WITH_PANIC_HOOK                  % !yesNo(OS::PANICHOOK) %
 #define WITH_USEGETSERVICEID             % !yesNo(OS::USEGETSERVICEID) %
 #define WITH_USEPARAMETERACCESS          % !yesNo(OS::USEPARAMETERACCESS) %
@@ -68,20 +69,14 @@ end if%
 #define WITH_OSAPPLICATION               % !yesNo(OS::SCALABILITYCLASS > 2)%
 #define WITH_OSAPPLICATION_STARTUP_HOOK  % !yesNo(OS::APPLICATIONSTARTUPHOOK > 0) %
 #define WITH_OSAPPLICATION_SHUTDOWN_HOOK % !yesNo(OS::APPLICATIONSHUTDOWNHOOK > 0) %
-#define WITH_TRACE                       % !yesNo(OS::TRACE)
+#define WITH_TRACE                       % !yesNo(OS::TRACE) %
+#define WITH_ID                          % !yesNo(OS::TRACE)
 if OS::TRACE then%
-#define TRACE_TASK                       % !yesNo(OS::TRACE_S::TRACE_TASK) %
-#define TRACE_ISR                        % !yesNo(OS::TRACE_S::TRACE_ISR) %
-#define TRACE_RES                        % !yesNo(OS::TRACE_S::TRACE_RESOURCE) %
-#define TRACE_ALARM                      % !yesNo(OS::TRACE_S::TRACE_ALARM) %
-#define TRACE_U_EVENT                    % !yesNo(OS::TRACE_S::TRACE_USER) %
-#define TRACE_FORMAT()                   tpl_trace_format_% !OS::TRACE_S::FORMAT %();%
-  if exists OS::TRACE_S::METHOD then%
-#define TRACE_METHOD                     % !OS::TRACE_S::METHOD
-    if OS::TRACE_S::METHOD == "FILE" then%
-#define TRACE_FILE                       "%! OS::TRACE_S::METHOD_S::NAME %"%
-    end if
-  end if
+#define TRACE_PROC                       % !yesNo(OS::TRACE_S::PROC) %
+#define TRACE_RES                        % !yesNo(OS::TRACE_S::RESOURCE) %
+#define TRACE_EVENT                      % !yesNo(OS::TRACE_S::EVENT) %
+#define TRACE_ALARM                      % !yesNo(OS::TRACE_S::ALARM) %
+#define TRACE_FORMAT                     TRACE_FORMAT_% ![OS::TRACE_S::FORMAT uppercaseString]
 end if
 %
 #define WITH_IT_TABLE                    % !yesNo(OS::INTERRUPTTABLE)%

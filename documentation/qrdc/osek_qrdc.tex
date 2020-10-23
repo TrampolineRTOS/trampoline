@@ -1,0 +1,346 @@
+\documentclass[10pt,notumble]{leaflet}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{a4paper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{lipsum}
+\usepackage{underscore}
+\usepackage{longtable}
+
+\title{\vspace{-2em}\sc{Osek} QRDC\vspace{-.5em}}
+\author{\scriptsize Jean-Luc B\'echennec -- LS2N\\\scriptsize v1.0 -- September 2018}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+
+\maketitle
+
+
+\newcommand\ext[1]{\footnotesize #1$\dagger$}
+\newcommand\std[1]{\footnotesize #1}
+\newcommand\sect[1]{\vspace{-1em}\section{\hrulefill\\#1}\vspace{-1.5em}\hrulefill}
+\newcommand\code[1]{\texttt{\small #1}}
+\newcommand\service[1]{\vspace{-.8em}\subsection{#1}}
+\newcommand\schedservice[1]{\vspace{-.8em}\subsection{#1 $\Join$}}
+
+%\lipsum[2-56]
+\thispagestyle{empty}
+
+
+\setlength\LTleft\parindent
+\setlength\LTright\fill
+\setlength\LTpre{.5em}
+\setlength\LTpost{-.2em}
+
+\vspace{-1em}
+
+{\Large\bf Data types}
+
+\begin{longtable}{lp{5.5cm}}
+\code{StatusType} & error code returned by a service \\
+\code{AppModeType} & an application mode \\
+\code{TaskType} & identifier of a task \\
+\code{TaskStateType} & state of a task (\code{SUSPENDED}, \code{READY}, \code{RUNNING} or \code{WAITING}) \\
+\code{AlarmType} & identifier of an alarm\\
+\code{AlarmBaseType} & counter attributes\\
+\code{TickType} & number of ticks\\
+\code{EventMaskType} & a set of events\\
+\code{ResourceType} & identifier of a resource\\
+\code{MessageType} & identifier of a message\\
+\end{longtable}
+
+\vspace{.5em}
+
+{\Large\bf Services}
+
+Each service returns an error code except \code{GetActiveApplicationMode}. If the OS has been compiled in {\sc Extended} configuration additional error codes may be returned and are suffixed by a $\dagger$. Services suffixed by a $\Join$ lead to a rescheduling.
+
+
+\sect{Operating system}
+
+\service{StartOS(\emph{app_mode})}
+
+Start the operating system in application mode \emph{app_mode}. Does not return.
+
+\service{ShutdownOS(\emph{error})}
+
+Shutdown the operating system with error code \emph{error}. Does not return.
+
+\service{GetActiveApplicationMode()}
+
+Returns the application mode used to start the operating system.
+
+\sect{Tasks}
+
+%\subsection{}
+
+%-----------------------------------------------------------------------
+
+\schedservice{ActivateTask(\emph{task_id})}
+
+Activate task \emph{task_id}. If task \emph{task_id} has a priority greater than the caller priority, the caller is preempted. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\std{E_OS_LIMIT} & too many activation of \emph{task_id} \\
+\ext{E_OS_ID} & task \emph{task_id} does not exist\\
+\end{longtable}
+
+%-----------------------------------------------------------------------
+
+\schedservice{TerminateTask()}
+
+Terminate the caller. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
+\end{longtable}
+
+%-----------------------------------------------------------------------
+
+\schedservice{ChainTask(\emph{task_id})}
+
+Terminate the caller and activate \emph{task_id}. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\std{E_OS_LIMIT} & too many activation of \emph{task_id} \\
+\ext{E_OS_ID} & task \emph{task_id} does not exist\\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
+\end{longtable}
+
+%-----------------------------------------------------------------------
+
+\schedservice{Schedule()}
+
+Call the scheduler. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
+\end{longtable}
+
+%-----------------------------------------------------------------------
+
+\service{GetTaskID(\emph{task_id_ref})}
+
+Get the task identifier of the task which is currently running. \emph{task_id_ref} is a \underline{\smash{pointer}} to a \code{TaskType} variable where the task identifier of the running task is written. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\end{longtable}
+
+
+%-----------------------------------------------------------------------
+
+\service{GetTaskState(\emph{task_id}, \emph{task_state_ref})}
+
+Get the task state of task \emph{task_id}. \emph{task_state_ref} is a \underline{\smash{pointer}} to a \code{TaskState} variable where the  state is written. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_ID} & task \emph{task_id} does not exist\\
+\end{longtable}
+
+%-----------------------------------------------------------------------
+%-----------------------------------------------------------------------
+
+\sect{Alarms}
+
+%-----------------------------------------------------------------------
+
+\service{GetAlarm(\emph{alarm_id}, \emph{tick_ref})}
+
+Get the remaining tick count of alarm \emph{alarm_id} before the alarm reaches the date. \emph{tick_ref} is a \underline{\smash{pointer}} to a \code{TickType} variable where the remaining tick count  is written. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\std{E_OS_NOFUNC} & alarm \emph{alarm_id} is not started\\
+\ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
+\end{longtable}
+
+\service{GetAlarmBase(\emph{alarm_id}, \emph{info_ref})}
+
+Get the information about the underlying counter of alarm \emph{alarm_id}. \emph{info_ref} is a \underline{\smash{pointer}} to a \code{AlarmBaseType} variable where the information is written. A \code{AlarmBaseType} is a \code{struct} with 3 fields: \code{maxallowedvalue}, \code{ticksperbase} and \code{mincycle}. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
+\end{longtable}
+
+\service{SetRelAlarm(\emph{alarm_id}, \emph{offset}, \emph{cycle})}
+
+Start alarm \emph{alarm_id}. After \emph{offset} ticks the alarm expire and its action is executed. \emph{offset} shall be $>0$. If \emph{cycle} is $>0$ the alarm is restarted and expire every \emph{cycle} ticks. Both \emph{offset} and \emph{cycle} shall $\in [$\code{MINCYCLE}, \code{MAXALLOWEDVALUE}$]$. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\std{E_OS_NOFUNC} & alarm \emph{alarm_id} is already started\\
+\ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
+\ext{E_OS_VALUE} & \emph{offset} and/or \emph{cycle} out of bounds\\
+\end{longtable}
+
+\service{SetAbsAlarm(\emph{alarm_id}, \emph{date}, \emph{cycle})}
+
+Start alarm \emph{alarm_id}. At next counter  \emph{date} the alarm expire and its action is executed. If \emph{cycle} is $>0$ the alarm is restarted and expire every \emph{cycle} ticks. \emph{date} shall be $\leq$ \code{MAXALLOWEDVALUE}. \emph{offset} shall $\in [$\code{MINCYCLE}, \code{MAXALLOWEDVALUE}$]$. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\std{E_OS_NOFUNC} & alarm \emph{alarm_id} is already started\\
+\ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
+\ext{E_OS_VALUE} & \emph{date} and/or \emph{cycle} out of bounds\\
+\end{longtable}
+
+\service{CancelAlarm(\emph{alarm_id})}
+
+Stop alarm \emph{alarm_id}. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\std{E_OS_NOFUNC} & alarm \emph{alarm_id} is not started\\
+\ext{E_OS_ID} & alarm \emph{alarm_id} does not exist\\
+\end{longtable}
+
+\sect{Events}
+
+\schedservice{SetEvent(\emph{task_id}, \emph{event_mask})}
+
+Set event(s) \emph{event_mask} to task \emph{task_id}. If task \emph{task_id} was waiting for one of the events of  \emph{event_mask} and it has a higher priority than the caller, the caller is preempted. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_ID} & task \emph{task_id} does not exist\\
+\ext{E_OS_ACCESS} & task \emph{task_id} is not an extended task\\
+\ext{E_OS_STATE} & task \emph{task_id} is in \code{SUSPENDED} state\\
+\end{longtable}
+
+\service{ClearEvent(\emph{event_mask})}
+
+Clear the event(s) of the caller according to events set in \emph{event_mask}. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_ACCESS} & the caller is not an extended task\\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
+\end{longtable}
+
+\service{GetEvent(\emph{task_id}, \emph{event_mask_ref})}
+
+Get a copy of the event mask of task \emph{task_id}. \emph{event_mask_ref} is a \underline{\smash{pointer}} to an \code{EventMaskType} variable where the copy is written. Returns
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_ID} & task \emph{task_id} does not exist\\
+\ext{E_OS_ACCESS} & task \emph{task_id} is not an extended task\\
+\ext{E_OS_STATE} & task \emph{task_id} is in \code{SUSPENDED} state\\
+\end{longtable}
+
+\schedservice{WaitEvent(\emph{event_mask})}
+
+If the none of the events in \emph{event_mask} is set in the event mask of the caller, the caller is put in the \code{WAITING} state. Returns:
+
+\begin{longtable}{ll}
+\std{E_OK} & success \\
+\ext{E_OS_ACCESS} & the caller isn't an extended task\\
+\ext{E_OS_RESOURCE} & the caller hold a resource \\
+\ext{E_OS_CALLEVEL} & the caller is not a task \\
+\end{longtable}
+
+\sect{Resources}
+
+\service{GetResource(\emph{rez_id})}
+
+Get resource \emph{rez_id}. The priority of the caller is raised to the priority of the resource if higher. Returns:
+
+\begin{longtable}{lp{5.5cm}}
+\std{E_OK} & success \\
+\ext{E_OS_ID} & resource \emph{rez_id} does not exist\\
+\ext{E_OS_ACCESS} & the caller try to get a resource already held\\
+\end{longtable}
+
+\schedservice{ReleaseResource(\emph{rez_id})}
+
+Release resource \emph{rez_id}. The priority of the caller returns to the priority it had before. Returns:
+
+\begin{longtable}{lp{5.5cm}}
+\std{E_OK} & success \\
+\ext{E_OS_ID} & resource \emph{rez_id} does not exist\\
+\ext{E_OS_NOFUNC} & the caller try to release a resource it does not hold\\
+\ext{E_OS_ACCESS} & the caller try to release a resource with a priority lower than the caller one\\
+\end{longtable}
+
+\sect{Messages}
+
+\schedservice{SendMessage(\emph{mess_id}, \emph{data_ref})}
+
+Send message \emph{mess_id}. \emph{data_ref} is a \underline{\smash{pointer}} to a variable containing the data to send. Returns:
+
+\begin{longtable}{lp{6cm}}
+\std{E_OK} & success \\
+\ext{E_COM_ID} & message \emph{mess_id} does not exist or has the wrong type\\
+\end{longtable}
+
+\schedservice{SendZeroMessage(\emph{mess_id})}
+
+Send signalization message \emph{mess_id}. Returns:
+
+\begin{longtable}{lp{6cm}}
+\std{E_OK} & success \\
+\ext{E_COM_ID} & message \emph{mess_id} does not exist or has the wrong type\\
+\end{longtable}
+
+\service{ReceiveMessage(\emph{mess_id}, \emph{data_ref})}
+
+Receive message \emph{mess_id}. \emph{data_ref} is a \underline{\smash{pointer}} to a variable where the data are copied.
+
+\begin{longtable}{lp{5.25cm}}
+\std{E_OK} & success \\
+\ext{E_COM_ID} & message \emph{mess_id} does not exist or has the wrong type\\
+\std{E_COM_NOMSG} & message \emph{mess_id} is queued and the queue is empty\\
+\std{E_COM_LIMIT} & message \emph{mess_id} is queued and the queue has overflown\\
+\end{longtable}
+
+\service{GetMessageStatus(\emph{mess_id})}
+
+Returns the status of a message:
+
+\begin{longtable}{lp{5.25cm}}
+\ext{E_COM_ID} & message \emph{mess_id} does not exist\\
+\std{E_COM_NOMSG} & message \emph{mess_id} is queued and the queue is empty\\
+\std{E_COM_LIMIT} & message \emph{mess_id} is queued and the queue has overflown\\
+\std{E_OK} & none of the above \\
+\end{longtable}
+
+\sect{Interrupts}
+
+\service{DisableAllInterrupt()}
+
+Disable all the interrupt sources. Cannot be nested.
+
+\service{EnableAllInterrupt()}
+
+Enable all the interrupt sources. Cannot be nested.
+
+\service{SuspendAllInterrupt()}
+
+Suspend all the interrupt sources. Can be nested.
+
+\service{ResumeAllInterrupt()}
+
+Resume all the interrupt sources. Can be nested.
+
+\service{SuspendOSInterrupt()}
+
+Suspend the interrupt sources of ISR2. Can be nested.
+
+\service{ResumeOSInterrupt()}
+
+Resume the interrupt sources of ISR2. Can be nested.
+
+\end{document}  

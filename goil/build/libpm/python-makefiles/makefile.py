@@ -22,6 +22,8 @@
 #             change isinstance function arguments ---> function argumentIsString
 #             subprocess.call: add "universal_newlines=True" argument
 #             added test (job.mReturnCode != None) lines 727 and 739
+# 3.1: may 26th, 2018
+#        Added tolerance in secondary dependency file syntax:
 #
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 # http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html
@@ -332,7 +334,7 @@ class Job:
     postCommand = self.mPostCommands [0]
     self.mCommand = postCommand.mCommand
     displayLock.acquire ()
-    print (BOLD_BLUE () + "       " + postCommand.mTitle + ENDC ())
+    print (BOLD_BLUE () + postCommand.mTitle + ENDC ())
     if showCommand:
       cmdAsString = ""
       for s in self.mCommand:
@@ -424,18 +426,22 @@ class Rule:
         s = s.replace ("\\ ", "\x01") # Replace escaped spaces by \0x01
         s = s.replace ("\\\n", "") # Suppress \ at the end of lines
         liste = s.split ("\n\n")
+        # print ("DEP " + secondaryDependanceFile)
         for s in liste:
+          # print ("S " + s)
           components = s.split (':')
-          target = components [0].replace ("\x01", " ")
+          # print (str (len (components)))
+          #target = components [0].replace ("\x01", " ")
           #print ("------- Optional dependency rules for target '" + target + "'")
           #print ("Secondary target '" + target + "'")
-          for src in components [1].split ():
-            secondarySource = src.replace ("\x01", " ")
-            #print ("  '" + secondarySource + "'")
-            modifDate = modificationDateForFile (make.mModificationDateDictionary, secondarySource)
-            if self.mSecondaryMostRecentModificationDate < modifDate :
-              self.mSecondaryMostRecentModificationDate = modifDate
-              #print (BOLD_BLUE () + str (modifDate) + ENDC ())
+          if len (components) > 1 :
+            for src in components [1].split ():
+              secondarySource = src.replace ("\x01", " ")
+              # print ("  SECONDARY SOURCE  '" + secondarySource + "'")
+              modifDate = modificationDateForFile (make.mModificationDateDictionary, secondarySource)
+              if self.mSecondaryMostRecentModificationDate < modifDate :
+                self.mSecondaryMostRecentModificationDate = modifDate
+                #print (BOLD_BLUE () + str (modifDate) + ENDC ())
 
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 #   class Make                                                                                                         *
@@ -713,8 +719,11 @@ class Make:
                   absTargetDirectory = os.path.dirname (os.path.abspath (aTarget))
                   if not os.path.exists (absTargetDirectory):
                     displayLock.acquire ()
-                    print (BOLD_BLUE () + "Making \"" + os.path.dirname (aTarget) + "\" directory" + ENDC())
-                    os.makedirs (os.path.dirname (aTarget))
+                    runCommand (
+                      ["mkdir", "-p", os.path.dirname (aTarget)], "Making \"" + os.path.dirname (aTarget) + "\" directory",
+                      showCommand,
+                      job.mLogUtilityTool
+                    )
                     displayLock.release ()
                 #--- Progress string
                 launchedJobCount += 1.0
@@ -763,7 +772,7 @@ class Make:
                       os.system ("open -a \"" + self.mMacTextEditor + "\" \"" + components [0] + "\"")
                     elif sys.platform == "linux2":
                       os.system ("\"" + self.mLinuxTextEditor + "\" \"" + components [0] + "\"")
-            elif (job.mState == 3) and (job.mReturnCode != None) and (job.mReturnCode == 0): # post command is terminated without error
+            elif (job.mState == 3) and (job.mReturnCode == 0): # post command is terminated without error
               jobCount = jobCount - 1
               job.mPostCommands.pop (0) # Remove completed post command
               if len (job.mPostCommands) > 0:
@@ -771,7 +780,7 @@ class Make:
               else:
                 job.mState = 4 # Completed
                 index = index - 1 # For removing job from list
-            elif (job.mState == 3) and (job.mReturnCode != None) and (job.mReturnCode > 0): # post command is terminated with error
+            elif (job.mState == 3) and (job.mReturnCode > 0): # post command is terminated with error
               jobCount = jobCount - 1
               job.mState = 4 # Completed
               index = index - 1 # For removing job from list
@@ -798,6 +807,28 @@ class Make:
                   print ("Wait for job termination...")
                 returnCode = job.mReturnCode
           loop = (len (self.mJobList) > 0) if (returnCode == 0) else (jobCount > 0)
+
+  #····················································································································*
+
+  def searchFileInRelativeDirectories (self, file, directoryList): # returns "" if not found, register error
+    matchCount = 0
+    result = ""
+    for sourceDir in directoryList:
+      sourcePath = sourceDir + "/" + file
+      if os.path.exists (os.path.abspath (sourcePath)):
+        matchCount = matchCount + 1
+        prefix = os.path.commonprefix ([os.getcwd (), sourcePath])
+        result = sourcePath [len (prefix):]
+        if result [0] == '/' :
+          result = result [1:]
+    if matchCount == 0:
+      print (BOLD_RED () + "Cannot find '" + file + "'" + ENDC ())
+      self.mErrorCount = self.mErrorCount + 1
+    elif matchCount > 1:
+      print (BOLD_RED () + str (matchCount) + " source files for making '" + file + "'" + ENDC ())
+      self.mErrorCount = self.mErrorCount + 1
+      result = ""
+    return result
 
   #····················································································································*
 
@@ -878,8 +909,7 @@ class Make:
         for rule in self.mRuleList:
           for aTarget in rule.mTargets:
             if rule.mDeleteTargetOnError and os.path.exists (os.path.abspath (aTarget)):
-              print (BOLD_BLUE () + "Delete \"" + aTarget + "\" on error" + ENDC())
-              os.remove(aTarget)
+              runCommand (["rm", aTarget], "Delete \"" + aTarget + "\" on error", showCommand, self.mLogUtilityTool)
     elif self.mSelectedGoal == "clean" :
       filesToRemoveList = []
       directoriesToRemoveSet = set ()
@@ -897,17 +927,15 @@ class Make:
       for dir in directoriesToRemoveSet:
         if os.path.exists (os.path.abspath (dir)):
           if self.mSimulateClean:
-            print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "os.remove '" + dir + "'")
+            print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -fr '" + dir + "'")
           else:
-            print (BOLD_BLUE () + "Removing \"" + dir + "\"" + ENDC())
-            shutil.rmtree(dir)
+            runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand, self.mLogUtilityTool)
       for file in filesToRemoveList:
         if os.path.exists (os.path.abspath (file)):
           if self.mSimulateClean:
             print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -f '" + file + "'")
           else:
-            print (BOLD_BLUE () + "Deleting \"" + file + "\"" + ENDC())
-            os.remove(file)
+            runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand, self.mLogUtilityTool)
     else:
       errorMessage = "The '" + self.mSelectedGoal + "' goal is not defined; defined goals:"
       for key in self.mGoals:

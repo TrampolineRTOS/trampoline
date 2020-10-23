@@ -1,3 +1,17 @@
+IMPLEMENTATION teensy31 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          WString,Print,LiquidCrystalFast
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+
 CPU teensy31 {
   PLATFORM_FILES teensy31 {
     PATH = "cortex/armv7em/mk20dx256/teensy31";

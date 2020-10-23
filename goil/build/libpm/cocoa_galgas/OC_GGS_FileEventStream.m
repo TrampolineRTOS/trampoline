@@ -3,17 +3,17 @@
 //  galgas-developer-v3
 //
 //  Created by Pierre Molinaro on 14/07/2015.
-//  Copyright © 2015 IRCCyN. All rights reserved.
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //
 
 #import "OC_GGS_DocumentData.h"
 #import "OC_GGS_FileEventStream.h"
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static NSMutableArray * gFileEventStreamArray = nil ;
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 @interface OC_GGS_FileEventStream : NSObject {
   @private FSEventStreamRef mFSEventStream ;
@@ -24,7 +24,7 @@ static NSMutableArray * gFileEventStreamArray = nil ;
 
 @end
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 @implementation OC_GGS_FileEventStream
 
@@ -129,7 +129,7 @@ static NSMutableArray * gFileEventStreamArray = nil ;
 
 @end
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void addFileEventStreamForDocument (OC_GGS_DocumentData * inDocument) {
   if (nil == gFileEventStreamArray) {
@@ -148,7 +148,7 @@ void addFileEventStreamForDocument (OC_GGS_DocumentData * inDocument) {
   }
 }
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void removeFileEventStreamForDocument (OC_GGS_DocumentData * inDocument) {
   OC_GGS_FileEventStream * objectToRemove = nil ;
@@ -163,4 +163,4 @@ void removeFileEventStreamForDocument (OC_GGS_DocumentData * inDocument) {
   }
 }
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

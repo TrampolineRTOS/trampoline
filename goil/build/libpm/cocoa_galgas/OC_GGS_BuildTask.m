@@ -1,12 +1,12 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
 //  Copyright (C) 2011, ..., 2014 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -16,31 +16,33 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #import "OC_GGS_BuildTask.h"
 #import "PMIssueDescriptor.h"
 #import "OC_GGS_Document.h"
 #import "OC_GGS_ApplicationDelegate.h"
+#import "F_CocoaWrapperForGalgas.h"
 #import "PMDebug.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include <netdb.h>
 #include <netinet/in.h>
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 //#define DEBUG_MESSAGES
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 @implementation OC_GGS_BuildTask 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 - (OC_GGS_BuildTask *) initWithDocument: (OC_GGS_Document *) inDocument
-                       filePath: (NSString *) inFilePath {
+                       filePath: (NSString *) inFilePath
+                       isBuildRun: (BOOL) inIsBuildRun {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
@@ -70,6 +72,12 @@
       [arguments addObjectsFromArray:[commandLineArray subarrayWithRange:NSMakeRange (1, [commandLineArray count]-1)]] ;
       [arguments addObject:inFilePath] ;
       [arguments addObject:@"--cocoa"] ;
+      if (inIsBuildRun) {
+        NSString * option = buildRunOption () ;
+        if ([option length] > 0) {
+          [arguments addObject:option] ;
+        }
+      }
    //--- Create task
       mTask = [NSTask new] ;
       if ([gCocoaApplicationDelegate prefixByToolUtility]) {
@@ -107,14 +115,14 @@
   return self ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 - (void) FINALIZE_OR_DEALLOC {
   noteObjectDeallocation (self) ;
   macroSuperFinalize ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 - (void) getDataFromTaskOutput: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
@@ -143,24 +151,24 @@
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 - (void) taskDidTerminate: (NSNotification *) inNotification {
   mTaskCompleted = YES ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 - (void) terminate {
   [mTask terminate] ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 - (BOOL) isCompleted {
   return mTaskCompleted && mOutputBufferedDataHasBeenTransmitted ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 @end

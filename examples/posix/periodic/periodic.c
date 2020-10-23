@@ -14,7 +14,7 @@ TASK(my_periodic_task)
   static int occurence = 0;
     
   occurence++;
-  printf("Activation #%d\n",occurence);
+  printf("Activation #%d\r\n",occurence);
     
   TerminateTask();
 }
@@ -22,6 +22,7 @@ TASK(my_periodic_task)
 TASK(stop)
 {
   CancelAlarm(one_second);
-  printf("Terminaison\n");
+  printf("Shutdown\r\n");
+  ShutdownOS(E_OK);
   TerminateTask();
 }

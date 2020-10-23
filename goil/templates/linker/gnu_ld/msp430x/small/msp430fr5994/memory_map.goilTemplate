@@ -1,0 +1,41 @@
+/* Specify the memory areas for msp430fr5994
+ * basic first version:
+ * - FRAM used as flash only
+ * - upper FRAM bank 0x10000 (208kb) not configured
+ */
+%
+
+# Compute start address, end address and size of the vectors
+let start_address := 0xFFFE
+let end_address := 0x0000
+foreach vect in INTERRUPT do
+  if vect::ADDRESS < start_address then 
+    let start_address := vect::ADDRESS 
+  end if
+  if vect::ADDRESS > end_address then 
+    let end_address := vect::ADDRESS 
+  end if
+end foreach
+let end_address += 2
+let size := end_address - start_address
+let hex_start := [start_address xString]
+repeat while [hex_start length] < 5 do
+  let hex_start := "0" + hex_start
+end repeat
+let hex_end := [end_address xString]
+repeat while [hex_end length] < 5 do
+  let hex_end := "0" + hex_end
+end repeat
+
+%
+MEMORY
+{
+  VECTOR (rx) : ORIGIN = 0x%
+   ! hex_start %, LENGTH = %
+   ! [size hexString] %   /* ends at 0x%
+   ! hex_end %, %
+   ! size % bytes - %
+   ! size / 2 % vectors */
+  FLASH (rx)  : ORIGIN = 0x04000, LENGTH = 0xBF80 /* ends at 0xff80. size is 47,875k */
+  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = 0x2000 /* size is 8k */
+}

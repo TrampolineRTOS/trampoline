@@ -1,0 +1,280 @@
+%
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build IRQ handlers
+#
+# PORTS IRQ may have more than one ISR connected each to its own bit but 
+# ISR1 and ISR2 cannot be mixed within the same PORT IRQ
+#
+
+let objForIRQ := @[ ]
+
+let PORT_IRQ := @!
+  "PORT1_VECTOR",
+  "PORT2_VECTOR",
+  "PORT3_VECTOR",
+  "PORT4_VECTOR",
+  "PORT5_VECTOR",
+  "PORT6_VECTOR",
+  "PORT7_VECTOR",
+  "PORT8_VECTOR"
+!
+
+let ISR1_USED_PORT_BITS := @[
+  "PORT1_VECTOR" : 0,
+  "PORT2_VECTOR" : 0,
+  "PORT3_VECTOR" : 0,
+  "PORT4_VECTOR" : 0,
+  "PORT5_VECTOR" : 0,
+  "PORT6_VECTOR" : 0,
+  "PORT7_VECTOR" : 0,
+  "PORT8_VECTOR" : 0
+]
+
+let ISR2_USED_PORT_BITS := @[
+  "PORT1_VECTOR" : 0,
+  "PORT2_VECTOR" : 0,
+  "PORT3_VECTOR" : 0,
+  "PORT4_VECTOR" : 0,
+  "PORT5_VECTOR" : 0,
+  "PORT6_VECTOR" : 0,
+  "PORT7_VECTOR" : 0,
+  "PORT8_VECTOR" : 0
+]
+
+let COUNTER_USED_PORT_BITS := @[
+  "PORT1_VECTOR" : 0,
+  "PORT2_VECTOR" : 0,
+  "PORT3_VECTOR" : 0,
+  "PORT4_VECTOR" : 0,
+  "PORT5_VECTOR" : 0,
+  "PORT6_VECTOR" : 0,
+  "PORT7_VECTOR" : 0,
+  "PORT8_VECTOR" : 0
+]
+
+#
+# Map ISR into objForIRQ
+#
+foreach isr in ISRS1 do
+  let key := isr::SOURCE
+  let isr::KIND := "ISR"
+  if [PORT_IRQ contains: key] then
+    # it's a PORTx_VECTOR source
+    if exists isr::SOURCE_S::BIT then
+      if [ISR1_USED_PORT_BITS[key] bitAtIndex: isr::SOURCE_S::BIT] then
+        error isr::SOURCE_S::BIT : "Bit already used"
+      else
+        [!ISR1_USED_PORT_BITS[key] setBitAtIndex: true, isr::SOURCE_S::BIT]
+      end if
+      let isr::BIT := isr::SOURCE_S::BIT
+      if not exists objForIRQ[key] then let objForIRQ[key] := @() end if
+      let objForIRQ[key] += isr
+    else
+      # No bit specified, takes all if available
+      if ISR1_USED_PORT_BITS[key] == 0 then 
+        let ISR1_USED_PORT_BITS[key] := 0xFFFF
+      else
+        error isr::SOURCE : "No bit specified but some already taken"
+      end if
+      let objForIRQ[key] := isr
+    end if
+  else
+    if not exists objForIRQ[key] then
+      let objForIRQ[key] := isr
+    else
+      error isr::SOURCE : "Interrupt source already used"
+    end if
+  end if
+end foreach
+
+#
+# Map ISR2 into objForIRQ
+#
+foreach isr in ISRS2 do
+  let key := isr::SOURCE
+  let isr::KIND := "ISR"
+  let isr::IDENT := INDEX
+  if [PORT_IRQ contains: key] then
+    # it's a PORTx_VECTOR source
+    if ISR1_USED_PORT_BITS[key] != 0 then
+      # at leat one bit used by an ISR1
+      error isr::SOURCE : key + " already used by an ISR category 1"
+    else
+      if exists isr::SOURCE_S::BIT then
+        if [ISR2_USED_PORT_BITS[key] bitAtIndex: isr::SOURCE_S::BIT] then
+          error isr::SOURCE_S::BIT : "Bit already used"
+        else
+          [!ISR2_USED_PORT_BITS[key] setBitAtIndex: true, isr::SOURCE_S::BIT]
+        end if
+        let isr::BIT := isr::SOURCE_S::BIT
+        if not exists objForIRQ[key] then let objForIRQ[key] := @() end if
+        let objForIRQ[key] += isr   
+      else
+        # No bit specified, takes all if available
+        if ISR2_USED_PORT_BITS[key] == 0 then 
+          let ISR2_USED_PORT_BITS[key] := 0xFFFF
+        else
+          error isr::SOURCE : "No bit specified but some already taken"
+        end if
+        let objForIRQ[key] := isr   
+      end if
+    end if
+  else 
+    if not exists objForIRQ[key] then
+      let objForIRQ[key] := isr
+    else
+      error isr::SOURCE : "Interrupt source already used"
+    end if
+  end if
+end foreach
+
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  let cnt::KIND := "COUNTER"
+  if [PORT_IRQ contains: key] then
+    # it's a PORTx_VECTOR source
+    if ISR1_USED_PORT_BITS[key] != 0 then
+      # at leat one bit used by an ISR1
+      error cnt::SOURCE : key + " already used by an ISR category 1"
+    elsif ISR2_USED_PORT_BITS[key] != 0 then
+      # at leat one bit used by an ISR2
+      error cnt::SOURCE : key + " already used by an ISR category 2"
+    else
+      if exists cnt::SOURCE_S::BIT then
+        if [COUNTER_USED_PORT_BITS[key] bitAtIndex: cnt::SOURCE_S::BIT] then
+          error cnt::SOURCE_S::BIT : "Bit already used"
+        else
+          [!COUNTER_USED_PORT_BITS[key] setBitAtIndex: true, cnt::SOURCE_S::BIT]
+        end if
+        let cnt::BIT := cnt::SOURCE_S::BIT
+        if not exists objForIRQ[key] then let objForIRQ[key] := @() end if
+        let objForIRQ[key] += cnt   
+     else
+        # No bit specified, takes all if available
+        if COUNTER_USED_PORT_BITS[key] == 0 then 
+          let COUNTER_USED_PORT_BITS[key] := 0xFFFF
+        else
+          error cnt::SOURCE : "No bit specified but some already taken"
+        end if
+        let objForIRQ[key] := cnt   
+      end if
+    end if
+  else
+    if not exists objForIRQ[key] then
+      let objForIRQ[key] := cnt
+    else
+      error cnt::SOURCE : "Interrupt source already used"
+    end if
+  end if
+end foreach
+
+# Sort the list of handlers by BIT number
+
+let sortedObjForIRQ := @[]
+foreach obj in objForIRQ do
+  if [obj type] == @list then
+    sort obj by BIT <
+  end if
+  let sortedObjForIRQ[KEY] := obj
+end foreach
+
+#------------------------------------------------------------------------------*
+%/**
+ * @file tpl_irq_handlers.% !EXTENSIONIRQHANDLERS %
+ *
+ * @section descr File description
+ *
+ * Generated from application % !CPUNAME %
+ * Automatically generated by goil on % !TIMESTAMP %
+ * from root OIL file % !OILFILENAME %
+ *
+ * @section infos File informations
+ *
+ */
+
+#include "tpl_assembler.h"
+#include "tpl_asm_definitions.h"
+#include "tpl_kern_stack.h"
+
+.extern tpl_kern
+.extern tpl_kern_stack
+
+#define OS_START_SEC_CODE
+#include "tpl_as_memmap.h"
+
+/*=============================================================================
+ * After en interrupt on a CPUX, the process stack is as follow
+ *
+ *    +----+--------------+
+ *  0 | PC |      SR      | + 0
+ *    +----+--------------+
+ *  1 |         PC        | + 2
+ *    +-------------------+
+ *
+ */
+%
+
+foreach obj in sortedObjForIRQ
+  before
+%
+%
+  do
+%
+/*=============================================================================
+ * IRQ Handler for%
+    if [obj type] == @struct then
+      % % ! obj::KIND 
+      if obj::KIND == "ISR" then 
+        % category % ! obj::CATEGORY
+      end if
+% with source vector % !obj::SOURCE 
+    else
+      % % ! obj[0]::KIND
+      if obj[0]::KIND == "ISR" then 
+        % category % ! obj[0]::CATEGORY
+      end if
+      %:
+ * %
+      foreach item in obj do
+        ! item::NAME %, bit % ! item::SOURCE_S::BIT %
+ * %
+      end foreach
+%with source vector % !obj[0]::SOURCE 
+    end if
+%
+ ******************************************************************************/
+%
+    if [obj type] == @struct then
+      if obj::KIND == "ISR" then 
+        if obj::CATEGORY == 1 then
+          template direct_irq_handler_body
+        else 
+          template primary_irq_handler_body
+        end if
+      else
+        template primary_irq_handler_body
+      end if
+    else
+      if obj[0]::KIND == "ISR" then 
+        if obj[0]::CATEGORY == 1 then
+          template direct_irq_handler_body
+        else 
+          template primary_irq_handler_body
+        end if
+      else
+        template primary_irq_handler_body
+      end if
+    end if
+  after
+%
+%
+end foreach
+
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
+/* End of file tpl_irq_handlers.% !EXTENSIONIRQHANDLERS % */

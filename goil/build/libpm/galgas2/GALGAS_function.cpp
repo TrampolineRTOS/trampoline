@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  GALGAS_function : this class implements introspection for GALGAS functions                                         *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2002, ..., 2011 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,7 +18,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-predefined-types.h"
 #include "galgas2/C_galgas_function_descriptor.h"
@@ -26,44 +26,44 @@
 #include "galgas2/C_Compiler.h"
 #include "galgas2/cObjectArray.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //                     'GALGAS_function' class                                                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_function::GALGAS_function (void) :
 AC_GALGAS_root (),
 mFunctionDescriptor (NULL) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_function::GALGAS_function (const C_galgas_function_descriptor * inFunctionDescriptor) :
 AC_GALGAS_root (),
 mFunctionDescriptor (inFunctionDescriptor) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_function::GALGAS_function (const GALGAS_function & inSource) :
 AC_GALGAS_root (),
 mFunctionDescriptor (inSource.mFunctionDescriptor) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_function & GALGAS_function::operator = (const GALGAS_function & inSource) {
   mFunctionDescriptor = inSource.mFunctionDescriptor ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_function::~ GALGAS_function (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_function::description (C_String & ioString,
                                    const int32_t /* inIndentation */) const {
@@ -83,7 +83,7 @@ void GALGAS_function::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_functionlist GALGAS_function::constructor_functionList (LOCATION_ARGS) {
   GALGAS_functionlist result = GALGAS_functionlist::constructor_emptyList (THERE) ;
@@ -95,7 +95,7 @@ GALGAS_functionlist GALGAS_function::constructor_functionList (LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_function::constructor_isFunctionDefined (const GALGAS_string & inFunctionName
                                                             COMMA_UNUSED_LOCATION_ARGS) {
@@ -113,7 +113,7 @@ GALGAS_bool GALGAS_function::constructor_isFunctionDefined (const GALGAS_string 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_function GALGAS_function::constructor_functionWithName (const GALGAS_string & inFunctionName
                                                                COMMA_UNUSED_LOCATION_ARGS) {
@@ -131,7 +131,7 @@ GALGAS_function GALGAS_function::constructor_functionWithName (const GALGAS_stri
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_typelist GALGAS_function::getter_formalParameterTypeList (LOCATION_ARGS) const {
   GALGAS_typelist result = GALGAS_typelist::constructor_emptyList (THERE) ;
@@ -141,19 +141,19 @@ GALGAS_typelist GALGAS_function::getter_formalParameterTypeList (LOCATION_ARGS) 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_function::getter_name (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mFunctionDescriptor->mFunctionName) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_type GALGAS_function::getter_resultType (UNUSED_LOCATION_ARGS) const {
   return GALGAS_type (mFunctionDescriptor->mResultType) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_object GALGAS_function::getter_invoke (const GALGAS_objectlist & inObjectList,
                                               const GALGAS_location & inErrorLocation,
@@ -204,7 +204,7 @@ GALGAS_object GALGAS_function::getter_invoke (const GALGAS_objectlist & inObject
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_function::objectCompare (const GALGAS_function & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -221,4 +221,4 @@ typeComparisonResult GALGAS_function::objectCompare (const GALGAS_function & inO
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

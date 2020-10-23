@@ -1,14 +1,14 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     BDD package (implementation of ROBDD)                                                                           *
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1999, ..., 2019 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,7 +18,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "bdd/C_BDD.h"
 #include "utilities/F_GetPrime.h"
@@ -27,55 +27,55 @@
 #include "bdd/C_BDD-node.h"
 #include "time/C_Timer.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::getBDDnodeSize (void) {
   return (uint32_t) sizeof (cBDDnode) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  BDD objects unique table                                                                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static uint32_t gNodeArraySize = 0 ;
 cBDDnode * gNodeArray = NULL ;
 static uint64_t * gMarkTable = NULL ;
 static uint32_t gCurrentNodeCount = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t nodeMapMemoryUsage (void) {
   return (gNodeArraySize * C_BDD::getBDDnodeSize ()) / 1000000 ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::getCreatedNodesCount (void) {
   return gNodeArraySize ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::getExistingNodesCount (void) {
   return gCurrentNodeCount ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static uint32_t * gCollisionMap = NULL ;
 static uint32_t gCollisionMapSize = 0 ;
 static uint32_t gHashMapPowerOfTwoMaxSize = 31 ;
 static bool gHashMapExpandable = true ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t hashMapMemoryUsage (void) {
   return (uint32_t) ((gCollisionMapSize * sizeof (uint32_t)) / 1000000) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 inline uint64_t nodeHashCode (const cBDDnode inNode) {
   uint64_t result = bothBranches (inNode) % (uint64_t) gCollisionMapSize ;
@@ -84,7 +84,7 @@ inline uint64_t nodeHashCode (const cBDDnode inNode) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void reallocHashMap (const uint32_t inNewSize) {
   if ((0 < inNewSize) && (inNewSize != gCollisionMapSize)) {
@@ -106,11 +106,11 @@ static void reallocHashMap (const uint32_t inNewSize) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const uint32_t kUniqueMapSizeIncrement = 4194304 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static uint32_t addNewNode (const cBDDnode inNode) {
   if (gNodeArraySize <= (gCurrentNodeCount + 1)) {
@@ -168,7 +168,7 @@ static uint32_t addNewNode (const cBDDnode inNode) {
   return gCurrentNodeCount ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::unmarkAllExistingBDDnodes (void) {
   MF_Assert ((gNodeArraySize % 64) == 0, "gNodeArraySize (%lld) is not a multiple of 64", gNodeArraySize, 0) ;
@@ -177,7 +177,7 @@ void C_BDD::unmarkAllExistingBDDnodes (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static bool isNodeMarked (const uint32_t inValue COMMA_LOCATION_ARGS) {
   const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
@@ -192,7 +192,7 @@ static bool isNodeMarked (const uint32_t inValue COMMA_LOCATION_ARGS) {
   return marked ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 bool isNodeMarkedThenMark (const uint32_t inValue COMMA_LOCATION_ARGS) {
   const uint32_t nodeIndex = inValue >> 1 ;
@@ -205,7 +205,7 @@ bool isNodeMarkedThenMark (const uint32_t inValue COMMA_LOCATION_ARGS) {
   return isMarked ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void markNode (const uint32_t inValue) {
   const uint32_t nodeIndex = inValue >> 1 ;
@@ -216,7 +216,7 @@ void markNode (const uint32_t inValue) {
   gMarkTable [idx] |= mask ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::getMarkedNodesCount (void) {
   uint32_t count = 0 ;
@@ -230,19 +230,19 @@ uint32_t C_BDD::getMarkedNodesCount (void) {
   return count ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  BDD objects hash map                                                                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static const int32_t kInitialCollisionMapPowerOfTwoSize = 20 ; 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //       BDD unique table implementation                                                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t find_or_add (const uint32_t inBoolVar,
                       const uint32_t inELSEbranch,
@@ -274,7 +274,7 @@ uint32_t find_or_add (const uint32_t inBoolVar,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::setHashMapMaxSize (const uint32_t inPowerOfTwoSize) {
   gHashMapPowerOfTwoMaxSize = inPowerOfTwoSize ;
@@ -283,29 +283,30 @@ void C_BDD::setHashMapMaxSize (const uint32_t inPowerOfTwoSize) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-static C_BDD gBDDinstancesListRoot ;
+static C_BDD * gFirstBDD = NULL ;
+static C_BDD * gLastBDD = NULL ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::getBDDinstancesCount (void) {
   uint32_t n = 0 ;
-  C_BDD * p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
+  C_BDD * p = gFirstBDD ;
+  while (p != NULL) {
     n ++ ;
     p = p->mPtrToNextBDD ;
   }
   return n ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Mark and Sweep
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void recursiveMarkBDDNodes (const uint32_t inValue) {
   const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
@@ -317,29 +318,23 @@ static void recursiveMarkBDDNodes (const uint32_t inValue) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::markAllBDDnodes (void) {
   recursiveMarkBDDNodes (mBDDvalue) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::markAndSweepUnusedNodes (void) {
   C_Timer timer ;
-/* printf ("mark and sweep\n") ; fflush (stdout) ;
-  for (uint32_t nodeIndex=2 ; nodeIndex<=gCurrentNodeCount ; nodeIndex++) {
-    for (uint32_t idx=1 ; idx<nodeIndex ; idx++) {
-      MF_Assert (gNodeArray [nodeIndex] != gNodeArray [idx], "(gNodeArray [nodeIndex]  (%lld) != gNodeArray [idx] [%lld]", nodeIndex, idx) ;
-    }
-  }*/
 //--- Clear operation caches
   clearANDOperationCache () ;
 //--- Effacer tous les champs marquage des elements BDD existants
   unmarkAllExistingBDDnodes () ;
 //--- Marquer tous les elements utilises
-  C_BDD * p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
+  C_BDD * p = gFirstBDD ;
+  while (p != NULL) {
     recursiveMarkBDDNodes (p->mBDDvalue) ;
     p = p->mPtrToNextBDD ;
   }
@@ -373,23 +368,17 @@ void C_BDD::markAndSweepUnusedNodes (void) {
       gNodeArray [newNodeCount].mELSE = newElseBranch ;
       gNodeArray [newNodeCount].mVariableIndex = var ;
       gNodeArray [nodeIndex].mAuxiliary = newNodeCount ;
-     // MF_Assert (node == newNode, "node [%lld] == newNode [%lld]", node, newNode) ;
-      //if (newNodeCount < 10) {
-      //  printf ("index %4u -> %4u, node %16llX -> %16llX\n", nodeIndex, newNodeCount, node, newNode) ;
-      // }
     }
   }
   // printf ("gCurrentNodeCount %u -> %u\n", gCurrentNodeCount, newNodeCount) ;
   const uint32_t previousNodeCount = gCurrentNodeCount ;
   if (gNodeArraySize > 0) {
     gCurrentNodeCount = newNodeCount ;
-    p = gBDDinstancesListRoot.mPtrToNextBDD ;
-    while (p != & gBDDinstancesListRoot) {
+    p = gFirstBDD ;
+    while (p != NULL) {
       const uint32_t previousValue = p->mBDDvalue ;
       MF_Assert ((gNodeArray [previousValue >> 1].mAuxiliary) <= (previousValue >> 1), "(elseBranch [%lld] >> 1) <= nodeIndex [%lld]", (gNodeArray [previousValue >> 1].mAuxiliary), previousValue >> 1) ;
       p->mBDDvalue = (gNodeArray [previousValue >> 1].mAuxiliary << 1) | (previousValue & 1) ;
-      // printf ("root %X -> %X\n", previousValue, p->mBDDvalue) ;
-     // MF_Assert (previousValue == p->mBDDvalue, "(previousValue [%lld] >> 1) == p->mBDDvalue [%lld]", previousValue, p->mBDDvalue) ;
       p = p->mPtrToNextBDD ;
     }
   }
@@ -416,13 +405,13 @@ void C_BDD::markAndSweepUnusedNodes (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD constructors, destructor, assignment
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD::C_BDD (void) :
 mBDDvalue (0),
@@ -431,7 +420,7 @@ mPtrToNextBDD (NULL) {
   initLinks () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD::C_BDD (const uint32_t inValue) :
 mBDDvalue (inValue),
@@ -440,7 +429,7 @@ mPtrToNextBDD (NULL) {
   initLinks () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD::C_BDD (const uint32_t variable,
               const bool inSign) :
@@ -452,7 +441,7 @@ mPtrToNextBDD (NULL) {
   mBDDvalue = find_or_add (variable, complement, complement ^ 1 COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD::C_BDD (const C_BDD & inSource) :
 mBDDvalue (inSource.mBDDvalue),
@@ -461,42 +450,59 @@ mPtrToNextBDD (NULL) {
   initLinks () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::initLinks (void) {
-  mPtrToPreviousBDD = this ;
-  mPtrToNextBDD = this ;
-  C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
-  mPtrToPreviousBDD = & gBDDinstancesListRoot ;
-  suivantRacine->mPtrToPreviousBDD = this ;
-  mPtrToNextBDD = suivantRacine ;
-  gBDDinstancesListRoot.mPtrToNextBDD = this ;
+  if (gFirstBDD == NULL) {
+    gLastBDD = this ;
+  }else{
+    gFirstBDD->mPtrToPreviousBDD = this ;
+  }
+  mPtrToNextBDD = gFirstBDD ;
+  gFirstBDD = this ;
+
+//  mPtrToPreviousBDD = this ;
+//  C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
+//  mPtrToPreviousBDD = & gBDDinstancesListRoot ;
+//  suivantRacine->mPtrToPreviousBDD = this ;
+//  mPtrToNextBDD = suivantRacine ;
+//  gBDDinstancesListRoot.mPtrToNextBDD = this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD::~C_BDD (void) {
   mBDDvalue = 0 ;
-  C_BDD * suivant = mPtrToNextBDD ;
-  C_BDD * precedent = mPtrToPreviousBDD ;
-  precedent->mPtrToNextBDD = suivant ;
-  suivant->mPtrToPreviousBDD = precedent ;
+  if (mPtrToPreviousBDD == NULL) {
+    gFirstBDD = gFirstBDD->mPtrToNextBDD ;
+  }else{
+    mPtrToPreviousBDD->mPtrToNextBDD = mPtrToNextBDD ;
+  }
+  if (mPtrToNextBDD == NULL) {
+    gLastBDD = gLastBDD->mPtrToPreviousBDD ;
+  }else{
+    mPtrToNextBDD->mPtrToPreviousBDD = mPtrToPreviousBDD ;
+  }
+//  C_BDD * suivant = mPtrToNextBDD ;
+//  C_BDD * precedent = mPtrToPreviousBDD ;
+//  precedent->mPtrToNextBDD = suivant ;
+//  suivant->mPtrToPreviousBDD = precedent ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 C_BDD & C_BDD::operator = (const C_BDD & inSource) {
   mBDDvalue = inSource.mBDDvalue ;
   return *this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Check all BDDs are well-formed
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void internalCheckBDDIsWellFormed (const uint32_t inBDD,
                                           const uint32_t inCurrentVar
@@ -519,20 +525,20 @@ static void internalCheckBDDIsWellFormed (const uint32_t inBDD,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::checkAllBDDsAreWellFormed (LOCATION_ARGS) {
 //--- Unmark all nodes
   unmarkAllExistingBDDnodes () ;
 //--- Check BDDs
-  C_BDD * p = gBDDinstancesListRoot.mPtrToNextBDD ;
-  while (p != & gBDDinstancesListRoot) {
+  C_BDD * p = gFirstBDD ;
+  while (p != NULL) {
     internalCheckBDDIsWellFormed (p->mBDDvalue, UINT16_MAX COMMA_THERE) ;
     p = p->mPtrToNextBDD ;
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::checkBDDIsWellFormed (LOCATION_ARGS) {
 //--- Unmark all nodes
@@ -541,13 +547,13 @@ void C_BDD::checkBDDIsWellFormed (LOCATION_ARGS) {
   internalCheckBDDIsWellFormed (mBDDvalue, UINT16_MAX COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Memory Usage
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::currentMemoryUsage (void) {
   uint32_t result = nodeMapMemoryUsage () ;
@@ -557,29 +563,29 @@ uint32_t C_BDD::currentMemoryUsage (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static uint32_t gMaximumMemoryUsage = UINT32_MAX ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 uint32_t C_BDD::maximumMemoryUsage (void) { // In MB
   return gMaximumMemoryUsage ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::setMaximumMemoryUsage (const uint32_t inMaxMemoryUsage) { // In MB
   gMaximumMemoryUsage = inMaxMemoryUsage ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD Package stats
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::printBDDpackageOperationsSummary (AC_OutputStream & inStream) {
   #ifdef __LP64__
@@ -625,7 +631,7 @@ void C_BDD::printBDDpackageOperationsSummary (AC_OutputStream & inStream) {
   }  
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void C_BDD::freeBDDStataStructures (void) {
   releaseANDOperationCache () ;
@@ -644,4 +650,4 @@ void C_BDD::freeBDDStataStructures (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

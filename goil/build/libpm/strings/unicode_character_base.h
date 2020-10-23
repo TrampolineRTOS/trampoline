@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  unicode_character : an implementation of Unicode character                                                         *
 //                                                                                                                     *
@@ -6,9 +6,9 @@
 //                                                                                                                     *
 //  Copyright (C) 2008, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,12 +18,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-#ifndef UNICODE_BASE_ROUTINES_DEFINED
-#define UNICODE_BASE_ROUTINES_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 //--- Character assigned ?
 bool isUnicodeCharacterAssigned (const utf32 inUnicodeCharacterCode) ;
@@ -76,7 +75,7 @@ bool isUnicodePunctuation (const utf32 inUnicodeCharacter) ;
 //--- Returns true if unicode symbol
 bool isUnicodeSymbol (const utf32 inUnicodeCharacter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 extern const utf32 UNICODE_REPLACEMENT_CHARACTER ;
 extern const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER ;
@@ -84,21 +83,22 @@ extern const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER ;
 //--- Returns true if unicode letter
 bool isRestrictedUnicodeLetter (const utf32 inUnicodeCharacter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //   D E C O D E    H T M L    E N C O D I N G                                                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 //--- Decode HTML in string, return Unicode (or NULL if not found)
 #ifdef __cplusplus
   utf32 unicodeCharacterFromHTMLSequence (const C_String & inString) ;
 #endif
+
 #ifdef __OBJC__
   utf32 unicodeCharacterFromHTMLSequence (NSString * inString) ;
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 utf32 unicodeCharacterForSingleByteCharacter (const char inChar, const PMStringEncoding inStringEncoding) ;
 
@@ -115,6 +115,4 @@ int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequenc
                                   bool & ioOK) ;
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#endif
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

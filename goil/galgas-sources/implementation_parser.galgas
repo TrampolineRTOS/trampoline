@@ -26,25 +26,6 @@
 
 syntax implementation_parser(goil_lexique){
 
-#rule <implementation_definition> ?!@implementation implementation
-#rule <implementation_objects> ?!@implementation implementation
-#rule <implementation_type> !@lstring attributeName !@impType type
-
-#rule <with_auto> !@bool withAuto
-#rule <int_or_float> !@object_t num ?let @dataType type
-#rule <set_followup> ?!@numberList numbers ?let @dataType type
-#rule <range> !@attributeRange range ?let @dataType rangeType
-#rule <range_content> !@attributeRange range ?let @dataType rangeType
-#rule <number_options> !@lstring name !@impType options ?let @dataType type
-#rule <type_options> !@lstring name !@impType options ?let @dataType type
-#rule <boolean_options> !@lstring name !@impType options
-#rule <string_options> !@lstring name !@impType options
-#rule <enum_item> ?!@enumValues items
-#rule <enum_options> !@lstring name !@impType options
-#rule <multiple> !@bool multiple
-#rule <identifier_or_attribute> !@lstring name
-#rule <identifier_or_enum_value> !@lstring name
-
 #
 # External rules
 #
@@ -110,28 +91,6 @@ rule <include_type_level>
   end
 }
 
-#routine addToImplementation
-#  ?!@implementation implementation
-#  ??@implementationObject object
-#  ??@lstring objectKind
-#:
-#  @implementationObject previousObject;
-#  @implementationMap imp := [implementation imp];
-#  if [implementation hasKey ![objectKind string]] then
-#    [!?imp del !objectKind ?previousObject];
-#  else
-#    previousObject := [@implementationObject emptyMap];
-#  end if;
-#  foreach object do
-#    if [previousObject hasKey ![lkey string]] then
-#      [!?previousObject del !lkey ?*];
-#    end if;
-#    [!?previousObject put !lkey !type];
-#  end foreach;
-#  [!?imp put !objectKind !previousObject];
-#  [!?implementation setImp !imp];
-#end routine;
-
 rule <implementation_objects>
   ?!@implementation implementation
 {
@@ -164,18 +123,7 @@ rule <implementation_objects>
   else
     object = newObject
   end
-  
-#  if objectKnown then
-#    if [multiple bool] != [oldMultiple bool] then
-#      if [option goil_options.warnMultiple value] then
-#        warning multiple:"Object multiple redefinition"
-#        warning oldMultiple:"was defined here"
-#      end
-#      multiple = oldMultiple
-#    end
-#  end
-  
-  
+    
   [!?imp put !objectName !object]
   [!?implementation setImp !imp]
 }

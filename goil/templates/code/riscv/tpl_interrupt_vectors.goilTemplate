@@ -1,0 +1,322 @@
+/* Interrupt table vector */
+#include "tpl_compiler.h"
+#include "tpl_os.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_machine.h"
+#include <int.h>
+
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let objForIRQ := @[ ]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @( )
+  end if
+  let isr::KIND := "ISR"
+  let objForIRQ[key] += isr
+end foreach
+
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @( )
+  end if
+  let cnt::KIND := "COUNTER"
+  let objForIRQ[key] += cnt
+end foreach
+
+
+# Map ISR2s to an index for tpl_isr_stat_table
+let index := 0
+let mapOfISR2 := @[ ]
+foreach isr in ISRS2 do
+  let key := isr::SOURCE
+  if not exists mapOfISR2[key] then
+    let mapOfISR2[key] := @( )
+  end if
+  let isr::INDEX := index
+  let mapOfISR2[key] += isr
+  let index := index + 1
+end foreach
+
+#let mapOfISR := mapof ISR by SOURCE
+#let mapOfISRS2 := mapof ISRS2 by SOURCE
+#let mapOfCOUNTER := mapof COUNTER by SOURCE
+let setOfISRsource := [ISR setBy: "SOURCE"]
+let setOfISRS2source := [ISRS2 setBy: "SOURCE"]
+let setOfCOUNTERsource := [COUNTER setBy: "SOURCE"]
+
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+let mapOfHandlers := @[ ]
+
+foreach irq in INTERRUPTMAP do
+  let key := irq::NAME
+  if [setOfISRsource contains: key] then
+    if not exists mapOfHandlers[key] then
+      let mapOfHandlers[key] := @( )
+    end if
+#    let mapOfHandlers[key] += mapOfISR[key]
+  end if
+  if [setOfISRS2source contains: key] then
+    if not exists mapOfHandlers[key] then
+      let mapOfHandlers[key] := @( )
+    end if
+#    let mapOfHandlers[key] += mapOfISRS2[key]
+  end if
+  if [setOfCOUNTERsource contains: key] then
+    if not exists mapOfHandlers[key] then
+      let mapOfHandlers[key] := @( )
+    end if
+#    let mapOfHandlers[key] += mapOfCOUNTER[key]
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+
+%
+/* External handlers */
+%
+
+# Get the maximum priority of used IRQs
+let max_irq_prio := @( )
+foreach isr in ISRS do
+  if exists max_irq_prio[isr::SOURCE] then
+    if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
+      let max_irq_prio[isr::SOURCE] := isr
+    end if
+  else
+    let max_irq_prio[isr::SOURCE] := isr
+  end if
+end foreach
+
+# Sort them by priority
+let sorted_isrs := @( )
+foreach isr in max_irq_prio do
+  let sorted_isrs += isr
+end foreach
+sort sorted_isrs by PRIORITY <
+
+# Print them by order
+let prioVect := @[ ]
+foreach isr in sorted_isrs do
+  let interrupt := INTERRUPTMAP[isr::SOURCE]
+  let prio := INDEX
+  let prioVect[interrupt::NAME] := prio
+%uint8 % !isr::SOURCE % = % !prio %;
+% end foreach
+
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  do
+    let handlerIsEmpty := true
+    foreach int in INTERRUPT do
+      # Reach the declared interrupt in INTERRUPT
+      let vect := -1
+      let found := false
+      if exists prioVect[int::NAME] then
+         let vect := prioVect[int::NAME]
+         let found := true
+      end if
+      if ENTRY == int::VECT | (found == true & vect == ENTRY) then
+        if exists objForIRQ[int::NAME] then
+          let handlerIsEmpty := false
+          foreach objList in objForIRQ do
+            if KEY == int::NAME then
+              # We have found the list of interrupts to call
+              # How many ISR do we have for this SOURCE ?
+              if [objList length] == 1 then
+                let obj := [objList first]
+                # check whether we have an ISR or a COUNTER
+                if obj::KIND == "ISR" then
+                  if obj::CATEGORY == 1 then
+                    %extern FUNC(void, OS_CODE) % !KEY %_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+                  else
+                    if obj::CATEGORY == 2 then
+                      %extern FUNC(void, OS_CODE) ISR_% !KEY %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+                    else
+                      %#error unknown CATEGORY % !obj::CATEGORY %
+%
+                    end if
+                  end if
+                else # this is a counter
+                  %extern FUNC(void, OS_CODE) ISR_% !KEY %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+                end if
+              else
+                # check if we have only ISR1
+                let onlyISR1 := true
+                foreach obj in objList do
+                  if ( (obj::KIND == "ISR" & obj::CATEGORY == 2) |
+                       (obj::KIND == "COUNTER") ) then
+                    let onlyISR1 := false
+                  end if
+                end foreach
+                if onlyISR1 == true then
+                  %extern FUNC(void, OS_CODE) % !KEY %_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+                else
+                  %extern FUNC(void, OS_CODE) ISR_% !KEY %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+                end if
+              end if
+            end if
+          end foreach
+        else
+          if int::EXCEPTION then
+            let handlerIsEmpty := false
+            if int::VECTOR_TYPE == "HANDLER" then
+              if int::VECTOR_TYPE_S::NAME != "NONE" then
+                %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+#              else
+#                %(tpl_it_handler)tpl_null_it%
+              end if
+#            else
+#              if int::VECTOR_TYPE == "REFERENCE" then
+#                %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+#%
+#              end if
+            end if
+          end if
+        end if
+      end if
+    end foreach
+#    if handlerIsEmpty then
+#      %(tpl_it_handler)tpl_null_it%
+#    end if
+end loop
+%
+/* Interrupt table vector */
+%
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+  do
+    %  %#{ %
+    let handlerIsEmpty := true
+    foreach int in INTERRUPT do
+      # Reach the declared interrupt in INTERRUPT
+      let vect := -1
+      let found := false
+      if exists prioVect[int::NAME] then
+         let vect := prioVect[int::NAME]
+         let found := true
+      end if
+      if ENTRY == int::VECT | (found == true & vect == ENTRY) then
+        if exists objForIRQ[int::NAME] then
+          let handlerIsEmpty := false
+          foreach objList in objForIRQ do
+            if KEY == int::NAME then
+              # We have found the list of interrupts to call
+              # How many ISR do we have for this SOURCE ?
+              if [objList length] == 1 then
+                let obj := [objList first]
+                # check whether we have an ISR or a COUNTER
+                if obj::KIND == "ISR" then
+                  if obj::CATEGORY == 1 then
+                    %(tpl_it_handler)% !KEY %_Handler%
+                  else
+                    if obj::CATEGORY == 2 then
+                      %(tpl_it_handler)ISR_% !KEY
+                    else
+                      %#error unknown CATEGORY % !obj::CATEGORY
+                    end if
+                  end if
+                else # this is a counter
+                  %(tpl_it_handler)ISR_% !KEY
+                end if
+              else
+                # check if we have only ISR1
+                let onlyISR1 := true
+                foreach obj in objList do
+                  if ( (obj::KIND == "ISR" & obj::CATEGORY == 2) |
+                       (obj::KIND == "COUNTER") ) then
+                    let onlyISR1 := false
+                  end if
+                end foreach
+                if onlyISR1 == true then
+                  %(tpl_it_handler)% !KEY %_Handler%
+                else
+                  %(tpl_it_handler)ISR_% !KEY
+                end if
+              end if
+            end if
+          end foreach
+        else
+          if int::EXCEPTION then
+            let handlerIsEmpty := false
+            if int::VECTOR_TYPE == "HANDLER" then
+              if int::VECTOR_TYPE_S::NAME != "NONE" then
+                %(tpl_it_handler)% !int::VECTOR_TYPE_S::NAME
+              else
+                %(tpl_it_handler)tpl_null_it%
+              end if
+            else
+              if int::VECTOR_TYPE == "REFERENCE" then
+                %(tpl_it_handler)% !int::VECTOR_TYPE_S::NAME
+              end if
+            end if
+          end if
+        end if
+      end if
+    end foreach
+    if handlerIsEmpty then
+      %(tpl_it_handler)tpl_null_it%
+    end if
+#    % }%
+  between %,
+%
+  after
+%
+};
+%
+end loop
+%
+%
+
+loop priority from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+CONST(uint32, AUTOMATIC) tpl_priority_interruption_masks[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+  do
+
+  let currentMask := 0x00FFFFFF
+  if [ALARMS length] > 0 then
+    let currentMask := 0xF0FFFFFF
+  end if
+
+  if [max_irq_prio length] == 0 then
+!currentMask%,
+%
+  else
+  
+    foreach isr in ISRS2
+      do
+      let int := INTERRUPTMAP[isr::SOURCE]
+      if (priority >= isr::PRIORITY) then
+        let currentMask := currentMask & ~(2 << prioVect[int::NAME])
+      end if
+    end foreach
+    !currentMask%,
+%
+  end if
+  after
+%};
+%
+end loop
+
+# vim:ft=goil_templates

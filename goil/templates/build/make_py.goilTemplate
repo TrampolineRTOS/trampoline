@@ -59,13 +59,21 @@ end foreach
 #---     produced. This is done by the build.py file.
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
+from __future__ import print_function
 import sys, os, subprocess, atexit, string
 
 #--- Add the location of makefile.py to the import path
 sys.path.append("% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/make")
 
 #--- Import the makefile system in python
-import makefile, projfile
+try:
+	import makefile, projfile
+except ImportError:
+	#it defines inline the red color, as other are defined in the makefile.py
+	print("\033[91mThe OS->BUILD->TRAMPOLINE_BASE_PATH key is not set correctly in the oil file % !OILFILENAME %.")
+	print("Set the correct Trampoline installation path in the oil file and run goil again:\033[0m")
+	print("goil -t=%!TARGET% --templates=%!TEMPLATEPATH% %!OILFILENAME%")
+	sys.exit(1)
 
 #--- To work with relative paths
 scriptDir = os.path.dirname (os.path.abspath (sys.argv[0]))

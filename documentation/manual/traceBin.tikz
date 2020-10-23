@@ -1,0 +1,30 @@
+\definecolor{colorLine}{RGB}{100,100,100}
+\definecolor{colorFill}{RGB}{230,230,230}
+
+\begin{tikzpicture}[
+txt/.style = {font=\Large},
+boxTxt/.style = {colorLine,fill=colorFill,thick,txt,text width=3cm, text centered,text=black},
+box/.style ={draw,drop shadow={opacity=0.25},boxTxt,minimum height=2cm,minimum width=3cm},
+boxLegende/.style={box,minimum width=1.5cm,text width = 0cm,minimum height=1cm},
+fleche/.style={->,>=stealth,line width=0.5mm},
+srcFile/.style={draw,tape,drop shadow={opacity=0.25},boxTxt, minimum height=2cm, tape bend top=out and in, tape bend bottom=out and in}
+]
+
+%w    width is displayed frame
+%text field text
+%s    size in trace
+\newcount\offset
+\offset=0
+\foreach \w/\text/\s in {
+  2/Type      /3,
+  1/xx        /5,
+  4/TimeStamp/16,
+  2/xxx       /8,
+  2/Chksum    /8
+}{
+  \draw[boxTxt] (\the\offset,0) rectangle ++(\w,1) node[midway] {\text};
+  \draw[<->] (\the\offset,-.2) -- ++(\w,0) node[midway,below] {\s};
+  \global\advance\offset by \w
+}
+
+\end{tikzpicture}

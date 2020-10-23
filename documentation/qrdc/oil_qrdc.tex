@@ -1,0 +1,341 @@
+\documentclass[10pt,notumble]{leaflet}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{a4paper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{lipsum}
+\usepackage{underscore}
+\usepackage{longtable}
+
+\title{\vspace{-2em}\sc{Basic Oil} QRDC\vspace{-.5em}}
+\author{\scriptsize Jean-Luc B\'echennec -- LS2N\\\scriptsize v1.0 -- September 2018}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+
+\maketitle
+
+
+\newcommand\ext[1]{\footnotesize #1$\dagger$}
+\newcommand\attrval[1]{\footnotesize #1}
+\newcommand\defattrval[1]{\footnotesize \hspace{-.3em}\fbox{#1}}
+\newcommand\sect[1]{\vspace{-1.5em}\section{\hrulefill\\#1}\vspace{-1.5em}\hrulefill}
+\newcommand\code[1]{\texttt{\small #1}}
+\newcommand\attr[1]{\vspace{-.8em}\subsection{#1}\vspace{-.3em}}
+\newcommand\subattr[2]{\vspace{-.3em}\subsection{{\footnotesize #1} $\triangleright$ #2}}
+\newcommand\optattr[1]{\vspace{-.8em}\subsection{#1\,$\dagger$}}
+\newcommand\schedservice[1]{\vspace{-.8em}\subsection{#1 $\Join$}}
+\newcommand\many{\raisebox{.075em}{$\otimes$}}
+
+%\lipsum[2-56]
+\thispagestyle{empty}
+
+
+\setlength\LTleft\parindent
+\setlength\LTright\fill
+\setlength\LTpre{.5em}
+\setlength\LTpost{-.2em}
+
+The OIL standard defines standard attributes but allows implementation-specific attributes. The latter are suffixed by a $\dagger$. Attribute values in a \fbox{\footnotesize box} are the default values. If none of the attribute values are boxed no default value exists.
+Attributes suffixed by a $\otimes$ may appear 0, 1 or many times.
+
+\sect{OS object attributes}
+
+\attr{STATUS}
+
+Set the error processing level of services. See the {\sc Osek} QRDC. Possible values are:
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{STANDARD} & does not check object ids, caller identity and state, alarm bounds and resources ownership.\\
+\attrval{EXTENDED} & checks all possible errors.\\
+\end{longtable}
+
+\attr{STARTUPHOOK}
+
+Switch the call to the startup hook in StartOS.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the startup hook is not called\\
+\attrval{TRUE} & the startup hook is called\\
+\end{longtable}
+
+\attr{SHUTDOWNHOOK}
+
+Switch the call to the shutdown hook in ShutdownOS.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the shutdown hook is not called\\
+\attrval{TRUE} & the shutdown hook is called\\
+\end{longtable}
+
+\attr{ERRORHOOK}
+
+Switch the call to the error hook when an error occurs in a service or while processing an alarm.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the error hook is not called\\
+\attrval{TRUE} & the error hook is called\\
+\end{longtable}
+
+\attr{PRETASKHOOK}
+
+Switch the call to the pre task hook when a context switch is about to occur.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the pre task hook is not called\\
+\attrval{TRUE} & the pre task hook is called\\
+\end{longtable}
+
+\attr{POSTTASKHOOK}
+
+Switch the call to the post task hook when a context switch is about to occur.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the post task hook is not called\\
+\attrval{TRUE} & the post task hook is called\\
+\end{longtable}
+
+\attr{USEGETSERVICEID}
+
+Enable the macro allowing to access in the error hook the identifier of the service in which the error occurred.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the macro to get the identifier of the service is disabled\\
+\attrval{TRUE} & the macro to get the identifier of the service is enabled\\
+\end{longtable}
+
+\attr{USEPARAMETERACCESS}
+
+Enable the macros allowing to access in the error hook the parameters of the service in which the error occurred.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the macro to get the parameters of the service is disabled\\
+\attrval{TRUE} & the macro to get the parameters of the service is enabled\\
+\end{longtable}
+
+\attr{USERESSCHEDULER}
+
+Enable the \code{res_scheduler} resource. This resource has a priority higher than the highest priority task and lower than the lowest priority ISR2.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{FALSE} & the \code{res_scheduler} resource is disabled\\
+\defattrval{TRUE} & the \code{res_scheduler} resource is enabled\\
+\end{longtable}
+
+\optattr{BUILD}
+
+Enable the generation of a build script.
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & no build script is generated\\
+\attrval{TRUE} & a build script is generated\\
+\end{longtable}
+
+\subattr{TRUE}{APP_SRC \many}
+
+Gives as a string a C source file name where the application code is located.
+
+\subattr{TRUE}{APP_CPPSRC \many}
+
+Gives as a string a C++ source file name where the application code is located.
+
+\subattr{TRUE}{APP_NAME}
+
+The output binary executable file name.
+
+\subattr{TRUE}{TRAMPOLINE_BASE_PATH}
+
+The path to the trampoline directory.
+
+\subattr{TRUE}{CFLAGS \many}
+
+Gives as a string the flags passed to the C compiler
+
+\subattr{TRUE}{CPPFLAGS \many}
+
+Gives as a string the flags passed to the C++ compiler
+
+\subattr{TRUE}{COMMONFLAGS \many}
+
+Gives as a string the flags passed to both the C and the C++ compiler
+
+\subattr{TRUE}{ASFLAGS \many}
+
+Gives as a string the flags passed to the assembler.
+
+\subattr{TRUE}{LDFLAGS \many}
+
+Gives as a string the flags passed to the linker.
+
+\sect{APPMODE objects attribute}
+
+\attr{DEFAULT}
+
+If $>1$ APPMODE are defined, exactly one of the APPMODE shall have its DEFAULT attribute set to TRUE
+
+\begin{longtable}{lp{5.8cm}}
+\defattrval{FALSE} & the APPMODE is not the default one\\
+\attrval{TRUE} & the APPMODE is the default one\\
+\end{longtable}
+
+\sect{ISR objects attributes}
+
+\attr{CATEGORY}
+
+Set the category of the ISR.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{1} & the ISR is an ISR 1\\
+\attrval{2} & the ISR is an ISR 2\\
+\end{longtable}
+
+
+\attr{PRIORITY}
+
+Specifies the priority of the ISR. PRIORITY range from 0 (the lowest) to $2^{32}-1$ (the highest). Even a priority lower than the highest priority task is given, the OIL compiler compute an actual priority greater than the highest priority task.
+
+\attr{SOURCE}
+
+Specifies the hardware interrupt source. Possible values depend on the hardware platform.
+
+\attr{RESOURCE \many}
+
+Gives the resources used by the ISR, usable only for ISR 2.
+
+\attr{MESSAGE \many}
+
+Gives the messages used by the ISR, usable only for ISR 2.
+
+\sect{TASK objects attributes}
+
+\attr{AUTOSTART}
+
+Specifies if a task is in the \code{READY} state or not when the OS is started.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{FALSE} & the task is in the \code{SUSPENDED} state\\
+\attrval{TRUE} & the task is in the \code{READY} state\\
+\end{longtable}
+
+\subattr{TRUE}{APPMODE \many}
+
+$\geq 1$ APPMODE sub-attribute shall be set. The task is AUTOSTART if the OS is started in one of these APPMODE.
+
+
+\attr{PRIORITY}
+
+Specifies the priority of the task. PRIORITY range from 0 (the lowest) to $2^{32}-1$ (the highest).
+
+\attr{ACTIVATION}
+
+Specifies the number of jobs that can be recorded. ACTIVATION ranges from 1 to $2^{32}-1$.
+
+\attr{SCHEDULE}
+
+Specifies if the task is preemptable or not.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{FULL} & the task is preemptable\\
+\attrval{NON} & the task is not preemptable\\
+\end{longtable}
+
+\attr{EVENT \many}
+
+Gives the events used by the task. A task having no EVENT attribute is a basic task. A task having $\geq 1$ EVENT attribut is an extended task.
+
+\attr{RESOURCE \many}
+
+Gives the resources used by the task.
+
+\attr{MESSAGE \many}
+
+Gives the messages used by the task.
+
+\sect{COUNTER objects attributes}
+
+\attr{MINCYCLE}
+
+Set the minimum number of ticks which separate two alarm expirations. Default to 1.
+
+\attr{TICKSPERBASE}
+
+Set the prescaler of the counter. Default to 1.
+
+\attr{MAXALLOWEDVALUE}
+
+Set the maximum value of the counter. Default to 32767.
+
+\sect{ALARM objects attributes}
+
+\attr{COUNTER}
+
+Set the counter used by the alarm.
+
+\attr{AUTOSTART}
+
+Specifies if an alarm is started or not when the OS is started.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{FALSE} & the alarm is not started\\
+\attrval{TRUE} & the alarm is started\\
+\end{longtable}
+
+\subattr{TRUE}{APPMODE \many}
+
+$\geq 1$ APPMODE sub-attribute shall be set. The alarm is AUTOSTART if the OS is started in one of these APPMODE.
+
+\attr{ACTION}
+
+Specifies which action to do when the alarm expire.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{ACTIVATETASK} & activate a task. \\
+\attrval{SETEVENT} & set an event to a task\\
+\attrval{ALARMCALLBACK} & call a function\\
+\end{longtable}
+
+\subattr{ACTIVATETASK}{TASK}
+
+Specifies which task to activate.
+
+\subattr{SETEVENT}{TASK}
+
+Specifies which task is the target of the event.
+
+\subattr{SETEVENT}{EVENT}
+
+Specifies the event.
+
+\subattr{ALARMCALLBACK}{\\ALARMCALLBACKNAME}
+
+Specifies a string with the name of the function to call.
+
+%\newpage
+\sect{EVENT objects attribute}
+
+\attr{MASK}
+
+Set the event mask of the event.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{AUTO} & the actual value is computed by the OIL compiler\\
+\attrval{[0..$2^{32}-1$]} & the actual value is set to this value\\
+\end{longtable}
+
+\sect{RESOURCE objects attribute}
+
+\attr{RESOURCEPROPERTY}
+
+Set the kind of resource.
+
+\begin{longtable}{lp{5.8cm}}
+\attrval{STANDARD} & the resource is a standard one te be used with \code{GetResource} and \code{ReleaseResource}\\
+\attrval{INTERNAL} & the resource is an internal one\\
+\end{longtable}
+
+
+
+\end{document}  

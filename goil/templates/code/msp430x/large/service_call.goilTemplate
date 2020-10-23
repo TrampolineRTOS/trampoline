@@ -1,0 +1,16 @@
+
+ /*============================================================================
+  * Service % !api_func::NAME %
+  */
+.global % !exists api_func::ACTUAL default ( api_func::NAME ) %
+.type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
+% !exists api_func::ACTUAL default ( api_func::NAME ) %:
+    /*-------------------------------------------------------------------------
+     * Load the service id in REG_SID (R12 or R15, depending on the ABI)
+     */
+    mov   #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %, REG_SID
+    /*-------------------------------------------------------------------------
+     * Does the system call
+     */
+    calla #tpl_sc_handler
+    ret

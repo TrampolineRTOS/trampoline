@@ -1,7 +1,7 @@
 CPU avrArduino {
 
   PLATFORM_FILES arduinoMega {
-    PATH = "avr/arduino/hardware/variants/mega";
+    PATH = "avr/arduino/variants/mega";
   };
   
   BUILDOPTIONS buildOptionsForArduino {
@@ -14,12 +14,23 @@ CPU avrArduino {
 
 CPU arduino {
 
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+  };
+
   POSTCOMMAND flash {
     COMMAND flash {
       MESSAGE = "Flashing";
       COMMAND = "avrdude";
-      INPUT = TARGET { EXT = ""; };
-      PREOPTION = "-c stk500v2 -p m2560 -P/dev/ttyUSB0 -U flash:w:";
+      INPUT = TARGET { EXT = ".hex"; };
+      PREOPTION = "-c wiring -p m2560";
+      PREOPT = ENVAR { NAME = "AVRDUDE_PORT"; OPT = "-P"; };
+      PREOPT = LITERAL { VALUE = "flash:w:"; OPT = "-U"; };
     };
   };
 }; 

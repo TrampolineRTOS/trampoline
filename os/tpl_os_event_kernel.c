@@ -127,6 +127,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   {
     tpl_task_events_table[(tpl_proc_id)TPL_KERN(core_id).running_id]->evt_set &=
       (tpl_event_mask)(~event);
+    TRACE_EVENT_RESET(event)
   }
 #endif
 

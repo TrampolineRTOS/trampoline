@@ -313,10 +313,10 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMDisableTimerInterrupt(
  *
  * See page 781 of the mk20dx256 manual.
  */
-#define FTM_NoClock             0x00ul
-#define FTM_SystemClock         0x01ul
-#define FTM_FixedFrequencyClock 0x02ul
-#define FTM_ExternalClock       0x03ul
+#define FTM_NoClock             (0x00ul)
+#define FTM_SystemClock         (0x01ul)
+#define FTM_FixedFrequencyClock (0x02ul)
+#define FTM_ExternalClock       (0x03ul)
 
 INLINE_FUNC(tpl_status, OS_CODE) FTMSetClockSource(
   CONST(uint32, AUTOMATIC) timer,
@@ -397,21 +397,21 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetUpDownCounting(
  */
 
 /* Corresponding prescaler values */
-#define FTM_PS_1    0x00ul
-#define FTM_PS_2    0x01ul
-#define FTM_PS_4    0x02ul
-#define FTM_PS_8    0x03ul
-#define FTM_PS_16   0x04ul
-#define FTM_PS_32   0x05ul
-#define FTM_PS_64   0x06ul
-#define FTM_PS_128  0x07ul
+#define FTM_PS_1    (0x00ul)
+#define FTM_PS_2    (0x01ul)
+#define FTM_PS_4    (0x02ul)
+#define FTM_PS_8    (0x03ul)
+#define FTM_PS_16   (0x04ul)
+#define FTM_PS_32   (0x05ul)
+#define FTM_PS_64   (0x06ul)
+#define FTM_PS_128  (0x07ul)
 
 INLINE_FUNC(tpl_status, OS_CODE) FTMSetPrescaler(
   CONST(uint32, AUTOMATIC) timer,
   CONST(uint32, AUTOMATIC) prescaler)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER(timer).FTM_SC &= FTM_SC_PS(7);          /* Reset prescaler to 0 */
+  FTM_TIMER(timer).FTM_SC &= ~FTM_SC_PS(7);          /* Reset prescaler to 0 */
   FTM_TIMER(timer).FTM_SC |= FTM_SC_PS(prescaler);  /* Set the new value    */
   return E_OK;
 }

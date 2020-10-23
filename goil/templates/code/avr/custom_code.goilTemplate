@@ -1,0 +1,25 @@
+%
+# @file custom_code.goilTemplate
+#
+# @section desc File description
+#
+# custom code template file for goil
+# 
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) LS2N
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# 
+
+write to PROJECT+"/tpl_interrupts.c":
+ let EXTENSIONSECONDSTAGE := "c"
+ template if exists tpl_external_interrupts_c in code
+end write
+

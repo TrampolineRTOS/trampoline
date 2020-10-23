@@ -1,0 +1,20 @@
+/*
+ * Interrupt sources
+ */
+ENUM [
+  SOFT_IRQ0,
+  SOFT_IRQ1,
+  SOFT_IRQ2,
+  I2C,
+  UART,
+  GPIO,
+  SPIM0,
+  SPIM1,
+  TA_CMP,
+  TA_OVF,
+  TB_CMP,
+  TB_OVF,
+  Reset,
+  IllegalInstruction,
+  ECALL
+] SOURCE;

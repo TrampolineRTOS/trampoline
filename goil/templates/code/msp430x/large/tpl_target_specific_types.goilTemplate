@@ -1,0 +1,11 @@
+/**
+ * tpl_tick is used for relative and absolute dates.
+ * tpl_tick should be an unsigned datatype.
+ *
+ * On MSP430, tpl_ticks should be limited to 16 bits
+ * (on 32 bits, arguments for system call SetRelAlarm 
+ *  would be passed through the stack, which is not
+ *  possible)
+ */
+typedef uint16 tpl_tick;
+

@@ -1,14 +1,14 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //  'GALGAS_string' : class of galgas string                                                                           *
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1996, ..., 2016 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1996, ..., 2018 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
 //                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
@@ -18,7 +18,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include "all-predefined-types.h"
 #include "galgas2/C_galgas_CLI_Options.h"
@@ -31,7 +31,7 @@
 #include "files/C_BinaryFileWrite.h"
 #include "galgas2/F_verbose_output.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #include <math.h>
 #include <dirent.h>
@@ -40,7 +40,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifndef COMPILE_FOR_WINDOWS
   #error COMPILE_FOR_WINDOWS is undefined
@@ -54,38 +54,40 @@
   #include <Shlobj.h>
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     C++ Management                                                                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark C++ Management
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string::GALGAS_string (void) :
+AC_GALGAS_root (),
 mIsValid (false),
 mString () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string::GALGAS_string (const C_String & inString) :
+AC_GALGAS_root (),
 mIsValid (true),
 mString (inString) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::drop (void) {
   mIsValid = false ;
   mString.releaseString () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::makeEmptyString (void) {
   GALGAS_string result ;
@@ -93,7 +95,7 @@ GALGAS_string GALGAS_string::makeEmptyString (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 typeComparisonResult GALGAS_string::objectCompare (const GALGAS_string & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -111,7 +113,7 @@ typeComparisonResult GALGAS_string::objectCompare (const GALGAS_string & inOpera
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::description (C_String & ioString,
                                  const int32_t /* inIndentation */) const {
@@ -124,7 +126,7 @@ void GALGAS_string::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const GALGAS_string & inString) {
@@ -132,7 +134,7 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
   return inStream ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const GALGAS_lstring & inString) {
@@ -140,23 +142,39 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
   return inStream ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     Constructors                                                                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Constructors
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_string GALGAS_string::constructor_stringByRepeatingString (const GALGAS_string & inString,
+                                                                  const GALGAS_uint & inCount
+                                                                  COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result ;
+  if (inString.isValid () && inCount.isValid ()) {
+    C_String s ;
+    for (uint32_t i=0 ; i<inCount.uintValue () ; i++) {
+      s << inString.stringValue () ;
+    }
+    result = GALGAS_string (s) ;
+  }
+  return result ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_newWithStdIn (UNUSED_LOCATION_ARGS) {
   return GALGAS_string (C_String::newWithStdIn ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_CppChar (const GALGAS_char & inCharacter
                                                   COMMA_UNUSED_LOCATION_ARGS) {
@@ -169,14 +187,14 @@ GALGAS_string GALGAS_string::constructor_CppChar (const GALGAS_char & inCharacte
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_CppLineComment (UNUSED_LOCATION_ARGS) {
   C_String s ; s.appendCppHyphenLineComment () ;
   return GALGAS_string (s) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_CppTitleComment (const GALGAS_string & inTitle
                                                           COMMA_UNUSED_LOCATION_ARGS) {
@@ -189,14 +207,14 @@ GALGAS_string GALGAS_string::constructor_CppTitleComment (const GALGAS_string & 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_CppSpaceComment (UNUSED_LOCATION_ARGS) {
   C_String s ; s.appendCppSpaceLineComment () ;
   return GALGAS_string (s) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_CppString (const GALGAS_string & inString
                                                     COMMA_UNUSED_LOCATION_ARGS) {
@@ -209,7 +227,7 @@ GALGAS_string GALGAS_string::constructor_CppString (const GALGAS_string & inStri
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #if COMPILE_FOR_WINDOWS == 0
   GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
@@ -225,13 +243,13 @@ GALGAS_string GALGAS_string::constructor_CppString (const GALGAS_string & inStri
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_string ("") ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithSequenceOfCharacters (const GALGAS_char & inCharacter,
                                                                          const GALGAS_uint & inCount
@@ -248,14 +266,14 @@ GALGAS_string GALGAS_string::constructor_stringWithSequenceOfCharacters (const G
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithSourceFilePath (C_Compiler * inCompiler
                                                                    COMMA_UNUSED_LOCATION_ARGS) {
   return GALGAS_string (inCompiler->sourceFilePath ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithContentsOfFile (const GALGAS_string & inFilePath,
                                                                    C_Compiler * inCompiler
@@ -274,13 +292,13 @@ GALGAS_string GALGAS_string::constructor_stringWithContentsOfFile (const GALGAS_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithCurrentDirectory (UNUSED_LOCATION_ARGS) {
   return GALGAS_string (C_FileManager::currentDirectory ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithEnvironmentVariable (const GALGAS_string & inEnvironmentVariableName,
                                                                         C_Compiler * inCompiler
@@ -299,7 +317,7 @@ GALGAS_string GALGAS_string::constructor_stringWithEnvironmentVariable (const GA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithEnvironmentVariableOrEmpty (const GALGAS_string & inEnvironmentVariableName
                                                                                COMMA_UNUSED_LOCATION_ARGS) {
@@ -311,7 +329,7 @@ GALGAS_string GALGAS_string::constructor_stringWithEnvironmentVariableOrEmpty (c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_componentsJoinedByString (const GALGAS_stringlist & inComponents,
                                                                    const GALGAS_string & inSeparator
@@ -335,7 +353,7 @@ GALGAS_string GALGAS_string::constructor_componentsJoinedByString (const GALGAS_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithCurrentDateTime (UNUSED_LOCATION_ARGS) {
   const time_t currentTime = ::time (NULL) ;
@@ -355,7 +373,7 @@ GALGAS_string GALGAS_string::constructor_stringWithCurrentDateTime (UNUSED_LOCAT
   return GALGAS_string (ok ? timeString : "") ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_retrieveAndResetTemplateString (C_Compiler * inCompiler
                                                                          COMMA_UNUSED_LOCATION_ARGS) {
@@ -363,7 +381,14 @@ GALGAS_string GALGAS_string::constructor_retrieveAndResetTemplateString (C_Compi
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_string GALGAS_string::constructor_separatorString (C_Compiler * inCompiler
+                                                          COMMA_UNUSED_LOCATION_ARGS) {
+  return inCompiler->separatorString () ;
+}
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::constructor_stringWithSymbolicLinkContents (const GALGAS_string & inSymbolicLink,
                                                                          C_Compiler * inCompiler
@@ -383,17 +408,17 @@ GALGAS_string GALGAS_string::constructor_stringWithSymbolicLinkContents (const G
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     Operators                                                                                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Operators
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::add_operation (const GALGAS_string & inOperand2,
                                             C_Compiler * /* inCompiler */
@@ -405,7 +430,7 @@ GALGAS_string GALGAS_string::add_operation (const GALGAS_string & inOperand2,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::plusAssign_operation (GALGAS_string inOperand,
                                           C_Compiler *
@@ -417,17 +442,17 @@ void GALGAS_string::plusAssign_operation (GALGAS_string inOperand,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     Getters                                                                                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Getters
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_HTMLRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -437,7 +462,7 @@ GALGAS_string GALGAS_string::getter_HTMLRepresentation (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_string::getter_nowhere (LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -448,7 +473,7 @@ GALGAS_lstring GALGAS_string::getter_nowhere (LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_lstring GALGAS_string::getter_here (C_Compiler * inCompiler COMMA_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -459,7 +484,7 @@ GALGAS_lstring GALGAS_string::getter_here (C_Compiler * inCompiler COMMA_LOCATIO
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_fileExists (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -469,7 +494,7 @@ GALGAS_bool GALGAS_string::getter_fileExists (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_directoryExists (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -479,7 +504,7 @@ GALGAS_bool GALGAS_string::getter_directoryExists (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint GALGAS_string::getter_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -489,7 +514,7 @@ GALGAS_uint GALGAS_string::getter_length (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_range GALGAS_string::getter_range (UNUSED_LOCATION_ARGS) const {
   GALGAS_range result ;
@@ -499,7 +524,7 @@ GALGAS_range GALGAS_string::getter_range (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_md_35_ (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -509,7 +534,7 @@ GALGAS_string GALGAS_string::getter_md_35_ (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_utf_33__32_Representation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -521,7 +546,7 @@ GALGAS_string GALGAS_string::getter_utf_33__32_Representation (UNUSED_LOCATION_A
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -533,7 +558,20 @@ GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS)
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+GALGAS_uint GALGAS_string::getter_utf_38_Length (UNUSED_LOCATION_ARGS) const {
+  GALGAS_uint result ;
+  if (isValid ()) {
+    C_Data data ;
+    data.appendString (mString) ;
+    result = GALGAS_uint ((uint32_t) data.length ()) ;
+  }
+  return result ;
+}
+
+
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_utf_38_RepresentationWithoutDelimiters (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -545,7 +583,7 @@ GALGAS_string GALGAS_string::getter_utf_38_RepresentationWithoutDelimiters (UNUS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_identifierRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -555,7 +593,7 @@ GALGAS_string GALGAS_string::getter_identifierRepresentation (UNUSED_LOCATION_AR
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_nameRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -565,7 +603,7 @@ GALGAS_string GALGAS_string::getter_nameRepresentation (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_fileNameRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -575,7 +613,7 @@ GALGAS_string GALGAS_string::getter_fileNameRepresentation (UNUSED_LOCATION_ARGS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_assemblerRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -585,7 +623,7 @@ GALGAS_string GALGAS_string::getter_assemblerRepresentation (UNUSED_LOCATION_ARG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_decodedStringFromRepresentation (C_Compiler * inCompiler
                                                                      COMMA_LOCATION_ARGS) const {
@@ -605,7 +643,7 @@ GALGAS_string GALGAS_string::getter_decodedStringFromRepresentation (C_Compiler 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_subStringFromIndex (const GALGAS_uint & inStartIndex
                                                         COMMA_UNUSED_LOCATION_ARGS) const {
@@ -616,7 +654,7 @@ GALGAS_string GALGAS_string::getter_subStringFromIndex (const GALGAS_uint & inSt
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_rightSubString (const GALGAS_uint & inLength
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
@@ -627,7 +665,7 @@ GALGAS_string GALGAS_string::getter_rightSubString (const GALGAS_uint & inLength
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_leftSubString (const GALGAS_uint & inLength
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
@@ -638,7 +676,7 @@ GALGAS_string GALGAS_string::getter_leftSubString (const GALGAS_uint & inLength
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_subString (const GALGAS_uint & inStart,
                                                const GALGAS_uint & inLength
@@ -652,7 +690,7 @@ GALGAS_string GALGAS_string::getter_subString (const GALGAS_uint & inStart,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_absolutePathFromPath (const GALGAS_string & inBasePath
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
@@ -673,7 +711,7 @@ GALGAS_string GALGAS_string::getter_absolutePathFromPath (const GALGAS_string & 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_relativePathFromPath (const GALGAS_string & inReferencePath
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
@@ -684,7 +722,7 @@ GALGAS_string GALGAS_string::getter_relativePathFromPath (const GALGAS_string & 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_char GALGAS_string::getter_lastCharacter (C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) const {
@@ -702,67 +740,67 @@ GALGAS_char GALGAS_string::getter_lastCharacter (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByStandardizingPath (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByStandardizingPath ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_pathExtension (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.pathExtension ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_char GALGAS_string::getter_firstCharacterOrNul (UNUSED_LOCATION_ARGS) const {
   return GALGAS_char (mString.readCharOrNul (0 COMMA_HERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByDeletingPathExtension (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByDeletingPathExtension ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByDeletingLastPathComponent (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByDeletingLastPathComponent ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByCapitalizingFirstCharacter (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByCapitalizingFirstCharacter ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_uppercaseString (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.uppercaseString ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_lowercaseString (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.lowercaseString ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_reversedString (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.reversedString ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByTrimmingWhiteSpaces (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByTrimmingSeparators ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint GALGAS_string::getter_currentColumn (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -772,7 +810,7 @@ GALGAS_uint GALGAS_string::getter_currentColumn (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByLeftPadding (const GALGAS_uint & inPaddedStringLength,
                                                          const GALGAS_char & inPaddingChar
@@ -792,7 +830,7 @@ GALGAS_string GALGAS_string::getter_stringByLeftPadding (const GALGAS_uint & inP
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByRightPadding (const GALGAS_uint & inPaddedStringLength,
                                                           const GALGAS_char & inPaddingChar
@@ -812,7 +850,7 @@ GALGAS_string GALGAS_string::getter_stringByRightPadding (const GALGAS_uint & in
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByLeftAndRightPadding (const GALGAS_uint & inPaddedStringLength,
                                                                  const GALGAS_char & inPaddingChar
@@ -835,13 +873,13 @@ GALGAS_string GALGAS_string::getter_stringByLeftAndRightPadding (const GALGAS_ui
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_lastPathComponent (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.lastPathComponent ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByReplacingStringByString (const GALGAS_string & inSearchedString,
                                                                      const GALGAS_string & inReplacementString,
@@ -864,7 +902,7 @@ GALGAS_string GALGAS_string::getter_stringByReplacingStringByString (const GALGA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_stringByRemovingCharacterAtIndex (const GALGAS_uint & inIndex,
                                                                         C_Compiler * inCompiler
@@ -885,7 +923,7 @@ GALGAS_string GALGAS_string::getter_stringByRemovingCharacterAtIndex (const GALG
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_char GALGAS_string::getter_characterAtIndex (const GALGAS_uint & inIndex,
                                                       C_Compiler * inCompiler
@@ -905,7 +943,7 @@ GALGAS_char GALGAS_string::getter_characterAtIndex (const GALGAS_uint & inIndex,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_containsCharacter (const GALGAS_char & inCharacter
                                                      COMMA_UNUSED_LOCATION_ARGS) const {
@@ -916,7 +954,7 @@ GALGAS_bool GALGAS_string::getter_containsCharacter (const GALGAS_char & inChara
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_containsCharacterInRange (const GALGAS_char & inFirstCharacter,
                                                             const GALGAS_char & inLastCharacter
@@ -928,19 +966,19 @@ GALGAS_bool GALGAS_string::getter_containsCharacterInRange (const GALGAS_char & 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_unixPathWithNativePath (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (C_FileManager::unixPathWithNativePath (mString)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_string GALGAS_string::getter_nativePathWithUnixPath (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (C_FileManager::nativePathWithUnixPath (mString)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist GALGAS_string::getter_componentsSeparatedByString (const GALGAS_string & inSeparator
                                                                     COMMA_LOCATION_ARGS) const {
@@ -956,13 +994,13 @@ GALGAS_stringlist GALGAS_string::getter_componentsSeparatedByString (const GALGA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sint GALGAS_string::getter_system (UNUSED_LOCATION_ARGS) const {
   return GALGAS_sint (::system (mString.cString (HERE))) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                             const bool inRecursiveSearch,
@@ -976,7 +1014,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForRegularFiles (name,
                                             inRecursiveSearch,
@@ -990,11 +1028,11 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist GALGAS_string::getter_regularFiles (const GALGAS_bool & inRecursiveSearch
                                                       COMMA_LOCATION_ARGS) const {
@@ -1009,7 +1047,7 @@ GALGAS_stringlist GALGAS_string::getter_regularFiles (const GALGAS_bool & inRecu
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
                                            const bool inRecursiveSearch,
@@ -1023,7 +1061,7 @@ static void recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
       if ((strlen (current->d_name) > 1) && (current->d_name [0] == '.') && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForHiddenFiles (name,
                                            inRecursiveSearch,
@@ -1037,11 +1075,11 @@ static void recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist GALGAS_string::getter_hiddenFiles (const GALGAS_bool & inRecursiveSearch
                                                      COMMA_LOCATION_ARGS) const {
@@ -1056,7 +1094,7 @@ GALGAS_stringlist GALGAS_string::getter_hiddenFiles (const GALGAS_bool & inRecur
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
                                            const bool inRecursiveSearch,
@@ -1070,7 +1108,7 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           const C_String relativePath = inRelativePath + current->d_name ;
           ioResult.addAssign_operation (GALGAS_string (relativePath) COMMA_HERE) ;
           if (inRecursiveSearch) {
@@ -1083,11 +1121,11 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist GALGAS_string::getter_directories (const GALGAS_bool & inRecursiveSearch
                                                      COMMA_LOCATION_ARGS) const {
@@ -1104,7 +1142,7 @@ GALGAS_stringlist GALGAS_string::getter_directories (const GALGAS_bool & inRecur
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                             GALGAS_stringlist inExtensionList,
@@ -1119,7 +1157,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForRegularFiles (name,
                                             inExtensionList,
@@ -1143,11 +1181,11 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist GALGAS_string::getter_regularFilesWithExtensions (const GALGAS_bool & inRecursiveSearch,
                                                                       const GALGAS_stringlist & inExtensionList
@@ -1166,7 +1204,7 @@ GALGAS_stringlist GALGAS_string::getter_regularFilesWithExtensions (const GALGAS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
                                            GALGAS_stringlist inExtensionList,
@@ -1181,7 +1219,7 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
         //--- Look for extension
           const C_String extension = name.pathExtension () ;
           bool extensionFound = false ;
@@ -1206,11 +1244,11 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_stringlist GALGAS_string::getter_directoriesWithExtensions (const GALGAS_bool & inRecursiveSearch,
                                                                    const GALGAS_stringlist & inExtensionList
@@ -1229,7 +1267,7 @@ GALGAS_stringlist GALGAS_string::getter_directoriesWithExtensions (const GALGAS_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_doesEnvironmentVariableExist (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1239,7 +1277,7 @@ GALGAS_bool GALGAS_string::getter_doesEnvironmentVariableExist (UNUSED_LOCATION_
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint GALGAS_string::getter_capacity (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -1249,7 +1287,7 @@ GALGAS_uint GALGAS_string::getter_capacity (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1262,7 +1300,7 @@ GALGAS_bool GALGAS_string::getter_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS)
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint GALGAS_string::getter_decimalUnsignedNumber (C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const {
@@ -1280,7 +1318,7 @@ GALGAS_uint GALGAS_string::getter_decimalUnsignedNumber (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isDecimalUnsigned_36__34_Number (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1293,7 +1331,7 @@ GALGAS_bool GALGAS_string::getter_isDecimalUnsigned_36__34_Number (UNUSED_LOCATI
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_uint_36__34_ GALGAS_string::getter_decimalUnsigned_36__34_Number (C_Compiler * inCompiler
                                                                          COMMA_LOCATION_ARGS) const {
@@ -1311,7 +1349,7 @@ GALGAS_uint_36__34_ GALGAS_string::getter_decimalUnsigned_36__34_Number (C_Compi
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isDecimalSignedNumber (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1324,7 +1362,7 @@ GALGAS_bool GALGAS_string::getter_isDecimalSignedNumber (UNUSED_LOCATION_ARGS) c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sint GALGAS_string::getter_decimalSignedNumber (C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) const {
@@ -1342,7 +1380,7 @@ GALGAS_sint GALGAS_string::getter_decimalSignedNumber (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isDecimalSigned_36__34_Number (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1355,7 +1393,7 @@ GALGAS_bool GALGAS_string::getter_isDecimalSigned_36__34_Number (UNUSED_LOCATION
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_sint_36__34_ GALGAS_string::getter_decimalSigned_36__34_Number (C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const {
@@ -1373,7 +1411,7 @@ GALGAS_sint_36__34_ GALGAS_string::getter_decimalSigned_36__34_Number (C_Compile
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isDecimalSignedBigInt (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1397,7 +1435,7 @@ GALGAS_bool GALGAS_string::getter_isDecimalSignedBigInt (UNUSED_LOCATION_ARGS) c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bigint GALGAS_string::getter_decimalSignedBigInt (C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const {
@@ -1414,7 +1452,7 @@ GALGAS_bigint GALGAS_string::getter_decimalSignedBigInt (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_double GALGAS_string::getter_doubleNumber (C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) const {
@@ -1432,7 +1470,7 @@ GALGAS_double GALGAS_string::getter_doubleNumber (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isDoubleNumber (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1445,7 +1483,7 @@ GALGAS_bool GALGAS_string::getter_isDoubleNumber (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1455,13 +1493,13 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Getter popen
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 // http://msdn.microsoft.com/en-us/library/ms682499%28VS.85%29.aspx
 
@@ -1469,7 +1507,7 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   #include <windows.h>
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #if COMPILE_FOR_WINDOWS == 1
   static bool CreateChildProcess (HANDLE g_hChildStd_OUT_Wr,
@@ -1517,7 +1555,7 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #if COMPILE_FOR_WINDOWS == 1
   GALGAS_string GALGAS_string::getter_popen (C_Compiler * inCompiler
@@ -1587,7 +1625,7 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #if COMPILE_FOR_WINDOWS == 0
   GALGAS_string GALGAS_string::getter_popen (C_Compiler * /* inCompiler */
@@ -1614,17 +1652,17 @@ GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     Methods                                                                                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Methods
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_makeDirectory (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
@@ -1636,7 +1674,7 @@ void GALGAS_string::method_makeDirectory (C_Compiler * inCompiler
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_makeDirectoryAndWriteToFile (GALGAS_string inFilePath,
                                                         C_Compiler * inCompiler
@@ -1655,7 +1693,7 @@ void GALGAS_string::method_makeDirectoryAndWriteToFile (GALGAS_string inFilePath
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_makeDirectoryAndWriteToExecutableFile (GALGAS_string inFilePath,
                                                                   C_Compiler * inCompiler
@@ -1674,7 +1712,7 @@ void GALGAS_string::method_makeDirectoryAndWriteToExecutableFile (GALGAS_string 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
                                         C_Compiler * inCompiler
@@ -1699,7 +1737,7 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFilePath,
                                                              GALGAS_bool & outFileWritten,
@@ -1743,7 +1781,7 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
                                                   C_Compiler * inCompiler
@@ -1769,7 +1807,7 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_string inFilePath,
                                                                        GALGAS_bool & outFileWritten,
@@ -1813,7 +1851,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
                                                      C_Compiler * inCompiler
@@ -1830,17 +1868,17 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     Setters                                                                                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Setters
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_appendSpacesUntilColumn (GALGAS_uint inColumnIndex,
                                                     C_Compiler * /* inCompiler */
@@ -1850,7 +1888,7 @@ void GALGAS_string::setter_appendSpacesUntilColumn (GALGAS_uint inColumnIndex,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_setCapacity (GALGAS_uint inNewCapacity,
                                         C_Compiler * inCompiler
@@ -1868,7 +1906,7 @@ void GALGAS_string::setter_setCapacity (GALGAS_uint inNewCapacity,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_incIndentation (GALGAS_uint inIndentation,
                                            C_Compiler * /* inCompiler */
@@ -1878,7 +1916,7 @@ void GALGAS_string::setter_incIndentation (GALGAS_uint inIndentation,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_decIndentation (GALGAS_uint inIndentation,
                                            C_Compiler * /* inCompiler */
@@ -1888,7 +1926,7 @@ void GALGAS_string::setter_decIndentation (GALGAS_uint inIndentation,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_setCharacterAtIndex (GALGAS_char inCharacter,
                                                 GALGAS_uint inIndex,
@@ -1907,7 +1945,7 @@ void GALGAS_string::setter_setCharacterAtIndex (GALGAS_char inCharacter,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_insertCharacterAtIndex (GALGAS_char inCharacter,
                                                    GALGAS_uint inIndex,
@@ -1926,7 +1964,7 @@ void GALGAS_string::setter_insertCharacterAtIndex (GALGAS_char inCharacter,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::setter_removeCharacterAtIndex (GALGAS_char & outChar,
                                                    GALGAS_uint inIndex,
@@ -1947,18 +1985,18 @@ void GALGAS_string::setter_removeCharacterAtIndex (GALGAS_char & outChar,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 //                                                                                                                     *
 //     Type methods                                                                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Type methods
 #endif
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
                                              C_Compiler * inCompiler
@@ -1981,7 +2019,7 @@ void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::class_method_deleteFileIfExists (GALGAS_string inFilePath,
                                                      C_Compiler * inCompiler
@@ -1991,7 +2029,7 @@ void GALGAS_string::class_method_deleteFileIfExists (GALGAS_string inFilePath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::class_method_removeEmptyDirectory (GALGAS_string inDirectoryPath,
                                                        C_Compiler * inCompiler
@@ -2012,7 +2050,7 @@ void GALGAS_string::class_method_removeEmptyDirectory (GALGAS_string inDirectory
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) {
   C_String result ;
@@ -2024,7 +2062,7 @@ static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) 
       if ((strcmp (current->d_name, ".") != 0) && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (C_FileManager::directoryExists (name)) {
+        if (C_FileManager::directoryExistsWithNativePath (name)) {
           recursiveRemoveDirectory (name) ;
         }else if (C_FileManager::fileExistsAtPath (name)) {
           result = C_FileManager::deleteFile (name) ;
@@ -2032,15 +2070,15 @@ static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) 
       }
       current = readdir (dir) ;
     }
+    closedir (dir) ;
   }
-  closedir (dir) ;
   if (result.length () == 0) {
     result = C_FileManager::removeDirectory (inUnixDirectoryPath) ;
   }
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::class_method_removeDirectoryRecursively (GALGAS_string inDirectoryPath,
                                                              C_Compiler * inCompiler
@@ -2061,7 +2099,7 @@ void GALGAS_string::class_method_removeDirectoryRecursively (GALGAS_string inDir
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static bool writeFile (const C_String & inMessage,
                        const C_String & inFullPathName,
@@ -2093,7 +2131,7 @@ static bool writeFile (const C_String & inMessage,
   return ok ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static bool updateFile (const C_String & inFullPathName,
                         const C_String & inContents,
@@ -2118,7 +2156,7 @@ static bool updateFile (const C_String & inFullPathName,
   return ok ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 static void generateFile (const C_String & inStartPath,
                           const C_String & inFileName,
@@ -2146,7 +2184,7 @@ static void generateFile (const C_String & inStartPath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
                                                GALGAS_string inFileName,
@@ -2158,7 +2196,7 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 /*static void generateFileWithCache (const C_String & inStartPath,
                                    const C_String & inFileName,
@@ -2208,7 +2246,7 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
   }
 } */
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 //void GALGAS_string::class_method_generateFileWithCache (GALGAS_string inStartPath,
 //                                                        GALGAS_string inFileName,
@@ -2221,7 +2259,7 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
 //  }
 //}
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartPath,
                                                           GALGAS_string inFileName,
@@ -2261,4 +2299,4 @@ void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartP
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*

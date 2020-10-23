@@ -1,0 +1,28 @@
+/**
+ * set the CPU default frequency at startup in MHz.
+ * Value defined with .oil key CPU->OS->CPU_FREQ_MHZ;
+ *
+ * This frequency may be overriden using at runtime with
+ * void tpl_set_mcu_clock(uint16_t freqInMHz);
+ * (defined in tpl_clocks.h)
+ */
+#define CPU_FREQ_MHZ    % ! exists OS::CPU_FREQ_MHZ default (1) %
+#define WITH_BASIC_MPU  % ! yesNo(exists MPU_CONFIGURATION) %
+#define B1_BOUNDARY     % ! [exists MPU_CONFIGURATION::B1_BOUNDARY default (0) hexString] %
+#define B2_BOUNDARY     % ! [exists MPU_CONFIGURATION::B2_BOUNDARY default (0) hexString] %
+
+/*
+ * Power mode to be used in the idle task
+ */
+#define ACTIVE_POWER_MODE  -1
+#define LPM0_POWER_MODE     0
+#define LPM1_POWER_MODE     1
+#define LPM2_POWER_MODE     2
+#define LPM3_POWER_MODE     3
+
+#define IDLE_POWER_MODE % ! OS::IDLE_POWER_MODE %_POWER_MODE
+#define IDLE_LPM        % ! OS::IDLE_POWER_MODE 
+%
+%
+template if exists tpl_library_defines
+

@@ -55,6 +55,10 @@ struct TPL_RESOURCE {
     app_id;                 /**<  Id of the OS Application which owns the
                                   resource.                                   */
 #endif
+#if WITH_ID == YES
+  CONST(tpl_resource_id, TYPEDEF)
+    res_id;                 /**< Index of the resource in the resource table */
+#endif
   struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
     next_res;               /**< Pointer to the next resource used to link
                                  them together when a task get more than one
