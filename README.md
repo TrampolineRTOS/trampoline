@@ -105,7 +105,7 @@ Updated to version 3.1.9 on 2017, November 28.
 
 ## Useful links
 
-* [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various platforms.
+* [ARM development tools](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm) compiled for various platforms.
 
 The OSEK-VDX portal is down since at least june 2017 because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
