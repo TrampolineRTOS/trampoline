@@ -9,39 +9,42 @@
 
 if exists OS::GDBCOMMANDS_S::PORT then
 %
+#
+# Connect to target, load the program, put a pb on main
+#
 tar extended-remote : % !OS::GDBCOMMANDS_S::PORT %
 load
 break main
 %
 end if
 
-let internal_rez := @!!
-let standard_rez := @!!
+let internal_rez := @()
+let standard_rez := @()
 foreach rez in RESOURCES do
   if rez::RESOURCEPROPERTY == "INTERNAL" then 
-    let internal_rez += rez::NAME
+    let internal_rez += rez
   elsif rez::RESOURCEPROPERTY == "STANDARD" then
-    let standard_rez += rez::NAME
+    let standard_rez += rez
   end if
 end foreach
 if OS::HASNONPREEMPTABLETASK then
-  let internal_rez += "INTERNAL_RES_SCHEDULER"
+  let internal_rez += @{ NAME: "INTERNAL_RES_SCHEDULER" }
 end if
 if OS::USERESSCHEDULER then
-  let standard_rez += "res_sched"
+  let standard_rez += @{ NAME: "res_sched" }
 end if
 
 %
 define _print_internal_rez_name%
 foreach rez in internal_rez do
-  if rez == "INTERNAL_RES_SCHEDULER" then
+  if rez::NAME == "INTERNAL_RES_SCHEDULER" then
 %
-  if $arg0 == &% !rez
+  if $arg0 == &% !rez::NAME
   else
 %
-  if $arg0 == &% !rez %_rez_desc%
+  if $arg0 == &% !rez::NAME %_rez_desc%
   end if%
-    printf "% !rez %"
+    printf "% !rez::NAME %"
   end%
 end foreach
 %
@@ -52,11 +55,11 @@ end
 
 define _print_rez_name%
 foreach rez in standard_rez do%
-  if $arg0 == &% !rez %_rez_desc%
-  if rez == "res_sched" then %
+  if $arg0 == &% !rez::NAME %_rez_desc%
+  if rez::NAME == "res_sched" then %
     printf "RES_SCHEDULER"%
   else%
-    printf "% !rez % "%
+    printf "% !rez::NAME % "%
   end if%
   end%
 end foreach
@@ -93,7 +96,7 @@ end
 foreach task in TASKS do
 %
 define _% !task::NAME %
-  printf "% !task::NAME % (id = \%d, basic task):\\n",% !task::NAME %_task_stat_desc.id
+  printf "Task % !task::NAME % (id = \%d, %if exists task::EVENT then %EXTENDED% else %BASIC% end if%):\\n", % !task::NAME %_task_stat_desc.id
   printf "\tstate             = "
   _print_task_state % !task::NAME %_task_desc.state
   printf "\\n\tpriority          = \%d/\%d\\n",% !task::NAME %_task_desc.priority >> % ! PRIORITY_SHIFT %,% !task::NAME %_task_stat_desc.base_priority
@@ -111,3 +114,44 @@ define b_% !task::NAME %
 end
 %
 end foreach
+
+%
+define _print_rez_id%
+foreach rez in standard_rez do%
+  if $arg0 == &% !rez::NAME %_rez_desc
+    printf "% !INDEX %"
+  end%
+end foreach
+%
+end
+
+define _print_task_name_from_id
+  set $_found = 0%
+foreach proc in PROCESSES do%
+  if $arg0 == % !INDEX %
+    printf "% !proc::NAME %"
+    set $_found = 1
+  end%
+end foreach
+%
+  if $_found == 0
+    printf "NONE"
+  end
+end
+
+%
+foreach rez in standard_rez do
+%
+define _% !rez::NAME %
+  printf "Standard resource % !rez::NAME % (id = \%d):\\n",% !rez::NAME %
+  printf "\tceiling priority    = \%d\\n",% !rez::NAME %_rez_desc.ceiling_priority
+  printf "\towner               = "
+  _print_task_name_from_id % !rez::NAME %_rez_desc.owner
+  printf "\\n"
+  if % !rez::NAME %_rez_desc.owner != -1
+  printf "\towner prev priority = \%d\\n",% !rez::NAME %_rez_desc.owner_prev_priority >> % ! PRIORITY_SHIFT %
+  end
+end
+%
+end foreach
+

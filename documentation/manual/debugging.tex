@@ -55,7 +55,7 @@ TASK(blink)
     GetResource(r2);
     ledToggle(GREEN);|\label{bp:between-rez}|
     ReleaseResource(r2);
-    ReleaseResource(r1);
+    ReleaseResource(r1);|\label{bp:after-rez2-release}|
     TerminateTask();
 }
 \end{lstlisting}
@@ -64,7 +64,7 @@ and that a breakpoint has been set at the line \ref{bp:between-rez}. The command
 
 \begin{lstlisting}
 (gdb) _blink 
-blink (id = 0, basic task):
+Task blink (id = 0, BASIC):
 	state             = RUNNING
 	priority          = 2/1
 	activate_count    = 1/1
@@ -73,4 +73,33 @@ blink (id = 0, basic task):
 \end{lstlisting} 
 
 \warning{If the command is performed before reaching \cfunction{main}, i.e. possibly before the copy of the initialized variables has taken place, the variables may not be initialized yet and the state, the current priority or the current number of activations will be wrong. In addition, the pointer to the head of the list of resources held will be wrong, which may lead to an error message from GDB. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
+
+\section{Examining the resources}
+
+\note{Currently only standard resources are supported}
+
+For each resource, a command named \com{_<resource name>} is generated. This command displays the type (Standard) of the resource, its name and identifier as well as:
+
+\begin{pitemize}
+\item its ceiling priority;
+\item the name of the owning process. If the resource is not held, \comoutput{NONE} is displayed;
+\item if the resource is held, the previous priority of the process holding it is displayed.
+\end{pitemize}
+
+Let's continue with the previous example. The execution of the command \com{_r2} when the execution has reached the line \ref{bp:between-rez} would display:
+
+\begin{lstlisting}
+Standard resource r2 (id = 0):
+	ceiling priority    = 2
+	owner               = blink
+	owner prev priority = 2
+\end{lstlisting} 
+
+After reaching the line \ref{bp:after-rez2-release}, the execution of the command \com{_r2} would display:
+
+\begin{lstlisting}
+Standard resource r2 (id = 0):
+	ceiling priority    = 2
+	owner               = NONE
+\end{lstlisting} 
 
