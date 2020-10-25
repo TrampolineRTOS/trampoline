@@ -26,20 +26,51 @@ may be used on STMicroelectronics MCU (port 4242 is the default port of ST-LINK 
 For each task declared in the OIL file, 2 commands named \com{b_<task name>} and \com{_<task name>} are generated. The first command sets a breakpoint on the task. The second command displays the name of the task, its identifier and its type (basic or extended) as well as:
 
 \begin{pitemize}
+\item its state, \SUSPENDED, \READY, \RUNNING\ or \WAITING;
 \item its priority in the form \comoutput{<current priority>/<basic priority>};
 \item its activation count in the form \comoutput{<current activation>/<maximum activation>};
 \item its internal resource if it exists. For a non-preemptible task, \comoutput{INTERNAL_RES_SCHEDULER} will be displayed. If the task has no internal resource, \comoutput{NONE} will be displayed.
+\item a list of resources that the task holds. The list is displayed between a pair of square brackets from the most recently taken resource to the oldest taken resource. If no resource is held, only the pair of brackets is displayed. 
 \end{pitemize}
 
-Suppose, for example, that the OIL file declares a task named \oilobj{blink} with \lstinline[language=OIL]{PRIORITY = 1}, \lstinline[language=OIL]{ACTIVATION = 1} and \lstinline[language=OIL]{SCHEDULE = NON}. The command \com{_blink} will be generated and it will display the following result:
+Suppose, for example, that the OIL file declares a task named \oilobj{blink} as shown below.
+
+\begin{lstlisting}[language=OIL]
+TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    RESOURCE = r1;
+    RESOURCE = r2;
+};
+\end{lstlisting}
+
+and that the code of the task \cfunction{blink} is the following:
+
+\begin{lstlisting}[language=C,escapechar=|,numbers=left]
+TASK(blink)
+{
+    GetResource(r1);
+    GetResource(r2);
+    ledToggle(GREEN);|\label{bp:between-rez}|
+    ReleaseResource(r2);
+    ReleaseResource(r1);
+    TerminateTask();
+}
+\end{lstlisting}
+ 
+and that a breakpoint has been set at the line \ref{bp:between-rez}. The command \com{_blink} will be generated and if invoked at the breakpoint it would display the following result:
 
 \begin{lstlisting}
 (gdb) _blink 
 blink (id = 0, basic task):
-	priority          = 1/1
-	activate_count    = 0/1
-	internal_resource = INTERNAL_RES_SCHEDULER
+	state             = RUNNING
+	priority          = 2/1
+	activate_count    = 1/1
+	internal_resource = NONE
+	resources         = [ r2 r1 ]
 \end{lstlisting} 
 
-\warning{If the command is performed before reaching \cfunction{main}, the variables may not be initialized yet and the current priority or the current number of activations will be wrong. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
+\warning{If the command is performed before reaching \cfunction{main}, i.e. possibly before the copy of the initialized variables has taken place, the variables may not be initialized yet and the state, the current priority or the current number of activations will be wrong. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
 

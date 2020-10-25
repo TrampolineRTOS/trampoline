@@ -16,13 +16,19 @@ break main
 end if
 
 let internal_rez := @!!
+let standard_rez := @!!
 foreach rez in RESOURCES do
   if rez::RESOURCEPROPERTY == "INTERNAL" then 
     let internal_rez += rez::NAME
+  elsif rez::RESOURCEPROPERTY == "STANDARD" then
+    let standard_rez += rez::NAME
   end if
 end foreach
 if OS::HASNONPREEMPTABLETASK then
   let internal_rez += "INTERNAL_RES_SCHEDULER"
+end if
+if OS::USERESSCHEDULER then
+  let standard_rez += "res_sched"
 end if
 
 %
@@ -43,17 +49,61 @@ end foreach
     printf "NONE"
   end
 end
+
+define _print_rez_name%
+foreach rez in standard_rez do%
+  if $arg0 == &% !rez %_rez_desc%
+  if rez == "res_sched" then %
+    printf "RES_SCHEDULER"%
+  else%
+    printf "% !rez % "%
+  end if%
+  end%
+end foreach
+%
+end
+
+define _print_held_rez
+  _print_rez_name $arg0
+  if $arg0 != 0
+    _print_held_rez $arg0->next_res
+  end
+end
+
+define _print_task_state
+  set $_state = $arg0 & 0x3
+  if $_state == 0
+    printf "SUSPENDED"
+  else
+    if $_state == 1
+      printf "READY"
+    else
+      if $_state == 2
+        printf "RUNNING"
+      else
+        if $_state == 3
+          printf "WAITING"
+        end
+      end
+    end
+  end
+end
 %
 
 foreach task in TASKS do
 %
 define _% !task::NAME %
   printf "% !task::NAME % (id = \%d, basic task):\\n",% !task::NAME %_task_stat_desc.id
-  printf "\tpriority          = \%d/\%d\\n",% !task::NAME %_task_desc.priority >> % ! PRIORITY_SHIFT %,% !task::NAME %_task_stat_desc.base_priority
+  printf "\tstate             = "
+  _print_task_state % !task::NAME %_task_desc.state
+  printf "\\n\tpriority          = \%d/\%d\\n",% !task::NAME %_task_desc.priority >> % ! PRIORITY_SHIFT %,% !task::NAME %_task_stat_desc.base_priority
   printf "\tactivate_count    = \%d/\%d\\n",% !task::NAME %_task_desc.activate_count,% !task::NAME %_task_stat_desc.max_activate_count
   printf "\tinternal_resource = "
   _print_internal_rez_name % !task::NAME %_task_stat_desc.internal_resource
   printf "\\n"
+  printf "\tresources         = [ "
+  _print_held_rez % !task::NAME %_task_desc.resources
+  printf "]\\n"
 end
 
 define b_% !task::NAME %
