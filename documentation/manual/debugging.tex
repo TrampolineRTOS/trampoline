@@ -29,7 +29,7 @@ For each task declared in the OIL file, 2 commands named \com{b_<task name>} and
 \item its state, \SUSPENDED, \READY, \RUNNING\ or \WAITING;
 \item its priority in the form \comoutput{<current priority>/<basic priority>};
 \item its activation count in the form \comoutput{<current activation>/<maximum activation>};
-\item its internal resource if it exists. For a non-preemptible task, \comoutput{INTERNAL_RES_SCHEDULER} will be displayed. If the task has no internal resource, \comoutput{NONE} will be displayed.
+\item its internal resource if it exists. For a non-preemptible task, \comoutput{INTERNAL_RES_SCHEDULER} is displayed. If the task has no internal resource, \comoutput{NONE} is displayed.
 \item a list of resources that the task holds. The list is displayed between a pair of square brackets from the most recently taken resource to the oldest taken resource. If no resource is held, only the pair of brackets is displayed. 
 \end{pitemize}
 
@@ -46,7 +46,7 @@ TASK blink {
 };
 \end{lstlisting}
 
-and that the code of the task \cfunction{blink} is the following:
+and that the C code of the task \cfunction{blink} is the following:
 
 \begin{lstlisting}[language=C,escapechar=|,numbers=left]
 TASK(blink)
@@ -72,5 +72,5 @@ blink (id = 0, basic task):
 	resources         = [ r2 r1 ]
 \end{lstlisting} 
 
-\warning{If the command is performed before reaching \cfunction{main}, i.e. possibly before the copy of the initialized variables has taken place, the variables may not be initialized yet and the state, the current priority or the current number of activations will be wrong. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
+\warning{If the command is performed before reaching \cfunction{main}, i.e. possibly before the copy of the initialized variables has taken place, the variables may not be initialized yet and the state, the current priority or the current number of activations will be wrong. In addition, the pointer to the head of the list of resources held will be wrong, which may lead to an error message from GDB. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
 
