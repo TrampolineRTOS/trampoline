@@ -86,7 +86,7 @@
 	  IMPLEMENTATION,
 	  RESOURCE, RESOURCEPROPERTY, STANDARD, INTERNAL, LINKED, LINKEDRESOURCE,
 	  TASK, SCHEDULE, FULL, NONE, PRIORITY, EVENT, ISR, CATEGORY, OS, CPU, MEMMAP,
-	  COMPILER, LINKER, SCRIPT, IOC, DATATYPENAME, DATATYPEPROPERTY, RECEIVER, SENDER, RCV_OSAPPLICATION, 	  RECEIVER_PULL_CB, ACTION, SENDER_ID, SND_OSAPPLICATION, FALSE, TRUE
+	  COMPILER, LINKER, SCRIPT, IOC, DATATYPENAME, DATATYPEPROPERTY, RECEIVER, SENDER, RCV_OSAPPLICATION, 	  RECEIVER_PULL_CB, ACTION, SENDER_ID, SND_OSAPPLICATION, FALSE, GDBCOMMANDS, PORT
 	}
 }
 
@@ -210,6 +210,7 @@
 \newcommand{\var}[1]{{\ttfamily\em #1}}
 \newcommand{\va}{\small\ttfamily\em}
 \newcommand{\cfunction}[1]{{\ttfamily #1}}
+\newcommand{\pyfunction}[1]{{\ttfamily #1}}
 \newcommand{\cmacro}[1]{{\small\ttfamily #1}}
 \newcommand{\constant}[1]{{\small\ttfamily #1}}
 \newcommand{\oilobj}[1]{\lstinline[language=OIL]{#1}}
@@ -223,6 +224,7 @@
 %
 \newcommand{\tool}[1]{{\small\ttfamily #1}}
 \newcommand{\com}[1]{\inlinebox[blue]{\small\ttfamily #1}}
+\newcommand{\comoutput}[1]{{\small\ttfamily #1}}
 \newcommand{\file}[1]{{\small\ttfamily `#1'}}
 \newcommand{\envvar}[1]{{\scriptsize\sffamily #1}}
 \newcommand{\longprogramopt}[1]{{\small\ttfamily --#1}}
@@ -470,6 +472,7 @@ Florent Pavin\\
 \include{ioc}
 \include{memmapping}
 \include{traces}
+\include{debugging}
 
 \part{Trampoline RTOS internals}
 

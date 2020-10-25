@@ -1,0 +1,45 @@
+%!TEX root = ./main.tex
+
+\chapter{Debugging an application}
+
+%\section*{Introduction}
+
+Debugging an application requires examining the internal structures of Trampoline. The information contained in these structures can be used to find out which task is running, which tasks are ready, which resources are held, the status of alarms, etc. Finding one's way around these data structures can be difficult for a user. 
+
+As GDB is the most frequently used debugger, it is possible for GDB to generate a command file to simplify the examination of the internal structures of Trampoline.
+
+\section{Command generation}
+
+The OIL object \oilobj{OS} has the boolean attribute \oilattr{GDBCOMMANDS} which, when true, leads to the generation of a file named \file{commands.gdb} in the same directory as the OIL file. An optionnal sub-attribute, \oilattr{PORT}, is used to specify the TCP/IP port on which the GDB server is listening and to generate the commands allowing GDB to connect to the GDB server, to load the program on the target and to set a breakpoint on the \cfunction{main}. For example:
+
+\begin{lstlisting}[language=OIL]
+GDBCOMMANDS = TRUE
+{
+    PORT = 4242;
+};
+\end{lstlisting}
+
+may be used on STMicroelectronics MCU (port 4242 is the default port of ST-LINK debugging system). 
+
+\section{Examining the tasks}
+
+For each task declared in the OIL file, 2 commands named \com{b_<task name>} and \com{_<task name>} are generated. The first command sets a breakpoint on the task. The second command displays the name of the task, its identifier and its type (basic or extended) as well as:
+
+\begin{pitemize}
+\item its priority in the form \comoutput{<current priority>/<basic priority>};
+\item its activation count in the form \comoutput{<current activation>/<maximum activation>};
+\item its internal resource if it exists. For a non-preemptible task, \comoutput{INTERNAL_RES_SCHEDULER} will be displayed. If the task has no internal resource, \comoutput{NONE} will be displayed.
+\end{pitemize}
+
+Suppose, for example, that the OIL file declares a task named \oilobj{blink} with \lstinline[language=OIL]{PRIORITY = 1}, \lstinline[language=OIL]{ACTIVATION = 1} and \lstinline[language=OIL]{SCHEDULE = NON}. The command \com{_blink} will be generated and it will display the following result:
+
+\begin{lstlisting}
+(gdb) _blink 
+blink (id = 0, basic task):
+	priority          = 1/1
+	activate_count    = 0/1
+	internal_resource = INTERNAL_RES_SCHEDULER
+\end{lstlisting} 
+
+\warning{If the command is performed before reaching \cfunction{main}, the variables may not be initialized yet and the current priority or the current number of activations will be wrong. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
+
