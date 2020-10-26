@@ -170,3 +170,82 @@ end
 %
 end foreach
 
+%
+define _print_counter_name%
+foreach cnt in COUNTERS do
+%
+  if $arg0 == &% !cnt::NAME %_counter_desc
+    printf "% !cnt::NAME %"
+  end%
+end foreach%
+end
+
+define _print_alarm_state
+  if $arg0 == 0
+    printf "SLEEP"
+  else
+    if $arg0 == 1
+      printf "ACTIVE"
+    else
+      if $arg0 == 2
+        printf "AUTOSTART"
+      else
+        printf "?"
+      end
+    end
+  end
+end
+
+%
+
+let use_activate_task_action := false
+let use_set_event_action := false
+foreach alarm in ALARMS do
+  if alarm::ACTION == "ACTIVATETASK" then
+    let use_activate_task_action := true
+  elsif alarm::ACTION == "SETEVENT" then 
+    let use_set_event_action := true
+  end if
+end foreach
+
+%
+
+define _print_alarm_action%
+if use_activate_task_action then%
+  if ((int)$arg0 & ~1) == tpl_action_activate_task
+    printf "ACTIVATETASK"
+  end%
+end if
+if use_set_event_action then%
+  if ((int)$arg0 & ~1) == tpl_action_set_event
+    printf "SETEVENT"
+  end%
+end if%
+  if ((int)$arg0 & ~1) == tpl_action_callback
+    printf "CALLBACK"
+  end
+end
+%
+foreach alarm in ALARMS do
+%
+define _% !alarm::NAME%
+  printf "Alarm % !alarm::NAME% (id = \%d):\\n",% !alarm::NAME %
+  printf "\tcounter = "
+  _print_counter_name % !alarm::NAME %_alarm_desc.stat_part->counter
+  printf " (\%d)\\n",% !alarm::NAME %_alarm_desc.stat_part->counter->current_date
+  printf "\tstate   = "
+  _print_alarm_state % !alarm::NAME %_alarm_desc.state
+  printf "\\n"
+  if % !alarm::NAME %_alarm_desc.state == 1
+    printf "\tdate    = \%d\\n",% !alarm::NAME %_alarm_desc.date
+    if % !alarm::NAME %_alarm_desc.cycle != 0
+      printf "\tcycle   = \%d\\n",% !alarm::NAME %_alarm_desc.cycle
+    end
+  end
+  printf "\taction  = "
+  _print_alarm_action ((tpl_action*)((tpl_alarm_static*)% !alarm::NAME %_alarm_desc.stat_part)->action)->action
+  printf "\\n"
+end
+%
+end foreach
+

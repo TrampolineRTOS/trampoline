@@ -129,3 +129,27 @@ Resource oups (INTERNAL):
 	taken               = 1
 	owner prev priority = 3
 \end{lstlisting} 
+
+\section{Examining alarms}
+
+For each alarm, a command \com{_<alarm name>} is generated. The command displays the alarm identifier as well as the following information:
+
+\begin{pitemize}
+\item the counter to which it is linked with the current date of the counter in brackets;
+\item son état (\comoutput{SLEEP}, \comoutput{ACTIVE} ou \comoutput{AUTOSTART}\footnote{This state is only possible before starting the OS.});
+\item if the alarm is \comoutput{ACTIVE}, its expiry date;
+\item if the alarm is \comoutput{ACTIVE} and cyclic, its cycle;
+\item finally its action.
+\end{pitemize}
+
+The following output is an example of an alarm display:
+
+\begin{lstlisting}
+(gdb) _blink_alarm 
+Alarm blink_alarm (id = 0):
+	counter = SystemCounter (1461)
+	state   = ACTIVE
+	date    = 1561
+	cycle   = 100
+	action  = ACTIVATETASK
+\end{lstlisting}
