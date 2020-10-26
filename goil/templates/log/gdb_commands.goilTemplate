@@ -27,9 +27,6 @@ foreach rez in RESOURCES do
     let standard_rez += rez
   end if
 end foreach
-if OS::HASNONPREEMPTABLETASK then
-  let internal_rez += @{ NAME: "INTERNAL_RES_SCHEDULER" }
-end if
 if OS::USERESSCHEDULER then
   let standard_rez += @{ NAME: "res_sched" }
 end if
@@ -143,13 +140,31 @@ end
 foreach rez in standard_rez do
 %
 define _% !rez::NAME %
-  printf "Standard resource % !rez::NAME % (id = \%d):\\n",% !rez::NAME %
+  printf "Resource % !rez::NAME % (id = \%d, STANDARD):\\n",% !rez::NAME %
   printf "\tceiling priority    = \%d\\n",% !rez::NAME %_rez_desc.ceiling_priority
   printf "\towner               = "
   _print_task_name_from_id % !rez::NAME %_rez_desc.owner
   printf "\\n"
   if % !rez::NAME %_rez_desc.owner != -1
   printf "\towner prev priority = \%d\\n",% !rez::NAME %_rez_desc.owner_prev_priority >> % ! PRIORITY_SHIFT %
+  end
+end
+%
+end foreach
+
+foreach rez in internal_rez do
+%
+define _% !rez::NAME 
+  let rezDescName := rez::NAME
+  if rez::NAME != "INTERNAL_RES_SCHEDULER" then
+    let rezDescName := rezDescName + "_rez_desc"
+  end if  
+%
+  printf "Resource % !rez::NAME % (INTERNAL):\\n"
+  printf "\tceiling priority    = \%d\\n",% !rezDescName %.ceiling_priority
+  printf "\ttaken               = \%d\\n",% !rezDescName %.taken
+  if % !rez::NAME %_rez_desc.taken == 1
+    printf "\towner prev priority = \%d\\n",% !rezDescName %.owner_prev_priority >> % ! PRIORITY_SHIFT %
   end
 end
 %

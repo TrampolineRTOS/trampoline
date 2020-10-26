@@ -76,9 +76,7 @@ Task blink (id = 0, BASIC):
 
 \section{Examining the resources}
 
-\note{Currently only standard resources are supported}
-
-For each resource, a command named \com{_<resource name>} is generated. This command displays the type (Standard) of the resource, its name and identifier as well as:
+For each resource, a command named \com{_<resource name>} is generated. This command displays the type (\oilval{STANDARD} or \oilval{INTERNAL}) of the resource, its name and identifier as well as for standard resources:
 
 \begin{pitemize}
 \item its ceiling priority;
@@ -86,10 +84,19 @@ For each resource, a command named \com{_<resource name>} is generated. This com
 \item if the resource is held, the previous priority of the process holding it is displayed.
 \end{pitemize}
 
+For an internal resource the following information is displayed:
+
+\begin{pitemize}
+\item its ceiling priority;
+\item if the resource is held;
+\item if the resource is held, the previous priority of the process holding it is displayed.
+\end{pitemize}
+
 Let's continue with the previous example. The execution of the command \com{_r2} when the execution has reached the line \ref{bp:between-rez} would display:
 
 \begin{lstlisting}
-Standard resource r2 (id = 0):
+(gdb) _r2
+Resource r2 (id = 0, STANDARD):
 	ceiling priority    = 2
 	owner               = blink
 	owner prev priority = 2
@@ -98,8 +105,27 @@ Standard resource r2 (id = 0):
 After reaching the line \ref{bp:after-rez2-release}, the execution of the command \com{_r2} would display:
 
 \begin{lstlisting}
-Standard resource r2 (id = 0):
+(gdb) _r2
+Resource r2 (id = 0, STANDARD):
 	ceiling priority    = 2
 	owner               = NONE
 \end{lstlisting} 
 
+The following example shows the display of internal resource \oilval{oups} according to whether it is not held:
+
+\begin{lstlisting}
+(gdb) _oups 
+Resource oups (INTERNAL):
+	ceiling priority    = 4
+	taken               = 0
+\end{lstlisting} 
+
+or held:
+
+\begin{lstlisting}
+(gdb) _oups 
+Resource oups (INTERNAL):
+	ceiling priority    = 4
+	taken               = 1
+	owner prev priority = 3
+\end{lstlisting} 
