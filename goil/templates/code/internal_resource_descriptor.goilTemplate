@@ -16,8 +16,12 @@ between
 end foreach
 %
  */
-VAR(tpl_internal_resource, OS_VAR) % !resource::NAME %_rez_desc = {
-  /* ceiling priority of the resource */  % !resource::PRIORITY %,
+VAR(tpl_internal_resource, OS_VAR) % !resource::NAME %_rez_desc = {%
+  if resource::NAME == "INTERNAL_RES_SCHEDULER" then%
+  /* ceiling priority of the resource */  RES_SCHEDULER_PRIORITY,%
+  else%
+  /* ceiling priority of the resource */  % !resource::PRIORITY %,%
+  end if%
   /* owner previous priority          */  0,
   /* true if the resource is taken    */  FALSE
 };
