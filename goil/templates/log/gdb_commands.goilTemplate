@@ -32,7 +32,7 @@ if OS::USERESSCHEDULER then
 end if
 
 %
-define _print_internal_rez_name%
+define tr_print_internal_rez_name%
 foreach rez in internal_rez do
   if rez::NAME == "INTERNAL_RES_SCHEDULER" then
 %
@@ -50,7 +50,7 @@ end foreach
   end
 end
 
-define _print_rez_name%
+define tr_print_rez_name%
 foreach rez in standard_rez do%
   if $arg0 == &% !rez::NAME %_rez_desc%
   if rez::NAME == "res_sched" then %
@@ -63,14 +63,14 @@ end foreach
 %
 end
 
-define _print_held_rez
-  _print_rez_name $arg0
+define tr_print_held_rez
+  tr_print_rez_name $arg0
   if $arg0 != 0
-    _print_held_rez $arg0->next_res
+    tr_print_held_rez $arg0->next_res
   end
 end
 
-define _print_task_state
+define tr_print_task_state
   set $_state = $arg0 & 0x3
   if $_state == 0
     printf "SUSPENDED"
@@ -88,6 +88,27 @@ define _print_task_state
     end
   end
 end
+
+define tr_print_event
+  set $_tr_displayed_event_count = 0
+  set $_tr_task_events = $arg0%
+foreach ev in EVENTS do
+%
+  if $_tr_task_events & % !ev::MASK % == % !ev::MASK %
+    printf "% !ev::NAME % "
+    set $_tr_task_events = $_tr_task_events & ~% !ev::MASK %
+    set $_tr_displayed_event_count = $_tr_displayed_event_count + 1
+  end%
+end foreach
+%
+  if $_tr_task_events != 0
+    printf "\%d",$_tr_task_events
+    set $_tr_displayed_event_count = $_tr_displayed_event_count + 1
+  end
+  if $_tr_displayed_event_count == 0
+    printf "<NONE>"
+  end
+end
 %
 
 foreach task in TASKS do
@@ -95,34 +116,42 @@ foreach task in TASKS do
 define _% !task::NAME %
   printf "Task % !task::NAME % (id = \%d, %if exists task::EVENT then %EXTENDED% else %BASIC% end if%):\\n", % !task::NAME %_task_stat_desc.id
   printf "\tstate             = "
-  _print_task_state % !task::NAME %_task_desc.state
+  tr_print_task_state % !task::NAME %_task_desc.state
   printf "\\n\tpriority          = \%d/\%d\\n",% !task::NAME %_task_desc.priority >> % ! PRIORITY_SHIFT %,% !task::NAME %_task_stat_desc.base_priority
   printf "\tactivate_count    = \%d/\%d\\n",% !task::NAME %_task_desc.activate_count,% !task::NAME %_task_stat_desc.max_activate_count
   printf "\tinternal_resource = "
-  _print_internal_rez_name % !task::NAME %_task_stat_desc.internal_resource
+  tr_print_internal_rez_name % !task::NAME %_task_stat_desc.internal_resource
   printf "\\n"
   printf "\tresources         = [ "
-  _print_held_rez % !task::NAME %_task_desc.resources
-  printf "]\\n"
+  tr_print_held_rez % !task::NAME %_task_desc.resources
+  printf "]\\n"%
+  if exists task::EVENT then%
+  printf "\twait event(s)     = "
+  tr_print_event % !task::NAME %_task_evts.evt_wait
+  printf "\\n"
+  printf "\tgot event(s)      = "
+  tr_print_event % !task::NAME %_task_evts.evt_set
+  printf "\\n"%
+  end if%
+end
+
+document _% !task::NAME %
+  Displays the task descriptor of _% !task::NAME % synthetically
 end
 
 define b_% !task::NAME %
   b % !task::NAME %_function
 end
-%
-end foreach
 
-%
-define _print_rez_id%
-foreach rez in standard_rez do%
-  if $arg0 == &% !rez::NAME %_rez_desc
-    printf "% !INDEX %"
-  end%
-end foreach
-%
+document b_% !task::NAME %
+  Places a breakpoint on the first instruction of the task _% !task::NAME %
 end
+%
+end foreach
 
-define _print_task_name_from_id
+%
+
+define tr_print_task_name_from_id
   set $_found = 0%
 foreach proc in PROCESSES do%
   if $arg0 == % !INDEX %
@@ -143,11 +172,15 @@ define _% !rez::NAME %
   printf "Resource % !rez::NAME % (id = \%d, STANDARD):\\n",% !rez::NAME %
   printf "\tceiling priority    = \%d\\n",% !rez::NAME %_rez_desc.ceiling_priority
   printf "\towner               = "
-  _print_task_name_from_id % !rez::NAME %_rez_desc.owner
+  tr_print_task_name_from_id % !rez::NAME %_rez_desc.owner
   printf "\\n"
   if % !rez::NAME %_rez_desc.owner != -1
   printf "\towner prev priority = \%d\\n",% !rez::NAME %_rez_desc.owner_prev_priority >> % ! PRIORITY_SHIFT %
   end
+end
+
+document _% !rez::NAME %
+  Displays the resource descriptor of _% !rez::NAME % synthetically
 end
 %
 end foreach
@@ -167,11 +200,15 @@ define _% !rez::NAME
     printf "\towner prev priority = \%d\\n",% !rezDescName %.owner_prev_priority >> % ! PRIORITY_SHIFT %
   end
 end
+
+document _% !rez::NAME %
+  Displays the resource descriptor of _% !rez::NAME % synthetically
+end
 %
 end foreach
 
 %
-define _print_counter_name%
+define tr_print_counter_name%
 foreach cnt in COUNTERS do
 %
   if $arg0 == &% !cnt::NAME %_counter_desc
@@ -180,7 +217,7 @@ foreach cnt in COUNTERS do
 end foreach%
 end
 
-define _print_alarm_state
+define tr_print_alarm_state
   if $arg0 == 0
     printf "SLEEP"
   else
@@ -210,19 +247,34 @@ end foreach
 
 %
 
-define _print_alarm_action%
+define tr_print_event_name_for_mask%
+foreach event in EVENTS do%
+  if $arg0 == % !event::NAME %
+    printf "% !event::NAME %"
+  end%
+end foreach%
+end
+
+define tr_print_alarm_action%
 if use_activate_task_action then%
-  if ((int)$arg0 & ~1) == tpl_action_activate_task
-    printf "ACTIVATETASK"
+  set $_action_ptr = ((tpl_action*)$arg0)->action
+  if ((int)$_action_ptr & ~1) == tpl_action_activate_task
+    printf "ActivateTask("
+    tr_print_task_name_from_id ((tpl_task_activation_action*)$arg0)->task_id
+    printf ")"
   end%
 end if
 if use_set_event_action then%
-  if ((int)$arg0 & ~1) == tpl_action_set_event
-    printf "SETEVENT"
+  if ((int)$_action_ptr & ~1) == tpl_action_setevent
+    printf "SetEvent("
+    tr_print_task_name_from_id ((tpl_setevent_action*)$arg0)->task_id
+    printf ", "
+    tr_print_event_name_for_mask ((tpl_setevent_action*)$arg0)->mask
+    printf ")"
   end%
 end if%
-  if ((int)$arg0 & ~1) == tpl_action_callback
-    printf "CALLBACK"
+  if ((int)$_action_ptr & ~1) == tpl_action_callback
+    output ((tpl_callback_action*)$arg0)->callback
   end
 end
 %
@@ -231,10 +283,10 @@ foreach alarm in ALARMS do
 define _% !alarm::NAME%
   printf "Alarm % !alarm::NAME% (id = \%d):\\n",% !alarm::NAME %
   printf "\tcounter = "
-  _print_counter_name % !alarm::NAME %_alarm_desc.stat_part->counter
-  printf " (\%d)\\n",% !alarm::NAME %_alarm_desc.stat_part->counter->current_date
+  tr_print_counter_name % !alarm::NAME %_alarm_desc.stat_part->counter
+  printf "(\%d)\\n",% !alarm::NAME %_alarm_desc.stat_part->counter->current_date
   printf "\tstate   = "
-  _print_alarm_state % !alarm::NAME %_alarm_desc.state
+  tr_print_alarm_state % !alarm::NAME %_alarm_desc.state
   printf "\\n"
   if % !alarm::NAME %_alarm_desc.state == 1
     printf "\tdate    = \%d\\n",% !alarm::NAME %_alarm_desc.date
@@ -243,9 +295,50 @@ define _% !alarm::NAME%
     end
   end
   printf "\taction  = "
-  _print_alarm_action ((tpl_action*)((tpl_alarm_static*)% !alarm::NAME %_alarm_desc.stat_part)->action)->action
+  tr_print_alarm_action ((tpl_alarm_static*)% !alarm::NAME %_alarm_desc.stat_part)->action
   printf "\\n"
+end
+
+document _% !alarm::NAME %
+  Displays the alarm descriptor of _% !alarm::NAME % synthetically
 end
 %
 end foreach
+%
 
+define tr_print_alarm_name%
+foreach alarm in ALARMS do%
+  if $arg0 == &% !alarm::NAME %_alarm_desc
+    printf "% !alarm::NAME %"
+  end%
+end foreach%
+end
+
+define tr_print_alarm_list
+  if $arg0 != $arg1
+    tr_print_alarm_name $arg0
+    printf "(\%d) ",$arg0->date
+    tr_print_alarm_list $arg0->next_to $arg1
+  end
+end
+%
+foreach cnt in COUNTERS do
+%
+define _% !cnt::NAME %
+  printf "Counter % !cnt::NAME %:\\n"
+  printf "\tticks per base    = \%d\\n",% !cnt::NAME %_counter_desc.ticks_per_base
+  printf "\tmax allowed value = \%d\\n",% !cnt::NAME %_counter_desc.max_allowed_value
+  printf "\tmin cycle         = \%d\\n",% !cnt::NAME %_counter_desc.min_cycle
+  printf "\tcurrent tick      = \%d\\n",% !cnt::NAME %_counter_desc.current_tick
+  printf "\tcurrent date      = \%d\\n",% !cnt::NAME %_counter_desc.current_date
+  printf "\talarms            = [ "
+  tr_print_alarm_list % !cnt::NAME %_counter_desc.next_to 0
+  tr_print_alarm_list % !cnt::NAME %_counter_desc.first_to % !cnt::NAME %_counter_desc.next_to
+  printf "]\\n"
+end
+
+document _% !cnt::NAME %
+  Displays the counter descriptor of _% !cnt::NAME %
+end
+%
+end foreach

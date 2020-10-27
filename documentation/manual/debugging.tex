@@ -31,6 +31,7 @@ For each task declared in the OIL file, 2 commands named \com{b_<task name>} and
 \item its activation count in the form \comoutput{<current activation>/<maximum activation>};
 \item its internal resource if it exists. For a non-preemptible task, \comoutput{INTERNAL_RES_SCHEDULER} is displayed. If the task has no internal resource, \comoutput{NONE} is displayed.
 \item a list of resources that the task holds. The list is displayed between a pair of square brackets from the most recently taken resource to the oldest taken resource. If no resource is held, only the pair of brackets is displayed. 
+\item if the task is extended, the events it is waiting for and those it has received are displayed. If a numerical value is displayed, these are events that are not present in the application and are probably related to a programming error. When no events are displayed, \comoutput{<NONE>} is displayed.
 \end{pitemize}
 
 Suppose, for example, that the OIL file declares a task named \oilobj{blink} as shown below.
@@ -130,13 +131,13 @@ Resource oups (INTERNAL):
 	owner prev priority = 3
 \end{lstlisting} 
 
-\section{Examining alarms}
+\section{Examining the alarms}
 
 For each alarm, a command \com{_<alarm name>} is generated. The command displays the alarm identifier as well as the following information:
 
 \begin{pitemize}
 \item the counter to which it is linked with the current date of the counter in brackets;
-\item son état (\comoutput{SLEEP}, \comoutput{ACTIVE} ou \comoutput{AUTOSTART}\footnote{This state is only possible before starting the OS.});
+\item its state (\comoutput{SLEEP}, \comoutput{ACTIVE} or \comoutput{AUTOSTART}\footnote{This state is only possible before starting the OS.});
 \item if the alarm is \comoutput{ACTIVE}, its expiry date;
 \item if the alarm is \comoutput{ACTIVE} and cyclic, its cycle;
 \item finally its action.
@@ -147,9 +148,35 @@ The following output is an example of an alarm display:
 \begin{lstlisting}
 (gdb) _blink_alarm 
 Alarm blink_alarm (id = 0):
-	counter = SystemCounter (1461)
+	counter = SystemCounter(1461)
 	state   = ACTIVE
 	date    = 1561
 	cycle   = 100
-	action  = ACTIVATETASK
+	action  = ActivateTask(blink)
+\end{lstlisting}
+
+\section{Examining the counters}
+
+For each counter used in the application, a command \com{_<counter name>} is generated. The command displays the following information:
+
+\begin{pitemize}
+\item the ticks per base of the counter, i.e. the number of ticks coming from the interrupt source and which are necessary to increase the counter value by 1;
+\item the maximum allowed value of the counter;
+\item the minimum cycle of the counter;
+\item the current number of ticks;
+\item the current date;
+\item the list of alarms that are currently scheduled by the counter. The first is the next alarm that will expire. Between the brackets, the date on which the alarm will expire is given.
+\end{pitemize}
+
+Here is for example the display of the \var{SystemCounter}:
+
+\begin{lstlisting}
+(gdb) _SystemCounter 
+Counter SystemCounter:
+	ticks per base    = 1
+	max allowed value = 65535
+	min cycle         = 1
+	current tick      = 0
+	current date      = 1224
+	alarms            = [ blink_alarm(1324) ]
 \end{lstlisting}
