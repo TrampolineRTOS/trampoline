@@ -12,7 +12,7 @@ else:
   import urllib.request
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   runCommand                                                                                                         *
+#   runCommand
 #----------------------------------------------------------------------------------------------------------------------*
 
 def runCommand (cmd) :
@@ -26,7 +26,7 @@ def runCommand (cmd) :
     sys.exit (childProcess.returncode)
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   ARCHIVE DOWNLOAD                                                                                                   *
+#   ARCHIVE DOWNLOAD
 #----------------------------------------------------------------------------------------------------------------------*
 
 gPerCentLoaded = 0
@@ -66,12 +66,12 @@ def downloadArchive (archiveURL, archivePath):
     sys.exit (1)
 
 #----------------------------------------------------------------------------------------------------------------------*
-#  MAIN                                                                                                                *
+#  MAIN
 #----------------------------------------------------------------------------------------------------------------------*
 
 def downloadToolChain (TOOL_CHAIN):
   #--------------------------------------------------------------------------- Get URL
-  url = "http://crossgcc.rts-software.org/downloads/galgas-tools-for-cross-compilation/" + TOOL_CHAIN + ".tar.bz2"
+  url = "http://www.pcmolinaro.name/galgas-tools-for-cross-compilation/" + TOOL_CHAIN + ".tar.bz2"
   print ("*** TOOL CHAIN IS NOT INSTALLED")
   print ("Tool chain URL: " + url)
   #--------------------------------------------------------------------------- Get installation directory

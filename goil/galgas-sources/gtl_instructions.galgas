@@ -48,7 +48,7 @@ abstract method @gtlInstruction execute
 # instruction list
 #-----------------------------------------------------------------------------*
 list @gtlInstructionList {
-  @gtlInstruction instruction %setter
+  @gtlInstruction instruction
 }
 
 method @gtlInstructionList execute

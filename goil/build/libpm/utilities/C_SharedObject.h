@@ -1,33 +1,31 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  C_SharedObject : Base class for GALGAS object handling                                                             *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2014 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  C_SharedObject : Base class for GALGAS object handling                                       
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2014 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/MF_Assert.h"
 #include "utilities/MF_MemoryControl.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_SharedObject {
 //--- Attributes for debug
@@ -72,9 +70,9 @@ class C_SharedObject {
   #endif
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroValidSharedObject                                                                                            *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroValidSharedObject                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObject(OBJECT,TYPE) { \
@@ -87,9 +85,9 @@ class C_SharedObject {
   #define macroValidSharedObject(OBJECT,TYPE)
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroValidSharedObjectThere                                                                                       *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroValidSharedObjectThere                                                                 
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObjectThere(OBJECT,TYPE) { \
@@ -102,9 +100,9 @@ class C_SharedObject {
   #define macroValidSharedObjectThere(OBJECT,TYPE)
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroNullOrValidSharedObject                                                                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroNullOrValidSharedObject                                                                
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroNullOrValidSharedObject(OBJECT,TYPE) \
@@ -116,9 +114,9 @@ class C_SharedObject {
   #define macroNullOrValidSharedObject(OBJECT,TYPE)
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroNullOrValidSharedObjectThere                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroNullOrValidSharedObjectThere                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroNullOrValidSharedObjectThere(OBJECT,TYPE) \
@@ -130,46 +128,46 @@ class C_SharedObject {
   #define macroNullOrValidSharedObjectThere(OBJECT,TYPE)
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroAssignSharedObject                                                                                           *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroAssignSharedObject                                                                     
+//----------------------------------------------------------------------------------------------------------------------
 
 #define macroAssignSharedObject(TARGET_PTR,SOURCE_PTR) \
   { C_SharedObject::retainRelease (SOURCE_PTR, TARGET_PTR COMMA_HERE) ; TARGET_PTR = SOURCE_PTR ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroAssignSharedObjectThere                                                                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroAssignSharedObjectThere                                                                
+//----------------------------------------------------------------------------------------------------------------------
 
 #define macroAssignSharedObjectThere(TARGET_PTR,SOURCE_PTR) \
   { C_SharedObject::retainRelease (SOURCE_PTR, TARGET_PTR COMMA_THERE) ; TARGET_PTR = SOURCE_PTR ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroDetachSharedObject                                                                                           *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroDetachSharedObject                                                                     
+//----------------------------------------------------------------------------------------------------------------------
 
 #define macroDetachSharedObject(PTR) \
   { C_SharedObject::release (PTR COMMA_HERE) ; PTR = NULL ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroDetachSharedObjectThere                                                                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroDetachSharedObjectThere                                                                
+//----------------------------------------------------------------------------------------------------------------------
 
 #define macroDetachSharedObjectThere(PTR) \
   { C_SharedObject::release (PTR COMMA_THERE) ; PTR = NULL ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroUniqueSharedObject                                                                                           *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroUniqueSharedObject                                                                     
+//----------------------------------------------------------------------------------------------------------------------
 
 #define macroUniqueSharedObject(PTR) \
   { MF_Assert ((PTR)->isUniquelyReferenced (), "isUniquelyReferenced () is false", 0, 0) ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   macroUniqueSharedObjectThere                                                                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   macroUniqueSharedObjectThere                                                                
+//----------------------------------------------------------------------------------------------------------------------
 
 #define macroUniqueSharedObjectThere(PTR) \
   { MF_AssertThere ((PTR)->isUniquelyReferenced (), "isUniquelyReferenced () is false", 0, 0) ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

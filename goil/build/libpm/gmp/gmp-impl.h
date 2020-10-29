@@ -486,7 +486,7 @@ struct tmp_debug_t {
 };
 struct tmp_debug_entry_t {
   struct tmp_debug_entry_t  *next;
-  char                      *block;
+  charblock;
   size_t                    size;
 };
 __GMP_DECLSPEC void  __gmp_tmp_debug_mark (const char *, int, struct tmp_debug_t **,

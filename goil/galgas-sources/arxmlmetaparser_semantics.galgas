@@ -398,16 +398,16 @@ method @arxmlMetaSimpletype display
 
   ioString = ioString + svgString
 }
-setter @arxmlMetaSimpletype setType
-  ?@restrictionType iType
-{
-  type = iType
-}
-setter @arxmlMetaSimpletype setBase
-  ?@restrictionBaseType iBase
-{
-  base = iBase
-}
+#setter @arxmlMetaSimpletype setType
+#  ?@restrictionType iType
+#{
+#  type = iType
+#}
+#setter @arxmlMetaSimpletype setBase
+#  ?@restrictionBaseType iBase
+#{
+#  base = iBase
+#}
 setter @arxmlMetaSimpletype addValue
   ?@lstring value
 {

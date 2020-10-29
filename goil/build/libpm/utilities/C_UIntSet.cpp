@@ -1,41 +1,39 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  C_UIntSet : algorithms on sets of uint32_t                                                                         *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2013, ..., 2013 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  C_UIntSet : algorithms on sets of uint32_t                                                   
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2013, ..., 2013 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "C_UIntSet.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_UIntSet::C_UIntSet (void) :
 mDefinition () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_UIntSet::C_UIntSet (const uint32_t inValue) :
 mDefinition () {
   add (inValue) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::add (const uint32_t inNodeIndex) {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
@@ -48,7 +46,7 @@ void C_UIntSet::add (const uint32_t inNodeIndex) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::remove (const uint32_t inNodeIndex) {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
@@ -63,7 +61,7 @@ void C_UIntSet::remove (const uint32_t inNodeIndex) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const {
   outBoolValueArray.setCountToZero () ;
@@ -78,7 +76,7 @@ void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) co
   }
 }
   
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const {
   outValueArray.setCountToZero () ;
@@ -94,7 +92,7 @@ void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const 
   }
 }
   
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_UIntSet::contains (const uint32_t inNodeIndex) const {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
@@ -105,7 +103,7 @@ bool C_UIntSet::contains (const uint32_t inNodeIndex) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_UIntSet::firstValueNotIsSet (void) const {
   uint32_t result = 0 ;
@@ -120,7 +118,7 @@ uint32_t C_UIntSet::firstValueNotIsSet (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_UIntSet::count (void) const {
   uint32_t result = 0 ;
@@ -134,7 +132,7 @@ uint32_t C_UIntSet::count (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   while (mDefinition.count () > inOther.mDefinition.count ()) {
@@ -151,7 +149,7 @@ void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   while (mDefinition.count () < inOther.mDefinition.count ()) {
@@ -165,13 +163,13 @@ void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static inline int32_t minSInt32 (const int32_t inA, const int32_t inB) {
   return (inA < inB) ? inA : inB ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntSet::operator -= (const C_UIntSet & inOther) {
   const int32_t n = minSInt32 (mDefinition.count (), inOther.mDefinition.count ()) ;
@@ -186,7 +184,7 @@ void C_UIntSet::operator -= (const C_UIntSet & inOther) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   bool result = mDefinition.count () == inOther.mDefinition.count () ;
@@ -196,13 +194,13 @@ bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_UIntSet::operator != (const C_UIntSet & inOther) const {
   return ! (*this == inOther) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void C_UIntSet::check (void) const {
@@ -212,4 +210,4 @@ bool C_UIntSet::operator != (const C_UIntSet & inOther) const {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

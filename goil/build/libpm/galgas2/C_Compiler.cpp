@@ -1,24 +1,22 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'C_Compiler' : the compiler base class ;                                                                           *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2015 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_Compiler' : the compiler base class ;                                                     
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2015 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "files/C_TextFileWrite.h"
@@ -30,38 +28,38 @@
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/F_verbose_output.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//        Syntax error message for 'end of source':                                                                    *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//        Syntax error message for 'end of source':                                              
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const char * C_Compiler::kEndOfSourceLexicalErrorMessage = "end of source" ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Compiler::performGeneration (void) {
   return (! gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue)
       && (executionMode () == kExecutionModeNormal) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Compiler::performLogFileRead (void) {
   return gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read.mValue ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Constructor and destructor
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//        Constructor and destructor                                                                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//        Constructor and destructor                                                             
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Compiler::C_Compiler (C_Compiler * inCallerCompiler
                         COMMA_LOCATION_ARGS) :
@@ -81,25 +79,25 @@ mEndLocationForNext () {
   macroAssignSharedObject (mCallerCompiler, inCallerCompiler) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Compiler::~C_Compiler (void) {
   macroDetachSharedObject (mCallerCompiler) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_Compiler::sourceFilePath (void) const {
   return mSourceText.sourceFilePath () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Issue
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::appendIssue (const cIssueDescriptor & inIssue) {
   if (NULL == mCallerCompiler) {
@@ -109,7 +107,7 @@ void C_Compiler::appendIssue (const cIssueDescriptor & inIssue) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::writeIssueJSONFile (const C_String & inFile) {
   if (performGeneration ()) {
@@ -130,13 +128,13 @@ void C_Compiler::writeIssueJSONFile (const C_String & inFile) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Sent String Management
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string C_Compiler::sentString (void) const {
   GALGAS_string result ;
@@ -146,13 +144,13 @@ GALGAS_string C_Compiler::sentString (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Template String Management
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   const C_String s = mTemplateString ;
@@ -161,32 +159,32 @@ GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   return GALGAS_string (s) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::resetTemplateString (void) {
   mTemplateString.setLengthToZero () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Scanner configuration
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::resetAndLoadSourceFromText (const C_SourceTextInString & inSourceText) {
   mSourceText = inSourceText ;
   mCurrentLocation.resetWithSourceText (mSourceText) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark On the fly semantic error Message
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                                         COMMA_LOCATION_ARGS) {
@@ -197,13 +195,13 @@ void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                        COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark On the fly semantic Warning Message
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                                           COMMA_LOCATION_ARGS) {
@@ -214,13 +212,13 @@ void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                          COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Print Message
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::printMessage (const GALGAS_string & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -229,7 +227,7 @@ void C_Compiler::printMessage (const GALGAS_string & inMessage
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::printMessage (const C_String & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -238,13 +236,13 @@ void C_Compiler::printMessage (const C_String & inMessage
   ggs_printMessage (s COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Log File Read
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::logFileRead (const C_String & inFilePath) {
   if (performLogFileRead ()) {
@@ -252,25 +250,25 @@ void C_Compiler::logFileRead (const C_String & inFilePath) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Loop variant run time error
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::loopRunTimeVariantError (LOCATION_ARGS) {
   onTheFlyRunTimeError ("loop variant run-time error" COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Cast error
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::castError (const C_String & inTargetTypeName,
                             const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
@@ -280,13 +278,13 @@ void C_Compiler::castError (const C_String & inTargetTypeName,
   onTheFlyRunTimeError (m COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark GALGAS Error
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocation,
                                           const C_String & inErrorMessage,
@@ -305,7 +303,7 @@ void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocatio
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
                                     const GALGAS_string & inErrorMessage,
@@ -325,7 +323,7 @@ void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
                                               TC_UniqueArray <C_String> & ioNearestKeyArray,
@@ -360,7 +358,7 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
   semanticErrorAtLocation (key_location, message, fixItArray COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
                                                 const char * in_K_L_ErrorMessage,
@@ -392,7 +390,7 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
   semanticErrorAtLocation (key_location, message, TC_Array <C_FixItDescription> () COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
                                                   const char * in_K_L_ErrorMessage,
@@ -424,13 +422,13 @@ void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
   semanticWarningAtLocation (key_location, message COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark GALGAS Warnings
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLocation,
                                             const C_String & inWarningMessage
@@ -448,7 +446,7 @@ void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLoc
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
                                       const GALGAS_string & inWarningMessage,
@@ -468,57 +466,57 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Run Time Error
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
                                        COMMA_LOCATION_ARGS) {
   signalRunTimeError (this, inRunTimeErrorMessage COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark here, next
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location C_Compiler::here (void) const {
   return GALGAS_location (mStartLocationForHere, mEndLocationForHere, mSourceText) ;
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location C_Compiler::next (void) const {
   return GALGAS_location (mStartLocationForNext, mEndLocationForNext, mSourceText) ;
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Check And Generate File
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   C H E C K    A N D    G E N E R A T E   F I L E                                                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   C H E C K    A N D    G E N E R A T E   F I L E                                             
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static const char START_OF_USER_ZONE_1 [] =  "--- START OF USER ZONE 1\n" ;
 static const char END_OF_USER_ZONE_1   [] =  "--- END OF USER ZONE 1\n" ;
 static const char START_OF_USER_ZONE_2 [] =  "--- START OF USER ZONE 2\n" ;
 static const char END_OF_USER_ZONE_2   [] =  "--- END OF USER ZONE 2\n" ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                                const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -541,7 +539,7 @@ void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                           inMakeExecutable) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
                                          const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -602,7 +600,7 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::generateFileWithPatternFromPathes (
   const C_String & inStartPath,
@@ -734,4 +732,4 @@ void C_Compiler::generateFileWithPatternFromPathes (
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

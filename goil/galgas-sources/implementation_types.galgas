@@ -439,11 +439,11 @@ getter @impType getDefaultValue
 {
   outDefaultValue = @void.new{!emptyLString() !.nowhere}
 }
-setter @impType setDefaultValue
+
+setter @impType setDefaultObjectValue
   ?@object_t unused inDefaultValue
 {
 }
-
 
 abstract getter @impType mergeWithType
   ?@impType unused typeToMerge
@@ -505,7 +505,7 @@ override getter @impAutoDefaultType getDefaultValue
 {
   outDefaultValue = defaultValue
 }
-override setter @impAutoDefaultType setDefaultValue
+override setter @impAutoDefaultType setDefaultObjectValue
   ?@object_t inDefaultValue
 {
   defaultValue = inDefaultValue
@@ -580,8 +580,8 @@ map @implementationObjectMap {
 }
 
 class @implementationObject {
-  @lbool multiple %setter
-  @implementationObjectMap attributes %setter
+  @lbool multiple 
+  @implementationObjectMap attributes 
 }
 
 map @enumValues { # a map of enumeration values
@@ -793,7 +793,7 @@ map @implementationMap {
 }
 
 class @implementation {
-  @implementationMap imp %setter
+  @implementationMap imp
 }
 
 getter @implementation hasKey
