@@ -1,48 +1,46 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-#import "CocoaGalgasPrefix.h"
+#import <Objc/Objc.h>
 #import "unicode_character_m.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  T E M P L A T E    D E L I M I T E R     C L A S S                                                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  T E M P L A T E    D E L I M I T E R     C L A S S                                           
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 @interface OC_GGS_TemplateDelimiter : NSObject
 
-@property (assign, readonly PROPERTY_COMMA_ATOMIC) NSString * startString ;
-@property (assign, readonly PROPERTY_COMMA_ATOMIC) NSString * endString ;
-@property (assign, readonly PROPERTY_COMMA_ATOMIC) BOOL discardStartString ;
+@property (assign, readonly, atomic) NSString * startString ;
+@property (assign, readonly, atomic) NSString * endString ;
+@property (assign, readonly, atomic) BOOL discardStartString ;
 
 - (id) initWithStartString: (NSString *) inStartString
        endString: (NSString *) inEndString
        discardStartString: (BOOL) inDiscardStartString ;
 @end
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//              S C A N N I N G   P O I N T   S T R U C T                                                              *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//              S C A N N I N G   P O I N T   S T R U C T                                        
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   utf32 mPreviousChar ; 
@@ -50,11 +48,11 @@ typedef struct {
   NSUInteger mCurrentLocation ;
 } scanningPointStructForCocoa ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                       O C   L E X I Q U E                                                                           *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                       O C   L E X I Q U E                                                     
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 @interface OC_Lexique : NSObject {
   @protected NSString * mSourceString ;
@@ -68,7 +66,7 @@ typedef struct {
   @private NSDictionary * mCustomSyntaxColoringDictionary ;
 }
 
-@property (retain, readonly PROPERTY_COMMA_ATOMIC) NSMenu * menuForEntryPopUpButton ;
+@property (retain, readonly, atomic) NSMenu * menuForEntryPopUpButton ;
 
 - (void) detach ;
 
@@ -132,26 +130,24 @@ typedef struct {
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex ;
 @end
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   const char * mEntry ;
   UInt32 mTokenCode ;
 } C_cocoa_lexique_table_entry ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 NSInteger searchStringInTable (NSString * inSearchedString,
                                const C_cocoa_lexique_table_entry * inTable,
                                const NSUInteger inTableSize) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  S C A N N E R    A C T I O N S                                                                                     *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-//--- Predefined scanner actions: see http://galgas.rts-software.org/doku.php?id=lex#predefined_lexical_actions
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  S C A N N E R    A C T I O N S                                                               
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void scanner_cocoa_routine_multiplyUInt (BOOL * ioNoLexicalError,
                                          const UInt32 inFactor,
@@ -310,12 +306,11 @@ void scanner_cocoa_routine_convertBinaryStringIntoBigInt (BOOL * ioScanningOk,
                                                           NSString * inHexString,
                                                           NSMutableString * ioString) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-//--- Predefined scanner functions: see http://galgas.rts-software.org/doku.php?id=lex#predefined_lexical_functions
 utf32 scanner_cocoa_function_toLower (const utf32 inCharacter) ;
 
 utf32 scanner_cocoa_function_toUpper (const utf32 inCharacter) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 

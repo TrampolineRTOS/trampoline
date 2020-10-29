@@ -1,35 +1,33 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'C_SourceTextInString'                                                                                             *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 1996, ..., 2016 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_SourceTextInString'                                                                       
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 1996, ..., 2016 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/C_SourceTextInString.h"
 #include "galgas2/C_LocationInSource.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString::C_SourceTextInString (void) :
 mObject (NULL) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString::C_SourceTextInString (const C_String & inSourceString,
                                             const C_String & inFilePath,
@@ -38,20 +36,20 @@ mObject (NULL) {
   macroMyNew (mObject, cSourceTextInString (inSourceString, inFilePath, inShowSourceOnDetailledErrorMessage COMMA_HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString::~ C_SourceTextInString (void) {
   macroDetachSharedObject (mObject) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString::C_SourceTextInString (const C_SourceTextInString & inSource) :
 mObject (NULL) {
   macroAssignSharedObject (mObject, inSource.mObject) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_SourceTextInString & C_SourceTextInString::operator = (const C_SourceTextInString & inSource) {
   if (this != & inSource) {
@@ -60,7 +58,7 @@ C_SourceTextInString & C_SourceTextInString::operator = (const C_SourceTextInStr
   return *this ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_SourceTextInString::getLineForLocation (const C_LocationInSource & inLocation) const {
   C_String errorLine ;
@@ -85,7 +83,7 @@ C_String C_SourceTextInString::getLineForLocation (const C_LocationInSource & in
   return errorLine ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_SourceTextInString::appendSourceContents (C_String & ioMessage) const {
   if ((NULL != mObject) && mObject->mShowSourceOnDetailledErrorMessage) {
@@ -97,4 +95,4 @@ void C_SourceTextInString::appendSourceContents (C_String & ioMessage) const {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

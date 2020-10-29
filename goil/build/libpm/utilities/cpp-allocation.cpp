@@ -1,45 +1,43 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  Implementation of routines for handling dynamic allocation checking.                                               *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 1994, ..., 2010 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  Implementation of routines for handling dynamic allocation checking.                         
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 1994, ..., 2019 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/M_machine.h"
 #include "utilities/MF_MemoryControl.h"
 #include "utilities/cpp-allocation.h"
 #include "utilities/basic-allocation.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 //#define REGISTER_ALLOCATION_STATS
 //#define REDEFINE_NEW_DELETE_OPERATORS
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 // Include this header is required for safely compile allocation operators.
 
 #include <new>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #ifndef REGISTER_ALLOCATION_STATS
@@ -47,7 +45,7 @@
   #endif
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #ifndef REDEFINE_NEW_DELETE_OPERATORS
@@ -55,13 +53,13 @@
   #endif
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static int32_t gAllocProloguePendings = 0 ;
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef REGISTER_ALLOCATION_STATS
   static uint32_t gBlockAllocatedWithoutUsingMacroMyNew = 0 ;
@@ -72,7 +70,7 @@
   static uint32_t gAllocatedArrayCount = 0 ;
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void prologueForNew (void) {
@@ -80,10 +78,14 @@
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
-void * operator new (size_t inSizeInBytes) throw (std::bad_alloc) {
+  #if __cplusplus >= 201703
+    void * operator new (size_t inSizeInBytes) {
+  #else
+    void * operator new (size_t inSizeInBytes) throw (std::bad_alloc) {
+  #endif
   #ifndef DO_NOT_GENERATE_CHECKINGS
     if (gAllocProloguePendings <= 0) {
       gBlockAllocatedWithoutUsingMacroMyNew ++ ;
@@ -105,35 +107,43 @@ void * operator new (size_t inSizeInBytes) throw (std::bad_alloc) {
 }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
-void * operator new [] (size_t inSizeInBytes) throw (std::bad_alloc) {
-  #ifndef DO_NOT_GENERATE_CHECKINGS
-    if (gAllocProloguePendings <= 0) {
-      gBlockAllocatedWithoutUsingMacroMyNewArray ++ ;
-    }
-    gAllocProloguePendings -- ;
+  #if __cplusplus >= 201703
+    void * operator new [] (size_t inSizeInBytes) {
+  #else
+    void * operator new [] (size_t inSizeInBytes) throw (std::bad_alloc) {
   #endif
-  void * result = NULL ;
-  if (inSizeInBytes > 0) {
-    result = ::myAllocRoutine (inSizeInBytes) ;
-    if (NULL == result) {
-      throw std::bad_alloc () ;
-    }
-    #ifdef REGISTER_ALLOCATION_STATS
-      gCurrentArrayCount ++ ;
-      gAllocatedArrayCount ++ ;
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      if (gAllocProloguePendings <= 0) {
+        gBlockAllocatedWithoutUsingMacroMyNewArray ++ ;
+      }
+      gAllocProloguePendings -- ;
     #endif
+    void * result = NULL ;
+    if (inSizeInBytes > 0) {
+      result = ::myAllocRoutine (inSizeInBytes) ;
+      if (NULL == result) {
+        throw std::bad_alloc () ;
+      }
+      #ifdef REGISTER_ALLOCATION_STATS
+        gCurrentArrayCount ++ ;
+        gAllocatedArrayCount ++ ;
+      #endif
+    }
+    return result ;
   }
-  return result ;
-}
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
-void operator delete (void * inPointer) throw () {
+//  #if __cplusplus >= 201703
+//    void operator delete (void * inPointer) {
+//  #else
+    void operator delete (void * inPointer) throw () {
+//  #endif
   if (inPointer != NULL) {
     ::myFreeRoutine (inPointer) ;
     #ifdef REGISTER_ALLOCATION_STATS
@@ -143,10 +153,14 @@ void operator delete (void * inPointer) throw () {
 }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
-void operator delete [] (void * inPointer) throw () {
+//  #if __cplusplus >= 201703
+//    void operator delete [] (void * inPointer) {
+//  #else
+    void operator delete [] (void * inPointer) throw () {
+//  #endif
   if (inPointer != NULL) {
     ::myFreeRoutine (inPointer) ;
     #ifdef REGISTER_ALLOCATION_STATS
@@ -156,7 +170,7 @@ void operator delete [] (void * inPointer) throw () {
 }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void displayAllocationStats (void) {
   #ifdef REGISTER_ALLOCATION_STATS
@@ -176,4 +190,4 @@ void displayAllocationStats (void) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

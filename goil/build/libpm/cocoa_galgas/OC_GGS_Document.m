@@ -1,22 +1,20 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2003, ..., 2017 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2003, ..., 2019 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "OC_GGS_Document.h"
 #import "OC_GGS_ApplicationDelegate.h"
@@ -35,23 +33,23 @@
 #import "NSString+identifierRepresentation.h"
 #import "F_CocoaWrapperForGalgas.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 // #define DEBUG_MESSAGES
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_Document
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @synthesize mBuildTaskIsRunning ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//       I N I T                                                                                                       *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//       I N I T                                                                                 
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (instancetype) init {
   self = [super init] ;
@@ -84,14 +82,13 @@
   return self;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-- (void) FINALIZE_OR_DEALLOC {
+- (void) dealloc {
   noteObjectDeallocation (self) ;
-  macroSuperFinalize ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) sourceStringForGlobalSearch {
   #ifdef DEBUG_MESSAGES
@@ -100,15 +97,15 @@
   return mDocumentData.sourceString ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Nib relative Actions
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//       W I N D O W    N I B    N A M E                                                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//       W I N D O W    N I B    N A M E                                                         
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) windowNibName {
   #ifdef DEBUG_MESSAGES
@@ -117,11 +114,11 @@
   return @"OC_GGS_Document" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//       W I N D O W    C O N T R O L L E R    D I D    L O A D    N I B                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//       W I N D O W    C O N T R O L L E R    D I D    L O A D    N I B                         
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) windowControllerDidLoadNib: (NSWindowController *) inWindowController {
   #ifdef DEBUG_MESSAGES
@@ -413,7 +410,7 @@
   ] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) removeWindowController:(NSWindowController *) inWindowController {
   #ifdef DEBUG_MESSAGES
@@ -529,11 +526,11 @@
   [super removeWindowController:inWindowController] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Actions
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) registerConfigurationInPreferences {
   NSMutableArray * configurationArray = [NSMutableArray new] ;
@@ -549,7 +546,7 @@
   // NSLog (@"Write Prefs '%@' -> %@", key, configurationArray) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) changeSelectedSourceViewAction: (NSButton *) inSender {
   #ifdef DEBUG_MESSAGES
@@ -558,7 +555,7 @@
   [mSourceDisplayArrayControllerHigh setSelectionIndex:(NSUInteger) inSender.tag] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionGotoLine: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -573,7 +570,7 @@
   ] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) collapseIssuesAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -582,11 +579,11 @@
   [mFirstSplitView setPosition:0.0 ofDividerAtIndex:0] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//        S H E E T    D I D    E N D    ( G O T O    L I N E )                                                        *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//        S H E E T    D I D    E N D    ( G O T O    L I N E )                                  
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) sheetDidEnd: (NSWindow *) inSheet
          returnCode: (int) inReturnCode
@@ -603,7 +600,7 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionComment: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -613,7 +610,7 @@
   [selectedObject commentSelection] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionUncomment: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -623,7 +620,7 @@
   [selectedObject uncommentSelection] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionShiftLeft: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -633,7 +630,7 @@
   [selectedObject shiftLeftAction] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionShiftRight: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -643,7 +640,7 @@
   [selectedObject shiftRightAction] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) validateMenuItem:(NSMenuItem *) item {
   BOOL result = YES ;
@@ -656,7 +653,7 @@
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) saveAllDocuments: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -665,7 +662,7 @@
   [OC_GGS_DocumentData saveAllDocuments] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) displaySourceWithURL: (NSURL *) inURL
          atLine: (NSUInteger) inLine {
@@ -679,7 +676,7 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionPathControl: (id) inSender {
   NSArray * cells = mSourceFilePathControl.pathComponentCells ;
@@ -696,7 +693,7 @@
   [ws selectFile:path inFileViewerRootedAtPath:rootPath] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) copyFilePath: (id) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
@@ -706,7 +703,7 @@
   [pasteboard writeObjects:[NSArray arrayWithObject:filePath]] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) copyFileName: (id) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
@@ -716,7 +713,7 @@
   [pasteboard writeObjects:[NSArray arrayWithObject:fileName]] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) copyFileDirectory: (id) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
@@ -726,22 +723,22 @@
   [pasteboard writeObjects:[NSArray arrayWithObject:fileDirectory]] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) actionInsertTextMacro: (NSMenuItem *) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject actionInsertTextMacro:inSender] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Document Actions
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//    P R I N T                                                                                                        *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//    P R I N T                                                                                  
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) printDocument: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -751,11 +748,11 @@
   [selectedObject.textView print:sender] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Tracking File Document changes
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSDate *) sourceFileModificationDateInFileSystem {
   NSURL * fileURL = [self fileURL] ;
@@ -771,7 +768,7 @@
   return date ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) updateFromFileSystem: (id) inUnusedArgument {
   #ifdef DEBUG_MESSAGES
@@ -797,82 +794,15 @@
   [mUpdateFromFileSystemPanel orderOut:self] ;
   [NSApp endSheet:mUpdateFromFileSystemPanel] ;   
 }
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-/*- (void) askForUpdatingFromFileSystem {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-//--- Get application name
-  NSDictionary * bundleDictionary = [[NSBundle mainBundle] localizedInfoDictionary] ;
-  NSString * applicationName = [bundleDictionary objectForKey: @"CFBundleName"] ;
-//--- Build Alert
-  NSAlert *alert = [NSAlert
-    alertWithMessageText:@"Warning"
-    defaultButton:[NSString stringWithFormat:@"Keep %@ Version", applicationName]
-    alternateButton:@"Update From File Contents"
-    otherButton:nil
-    informativeTextWithFormat:@"This file for document at %@ has been modified by an other application."
-      " Do you want to keep the %@ version or update from file contents ?",
-      self.fileURL.path,
-      applicationName
-  ] ;
-//--- Display alert as window sheet
-  [alert
-    beginSheetModalForWindow:[self windowForSheet]
-    modalDelegate:self
-    didEndSelector:@selector (askForUpdatingFromFileSystemAlertEnding:returnCode:contextInfo:)
-    contextInfo:NULL
-  ] ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-- (void) askForUpdatingFromFileSystemAlertEnding:(NSAlert *) inAlert
-         returnCode:(int) returnCode
-         contextInfo:(void *) contextInfo {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-//  NSLog (@"returnCode %d", returnCode) ;
-  if (returnCode == NSAlertAlternateReturn) { // Revert button
-    [[NSRunLoop mainRunLoop]
-      performSelector: @selector (updateFromFileSystem:)
-      target:self
-      argument:nil
-      order:0
-      modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]
-    ] ;
-  }
-//--- Set new file modification date
-  [self setFileModificationDate:[self sourceFileModificationDateInFileSystem]] ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-- (void) windowDidBecomeKey: (NSNotification *) inNotification {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  if (self.fileURL.path.length > 0) {
-    NSDate * modificationDateOnFileSystem = [self sourceFileModificationDateInFileSystem] ;
-    if ([modificationDateOnFileSystem compare:[self fileModificationDate]] != NSOrderedSame) {
-      [self askForUpdatingFromFileSystem] ;
-    }
-  }
-}
-*/
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Document Save
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//    S A V E    D O C U M E N T                                                                                       *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//    S A V E    D O C U M E N T                                                                 
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) saveDocument:(id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -885,127 +815,127 @@
   [self setFileURL:url] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//    W R I T E    T O    F I L E                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//    W R I T E    T O    F I L E                                                                
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) writeToURL: (NSURL *) inAbsoluteURL
          ofType: (NSString *) inTypeName
-         error: (NSError * macroAutoreleasingInARC *) outError {
+         error: (NSError * __autoreleasing *) outError {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, URL %@", __PRETTY_FUNCTION__, inAbsoluteURL) ;
   #endif
 //---
-  return [mDocumentData performSaveToURL:inAbsoluteURL] ;
+  return [mDocumentData performSaveToURL: inAbsoluteURL] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  S A V I N G    H F S    T Y P E    A N D    C R E A T O R    C O D E S                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  S A V I N G    H F S    T Y P E    A N D    C R E A T O R    C O D E S                       
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-- (NSDictionary *) fileAttributesToWriteToURL:(NSURL *) inDocumentURL
-    ofType:(NSString *)documentTypeName
-    forSaveOperation:(NSSaveOperationType)saveOperationType
-    originalContentsURL: (NSURL *) inOriginalURL
-    error: (NSError * macroAutoreleasingInARC *) outError {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-    
-  NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
-  NSString *creatorCodeString;
-  NSArray *documentTypes;
-  NSNumber *typeCode, *creatorCode;
-  NSMutableDictionary *newAttributes;
-  
-  typeCode = creatorCode = nil;
-  
-  // First, set creatorCode to the HFS creator code for the application,
-  // if it exists.
-   creatorCodeString = [infoPlist objectForKey:@"CFBundleSignature"];
-  if(creatorCodeString)
-  {
-      creatorCode = [NSNumber
-          numberWithUnsignedLong:NSHFSTypeCodeFromFileType([NSString
-          stringWithFormat:@"'%@'",creatorCodeString])];
-  }
-  
-  // Then, find the matching Info.plist dictionary entry for this type.
-  // Use the first associated HFS type code, if any exist.
-  documentTypes = [infoPlist objectForKey:@"CFBundleDocumentTypes"];
-  if(documentTypes)
-  {
-      const NSUInteger count = [documentTypes count];
-      
-      for(NSUInteger i = 0; i < count; i++)
-      {
-          NSString *type = [[documentTypes objectAtIndex:i]
-              objectForKey:@"CFBundleTypeName"];
-          if(type && [type isEqualToString:documentTypeName])
-          {
-              NSArray *typeCodeStrings = [[documentTypes objectAtIndex:i]
-                  objectForKey:@"CFBundleTypeOSTypes"];
-              if(typeCodeStrings)
-              {
-                 NSString *firstTypeCodeString = [typeCodeStrings
-                      objectAtIndex:0];
-                  if (firstTypeCodeString)
-                  {
-                      typeCode = [NSNumber                            numberWithUnsignedLong:
-                         NSHFSTypeCodeFromFileType([NSString
-                         stringWithFormat:@"'%@'",firstTypeCodeString])];
-                  }
-              }
-              break;
-          }
-      }
-  }
-   // If neither type nor creator code exist, use the default implementation.
-  if(!(typeCode || creatorCode))
-  {
-      return [super
-        fileAttributesToWriteToURL:inDocumentURL
-        ofType:documentTypeName
-        forSaveOperation:saveOperationType
-        originalContentsURL:inOriginalURL
-        error:outError
-      ];
-  }
-  
-  // Otherwise, add the type and/or creator to the dictionary.
-  newAttributes = [NSMutableDictionary
-    dictionaryWithDictionary:[super
-      fileAttributesToWriteToURL:inDocumentURL
-      ofType:documentTypeName
-      forSaveOperation:saveOperationType
-      originalContentsURL:inOriginalURL
-      error:outError
-    ]
-  ];
-  if(typeCode)
-      [newAttributes setObject:typeCode forKey:NSFileHFSTypeCode];
-  if(creatorCode)
-      [newAttributes setObject:creatorCode forKey:NSFileHFSCreatorCode];
-  return newAttributes;
-}
+//- (NSDictionary *) fileAttributesToWriteToURL:(NSURL *) inDocumentURL
+//    ofType:(NSString *)documentTypeName
+//    forSaveOperation:(NSSaveOperationType)saveOperationType
+//    originalContentsURL: (NSURL *) inOriginalURL
+//    error: (NSError * __autoreleasing *) outError {
+//  #ifdef DEBUG_MESSAGES
+//    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+//  #endif
+//
+//  NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+//  NSString *creatorCodeString;
+//  NSArray *documentTypes;
+//  NSNumber *typeCode, *creatorCode;
+//  NSMutableDictionary *newAttributes;
+//
+//  typeCode = creatorCode = nil;
+//
+//  // First, set creatorCode to the HFS creator code for the application,
+//  // if it exists.
+//   creatorCodeString = [infoPlist objectForKey:@"CFBundleSignature"];
+//  if(creatorCodeString)
+//  {
+//      creatorCode = [NSNumber
+//          numberWithUnsignedLong:NSHFSTypeCodeFromFileType([NSString
+//          stringWithFormat:@"'%@'",creatorCodeString])];
+//  }
+//
+//  // Then, find the matching Info.plist dictionary entry for this type.
+//  // Use the first associated HFS type code, if any exist.
+//  documentTypes = [infoPlist objectForKey:@"CFBundleDocumentTypes"];
+//  if(documentTypes)
+//  {
+//      const NSUInteger count = [documentTypes count];
+//
+//      for(NSUInteger i = 0; i < count; i++)
+//      {
+//          NSString *type = [[documentTypes objectAtIndex:i]
+//              objectForKey:@"CFBundleTypeName"];
+//          if(type && [type isEqualToString:documentTypeName])
+//          {
+//              NSArray *typeCodeStrings = [[documentTypes objectAtIndex:i]
+//                  objectForKey:@"CFBundleTypeOSTypes"];
+//              if(typeCodeStrings)
+//              {
+//                 NSString *firstTypeCodeString = [typeCodeStrings
+//                      objectAtIndex:0];
+//                  if (firstTypeCodeString)
+//                  {
+//                      typeCode = [NSNumber                            numberWithUnsignedLong:
+//                         NSHFSTypeCodeFromFileType([NSString
+//                         stringWithFormat:@"'%@'",firstTypeCodeString])];
+//                  }
+//              }
+//              break;
+//          }
+//      }
+//  }
+//   // If neither type nor creator code exist, use the default implementation.
+//  if(!(typeCode || creatorCode))
+//  {
+//      return [super
+//        fileAttributesToWriteToURL:inDocumentURL
+//        ofType:documentTypeName
+//        forSaveOperation:saveOperationType
+//        originalContentsURL:inOriginalURL
+//        error:outError
+//      ];
+//  }
+//
+//  // Otherwise, add the type and/or creator to the dictionary.
+//  newAttributes = [NSMutableDictionary
+//    dictionaryWithDictionary:[super
+//      fileAttributesToWriteToURL:inDocumentURL
+//      ofType:documentTypeName
+//      forSaveOperation:saveOperationType
+//      originalContentsURL:inOriginalURL
+//      error:outError
+//    ]
+//  ];
+//  if(typeCode)
+//      [newAttributes setObject:typeCode forKey:NSFileHFSTypeCode];
+//  if(creatorCode)
+//      [newAttributes setObject:creatorCode forKey:NSFileHFSCreatorCode];
+//  return newAttributes;
+//}
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Document Read
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//    R E A D    F R O M    F I L E                                                                                    *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//    R E A D    F R O M    F I L E                                                              
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) readFromURL:(NSURL *) inAbsoluteURL
          ofType:(NSString *) inTypeName
-         error:(NSError * macroAutoreleasingInARC *) outError {
+         error:(NSError * __autoreleasing *) outError {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, URL '%@'", __PRETTY_FUNCTION__, inAbsoluteURL) ;
   #endif
@@ -1019,15 +949,15 @@
   return mDocumentData != nil ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Build
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//    C O M P I L E                                                                                                    *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//    C O M P I L E                                                                              
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) stopBuild: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -1037,7 +967,7 @@
   [mBuildTask terminate] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionBuildFirst: (id) inUnusedSender {
   #ifdef DEBUG_MESSAGES
@@ -1049,7 +979,7 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) actionBuildRun: (id) inUnusedSender {
   #ifdef DEBUG_MESSAGES
@@ -1061,7 +991,7 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) compileFileAtPath: (NSString *) inFilePath
          isBuildRun: (BOOL) inIsBuildRun {
@@ -1105,7 +1035,7 @@
   [mOutputTextView setAutomaticLinkDetectionEnabled:YES] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) enterIssue: (NSString *) inIssueMessage
          isError: (BOOL) inIsError
@@ -1157,12 +1087,12 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const utf32 COCOA_WARNING_ID = TO_UNICODE (3) ;
 static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) enterOutputData: (NSData *) inData {
   #ifdef DEBUG_MESSAGES
@@ -1245,7 +1175,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mOutputTextView scrollRangeToVisible:NSMakeRange (mOutputTextView.textStorage.length, 0)] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) buildCompleted {
   #ifdef DEBUG_MESSAGES
@@ -1278,7 +1208,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   ] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) pmReleaseBuildTask {
   #ifdef DEBUG_MESSAGES
@@ -1294,7 +1224,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) appendBuildOutputData: (NSData *) inData {
   #ifdef DEBUG_MESSAGES
@@ -1327,7 +1257,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) triggerDocumentEditedStatusUpdate {
   #ifdef DEBUG_MESSAGES
@@ -1343,11 +1273,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self updateChangeCount:isEdited ? NSChangeDone : NSChangeCleared] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Click on issue table view
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) clickOnSourceTableViewHigh: (id) inSender {
   if (mDisplayDescriptorTableViewHigh.clickedColumn == 1) {
@@ -1359,7 +1289,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) openSourceInNewWindowAction: (id) inSender {
   NSError * error = nil ;
@@ -1375,7 +1305,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) moveSourceInNewWindowAction: (id) inSender {
   NSError * error = nil ;
@@ -1392,7 +1322,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) duplicateSourceAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
@@ -1404,7 +1334,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self registerConfigurationInPreferences] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) revealInFinderAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
@@ -1415,14 +1345,14 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) closeAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [self removeSelectedTabAction:d] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) closeOthersAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
@@ -1433,7 +1363,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (OC_GGS_DocumentData *) findOrAddDocumentWithPath: (NSString *) inPath {
   #ifdef DEBUG_MESSAGES
@@ -1450,7 +1380,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   ] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (OC_GGS_TextDisplayDescriptor *) findOrAddNewTabForFile: (NSString *) inDocumentPath {
   #ifdef DEBUG_MESSAGES
@@ -1480,7 +1410,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return foundSourceText ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) appendTabForFile: (NSString *) inDocumentPath {
   #ifdef DEBUG_MESSAGES
@@ -1498,7 +1428,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) removeSelectedTabAction: (OC_GGS_TextDisplayDescriptor *) inTextDisplayDescriptor {
   #ifdef DEBUG_MESSAGES
@@ -1516,11 +1446,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark observeValueForKeyPath
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) observeValueForKeyPath:(NSString *) inKeyPath
          ofObject: (id) inObject
@@ -1570,11 +1500,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Open Quickly
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) fileNameFromSelection {
   #ifdef DEBUG_MESSAGES
@@ -1633,7 +1563,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return [self.fileURL.path.stringByDeletingLastPathComponent stringByAppendingPathComponent:relativePath] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) actionOpenFromSelectionInNewWindow: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -1652,7 +1582,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) actionOpenFromSelection: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -1661,15 +1591,15 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self findOrAddNewTabForFile:self.fileNameFromSelection] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Search and Replace
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 //https://github.com/malcommac/NSSplitView-Animatable
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) updateDirectoryListVisibility {
   const NSInteger sel = [[NSUserDefaults standardUserDefaults] integerForKey:[NSString stringWithFormat:@"searchMatrixFor:%@", mBaseFilePreferenceKey]] ;
@@ -1677,7 +1607,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mExplicitSearchDirectoryView setHidden:sel != 2] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (double) positionOfDividerAtIndex:(NSInteger)dividerIndex {
   #ifdef DEBUG_MESSAGES
@@ -1695,7 +1625,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return mSecondSplitView.isVertical ? NSMaxX (priorViewFrame) : NSMaxY (priorViewFrame);
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 // NSPlitView delegate method
 
 - (CGFloat) splitView:(NSSplitView *) inSplitView
@@ -1715,7 +1645,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 // NSPlitView delegate method
 
 - (CGFloat) splitView:(NSSplitView *) inSplitView
@@ -1733,7 +1663,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 // http://stackoverflow.com/questions/17441877/nssplitview-fixed-splitter-on-window-resize
 
@@ -1784,7 +1714,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) showSearchAndReplaceView: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1798,7 +1728,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mGlobalSearchTextField.window makeFirstResponder:mGlobalSearchTextField] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) closeSearchAndReplaceView: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1811,7 +1741,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mSecondSplitView setPosition:position ofDividerAtIndex:0] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) updateOccurrenceFoundTextField {
   #ifdef DEBUG_MESSAGES
@@ -1827,7 +1757,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mOccurenceFoundCountTextField display] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) globalFindAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1846,7 +1776,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) findInExplicitDirectories {
   #ifdef DEBUG_MESSAGES
@@ -1885,7 +1815,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) findInOpenedFileDirectories {
   #ifdef DEBUG_MESSAGES
@@ -1933,7 +1863,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) recursiveSearchInDirectory: (NSString *) inDirectoryFullPath
          recursive: (BOOL) inRecursive
@@ -1962,7 +1892,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSArray *) allTypesOfCurrentApplication {
   #ifdef DEBUG_MESSAGES
@@ -1978,7 +1908,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return allTypes ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSUInteger) searchOptions {
   #ifdef DEBUG_MESSAGES
@@ -1991,7 +1921,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return searchOptions ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) findInFile: (NSString *) inFilePath {
   #ifdef DEBUG_MESSAGES
@@ -2018,7 +1948,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self enterResult:foundEntries forFilePath:inFilePath] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) findInOpenedFiles {
   #ifdef DEBUG_MESSAGES
@@ -2052,7 +1982,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) addFindResult:(NSString *) inSourceFilePath
          sourceString: (NSString *) inSourceString
@@ -2072,7 +2002,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   mResultCount ++ ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) enterResult: (NSMutableArray *) inFoundEntries
          forFilePath:(NSString *) inSourceFilePath {
@@ -2092,7 +2022,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) changeSelectionInSearchResultView {
   #ifdef DEBUG_MESSAGES
@@ -2117,7 +2047,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) updateSearchResultForFile: (NSString *) inFilePath
          previousRange: (NSRange) inPreviousRange
@@ -2134,7 +2064,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 } 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (IBAction) globalReplaceAllAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -2166,7 +2096,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) addExplicitSearchDirectoryAction: (id) inSender {
   NSOpenPanel * panel = [NSOpenPanel openPanel] ;
@@ -2186,7 +2116,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   ] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) addSearchDirectoryPanelDidEnd: (NSOpenPanel *) inPanel
          returnCode: (int) inReturnCode
@@ -2200,7 +2130,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) addExcludedDirectoryAction: (id) inSender {
   NSOpenPanel * panel = [NSOpenPanel openPanel] ;
@@ -2221,7 +2151,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) addExcludedDirectoryPanelDidEnd: (NSOpenPanel *) inPanel
          returnCode: (int) inReturnCode
@@ -2235,9 +2165,9 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   DRAG AND DROP                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   DRAG AND DROP                                                                               
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Drag and Drop in source table View
 
@@ -2245,7 +2175,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 
 //#define DEBUG_MESSAGES
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) tableView: (NSTableView *) inTableView
          writeRowsWithIndexes: (NSIndexSet *) inRowIndexes
@@ -2263,7 +2193,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return YES;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSDragOperation) tableView:(NSTableView*)tv
                     validateDrop:(id <NSDraggingInfo>)info
@@ -2275,7 +2205,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return NSDragOperationEvery ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) tableView: (NSTableView *) inTableView
          acceptDrop: (id <NSDraggingInfo>) inDraggingInfo
@@ -2294,6 +2224,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
         initWithDocumentData:documentData
         displayDocument:self
       ] ;
+      // NSLog (@"Inserted %@", tdd) ;
       [mSourceDisplayArrayControllerHigh insertObject:tdd atArrangedObjectIndex:(NSUInteger) inRow] ;
       [mSourceDisplayArrayControllerHigh setSelectedObjects:[NSArray arrayWithObject:tdd]] ;
       [self registerConfigurationInPreferences] ;
@@ -2302,6 +2233,6 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return YES ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @end

@@ -1,28 +1,26 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  C_String : an implementation of fully dynamic character string                                                     *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 1997, ..., 2016 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  C_String : an implementation of fully dynamic character string                               
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 1997, ..., 2020 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/M_SourceLocation.h"
 #include "collections/TC_UniqueArray.h"
@@ -32,26 +30,26 @@
 #include "utilities/TF_Swap.h"
 #include "time/C_DateTime.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <exception>
 #include <stdio.h> 
 #include <dirent.h> 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef COMPILE_FOR_WINDOWS
   #error COMPILE_FOR_WINDOWS is undefined
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 0
   #include <sys/types.h>
   #include <sys/stat.h>
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef enum {
   kUTF_8_FileEncoding,
@@ -79,11 +77,11 @@ typedef enum {
   kMacRoman_FileEncoding
 } PMTextFileEncoding ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//      Fully dynamic character string : C_String                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//      Fully dynamic character string : C_String                                                
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_String : public AC_OutputStream {
 //--- Constructors
@@ -161,7 +159,13 @@ class C_String : public AC_OutputStream {
   public : C_String nameRepresentation (void) const ; // Preserves ASCII letters, digits and '_'
   public : C_String fileNameRepresentation (void) const ; // Preserves ASCII lowercase letters, digits and '_'
   public : C_String assemblerRepresentation (void) const ; // Preserves ASCII letters, digits, '_', '.' and '$'
+  public : C_String utf8RepresentationWithUnicodeEscaping (void) const ; // \uXXXX, \UXXXXXXXX
   public : C_String decodedStringFromRepresentation (bool & outOk) const ; // Reverses the above representations
+
+//--- Get a representation enclosing by a given character
+//      - escaped by a back slash
+//      - back slash is also escaped by back slash
+  public : C_String utf8RepresentationEnclosedWithin (const utf32 inCharacter) const ;
 
 //--- Get an HTML representation (&, <, > and " are escaped using HTML escape sequence)
   public : C_String HTMLRepresentation (void) const ;
@@ -193,6 +197,10 @@ class C_String : public AC_OutputStream {
                                         int32_t & outLineNumber,
                                         int32_t & outColumnNumber,
                                         C_String & outLineContents) const ;
+
+//--- Get index from line number and column number
+  public : int32_t indexFromLineAndColumn (const int32_t inLineNumber,
+                                           const int32_t inColumnNumber) const ;
 
 //--- Subsitute 'inCharacter' by 'inString' ; if the character occurs twice, suppress one
   public : C_String stringByReplacingCharacterByString (const utf32 inCharacter,
@@ -330,11 +338,11 @@ class C_String : public AC_OutputStream {
   private : mutable class cEmbeddedString * mEmbeddedString ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  Exception generated by readTextFile method when a read error occurs                                                *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  Exception generated by readTextFile method when a read error occurs                          
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const size_t kTextReadExceptionStringMaxLength = 1000 ;
 
@@ -346,4 +354,4 @@ class C_TextReadException : public ::std::exception {
   public : virtual const char * what (void) const throw () ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

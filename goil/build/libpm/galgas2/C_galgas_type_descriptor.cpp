@@ -1,49 +1,47 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  GALGAS Type Inspector (for introspection)                                                                          *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2010, ..., 2011 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  GALGAS Type Inspector (for introspection)                                                    
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2010, ..., 2011 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/C_galgas_type_descriptor.h"
 #include "strings/C_String.h"
 #include "galgas2/C_galgas_io.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  GALGAS type reference (for type introspection)                                                                     *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  GALGAS type reference (for type introspection)                                               
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ======== C_galgas_type_descriptor
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static C_galgas_type_descriptor * gGalgasTypeListRoot = NULL ;
 static int32_t gSlotID = 0 ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_type_descriptor::C_galgas_type_descriptor (const char * inGalgasTypeName,
                                                     const C_galgas_type_descriptor * inSuperClassDescriptor) :
@@ -58,7 +56,7 @@ mSuperclassDescriptor (inSuperClassDescriptor) {
   recursiveInsert (gGalgasTypeListRoot, this, extension) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::recursiveGetSortedTypeList (C_galgas_type_descriptor * inRoot,
                                                            TC_UniqueArray <C_galgas_type_descriptor *> & ioTypeList) {
@@ -69,19 +67,19 @@ void C_galgas_type_descriptor::recursiveGetSortedTypeList (C_galgas_type_descrip
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::typeListRoot (TC_UniqueArray <C_galgas_type_descriptor *> & outTypeList) {
   recursiveGetSortedTypeList (gGalgasTypeListRoot, outTypeList) ;
 } 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Insertion Implementation
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::rotateLeft (C_galgas_type_descriptor * & ioRootPtr) {
   C_galgas_type_descriptor * b = ioRootPtr->mNextType ;
@@ -102,7 +100,7 @@ void C_galgas_type_descriptor::rotateLeft (C_galgas_type_descriptor * & ioRootPt
   ioRootPtr = b ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::rotateRight (C_galgas_type_descriptor * & ioRootPtr) {
   C_galgas_type_descriptor * b = ioRootPtr->mPreviousType ;
@@ -122,7 +120,7 @@ void C_galgas_type_descriptor::rotateRight (C_galgas_type_descriptor * & ioRootP
   ioRootPtr = b ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_galgas_type_descriptor::recursiveInsert (C_galgas_type_descriptor * & ioRootPtr,
                                                 C_galgas_type_descriptor * inDescriptor,
@@ -169,4 +167,4 @@ void C_galgas_type_descriptor::recursiveInsert (C_galgas_type_descriptor * & ioR
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

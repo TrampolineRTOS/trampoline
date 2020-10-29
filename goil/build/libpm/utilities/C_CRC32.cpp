@@ -1,42 +1,40 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'C_CRC32' : a class for computing CRC32                                                                            *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 1997 Pierre Molinaro.                                                                                *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_CRC32' : a class for computing CRC32                                                      
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 1997 Pierre Molinaro.                                                          
+//  e-mail : pierre@pcmolinaro.name
+//  This library is free software; you can redistribute it and/or modify it                      
+//  under the terms of the GNU Lesser General Public License as published                        
+//  by the Free Software Foundation; either version 2 of the License, or                         
+//  (at your option) any later version.                                                          
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT                       
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                        
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                     
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "C_CRC32.h"
 #include <string.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//            Initialisation du tableau des sommes de controle                                                         *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//            Initialisation du tableau des sommes de controle                                   
+//----------------------------------------------------------------------------------------------------------------------
 
 static uint32_t tableCRC [256] ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cInitTableCRC {
   public : cInitTableCRC (void) ;
 } ;
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cInitTableCRC::cInitTableCRC (void) {
   const uint32_t polynome_CRC32 = 0xEDB88320UL ;
@@ -53,7 +51,7 @@ cInitTableCRC::cInitTableCRC (void) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_CRC32::addCharToChecksum (const char car, uint32_t & somme) {
   int32_t valeurLong = car ;
@@ -61,14 +59,14 @@ void C_CRC32::addCharToChecksum (const char car, uint32_t & somme) {
   addLongToChecksum (valeurLong, somme) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_CRC32::addShortToChecksum (const int16_t valeur, uint32_t & somme) {
   const int32_t valeurLong = valeur ;
   addLongToChecksum (valeurLong, somme) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_CRC32::addLongToChecksum (const int32_t valeur, uint32_t & somme) {
   const uint32_t temp1 = (somme >> 8) & 0x00FFFFFFUL ;
@@ -76,7 +74,7 @@ void C_CRC32::addLongToChecksum (const int32_t valeur, uint32_t & somme) {
   somme = temp1 ^ temp2 ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_CRC32::addUnsignedLongToChecksum (const uint32_t valeur, uint32_t & somme) {
   const uint32_t temp1 = (somme >> 8) & 0x00FFFFFFUL ;
@@ -84,7 +82,7 @@ void C_CRC32::addUnsignedLongToChecksum (const uint32_t valeur, uint32_t & somme
   somme = temp1 ^ temp2 ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_CRC32::addStringToChecksum (const char * chaine, uint32_t & somme) {
   if (chaine == NULL) {
@@ -97,4 +95,4 @@ void C_CRC32::addStringToChecksum (const char * chaine, uint32_t & somme) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

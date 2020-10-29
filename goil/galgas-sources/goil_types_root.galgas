@@ -33,7 +33,7 @@ map @objectKindMap {
 }
 
 class @objectKind {
-  @objectKindMap objects %setter
+  @objectKindMap objects
 }
 
 map @objectsMap {
@@ -44,11 +44,11 @@ map @objectsMap {
 }
 
 class @applicationDefinition {
-  @lstring name %setter
-  @lstring cpuDescription %setter
-  @lstring version %setter
-  @lstring versionDescription %setter
-  @objectsMap objects %setter
+  @lstring name
+  @lstring cpuDescription
+  @lstring version
+  @lstring versionDescription
+  @objectsMap objects
 }
 
 func emptyApplicationDefinition -> @applicationDefinition result {

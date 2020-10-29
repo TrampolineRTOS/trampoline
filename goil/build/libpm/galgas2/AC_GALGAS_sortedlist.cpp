@@ -1,24 +1,22 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  AC_GALGAS_sortedlist                                                                                               *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2005, ..., 2016 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  AC_GALGAS_sortedlist                                                                         
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2005, ..., 2016 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/AC_GALGAS_sortedlist.h"
 #include "galgas2/capSortedListElement.h"
@@ -27,11 +25,11 @@
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_Compiler.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  c S t r i n g s e t N o d e                                                                                        *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  c S t r i n g s e t N o d e                                                                  
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cSortedListNode {
   public : cSortedListNode * mInfPtr ;
@@ -51,7 +49,7 @@ class cSortedListNode {
   private : cSortedListNode & operator = (const cSortedListNode &) ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cSortedListNode::cSortedListNode (const capSortedListElement & inAttributes) :
 mInfPtr (NULL),
@@ -62,7 +60,7 @@ mPreviousPtr (NULL),
 mProperties (inAttributes) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cSortedListNode::cSortedListNode (cSortedListNode * inNode) :
 mInfPtr (NULL),
@@ -82,7 +80,7 @@ mProperties () {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void disposeNodes (cSortedListNode * inNode) {
   if (NULL != inNode) {
@@ -92,17 +90,17 @@ static void disposeNodes (cSortedListNode * inNode) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cSharedSortedListRoot
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//    cSharedSortedListRoot                                                                                            *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//    cSharedSortedListRoot                                                                      
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cSharedSortedListRoot : public C_SharedObject {
 //--------------------------------- Private data members
@@ -170,7 +168,7 @@ class cSharedSortedListRoot : public C_SharedObject {
   friend class AC_GALGAS_sortedlist ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cSharedSortedListRoot::cSharedSortedListRoot (LOCATION_ARGS) :
 C_SharedObject (THERE),
@@ -180,19 +178,19 @@ mLast (NULL),
 mCount (0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
   disposeNodes (mRoot) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Checking sorted lists
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void populateCheckArray (const cSortedListNode * inNode,
@@ -209,7 +207,7 @@ cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void checkSortedList (const cSortedListNode * inRoot,
@@ -245,13 +243,13 @@ cSharedSortedListRoot::~ cSharedSortedListRoot (void) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Insulate
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::insulate (LOCATION_ARGS) {
   if ((mSharedRoot != NULL) && !mSharedRoot->isUniquelyReferenced ()) {
@@ -263,7 +261,7 @@ void AC_GALGAS_sortedlist::insulate (LOCATION_ARGS) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void buildDirectLinksOnCopy (cSortedListNode * inNode,
                                     cSortedListNode * & ioFirst) {
@@ -275,7 +273,7 @@ static void buildDirectLinksOnCopy (cSortedListNode * inNode,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void buildReverseLinksOnCopy (cSortedListNode * inNode,
                                      cSortedListNode * & ioLast) {
@@ -287,7 +285,7 @@ static void buildReverseLinksOnCopy (cSortedListNode * inNode,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::copyFrom (const cSharedSortedListRoot * inList) {
   if ((inList != NULL) && (inList->mRoot != NULL)) {
@@ -308,13 +306,13 @@ void cSharedSortedListRoot::copyFrom (const cSharedSortedListRoot * inList) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Comparison
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cSharedSortedListRoot::objectCompare (const cSharedSortedListRoot * inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -337,7 +335,7 @@ typeComparisonResult cSharedSortedListRoot::objectCompare (const cSharedSortedLi
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult AC_GALGAS_sortedlist::objectCompare (const AC_GALGAS_sortedlist & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -347,13 +345,13 @@ typeComparisonResult AC_GALGAS_sortedlist::objectCompare (const AC_GALGAS_sorted
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Insertion Implementation
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void rotateLeft (cSortedListNode * & ioRootPtr) {
   cSortedListNode * b = ioRootPtr->mSupPtr ;
@@ -394,7 +392,7 @@ static void rotateRight (cSortedListNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
                                       cSortedListNode * inBeforeNode,
@@ -458,7 +456,7 @@ void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 /* static void imprimerArbre (cSortedListNode * inRoot,
                            const uint32_t inElementSize) {
@@ -473,7 +471,7 @@ void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
   }
 } */
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::appendObject (capSortedListElement & inAttributes) {
   if (inAttributes.isValid ()) {
@@ -488,7 +486,7 @@ void cSharedSortedListRoot::appendObject (capSortedListElement & inAttributes) {
 //  printf ("*** FIN\n") ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::appendObject (capSortedListElement & inAttributes) {
   if (isValid ()) {
@@ -499,13 +497,13 @@ void AC_GALGAS_sortedlist::appendObject (capSortedListElement & inAttributes) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Insertion Implementation
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::appendSortedList (const cSharedSortedListRoot * inList) {
   macroValidPointer (inList) ;
@@ -520,7 +518,7 @@ void cSharedSortedListRoot::appendSortedList (const cSharedSortedListRoot * inLi
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::appendSortedList (const AC_GALGAS_sortedlist & inList) {
   if ((NULL != mSharedRoot) && (NULL != inList.mSharedRoot)) {
@@ -530,13 +528,13 @@ void AC_GALGAS_sortedlist::appendSortedList (const AC_GALGAS_sortedlist & inList
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Remove Smallest
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void supBranchDecreased (cSortedListNode * & ioRoot,
                                 bool & ioBranchHasBeenRemoved) {
@@ -565,7 +563,7 @@ static void supBranchDecreased (cSortedListNode * & ioRoot,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void infBranchDecreased (cSortedListNode * & ioRoot,
                                 bool & ioBranchHasBeenRemoved) {
@@ -594,7 +592,7 @@ static void infBranchDecreased (cSortedListNode * & ioRoot,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalRemoveLowestElement (cSortedListNode * & ioRoot,
                                          bool & ioBranchHasBeenRemoved) {
@@ -612,7 +610,7 @@ static void internalRemoveLowestElement (cSortedListNode * & ioRoot,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::removeSmallestObject (capSortedListElement & outAttributes,
                                                   C_Compiler * inCompiler
@@ -643,7 +641,7 @@ void cSharedSortedListRoot::removeSmallestObject (capSortedListElement & outAttr
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::removeSmallestObject (capSortedListElement & outAttributes,
                                               C_Compiler * inCompiler
@@ -653,13 +651,13 @@ void AC_GALGAS_sortedlist::removeSmallestObject (capSortedListElement & outAttri
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Remove Greatest
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalRemoveGreatestElement (cSortedListNode * & ioRoot,
                                            bool & ioBranchHasBeenRemoved) {
@@ -677,7 +675,7 @@ static void internalRemoveGreatestElement (cSortedListNode * & ioRoot,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::removeGreatestObject (capSortedListElement & outAttributes,
                                                   C_Compiler * inCompiler
@@ -708,7 +706,7 @@ void cSharedSortedListRoot::removeGreatestObject (capSortedListElement & outAttr
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::removeGreatestObject (capSortedListElement & outAttributes,
                                               C_Compiler * inCompiler
@@ -718,19 +716,19 @@ void AC_GALGAS_sortedlist::removeGreatestObject (capSortedListElement & outAttri
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark AC_GALGAS_sortedlist
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_sortedlist::AC_GALGAS_sortedlist (void) :
 mSharedRoot (NULL) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_sortedlist::AC_GALGAS_sortedlist (const AC_GALGAS_sortedlist & inSource) :
 AC_GALGAS_root (),
@@ -738,38 +736,38 @@ mSharedRoot (NULL) {
   macroAssignSharedObject (mSharedRoot, inSource.mSharedRoot) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_sortedlist & AC_GALGAS_sortedlist::operator = (const AC_GALGAS_sortedlist & inSource) {
   macroAssignSharedObject (mSharedRoot, inSource.mSharedRoot) ;
   return *this ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_sortedlist::~ AC_GALGAS_sortedlist (void) {
   macroDetachSharedObject (mSharedRoot) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::drop (void) {
   macroDetachSharedObject (mSharedRoot) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::createNewEmptySortedList (LOCATION_ARGS) {
   macroMyNew (mSharedRoot, cSharedSortedListRoot (THERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark description
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::description (C_String & ioString,
                                          const int32_t inIndentation) const {
@@ -790,7 +788,7 @@ void cSharedSortedListRoot::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::description (C_String & ioString,
                                      const int32_t inIndentation) const {
@@ -803,13 +801,13 @@ void AC_GALGAS_sortedlist::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Readers
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint AC_GALGAS_sortedlist::getter_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -819,7 +817,7 @@ GALGAS_uint AC_GALGAS_sortedlist::getter_length (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 uint32_t AC_GALGAS_sortedlist::count () const {
   uint32_t result = 0 ;
@@ -829,13 +827,13 @@ uint32_t AC_GALGAS_sortedlist::count () const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Methods
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::smallestObjectAttributeList (capSortedListElement & outAttributes,
                                                          C_Compiler * inCompiler
@@ -847,7 +845,7 @@ void cSharedSortedListRoot::smallestObjectAttributeList (capSortedListElement & 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::smallestObjectAttributeList (capSortedListElement & outAttributes,
                                                      C_Compiler * inCompiler
@@ -857,7 +855,7 @@ void AC_GALGAS_sortedlist::smallestObjectAttributeList (capSortedListElement & o
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::greatestObjectAttributeList (capSortedListElement & outAttributes,
                                                          C_Compiler * inCompiler
@@ -869,7 +867,7 @@ void cSharedSortedListRoot::greatestObjectAttributeList (capSortedListElement & 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::greatestObjectAttributeList (capSortedListElement & outAttributes,
                                                      C_Compiler * inCompiler
@@ -879,17 +877,17 @@ void AC_GALGAS_sortedlist::greatestObjectAttributeList (capSortedListElement & o
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Enumerator
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                 'AC_GALGAS_sortedlist::cEnumerator' class                                                           *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                 'AC_GALGAS_sortedlist::cEnumerator' class                                     
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedSortedListRoot::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
   inEnumerationArray.setCapacity (mCount) ;
@@ -906,7 +904,7 @@ void cSharedSortedListRoot::populateEnumerationArray (capCollectionElementArray 
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_sortedlist::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
   if (mSharedRoot != NULL) {
@@ -914,5 +912,5 @@ void AC_GALGAS_sortedlist::populateEnumerationArray (capCollectionElementArray &
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 

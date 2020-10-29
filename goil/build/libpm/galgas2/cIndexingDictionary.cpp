@@ -1,40 +1,38 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'cIndexingDictionary': dictionary for indexing soures                                                              *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2010, ..., 2012 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'cIndexingDictionary': dictionary for indexing soures                                        
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2010, ..., 2012 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/cIndexingDictionary.h"
 #include "strings/C_String.h"
 #include "files/C_FileManager.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Entry Dictionary
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  c I n d e x E n t r y N o d e                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  c I n d e x E n t r y N o d e                                                                
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cIndexEntryNode {
   public : cIndexEntryNode * mInfPtr ;
@@ -54,7 +52,7 @@ class cIndexEntryNode {
   private : cIndexEntryNode & operator = (const cIndexEntryNode &) ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cIndexEntryNode::cIndexEntryNode (const C_String & inKey) :
 mInfPtr (NULL),
@@ -64,14 +62,14 @@ mKey (inKey),
 mDescriptorArray () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cIndexEntryNode::~ cIndexEntryNode (void) {
   macroMyDelete (mInfPtr) ;
   macroMyDelete (mSupPtr) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void rotateLeft (cIndexEntryNode * & ioRootPtr) {
   cIndexEntryNode * b = ioRootPtr->mSupPtr ;
@@ -112,7 +110,7 @@ static void rotateRight (cIndexEntryNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cIndexEntryNode * cIndexingDictionary::findOrAddEntry (cIndexEntryNode * & ioRootPtr,
                                                        const C_String & inKey,
@@ -161,29 +159,29 @@ cIndexEntryNode * cIndexingDictionary::findOrAddEntry (cIndexEntryNode * & ioRoo
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cIndexingDictionary
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                 cIndexingDictionary                                                                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                 cIndexingDictionary                                                           
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 cIndexingDictionary::cIndexingDictionary (void) :
 mEntryRoot (NULL) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cIndexingDictionary::~ cIndexingDictionary (void) {
   macroMyDelete (mEntryRoot) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cIndexingDictionary::addIndexedKey (const uint32_t inIndexingKind,
                                          const C_String & inIndexedKey,
@@ -228,7 +226,7 @@ static void enumerateEntries (const cIndexEntryNode * inNode,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cIndexingDictionary::generateIndexFile (const C_String & inOutputIndexFilePath) const {
   C_String contents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -243,4 +241,4 @@ void cIndexingDictionary::generateIndexFile (const C_String & inOutputIndexFileP
   C_FileManager::writeStringToFile (contents, inOutputIndexFilePath) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

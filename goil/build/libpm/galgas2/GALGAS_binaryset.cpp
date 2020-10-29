@@ -1,51 +1,49 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  GALGAS_binaryset                                                                                                   *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Created january 22, 2007.                                                                                          *
-//                                                                                                                     *
-//  Copyright (C) 2007, ..., 2017 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  GALGAS_binaryset                                                                             
+//
+//  This file is part of libpm library                                                           
+//
+//  Created january 22, 2007.                                                                    
+//
+//  Copyright (C) 2007, ..., 2017 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset::GALGAS_binaryset (void) :
 mIsValid (false),
 mBDD () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset::GALGAS_binaryset (const C_BDD & inOperand_mBDD) :
 mIsValid (true),
 mBDD (inOperand_mBDD) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_emptyBinarySet (UNUSED_LOCATION_ARGS) {
   return GALGAS_binaryset (C_BDD ()) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_fullBinarySet (UNUSED_LOCATION_ARGS) {
   C_BDD bdd ;
@@ -53,7 +51,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_fullBinarySet (UNUSED_LOCATION_AR
   return GALGAS_binaryset (bdd) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithBit (const GALGAS_uint & inBitIndex,
                                                                  C_Compiler * /* inCompiler */
@@ -67,7 +65,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithBit (const GALGAS_ui
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithPredicateString (const GALGAS_string & inBitString,
                                                                              C_Compiler * inCompiler
@@ -122,7 +120,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithPredicateString (con
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_binaryset binarySetWithComparison (C_Compiler * inCompiler,
                                                  const GALGAS_uint & inLeftFirstIndex,
@@ -148,7 +146,7 @@ static GALGAS_binaryset binarySetWithComparison (C_Compiler * inCompiler,
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithEqualComparison (const GALGAS_uint & inLeftFirstIndex,
                                                                              const GALGAS_uint & inBitCount,
@@ -163,7 +161,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithEqualComparison (con
                                   COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithNotEqualComparison (const GALGAS_uint & inLeftFirstIndex,
                                                                                 const GALGAS_uint & inBitCount,
@@ -178,7 +176,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithNotEqualComparison (
                                   COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithLowerOrEqualComparison (const GALGAS_uint & inLeftFirstIndex,
                                                                                     const GALGAS_uint & inBitCount,
@@ -193,7 +191,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithLowerOrEqualComparis
                                   COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithGreaterOrEqualComparison (const GALGAS_uint & inLeftFirstIndex,
                                                                                       const GALGAS_uint & inBitCount,
@@ -208,7 +206,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithGreaterOrEqualCompar
                                   COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictLowerComparison (const GALGAS_uint & inLeftFirstIndex,
                                                                                    const GALGAS_uint & inBitCount,
@@ -223,7 +221,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictLowerCompariso
                                   COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictGreaterComparison (const GALGAS_uint & inLeftFirstIndex,
                                                                                      const GALGAS_uint & inBitCount,
@@ -238,7 +236,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictGreaterCompari
                                   COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_binaryset binarySetWithComparisonWithConstant (C_Compiler * inCompiler,
                                                              const GALGAS_uint & inBitIndex,
@@ -261,7 +259,7 @@ static GALGAS_binaryset binarySetWithComparisonWithConstant (C_Compiler * inComp
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithEqualToConstant (const GALGAS_uint & inBitIndex,
                                                                              const GALGAS_uint & inBitCount,
@@ -276,7 +274,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithEqualToConstant (con
                                               COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithNotEqualToConstant (const GALGAS_uint & inBitIndex,
                                                                                 const GALGAS_uint & inBitCount,
@@ -291,7 +289,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithNotEqualToConstant (
                                               COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithLowerOrEqualToConstant (const GALGAS_uint & inBitIndex,
                                                                                     const GALGAS_uint & inBitCount,
@@ -306,7 +304,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithLowerOrEqualToConsta
                                               COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictLowerThanConstant (const GALGAS_uint & inBitIndex,
                                                                                      const GALGAS_uint & inBitCount,
@@ -321,7 +319,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictLowerThanConst
                                               COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithGreaterOrEqualToConstant (const GALGAS_uint & inBitIndex,
                                                                                       const GALGAS_uint & inBitCount,
@@ -336,7 +334,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithGreaterOrEqualToCons
                                               COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictGreaterThanConstant (const GALGAS_uint & inBitIndex,
                                                                                        const GALGAS_uint & inBitCount,
@@ -351,13 +349,13 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithStrictGreaterThanCon
                                               COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Operators
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::operator_xor (const GALGAS_binaryset & inOperand2
                                                  COMMA_UNUSED_LOCATION_ARGS) const {
@@ -368,7 +366,7 @@ GALGAS_binaryset GALGAS_binaryset::operator_xor (const GALGAS_binaryset & inOper
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::operator_and (const GALGAS_binaryset & inOperand2
                                                  COMMA_UNUSED_LOCATION_ARGS) const {
@@ -379,7 +377,7 @@ GALGAS_binaryset GALGAS_binaryset::operator_and (const GALGAS_binaryset & inOper
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::operator_or (const GALGAS_binaryset & inOperand2
                                                 COMMA_UNUSED_LOCATION_ARGS) const {
@@ -390,7 +388,7 @@ GALGAS_binaryset GALGAS_binaryset::operator_or (const GALGAS_binaryset & inOpera
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::operator_tilde (UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
@@ -400,7 +398,7 @@ GALGAS_binaryset GALGAS_binaryset::operator_tilde (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_binaryset::description (C_String & ioString,
                                     const int32_t /* inIndentation */) const {
@@ -426,7 +424,7 @@ void GALGAS_binaryset::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_binaryset::getter_containsValue (const GALGAS_uint_36__34_ & inValue,
                                                     const GALGAS_uint & inFirstBit,
@@ -442,7 +440,7 @@ GALGAS_bool GALGAS_binaryset::getter_containsValue (const GALGAS_uint_36__34_ & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_ITE (const GALGAS_binaryset & inTHENoperand,
                                                const GALGAS_binaryset & inELSEoperand                                             
@@ -454,7 +452,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_ITE (const GALGAS_binaryset & inTHENop
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_implies (const GALGAS_binaryset & inOperand
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
@@ -465,7 +463,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_implies (const GALGAS_binaryset & inOp
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_equalTo (const GALGAS_binaryset & inOperand
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
@@ -476,7 +474,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_equalTo (const GALGAS_binaryset & inOp
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_notEqualTo (const GALGAS_binaryset & inOperand
                                                       COMMA_UNUSED_LOCATION_ARGS) const {
@@ -487,7 +485,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_notEqualTo (const GALGAS_binaryset & i
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_lowerOrEqualTo (const GALGAS_binaryset & inOperand
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
@@ -498,7 +496,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_lowerOrEqualTo (const GALGAS_binaryset
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_greaterOrEqualTo (const GALGAS_binaryset & inOperand
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
@@ -509,7 +507,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_greaterOrEqualTo (const GALGAS_binarys
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_strictLowerThan (const GALGAS_binaryset & inOperand
                                                            COMMA_UNUSED_LOCATION_ARGS) const {
@@ -520,7 +518,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_strictLowerThan (const GALGAS_binaryse
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_strictGreaterThan (const GALGAS_binaryset & inOperand
                                                              COMMA_UNUSED_LOCATION_ARGS) const {
@@ -531,7 +529,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_strictGreaterThan (const GALGAS_binary
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_binaryset::getter_isFull (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -541,7 +539,7 @@ GALGAS_bool GALGAS_binaryset::getter_isFull (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_binaryset::getter_isEmpty (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -551,7 +549,7 @@ GALGAS_bool GALGAS_binaryset::getter_isEmpty (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_binaryset::getter_significantVariableCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -561,7 +559,7 @@ GALGAS_uint GALGAS_binaryset::getter_significantVariableCount (UNUSED_LOCATION_A
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_binaryset::getter_valueCount (const GALGAS_uint & inVariableCount,
                                                          C_Compiler * inCompiler
@@ -577,7 +575,7 @@ GALGAS_uint_36__34_ GALGAS_binaryset::getter_valueCount (const GALGAS_uint & inV
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_binaryset::getter_bigValueCount (const GALGAS_uint & inVariableCount,
                                                       C_Compiler * inCompiler
@@ -594,7 +592,7 @@ GALGAS_bigint GALGAS_binaryset::getter_bigValueCount (const GALGAS_uint & inVari
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_binaryset::getter_compressedValueCount (UNUSED_LOCATION_ARGS) const {
   TC_UniqueArray <C_String> valuesArray ;
@@ -602,7 +600,7 @@ GALGAS_uint_36__34_ GALGAS_binaryset::getter_compressedValueCount (UNUSED_LOCATI
   return GALGAS_uint_36__34_ ((uint32_t) valuesArray.count ()) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_list GALGAS_binaryset::getter_uint_36__34_ValueList (const GALGAS_uint & inVariableCount
                                                                         COMMA_LOCATION_ARGS) const {
@@ -619,7 +617,7 @@ GALGAS_uint_36__34_list GALGAS_binaryset::getter_uint_36__34_ValueList (const GA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_binaryset::getter_stringValueListWithNameList (const GALGAS_uint & inVariableCount,
                                                                         const GALGAS_stringlist & inStringList,
@@ -639,7 +637,7 @@ GALGAS_stringlist GALGAS_binaryset::getter_stringValueListWithNameList (const GA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_binaryset::getter_compressedStringValueList (const GALGAS_uint & inVariableCount,
                                                                       C_Compiler * inCompiler
@@ -667,7 +665,7 @@ GALGAS_stringlist GALGAS_binaryset::getter_compressedStringValueList (const GALG
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_binaryset::getter_stringValueList (const GALGAS_uint & inVariableCount
                                                             COMMA_LOCATION_ARGS) const {
@@ -684,13 +682,13 @@ GALGAS_stringlist GALGAS_binaryset::getter_stringValueList (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_binaryset::getter_predicateStringValue (LOCATION_ARGS) const {
   return GALGAS_string (mBDD.queryStringValue (THERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_forAllOnBitIndex (const GALGAS_uint & inVariableIndex
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
@@ -701,7 +699,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_forAllOnBitIndex (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_forAllOnBitIndexAndBeyond (const GALGAS_uint & inVariableIndex
                                                                      COMMA_UNUSED_LOCATION_ARGS) const {
@@ -712,7 +710,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_forAllOnBitIndexAndBeyond (const GALGA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_existOnBitIndex (const GALGAS_uint & inVariableIndex
                                                            COMMA_UNUSED_LOCATION_ARGS)const  {
@@ -723,7 +721,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_existOnBitIndex (const GALGAS_uint & i
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_existOnBitIndexAndBeyond (const GALGAS_uint & inVariableIndex
                                                                     COMMA_UNUSED_LOCATION_ARGS) const {
@@ -734,7 +732,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_existOnBitIndexAndBeyond (const GALGAS
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_binaryset::getter_print (const GALGAS_stringlist & inVariableList,
                                               const GALGAS_uintlist & inBDDCount
@@ -760,7 +758,7 @@ GALGAS_string GALGAS_binaryset::getter_print (const GALGAS_stringlist & inVariab
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_transformedBy (const GALGAS_uintlist & inTransformationArray
                                                          COMMA_LOCATION_ARGS) const {
@@ -782,7 +780,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_transformedBy (const GALGAS_uintlist &
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_binaryset::getter_nodeCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
@@ -792,7 +790,7 @@ GALGAS_uint_36__34_ GALGAS_binaryset::getter_nodeCount (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_binaryset::getter_graphviz (const GALGAS_stringlist & inBitNameList
                                                  COMMA_UNUSED_LOCATION_ARGS) const {
@@ -810,7 +808,7 @@ GALGAS_string GALGAS_binaryset::getter_graphviz (const GALGAS_stringlist & inBit
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_binaryset::getter_graphvizDump (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -820,7 +818,7 @@ GALGAS_string GALGAS_binaryset::getter_graphvizDump (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_swap_31__30_ (const GALGAS_uint & inBitCount1,
                                                         const GALGAS_uint & inBitCount2
@@ -834,7 +832,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_swap_31__30_ (const GALGAS_uint & inBi
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_swap_30__32__31_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
@@ -850,7 +848,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_swap_30__32__31_ (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_swap_31__30__32_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
@@ -866,7 +864,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_swap_31__30__32_ (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_swap_31__32__30_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
@@ -882,7 +880,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_swap_31__32__30_ (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_swap_32__30__31_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
@@ -898,7 +896,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_swap_32__30__31_ (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_swap_32__31__30_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
@@ -914,7 +912,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_swap_32__31__30_ (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_transitiveClosure (const GALGAS_uint & inBitCount
                                                              COMMA_UNUSED_LOCATION_ARGS) const {
@@ -926,7 +924,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_transitiveClosure (const GALGAS_uint &
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_accessibleStates (const GALGAS_binaryset & inInitialStateSet,
                                                             const GALGAS_uint & inBitCount
@@ -943,7 +941,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_accessibleStates (const GALGAS_binarys
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_binarySetByTranslatingFromIndex (const GALGAS_uint & inFirstIndexToTranslate,
                                                                            const GALGAS_uint & inTranslation 
@@ -971,7 +969,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_binarySetByTranslatingFromIndex (const
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_existsOnBitRange (const GALGAS_uint & inFirstIndex,
                                                             const GALGAS_uint & inCount 
@@ -990,7 +988,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_existsOnBitRange (const GALGAS_uint & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::getter_transposedBy (const class GALGAS_uintlist & inVector,
                                                         C_Compiler * inCompiler
@@ -1010,7 +1008,7 @@ GALGAS_binaryset GALGAS_binaryset::getter_transposedBy (const class GALGAS_uintl
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_uint inLeftShiftCount,
                                                          class C_Compiler * /* inCompiler */
@@ -1022,7 +1020,7 @@ GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_uint inLef
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_bigint inLeftShiftCount,
                                                          class C_Compiler * inCompiler
@@ -1038,7 +1036,7 @@ GALGAS_binaryset GALGAS_binaryset::left_shift_operation (const GALGAS_bigint inL
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_uint inRightShiftCount,
                                                           class C_Compiler * /* inCompiler*/
@@ -1050,7 +1048,7 @@ GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_uint inRi
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_bigint inRightShiftCount,
                                                           class C_Compiler * inCompiler
@@ -1066,7 +1064,7 @@ GALGAS_binaryset GALGAS_binaryset::right_shift_operation (const GALGAS_bigint in
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_binaryset::objectCompare (const GALGAS_binaryset & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -1082,7 +1080,7 @@ typeComparisonResult GALGAS_binaryset::objectCompare (const GALGAS_binaryset & i
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_binaryset::class_method_setNodeTableSize (class GALGAS_uint inTableSize
                                                       COMMA_UNUSED_LOCATION_ARGS) {
@@ -1091,7 +1089,7 @@ void GALGAS_binaryset::class_method_setNodeTableSize (class GALGAS_uint inTableS
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_binaryset::class_method_setAndTableSize (class GALGAS_uint inTableSize
                                                      COMMA_UNUSED_LOCATION_ARGS) {
@@ -1100,4 +1098,4 @@ void GALGAS_binaryset::class_method_setAndTableSize (class GALGAS_uint inTableSi
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

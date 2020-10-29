@@ -3,7 +3,7 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-declarations-6.h"
 
@@ -3383,9 +3383,9 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_element_i3_parse (C_Lexique_a
   inCompiler->resetTemplateString () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlElementNode::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -3403,7 +3403,7 @@ typeComparisonResult cPtr_arxmlElementNode::dynamicObjectCompare (const acPtr_cl
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlElementNode::objectCompare (const GALGAS_arxmlElementNode & inOperand) const {
@@ -3422,13 +3422,13 @@ typeComparisonResult GALGAS_arxmlElementNode::objectCompare (const GALGAS_arxmlE
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementNode::GALGAS_arxmlElementNode (void) :
 GALGAS_arxmlNode () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlElementNode::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -3437,14 +3437,14 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_default (LOCATION_A
                                                    COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementNode::GALGAS_arxmlElementNode (const cPtr_arxmlElementNode * inSourcePtr) :
 GALGAS_arxmlNode (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlElementNode) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                   const GALGAS_arxmlAttributeMap & inAttribute_attributes,
@@ -3457,7 +3457,7 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementNode::constructor_new (const GALGAS_l
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -3469,13 +3469,13 @@ GALGAS_lstring GALGAS_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlAttributeMap GALGAS_arxmlElementNode::getter_attributes (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlAttributeMap result ;
@@ -3487,13 +3487,13 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementNode::getter_attributes (UNUSED_LOCA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlAttributeMap cPtr_arxmlElementNode::getter_attributes (UNUSED_LOCATION_ARGS) const {
   return mProperty_attributes ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlNodeList GALGAS_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlNodeList result ;
@@ -3505,15 +3505,72 @@ GALGAS_arxmlNodeList GALGAS_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCAT
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlNodeList cPtr_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCATION_ARGS) const {
   return mProperty_enclosedNodes ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                      Pointer class for @arxmlElementNode class                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementNode::setter_setName (GALGAS_lstring inValue
+                                              COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementNode * p = (cPtr_arxmlElementNode *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementNode) ;
+    p->mProperty_name = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementNode::setter_setName (GALGAS_lstring inValue
+                                            COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_name = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementNode::setter_setAttributes (GALGAS_arxmlAttributeMap inValue
+                                                    COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementNode * p = (cPtr_arxmlElementNode *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementNode) ;
+    p->mProperty_attributes = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementNode::setter_setAttributes (GALGAS_arxmlAttributeMap inValue
+                                                  COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_attributes = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementNode::setter_setEnclosedNodes (GALGAS_arxmlNodeList inValue
+                                                       COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementNode * p = (cPtr_arxmlElementNode *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementNode) ;
+    p->mProperty_enclosedNodes = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementNode::setter_setEnclosedNodes (GALGAS_arxmlNodeList inValue
+                                                     COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_enclosedNodes = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlElementNode class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlElementNode::cPtr_arxmlElementNode (const GALGAS_lstring & in_name,
                                               const GALGAS_arxmlAttributeMap & in_attributes,
@@ -3525,7 +3582,7 @@ mProperty_attributes (in_attributes),
 mProperty_enclosedNodes (in_enclosedNodes) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlElementNode::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementNode ;
@@ -3542,7 +3599,7 @@ void cPtr_arxmlElementNode::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlElementNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -3551,23 +3608,23 @@ acPtr_class * cPtr_arxmlElementNode::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                               @arxmlElementNode type                                                *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlElementNode type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlElementNode ("arxmlElementNode",
                                          & kTypeDescriptor_GALGAS_arxmlNode) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlElementNode::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementNode ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlElementNode::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -3577,7 +3634,7 @@ AC_GALGAS_root * GALGAS_arxmlElementNode::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementNode GALGAS_arxmlElementNode::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -3594,22 +3651,22 @@ GALGAS_arxmlElementNode GALGAS_arxmlElementNode::extractObject (const GALGAS_obj
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                 Extension method '@arxmlElementNode getSubElements'                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getSubElements'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getSubElements> gExtensionMethodTable_arxmlElementNode_getSubElements ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getSubElements (const int32_t inClassIndex,
                                           extensionMethodSignature_arxmlElementNode_getSubElements inMethod) {
   gExtensionMethodTable_arxmlElementNode_getSubElements.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getSubElements (const cPtr_arxmlElementNode * inObject,
                                          GALGAS_arxmlElementList & out_nodeList,
@@ -3642,7 +3699,7 @@ void callExtensionMethod_getSubElements (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementNode_getSubElements (const cPtr_arxmlElementNode * inObject,
                                                              GALGAS_arxmlElementList & outArgument_nodeList,
@@ -3672,40 +3729,40 @@ static void extensionMethod_arxmlElementNode_getSubElements (const cPtr_arxmlEle
     enumerator_4586.gotoNextObject () ;
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementNode_getSubElements (void) {
   enterExtensionMethod_getSubElements (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                        extensionMethod_arxmlElementNode_getSubElements) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementNode_getSubElements (void) {
   gExtensionMethodTable_arxmlElementNode_getSubElements.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getSubElements (defineExtensionMethod_arxmlElementNode_getSubElements,
                                                             freeExtensionMethod_arxmlElementNode_getSubElements) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                    Extension method '@arxmlElementNode getText'                                     *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getText'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getText> gExtensionMethodTable_arxmlElementNode_getText ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getText (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlElementNode_getText inMethod) {
   gExtensionMethodTable_arxmlElementNode_getText.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getText (const cPtr_arxmlElementNode * inObject,
                                   GALGAS_lstring & io_value,
@@ -3738,7 +3795,7 @@ void callExtensionMethod_getText (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementNode_getText (const cPtr_arxmlElementNode * inObject,
                                                       GALGAS_lstring & ioArgument_value,
@@ -3775,40 +3832,40 @@ static void extensionMethod_arxmlElementNode_getText (const cPtr_arxmlElementNod
     }
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementNode_getText (void) {
   enterExtensionMethod_getText (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                 extensionMethod_arxmlElementNode_getText) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementNode_getText (void) {
   gExtensionMethodTable_arxmlElementNode_getText.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getText (defineExtensionMethod_arxmlElementNode_getText,
                                                      freeExtensionMethod_arxmlElementNode_getText) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                 Extension method '@arxmlElementNode getAttributes'                                  *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getAttributes'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getAttributes> gExtensionMethodTable_arxmlElementNode_getAttributes ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getAttributes (const int32_t inClassIndex,
                                          extensionMethodSignature_arxmlElementNode_getAttributes inMethod) {
   gExtensionMethodTable_arxmlElementNode_getAttributes.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAttributes (const cPtr_arxmlElementNode * inObject,
                                         GALGAS_arxmlAttributeMap & io_outAttributes,
@@ -3840,7 +3897,7 @@ void callExtensionMethod_getAttributes (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementNode_getAttributes (const cPtr_arxmlElementNode * inObject,
                                                             GALGAS_arxmlAttributeMap & ioArgument_outAttributes,
@@ -3850,40 +3907,40 @@ static void extensionMethod_arxmlElementNode_getAttributes (const cPtr_arxmlElem
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   ioArgument_outAttributes = object->mProperty_attributes ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementNode_getAttributes (void) {
   enterExtensionMethod_getAttributes (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                       extensionMethod_arxmlElementNode_getAttributes) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementNode_getAttributes (void) {
   gExtensionMethodTable_arxmlElementNode_getAttributes.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getAttributes (defineExtensionMethod_arxmlElementNode_getAttributes,
                                                            freeExtensionMethod_arxmlElementNode_getAttributes) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  Extension method '@arxmlElementNode getAttribute'                                  *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getAttribute'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getAttribute> gExtensionMethodTable_arxmlElementNode_getAttribute ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getAttribute (const int32_t inClassIndex,
                                         extensionMethodSignature_arxmlElementNode_getAttribute inMethod) {
   gExtensionMethodTable_arxmlElementNode_getAttribute.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAttribute (const cPtr_arxmlElementNode * inObject,
                                        GALGAS_string in_attributeName,
@@ -3917,7 +3974,7 @@ void callExtensionMethod_getAttribute (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementNode_getAttribute (const cPtr_arxmlElementNode * inObject,
                                                            GALGAS_string inArgument_attributeName,
@@ -3928,40 +3985,40 @@ static void extensionMethod_arxmlElementNode_getAttribute (const cPtr_arxmlEleme
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   object->mProperty_attributes.method_searchKey (function_lstringWith (inArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)), outArgument_outAttribute, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)) ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementNode_getAttribute (void) {
   enterExtensionMethod_getAttribute (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                      extensionMethod_arxmlElementNode_getAttribute) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementNode_getAttribute (void) {
   gExtensionMethodTable_arxmlElementNode_getAttribute.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getAttribute (defineExtensionMethod_arxmlElementNode_getAttribute,
                                                           freeExtensionMethod_arxmlElementNode_getAttribute) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                    Extension method '@arxmlElementNode getName'                                     *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getName'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementNode_getName> gExtensionMethodTable_arxmlElementNode_getName ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getName (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlElementNode_getName inMethod) {
   gExtensionMethodTable_arxmlElementNode_getName.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getName (const cPtr_arxmlElementNode * inObject,
                                   GALGAS_lstring & out_outName,
@@ -3994,7 +4051,7 @@ void callExtensionMethod_getName (const cPtr_arxmlElementNode * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementNode_getName (const cPtr_arxmlElementNode * inObject,
                                                       GALGAS_lstring & outArgument_outName,
@@ -4004,27 +4061,27 @@ static void extensionMethod_arxmlElementNode_getName (const cPtr_arxmlElementNod
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   outArgument_outName = object->mProperty_name ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementNode_getName (void) {
   enterExtensionMethod_getName (kTypeDescriptor_GALGAS_arxmlElementNode.mSlotID,
                                 extensionMethod_arxmlElementNode_getName) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementNode_getName (void) {
   gExtensionMethodTable_arxmlElementNode_getName.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementNode_getName (defineExtensionMethod_arxmlElementNode_getName,
                                                      freeExtensionMethod_arxmlElementNode_getName) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlCommentNode::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -4036,7 +4093,7 @@ typeComparisonResult cPtr_arxmlCommentNode::dynamicObjectCompare (const acPtr_cl
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlCommentNode::objectCompare (const GALGAS_arxmlCommentNode & inOperand) const {
@@ -4055,27 +4112,27 @@ typeComparisonResult GALGAS_arxmlCommentNode::objectCompare (const GALGAS_arxmlC
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlCommentNode::GALGAS_arxmlCommentNode (void) :
 GALGAS_arxmlNode () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlCommentNode::constructor_new (GALGAS_lstring::constructor_default (HERE)
                                                    COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlCommentNode::GALGAS_arxmlCommentNode (const cPtr_arxmlCommentNode * inSourcePtr) :
 GALGAS_arxmlNode (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlCommentNode) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::constructor_new (const GALGAS_lstring & inAttribute_comment
                                                                   COMMA_LOCATION_ARGS) {
@@ -4086,7 +4143,7 @@ GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::constructor_new (const GALGAS_l
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4098,15 +4155,34 @@ GALGAS_lstring GALGAS_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) const {
   return mProperty_comment ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                      Pointer class for @arxmlCommentNode class                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlCommentNode::setter_setComment (GALGAS_lstring inValue
+                                                 COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlCommentNode * p = (cPtr_arxmlCommentNode *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlCommentNode) ;
+    p->mProperty_comment = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlCommentNode::setter_setComment (GALGAS_lstring inValue
+                                               COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_comment = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlCommentNode class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlCommentNode::cPtr_arxmlCommentNode (const GALGAS_lstring & in_comment
                                               COMMA_LOCATION_ARGS) :
@@ -4114,7 +4190,7 @@ cPtr_arxmlNode (THERE),
 mProperty_comment (in_comment) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlCommentNode::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlCommentNode ;
@@ -4127,7 +4203,7 @@ void cPtr_arxmlCommentNode::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlCommentNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -4136,23 +4212,23 @@ acPtr_class * cPtr_arxmlCommentNode::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                               @arxmlCommentNode type                                                *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlCommentNode type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlCommentNode ("arxmlCommentNode",
                                          & kTypeDescriptor_GALGAS_arxmlNode) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlCommentNode::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlCommentNode ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlCommentNode::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4162,7 +4238,7 @@ AC_GALGAS_root * GALGAS_arxmlCommentNode::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -4179,9 +4255,9 @@ GALGAS_arxmlCommentNode GALGAS_arxmlCommentNode::extractObject (const GALGAS_obj
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlTextNode::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -4193,7 +4269,7 @@ typeComparisonResult cPtr_arxmlTextNode::dynamicObjectCompare (const acPtr_class
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlTextNode::objectCompare (const GALGAS_arxmlTextNode & inOperand) const {
@@ -4212,27 +4288,27 @@ typeComparisonResult GALGAS_arxmlTextNode::objectCompare (const GALGAS_arxmlText
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlTextNode::GALGAS_arxmlTextNode (void) :
 GALGAS_arxmlNode () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlTextNode GALGAS_arxmlTextNode::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlTextNode::constructor_new (GALGAS_lstring::constructor_default (HERE)
                                                 COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlTextNode::GALGAS_arxmlTextNode (const cPtr_arxmlTextNode * inSourcePtr) :
 GALGAS_arxmlNode (inSourcePtr) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlTextNode) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlTextNode GALGAS_arxmlTextNode::constructor_new (const GALGAS_lstring & inAttribute_text
                                                             COMMA_LOCATION_ARGS) {
@@ -4243,7 +4319,7 @@ GALGAS_arxmlTextNode GALGAS_arxmlTextNode::constructor_new (const GALGAS_lstring
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4255,15 +4331,34 @@ GALGAS_lstring GALGAS_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   return mProperty_text ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                       Pointer class for @arxmlTextNode class                                        *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlTextNode::setter_setText (GALGAS_lstring inValue
+                                           COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlTextNode * p = (cPtr_arxmlTextNode *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlTextNode) ;
+    p->mProperty_text = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlTextNode::setter_setText (GALGAS_lstring inValue
+                                         COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_text = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlTextNode class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlTextNode::cPtr_arxmlTextNode (const GALGAS_lstring & in_text
                                         COMMA_LOCATION_ARGS) :
@@ -4271,7 +4366,7 @@ cPtr_arxmlNode (THERE),
 mProperty_text (in_text) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlTextNode::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlTextNode ;
@@ -4284,7 +4379,7 @@ void cPtr_arxmlTextNode::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlTextNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -4293,23 +4388,23 @@ acPtr_class * cPtr_arxmlTextNode::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                                 @arxmlTextNode type                                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlTextNode type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlTextNode ("arxmlTextNode",
                                       & kTypeDescriptor_GALGAS_arxmlNode) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlTextNode::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlTextNode ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlTextNode::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4319,7 +4414,7 @@ AC_GALGAS_root * GALGAS_arxmlTextNode::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlTextNode GALGAS_arxmlTextNode::extractObject (const GALGAS_object & inObject,
                                                           C_Compiler * inCompiler
@@ -4336,22 +4431,22 @@ GALGAS_arxmlTextNode GALGAS_arxmlTextNode::extractObject (const GALGAS_object & 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                      Extension method '@arxmlTextNode getText'                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlTextNode getText'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlTextNode_getText> gExtensionMethodTable_arxmlTextNode_getText ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getText (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlTextNode_getText inMethod) {
   gExtensionMethodTable_arxmlTextNode_getText.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getText (const cPtr_arxmlTextNode * inObject,
                                   GALGAS_lstring & out_outText,
@@ -4384,7 +4479,7 @@ void callExtensionMethod_getText (const cPtr_arxmlTextNode * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlTextNode_getText (const cPtr_arxmlTextNode * inObject,
                                                    GALGAS_lstring & outArgument_outText,
@@ -4394,27 +4489,27 @@ static void extensionMethod_arxmlTextNode_getText (const cPtr_arxmlTextNode * in
   macroValidSharedObject (object, cPtr_arxmlTextNode) ;
   outArgument_outText = object->mProperty_text ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlTextNode_getText (void) {
   enterExtensionMethod_getText (kTypeDescriptor_GALGAS_arxmlTextNode.mSlotID,
                                 extensionMethod_arxmlTextNode_getText) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlTextNode_getText (void) {
   gExtensionMethodTable_arxmlTextNode_getText.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlTextNode_getText (defineExtensionMethod_arxmlTextNode_getText,
                                                   freeExtensionMethod_arxmlTextNode_getText) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlElementValue::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -4435,7 +4530,7 @@ typeComparisonResult cPtr_arxmlElementValue::dynamicObjectCompare (const acPtr_c
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlElementValue::objectCompare (const GALGAS_arxmlElementValue & inOperand) const {
@@ -4454,13 +4549,13 @@ typeComparisonResult GALGAS_arxmlElementValue::objectCompare (const GALGAS_arxml
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValue::GALGAS_arxmlElementValue (void) :
 AC_GALGAS_class (false) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlElementValue::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -4470,14 +4565,14 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_default (LOCATION
                                                     COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValue::GALGAS_arxmlElementValue (const cPtr_arxmlElementValue * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlElementValue) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_new (const GALGAS_lstring & inAttribute_type,
                                                                     const GALGAS_lstring & inAttribute_text,
@@ -4491,7 +4586,7 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::constructor_new (const GALGAS
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4503,13 +4598,13 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -4521,13 +4616,13 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) const {
   return mProperty_text ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValueMap GALGAS_arxmlElementValue::getter_elements (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlElementValueMap result ;
@@ -4539,13 +4634,13 @@ GALGAS_arxmlElementValueMap GALGAS_arxmlElementValue::getter_elements (UNUSED_LO
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValueMap cPtr_arxmlElementValue::getter_elements (UNUSED_LOCATION_ARGS) const {
   return mProperty_elements ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlAttributeMap GALGAS_arxmlElementValue::getter_attributes (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlAttributeMap result ;
@@ -4557,15 +4652,91 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementValue::getter_attributes (UNUSED_LOC
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlAttributeMap cPtr_arxmlElementValue::getter_attributes (UNUSED_LOCATION_ARGS) const {
   return mProperty_attributes ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                     Pointer class for @arxmlElementValue class                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValue::setter_setType (GALGAS_lstring inValue
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementValue * p = (cPtr_arxmlElementValue *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementValue) ;
+    p->mProperty_type = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementValue::setter_setType (GALGAS_lstring inValue
+                                             COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_type = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValue::setter_setText (GALGAS_lstring inValue
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementValue * p = (cPtr_arxmlElementValue *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementValue) ;
+    p->mProperty_text = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementValue::setter_setText (GALGAS_lstring inValue
+                                             COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_text = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValue::setter_setElements (GALGAS_arxmlElementValueMap inValue
+                                                   COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementValue * p = (cPtr_arxmlElementValue *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementValue) ;
+    p->mProperty_elements = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementValue::setter_setElements (GALGAS_arxmlElementValueMap inValue
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_elements = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlElementValue::setter_setAttributes (GALGAS_arxmlAttributeMap inValue
+                                                     COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlElementValue * p = (cPtr_arxmlElementValue *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlElementValue) ;
+    p->mProperty_attributes = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlElementValue::setter_setAttributes (GALGAS_arxmlAttributeMap inValue
+                                                   COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_attributes = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlElementValue class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlElementValue::cPtr_arxmlElementValue (const GALGAS_lstring & in_type,
                                                 const GALGAS_lstring & in_text,
@@ -4579,7 +4750,7 @@ mProperty_elements (in_elements),
 mProperty_attributes (in_attributes) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlElementValue::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementValue ;
@@ -4598,7 +4769,7 @@ void cPtr_arxmlElementValue::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlElementValue::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -4607,23 +4778,23 @@ acPtr_class * cPtr_arxmlElementValue::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                               @arxmlElementValue type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlElementValue type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlElementValue ("arxmlElementValue",
                                           NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlElementValue::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlElementValue ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlElementValue::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -4633,7 +4804,7 @@ AC_GALGAS_root * GALGAS_arxmlElementValue::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlElementValue GALGAS_arxmlElementValue::extractObject (const GALGAS_object & inObject,
                                                                   C_Compiler * inCompiler
@@ -4650,22 +4821,22 @@ GALGAS_arxmlElementValue GALGAS_arxmlElementValue::extractObject (const GALGAS_o
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                 Extension setter '@arxmlElementValue insertElement'                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlElementValue insertElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlElementValue_insertElement> gExtensionModifierTable_arxmlElementValue_insertElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_insertElement (const int32_t inClassIndex,
                                          extensionSetterSignature_arxmlElementValue_insertElement inModifier) {
   gExtensionModifierTable_arxmlElementValue_insertElement.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_insertElement (cPtr_arxmlElementValue * inObject,
                                         GALGAS_lstring in_key,
@@ -4696,7 +4867,7 @@ void callExtensionSetter_insertElement (cPtr_arxmlElementValue * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlElementValue_insertElement (cPtr_arxmlElementValue * inObject,
                                                              GALGAS_lstring inArgument_key,
@@ -4723,40 +4894,40 @@ static void extensionSetter_arxmlElementValue_insertElement (cPtr_arxmlElementVa
   object->mProperty_elements.setter_insertKey (inArgument_key, var_keyList_8388, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 391)) ;
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlElementValue_insertElement (void) {
   enterExtensionSetter_insertElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                       extensionSetter_arxmlElementValue_insertElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlElementValue_insertElement (void) {
   gExtensionModifierTable_arxmlElementValue_insertElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlElementValue_insertElement (defineExtensionSetter_arxmlElementValue_insertElement,
                                                             freeExtensionModifier_arxmlElementValue_insertElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                               Extension method '@arxmlElementValue getElementsByPath'                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getElementsByPath'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getElementsByPath> gExtensionMethodTable_arxmlElementValue_getElementsByPath ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getElementsByPath (const int32_t inClassIndex,
                                              extensionMethodSignature_arxmlElementValue_getElementsByPath inMethod) {
   gExtensionMethodTable_arxmlElementValue_getElementsByPath.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElementsByPath (const cPtr_arxmlElementValue * inObject,
                                             GALGAS_stringlist in_path,
@@ -4789,7 +4960,7 @@ void callExtensionMethod_getElementsByPath (const cPtr_arxmlElementValue * inObj
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementValue_getElementsByPath (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_stringlist inArgument_path,
@@ -4822,40 +4993,40 @@ static void extensionMethod_arxmlElementValue_getElementsByPath (const cPtr_arxm
     }
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementValue_getElementsByPath (void) {
   enterExtensionMethod_getElementsByPath (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                           extensionMethod_arxmlElementValue_getElementsByPath) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementValue_getElementsByPath (void) {
   gExtensionMethodTable_arxmlElementValue_getElementsByPath.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getElementsByPath (defineExtensionMethod_arxmlElementValue_getElementsByPath,
                                                                 freeExtensionMethod_arxmlElementValue_getElementsByPath) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  Extension method '@arxmlElementValue getElements'                                  *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getElements'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getElements> gExtensionMethodTable_arxmlElementValue_getElements ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getElements (const int32_t inClassIndex,
                                        extensionMethodSignature_arxmlElementValue_getElements inMethod) {
   gExtensionMethodTable_arxmlElementValue_getElements.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElements (const cPtr_arxmlElementValue * inObject,
                                       GALGAS_string in_elementName,
@@ -4889,7 +5060,7 @@ void callExtensionMethod_getElements (const cPtr_arxmlElementValue * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementValue_getElements (const cPtr_arxmlElementValue * inObject,
                                                            GALGAS_string inArgument_elementName,
@@ -4910,40 +5081,40 @@ static void extensionMethod_arxmlElementValue_getElements (const cPtr_arxmlEleme
     outArgument_outElements = GALGAS_arxmlElementValueList::constructor_emptyList (SOURCE_FILE ("arxml_types.galgas", 420)) ;
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementValue_getElements (void) {
   enterExtensionMethod_getElements (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                     extensionMethod_arxmlElementValue_getElements) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementValue_getElements (void) {
   gExtensionMethodTable_arxmlElementValue_getElements.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getElements (defineExtensionMethod_arxmlElementValue_getElements,
                                                           freeExtensionMethod_arxmlElementValue_getElements) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  Extension method '@arxmlElementValue getElement'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getElement> gExtensionMethodTable_arxmlElementValue_getElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getElement (const int32_t inClassIndex,
                                       extensionMethodSignature_arxmlElementValue_getElement inMethod) {
   gExtensionMethodTable_arxmlElementValue_getElement.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElement (const cPtr_arxmlElementValue * inObject,
                                      GALGAS_string in_elementName,
@@ -4977,7 +5148,7 @@ void callExtensionMethod_getElement (const cPtr_arxmlElementValue * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementValue_getElement (const cPtr_arxmlElementValue * inObject,
                                                           GALGAS_string inArgument_elementName,
@@ -5002,40 +5173,40 @@ static void extensionMethod_arxmlElementValue_getElement (const cPtr_arxmlElemen
     var_foundElements_9451.method_first (outArgument_outElement, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 435)) ;
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementValue_getElement (void) {
   enterExtensionMethod_getElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                    extensionMethod_arxmlElementValue_getElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementValue_getElement (void) {
   gExtensionMethodTable_arxmlElementValue_getElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getElement (defineExtensionMethod_arxmlElementValue_getElement,
                                                          freeExtensionMethod_arxmlElementValue_getElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  Extension getter '@arxmlElementValue hasElement'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlElementValue hasElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <enterExtensionGetter_arxmlElementValue_hasElement> gExtensionGetterTable_arxmlElementValue_hasElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_hasElement (const int32_t inClassIndex,
                                       enterExtensionGetter_arxmlElementValue_hasElement inGetter) {
   gExtensionGetterTable_arxmlElementValue_hasElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue * inObject,
                                             GALGAS_string in_elementName,
@@ -5070,7 +5241,7 @@ GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue * inObj
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_arxmlElementValue_hasElement (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_string inArgument_elementName,
@@ -5097,40 +5268,40 @@ static GALGAS_bool extensionGetter_arxmlElementValue_hasElement (const cPtr_arxm
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_arxmlElementValue_hasElement (void) {
   enterExtensionGetter_hasElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                    extensionGetter_arxmlElementValue_hasElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionGetter_arxmlElementValue_hasElement (void) {
   gExtensionGetterTable_arxmlElementValue_hasElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_arxmlElementValue_hasElement (defineExtensionGetter_arxmlElementValue_hasElement,
                                                          freeExtensionGetter_arxmlElementValue_hasElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                              Extension getter '@arxmlElementValue getTextFromElement'                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlElementValue getTextFromElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <enterExtensionGetter_arxmlElementValue_getTextFromElement> gExtensionGetterTable_arxmlElementValue_getTextFromElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_getTextFromElement (const int32_t inClassIndex,
                                               enterExtensionGetter_arxmlElementValue_getTextFromElement inGetter) {
   gExtensionGetterTable_arxmlElementValue_getTextFromElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlElementValue * inObject,
                                                        GALGAS_string in_elementName,
@@ -5165,7 +5336,7 @@ GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlElementVa
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_lstring extensionGetter_arxmlElementValue_getTextFromElement (const cPtr_arxmlElementValue * inObject,
                                                                             GALGAS_string inArgument_elementName,
@@ -5183,40 +5354,40 @@ static GALGAS_lstring extensionGetter_arxmlElementValue_getTextFromElement (cons
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_arxmlElementValue_getTextFromElement (void) {
   enterExtensionGetter_getTextFromElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                            extensionGetter_arxmlElementValue_getTextFromElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionGetter_arxmlElementValue_getTextFromElement (void) {
   gExtensionGetterTable_arxmlElementValue_getTextFromElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_arxmlElementValue_getTextFromElement (defineExtensionGetter_arxmlElementValue_getTextFromElement,
                                                                  freeExtensionGetter_arxmlElementValue_getTextFromElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                               Extension method '@arxmlElementValue getAllTextsInSelf'                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getAllTextsInSelf'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlElementValue_getAllTextsInSelf> gExtensionMethodTable_arxmlElementValue_getAllTextsInSelf ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getAllTextsInSelf (const int32_t inClassIndex,
                                              extensionMethodSignature_arxmlElementValue_getAllTextsInSelf inMethod) {
   gExtensionMethodTable_arxmlElementValue_getAllTextsInSelf.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAllTextsInSelf (const cPtr_arxmlElementValue * inObject,
                                             GALGAS_string in_separator,
@@ -5249,7 +5420,7 @@ void callExtensionMethod_getAllTextsInSelf (const cPtr_arxmlElementValue * inObj
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlElementValue_getAllTextsInSelf (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_string inArgument_separator,
@@ -5289,40 +5460,40 @@ static void extensionMethod_arxmlElementValue_getAllTextsInSelf (const cPtr_arxm
     enumerator_10610.gotoNextObject () ;
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlElementValue_getAllTextsInSelf (void) {
   enterExtensionMethod_getAllTextsInSelf (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                           extensionMethod_arxmlElementValue_getAllTextsInSelf) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlElementValue_getAllTextsInSelf (void) {
   gExtensionMethodTable_arxmlElementValue_getAllTextsInSelf.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlElementValue_getAllTextsInSelf (defineExtensionMethod_arxmlElementValue_getAllTextsInSelf,
                                                                 freeExtensionMethod_arxmlElementValue_getAllTextsInSelf) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                         Extension getter '@arxmlElementValue getAttributeValueFromElement'                          *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlElementValue getAttributeValueFromElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <enterExtensionGetter_arxmlElementValue_getAttributeValueFromElement> gExtensionGetterTable_arxmlElementValue_getAttributeValueFromElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_getAttributeValueFromElement (const int32_t inClassIndex,
                                                         enterExtensionGetter_arxmlElementValue_getAttributeValueFromElement inGetter) {
   gExtensionGetterTable_arxmlElementValue_getAttributeValueFromElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPtr_arxmlElementValue * inObject,
                                                                  GALGAS_string in_elementName,
@@ -5358,7 +5529,7 @@ GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPtr_arxm
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_lstring extensionGetter_arxmlElementValue_getAttributeValueFromElement (const cPtr_arxmlElementValue * inObject,
                                                                                       GALGAS_string inArgument_elementName,
@@ -5378,27 +5549,27 @@ static GALGAS_lstring extensionGetter_arxmlElementValue_getAttributeValueFromEle
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_arxmlElementValue_getAttributeValueFromElement (void) {
   enterExtensionGetter_getAttributeValueFromElement (kTypeDescriptor_GALGAS_arxmlElementValue.mSlotID,
                                                      extensionGetter_arxmlElementValue_getAttributeValueFromElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionGetter_arxmlElementValue_getAttributeValueFromElement (void) {
   gExtensionGetterTable_arxmlElementValue_getAttributeValueFromElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_arxmlElementValue_getAttributeValueFromElement (defineExtensionGetter_arxmlElementValue_getAttributeValueFromElement,
                                                                            freeExtensionGetter_arxmlElementValue_getAttributeValueFromElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlMetaClass::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -5428,7 +5599,7 @@ typeComparisonResult cPtr_arxmlMetaClass::dynamicObjectCompare (const acPtr_clas
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlMetaClass::objectCompare (const GALGAS_arxmlMetaClass & inOperand) const {
@@ -5447,13 +5618,13 @@ typeComparisonResult GALGAS_arxmlMetaClass::objectCompare (const GALGAS_arxmlMet
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaClass::GALGAS_arxmlMetaClass (void) :
 AC_GALGAS_class (false) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlMetaClass::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -5466,14 +5637,14 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_default (LOCATION_ARGS)
                                                  COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaClass::GALGAS_arxmlMetaClass (const cPtr_arxmlMetaClass * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaClass) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                               const GALGAS_bool & inAttribute_isAbstract,
@@ -5490,7 +5661,7 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::constructor_new (const GALGAS_lstri
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -5502,13 +5673,13 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -5520,13 +5691,13 @@ GALGAS_bool GALGAS_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool cPtr_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) const {
   return mProperty_isAbstract ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElement (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaElementList result ;
@@ -5538,13 +5709,13 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElement (UNUSED_LOCAT
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElementList cPtr_arxmlMetaClass::getter_lElement (UNUSED_LOCATION_ARGS) const {
   return mProperty_lElement ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElementLegacy (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaElementList result ;
@@ -5556,13 +5727,13 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElementLegacy (UNUSED
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElementList cPtr_arxmlMetaClass::getter_lElementLegacy (UNUSED_LOCATION_ARGS) const {
   return mProperty_lElementLegacy ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttribute (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaAttributeList result ;
@@ -5574,13 +5745,13 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttribute (UNUSED_L
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttributeList cPtr_arxmlMetaClass::getter_lAttribute (UNUSED_LOCATION_ARGS) const {
   return mProperty_lAttribute ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttributeLegacy (UNUSED_LOCATION_ARGS) const {
   GALGAS_arxmlMetaAttributeList result ;
@@ -5592,13 +5763,13 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttributeLegacy (UN
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttributeList cPtr_arxmlMetaClass::getter_lAttributeLegacy (UNUSED_LOCATION_ARGS) const {
   return mProperty_lAttributeLegacy ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -5610,15 +5781,148 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   return mProperty_desc ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                       Pointer class for @arxmlMetaClass class                                       *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setName (GALGAS_lstring inValue
+                                            COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_name = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setName (GALGAS_lstring inValue
+                                          COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_name = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setIsAbstract (GALGAS_bool inValue
+                                                  COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_isAbstract = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setIsAbstract (GALGAS_bool inValue
+                                                COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_isAbstract = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setLElement (GALGAS_arxmlMetaElementList inValue
+                                                COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_lElement = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setLElement (GALGAS_arxmlMetaElementList inValue
+                                              COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_lElement = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setLElementLegacy (GALGAS_arxmlMetaElementList inValue
+                                                      COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_lElementLegacy = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setLElementLegacy (GALGAS_arxmlMetaElementList inValue
+                                                    COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_lElementLegacy = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setLAttribute (GALGAS_arxmlMetaAttributeList inValue
+                                                  COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_lAttribute = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setLAttribute (GALGAS_arxmlMetaAttributeList inValue
+                                                COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_lAttribute = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setLAttributeLegacy (GALGAS_arxmlMetaAttributeList inValue
+                                                        COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_lAttributeLegacy = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setLAttributeLegacy (GALGAS_arxmlMetaAttributeList inValue
+                                                      COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_lAttributeLegacy = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaClass::setter_setDesc (GALGAS_lstring inValue
+                                            COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaClass * p = (cPtr_arxmlMetaClass *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
+    p->mProperty_desc = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaClass::setter_setDesc (GALGAS_lstring inValue
+                                          COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_desc = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlMetaClass class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlMetaClass::cPtr_arxmlMetaClass (const GALGAS_lstring & in_name,
                                           const GALGAS_bool & in_isAbstract,
@@ -5638,7 +5942,7 @@ mProperty_lAttributeLegacy (in_lAttributeLegacy),
 mProperty_desc (in_desc) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaClass::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaClass ;
@@ -5663,7 +5967,7 @@ void cPtr_arxmlMetaClass::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlMetaClass::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -5672,23 +5976,23 @@ acPtr_class * cPtr_arxmlMetaClass::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                                @arxmlMetaClass type                                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlMetaClass type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaClass ("arxmlMetaClass",
                                        NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaClass::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaClass ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlMetaClass::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -5698,7 +6002,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaClass::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::extractObject (const GALGAS_object & inObject,
                                                             C_Compiler * inCompiler
@@ -5715,22 +6019,22 @@ GALGAS_arxmlMetaClass GALGAS_arxmlMetaClass::extractObject (const GALGAS_object 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                               Extension setter '@arxmlMetaClass legacyAddParameters'                                *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass legacyAddParameters'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_legacyAddParameters> gExtensionModifierTable_arxmlMetaClass_legacyAddParameters ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_legacyAddParameters (const int32_t inClassIndex,
                                                extensionSetterSignature_arxmlMetaClass_legacyAddParameters inModifier) {
   gExtensionModifierTable_arxmlMetaClass_legacyAddParameters.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_legacyAddParameters (cPtr_arxmlMetaClass * inObject,
                                               GALGAS_arxmlMetaClassMap & io_classMap,
@@ -5761,7 +6065,7 @@ void callExtensionSetter_legacyAddParameters (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlMetaClass_legacyAddParameters (cPtr_arxmlMetaClass * inObject,
                                                                 GALGAS_arxmlMetaClassMap & ioArgument_classMap,
@@ -5778,40 +6082,40 @@ static void extensionSetter_arxmlMetaClass_legacyAddParameters (cPtr_arxmlMetaCl
     enumerator_2572.gotoNextObject () ;
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlMetaClass_legacyAddParameters (void) {
   enterExtensionSetter_legacyAddParameters (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                             extensionSetter_arxmlMetaClass_legacyAddParameters) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_legacyAddParameters (void) {
   gExtensionModifierTable_arxmlMetaClass_legacyAddParameters.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_legacyAddParameters (defineExtensionSetter_arxmlMetaClass_legacyAddParameters,
                                                                freeExtensionModifier_arxmlMetaClass_legacyAddParameters) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                   Extension setter '@arxmlMetaClass legacyUpdate'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass legacyUpdate'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_legacyUpdate> gExtensionModifierTable_arxmlMetaClass_legacyUpdate ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_legacyUpdate (const int32_t inClassIndex,
                                         extensionSetterSignature_arxmlMetaClass_legacyUpdate inModifier) {
   gExtensionModifierTable_arxmlMetaClass_legacyUpdate.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_legacyUpdate (cPtr_arxmlMetaClass * inObject,
                                        GALGAS_arxmlMetaElementList in_iElement,
@@ -5842,7 +6146,7 @@ void callExtensionSetter_legacyUpdate (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlMetaClass_legacyUpdate (cPtr_arxmlMetaClass * inObject,
                                                          GALGAS_arxmlMetaElementList inArgument_iElement,
@@ -5854,40 +6158,40 @@ static void extensionSetter_arxmlMetaClass_legacyUpdate (cPtr_arxmlMetaClass * i
   object->mProperty_lElementLegacy.plusAssign_operation(inArgument_iElement, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 105)) ;
   object->mProperty_lAttributeLegacy.plusAssign_operation(inArgument_iAttribute, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 106)) ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlMetaClass_legacyUpdate (void) {
   enterExtensionSetter_legacyUpdate (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                      extensionSetter_arxmlMetaClass_legacyUpdate) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_legacyUpdate (void) {
   gExtensionModifierTable_arxmlMetaClass_legacyUpdate.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_legacyUpdate (defineExtensionSetter_arxmlMetaClass_legacyUpdate,
                                                         freeExtensionModifier_arxmlMetaClass_legacyUpdate) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                     Extension method '@arxmlMetaClass display'                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlMetaClass display'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlMetaClass_display> gExtensionMethodTable_arxmlMetaClass_display ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_display (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlMetaClass_display inMethod) {
   gExtensionMethodTable_arxmlMetaClass_display.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_display (const cPtr_arxmlMetaClass * inObject,
                                   GALGAS_arxmlMetaClassMap in_classMap,
@@ -5920,7 +6224,7 @@ void callExtensionMethod_display (const cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * inObject,
                                                     GALGAS_arxmlMetaClassMap inArgument_classMap,
@@ -6008,40 +6312,40 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
     "\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 232)) ;
   ioArgument_ioString = ioArgument_ioString.add_operation (var_svgString_2953, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 233)) ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlMetaClass_display (void) {
   enterExtensionMethod_display (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                 extensionMethod_arxmlMetaClass_display) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlMetaClass_display (void) {
   gExtensionMethodTable_arxmlMetaClass_display.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlMetaClass_display (defineExtensionMethod_arxmlMetaClass_display,
                                                    freeExtensionMethod_arxmlMetaClass_display) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                    Extension setter '@arxmlMetaClass addElement'                                    *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass addElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_addElement> gExtensionModifierTable_arxmlMetaClass_addElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_addElement (const int32_t inClassIndex,
                                       extensionSetterSignature_arxmlMetaClass_addElement inModifier) {
   gExtensionModifierTable_arxmlMetaClass_addElement.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_addElement (cPtr_arxmlMetaClass * inObject,
                                      GALGAS_arxmlMetaElement in_mElement,
@@ -6071,7 +6375,7 @@ void callExtensionSetter_addElement (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inObject,
                                                        GALGAS_arxmlMetaElement inArgument_mElement,
@@ -6103,40 +6407,40 @@ static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inO
     }
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlMetaClass_addElement (void) {
   enterExtensionSetter_addElement (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                    extensionSetter_arxmlMetaClass_addElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_addElement (void) {
   gExtensionModifierTable_arxmlMetaClass_addElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_addElement (defineExtensionSetter_arxmlMetaClass_addElement,
                                                       freeExtensionModifier_arxmlMetaClass_addElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                   Extension setter '@arxmlMetaClass addAttribute'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass addAttribute'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_addAttribute> gExtensionModifierTable_arxmlMetaClass_addAttribute ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_addAttribute (const int32_t inClassIndex,
                                         extensionSetterSignature_arxmlMetaClass_addAttribute inModifier) {
   gExtensionModifierTable_arxmlMetaClass_addAttribute.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_addAttribute (cPtr_arxmlMetaClass * inObject,
                                        GALGAS_arxmlMetaAttribute in_mAttribute,
@@ -6166,7 +6470,7 @@ void callExtensionSetter_addAttribute (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * inObject,
                                                          GALGAS_arxmlMetaAttribute inArgument_mAttribute,
@@ -6198,40 +6502,40 @@ static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * i
     }
   }
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlMetaClass_addAttribute (void) {
   enterExtensionSetter_addAttribute (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                      extensionSetter_arxmlMetaClass_addAttribute) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_addAttribute (void) {
   gExtensionModifierTable_arxmlMetaClass_addAttribute.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_addAttribute (defineExtensionSetter_arxmlMetaClass_addAttribute,
                                                         freeExtensionModifier_arxmlMetaClass_addAttribute) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  Extension setter '@arxmlMetaClass setDescription'                                  *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass setDescription'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaClass_setDescription> gExtensionModifierTable_arxmlMetaClass_setDescription ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_setDescription (const int32_t inClassIndex,
                                           extensionSetterSignature_arxmlMetaClass_setDescription inModifier) {
   gExtensionModifierTable_arxmlMetaClass_setDescription.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_setDescription (cPtr_arxmlMetaClass * inObject,
                                          GALGAS_lstring in_iDesc,
@@ -6261,7 +6565,7 @@ void callExtensionSetter_setDescription (cPtr_arxmlMetaClass * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlMetaClass_setDescription (cPtr_arxmlMetaClass * inObject,
                                                            GALGAS_lstring inArgument_iDesc,
@@ -6271,40 +6575,40 @@ static void extensionSetter_arxmlMetaClass_setDescription (cPtr_arxmlMetaClass *
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   object->mProperty_desc = inArgument_iDesc ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlMetaClass_setDescription (void) {
   enterExtensionSetter_setDescription (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                        extensionSetter_arxmlMetaClass_setDescription) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaClass_setDescription (void) {
   gExtensionModifierTable_arxmlMetaClass_setDescription.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlMetaClass_setDescription (defineExtensionSetter_arxmlMetaClass_setDescription,
                                                           freeExtensionModifier_arxmlMetaClass_setDescription) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                    Extension getter '@arxmlMetaClass hasElement'                                    *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlMetaClass hasElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <enterExtensionGetter_arxmlMetaClass_hasElement> gExtensionGetterTable_arxmlMetaClass_hasElement ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_hasElement (const int32_t inClassIndex,
                                       enterExtensionGetter_arxmlMetaClass_hasElement inGetter) {
   gExtensionGetterTable_arxmlMetaClass_hasElement.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * inObject,
                                             GALGAS_string in_eleName,
@@ -6339,7 +6643,7 @@ GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * inObject
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_arxmlMetaClass_hasElement (const cPtr_arxmlMetaClass * inObject,
                                                               GALGAS_string inArgument_eleName,
@@ -6372,40 +6676,40 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasElement (const cPtr_arxmlMe
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_arxmlMetaClass_hasElement (void) {
   enterExtensionGetter_hasElement (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                    extensionGetter_arxmlMetaClass_hasElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionGetter_arxmlMetaClass_hasElement (void) {
   gExtensionGetterTable_arxmlMetaClass_hasElement.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_arxmlMetaClass_hasElement (defineExtensionGetter_arxmlMetaClass_hasElement,
                                                       freeExtensionGetter_arxmlMetaClass_hasElement) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                   Extension getter '@arxmlMetaClass hasAttribute'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlMetaClass hasAttribute'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <enterExtensionGetter_arxmlMetaClass_hasAttribute> gExtensionGetterTable_arxmlMetaClass_hasAttribute ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_hasAttribute (const int32_t inClassIndex,
                                         enterExtensionGetter_arxmlMetaClass_hasAttribute inGetter) {
   gExtensionGetterTable_arxmlMetaClass_hasAttribute.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool callExtensionGetter_hasAttribute (const cPtr_arxmlMetaClass * inObject,
                                               GALGAS_string in_attrName,
@@ -6440,7 +6744,7 @@ GALGAS_bool callExtensionGetter_hasAttribute (const cPtr_arxmlMetaClass * inObje
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_arxmlMetaClass_hasAttribute (const cPtr_arxmlMetaClass * inObject,
                                                                 GALGAS_string inArgument_attrName,
@@ -6473,27 +6777,27 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasAttribute (const cPtr_arxml
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_arxmlMetaClass_hasAttribute (void) {
   enterExtensionGetter_hasAttribute (kTypeDescriptor_GALGAS_arxmlMetaClass.mSlotID,
                                      extensionGetter_arxmlMetaClass_hasAttribute) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionGetter_arxmlMetaClass_hasAttribute (void) {
   gExtensionGetterTable_arxmlMetaClass_hasAttribute.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_arxmlMetaClass_hasAttribute (defineExtensionGetter_arxmlMetaClass_hasAttribute,
                                                         freeExtensionGetter_arxmlMetaClass_hasAttribute) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlMetaElement::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -6517,7 +6821,7 @@ typeComparisonResult cPtr_arxmlMetaElement::dynamicObjectCompare (const acPtr_cl
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlMetaElement::objectCompare (const GALGAS_arxmlMetaElement & inOperand) const {
@@ -6536,13 +6840,13 @@ typeComparisonResult GALGAS_arxmlMetaElement::objectCompare (const GALGAS_arxmlM
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElement::GALGAS_arxmlMetaElement (void) :
 AC_GALGAS_class (false) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlMetaElement::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -6553,14 +6857,14 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_default (LOCATION_A
                                                    COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElement::GALGAS_arxmlMetaElement (const cPtr_arxmlMetaElement * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaElement) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                   const GALGAS_lstring & inAttribute_type,
@@ -6575,7 +6879,7 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::constructor_new (const GALGAS_l
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6587,13 +6891,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6605,13 +6909,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6623,13 +6927,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) const {
   return mProperty_minOccurs ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6641,13 +6945,13 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) const {
   return mProperty_maxOccurs ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6659,15 +6963,110 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) const {
   return mProperty_prefix ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                      Pointer class for @arxmlMetaElement class                                      *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaElement::setter_setName (GALGAS_lstring inValue
+                                              COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaElement * p = (cPtr_arxmlMetaElement *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
+    p->mProperty_name = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaElement::setter_setName (GALGAS_lstring inValue
+                                            COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_name = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaElement::setter_setType (GALGAS_lstring inValue
+                                              COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaElement * p = (cPtr_arxmlMetaElement *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
+    p->mProperty_type = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaElement::setter_setType (GALGAS_lstring inValue
+                                            COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_type = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaElement::setter_setMinOccurs (GALGAS_lstring inValue
+                                                   COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaElement * p = (cPtr_arxmlMetaElement *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
+    p->mProperty_minOccurs = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaElement::setter_setMinOccurs (GALGAS_lstring inValue
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_minOccurs = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaElement::setter_setMaxOccurs (GALGAS_lstring inValue
+                                                   COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaElement * p = (cPtr_arxmlMetaElement *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
+    p->mProperty_maxOccurs = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaElement::setter_setMaxOccurs (GALGAS_lstring inValue
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_maxOccurs = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaElement::setter_setPrefix (GALGAS_lstring inValue
+                                                COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaElement * p = (cPtr_arxmlMetaElement *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
+    p->mProperty_prefix = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaElement::setter_setPrefix (GALGAS_lstring inValue
+                                              COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_prefix = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlMetaElement class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlMetaElement::cPtr_arxmlMetaElement (const GALGAS_lstring & in_name,
                                               const GALGAS_lstring & in_type,
@@ -6683,7 +7082,7 @@ mProperty_maxOccurs (in_maxOccurs),
 mProperty_prefix (in_prefix) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaElement::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaElement ;
@@ -6704,7 +7103,7 @@ void cPtr_arxmlMetaElement::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlMetaElement::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -6713,23 +7112,23 @@ acPtr_class * cPtr_arxmlMetaElement::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                               @arxmlMetaElement type                                                *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlMetaElement type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaElement ("arxmlMetaElement",
                                          NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaElement::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaElement ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlMetaElement::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -6739,7 +7138,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaElement::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::extractObject (const GALGAS_object & inObject,
                                                                 C_Compiler * inCompiler
@@ -6756,9 +7155,9 @@ GALGAS_arxmlMetaElement GALGAS_arxmlMetaElement::extractObject (const GALGAS_obj
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlMetaAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -6779,7 +7178,7 @@ typeComparisonResult cPtr_arxmlMetaAttribute::dynamicObjectCompare (const acPtr_
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlMetaAttribute::objectCompare (const GALGAS_arxmlMetaAttribute & inOperand) const {
@@ -6798,13 +7197,13 @@ typeComparisonResult GALGAS_arxmlMetaAttribute::objectCompare (const GALGAS_arxm
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttribute::GALGAS_arxmlMetaAttribute (void) :
 AC_GALGAS_class (false) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_default (LOCATION_ARGS) {
   return GALGAS_arxmlMetaAttribute::constructor_new (GALGAS_lstring::constructor_default (HERE),
@@ -6814,14 +7213,14 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_default (LOCATI
                                                      COMMA_THERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttribute::GALGAS_arxmlMetaAttribute (const cPtr_arxmlMetaAttribute * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaAttribute) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                       const GALGAS_lstring & inAttribute_type,
@@ -6835,7 +7234,7 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::constructor_new (const GALG
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6847,13 +7246,13 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6865,13 +7264,13 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) con
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6883,13 +7282,13 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) c
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) const {
   return mProperty_prefix ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -6901,15 +7300,91 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) const {
   return mProperty_use ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                     Pointer class for @arxmlMetaAttribute class                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaAttribute::setter_setName (GALGAS_lstring inValue
+                                                COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaAttribute * p = (cPtr_arxmlMetaAttribute *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
+    p->mProperty_name = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaAttribute::setter_setName (GALGAS_lstring inValue
+                                              COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_name = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaAttribute::setter_setType (GALGAS_lstring inValue
+                                                COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaAttribute * p = (cPtr_arxmlMetaAttribute *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
+    p->mProperty_type = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaAttribute::setter_setType (GALGAS_lstring inValue
+                                              COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_type = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaAttribute::setter_setPrefix (GALGAS_lstring inValue
+                                                  COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaAttribute * p = (cPtr_arxmlMetaAttribute *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
+    p->mProperty_prefix = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaAttribute::setter_setPrefix (GALGAS_lstring inValue
+                                                COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_prefix = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaAttribute::setter_setUse (GALGAS_lstring inValue
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaAttribute * p = (cPtr_arxmlMetaAttribute *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
+    p->mProperty_use = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaAttribute::setter_setUse (GALGAS_lstring inValue
+                                             COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_use = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlMetaAttribute class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlMetaAttribute::cPtr_arxmlMetaAttribute (const GALGAS_lstring & in_name,
                                                   const GALGAS_lstring & in_type,
@@ -6923,7 +7398,7 @@ mProperty_prefix (in_prefix),
 mProperty_use (in_use) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaAttribute::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaAttribute ;
@@ -6942,7 +7417,7 @@ void cPtr_arxmlMetaAttribute::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlMetaAttribute::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -6951,23 +7426,23 @@ acPtr_class * cPtr_arxmlMetaAttribute::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @arxmlMetaAttribute type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlMetaAttribute type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaAttribute ("arxmlMetaAttribute",
                                            NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaAttribute::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaAttribute ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlMetaAttribute::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -6977,7 +7452,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaAttribute::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::extractObject (const GALGAS_object & inObject,
                                                                     C_Compiler * inCompiler
@@ -6994,9 +7469,9 @@ GALGAS_arxmlMetaAttribute GALGAS_arxmlMetaAttribute::extractObject (const GALGAS
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//   Object comparison                                                                                                 *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                           
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult cPtr_arxmlMetaSimpletype::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
@@ -7017,7 +7492,7 @@ typeComparisonResult cPtr_arxmlMetaSimpletype::dynamicObjectCompare (const acPtr
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 
 typeComparisonResult GALGAS_arxmlMetaSimpletype::objectCompare (const GALGAS_arxmlMetaSimpletype & inOperand) const {
@@ -7036,20 +7511,20 @@ typeComparisonResult GALGAS_arxmlMetaSimpletype::objectCompare (const GALGAS_arx
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaSimpletype::GALGAS_arxmlMetaSimpletype (void) :
 AC_GALGAS_class (false) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaSimpletype::GALGAS_arxmlMetaSimpletype (const cPtr_arxmlMetaSimpletype * inSourcePtr) :
 AC_GALGAS_class (inSourcePtr, false) {
   macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlMetaSimpletype) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::constructor_new (const GALGAS_lstring & inAttribute_name,
                                                                         const GALGAS_restrictionType & inAttribute_type,
@@ -7063,7 +7538,7 @@ GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::constructor_new (const GA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstring result ;
@@ -7075,13 +7550,13 @@ GALGAS_lstring GALGAS_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring cPtr_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_restrictionType GALGAS_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_ARGS) const {
   GALGAS_restrictionType result ;
@@ -7093,13 +7568,13 @@ GALGAS_restrictionType GALGAS_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_restrictionType cPtr_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_restrictionBaseType GALGAS_arxmlMetaSimpletype::getter_base (UNUSED_LOCATION_ARGS) const {
   GALGAS_restrictionBaseType result ;
@@ -7111,13 +7586,13 @@ GALGAS_restrictionBaseType GALGAS_arxmlMetaSimpletype::getter_base (UNUSED_LOCAT
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_restrictionBaseType cPtr_arxmlMetaSimpletype::getter_base (UNUSED_LOCATION_ARGS) const {
   return mProperty_base ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringlist GALGAS_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
@@ -7129,15 +7604,91 @@ GALGAS_lstringlist GALGAS_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_AR
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringlist cPtr_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_ARGS) const {
   return mProperty_values ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                    Pointer class for @arxmlMetaSimpletype class                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaSimpletype::setter_setName (GALGAS_lstring inValue
+                                                 COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaSimpletype * p = (cPtr_arxmlMetaSimpletype *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
+    p->mProperty_name = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaSimpletype::setter_setName (GALGAS_lstring inValue
+                                               COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_name = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaSimpletype::setter_setType (GALGAS_restrictionType inValue
+                                                 COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaSimpletype * p = (cPtr_arxmlMetaSimpletype *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
+    p->mProperty_type = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaSimpletype::setter_setType (GALGAS_restrictionType inValue
+                                               COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_type = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaSimpletype::setter_setBase (GALGAS_restrictionBaseType inValue
+                                                 COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaSimpletype * p = (cPtr_arxmlMetaSimpletype *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
+    p->mProperty_base = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaSimpletype::setter_setBase (GALGAS_restrictionBaseType inValue
+                                               COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_base = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_arxmlMetaSimpletype::setter_setValues (GALGAS_lstringlist inValue
+                                                   COMMA_LOCATION_ARGS) {
+  if (NULL != mObjectPtr) {
+    insulate (THERE) ;
+    cPtr_arxmlMetaSimpletype * p = (cPtr_arxmlMetaSimpletype *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
+    p->mProperty_values = inValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void cPtr_arxmlMetaSimpletype::setter_setValues (GALGAS_lstringlist inValue
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
+  mProperty_values = inValue ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Pointer class for @arxmlMetaSimpletype class
+//----------------------------------------------------------------------------------------------------------------------
 
 cPtr_arxmlMetaSimpletype::cPtr_arxmlMetaSimpletype (const GALGAS_lstring & in_name,
                                                     const GALGAS_restrictionType & in_type,
@@ -7151,7 +7702,7 @@ mProperty_base (in_base),
 mProperty_values (in_values) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * cPtr_arxmlMetaSimpletype::classDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaSimpletype ;
@@ -7170,7 +7721,7 @@ void cPtr_arxmlMetaSimpletype::description (C_String & ioString,
   ioString << "]" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 acPtr_class * cPtr_arxmlMetaSimpletype::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
@@ -7179,23 +7730,23 @@ acPtr_class * cPtr_arxmlMetaSimpletype::duplicate (LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @arxmlMetaSimpletype type                                              *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@arxmlMetaSimpletype type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_arxmlMetaSimpletype ("arxmlMetaSimpletype",
                                             NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_arxmlMetaSimpletype::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_arxmlMetaSimpletype ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_arxmlMetaSimpletype::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -7205,7 +7756,7 @@ AC_GALGAS_root * GALGAS_arxmlMetaSimpletype::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::extractObject (const GALGAS_object & inObject,
                                                                       C_Compiler * inCompiler
@@ -7222,22 +7773,22 @@ GALGAS_arxmlMetaSimpletype GALGAS_arxmlMetaSimpletype::extractObject (const GALG
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                   Extension method '@arxmlMetaSimpletype display'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlMetaSimpletype display'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionMethodSignature_arxmlMetaSimpletype_display> gExtensionMethodTable_arxmlMetaSimpletype_display ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_display (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlMetaSimpletype_display inMethod) {
   gExtensionMethodTable_arxmlMetaSimpletype_display.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_display (const cPtr_arxmlMetaSimpletype * inObject,
                                   GALGAS_arxmlMetaClassMap in_classMap,
@@ -7270,7 +7821,7 @@ void callExtensionMethod_display (const cPtr_arxmlMetaSimpletype * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSimpletype * inObject,
                                                          GALGAS_arxmlMetaClassMap /* inArgument_classMap */,
@@ -7322,186 +7873,40 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
   }
   ioArgument_ioString = ioArgument_ioString.add_operation (var_svgString_9977, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 399)) ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_arxmlMetaSimpletype_display (void) {
   enterExtensionMethod_display (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
                                 extensionMethod_arxmlMetaSimpletype_display) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionMethod_arxmlMetaSimpletype_display (void) {
   gExtensionMethodTable_arxmlMetaSimpletype_display.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_arxmlMetaSimpletype_display (defineExtensionMethod_arxmlMetaSimpletype_display,
                                                         freeExtensionMethod_arxmlMetaSimpletype_display) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                   Extension setter '@arxmlMetaSimpletype setType'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static TC_UniqueArray <extensionSetterSignature_arxmlMetaSimpletype_setType> gExtensionModifierTable_arxmlMetaSimpletype_setType ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void enterExtensionSetter_setType (const int32_t inClassIndex,
-                                   extensionSetterSignature_arxmlMetaSimpletype_setType inModifier) {
-  gExtensionModifierTable_arxmlMetaSimpletype_setType.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void callExtensionSetter_setType (cPtr_arxmlMetaSimpletype * inObject,
-                                  GALGAS_restrictionType in_iType,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_arxmlMetaSimpletype) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_arxmlMetaSimpletype_setType f = NULL ;
-    if (classIndex < gExtensionModifierTable_arxmlMetaSimpletype_setType.count ()) {
-      f = gExtensionModifierTable_arxmlMetaSimpletype_setType (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_arxmlMetaSimpletype_setType.count ()) {
-           f = gExtensionModifierTable_arxmlMetaSimpletype_setType (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_arxmlMetaSimpletype_setType.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, in_iType, inCompiler COMMA_THERE) ;
-  }
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void extensionSetter_arxmlMetaSimpletype_setType (cPtr_arxmlMetaSimpletype * inObject,
-                                                         GALGAS_restrictionType inArgument_iType,
-                                                         C_Compiler * /* inCompiler */
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_arxmlMetaSimpletype * object = inObject ;
-  macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
-  object->mProperty_type = inArgument_iType ;
-}
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void defineExtensionSetter_arxmlMetaSimpletype_setType (void) {
-  enterExtensionSetter_setType (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
-                                extensionSetter_arxmlMetaSimpletype_setType) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void freeExtensionModifier_arxmlMetaSimpletype_setType (void) {
-  gExtensionModifierTable_arxmlMetaSimpletype_setType.free () ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-C_PrologueEpilogue gSetter_arxmlMetaSimpletype_setType (defineExtensionSetter_arxmlMetaSimpletype_setType,
-                                                        freeExtensionModifier_arxmlMetaSimpletype_setType) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                   Extension setter '@arxmlMetaSimpletype setBase'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static TC_UniqueArray <extensionSetterSignature_arxmlMetaSimpletype_setBase> gExtensionModifierTable_arxmlMetaSimpletype_setBase ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void enterExtensionSetter_setBase (const int32_t inClassIndex,
-                                   extensionSetterSignature_arxmlMetaSimpletype_setBase inModifier) {
-  gExtensionModifierTable_arxmlMetaSimpletype_setBase.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-void callExtensionSetter_setBase (cPtr_arxmlMetaSimpletype * inObject,
-                                  GALGAS_restrictionBaseType in_iBase,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_arxmlMetaSimpletype) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_arxmlMetaSimpletype_setBase f = NULL ;
-    if (classIndex < gExtensionModifierTable_arxmlMetaSimpletype_setBase.count ()) {
-      f = gExtensionModifierTable_arxmlMetaSimpletype_setBase (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_arxmlMetaSimpletype_setBase.count ()) {
-           f = gExtensionModifierTable_arxmlMetaSimpletype_setBase (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_arxmlMetaSimpletype_setBase.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, in_iBase, inCompiler COMMA_THERE) ;
-  }
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void extensionSetter_arxmlMetaSimpletype_setBase (cPtr_arxmlMetaSimpletype * inObject,
-                                                         GALGAS_restrictionBaseType inArgument_iBase,
-                                                         C_Compiler * /* inCompiler */
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_arxmlMetaSimpletype * object = inObject ;
-  macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
-  object->mProperty_base = inArgument_iBase ;
-}
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void defineExtensionSetter_arxmlMetaSimpletype_setBase (void) {
-  enterExtensionSetter_setBase (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
-                                extensionSetter_arxmlMetaSimpletype_setBase) ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-static void freeExtensionModifier_arxmlMetaSimpletype_setBase (void) {
-  gExtensionModifierTable_arxmlMetaSimpletype_setBase.free () ;
-}
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-
-C_PrologueEpilogue gSetter_arxmlMetaSimpletype_setBase (defineExtensionSetter_arxmlMetaSimpletype_setBase,
-                                                        freeExtensionModifier_arxmlMetaSimpletype_setBase) ;
-
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                  Extension setter '@arxmlMetaSimpletype addValue'                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaSimpletype addValue'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static TC_UniqueArray <extensionSetterSignature_arxmlMetaSimpletype_addValue> gExtensionModifierTable_arxmlMetaSimpletype_addValue ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_addValue (const int32_t inClassIndex,
                                     extensionSetterSignature_arxmlMetaSimpletype_addValue inModifier) {
   gExtensionModifierTable_arxmlMetaSimpletype_addValue.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_addValue (cPtr_arxmlMetaSimpletype * inObject,
                                    GALGAS_lstring in_value,
@@ -7531,7 +7936,7 @@ void callExtensionSetter_addValue (cPtr_arxmlMetaSimpletype * inObject,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionSetter_arxmlMetaSimpletype_addValue (cPtr_arxmlMetaSimpletype * inObject,
                                                           GALGAS_lstring inArgument_value,
@@ -7541,20 +7946,20 @@ static void extensionSetter_arxmlMetaSimpletype_addValue (cPtr_arxmlMetaSimplety
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
   object->mProperty_values.addAssign_operation (inArgument_value  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 414)) ;
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionSetter_arxmlMetaSimpletype_addValue (void) {
   enterExtensionSetter_addValue (kTypeDescriptor_GALGAS_arxmlMetaSimpletype.mSlotID,
                                  extensionSetter_arxmlMetaSimpletype_addValue) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void freeExtensionModifier_arxmlMetaSimpletype_addValue (void) {
   gExtensionModifierTable_arxmlMetaSimpletype_addValue.free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gSetter_arxmlMetaSimpletype_addValue (defineExtensionSetter_arxmlMetaSimpletype_addValue,
                                                          freeExtensionModifier_arxmlMetaSimpletype_addValue) ;
@@ -9214,14 +9619,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
     test_0 = test_2.boolEnum () ;
     if (kBoolTrue == test_0) {
       {
-      ioArgument_restriction.insulate (HERE) ;
-      cPtr_arxmlMetaSimpletype * ptr_18751 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-      callExtensionSetter_setBase ((cPtr_arxmlMetaSimpletype *) ptr_18751, GALGAS_restrictionBaseType::constructor_restrictionString (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 669)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 669)) ;
+      ioArgument_restriction.setter_setBase (GALGAS_restrictionBaseType::constructor_restrictionString (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 669)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 669)) ;
       }
       {
-      ioArgument_restriction.insulate (HERE) ;
-      cPtr_arxmlMetaSimpletype * ptr_18799 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-      callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_18799, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)) ;
+      ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)) ;
       }
     }
   }
@@ -9231,14 +9632,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
       test_3 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:unsignedInt").objectCompare (var_baseType_18531.getter_string (HERE))).boolEnum () ;
       if (kBoolTrue == test_3) {
         {
-        ioArgument_restriction.insulate (HERE) ;
-        cPtr_arxmlMetaSimpletype * ptr_18897 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-        callExtensionSetter_setBase ((cPtr_arxmlMetaSimpletype *) ptr_18897, GALGAS_restrictionBaseType::constructor_restrictionUint (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 672)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 672)) ;
+        ioArgument_restriction.setter_setBase (GALGAS_restrictionBaseType::constructor_restrictionUint (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 672)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 672)) ;
         }
         {
-        ioArgument_restriction.insulate (HERE) ;
-        cPtr_arxmlMetaSimpletype * ptr_18943 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-        callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_18943, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)) ;
+        ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)) ;
         }
       }
     }
@@ -9248,14 +9645,10 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
         test_4 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:double").objectCompare (var_baseType_18531.getter_string (HERE))).boolEnum () ;
         if (kBoolTrue == test_4) {
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_19036 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setBase ((cPtr_arxmlMetaSimpletype *) ptr_19036, GALGAS_restrictionBaseType::constructor_restrictionDouble (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 675)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 675)) ;
+          ioArgument_restriction.setter_setBase (GALGAS_restrictionBaseType::constructor_restrictionDouble (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 675)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 675)) ;
           }
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_19084 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_19084, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 676)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 676)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 676)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 676)) ;
           }
         }
       }
@@ -9283,9 +9676,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 687)) ;
           nt_xsd_5F_attribute_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_19450 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_19450, GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 689)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 689)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 689)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 689)) ;
           }
         } break ;
         case 3: {
@@ -9293,9 +9684,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 691)) ;
           nt_xsd_5F_attributeGroup_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_19609 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_19609, GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 693)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 693)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 693)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 693)) ;
           }
         } break ;
         case 4: {
@@ -9303,9 +9692,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 695)) ;
           nt_xsd_5F_choice_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_19752 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_19752, GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 697)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 697)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 697)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 697)) ;
           }
         } break ;
         case 5: {
@@ -9313,9 +9700,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 699)) ;
           nt_xsd_5F_sequence_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_19899 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_19899, GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 701)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 701)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 701)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 701)) ;
           }
         } break ;
         case 6: {
@@ -9323,18 +9708,14 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 703)) ;
           nt_xsd_5F_group_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_20040 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_20040, GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 705)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 705)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 705)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 705)) ;
           }
         } break ;
         case 7: {
           inCompiler->acceptTerminal (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 706)) ;
           nt_xsd_5F_simpleType_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_20176 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_20176, GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 708)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 708)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionUnused (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 708)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 708)) ;
           }
         } break ;
         case 8: {
@@ -9409,9 +9790,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
           }
           nt_xsd_5F_enumeration_ (ioArgument_classMap, ioArgument_classGraph, inArgument_parentClass, ioArgument_restriction, inCompiler) ;
           {
-          ioArgument_restriction.insulate (HERE) ;
-          cPtr_arxmlMetaSimpletype * ptr_21668 = (cPtr_arxmlMetaSimpletype *) ioArgument_restriction.ptr () ;
-          callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_21668, GALGAS_restrictionType::constructor_restrictionEnum (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 739)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 739)) ;
+          ioArgument_restriction.setter_setType (GALGAS_restrictionType::constructor_restrictionEnum (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 739)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 739)) ;
           }
         } break ;
         default:
@@ -10737,24 +11116,24 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ig
   inCompiler->resetTemplateString () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlDataList_2D_element::GALGAS_gtlDataList_2D_element (void) :
 mProperty_data () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlDataList_2D_element::~ GALGAS_gtlDataList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlDataList_2D_element::GALGAS_gtlDataList_2D_element (const GALGAS_gtlData & inOperand0) :
 mProperty_data (inOperand0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::constructor_new (const GALGAS_gtlData & inOperand0 
                                                                               COMMA_UNUSED_LOCATION_ARGS) {
@@ -10765,7 +11144,7 @@ GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::constructor_new (co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlDataList_2D_element::objectCompare (const GALGAS_gtlDataList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -10775,19 +11154,19 @@ typeComparisonResult GALGAS_gtlDataList_2D_element::objectCompare (const GALGAS_
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlDataList_2D_element::isValid (void) const {
   return mProperty_data.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlDataList_2D_element::drop (void) {
   mProperty_data.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlDataList_2D_element::description (C_String & ioString,
                                                  const int32_t inIndentation) const {
@@ -10800,7 +11179,7 @@ void GALGAS_gtlDataList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData GALGAS_gtlDataList_2D_element::getter_data (UNUSED_LOCATION_ARGS) const {
   return mProperty_data ;
@@ -10808,23 +11187,23 @@ GALGAS_gtlData GALGAS_gtlDataList_2D_element::getter_data (UNUSED_LOCATION_ARGS)
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @gtlDataList-element type                                              *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlDataList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlDataList_2D_element ("gtlDataList-element",
                                                NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlDataList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlDataList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlDataList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -10834,7 +11213,7 @@ AC_GALGAS_root * GALGAS_gtlDataList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                             C_Compiler * inCompiler
@@ -10851,19 +11230,19 @@ GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::extractObject (cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlVarMap_2D_element::GALGAS_gtlVarMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_value () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlVarMap_2D_element::~ GALGAS_gtlVarMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlVarMap_2D_element::GALGAS_gtlVarMap_2D_element (const GALGAS_lstring & inOperand0,
                                                           const GALGAS_gtlData & inOperand1) :
@@ -10871,7 +11250,7 @@ mProperty_lkey (inOperand0),
 mProperty_value (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                           const GALGAS_gtlData & inOperand1 
@@ -10883,7 +11262,7 @@ GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::constructor_new (const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlVarMap_2D_element::objectCompare (const GALGAS_gtlVarMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -10896,20 +11275,20 @@ typeComparisonResult GALGAS_gtlVarMap_2D_element::objectCompare (const GALGAS_gt
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlVarMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlVarMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_value.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlVarMap_2D_element::description (C_String & ioString,
                                                const int32_t inIndentation) const {
@@ -10924,13 +11303,13 @@ void GALGAS_gtlVarMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlVarMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData GALGAS_gtlVarMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -10938,23 +11317,23 @@ GALGAS_gtlData GALGAS_gtlVarMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) 
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                               @gtlVarMap-element type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlVarMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlVarMap_2D_element ("gtlVarMap-element",
                                              NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlVarMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlVarMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlVarMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -10964,7 +11343,7 @@ AC_GALGAS_root * GALGAS_gtlVarMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                         C_Compiler * inCompiler
@@ -10981,19 +11360,19 @@ GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::extractObject (const GA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionMap_2D_element::GALGAS_gtlExpressionMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_expression () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionMap_2D_element::~ GALGAS_gtlExpressionMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionMap_2D_element::GALGAS_gtlExpressionMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                         const GALGAS_gtlExpression & inOperand1) :
@@ -11001,7 +11380,7 @@ mProperty_lkey (inOperand0),
 mProperty_expression (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                         const GALGAS_gtlExpression & inOperand1 
@@ -11013,7 +11392,7 @@ GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::construct
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlExpressionMap_2D_element::objectCompare (const GALGAS_gtlExpressionMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11026,20 +11405,20 @@ typeComparisonResult GALGAS_gtlExpressionMap_2D_element::objectCompare (const GA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlExpressionMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_expression.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlExpressionMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_expression.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlExpressionMap_2D_element::description (C_String & ioString,
                                                       const int32_t inIndentation) const {
@@ -11054,13 +11433,13 @@ void GALGAS_gtlExpressionMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlExpressionMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpression GALGAS_gtlExpressionMap_2D_element::getter_expression (UNUSED_LOCATION_ARGS) const {
   return mProperty_expression ;
@@ -11068,23 +11447,23 @@ GALGAS_gtlExpression GALGAS_gtlExpressionMap_2D_element::getter_expression (UNUS
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                           @gtlExpressionMap-element type                                            *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlExpressionMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlExpressionMap_2D_element ("gtlExpressionMap-element",
                                                     NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlExpressionMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlExpressionMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlExpressionMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11094,7 +11473,7 @@ AC_GALGAS_root * GALGAS_gtlExpressionMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                       C_Compiler * inCompiler
@@ -11111,19 +11490,19 @@ GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::extractOb
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplateMap_2D_element::GALGAS_gtlTemplateMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_aTemplate () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplateMap_2D_element::~ GALGAS_gtlTemplateMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplateMap_2D_element::GALGAS_gtlTemplateMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                     const GALGAS_gtlTemplate & inOperand1) :
@@ -11131,14 +11510,14 @@ mProperty_lkey (inOperand0),
 mProperty_aTemplate (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlTemplateMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                            GALGAS_gtlTemplate::constructor_default (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                     const GALGAS_gtlTemplate & inOperand1 
@@ -11150,7 +11529,7 @@ GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_n
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlTemplateMap_2D_element::objectCompare (const GALGAS_gtlTemplateMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11163,20 +11542,20 @@ typeComparisonResult GALGAS_gtlTemplateMap_2D_element::objectCompare (const GALG
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlTemplateMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_aTemplate.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlTemplateMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_aTemplate.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlTemplateMap_2D_element::description (C_String & ioString,
                                                     const int32_t inIndentation) const {
@@ -11191,13 +11570,13 @@ void GALGAS_gtlTemplateMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlTemplateMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplate GALGAS_gtlTemplateMap_2D_element::getter_aTemplate (UNUSED_LOCATION_ARGS) const {
   return mProperty_aTemplate ;
@@ -11205,23 +11584,23 @@ GALGAS_gtlTemplate GALGAS_gtlTemplateMap_2D_element::getter_aTemplate (UNUSED_LO
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                            @gtlTemplateMap-element type                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlTemplateMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlTemplateMap_2D_element ("gtlTemplateMap-element",
                                                   NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlTemplateMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlTemplateMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlTemplateMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11231,7 +11610,7 @@ AC_GALGAS_root * GALGAS_gtlTemplateMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -11248,24 +11627,24 @@ GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::extractObject
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionList_2D_element::GALGAS_gtlExpressionList_2D_element (void) :
 mProperty_expression () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionList_2D_element::~ GALGAS_gtlExpressionList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionList_2D_element::GALGAS_gtlExpressionList_2D_element (const GALGAS_gtlExpression & inOperand0) :
 mProperty_expression (inOperand0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::constructor_new (const GALGAS_gtlExpression & inOperand0 
                                                                                           COMMA_UNUSED_LOCATION_ARGS) {
@@ -11276,7 +11655,7 @@ GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::constru
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlExpressionList_2D_element::objectCompare (const GALGAS_gtlExpressionList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11286,19 +11665,19 @@ typeComparisonResult GALGAS_gtlExpressionList_2D_element::objectCompare (const G
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlExpressionList_2D_element::isValid (void) const {
   return mProperty_expression.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlExpressionList_2D_element::drop (void) {
   mProperty_expression.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlExpressionList_2D_element::description (C_String & ioString,
                                                        const int32_t inIndentation) const {
@@ -11311,7 +11690,7 @@ void GALGAS_gtlExpressionList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpression GALGAS_gtlExpressionList_2D_element::getter_expression (UNUSED_LOCATION_ARGS) const {
   return mProperty_expression ;
@@ -11319,23 +11698,23 @@ GALGAS_gtlExpression GALGAS_gtlExpressionList_2D_element::getter_expression (UNU
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                           @gtlExpressionList-element type                                           *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlExpressionList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlExpressionList_2D_element ("gtlExpressionList-element",
                                                      NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlExpressionList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlExpressionList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlExpressionList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11345,7 +11724,7 @@ AC_GALGAS_root * GALGAS_gtlExpressionList_2D_element::clonedObject (void) const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                         C_Compiler * inCompiler
@@ -11362,24 +11741,24 @@ GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::extract
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_list_2D_element::GALGAS_list_2D_element (void) :
 mProperty_value () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_list_2D_element::~ GALGAS_list_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_list_2D_element::GALGAS_list_2D_element (const GALGAS_gtlData & inOperand0) :
 mProperty_value (inOperand0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_list_2D_element GALGAS_list_2D_element::constructor_new (const GALGAS_gtlData & inOperand0 
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
@@ -11390,7 +11769,7 @@ GALGAS_list_2D_element GALGAS_list_2D_element::constructor_new (const GALGAS_gtl
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_list_2D_element::objectCompare (const GALGAS_list_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11400,19 +11779,19 @@ typeComparisonResult GALGAS_list_2D_element::objectCompare (const GALGAS_list_2D
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_list_2D_element::isValid (void) const {
   return mProperty_value.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_list_2D_element::drop (void) {
   mProperty_value.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_list_2D_element::description (C_String & ioString,
                                           const int32_t inIndentation) const {
@@ -11425,7 +11804,7 @@ void GALGAS_list_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData GALGAS_list_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -11433,23 +11812,23 @@ GALGAS_gtlData GALGAS_list_2D_element::getter_value (UNUSED_LOCATION_ARGS) const
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                                 @list-element type                                                  *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@list-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_list_2D_element ("list-element",
                                         NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_list_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_list_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_list_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11459,7 +11838,7 @@ AC_GALGAS_root * GALGAS_list_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_list_2D_element GALGAS_list_2D_element::extractObject (const GALGAS_object & inObject,
                                                               C_Compiler * inCompiler
@@ -11476,30 +11855,30 @@ GALGAS_list_2D_element GALGAS_list_2D_element::extractObject (const GALGAS_objec
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringset_2D_element::GALGAS_lstringset_2D_element (void) :
 mProperty_lkey () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringset_2D_element::~ GALGAS_lstringset_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringset_2D_element::GALGAS_lstringset_2D_element (const GALGAS_lstring & inOperand0) :
 mProperty_lkey (inOperand0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_lstringset_2D_element (GALGAS_lstring::constructor_default (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_new (const GALGAS_lstring & inOperand0 
                                                                             COMMA_UNUSED_LOCATION_ARGS) {
@@ -11510,7 +11889,7 @@ GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_new (cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_lstringset_2D_element::objectCompare (const GALGAS_lstringset_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11520,19 +11899,19 @@ typeComparisonResult GALGAS_lstringset_2D_element::objectCompare (const GALGAS_l
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_lstringset_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_lstringset_2D_element::drop (void) {
   mProperty_lkey.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_lstringset_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -11545,7 +11924,7 @@ void GALGAS_lstringset_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_lstringset_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
@@ -11553,23 +11932,23 @@ GALGAS_lstring GALGAS_lstringset_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) 
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @lstringset-element type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@lstringset-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_lstringset_2D_element ("lstringset-element",
                                               NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_lstringset_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_lstringset_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_lstringset_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11579,7 +11958,7 @@ AC_GALGAS_root * GALGAS_lstringset_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -11596,7 +11975,7 @@ GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::extractObject (const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlArgumentList_2D_element::GALGAS_gtlArgumentList_2D_element (void) :
 mProperty_typed (),
@@ -11604,12 +11983,12 @@ mProperty_type (),
 mProperty_name () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlArgumentList_2D_element::~ GALGAS_gtlArgumentList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlArgumentList_2D_element::GALGAS_gtlArgumentList_2D_element (const GALGAS_bool & inOperand0,
                                                                       const GALGAS_type & inOperand1,
@@ -11619,7 +11998,7 @@ mProperty_type (inOperand1),
 mProperty_name (inOperand2) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::constructor_new (const GALGAS_bool & inOperand0,
                                                                                       const GALGAS_type & inOperand1,
@@ -11632,7 +12011,7 @@ GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::constructor
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlArgumentList_2D_element::objectCompare (const GALGAS_gtlArgumentList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11648,13 +12027,13 @@ typeComparisonResult GALGAS_gtlArgumentList_2D_element::objectCompare (const GAL
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlArgumentList_2D_element::isValid (void) const {
   return mProperty_typed.isValid () && mProperty_type.isValid () && mProperty_name.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlArgumentList_2D_element::drop (void) {
   mProperty_typed.drop () ;
@@ -11662,7 +12041,7 @@ void GALGAS_gtlArgumentList_2D_element::drop (void) {
   mProperty_name.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlArgumentList_2D_element::description (C_String & ioString,
                                                      const int32_t inIndentation) const {
@@ -11679,19 +12058,19 @@ void GALGAS_gtlArgumentList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_gtlArgumentList_2D_element::getter_typed (UNUSED_LOCATION_ARGS) const {
   return mProperty_typed ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type GALGAS_gtlArgumentList_2D_element::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlArgumentList_2D_element::getter_name (UNUSED_LOCATION_ARGS) const {
   return mProperty_name ;
@@ -11699,23 +12078,23 @@ GALGAS_lstring GALGAS_gtlArgumentList_2D_element::getter_name (UNUSED_LOCATION_A
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                            @gtlArgumentList-element type                                            *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlArgumentList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlArgumentList_2D_element ("gtlArgumentList-element",
                                                    NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlArgumentList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlArgumentList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlArgumentList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11725,7 +12104,7 @@ AC_GALGAS_root * GALGAS_gtlArgumentList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                     C_Compiler * inCompiler
@@ -11742,19 +12121,19 @@ GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::extractObje
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcMap_2D_element::GALGAS_gtlProcMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_procedure () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcMap_2D_element::~ GALGAS_gtlProcMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcMap_2D_element::GALGAS_gtlProcMap_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_gtlProcedure & inOperand1) :
@@ -11762,14 +12141,14 @@ mProperty_lkey (inOperand0),
 mProperty_procedure (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlProcMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                        GALGAS_gtlProcedure::constructor_default (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                             const GALGAS_gtlProcedure & inOperand1 
@@ -11781,7 +12160,7 @@ GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_new (cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlProcMap_2D_element::objectCompare (const GALGAS_gtlProcMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11794,20 +12173,20 @@ typeComparisonResult GALGAS_gtlProcMap_2D_element::objectCompare (const GALGAS_g
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlProcMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_procedure.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlProcMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_procedure.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlProcMap_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -11822,13 +12201,13 @@ void GALGAS_gtlProcMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlProcMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcedure GALGAS_gtlProcMap_2D_element::getter_procedure (UNUSED_LOCATION_ARGS) const {
   return mProperty_procedure ;
@@ -11836,23 +12215,23 @@ GALGAS_gtlProcedure GALGAS_gtlProcMap_2D_element::getter_procedure (UNUSED_LOCAT
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @gtlProcMap-element type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlProcMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlProcMap_2D_element ("gtlProcMap-element",
                                               NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlProcMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlProcMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlProcMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11862,7 +12241,7 @@ AC_GALGAS_root * GALGAS_gtlProcMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -11879,19 +12258,19 @@ GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::extractObject (const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFuncMap_2D_element::GALGAS_gtlFuncMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_function () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFuncMap_2D_element::~ GALGAS_gtlFuncMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFuncMap_2D_element::GALGAS_gtlFuncMap_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_gtlFunction & inOperand1) :
@@ -11899,14 +12278,14 @@ mProperty_lkey (inOperand0),
 mProperty_function (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_gtlFuncMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                        GALGAS_gtlFunction::constructor_default (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                             const GALGAS_gtlFunction & inOperand1 
@@ -11918,7 +12297,7 @@ GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_new (cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlFuncMap_2D_element::objectCompare (const GALGAS_gtlFuncMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -11931,20 +12310,20 @@ typeComparisonResult GALGAS_gtlFuncMap_2D_element::objectCompare (const GALGAS_g
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlFuncMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_function.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlFuncMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_function.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlFuncMap_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -11959,13 +12338,13 @@ void GALGAS_gtlFuncMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlFuncMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFunction GALGAS_gtlFuncMap_2D_element::getter_function (UNUSED_LOCATION_ARGS) const {
   return mProperty_function ;
@@ -11973,23 +12352,23 @@ GALGAS_gtlFunction GALGAS_gtlFuncMap_2D_element::getter_function (UNUSED_LOCATIO
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @gtlFuncMap-element type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlFuncMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlFuncMap_2D_element ("gtlFuncMap-element",
                                               NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlFuncMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlFuncMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlFuncMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -11999,7 +12378,7 @@ AC_GALGAS_root * GALGAS_gtlFuncMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -12016,19 +12395,19 @@ GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::extractObject (const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlGetterMap_2D_element::GALGAS_gtlGetterMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_theGetter () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlGetterMap_2D_element::~ GALGAS_gtlGetterMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlGetterMap_2D_element::GALGAS_gtlGetterMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                 const GALGAS_gtlGetter & inOperand1) :
@@ -12036,7 +12415,7 @@ mProperty_lkey (inOperand0),
 mProperty_theGetter (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                 const GALGAS_gtlGetter & inOperand1 
@@ -12048,7 +12427,7 @@ GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::constructor_new (
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlGetterMap_2D_element::objectCompare (const GALGAS_gtlGetterMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12061,20 +12440,20 @@ typeComparisonResult GALGAS_gtlGetterMap_2D_element::objectCompare (const GALGAS
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlGetterMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_theGetter.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlGetterMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_theGetter.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlGetterMap_2D_element::description (C_String & ioString,
                                                   const int32_t inIndentation) const {
@@ -12089,13 +12468,13 @@ void GALGAS_gtlGetterMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlGetterMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlGetter GALGAS_gtlGetterMap_2D_element::getter_theGetter (UNUSED_LOCATION_ARGS) const {
   return mProperty_theGetter ;
@@ -12103,23 +12482,23 @@ GALGAS_gtlGetter GALGAS_gtlGetterMap_2D_element::getter_theGetter (UNUSED_LOCATI
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                             @gtlGetterMap-element type                                              *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlGetterMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlGetterMap_2D_element ("gtlGetterMap-element",
                                                 NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlGetterMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlGetterMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlGetterMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12129,7 +12508,7 @@ AC_GALGAS_root * GALGAS_gtlGetterMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -12146,19 +12525,19 @@ GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::extractObject (co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlSetterMap_2D_element::GALGAS_gtlSetterMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_theSetter () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlSetterMap_2D_element::~ GALGAS_gtlSetterMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlSetterMap_2D_element::GALGAS_gtlSetterMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                 const GALGAS_gtlSetter & inOperand1) :
@@ -12166,7 +12545,7 @@ mProperty_lkey (inOperand0),
 mProperty_theSetter (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                 const GALGAS_gtlSetter & inOperand1 
@@ -12178,7 +12557,7 @@ GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::constructor_new (
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlSetterMap_2D_element::objectCompare (const GALGAS_gtlSetterMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12191,20 +12570,20 @@ typeComparisonResult GALGAS_gtlSetterMap_2D_element::objectCompare (const GALGAS
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlSetterMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_theSetter.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlSetterMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_theSetter.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlSetterMap_2D_element::description (C_String & ioString,
                                                   const int32_t inIndentation) const {
@@ -12219,13 +12598,13 @@ void GALGAS_gtlSetterMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_gtlSetterMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlSetter GALGAS_gtlSetterMap_2D_element::getter_theSetter (UNUSED_LOCATION_ARGS) const {
   return mProperty_theSetter ;
@@ -12233,23 +12612,23 @@ GALGAS_gtlSetter GALGAS_gtlSetterMap_2D_element::getter_theSetter (UNUSED_LOCATI
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                             @gtlSetterMap-element type                                              *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlSetterMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlSetterMap_2D_element ("gtlSetterMap-element",
                                                 NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlSetterMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlSetterMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlSetterMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12259,7 +12638,7 @@ AC_GALGAS_root * GALGAS_gtlSetterMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                               C_Compiler * inCompiler
@@ -12276,19 +12655,19 @@ GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::extractObject (co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlThenElsifStatementList_2D_element::GALGAS_gtlThenElsifStatementList_2D_element (void) :
 mProperty_condition (),
 mProperty_instructionList () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlThenElsifStatementList_2D_element::~ GALGAS_gtlThenElsifStatementList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlThenElsifStatementList_2D_element::GALGAS_gtlThenElsifStatementList_2D_element (const GALGAS_gtlExpression & inOperand0,
                                                                                           const GALGAS_gtlInstructionList & inOperand1) :
@@ -12296,7 +12675,7 @@ mProperty_condition (inOperand0),
 mProperty_instructionList (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_element::constructor_new (const GALGAS_gtlExpression & inOperand0,
                                                                                                           const GALGAS_gtlInstructionList & inOperand1 
@@ -12308,7 +12687,7 @@ GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_gtlThenElsifStatementList_2D_element::objectCompare (const GALGAS_gtlThenElsifStatementList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12321,20 +12700,20 @@ typeComparisonResult GALGAS_gtlThenElsifStatementList_2D_element::objectCompare 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_gtlThenElsifStatementList_2D_element::isValid (void) const {
   return mProperty_condition.isValid () && mProperty_instructionList.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlThenElsifStatementList_2D_element::drop (void) {
   mProperty_condition.drop () ;
   mProperty_instructionList.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_gtlThenElsifStatementList_2D_element::description (C_String & ioString,
                                                                const int32_t inIndentation) const {
@@ -12349,13 +12728,13 @@ void GALGAS_gtlThenElsifStatementList_2D_element::description (C_String & ioStri
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlExpression GALGAS_gtlThenElsifStatementList_2D_element::getter_condition (UNUSED_LOCATION_ARGS) const {
   return mProperty_condition ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList_2D_element::getter_instructionList (UNUSED_LOCATION_ARGS) const {
   return mProperty_instructionList ;
@@ -12363,23 +12742,23 @@ GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList_2D_element::getter_in
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                       @gtlThenElsifStatementList-element type                                       *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@gtlThenElsifStatementList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_gtlThenElsifStatementList_2D_element ("gtlThenElsifStatementList-element",
                                                              NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_gtlThenElsifStatementList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_gtlThenElsifStatementList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_gtlThenElsifStatementList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12389,7 +12768,7 @@ AC_GALGAS_root * GALGAS_gtlThenElsifStatementList_2D_element::clonedObject (void
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                                         C_Compiler * inCompiler
@@ -12406,19 +12785,19 @@ GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sortingKeyList_2D_element::GALGAS_sortingKeyList_2D_element (void) :
 mProperty_key (),
 mProperty_order () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sortingKeyList_2D_element::~ GALGAS_sortingKeyList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sortingKeyList_2D_element::GALGAS_sortingKeyList_2D_element (const GALGAS_lstring & inOperand0,
                                                                     const GALGAS_lsint & inOperand1) :
@@ -12426,14 +12805,14 @@ mProperty_key (inOperand0),
 mProperty_order (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_sortingKeyList_2D_element (GALGAS_lstring::constructor_default (HERE),
                                            GALGAS_lsint::constructor_default (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                     const GALGAS_lsint & inOperand1 
@@ -12445,7 +12824,7 @@ GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_n
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_sortingKeyList_2D_element::objectCompare (const GALGAS_sortingKeyList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12458,20 +12837,20 @@ typeComparisonResult GALGAS_sortingKeyList_2D_element::objectCompare (const GALG
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_sortingKeyList_2D_element::isValid (void) const {
   return mProperty_key.isValid () && mProperty_order.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_sortingKeyList_2D_element::drop (void) {
   mProperty_key.drop () ;
   mProperty_order.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_sortingKeyList_2D_element::description (C_String & ioString,
                                                     const int32_t inIndentation) const {
@@ -12486,13 +12865,13 @@ void GALGAS_sortingKeyList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_sortingKeyList_2D_element::getter_key (UNUSED_LOCATION_ARGS) const {
   return mProperty_key ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lsint GALGAS_sortingKeyList_2D_element::getter_order (UNUSED_LOCATION_ARGS) const {
   return mProperty_order ;
@@ -12500,23 +12879,23 @@ GALGAS_lsint GALGAS_sortingKeyList_2D_element::getter_order (UNUSED_LOCATION_ARG
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                            @sortingKeyList-element type                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@sortingKeyList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_sortingKeyList_2D_element ("sortingKeyList-element",
                                                   NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_sortingKeyList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_sortingKeyList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_sortingKeyList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12526,7 +12905,7 @@ AC_GALGAS_root * GALGAS_sortingKeyList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -12543,19 +12922,19 @@ GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::extractObject
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_numberList_2D_element::GALGAS_numberList_2D_element (void) :
 mProperty_location (),
 mProperty_value () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_numberList_2D_element::~ GALGAS_numberList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_numberList_2D_element::GALGAS_numberList_2D_element (const GALGAS_location & inOperand0,
                                                             const GALGAS_object_5F_t & inOperand1) :
@@ -12563,7 +12942,7 @@ mProperty_location (inOperand0),
 mProperty_value (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_numberList_2D_element GALGAS_numberList_2D_element::constructor_new (const GALGAS_location & inOperand0,
                                                                             const GALGAS_object_5F_t & inOperand1 
@@ -12575,7 +12954,7 @@ GALGAS_numberList_2D_element GALGAS_numberList_2D_element::constructor_new (cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_numberList_2D_element::objectCompare (const GALGAS_numberList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12588,20 +12967,20 @@ typeComparisonResult GALGAS_numberList_2D_element::objectCompare (const GALGAS_n
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_numberList_2D_element::isValid (void) const {
   return mProperty_location.isValid () && mProperty_value.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_numberList_2D_element::drop (void) {
   mProperty_location.drop () ;
   mProperty_value.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_numberList_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -12616,13 +12995,13 @@ void GALGAS_numberList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location GALGAS_numberList_2D_element::getter_location (UNUSED_LOCATION_ARGS) const {
   return mProperty_location ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object_5F_t GALGAS_numberList_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -12630,23 +13009,23 @@ GALGAS_object_5F_t GALGAS_numberList_2D_element::getter_value (UNUSED_LOCATION_A
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @numberList-element type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@numberList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_numberList_2D_element ("numberList-element",
                                               NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_numberList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_numberList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_numberList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12656,7 +13035,7 @@ AC_GALGAS_root * GALGAS_numberList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_numberList_2D_element GALGAS_numberList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -12673,19 +13052,19 @@ GALGAS_numberList_2D_element GALGAS_numberList_2D_element::extractObject (const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObjectMap_2D_element::GALGAS_implementationObjectMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_type () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObjectMap_2D_element::~ GALGAS_implementationObjectMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObjectMap_2D_element::GALGAS_implementationObjectMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                                       const GALGAS_impType & inOperand1) :
@@ -12693,7 +13072,7 @@ mProperty_lkey (inOperand0),
 mProperty_type (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                                       const GALGAS_impType & inOperand1 
@@ -12705,7 +13084,7 @@ GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_elem
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_implementationObjectMap_2D_element::objectCompare (const GALGAS_implementationObjectMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12718,20 +13097,20 @@ typeComparisonResult GALGAS_implementationObjectMap_2D_element::objectCompare (c
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_implementationObjectMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_type.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_implementationObjectMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_type.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_implementationObjectMap_2D_element::description (C_String & ioString,
                                                              const int32_t inIndentation) const {
@@ -12746,13 +13125,13 @@ void GALGAS_implementationObjectMap_2D_element::description (C_String & ioString
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_implementationObjectMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_impType GALGAS_implementationObjectMap_2D_element::getter_type (UNUSED_LOCATION_ARGS) const {
   return mProperty_type ;
@@ -12760,23 +13139,23 @@ GALGAS_impType GALGAS_implementationObjectMap_2D_element::getter_type (UNUSED_LO
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                        @implementationObjectMap-element type                                        *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@implementationObjectMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementationObjectMap_2D_element ("implementationObjectMap-element",
                                                            NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_implementationObjectMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_implementationObjectMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_implementationObjectMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12786,7 +13165,7 @@ AC_GALGAS_root * GALGAS_implementationObjectMap_2D_element::clonedObject (void) 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                                     C_Compiler * inCompiler
@@ -12803,19 +13182,19 @@ GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_elem
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_enumValues_2D_element::GALGAS_enumValues_2D_element (void) :
 mProperty_lkey (),
 mProperty_subAttributes () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_enumValues_2D_element::~ GALGAS_enumValues_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_enumValues_2D_element::GALGAS_enumValues_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_implementationObjectMap & inOperand1) :
@@ -12823,14 +13202,14 @@ mProperty_lkey (inOperand0),
 mProperty_subAttributes (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_enumValues_2D_element (GALGAS_lstring::constructor_default (HERE),
                                        GALGAS_implementationObjectMap::constructor_emptyMap (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                             const GALGAS_implementationObjectMap & inOperand1 
@@ -12842,7 +13221,7 @@ GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_new (cons
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_enumValues_2D_element::objectCompare (const GALGAS_enumValues_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12855,20 +13234,20 @@ typeComparisonResult GALGAS_enumValues_2D_element::objectCompare (const GALGAS_e
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_enumValues_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_subAttributes.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_enumValues_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_subAttributes.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_enumValues_2D_element::description (C_String & ioString,
                                                 const int32_t inIndentation) const {
@@ -12883,13 +13262,13 @@ void GALGAS_enumValues_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_enumValues_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObjectMap GALGAS_enumValues_2D_element::getter_subAttributes (UNUSED_LOCATION_ARGS) const {
   return mProperty_subAttributes ;
@@ -12897,23 +13276,23 @@ GALGAS_implementationObjectMap GALGAS_enumValues_2D_element::getter_subAttribute
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                              @enumValues-element type                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@enumValues-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_enumValues_2D_element ("enumValues-element",
                                               NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_enumValues_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_enumValues_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_enumValues_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -12923,7 +13302,7 @@ AC_GALGAS_root * GALGAS_enumValues_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::extractObject (const GALGAS_object & inObject,
                                                                           C_Compiler * inCompiler
@@ -12940,19 +13319,19 @@ GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::extractObject (const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap_2D_element::GALGAS_implementationMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_obj () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap_2D_element::~ GALGAS_implementationMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap_2D_element::GALGAS_implementationMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                           const GALGAS_implementationObject & inOperand1) :
@@ -12960,14 +13339,14 @@ mProperty_lkey (inOperand0),
 mProperty_obj (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_implementationMap_2D_element (GALGAS_lstring::constructor_default (HERE),
                                               GALGAS_implementationObject::constructor_default (HERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                           const GALGAS_implementationObject & inOperand1 
@@ -12979,7 +13358,7 @@ GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constru
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_implementationMap_2D_element::objectCompare (const GALGAS_implementationMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -12992,20 +13371,20 @@ typeComparisonResult GALGAS_implementationMap_2D_element::objectCompare (const G
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_implementationMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_obj.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_implementationMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_obj.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_implementationMap_2D_element::description (C_String & ioString,
                                                        const int32_t inIndentation) const {
@@ -13020,13 +13399,13 @@ void GALGAS_implementationMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_implementationMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationObject GALGAS_implementationMap_2D_element::getter_obj (UNUSED_LOCATION_ARGS) const {
   return mProperty_obj ;
@@ -13034,23 +13413,23 @@ GALGAS_implementationObject GALGAS_implementationMap_2D_element::getter_obj (UNU
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                           @implementationMap-element type                                           *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@implementationMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_implementationMap_2D_element ("implementationMap-element",
                                                      NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_implementationMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_implementationMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_implementationMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13060,7 +13439,7 @@ AC_GALGAS_root * GALGAS_implementationMap_2D_element::clonedObject (void) const 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                         C_Compiler * inCompiler
@@ -13077,19 +13456,19 @@ GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::extract
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierMap_2D_element::GALGAS_identifierMap_2D_element (void) :
 mProperty_lkey (),
 mProperty_value () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierMap_2D_element::~ GALGAS_identifierMap_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierMap_2D_element::GALGAS_identifierMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                   const GALGAS_object_5F_t & inOperand1) :
@@ -13097,7 +13476,7 @@ mProperty_lkey (inOperand0),
 mProperty_value (inOperand1) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
                                                                                   const GALGAS_object_5F_t & inOperand1 
@@ -13109,7 +13488,7 @@ GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::constructor_new
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_identifierMap_2D_element::objectCompare (const GALGAS_identifierMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -13122,20 +13501,20 @@ typeComparisonResult GALGAS_identifierMap_2D_element::objectCompare (const GALGA
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_identifierMap_2D_element::isValid (void) const {
   return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_identifierMap_2D_element::drop (void) {
   mProperty_lkey.drop () ;
   mProperty_value.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_identifierMap_2D_element::description (C_String & ioString,
                                                    const int32_t inIndentation) const {
@@ -13150,13 +13529,13 @@ void GALGAS_identifierMap_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring GALGAS_identifierMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
   return mProperty_lkey ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object_5F_t GALGAS_identifierMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
   return mProperty_value ;
@@ -13164,23 +13543,23 @@ GALGAS_object_5F_t GALGAS_identifierMap_2D_element::getter_value (UNUSED_LOCATIO
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                             @identifierMap-element type                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@identifierMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_identifierMap_2D_element ("identifierMap-element",
                                                  NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_identifierMap_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_identifierMap_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_identifierMap_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13190,7 +13569,7 @@ AC_GALGAS_root * GALGAS_identifierMap_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                 C_Compiler * inCompiler
@@ -13207,24 +13586,24 @@ GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::extractObject (
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierList_2D_element::GALGAS_identifierList_2D_element (void) :
 mProperty_item () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierList_2D_element::~ GALGAS_identifierList_2D_element (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierList_2D_element::GALGAS_identifierList_2D_element (const GALGAS_object_5F_t & inOperand0) :
 mProperty_item (inOperand0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierList_2D_element GALGAS_identifierList_2D_element::constructor_new (const GALGAS_object_5F_t & inOperand0 
                                                                                     COMMA_UNUSED_LOCATION_ARGS) {
@@ -13235,7 +13614,7 @@ GALGAS_identifierList_2D_element GALGAS_identifierList_2D_element::constructor_n
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_identifierList_2D_element::objectCompare (const GALGAS_identifierList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
@@ -13245,19 +13624,19 @@ typeComparisonResult GALGAS_identifierList_2D_element::objectCompare (const GALG
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_identifierList_2D_element::isValid (void) const {
   return mProperty_item.isValid () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_identifierList_2D_element::drop (void) {
   mProperty_item.drop () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_identifierList_2D_element::description (C_String & ioString,
                                                     const int32_t inIndentation) const {
@@ -13270,7 +13649,7 @@ void GALGAS_identifierList_2D_element::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_object_5F_t GALGAS_identifierList_2D_element::getter_item (UNUSED_LOCATION_ARGS) const {
   return mProperty_item ;
@@ -13278,23 +13657,23 @@ GALGAS_object_5F_t GALGAS_identifierList_2D_element::getter_item (UNUSED_LOCATIO
 
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                                            @identifierList-element type                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@identifierList-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor
 kTypeDescriptor_GALGAS_identifierList_2D_element ("identifierList-element",
                                                   NULL) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const C_galgas_type_descriptor * GALGAS_identifierList_2D_element::staticTypeDescriptor (void) const {
   return & kTypeDescriptor_GALGAS_identifierList_2D_element ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_root * GALGAS_identifierList_2D_element::clonedObject (void) const {
   AC_GALGAS_root * result = NULL ;
@@ -13304,7 +13683,7 @@ AC_GALGAS_root * GALGAS_identifierList_2D_element::clonedObject (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_identifierList_2D_element GALGAS_identifierList_2D_element::extractObject (const GALGAS_object & inObject,
                                                                                   C_Compiler * inCompiler
@@ -13316,6 +13695,143 @@ GALGAS_identifierList_2D_element GALGAS_identifierList_2D_element::extractObject
       result = *p ;
     }else{
       inCompiler->castError ("identifierList-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringMap_2D_element::GALGAS_stringMap_2D_element (void) :
+mProperty_lkey (),
+mProperty_value () {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringMap_2D_element::~ GALGAS_stringMap_2D_element (void) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringMap_2D_element::GALGAS_stringMap_2D_element (const GALGAS_lstring & inOperand0,
+                                                          const GALGAS_string & inOperand1) :
+mProperty_lkey (inOperand0),
+mProperty_value (inOperand1) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringMap_2D_element GALGAS_stringMap_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_stringMap_2D_element (GALGAS_lstring::constructor_default (HERE),
+                                      GALGAS_string::constructor_default (HERE)) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringMap_2D_element GALGAS_stringMap_2D_element::constructor_new (const GALGAS_lstring & inOperand0,
+                                                                          const GALGAS_string & inOperand1 
+                                                                          COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_stringMap_2D_element result ;
+  if (inOperand0.isValid () && inOperand1.isValid ()) {
+    result = GALGAS_stringMap_2D_element (inOperand0, inOperand1) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+typeComparisonResult GALGAS_stringMap_2D_element::objectCompare (const GALGAS_stringMap_2D_element & inOperand) const {
+   typeComparisonResult result = kOperandEqual ;
+  if (result == kOperandEqual) {
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
+  }
+  if (result == kOperandEqual) {
+    result = mProperty_value.objectCompare (inOperand.mProperty_value) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool GALGAS_stringMap_2D_element::isValid (void) const {
+  return mProperty_lkey.isValid () && mProperty_value.isValid () ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_stringMap_2D_element::drop (void) {
+  mProperty_lkey.drop () ;
+  mProperty_value.drop () ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_stringMap_2D_element::description (C_String & ioString,
+                                               const int32_t inIndentation) const {
+  ioString << "<struct @stringMap-element:" ;
+  if (! isValid ()) {
+    ioString << " not built" ;
+  }else{
+    mProperty_lkey.description (ioString, inIndentation+1) ;
+    ioString << ", " ;
+    mProperty_value.description (ioString, inIndentation+1) ;
+  }
+  ioString << ">" ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_lstring GALGAS_stringMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
+  return mProperty_lkey ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_string GALGAS_stringMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
+  return mProperty_value ;
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//@stringMap-element type
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_stringMap_2D_element ("stringMap-element",
+                                             NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor * GALGAS_stringMap_2D_element::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_stringMap_2D_element ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+AC_GALGAS_root * GALGAS_stringMap_2D_element::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_stringMap_2D_element (*this)) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_stringMap_2D_element GALGAS_stringMap_2D_element::extractObject (const GALGAS_object & inObject,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) {
+  GALGAS_stringMap_2D_element result ;
+  const GALGAS_stringMap_2D_element * p = (const GALGAS_stringMap_2D_element *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_stringMap_2D_element *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("stringMap-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;

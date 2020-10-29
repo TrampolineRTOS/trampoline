@@ -1,26 +1,24 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2003, ..., 2015 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2003, ..., 2019 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #define GGS_prefix_by_tool_utility           @"PMPrefixByTimeUtility"
 #define GGS_selected_tab                     @"GGS_selected_tab"
@@ -50,23 +48,19 @@
 #define GGS_editor_background_color   @"GGS_EDITOR_BACKGROUND_COLOR"
 #define GGS_editor_space_for_tab      @"GGS_EDITOR_SPACES_FOR_TAB"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @class OC_GGS_Document ;
 @class OC_GGS_ApplicationDelegate ;
 @class PMFontButton ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-@interface OC_GGS_ApplicationDelegate : NSObject
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
-  <NSWindowDelegate>
-#endif
-{
+@interface OC_GGS_ApplicationDelegate : NSObject <NSWindowDelegate> {
 //--- Text Macros Menu
   @private IBOutlet NSMenu * mTextMacroMenu ;
 
@@ -127,9 +121,7 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   @private IBOutlet NSPopUpButton * mNewDocumentTypePopUpButton ;
   @private IBOutlet NSView * mNewDocumentAccessoryView ;
 
-  #ifdef MAC_OS_X_VERSION_10_8
-    @private NSArray * mArrayOfNibTopObjects ;
-  #endif
+  @private NSArray * mArrayOfNibTopObjects ;
 
 //--- Page guide
   @private IBOutlet NSButton * mPageGuideCheckbox ;
@@ -150,11 +142,13 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
 - (NSArray *) toolNameArray ;
 
-- (NSString *) compilerToolPath ;
+- (NSInteger) selectedToolIndex ;
+
+- (NSString *) compilerToolPath: (NSInteger) inSelectedToolIndex ;
 
 - (BOOL) prefixByToolUtility ;
 
 - (NSString *) toolUtilityPrefix ;
 @end
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

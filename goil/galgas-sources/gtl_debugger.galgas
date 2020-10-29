@@ -102,23 +102,23 @@ method @string loadCommandFile
 #-----------------------------------------------------------------------------*
 class @debuggerContext
 {
-  @bool                           debugActive            %setter
-  @bool                           breakOnNext            %setter
-  @bool                           loopOnCommand          %setter
-  @string                         promptColor            %setter
-  @string                         promptFace             %setter
-  @string                         instructionColor       %setter
-  @string                         instructionFace        %setter
-  @string                         outputColor            %setter
-  @string                         outputFace             %setter
-  @string                         warningColor           %setter
-  @string                         warningFace            %setter
-  @bool                           executeDebuggerCommand %setter
+  @bool                           debugActive
+  @bool                           breakOnNext
+  @bool                           loopOnCommand
+  @string                         promptColor
+  @string                         promptFace
+  @string                         instructionColor
+  @string                         instructionFace
+  @string                         outputColor
+  @string                         outputFace
+  @string                         warningColor
+  @string                         warningFace
+  @bool                           executeDebuggerCommand
   @gtlInstructionList             doList
   @gtlBreakpointList              breakpoints
   @gtlExpressionList              watchpoints
-  @uint                           nextInstructionIndex   %setter
-  @gtlInstructionList             instructionList      
+  @uint                           nextInstructionIndex
+  @gtlInstructionList             instructionList
   @gtlInstructionListContextStack contextStack
   @debugCommandInput              commandInput
 }

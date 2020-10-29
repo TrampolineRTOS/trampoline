@@ -1,22 +1,20 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2011, ..., 2015 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2011, ..., 2020 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "OC_GGS_TextSyntaxColoring.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
@@ -28,8 +26,9 @@
 #import "PMDebug.h"
 #import "PMUndoManager.h"
 #import "OC_GGS_Document.h"
+#import "OC_GGS_TextView.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #define TAG_MASK                           (0xFF000000)
 #define TAG_FOR_FOREGROUND_COLOR           (0x80000000)
@@ -41,27 +40,26 @@
 #define TAG_FOR_TEMPLATE_BACKGROUND_COLOR  (0xE0000000)
 #define TAG_FOR_TEMPLATE_FONT_ATTRIBUTE    (0xF0000000)
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 //#define DEBUG_MESSAGES
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_TextSyntaxColoring
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @synthesize documentData ;
 @synthesize isDirty ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-- (void) FINALIZE_OR_DEALLOC {
+- (void) dealloc {
   noteObjectDeallocation (self) ;
-  macroSuperFinalize ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) computeMaxLineHeight: (BOOL *) outLineHeightDidChange {
   #ifdef DEBUG_MESSAGES
@@ -101,7 +99,7 @@
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (OC_GGS_TextSyntaxColoring *) initWithSourceString: (NSString *) inSource
                                 tokenizer: (OC_Lexique *) inTokenizer
@@ -293,7 +291,7 @@
   return self ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) detach {
   #ifdef DEBUG_MESSAGES
@@ -328,7 +326,7 @@
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSString *) sourceString {
   #ifdef DEBUG_MESSAGES
@@ -337,18 +335,40 @@
   return mSourceTextStorage.string ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) replaceSourceStringWithString: (NSString *) inString {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  [mSourceTextStorage beginEditing] ;
-  [mSourceTextStorage replaceCharactersInRange:NSMakeRange (0, mSourceTextStorage.length) withString:inString] ;
-  [mSourceTextStorage endEditing] ;
+  if (![mSourceTextStorage.string isEqualToString: inString]) {
+    NSArray * allDisplays = mTextDisplayDescriptorSet.allObjects ;
+  //--- Save selection
+    NSRange * savedRangeArray = malloc (sizeof (NSRange) * allDisplays.count) ;
+    NSInteger idx = 0 ;
+    for (OC_GGS_TextDisplayDescriptor * tdd in allDisplays) {
+      const NSRange selectedRange = [tdd selectedRange] ;
+      savedRangeArray [idx] = selectedRange ;
+      idx += 1 ;
+    }
+    [mSourceTextStorage beginEditing] ;
+    [mSourceTextStorage replaceCharactersInRange: NSMakeRange (0, mSourceTextStorage.length) withString: inString] ;
+    [mSourceTextStorage endEditing] ;
+  //--- Restore selection
+    const NSRange newFullRange = NSMakeRange (0, mSourceTextStorage.length) ;
+    idx = 0 ;
+    for (OC_GGS_TextDisplayDescriptor * tdd in allDisplays) {
+      const NSRange savedSelectedRange = savedRangeArray [idx] ;
+      const NSRange newRange = NSIntersectionRange (savedSelectedRange, newFullRange) ;
+      [tdd setSelectionRange: newRange] ;
+      idx += 1 ;
+    }
+  //--- Free selection range array
+    free (savedRangeArray) ;
+  }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) replaceCharactersInRange: (NSRange) inRange
          withString: (NSString *) inReplaceString {
@@ -372,7 +392,7 @@
   [mSourceTextStorage endEditing] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) replaceUsingDictionary: (NSDictionary *) inDictionary {
   #ifdef DEBUG_MESSAGES
@@ -385,7 +405,7 @@
   ] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSUndoManager *) undoManager {
   #ifdef DEBUG_MESSAGES
@@ -394,7 +414,7 @@
   return mUndoManager ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (OC_Lexique *) tokenizer {
   #ifdef DEBUG_MESSAGES
@@ -403,7 +423,7 @@
   return mTokenizer ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSArray *) tokenArray {
   #ifdef DEBUG_MESSAGES
@@ -412,7 +432,7 @@
   return mTokenArray ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) selectionByWordSelectsAllCharactersForTokenIndex: (NSUInteger) inTokenIndex {
   #ifdef DEBUG_MESSAGES
@@ -421,11 +441,11 @@
   return [mTokenizer atomicSelectionForToken:inTokenIndex] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Text attribute did change
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) applyTextAttributeForIndex: (NSInteger) inChangedColorIndex {
   #ifdef DEBUG_MESSAGES
@@ -508,11 +528,11 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Error and Warning Display
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSRange) rangeForLine: (NSInteger) inLineNumber {
   #ifdef DEBUG_MESSAGES
@@ -536,7 +556,7 @@
   return range ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) updateIssuesForEditedRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength {
@@ -565,7 +585,7 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) setIssueArray: (NSArray *) inIssueArray {
   mIssueArray = inIssueArray.mutableCopy ;
@@ -575,11 +595,11 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Syntax Coloring
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) updateSyntaxColoringForEditedRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength {
@@ -660,7 +680,7 @@
   //NSLog (@"%f", [[NSDate date] timeIntervalSinceDate:startDate]) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) textStorageDidProcessEditingNotification: (NSNotification *) inNotification {
 //  NSDate * startDate = [NSDate date] ;
@@ -694,7 +714,7 @@
 //  NSLog (@"%f", [[NSDate date] timeIntervalSinceDate:startDate]) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) autosaveTimerDidFire: (NSTimer *) inTimer {
   // NSLog (@"Timer did fire %@", self.documentData.fileURL) ;
@@ -703,7 +723,7 @@
   [documentData save] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) breakUndoCoalescing {
   for (NSLayoutManager * lm in mSourceTextStorage.layoutManagers) {
@@ -713,11 +733,11 @@
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//           C O M M E N T R A N G E                                                                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//           C O M M E N T R A N G E                                                             
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSRange) commentRange: (NSRange) inSelectedRangeValue {
   #ifdef DEBUG_MESSAGES
@@ -755,7 +775,7 @@
   return newSelectedRange ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) commentRangeForUndo: (NSValue *) inRangeValue { // An NSValue of NSRange
   #ifdef DEBUG_MESSAGES
@@ -764,34 +784,34 @@
   [self commentRange:inRangeValue.rangeValue] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                       U N C O M M E N T R A N G E                                                                   *
-//                                                                                                                     *
-// Cette méthode a plusieurs rôles :                                                                                   *
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                       U N C O M M E N T R A N G E                                             
+//
+// Cette méthode a plusieurs rôles :                                                             
 //   - supprimer les marques de commentaires des lignes concernées par la sélection, uniquement quand le               *
-//     commentaire commence une ligne ;                                                                                *
+//     commentaire commence une ligne ;                                                          
 //   - ajuster la sélection en conséquence ; en effet, dès que la méthode replaceCharactersInRange:withString: est     *
 //     appelée, Cocoa ramène la sélection à un point d'insertion. La sélection est ajustée et maintenue dans la        *
-//     variable finalSelectedRange.                                                                                    *
-//                                                                                                                     *
-// Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule :                                         *
+//     variable finalSelectedRange.                                                              
+//
+// Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule :                   
 //   - le nombre beforeSelectionCharacterCount de caractères du commentaire supprimé qui sont avant la sélection ; si  *
 //     ce nombre est > 0, on le début de la sélection du min entre ce nombre et le nombre de caractères du             *
-//     commentaire ;                                                                                                   *
+//     commentaire ;                                                                             
 //   - le nombre withinSelectionCharacterCount de caractères du commentaire supprimé qui sont à l'intérieur de la      *
-//     sélection ; si ce nombre est > 0, on le retranche de la longueur de la sélection.                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//     sélection ; si ce nombre est > 0, on le retranche de la longueur de la sélection.         
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 // #define DEBUG_UNCOMMENTRANGE
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static inline NSUInteger imin (const NSUInteger a, const NSUInteger b) { return a < b ? a : b ; }
 static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return a > b ? a : b ; }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSRange) uncommentRange: (NSRange) initialSelectedRange {
   #ifdef DEBUG_MESSAGES
@@ -858,7 +878,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return finalSelectedRange ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) uncommentRangeForUndo: (NSValue *) inRangeValue { // An NSValue of NSRange
   #ifdef DEBUG_MESSAGES
@@ -867,7 +887,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [self uncommentRange:inRangeValue.rangeValue] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) undoManagerCheckPointNotification: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
@@ -887,7 +907,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) documentHasBeenSaved {
   #ifdef DEBUG_MESSAGES
@@ -901,11 +921,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   [self undoManagerCheckPointNotification:nil] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark observeValueForKeyPath
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) observeValueForKeyPath: (NSString *) inKeyPath
          ofObject: (id) inObject
@@ -1016,11 +1036,11 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Source Indexing
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSSet *) handledExtensions {
   #ifdef DEBUG_MESSAGES
@@ -1041,7 +1061,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) sourceFile:(NSString *) inFile1
          newerThanFile: (NSString *) inFile2 {
@@ -1056,19 +1076,21 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return NSOrderedDescending == [file1_modificationDate compare:file2_modificationDate] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-- (void) parseSourceFileForBuildingIndexFile: (NSString *) inSourceFileFullPath {
+- (void) parseSourceFileForBuildingIndexFile: (NSArray *) inArray {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, file %@", __PRETTY_FUNCTION__, inSourceFileFullPath) ;
   #endif
-  NSString * compilerToolPath = gCocoaApplicationDelegate.compilerToolPath ;
+  NSString * sourceFileFullPath = [inArray objectAtIndex: 0] ;
+  const NSInteger selectedToolIndex = [[inArray objectAtIndex: 1] integerValue] ;
+  NSString * compilerToolPath = [gCocoaApplicationDelegate compilerToolPath: selectedToolIndex] ;
 //--- Command line tool does actually exist ? (First argument is not "?")
   if (! [compilerToolPath isEqualToString:@"?"]) {
   //--- Build argument array
     NSMutableArray * arguments = [NSMutableArray new] ;
-    [arguments addObject:inSourceFileFullPath] ;
-    [arguments addObject:@"--mode=indexing"] ;
+    [arguments addObject: sourceFileFullPath] ;
+    [arguments addObject: @"--mode=indexing"] ;
   //--- Create task
     NSTask * task = [NSTask new] ;
     [task setLaunchPath:compilerToolPath] ;
@@ -1081,7 +1103,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSArray *) buildIndexingDictionaryArray {
   #ifdef DEBUG_MESSAGES
@@ -1118,19 +1140,21 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
         NSString * indexFileFullPath = [NSString stringWithFormat:@"%@/%@.plist", indexingDirectory, [filePath lastPathComponent]] ;
       //--- Parse source file ?
         if (! [fm fileExistsAtPath:indexFileFullPath]) { // Parse source file
+          NSNumber * toolIndexNumber = [NSNumber numberWithInteger: gCocoaApplicationDelegate.selectedToolIndex] ;
           NSInvocationOperation * op = [[NSInvocationOperation alloc] 
             initWithTarget:self
             selector:@selector (parseSourceFileForBuildingIndexFile:)
-            object:fullFilePath
+            object:[NSArray arrayWithObjects: fullFilePath, toolIndexNumber, nil]
           ] ;
           [opq addOperation:op] ;
           [availableDictionaryPathArray addObject:indexFileFullPath] ;
         }else if ([self sourceFile:fullFilePath newerThanFile:indexFileFullPath]) {
+          NSNumber * toolIndexNumber = [NSNumber numberWithInteger: gCocoaApplicationDelegate.selectedToolIndex] ;
           [fm removeItemAtPath:indexFileFullPath error:NULL] ;
           NSInvocationOperation * op = [[NSInvocationOperation alloc] 
             initWithTarget:self
             selector:@selector (parseSourceFileForBuildingIndexFile:)
-            object:fullFilePath
+            object:[NSArray arrayWithObjects: fullFilePath, toolIndexNumber, nil]
           ] ;
           [opq addOperation:op] ;
           [availableDictionaryPathArray addObject:indexFileFullPath] ;
@@ -1153,7 +1177,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static NSInteger numericSort (NSString * inOperand1,
                               NSString * inOperand2,
@@ -1161,12 +1185,12 @@ static NSInteger numericSort (NSString * inOperand1,
   return [inOperand1 compare:inOperand2 options:NSNumericSearch] ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 // Every plist list is a dictionary: the key is the indexed to token; the 
 // associated value is an NSArray of NSString that has the following format:
 //   "kind:line:locationIndex:length:sourceFileFullPath"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) appendIndexingToMenu: (NSMenu *) inMenu
          forRange: (NSRange) inSelectedRange
@@ -1250,7 +1274,7 @@ static NSInteger numericSort (NSString * inOperand1,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) addDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
   [mTextDisplayDescriptorSet addObject:inDisplayDescriptor] ;
@@ -1261,7 +1285,7 @@ static NSInteger numericSort (NSString * inOperand1,
   [inDisplayDescriptor setTextDisplayIssueArray:mIssueArray] ; 
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (void) removeDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
   [mTextDisplayDescriptorSet removeObject:inDisplayDescriptor] ;
@@ -1269,12 +1293,12 @@ static NSInteger numericSort (NSString * inOperand1,
 //  NSLog (@"AFTER REMOVE mTextDisplayDescriptorSet %@", mTextDisplayDescriptorSet) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 - (NSUInteger) displayDescriptorCount {
   return mTextDisplayDescriptorSet.count ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @end

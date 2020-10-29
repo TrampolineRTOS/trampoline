@@ -1,22 +1,20 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2012, ..., 2014 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2012, ..., 2020 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "OC_GGS_DocumentData.h"
 #import "OC_GGS_Document.h"
@@ -27,15 +25,15 @@
 #import "PMIssueDescriptor.h"
 #import "OC_GGS_FileEventStream.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 //#define DEBUG_MESSAGES
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static NSMutableDictionary * gDocumentDataDictionary ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_GGS_DocumentData
 
@@ -183,9 +181,9 @@ static NSMutableDictionary * gDocumentDataDictionary ;
 - (void) readDocumentFromFile {
 //--- Try UTF8
   NSString * source = [[NSString alloc]
-    initWithContentsOfURL:fileURL
-    encoding:mFileEncoding
-    error:nil
+    initWithContentsOfURL: fileURL
+    encoding: mFileEncoding
+    error: nil
   ] ;
 //--- If not UTF8, try any encoding
   if (source == nil) {
@@ -218,10 +216,10 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   }
 //--- Delegate for syntax coloring
   mTextSyntaxColoring = [[OC_GGS_TextSyntaxColoring alloc]
-    initWithSourceString:source
-    tokenizer:tokenizerForExtension (fileURL.absoluteString.pathExtension)
-    documentData:self
-    issueArray:nil // mIssueArrayController.arrangedObjects
+    initWithSourceString:  source
+    tokenizer: tokenizerForExtension (fileURL.absoluteString.pathExtension)
+    documentData: self
+    issueArray: nil // mIssueArrayController.arrangedObjects
   ] ;
 //---
   if (source != nil) {
@@ -244,16 +242,15 @@ static NSMutableDictionary * gDocumentDataDictionary ;
       fileURL = inDocumentURL ;
       mFileEncoding = NSUTF8StringEncoding ;
       [self readDocumentFromFile] ;
-    //  addFileEventStreamForDocument (self) ;
+      // addFileEventStreamForDocument (self) ;  // §§
     }
     return self ;
   }
 
   //····················································································································
 
-  - (void) FINALIZE_OR_DEALLOC {
+  - (void) dealloc {
     noteObjectDeallocation (self) ;
-    macroSuperFinalize ;
   }
 
   //····················································································································
@@ -282,7 +279,7 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   + (void) cocoaDocumentWillClose: (OC_GGS_DocumentData *) inDocumentData {
     [OC_GGS_DocumentData saveAllDocuments] ;
     [inDocumentData detachFromCocoaDocument] ;
-    // removeFileEventStreamForDocument (inDocumentData) ;
+    // removeFileEventStreamForDocument (inDocumentData) ; // §§
     for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues.copy) {
       // NSLog (@"%lu for %@", documentData.textSyntaxColoring.displayDescriptorCount, documentData.fileURL) ;
       if (documentData.textSyntaxColoring.displayDescriptorCount == 0) {
@@ -329,8 +326,8 @@ static NSMutableDictionary * gDocumentDataDictionary ;
 
   - (OC_GGS_TextDisplayDescriptor *) newSourceDisplayDescriptorForDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying {
     OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
-      initWithDocumentData:self
-      displayDocument:inDocumentUsedForDisplaying
+      initWithDocumentData: self
+      displayDocument: inDocumentUsedForDisplaying
     ] ;
     return tdd ;
   }
@@ -368,16 +365,16 @@ static NSMutableDictionary * gDocumentDataDictionary ;
     NSString * string = mTextSyntaxColoring.sourceString ;
     NSError * error = nil ;
     const BOOL ok = [string
-      writeToURL:(inAbsoluteURL == nil) ? fileURL : inAbsoluteURL
-      atomically:YES
-      encoding:NSUTF8StringEncoding
+      writeToURL: (inAbsoluteURL == nil) ? fileURL : inAbsoluteURL
+      atomically: YES
+      encoding: NSUTF8StringEncoding
       error:& error
     ] ;
   //---
     if (ok) {
       [mTextSyntaxColoring documentHasBeenSaved] ;
-    }else{
-      [NSApp presentError:error] ;
+    }else if (error != nil) {
+      [NSApp presentError: error] ;
     }
     return ok ;
   }
@@ -385,14 +382,14 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   //····················································································································
 
   - (void) save {
-  //  NSLog (@"isDirty: %@", mTextSyntaxColoring.isDirty ? @"yes" : @"no") ;
     if (mTextSyntaxColoring.isDirty) {
-     // NSLog (@"document: %@", fileURL) ;
+ //     removeFileEventStreamForDocument (self) ;  // §§
       if (nil == self.document) {
-        [self performSaveToURL:nil] ;
+        [self performSaveToURL: nil] ;
       }else{
-        [self.document saveDocument:nil] ;
+        [self.document saveDocument: nil] ;
       }
+ //     addFileEventStreamForDocument (self) ;  // §§
     }
   }
 
@@ -411,18 +408,20 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   //····················································································································
 
   - (void) fileDidChangeInFileSystem {
-/*    NSString * filePath = self.fileURL.path ;
+    NSString * filePath = self.fileURL.path ;
     NSError * error = nil ;
     NSString * newContents = [NSString
-      stringWithContentsOfFile:filePath
-      encoding:NSUTF8StringEncoding
-      error:& error
+      stringWithContentsOfFile: filePath
+      encoding: NSUTF8StringEncoding
+      error: & error
     ] ;
     if (error == nil) {
-      [self replaceSourceStringWithString:newContents] ;
+    // https://stackoverflow.com/questions/25810749/how-can-i-suppress-the-autosave-the-file-has-been-changed-by-another-applicatio
+      [self.document revertDocumentToSaved: self.document] ;
+      [self replaceSourceStringWithString: newContents] ;
     }else{
       [NSApp presentError:error] ;
-    } */
+    }
   }
 
 
@@ -430,4 +429,4 @@ static NSMutableDictionary * gDocumentDataDictionary ;
 
 @end
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
