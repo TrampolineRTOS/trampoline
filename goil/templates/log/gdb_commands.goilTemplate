@@ -160,6 +160,10 @@ foreach proc in PROCESSES do%
   end%
 end foreach
 %
+  if $arg0 == % ![PROCESSES length]%
+    printf "IDLE"
+    set $_found = 1
+  end
   if $_found == 0
     printf "NONE"
   end
@@ -342,3 +346,63 @@ document _% !cnt::NAME %
 end
 %
 end foreach
+
+%
+define p_kernel
+  printf "tpl_kern:\\n"
+  printf "\trunning       = "
+  tr_print_task_name_from_id tpl_kern.running_id
+  printf "\\n\telected       = "
+  tr_print_task_name_from_id tpl_kern.elected_id
+  printf "\\n\tneed schedule = \%d\\n",tpl_kern.need_schedule
+  printf "\tneed switch   = \%d\\n",tpl_kern.need_switch & 1
+  printf "\tneed save     = \%d\\n",tpl_kern.need_switch >> 1
+
+  if tpl_kern.running_id != -1
+    if tpl_kern.s_running != tpl_stat_proc_table[tpl_kern.running_id]
+      printf "warning: tpl_kern pointer to static running proc descriptor does not correspond to running id\\n"
+    end
+    if tpl_kern.running != tpl_dyn_proc_table[tpl_kern.running_id]
+      printf "warning: tpl_kern pointer to dynamic running proc descriptor does not correspond to running id\\n"
+    end
+  end
+  if tpl_kern.elected_id != -1
+    if tpl_kern.s_elected != tpl_stat_proc_table[tpl_kern.elected_id]
+      printf "warning: tpl_kern pointer to static elected proc descriptor does not correspond to elected id\\n"
+    end
+    if tpl_kern.elected != tpl_dyn_proc_table[tpl_kern.elected_id]
+      printf "warning: tpl_kern pointer to dynamic elected proc descriptor does not correspond to elected id\\n"
+    end
+  end
+end
+
+define indentby
+  set $_indent = $arg0 + 2
+  while $_indent > 0 
+    printf " "
+    set $_indent = $_indent - 1
+  end
+end
+
+define p_ready_list_node
+  indentby $arg1
+  printf "[\%d](\%d,\%d) ",tpl_ready_list[$arg0].key,tpl_ready_list[$arg0].key >> % !PRIORITY_SHIFT %,tpl_ready_list[$arg0].key & % !RANK_MASK %
+  tr_print_task_name_from_id tpl_ready_list[$arg0].id
+  printf "\\n"
+  if ($arg0<<1) <= tpl_ready_list[0].key
+    p_ready_list_node ($arg0<<1) ($arg1+2)
+  end
+  if (($arg0<<1)+1) <= tpl_ready_list[0].key
+    p_ready_list_node (($arg0<<1)+1) ($arg1+2)
+  end
+end
+
+define p_ready_list
+  printf "ready_list [\%d]:\\n", tpl_ready_list[0].key
+  if tpl_ready_list[0].key > 0
+    p_ready_list_node 1 0
+  else
+    printf "EMPTY\\n"
+  end
+end
+
