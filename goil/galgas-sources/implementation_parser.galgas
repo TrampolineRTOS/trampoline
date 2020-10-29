@@ -184,7 +184,7 @@ rule <implementation_list>
           @object_t newDefault = @multipleAttribute.new{!desc !location !aList}
 
           # Replace the previous type
-          [!?type setDefaultObjectValue !newDefault]
+          [!?type setDefValue !newDefault]
 
           [!?objectAttributes del !attributeName ?*]
           [!?objectAttributes put !attributeName !type]

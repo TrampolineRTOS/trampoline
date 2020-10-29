@@ -803,8 +803,8 @@ void extensionSetter_replaceOrCreateAtLevel (GALGAS_gtlVarMap & ioObject,
     test_0 = temp_1.getter_hasKeyAtLevel (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 237)), constinArgument_level COMMA_SOURCE_FILE ("gtl_types.galgas", 237)).boolEnum () ;
     if (kBoolTrue == test_0) {
       {
-      GALGAS_gtlData joker_6114 ; // Joker input parameter
-      ioObject.setter_del (constinArgument_key, joker_6114, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 238)) ;
+      GALGAS_gtlData joker_6033 ; // Joker input parameter
+      ioObject.setter_del (constinArgument_key, joker_6033, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 238)) ;
       }
     }
   }
@@ -1804,10 +1804,10 @@ void extensionSetter_getTemplate (GALGAS_gtlTemplateMap & ioObject,
       test_3 = inArgument_path.getter_string (HERE).getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 290)).boolEnum () ;
       if (kBoolTrue == test_3) {
         outArgument_found = GALGAS_bool (true) ;
-        GALGAS_gtlInstructionList var_program_7851 ;
-        var_program_7851.drop () ;
-        cGrammar_gtl_5F_grammar::_performSourceFileParsing_ (inCompiler, inArgument_path, constinArgument_context, ioArgument_lib, var_program_7851  COMMA_SOURCE_FILE ("gtl_types.galgas", 292)) ;
-        outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 296)), var_program_7851  COMMA_SOURCE_FILE ("gtl_types.galgas", 296)) ;
+        GALGAS_gtlInstructionList var_program_7770 ;
+        var_program_7770.drop () ;
+        cGrammar_gtl_5F_grammar::_performSourceFileParsing_ (inCompiler, inArgument_path, constinArgument_context, ioArgument_lib, var_program_7770  COMMA_SOURCE_FILE ("gtl_types.galgas", 292)) ;
+        outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 296)), var_program_7770  COMMA_SOURCE_FILE ("gtl_types.galgas", 296)) ;
         {
         ioObject.setter_put (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 297)) ;
         }

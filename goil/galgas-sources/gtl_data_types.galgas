@@ -927,7 +927,7 @@ override setter @gtlEnum performSetter
 #-----------------------------------------------------------------------------*
 # Int type and operations on int
 #-----------------------------------------------------------------------------*
-class @gtlChar : @gtlData { @char value  }
+class @gtlChar : @gtlData { @char value }
 
 override getter @gtlChar desc
   ?let @uint tab
@@ -1209,7 +1209,7 @@ override setter @gtlChar performSetter
 #-----------------------------------------------------------------------------*
 # Int type and operations on int
 #-----------------------------------------------------------------------------*
-class @gtlInt    : @gtlData { @bigint  value  }
+class @gtlInt    : @gtlData { @bigint  value }
 
 override getter @gtlInt desc
   ?let @uint tab
@@ -3204,7 +3204,7 @@ override setter @gtlSet performSetter
 #-----------------------------------------------------------------------------*
 # Struct type and operations on struct
 #-----------------------------------------------------------------------------*
-class @gtlStruct : @gtlData { @gtlVarMap  value   }
+class @gtlStruct : @gtlData { @gtlVarMap  value }
 
 override getter @gtlStruct desc
   ?let @uint tab
@@ -3989,7 +3989,7 @@ override setter @gtlList appendItem
 #-----------------------------------------------------------------------------*
 # Map type and operations on maps
 #-----------------------------------------------------------------------------*
-class @gtlMap    : @gtlData { @gtlVarMap  value  }
+class @gtlMap    : @gtlData { @gtlVarMap  value }
 
 override getter @gtlMap desc
   ?let @uint tab

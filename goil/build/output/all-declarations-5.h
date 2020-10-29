@@ -94,26 +94,26 @@ class cPtr_void : public cPtr_object_5F_t {
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//Extension setter '@impType setDefaultObjectValue'
+//Extension setter '@impType setDefValue'
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*extensionSetterSignature_impType_setDefaultObjectValue) (class cPtr_impType * inObject,
-                                                                        class GALGAS_object_5F_t inArgument0,
-                                                                        class C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_impType_setDefValue) (class cPtr_impType * inObject,
+                                                              class GALGAS_object_5F_t inArgument0,
+                                                              class C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void enterExtensionSetter_setDefaultObjectValue (const int32_t inClassIndex,
-                                                 extensionSetterSignature_impType_setDefaultObjectValue inModifier) ;
+void enterExtensionSetter_setDefValue (const int32_t inClassIndex,
+                                       extensionSetterSignature_impType_setDefValue inModifier) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void callExtensionSetter_setDefaultObjectValue (class cPtr_impType * inObject,
-                                                GALGAS_object_5F_t in_inDefaultValue,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
+void callExtensionSetter_setDefValue (class cPtr_impType * inObject,
+                                      GALGAS_object_5F_t in_inDefaultValue,
+                                      C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //

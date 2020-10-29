@@ -28,15 +28,15 @@
 # @gtlContext is used to store the execution context of a template
 #-----------------------------------------------------------------------------*
 class @gtlContext {
-  @lstring         prefix                 
-  @string          path                   
-  @string          templateDirectory      
-  @string          userTemplateDirectory  
-  @string          templateExtension      
+  @lstring         prefix
+  @string          path
+  @string          templateDirectory
+  @string          userTemplateDirectory
+  @string          templateExtension
   @stringlist      importPath
-  @gtlDataList     inputVars              
-  @bool            propagateError         
-  @debuggerContext debuggerContext        
+  @gtlDataList     inputVars
+  @bool            propagateError
+  @debuggerContext debuggerContext
 }
 
 func emptyContext

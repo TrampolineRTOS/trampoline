@@ -399,24 +399,24 @@ GALGAS_bool function_checkEnums (const GALGAS_impEnumType & constinArgument_prev
                                  C_Compiler * inCompiler
                                  COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_inside ; // Returned variable
-  GALGAS_stringset var_newValues_16486 = constinArgument_newEnum.getter_valuesMap (SOURCE_FILE ("implementation_parser.galgas", 613)).getter_keySet (SOURCE_FILE ("implementation_parser.galgas", 613)) ;
-  GALGAS_stringset var_previousValues_16545 = constinArgument_previousEnum.getter_valuesMap (SOURCE_FILE ("implementation_parser.galgas", 614)).getter_keySet (SOURCE_FILE ("implementation_parser.galgas", 614)) ;
-  result_inside = GALGAS_bool (kIsEqual, var_newValues_16486.operator_and (var_previousValues_16545 COMMA_SOURCE_FILE ("implementation_parser.galgas", 615)).objectCompare (var_newValues_16486)) ;
+  GALGAS_stringset var_newValues_16476 = constinArgument_newEnum.getter_valuesMap (SOURCE_FILE ("implementation_parser.galgas", 613)).getter_keySet (SOURCE_FILE ("implementation_parser.galgas", 613)) ;
+  GALGAS_stringset var_previousValues_16535 = constinArgument_previousEnum.getter_valuesMap (SOURCE_FILE ("implementation_parser.galgas", 614)).getter_keySet (SOURCE_FILE ("implementation_parser.galgas", 614)) ;
+  result_inside = GALGAS_bool (kIsEqual, var_newValues_16476.operator_and (var_previousValues_16535 COMMA_SOURCE_FILE ("implementation_parser.galgas", 615)).objectCompare (var_newValues_16476)) ;
   enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
     test_0 = result_inside.operator_not (SOURCE_FILE ("implementation_parser.galgas", 616)).boolEnum () ;
     if (kBoolTrue == test_0) {
-      cEnumerator_locationList enumerator_16689 (constinArgument_newEnum.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 617)), kENUMERATION_UP) ;
-      while (enumerator_16689.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_16679 (constinArgument_newEnum.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 617)), kENUMERATION_UP) ;
+      while (enumerator_16679.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray1 ;
-        inCompiler->emitSemanticError (enumerator_16689.current_location (HERE), GALGAS_string ("ENUM is not within previous enum declaration"), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 618)) ;
-        enumerator_16689.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_16679.current_location (HERE), GALGAS_string ("ENUM is not within previous enum declaration"), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 618)) ;
+        enumerator_16679.gotoNextObject () ;
       }
-      cEnumerator_locationList enumerator_16808 (constinArgument_previousEnum.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 620)), kENUMERATION_UP) ;
-      while (enumerator_16808.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_16798 (constinArgument_previousEnum.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 620)), kENUMERATION_UP) ;
+      while (enumerator_16798.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray2 ;
-        inCompiler->emitSemanticError (enumerator_16808.current_location (HERE), GALGAS_string ("previous ENUM declaration was here"), fixItArray2  COMMA_SOURCE_FILE ("implementation_parser.galgas", 621)) ;
-        enumerator_16808.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_16798.current_location (HERE), GALGAS_string ("previous ENUM declaration was here"), fixItArray2  COMMA_SOURCE_FILE ("implementation_parser.galgas", 621)) ;
+        enumerator_16798.gotoNextObject () ;
       }
     }
   }
@@ -477,17 +477,17 @@ GALGAS_bool function_checkRanged (const GALGAS_impRangedType & constinArgument_p
   if (kBoolTrue == test_0) {
     test_0 = result_inside.operator_not (SOURCE_FILE ("implementation_parser.galgas", 635)).boolEnum () ;
     if (kBoolTrue == test_0) {
-      cEnumerator_locationList enumerator_17171 (constinArgument_newRanged.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 636)), kENUMERATION_UP) ;
-      while (enumerator_17171.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_17161 (constinArgument_newRanged.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 636)), kENUMERATION_UP) ;
+      while (enumerator_17161.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray1 ;
-        inCompiler->emitSemanticError (enumerator_17171.current_location (HERE), GALGAS_string ("new range or set is not within previous range or set declaration"), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 637)) ;
-        enumerator_17171.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_17161.current_location (HERE), GALGAS_string ("new range or set is not within previous range or set declaration"), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 637)) ;
+        enumerator_17161.gotoNextObject () ;
       }
-      cEnumerator_locationList enumerator_17312 (constinArgument_previousRanged.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 639)), kENUMERATION_UP) ;
-      while (enumerator_17312.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_17302 (constinArgument_previousRanged.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 639)), kENUMERATION_UP) ;
+      while (enumerator_17302.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray2 ;
-        inCompiler->emitSemanticError (enumerator_17312.current_location (HERE), GALGAS_string ("previous range or set declaration was here"), fixItArray2  COMMA_SOURCE_FILE ("implementation_parser.galgas", 640)) ;
-        enumerator_17312.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_17302.current_location (HERE), GALGAS_string ("previous range or set declaration was here"), fixItArray2  COMMA_SOURCE_FILE ("implementation_parser.galgas", 640)) ;
+        enumerator_17302.gotoNextObject () ;
       }
     }
   }
@@ -549,17 +549,17 @@ GALGAS_bool function_checkNewTypeWithinPreviousType (const GALGAS_lstring & cons
   if (kBoolTrue == test_0) {
     test_0 = GALGAS_bool (kIsNotEqual, constinArgument_newType.getter_type (SOURCE_FILE ("implementation_parser.galgas", 651)).objectCompare (constinArgument_previousType.getter_type (SOURCE_FILE ("implementation_parser.galgas", 651)))).boolEnum () ;
     if (kBoolTrue == test_0) {
-      cEnumerator_locationList enumerator_17627 (constinArgument_newType.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 652)), kENUMERATION_UP) ;
-      while (enumerator_17627.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_17617 (constinArgument_newType.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 652)), kENUMERATION_UP) ;
+      while (enumerator_17617.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray1 ;
-        inCompiler->emitSemanticError (enumerator_17627.current_location (HERE), constinArgument_name.getter_string (SOURCE_FILE ("implementation_parser.galgas", 653)).add_operation (GALGAS_string (" should be a "), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)).add_operation (extensionGetter_oilType (constinArgument_previousType.getter_type (SOURCE_FILE ("implementation_parser.galgas", 653)), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)) ;
-        enumerator_17627.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_17617.current_location (HERE), constinArgument_name.getter_string (SOURCE_FILE ("implementation_parser.galgas", 653)).add_operation (GALGAS_string (" should be a "), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)).add_operation (extensionGetter_oilType (constinArgument_previousType.getter_type (SOURCE_FILE ("implementation_parser.galgas", 653)), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)), fixItArray1  COMMA_SOURCE_FILE ("implementation_parser.galgas", 653)) ;
+        enumerator_17617.gotoNextObject () ;
       }
-      cEnumerator_locationList enumerator_17759 (constinArgument_previousType.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 655)), kENUMERATION_UP) ;
-      while (enumerator_17759.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_17749 (constinArgument_previousType.getter_locations (SOURCE_FILE ("implementation_parser.galgas", 655)), kENUMERATION_UP) ;
+      while (enumerator_17749.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray2 ;
-        inCompiler->emitSemanticError (enumerator_17759.current_location (HERE), constinArgument_name.getter_string (SOURCE_FILE ("implementation_parser.galgas", 656)).add_operation (GALGAS_string (" was previouly defined here"), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 656)), fixItArray2  COMMA_SOURCE_FILE ("implementation_parser.galgas", 656)) ;
-        enumerator_17759.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_17749.current_location (HERE), constinArgument_name.getter_string (SOURCE_FILE ("implementation_parser.galgas", 656)).add_operation (GALGAS_string (" was previouly defined here"), inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 656)), fixItArray2  COMMA_SOURCE_FILE ("implementation_parser.galgas", 656)) ;
+        enumerator_17749.gotoNextObject () ;
       }
       result_result = GALGAS_bool (false) ;
     }
@@ -567,19 +567,19 @@ GALGAS_bool function_checkNewTypeWithinPreviousType (const GALGAS_lstring & cons
   if (kBoolFalse == test_0) {
     if (constinArgument_previousType.isValid ()) {
       if (constinArgument_previousType.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impEnumType) {
-        GALGAS_impEnumType cast_17922_previousEnum ((cPtr_impEnumType *) constinArgument_previousType.ptr ()) ;
+        GALGAS_impEnumType cast_17912_previousEnum ((cPtr_impEnumType *) constinArgument_previousType.ptr ()) ;
         if (constinArgument_newType.isValid ()) {
           if (constinArgument_newType.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impEnumType) {
-            GALGAS_impEnumType cast_17978_newEnum ((cPtr_impEnumType *) constinArgument_newType.ptr ()) ;
-            result_result = function_checkEnums (cast_17922_previousEnum, cast_17978_newEnum, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 664)) ;
+            GALGAS_impEnumType cast_17968_newEnum ((cPtr_impEnumType *) constinArgument_newType.ptr ()) ;
+            result_result = function_checkEnums (cast_17912_previousEnum, cast_17968_newEnum, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 664)) ;
           }
         }
       }else if (constinArgument_previousType.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impRangedType) {
-        GALGAS_impRangedType cast_18089_previousRanged ((cPtr_impRangedType *) constinArgument_previousType.ptr ()) ;
+        GALGAS_impRangedType cast_18079_previousRanged ((cPtr_impRangedType *) constinArgument_previousType.ptr ()) ;
         if (constinArgument_newType.isValid ()) {
           if (constinArgument_newType.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impRangedType) {
-            GALGAS_impRangedType cast_18149_newRanged ((cPtr_impRangedType *) constinArgument_newType.ptr ()) ;
-            result_result = function_checkRanged (cast_18089_previousRanged, cast_18149_newRanged, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 669)) ;
+            GALGAS_impRangedType cast_18139_newRanged ((cPtr_impRangedType *) constinArgument_newType.ptr ()) ;
+            result_result = function_checkRanged (cast_18079_previousRanged, cast_18139_newRanged, inCompiler COMMA_SOURCE_FILE ("implementation_parser.galgas", 669)) ;
           }
         }
       }else{
@@ -1985,26 +1985,26 @@ static GALGAS_impType extensionGetter_impStructType_mergeWithType (const cPtr_im
       inCompiler->castError ("impStructType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 467)) ;
     }
   }
-  GALGAS_impStructType var_castTypeToMerge_12904 = temp_0 ;
-  GALGAS_implementationObjectMap var_mergedAttributes_12980 = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 468)) ;
-  cEnumerator_implementationObjectMap enumerator_13021 (object->mProperty_structAttributes, kENUMERATION_UP) ;
-  while (enumerator_13021.hasCurrentObject ()) {
-    GALGAS_impType var_mergedAttr_13048 = enumerator_13021.current_type (HERE) ;
+  GALGAS_impStructType var_castTypeToMerge_12894 = temp_0 ;
+  GALGAS_implementationObjectMap var_mergedAttributes_12970 = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 468)) ;
+  cEnumerator_implementationObjectMap enumerator_13011 (object->mProperty_structAttributes, kENUMERATION_UP) ;
+  while (enumerator_13011.hasCurrentObject ()) {
+    GALGAS_impType var_mergedAttr_13038 = enumerator_13011.current_type (HERE) ;
     enumGalgasBool test_1 = kBoolTrue ;
     if (kBoolTrue == test_1) {
-      test_1 = var_castTypeToMerge_12904.getter_structAttributes (SOURCE_FILE ("implementation_types.galgas", 471)).getter_hasKey (enumerator_13021.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 471)) COMMA_SOURCE_FILE ("implementation_types.galgas", 471)).boolEnum () ;
+      test_1 = var_castTypeToMerge_12894.getter_structAttributes (SOURCE_FILE ("implementation_types.galgas", 471)).getter_hasKey (enumerator_13011.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 471)) COMMA_SOURCE_FILE ("implementation_types.galgas", 471)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_impType var_subTypeToMerge_13203 ;
-        var_castTypeToMerge_12904.getter_structAttributes (SOURCE_FILE ("implementation_types.galgas", 472)).method_get (enumerator_13021.current_lkey (HERE), var_subTypeToMerge_13203, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 472)) ;
-        var_mergedAttr_13048 = callExtensionGetter_mergeWithType ((const cPtr_impType *) enumerator_13021.current_type (HERE).ptr (), var_subTypeToMerge_13203, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 473)) ;
+        GALGAS_impType var_subTypeToMerge_13193 ;
+        var_castTypeToMerge_12894.getter_structAttributes (SOURCE_FILE ("implementation_types.galgas", 472)).method_get (enumerator_13011.current_lkey (HERE), var_subTypeToMerge_13193, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 472)) ;
+        var_mergedAttr_13038 = callExtensionGetter_mergeWithType ((const cPtr_impType *) enumerator_13011.current_type (HERE).ptr (), var_subTypeToMerge_13193, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 473)) ;
       }
     }
     {
-    var_mergedAttributes_12980.setter_put (enumerator_13021.current_lkey (HERE), var_mergedAttr_13048, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 475)) ;
+    var_mergedAttributes_12970.setter_put (enumerator_13011.current_lkey (HERE), var_mergedAttr_13038, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 475)) ;
     }
-    enumerator_13021.gotoNextObject () ;
+    enumerator_13011.gotoNextObject () ;
   }
-  result_mergedType = GALGAS_impStructType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 478)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 478)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 482)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 482)), var_mergedAttributes_12980  COMMA_SOURCE_FILE ("implementation_types.galgas", 477)) ;
+  result_mergedType = GALGAS_impStructType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 478)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 478)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 482)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 482)), var_mergedAttributes_12970  COMMA_SOURCE_FILE ("implementation_types.galgas", 477)) ;
 //---
   return result_mergedType ;
 }
@@ -2080,28 +2080,28 @@ C_PrologueEpilogue gGetter_impAutoDefaultType_getDefaultValue (defineExtensionGe
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//Overriding extension setter '@impAutoDefaultType setDefaultObjectValue'
+//Overriding extension setter '@impAutoDefaultType setDefValue'
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-static void extensionSetter_impAutoDefaultType_setDefaultObjectValue (cPtr_impType * inObject,
-                                                                      GALGAS_object_5F_t inArgument_inDefaultValue,
-                                                                      C_Compiler * /* inCompiler */
-                                                                      COMMA_UNUSED_LOCATION_ARGS) {
+static void extensionSetter_impAutoDefaultType_setDefValue (cPtr_impType * inObject,
+                                                            GALGAS_object_5F_t inArgument_inDefaultValue,
+                                                            C_Compiler * /* inCompiler */
+                                                            COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_impAutoDefaultType * object = (cPtr_impAutoDefaultType *) inObject ;
   macroValidSharedObject (object, cPtr_impAutoDefaultType) ;
   object->mProperty_defaultValue = inArgument_inDefaultValue ;
 }
 //----------------------------------------------------------------------------------------------------------------------
 
-static void defineExtensionSetter_impAutoDefaultType_setDefaultObjectValue (void) {
-  enterExtensionSetter_setDefaultObjectValue (kTypeDescriptor_GALGAS_impAutoDefaultType.mSlotID,
-                                              extensionSetter_impAutoDefaultType_setDefaultObjectValue) ;
+static void defineExtensionSetter_impAutoDefaultType_setDefValue (void) {
+  enterExtensionSetter_setDefValue (kTypeDescriptor_GALGAS_impAutoDefaultType.mSlotID,
+                                    extensionSetter_impAutoDefaultType_setDefValue) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_PrologueEpilogue gSetter_impAutoDefaultType_setDefaultObjectValue (defineExtensionSetter_impAutoDefaultType_setDefaultObjectValue, NULL) ;
+C_PrologueEpilogue gSetter_impAutoDefaultType_setDefValue (defineExtensionSetter_impAutoDefaultType_setDefValue, NULL) ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -2170,11 +2170,11 @@ void routine_multiError (GALGAS_locationList inArgument_locations,
                          GALGAS_string inArgument_errorMessage,
                          C_Compiler * inCompiler
                          COMMA_UNUSED_LOCATION_ARGS) {
-  cEnumerator_locationList enumerator_14853 (inArgument_locations, kENUMERATION_UP) ;
-  while (enumerator_14853.hasCurrentObject ()) {
+  cEnumerator_locationList enumerator_14835 (inArgument_locations, kENUMERATION_UP) ;
+  while (enumerator_14835.hasCurrentObject ()) {
     TC_Array <C_FixItDescription> fixItArray0 ;
-    inCompiler->emitSemanticError (enumerator_14853.current_location (HERE), inArgument_errorMessage, fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 545)) ;
-    enumerator_14853.gotoNextObject () ;
+    inCompiler->emitSemanticError (enumerator_14835.current_location (HERE), inArgument_errorMessage, fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 546)) ;
+    enumerator_14835.gotoNextObject () ;
   }
 }
 
@@ -2197,26 +2197,26 @@ static GALGAS_impType extensionGetter_refType_mergeWithType (const cPtr_impType 
     if (NULL != dynamic_cast <const cPtr_refType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_refType *) inArgument_typeToMerge.ptr () ;
     }else{
-      inCompiler->castError ("refType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 557)) ;
+      inCompiler->castError ("refType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 558)) ;
     }
   }
-  GALGAS_refType var_castTypeToMerge_15086 = temp_0 ;
+  GALGAS_refType var_castTypeToMerge_15068 = temp_0 ;
   enumGalgasBool test_1 = kBoolTrue ;
   if (kBoolTrue == test_1) {
-    test_1 = GALGAS_bool (kIsNotEqual, object->mProperty_ref.getter_string (SOURCE_FILE ("implementation_types.galgas", 558)).objectCompare (var_castTypeToMerge_15086.getter_ref (SOURCE_FILE ("implementation_types.galgas", 558)).getter_string (SOURCE_FILE ("implementation_types.galgas", 558)))).boolEnum () ;
+    test_1 = GALGAS_bool (kIsNotEqual, object->mProperty_ref.getter_string (SOURCE_FILE ("implementation_types.galgas", 559)).objectCompare (var_castTypeToMerge_15068.getter_ref (SOURCE_FILE ("implementation_types.galgas", 559)).getter_string (SOURCE_FILE ("implementation_types.galgas", 559)))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      object->mProperty_ref.log ("ref"  COMMA_SOURCE_FILE ("implementation_types.galgas", 559)) ;
-      GALGAS_lstring var_csatRef_15202 = var_castTypeToMerge_15086.getter_ref (SOURCE_FILE ("implementation_types.galgas", 560)) ;
-      var_csatRef_15202.log ("csatRef"  COMMA_SOURCE_FILE ("implementation_types.galgas", 561)) ;
+      object->mProperty_ref.log ("ref"  COMMA_SOURCE_FILE ("implementation_types.galgas", 560)) ;
+      GALGAS_lstring var_csatRef_15184 = var_castTypeToMerge_15068.getter_ref (SOURCE_FILE ("implementation_types.galgas", 561)) ;
+      var_csatRef_15184.log ("csatRef"  COMMA_SOURCE_FILE ("implementation_types.galgas", 562)) ;
       {
-      routine_multiError (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 562)), GALGAS_string ("Redefinition of ").add_operation (object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 562)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 562)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 562)) ;
+      routine_multiError (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 563)), GALGAS_string ("Redefinition of ").add_operation (object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 563)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 563)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 563)) ;
       }
       {
-      routine_multiError (object->mProperty_locations, GALGAS_string ("Was defined here"), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 563)) ;
+      routine_multiError (object->mProperty_locations, GALGAS_string ("Was defined here"), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 564)) ;
       }
     }
   }
-  result_mergedType = GALGAS_refType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 566)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 566)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 570)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 570)), var_castTypeToMerge_15086.getter_ref (SOURCE_FILE ("implementation_types.galgas", 571))  COMMA_SOURCE_FILE ("implementation_types.galgas", 565)) ;
+  result_mergedType = GALGAS_refType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 567)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 567)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 571)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 571)), var_castTypeToMerge_15068.getter_ref (SOURCE_FILE ("implementation_types.galgas", 572))  COMMA_SOURCE_FILE ("implementation_types.galgas", 566)) ;
 //---
   return result_mergedType ;
 }
@@ -2244,13 +2244,13 @@ GALGAS_string function_valueList (const GALGAS_enumValues & constinArgument_valu
                                   COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
-  cEnumerator_enumValues enumerator_16182 (constinArgument_values, kENUMERATION_UP) ;
-  while (enumerator_16182.hasCurrentObject ()) {
-    result_result.plusAssign_operation(enumerator_16182.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 599)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 599)) ;
-    if (enumerator_16182.hasNextObject ()) {
-      result_result.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 601)) ;
+  cEnumerator_enumValues enumerator_16164 (constinArgument_values, kENUMERATION_UP) ;
+  while (enumerator_16164.hasCurrentObject ()) {
+    result_result.plusAssign_operation(enumerator_16164.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 600)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 600)) ;
+    if (enumerator_16164.hasNextObject ()) {
+      result_result.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 602)) ;
     }
-    enumerator_16182.gotoNextObject () ;
+    enumerator_16164.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -2306,14 +2306,14 @@ static GALGAS_impType extensionGetter_impRangedType_mergeWithType (const cPtr_im
     if (NULL != dynamic_cast <const cPtr_impRangedType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impRangedType *) inArgument_typeToMerge.ptr () ;
     }else{
-      inCompiler->castError ("impRangedType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 613)) ;
+      inCompiler->castError ("impRangedType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 614)) ;
     }
   }
-  GALGAS_impRangedType var_castTypeToMerge_16456 = temp_0 ;
+  GALGAS_impRangedType var_castTypeToMerge_16438 = temp_0 ;
   enumGalgasBool test_1 = kBoolTrue ;
   if (kBoolTrue == test_1) {
     const GALGAS_impRangedType temp_2 = object ;
-    test_1 = function_checkRanged (temp_2, var_castTypeToMerge_16456, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 614)).boolEnum () ;
+    test_1 = function_checkRanged (temp_2, var_castTypeToMerge_16438, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 615)).boolEnum () ;
     if (kBoolTrue == test_1) {
       result_mergedType = inArgument_typeToMerge ;
     }
@@ -2356,73 +2356,73 @@ static GALGAS_impType extensionGetter_impBoolType_mergeWithType (const cPtr_impT
     if (NULL != dynamic_cast <const cPtr_impBoolType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impBoolType *) inArgument_typeToMerge.ptr () ;
     }else{
-      inCompiler->castError ("impBoolType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 630)) ;
+      inCompiler->castError ("impBoolType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 631)) ;
     }
   }
-  GALGAS_impBoolType var_castTypeToMerge_16862 = temp_0 ;
-  GALGAS_implementationObjectMap var_mergedTrueAttributes_16940 = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 631)) ;
-  GALGAS_implementationObjectMap var_mergedFalseAttributes_17001 = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 632)) ;
-  cEnumerator_implementationObjectMap enumerator_17043 (object->mProperty_trueSubAttributes, kENUMERATION_UP) ;
-  while (enumerator_17043.hasCurrentObject ()) {
-    GALGAS_impType var_mergedAttr_17070 = enumerator_17043.current_type (HERE) ;
+  GALGAS_impBoolType var_castTypeToMerge_16844 = temp_0 ;
+  GALGAS_implementationObjectMap var_mergedTrueAttributes_16922 = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 632)) ;
+  GALGAS_implementationObjectMap var_mergedFalseAttributes_16983 = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 633)) ;
+  cEnumerator_implementationObjectMap enumerator_17025 (object->mProperty_trueSubAttributes, kENUMERATION_UP) ;
+  while (enumerator_17025.hasCurrentObject ()) {
+    GALGAS_impType var_mergedAttr_17052 = enumerator_17025.current_type (HERE) ;
     enumGalgasBool test_1 = kBoolTrue ;
     if (kBoolTrue == test_1) {
-      test_1 = var_castTypeToMerge_16862.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 635)).getter_hasKey (enumerator_17043.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 635)) COMMA_SOURCE_FILE ("implementation_types.galgas", 635)).boolEnum () ;
+      test_1 = var_castTypeToMerge_16844.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 636)).getter_hasKey (enumerator_17025.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 636)) COMMA_SOURCE_FILE ("implementation_types.galgas", 636)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_impType var_subTypeToMerge_17227 ;
-        var_castTypeToMerge_16862.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 636)).method_get (enumerator_17043.current_lkey (HERE), var_subTypeToMerge_17227, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 636)) ;
-        var_mergedAttr_17070 = callExtensionGetter_mergeWithType ((const cPtr_impType *) enumerator_17043.current_type (HERE).ptr (), var_subTypeToMerge_17227, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 637)) ;
+        GALGAS_impType var_subTypeToMerge_17209 ;
+        var_castTypeToMerge_16844.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 637)).method_get (enumerator_17025.current_lkey (HERE), var_subTypeToMerge_17209, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 637)) ;
+        var_mergedAttr_17052 = callExtensionGetter_mergeWithType ((const cPtr_impType *) enumerator_17025.current_type (HERE).ptr (), var_subTypeToMerge_17209, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 638)) ;
       }
     }
     {
-    var_mergedTrueAttributes_16940.setter_put (enumerator_17043.current_lkey (HERE), var_mergedAttr_17070, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 639)) ;
+    var_mergedTrueAttributes_16922.setter_put (enumerator_17025.current_lkey (HERE), var_mergedAttr_17052, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 640)) ;
     }
-    enumerator_17043.gotoNextObject () ;
+    enumerator_17025.gotoNextObject () ;
   }
-  cEnumerator_implementationObjectMap enumerator_17436 (var_castTypeToMerge_16862.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 642)), kENUMERATION_UP) ;
-  while (enumerator_17436.hasCurrentObject ()) {
+  cEnumerator_implementationObjectMap enumerator_17418 (var_castTypeToMerge_16844.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 643)), kENUMERATION_UP) ;
+  while (enumerator_17418.hasCurrentObject ()) {
     enumGalgasBool test_2 = kBoolTrue ;
     if (kBoolTrue == test_2) {
-      test_2 = object->mProperty_trueSubAttributes.getter_hasKey (enumerator_17436.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 643)) COMMA_SOURCE_FILE ("implementation_types.galgas", 643)).operator_not (SOURCE_FILE ("implementation_types.galgas", 643)).boolEnum () ;
+      test_2 = object->mProperty_trueSubAttributes.getter_hasKey (enumerator_17418.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 644)) COMMA_SOURCE_FILE ("implementation_types.galgas", 644)).operator_not (SOURCE_FILE ("implementation_types.galgas", 644)).boolEnum () ;
       if (kBoolTrue == test_2) {
         {
-        var_mergedTrueAttributes_16940.setter_put (enumerator_17436.current_lkey (HERE), enumerator_17436.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 644)) ;
+        var_mergedTrueAttributes_16922.setter_put (enumerator_17418.current_lkey (HERE), enumerator_17418.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 645)) ;
         }
       }
     }
-    enumerator_17436.gotoNextObject () ;
+    enumerator_17418.gotoNextObject () ;
   }
-  cEnumerator_implementationObjectMap enumerator_17592 (object->mProperty_falseSubAttributes, kENUMERATION_UP) ;
-  while (enumerator_17592.hasCurrentObject ()) {
-    GALGAS_impType var_mergedAttr_17619 = enumerator_17592.current_type (HERE) ;
+  cEnumerator_implementationObjectMap enumerator_17574 (object->mProperty_falseSubAttributes, kENUMERATION_UP) ;
+  while (enumerator_17574.hasCurrentObject ()) {
+    GALGAS_impType var_mergedAttr_17601 = enumerator_17574.current_type (HERE) ;
     enumGalgasBool test_3 = kBoolTrue ;
     if (kBoolTrue == test_3) {
-      test_3 = var_castTypeToMerge_16862.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 650)).getter_hasKey (enumerator_17592.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 650)) COMMA_SOURCE_FILE ("implementation_types.galgas", 650)).boolEnum () ;
+      test_3 = var_castTypeToMerge_16844.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 651)).getter_hasKey (enumerator_17574.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 651)) COMMA_SOURCE_FILE ("implementation_types.galgas", 651)).boolEnum () ;
       if (kBoolTrue == test_3) {
-        GALGAS_impType var_subTypeToMerge_17778 ;
-        var_castTypeToMerge_16862.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 651)).method_get (enumerator_17592.current_lkey (HERE), var_subTypeToMerge_17778, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 651)) ;
-        var_mergedAttr_17619 = callExtensionGetter_mergeWithType ((const cPtr_impType *) enumerator_17592.current_type (HERE).ptr (), var_subTypeToMerge_17778, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 652)) ;
+        GALGAS_impType var_subTypeToMerge_17760 ;
+        var_castTypeToMerge_16844.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 652)).method_get (enumerator_17574.current_lkey (HERE), var_subTypeToMerge_17760, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 652)) ;
+        var_mergedAttr_17601 = callExtensionGetter_mergeWithType ((const cPtr_impType *) enumerator_17574.current_type (HERE).ptr (), var_subTypeToMerge_17760, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 653)) ;
       }
     }
     {
-    var_mergedFalseAttributes_17001.setter_put (enumerator_17592.current_lkey (HERE), var_mergedAttr_17619, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 654)) ;
+    var_mergedFalseAttributes_16983.setter_put (enumerator_17574.current_lkey (HERE), var_mergedAttr_17601, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 655)) ;
     }
-    enumerator_17592.gotoNextObject () ;
+    enumerator_17574.gotoNextObject () ;
   }
-  cEnumerator_implementationObjectMap enumerator_17989 (var_castTypeToMerge_16862.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 657)), kENUMERATION_UP) ;
-  while (enumerator_17989.hasCurrentObject ()) {
+  cEnumerator_implementationObjectMap enumerator_17971 (var_castTypeToMerge_16844.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 658)), kENUMERATION_UP) ;
+  while (enumerator_17971.hasCurrentObject ()) {
     enumGalgasBool test_4 = kBoolTrue ;
     if (kBoolTrue == test_4) {
-      test_4 = object->mProperty_falseSubAttributes.getter_hasKey (enumerator_17989.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 658)) COMMA_SOURCE_FILE ("implementation_types.galgas", 658)).operator_not (SOURCE_FILE ("implementation_types.galgas", 658)).boolEnum () ;
+      test_4 = object->mProperty_falseSubAttributes.getter_hasKey (enumerator_17971.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 659)) COMMA_SOURCE_FILE ("implementation_types.galgas", 659)).operator_not (SOURCE_FILE ("implementation_types.galgas", 659)).boolEnum () ;
       if (kBoolTrue == test_4) {
         {
-        var_mergedTrueAttributes_16940.setter_put (enumerator_17989.current_lkey (HERE), enumerator_17989.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 659)) ;
+        var_mergedTrueAttributes_16922.setter_put (enumerator_17971.current_lkey (HERE), enumerator_17971.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 660)) ;
         }
       }
     }
-    enumerator_17989.gotoNextObject () ;
+    enumerator_17971.gotoNextObject () ;
   }
-  result_mergedType = GALGAS_impBoolType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 664)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 664)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 668)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 668)), object->mProperty_withAuto, var_castTypeToMerge_16862.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 670)), var_mergedTrueAttributes_16940, var_mergedFalseAttributes_17001  COMMA_SOURCE_FILE ("implementation_types.galgas", 663)) ;
+  result_mergedType = GALGAS_impBoolType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 665)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 665)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 669)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 669)), object->mProperty_withAuto, var_castTypeToMerge_16844.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 671)), var_mergedTrueAttributes_16922, var_mergedFalseAttributes_16983  COMMA_SOURCE_FILE ("implementation_types.galgas", 664)) ;
 //---
   return result_mergedType ;
 }
@@ -2455,69 +2455,69 @@ static void extensionMethod_impBoolType_setDefault (const cPtr_impAutoDefaultTyp
     if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_void) {
     }else if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_auto) {
     }else if (object->mProperty_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_boolAttribute) {
-      GALGAS_boolAttribute cast_18597_b ((cPtr_boolAttribute *) object->mProperty_defaultValue.ptr ()) ;
+      GALGAS_boolAttribute cast_18579_b ((cPtr_boolAttribute *) object->mProperty_defaultValue.ptr ()) ;
       enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        test_0 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 684)).getter_hasKey (object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 684)) COMMA_SOURCE_FILE ("implementation_types.galgas", 684)).boolEnum () ;
+        test_0 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 685)).getter_hasKey (object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 685)) COMMA_SOURCE_FILE ("implementation_types.galgas", 685)).boolEnum () ;
         if (kBoolTrue == test_0) {
-          GALGAS_identifierMap var_userAttributes_18873 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 687)) ;
-          GALGAS_object_5F_t var_value_18925 ;
-          var_userAttributes_18873.method_get (object->mProperty_name, var_value_18925, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 689)) ;
-          if (var_value_18925.isValid ()) {
-            if (var_value_18925.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_boolAttribute) {
-              GALGAS_boolAttribute cast_19027_boolValue ((cPtr_boolAttribute *) var_value_18925.ptr ()) ;
-              GALGAS_implementationObjectMap var_subImpAttributes_19081 ;
+          GALGAS_identifierMap var_userAttributes_18855 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 688)) ;
+          GALGAS_object_5F_t var_value_18907 ;
+          var_userAttributes_18855.method_get (object->mProperty_name, var_value_18907, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 690)) ;
+          if (var_value_18907.isValid ()) {
+            if (var_value_18907.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_boolAttribute) {
+              GALGAS_boolAttribute cast_19009_boolValue ((cPtr_boolAttribute *) var_value_18907.ptr ()) ;
+              GALGAS_implementationObjectMap var_subImpAttributes_19063 ;
               enumGalgasBool test_1 = kBoolTrue ;
               if (kBoolTrue == test_1) {
-                test_1 = cast_19027_boolValue.getter_value (SOURCE_FILE ("implementation_types.galgas", 693)).boolEnum () ;
+                test_1 = cast_19009_boolValue.getter_value (SOURCE_FILE ("implementation_types.galgas", 694)).boolEnum () ;
                 if (kBoolTrue == test_1) {
-                  var_subImpAttributes_19081 = object->mProperty_trueSubAttributes ;
+                  var_subImpAttributes_19063 = object->mProperty_trueSubAttributes ;
                 }
               }
               if (kBoolFalse == test_1) {
-                var_subImpAttributes_19081 = object->mProperty_falseSubAttributes ;
+                var_subImpAttributes_19063 = object->mProperty_falseSubAttributes ;
               }
-              GALGAS_objectAttributes var_subAttributes_19287 = cast_19027_boolValue.getter_subAttributes (SOURCE_FILE ("implementation_types.galgas", 698)) ;
+              GALGAS_objectAttributes var_subAttributes_19269 = cast_19009_boolValue.getter_subAttributes (SOURCE_FILE ("implementation_types.galgas", 699)) ;
               {
-              routine_setDefaultsForType (var_subImpAttributes_19081, var_subAttributes_19287, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 699)) ;
+              routine_setDefaultsForType (var_subImpAttributes_19063, var_subAttributes_19269, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 700)) ;
               }
-              GALGAS_boolAttribute var_bv_19442 = cast_19027_boolValue ;
+              GALGAS_boolAttribute var_bv_19424 = cast_19009_boolValue ;
               {
-              var_bv_19442.setter_setSubAttributes (var_subAttributes_19287 COMMA_SOURCE_FILE ("implementation_types.galgas", 702)) ;
-              }
-              {
-              var_userAttributes_18873.setter_setValueForKey (var_bv_19442, object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 703)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 703)) ;
+              var_bv_19424.setter_setSubAttributes (var_subAttributes_19269 COMMA_SOURCE_FILE ("implementation_types.galgas", 703)) ;
               }
               {
-              ioArgument_attributes.setter_setObjectParams (var_userAttributes_18873 COMMA_SOURCE_FILE ("implementation_types.galgas", 704)) ;
+              var_userAttributes_18855.setter_setValueForKey (var_bv_19424, object->mProperty_name.getter_string (SOURCE_FILE ("implementation_types.galgas", 704)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 704)) ;
+              }
+              {
+              ioArgument_attributes.setter_setObjectParams (var_userAttributes_18855 COMMA_SOURCE_FILE ("implementation_types.galgas", 705)) ;
               }
             }
           }
         }
       }
       if (kBoolFalse == test_0) {
-        GALGAS_implementationObjectMap var_subImpAttributes_19701 ;
+        GALGAS_implementationObjectMap var_subImpAttributes_19683 ;
         enumGalgasBool test_2 = kBoolTrue ;
         if (kBoolTrue == test_2) {
-          test_2 = cast_18597_b.getter_value (SOURCE_FILE ("implementation_types.galgas", 708)).boolEnum () ;
+          test_2 = cast_18579_b.getter_value (SOURCE_FILE ("implementation_types.galgas", 709)).boolEnum () ;
           if (kBoolTrue == test_2) {
-            var_subImpAttributes_19701 = object->mProperty_trueSubAttributes ;
+            var_subImpAttributes_19683 = object->mProperty_trueSubAttributes ;
           }
         }
         if (kBoolFalse == test_2) {
-          var_subImpAttributes_19701 = object->mProperty_falseSubAttributes ;
+          var_subImpAttributes_19683 = object->mProperty_falseSubAttributes ;
         }
-        GALGAS_objectAttributes var_subAttributes_19887 = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 713)) ;
+        GALGAS_objectAttributes var_subAttributes_19869 = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 714)) ;
         {
-        routine_setDefaultsForType (var_subImpAttributes_19701, var_subAttributes_19887, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 714)) ;
+        routine_setDefaultsForType (var_subImpAttributes_19683, var_subAttributes_19869, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 715)) ;
         }
-        GALGAS_boolAttribute var_defaults_19999 = GALGAS_boolAttribute::constructor_new (cast_18597_b.getter_oil_5F_desc (SOURCE_FILE ("implementation_types.galgas", 715)), cast_18597_b.getter_location (SOURCE_FILE ("implementation_types.galgas", 715)), cast_18597_b.getter_value (SOURCE_FILE ("implementation_types.galgas", 715)), var_subAttributes_19887  COMMA_SOURCE_FILE ("implementation_types.galgas", 715)) ;
-        GALGAS_identifierMap var_attr_20106 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 716)) ;
+        GALGAS_boolAttribute var_defaults_19981 = GALGAS_boolAttribute::constructor_new (cast_18579_b.getter_oil_5F_desc (SOURCE_FILE ("implementation_types.galgas", 716)), cast_18579_b.getter_location (SOURCE_FILE ("implementation_types.galgas", 716)), cast_18579_b.getter_value (SOURCE_FILE ("implementation_types.galgas", 716)), var_subAttributes_19869  COMMA_SOURCE_FILE ("implementation_types.galgas", 716)) ;
+        GALGAS_identifierMap var_attr_20088 = ioArgument_attributes.getter_objectParams (SOURCE_FILE ("implementation_types.galgas", 717)) ;
         {
-        var_attr_20106.setter_put (object->mProperty_name, var_defaults_19999, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 717)) ;
+        var_attr_20088.setter_put (object->mProperty_name, var_defaults_19981, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 718)) ;
         }
         {
-        ioArgument_attributes.setter_setObjectParams (var_attr_20106 COMMA_SOURCE_FILE ("implementation_types.galgas", 718)) ;
+        ioArgument_attributes.setter_setObjectParams (var_attr_20088 COMMA_SOURCE_FILE ("implementation_types.galgas", 719)) ;
         }
       }
     }
@@ -2553,11 +2553,11 @@ static GALGAS_impType extensionGetter_impEnumType_mergeWithType (const cPtr_impT
     if (NULL != dynamic_cast <const cPtr_impEnumType *> (inArgument_typeToMerge.ptr ())) {
       temp_0 = (cPtr_impEnumType *) inArgument_typeToMerge.ptr () ;
     }else{
-      inCompiler->castError ("impEnumType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 753)) ;
+      inCompiler->castError ("impEnumType", inArgument_typeToMerge.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("implementation_types.galgas", 754)) ;
     }
   }
-  GALGAS_impEnumType var_castTypeToMerge_21048 = temp_0 ;
-  result_mergedType = GALGAS_impEnumType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 755)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 755)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 759)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 759)), object->mProperty_withAuto, var_castTypeToMerge_21048.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 761)), extensionGetter_mergeWithEnum (object->mProperty_valuesMap, var_castTypeToMerge_21048.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 762)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 762))  COMMA_SOURCE_FILE ("implementation_types.galgas", 754)) ;
+  GALGAS_impEnumType var_castTypeToMerge_21030 = temp_0 ;
+  result_mergedType = GALGAS_impEnumType::constructor_new (object->mProperty_locations.add_operation (inArgument_typeToMerge.getter_locations (SOURCE_FILE ("implementation_types.galgas", 756)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 756)), object->mProperty_type, object->mProperty_name, object->mProperty_multiple, object->mProperty_descs.add_operation (inArgument_typeToMerge.getter_descs (SOURCE_FILE ("implementation_types.galgas", 760)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 760)), object->mProperty_withAuto, var_castTypeToMerge_21030.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 762)), extensionGetter_mergeWithEnum (object->mProperty_valuesMap, var_castTypeToMerge_21030.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 763)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 763))  COMMA_SOURCE_FILE ("implementation_types.galgas", 755)) ;
 //---
   return result_mergedType ;
 }
@@ -2585,26 +2585,26 @@ void routine_verifyEnum (const GALGAS_impType constinArgument_anEnum,
                          COMMA_UNUSED_LOCATION_ARGS) {
   if (constinArgument_anEnum.isValid ()) {
     if (constinArgument_anEnum.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impEnumType) {
-      GALGAS_impEnumType cast_21514_realEnum ((cPtr_impEnumType *) constinArgument_anEnum.ptr ()) ;
-      if (cast_21514_realEnum.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 774)).isValid ()) {
-        if (cast_21514_realEnum.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 774)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_string_5F_class) {
-          GALGAS_string_5F_class cast_21588_defaultValue ((cPtr_string_5F_class *) cast_21514_realEnum.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 774)).ptr ()) ;
+      GALGAS_impEnumType cast_21496_realEnum ((cPtr_impEnumType *) constinArgument_anEnum.ptr ()) ;
+      if (cast_21496_realEnum.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 775)).isValid ()) {
+        if (cast_21496_realEnum.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 775)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_string_5F_class) {
+          GALGAS_string_5F_class cast_21570_defaultValue ((cPtr_string_5F_class *) cast_21496_realEnum.getter_defaultValue (SOURCE_FILE ("implementation_types.galgas", 775)).ptr ()) ;
           enumGalgasBool test_0 = kBoolTrue ;
           if (kBoolTrue == test_0) {
-            test_0 = cast_21514_realEnum.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 776)).getter_hasKey (cast_21588_defaultValue.getter_value (SOURCE_FILE ("implementation_types.galgas", 776)) COMMA_SOURCE_FILE ("implementation_types.galgas", 776)).operator_not (SOURCE_FILE ("implementation_types.galgas", 776)).boolEnum () ;
+            test_0 = cast_21496_realEnum.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 777)).getter_hasKey (cast_21570_defaultValue.getter_value (SOURCE_FILE ("implementation_types.galgas", 777)) COMMA_SOURCE_FILE ("implementation_types.galgas", 777)).operator_not (SOURCE_FILE ("implementation_types.galgas", 777)).boolEnum () ;
             if (kBoolTrue == test_0) {
               TC_Array <C_FixItDescription> fixItArray1 ;
-              inCompiler->emitSemanticError (cast_21588_defaultValue.getter_location (SOURCE_FILE ("implementation_types.galgas", 777)), GALGAS_string ("Default enum value does not match any enum value"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 777)) ;
+              inCompiler->emitSemanticError (cast_21570_defaultValue.getter_location (SOURCE_FILE ("implementation_types.galgas", 778)), GALGAS_string ("Default enum value does not match any enum value"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 778)) ;
             }
           }
         }
       }
     }else{
-      cEnumerator_locationList enumerator_21813 (constinArgument_anEnum.getter_locations (SOURCE_FILE ("implementation_types.galgas", 781)), kENUMERATION_UP) ;
-      while (enumerator_21813.hasCurrentObject ()) {
+      cEnumerator_locationList enumerator_21795 (constinArgument_anEnum.getter_locations (SOURCE_FILE ("implementation_types.galgas", 782)), kENUMERATION_UP) ;
+      while (enumerator_21795.hasCurrentObject ()) {
         TC_Array <C_FixItDescription> fixItArray2 ;
-        inCompiler->emitSemanticError (enumerator_21813.current_location (HERE), GALGAS_string ("Internal, not an @impEnumType"), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 782)) ;
-        enumerator_21813.gotoNextObject () ;
+        inCompiler->emitSemanticError (enumerator_21795.current_location (HERE), GALGAS_string ("Internal, not an @impEnumType"), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 783)) ;
+        enumerator_21795.gotoNextObject () ;
       }
     }
   }
@@ -2630,23 +2630,23 @@ GALGAS_object_5F_t function_checkAndGetIntegerNumber (const GALGAS_lstring & con
     if (kBoolTrue == test_0) {
       enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        test_1 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 844)))).boolEnum () ;
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 845)))).boolEnum () ;
         if (kBoolTrue == test_1) {
-          result_value = GALGAS_sint_33__32__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 845)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 845)).getter_sint (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 845)).multiply_operation (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 845)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 845))  COMMA_SOURCE_FILE ("implementation_types.galgas", 845)) ;
+          result_value = GALGAS_sint_33__32__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 846)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 846)).getter_sint (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 846)).multiply_operation (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 846)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 846))  COMMA_SOURCE_FILE ("implementation_types.galgas", 846)) ;
         }
       }
       if (kBoolFalse == test_1) {
         enumGalgasBool test_2 = kBoolTrue ;
         if (kBoolTrue == test_2) {
-          test_2 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 846)))).boolEnum () ;
+          test_2 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 847)))).boolEnum () ;
           if (kBoolTrue == test_2) {
-            result_value = GALGAS_sint_36__34__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 847)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 847)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 847)).multiply_operation (GALGAS_sint_36__34_ ((int64_t) 1LL).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 847)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 847))  COMMA_SOURCE_FILE ("implementation_types.galgas", 847)) ;
+            result_value = GALGAS_sint_36__34__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 848)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 848)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 848)).multiply_operation (GALGAS_sint_36__34_ ((int64_t) 1LL).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 848)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 848))  COMMA_SOURCE_FILE ("implementation_types.galgas", 848)) ;
           }
         }
         if (kBoolFalse == test_2) {
-          result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 849))  COMMA_SOURCE_FILE ("implementation_types.galgas", 849)) ;
+          result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 850))  COMMA_SOURCE_FILE ("implementation_types.galgas", 850)) ;
           TC_Array <C_FixItDescription> fixItArray3 ;
-          inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 850)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 850)).add_operation (GALGAS_string (" expected, got a SINT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 850)), fixItArray3  COMMA_SOURCE_FILE ("implementation_types.galgas", 850)) ;
+          inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 851)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 851)).add_operation (GALGAS_string (" expected, got a SINT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 851)), fixItArray3  COMMA_SOURCE_FILE ("implementation_types.galgas", 851)) ;
         }
       }
     }
@@ -2654,39 +2654,39 @@ GALGAS_object_5F_t function_checkAndGetIntegerNumber (const GALGAS_lstring & con
   if (kBoolFalse == test_0) {
     enumGalgasBool test_4 = kBoolTrue ;
     if (kBoolTrue == test_4) {
-      test_4 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 853)))).boolEnum () ;
+      test_4 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 854)))).boolEnum () ;
       if (kBoolTrue == test_4) {
-        result_value = GALGAS_sint_33__32__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 854)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 854)).getter_sint (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 854))  COMMA_SOURCE_FILE ("implementation_types.galgas", 854)) ;
+        result_value = GALGAS_sint_33__32__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 855)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 855)).getter_sint (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 855))  COMMA_SOURCE_FILE ("implementation_types.galgas", 855)) ;
       }
     }
     if (kBoolFalse == test_4) {
       enumGalgasBool test_5 = kBoolTrue ;
       if (kBoolTrue == test_5) {
-        test_5 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 855)))).boolEnum () ;
+        test_5 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_sint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 856)))).boolEnum () ;
         if (kBoolTrue == test_5) {
-          result_value = GALGAS_sint_36__34__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 856)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 856)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 856))  COMMA_SOURCE_FILE ("implementation_types.galgas", 856)) ;
+          result_value = GALGAS_sint_36__34__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 857)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 857)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 857))  COMMA_SOURCE_FILE ("implementation_types.galgas", 857)) ;
         }
       }
       if (kBoolFalse == test_5) {
         enumGalgasBool test_6 = kBoolTrue ;
         if (kBoolTrue == test_6) {
-          test_6 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_uint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 857)))).boolEnum () ;
+          test_6 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_uint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 858)))).boolEnum () ;
           if (kBoolTrue == test_6) {
-            result_value = GALGAS_uint_33__32__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 858)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 858)).getter_uint (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 858))  COMMA_SOURCE_FILE ("implementation_types.galgas", 858)) ;
+            result_value = GALGAS_uint_33__32__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 859)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 859)).getter_uint (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 859))  COMMA_SOURCE_FILE ("implementation_types.galgas", 859)) ;
           }
         }
         if (kBoolFalse == test_6) {
           enumGalgasBool test_7 = kBoolTrue ;
           if (kBoolTrue == test_7) {
-            test_7 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 859)))).boolEnum () ;
+            test_7 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 860)))).boolEnum () ;
             if (kBoolTrue == test_7) {
-              result_value = GALGAS_uint_36__34__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 860)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 860))  COMMA_SOURCE_FILE ("implementation_types.galgas", 860)) ;
+              result_value = GALGAS_uint_36__34__5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 861)), constinArgument_number.getter_uint_36__34_ (SOURCE_FILE ("implementation_types.galgas", 861))  COMMA_SOURCE_FILE ("implementation_types.galgas", 861)) ;
             }
           }
           if (kBoolFalse == test_7) {
-            result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 862))  COMMA_SOURCE_FILE ("implementation_types.galgas", 862)) ;
+            result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 863))  COMMA_SOURCE_FILE ("implementation_types.galgas", 863)) ;
             TC_Array <C_FixItDescription> fixItArray8 ;
-            inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 863)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 863)).add_operation (GALGAS_string (" expected, got a UINT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 863)), fixItArray8  COMMA_SOURCE_FILE ("implementation_types.galgas", 863)) ;
+            inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 864)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 864)).add_operation (GALGAS_string (" expected, got a UINT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 864)), fixItArray8  COMMA_SOURCE_FILE ("implementation_types.galgas", 864)) ;
           }
         }
       }
@@ -2762,30 +2762,30 @@ GALGAS_object_5F_t function_checkAndGetFloatNumber (const GALGAS_lstring & const
     if (kBoolTrue == test_0) {
       enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        test_1 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_floatNumber (SOURCE_FILE ("implementation_types.galgas", 875)))).boolEnum () ;
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_floatNumber (SOURCE_FILE ("implementation_types.galgas", 876)))).boolEnum () ;
         if (kBoolTrue == test_1) {
-          result_value = GALGAS_float_5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 876)), constinArgument_number.getter_double (SOURCE_FILE ("implementation_types.galgas", 876)).multiply_operation (GALGAS_double (1).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 876)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 876))  COMMA_SOURCE_FILE ("implementation_types.galgas", 876)) ;
+          result_value = GALGAS_float_5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 877)), constinArgument_number.getter_double (SOURCE_FILE ("implementation_types.galgas", 877)).multiply_operation (GALGAS_double (1).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 877)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 877))  COMMA_SOURCE_FILE ("implementation_types.galgas", 877)) ;
         }
       }
       if (kBoolFalse == test_1) {
-        result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 878))  COMMA_SOURCE_FILE ("implementation_types.galgas", 878)) ;
+        result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 879))  COMMA_SOURCE_FILE ("implementation_types.galgas", 879)) ;
         TC_Array <C_FixItDescription> fixItArray2 ;
-        inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 879)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 879)).add_operation (GALGAS_string (" expected, got a FLOAT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 879)), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 879)) ;
+        inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 880)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 880)).add_operation (GALGAS_string (" expected, got a FLOAT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 880)), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 880)) ;
       }
     }
   }
   if (kBoolFalse == test_0) {
     enumGalgasBool test_3 = kBoolTrue ;
     if (kBoolTrue == test_3) {
-      test_3 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_floatNumber (SOURCE_FILE ("implementation_types.galgas", 882)))).boolEnum () ;
+      test_3 = GALGAS_bool (kIsEqual, constinArgument_type.objectCompare (GALGAS_dataType::constructor_floatNumber (SOURCE_FILE ("implementation_types.galgas", 883)))).boolEnum () ;
       if (kBoolTrue == test_3) {
-        result_value = GALGAS_float_5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 883)), constinArgument_number.getter_double (SOURCE_FILE ("implementation_types.galgas", 883))  COMMA_SOURCE_FILE ("implementation_types.galgas", 883)) ;
+        result_value = GALGAS_float_5F_class::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 884)), constinArgument_number.getter_double (SOURCE_FILE ("implementation_types.galgas", 884))  COMMA_SOURCE_FILE ("implementation_types.galgas", 884)) ;
       }
     }
     if (kBoolFalse == test_3) {
-      result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 885))  COMMA_SOURCE_FILE ("implementation_types.galgas", 885)) ;
+      result_value = GALGAS_void::constructor_new (constinArgument_oil_5F_desc, constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 886))  COMMA_SOURCE_FILE ("implementation_types.galgas", 886)) ;
       TC_Array <C_FixItDescription> fixItArray4 ;
-      inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 886)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 886)).add_operation (GALGAS_string (" expected, got a FLOAT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 886)), fixItArray4  COMMA_SOURCE_FILE ("implementation_types.galgas", 886)) ;
+      inCompiler->emitSemanticError (constinArgument_number.getter_location (SOURCE_FILE ("implementation_types.galgas", 887)), extensionGetter_oilType (constinArgument_type, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 887)).add_operation (GALGAS_string (" expected, got a FLOAT"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 887)), fixItArray4  COMMA_SOURCE_FILE ("implementation_types.galgas", 887)) ;
     }
   }
 //---
@@ -2852,21 +2852,21 @@ void routine_checkTypeForAttribute (const GALGAS_implementationObjectMap constin
                                     COMMA_UNUSED_LOCATION_ARGS) {
   enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    test_0 = constinArgument_obj.getter_hasKey (constinArgument_attributeName COMMA_SOURCE_FILE ("implementation_types.galgas", 895)).boolEnum () ;
+    test_0 = constinArgument_obj.getter_hasKey (constinArgument_attributeName COMMA_SOURCE_FILE ("implementation_types.galgas", 896)).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_impType var_type_25198 ;
-      constinArgument_obj.method_get (function_lstringWith (constinArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 897)), var_type_25198, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 897)) ;
+      GALGAS_impType var_type_25180 ;
+      constinArgument_obj.method_get (function_lstringWith (constinArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 898)), var_type_25180, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 898)) ;
       enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        test_1 = GALGAS_bool (kIsNotEqual, var_type_25198.getter_type (SOURCE_FILE ("implementation_types.galgas", 898)).objectCompare (constinArgument_expectedType)).boolEnum () ;
+        test_1 = GALGAS_bool (kIsNotEqual, var_type_25180.getter_type (SOURCE_FILE ("implementation_types.galgas", 899)).objectCompare (constinArgument_expectedType)).boolEnum () ;
         if (kBoolTrue == test_1) {
-          cEnumerator_locationList enumerator_25320 (var_type_25198.getter_locations (SOURCE_FILE ("implementation_types.galgas", 899)), kENUMERATION_UP) ;
-          while (enumerator_25320.hasCurrentObject ()) {
+          cEnumerator_locationList enumerator_25302 (var_type_25180.getter_locations (SOURCE_FILE ("implementation_types.galgas", 900)), kENUMERATION_UP) ;
+          while (enumerator_25302.hasCurrentObject ()) {
             TC_Array <C_FixItDescription> fixItArray2 ;
-            inCompiler->emitSemanticError (enumerator_25320.current_location (HERE), constinArgument_attributeName.add_operation (GALGAS_string (" is a "), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 900)).add_operation (extensionGetter_oilType (var_type_25198.getter_type (SOURCE_FILE ("implementation_types.galgas", 900)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 900)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 900)), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 900)) ;
+            inCompiler->emitSemanticError (enumerator_25302.current_location (HERE), constinArgument_attributeName.add_operation (GALGAS_string (" is a "), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 901)).add_operation (extensionGetter_oilType (var_type_25180.getter_type (SOURCE_FILE ("implementation_types.galgas", 901)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 901)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 901)), fixItArray2  COMMA_SOURCE_FILE ("implementation_types.galgas", 901)) ;
             TC_Array <C_FixItDescription> fixItArray3 ;
-            inCompiler->emitSemanticError (enumerator_25320.current_location (HERE), constinArgument_attributeName.add_operation (GALGAS_string (" should be a "), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 901)).add_operation (extensionGetter_oilType (constinArgument_expectedType, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 901)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 901)), fixItArray3  COMMA_SOURCE_FILE ("implementation_types.galgas", 901)) ;
-            enumerator_25320.gotoNextObject () ;
+            inCompiler->emitSemanticError (enumerator_25302.current_location (HERE), constinArgument_attributeName.add_operation (GALGAS_string (" should be a "), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 902)).add_operation (extensionGetter_oilType (constinArgument_expectedType, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 902)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 902)), fixItArray3  COMMA_SOURCE_FILE ("implementation_types.galgas", 902)) ;
+            enumerator_25302.gotoNextObject () ;
           }
         }
       }
@@ -2887,25 +2887,25 @@ GALGAS_implementationObjectMap function_boolSubAttributes (const GALGAS_implemen
                                                            C_Compiler * inCompiler
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_implementationObjectMap result_subImplementation ; // Returned variable
-  result_subImplementation = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 912)) ;
+  result_subImplementation = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 913)) ;
   enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    test_0 = constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 913)).getter_hasKey (constinArgument_attributeName COMMA_SOURCE_FILE ("implementation_types.galgas", 913)).boolEnum () ;
+    test_0 = constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 914)).getter_hasKey (constinArgument_attributeName COMMA_SOURCE_FILE ("implementation_types.galgas", 914)).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_impType var_type_25779 ;
-      constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 915)).method_get (function_lstringWith (constinArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 915)), var_type_25779, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 915)) ;
-      if (var_type_25779.isValid ()) {
-        if (var_type_25779.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impBoolType) {
-          GALGAS_impBoolType cast_25889_boolType ((cPtr_impBoolType *) var_type_25779.ptr ()) ;
+      GALGAS_impType var_type_25761 ;
+      constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 916)).method_get (function_lstringWith (constinArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 916)), var_type_25761, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 916)) ;
+      if (var_type_25761.isValid ()) {
+        if (var_type_25761.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impBoolType) {
+          GALGAS_impBoolType cast_25871_boolType ((cPtr_impBoolType *) var_type_25761.ptr ()) ;
           enumGalgasBool test_1 = kBoolTrue ;
           if (kBoolTrue == test_1) {
             test_1 = constinArgument_boolValue.boolEnum () ;
             if (kBoolTrue == test_1) {
-              result_subImplementation = cast_25889_boolType.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 919)) ;
+              result_subImplementation = cast_25871_boolType.getter_trueSubAttributes (SOURCE_FILE ("implementation_types.galgas", 920)) ;
             }
           }
           if (kBoolFalse == test_1) {
-            result_subImplementation = cast_25889_boolType.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 921)) ;
+            result_subImplementation = cast_25871_boolType.getter_falseSubAttributes (SOURCE_FILE ("implementation_types.galgas", 922)) ;
           }
         }
       }
@@ -2969,21 +2969,21 @@ GALGAS_implementationObjectMap function_enumSubAttributes (const GALGAS_implemen
                                                            C_Compiler * inCompiler
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_implementationObjectMap result_subImplementation ; // Returned variable
-  result_subImplementation = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 932)) ;
+  result_subImplementation = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 933)) ;
   enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    test_0 = constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 933)).getter_hasKey (constinArgument_attributeName COMMA_SOURCE_FILE ("implementation_types.galgas", 933)).boolEnum () ;
+    test_0 = constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 934)).getter_hasKey (constinArgument_attributeName COMMA_SOURCE_FILE ("implementation_types.galgas", 934)).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_impType var_type_26358 ;
-      constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 935)).method_get (function_lstringWith (constinArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 935)), var_type_26358, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 935)) ;
-      if (var_type_26358.isValid ()) {
-        if (var_type_26358.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impEnumType) {
-          GALGAS_impEnumType cast_26468_enumType ((cPtr_impEnumType *) var_type_26358.ptr ()) ;
+      GALGAS_impType var_type_26340 ;
+      constinArgument_obj.getter_attributes (SOURCE_FILE ("implementation_types.galgas", 936)).method_get (function_lstringWith (constinArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 936)), var_type_26340, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 936)) ;
+      if (var_type_26340.isValid ()) {
+        if (var_type_26340.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impEnumType) {
+          GALGAS_impEnumType cast_26450_enumType ((cPtr_impEnumType *) var_type_26340.ptr ()) ;
           enumGalgasBool test_1 = kBoolTrue ;
           if (kBoolTrue == test_1) {
-            test_1 = cast_26468_enumType.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 938)).getter_hasKey (constinArgument_enumValue COMMA_SOURCE_FILE ("implementation_types.galgas", 938)).boolEnum () ;
+            test_1 = cast_26450_enumType.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 939)).getter_hasKey (constinArgument_enumValue COMMA_SOURCE_FILE ("implementation_types.galgas", 939)).boolEnum () ;
             if (kBoolTrue == test_1) {
-              cast_26468_enumType.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 939)).method_get (function_lstringWith (constinArgument_enumValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 939)), result_subImplementation, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 939)) ;
+              cast_26450_enumType.getter_valuesMap (SOURCE_FILE ("implementation_types.galgas", 940)).method_get (function_lstringWith (constinArgument_enumValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 940)), result_subImplementation, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 940)) ;
             }
           }
         }
@@ -3045,44 +3045,44 @@ C_galgas_function_descriptor functionDescriptor_enumSubAttributes ("enumSubAttri
 void routine_checkFilters (const GALGAS_implementationObject constinArgument_messageProperty,
                            C_Compiler * inCompiler
                            COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_implementationObjectMap var_filter_26754 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("MASKEDNEWEQUALSX"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 950)) ;
+  GALGAS_implementationObjectMap var_filter_26736 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("MASKEDNEWEQUALSX"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 951)) ;
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MASK"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 951)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 951)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MASK"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 952)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 952)) ;
   }
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("X"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 952)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 952)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("X"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 953)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 953)) ;
   }
-  var_filter_26754 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("MASKEDNEWDIFFERSX"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 953)) ;
+  var_filter_26736 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("MASKEDNEWDIFFERSX"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 954)) ;
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MASK"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 954)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 954)) ;
-  }
-  {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("X"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 955)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 955)) ;
-  }
-  var_filter_26754 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("MASKEDNEWEQUALSMASKEDOLD"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 956)) ;
-  {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MASK"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 957)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 957)) ;
-  }
-  var_filter_26754 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("NEWISWITHIN"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 958)) ;
-  {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MIN"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 959)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 959)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MASK"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 955)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 955)) ;
   }
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MAX"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 960)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 960)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("X"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 956)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 956)) ;
   }
-  var_filter_26754 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("NEWISOUTSIDE"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 961)) ;
+  var_filter_26736 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("MASKEDNEWEQUALSMASKEDOLD"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 957)) ;
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MIN"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 962)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 962)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MASK"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 958)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 958)) ;
   }
+  var_filter_26736 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("NEWISWITHIN"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 959)) ;
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("MAX"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 963)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 963)) ;
-  }
-  var_filter_26754 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("ONEEVERYN"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 964)) ;
-  {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("PERIOD"), GALGAS_dataType::constructor_uint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 965)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 965)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MIN"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 960)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 960)) ;
   }
   {
-  routine_checkTypeForAttribute (var_filter_26754, GALGAS_string ("OFFSET"), GALGAS_dataType::constructor_uint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 966)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 966)) ;
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MAX"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 961)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 961)) ;
+  }
+  var_filter_26736 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("NEWISOUTSIDE"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 962)) ;
+  {
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MIN"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 963)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 963)) ;
+  }
+  {
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("MAX"), GALGAS_dataType::constructor_uint_36__34_Number (SOURCE_FILE ("implementation_types.galgas", 964)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 964)) ;
+  }
+  var_filter_26736 = function_enumSubAttributes (constinArgument_messageProperty, GALGAS_string ("FILTER"), GALGAS_string ("ONEEVERYN"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 965)) ;
+  {
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("PERIOD"), GALGAS_dataType::constructor_uint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 966)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 966)) ;
+  }
+  {
+  routine_checkTypeForAttribute (var_filter_26736, GALGAS_string ("OFFSET"), GALGAS_dataType::constructor_uint_33__32_Number (SOURCE_FILE ("implementation_types.galgas", 967)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 967)) ;
   }
 }
 
@@ -3101,10 +3101,10 @@ static void extensionMethod_refType_checkAttributeReferences (const cPtr_impType
   macroValidSharedObject (object, cPtr_refType) ;
   enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    test_0 = callExtensionGetter_hasKey ((const cPtr_implementation *) constinArgument_imp.ptr (), object->mProperty_ref.getter_string (SOURCE_FILE ("implementation_types.galgas", 981)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 981)).operator_not (SOURCE_FILE ("implementation_types.galgas", 981)).boolEnum () ;
+    test_0 = callExtensionGetter_hasKey ((const cPtr_implementation *) constinArgument_imp.ptr (), object->mProperty_ref.getter_string (SOURCE_FILE ("implementation_types.galgas", 982)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 982)).operator_not (SOURCE_FILE ("implementation_types.galgas", 982)).boolEnum () ;
     if (kBoolTrue == test_0) {
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (object->mProperty_ref.getter_location (SOURCE_FILE ("implementation_types.galgas", 982)), object->mProperty_ref.getter_string (SOURCE_FILE ("implementation_types.galgas", 982)).add_operation (GALGAS_string (" object kind does not exist"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 982)), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 982)) ;
+      inCompiler->emitSemanticError (object->mProperty_ref.getter_location (SOURCE_FILE ("implementation_types.galgas", 983)), object->mProperty_ref.getter_string (SOURCE_FILE ("implementation_types.galgas", 983)).add_operation (GALGAS_string (" object kind does not exist"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 983)), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 983)) ;
     }
   }
 }
@@ -3132,15 +3132,15 @@ static void extensionMethod_impBoolType_checkAttributeReferences (const cPtr_imp
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_impBoolType * object = (const cPtr_impBoolType *) inObject ;
   macroValidSharedObject (object, cPtr_impBoolType) ;
-  cEnumerator_implementationObjectMap enumerator_28644 (object->mProperty_trueSubAttributes, kENUMERATION_UP) ;
-  while (enumerator_28644.hasCurrentObject ()) {
-    callExtensionMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28644.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 990)) ;
-    enumerator_28644.gotoNextObject () ;
+  cEnumerator_implementationObjectMap enumerator_28626 (object->mProperty_trueSubAttributes, kENUMERATION_UP) ;
+  while (enumerator_28626.hasCurrentObject ()) {
+    callExtensionMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28626.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 991)) ;
+    enumerator_28626.gotoNextObject () ;
   }
-  cEnumerator_implementationObjectMap enumerator_28727 (object->mProperty_falseSubAttributes, kENUMERATION_UP) ;
-  while (enumerator_28727.hasCurrentObject ()) {
-    callExtensionMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28727.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 993)) ;
-    enumerator_28727.gotoNextObject () ;
+  cEnumerator_implementationObjectMap enumerator_28709 (object->mProperty_falseSubAttributes, kENUMERATION_UP) ;
+  while (enumerator_28709.hasCurrentObject ()) {
+    callExtensionMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28709.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 994)) ;
+    enumerator_28709.gotoNextObject () ;
   }
 }
 
@@ -3167,14 +3167,14 @@ static void extensionMethod_impEnumType_checkAttributeReferences (const cPtr_imp
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_impEnumType * object = (const cPtr_impEnumType *) inObject ;
   macroValidSharedObject (object, cPtr_impEnumType) ;
-  cEnumerator_enumValues enumerator_28887 (object->mProperty_valuesMap, kENUMERATION_UP) ;
-  while (enumerator_28887.hasCurrentObject ()) {
-    cEnumerator_implementationObjectMap enumerator_28919 (enumerator_28887.current_subAttributes (HERE), kENUMERATION_UP) ;
-    while (enumerator_28919.hasCurrentObject ()) {
-      callExtensionMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28919.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1002)) ;
-      enumerator_28919.gotoNextObject () ;
+  cEnumerator_enumValues enumerator_28869 (object->mProperty_valuesMap, kENUMERATION_UP) ;
+  while (enumerator_28869.hasCurrentObject ()) {
+    cEnumerator_implementationObjectMap enumerator_28901 (enumerator_28869.current_subAttributes (HERE), kENUMERATION_UP) ;
+    while (enumerator_28901.hasCurrentObject ()) {
+      callExtensionMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28901.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1003)) ;
+      enumerator_28901.gotoNextObject () ;
     }
-    enumerator_28887.gotoNextObject () ;
+    enumerator_28869.gotoNextObject () ;
   }
 }
 
@@ -3199,15 +3199,15 @@ void routine_setDefaultsForType (const GALGAS_implementationObjectMap constinArg
                                  GALGAS_objectAttributes & ioArgument_objectParams,
                                  C_Compiler * inCompiler
                                  COMMA_UNUSED_LOCATION_ARGS) {
-  cEnumerator_implementationObjectMap enumerator_29111 (constinArgument_impObject, kENUMERATION_UP) ;
-  while (enumerator_29111.hasCurrentObject ()) {
-    if (enumerator_29111.current_type (HERE).isValid ()) {
-      if (NULL != dynamic_cast <const cPtr_impAutoDefaultType *> (enumerator_29111.current_type (HERE).ptr ())) {
-        GALGAS_impAutoDefaultType cast_29172_defaultType ((cPtr_impAutoDefaultType *) enumerator_29111.current_type (HERE).ptr ()) ;
-        callExtensionMethod_setDefault ((const cPtr_impAutoDefaultType *) cast_29172_defaultType.ptr (), ioArgument_objectParams, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1014)) ;
+  cEnumerator_implementationObjectMap enumerator_29093 (constinArgument_impObject, kENUMERATION_UP) ;
+  while (enumerator_29093.hasCurrentObject ()) {
+    if (enumerator_29093.current_type (HERE).isValid ()) {
+      if (NULL != dynamic_cast <const cPtr_impAutoDefaultType *> (enumerator_29093.current_type (HERE).ptr ())) {
+        GALGAS_impAutoDefaultType cast_29154_defaultType ((cPtr_impAutoDefaultType *) enumerator_29093.current_type (HERE).ptr ()) ;
+        callExtensionMethod_setDefault ((const cPtr_impAutoDefaultType *) cast_29154_defaultType.ptr (), ioArgument_objectParams, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1015)) ;
       }
     }
-    enumerator_29111.gotoNextObject () ;
+    enumerator_29093.gotoNextObject () ;
   }
 }
 
@@ -3282,17 +3282,17 @@ static GALGAS_bool extensionGetter_uint_33__32_AttributeSet_contains (const cPtr
   macroValidSharedObject (object, cPtr_uint_33__32_AttributeSet) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_33__32__5F_class) {
-      GALGAS_uint_33__32__5F_class cast_31543_intVal ((cPtr_uint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_uint_33__32__5F_class cast_31525_intVal ((cPtr_uint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
       result_isInside = GALGAS_bool (false) ;
-      cEnumerator_uint_33__32_List enumerator_31589 (object->mProperty_valueList, kENUMERATION_UP) ;
-      while (enumerator_31589.hasCurrentObject ()) {
-        result_isInside = result_isInside.operator_or (GALGAS_bool (kIsEqual, enumerator_31589.current_value (HERE).objectCompare (cast_31543_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1102)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1102)) ;
-        enumerator_31589.gotoNextObject () ;
+      cEnumerator_uint_33__32_List enumerator_31571 (object->mProperty_valueList, kENUMERATION_UP) ;
+      while (enumerator_31571.hasCurrentObject ()) {
+        result_isInside = result_isInside.operator_or (GALGAS_bool (kIsEqual, enumerator_31571.current_value (HERE).objectCompare (cast_31525_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1103)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1103)) ;
+        enumerator_31571.gotoNextObject () ;
       }
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray0 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1106)), GALGAS_string ("UINT32 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1106)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1107)), GALGAS_string ("UINT32 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1107)) ;
     }
   }
 //---
@@ -3324,13 +3324,13 @@ static GALGAS_string extensionGetter_uint_33__32_AttributeSet_string (const cPtr
   const cPtr_uint_33__32_AttributeSet * object = (const cPtr_uint_33__32_AttributeSet *) inObject ;
   macroValidSharedObject (object, cPtr_uint_33__32_AttributeSet) ;
   result_desc = GALGAS_string::makeEmptyString () ;
-  cEnumerator_uint_33__32_List enumerator_31818 (object->mProperty_valueList, kENUMERATION_UP) ;
-  while (enumerator_31818.hasCurrentObject ()) {
-    result_desc.plusAssign_operation(enumerator_31818.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1114)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1114)) ;
-    if (enumerator_31818.hasNextObject ()) {
-      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1116)) ;
+  cEnumerator_uint_33__32_List enumerator_31800 (object->mProperty_valueList, kENUMERATION_UP) ;
+  while (enumerator_31800.hasCurrentObject ()) {
+    result_desc.plusAssign_operation(enumerator_31800.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1115)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1115)) ;
+    if (enumerator_31800.hasNextObject ()) {
+      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1117)) ;
     }
-    enumerator_31818.gotoNextObject () ;
+    enumerator_31800.gotoNextObject () ;
   }
 //---
   return result_desc ;
@@ -3363,16 +3363,16 @@ static GALGAS_bool extensionGetter_uint_33__32_AttributeMinMax_contains (const c
   macroValidSharedObject (object, cPtr_uint_33__32_AttributeMinMax) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_33__32__5F_class) {
-      GALGAS_uint_33__32__5F_class cast_32019_intVal ((cPtr_uint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
-      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_32019_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1126)))) ;
+      GALGAS_uint_33__32__5F_class cast_32001_intVal ((cPtr_uint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_32001_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1127)))) ;
       if (kBoolTrue == test_0.boolEnum ()) {
-        test_0 = GALGAS_bool (kIsInfOrEqual, cast_32019_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1126)).objectCompare (object->mProperty_max)) ;
+        test_0 = GALGAS_bool (kIsInfOrEqual, cast_32001_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1127)).objectCompare (object->mProperty_max)) ;
       }
       result_isInside = test_0 ;
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1129)), GALGAS_string ("UINT32 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1129)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1130)), GALGAS_string ("UINT32 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1130)) ;
     }
   }
 //---
@@ -3403,7 +3403,7 @@ static GALGAS_string extensionGetter_uint_33__32_AttributeMinMax_string (const c
   GALGAS_string result_desc ; // Returned variable
   const cPtr_uint_33__32_AttributeMinMax * object = (const cPtr_uint_33__32_AttributeMinMax *) inObject ;
   macroValidSharedObject (object, cPtr_uint_33__32_AttributeMinMax) ;
-  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1135)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1135)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1135)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1135)) ;
+  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1136)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1136)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1136)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1136)) ;
 //---
   return result_desc ;
 }
@@ -3435,17 +3435,17 @@ static GALGAS_bool extensionGetter_sint_33__32_AttributeSet_contains (const cPtr
   macroValidSharedObject (object, cPtr_sint_33__32_AttributeSet) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_33__32__5F_class) {
-      GALGAS_sint_33__32__5F_class cast_32394_intVal ((cPtr_sint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_sint_33__32__5F_class cast_32376_intVal ((cPtr_sint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
       result_isInside = GALGAS_bool (true) ;
-      cEnumerator_sint_33__32_List enumerator_32439 (object->mProperty_valueList, kENUMERATION_UP) ;
-      while (enumerator_32439.hasCurrentObject ()) {
-        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_32439.current_value (HERE).objectCompare (cast_32394_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1146)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1146)) ;
-        enumerator_32439.gotoNextObject () ;
+      cEnumerator_sint_33__32_List enumerator_32421 (object->mProperty_valueList, kENUMERATION_UP) ;
+      while (enumerator_32421.hasCurrentObject ()) {
+        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_32421.current_value (HERE).objectCompare (cast_32376_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1147)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1147)) ;
+        enumerator_32421.gotoNextObject () ;
       }
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray0 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1150)), GALGAS_string ("SINT32 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1150)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1151)), GALGAS_string ("SINT32 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1151)) ;
     }
   }
 //---
@@ -3477,13 +3477,13 @@ static GALGAS_string extensionGetter_sint_33__32_AttributeSet_string (const cPtr
   const cPtr_sint_33__32_AttributeSet * object = (const cPtr_sint_33__32_AttributeSet *) inObject ;
   macroValidSharedObject (object, cPtr_sint_33__32_AttributeSet) ;
   result_desc = GALGAS_string::makeEmptyString () ;
-  cEnumerator_sint_33__32_List enumerator_32668 (object->mProperty_valueList, kENUMERATION_UP) ;
-  while (enumerator_32668.hasCurrentObject ()) {
-    result_desc.plusAssign_operation(enumerator_32668.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1158)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1158)) ;
-    if (enumerator_32668.hasNextObject ()) {
-      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1160)) ;
+  cEnumerator_sint_33__32_List enumerator_32650 (object->mProperty_valueList, kENUMERATION_UP) ;
+  while (enumerator_32650.hasCurrentObject ()) {
+    result_desc.plusAssign_operation(enumerator_32650.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1159)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1159)) ;
+    if (enumerator_32650.hasNextObject ()) {
+      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1161)) ;
     }
-    enumerator_32668.gotoNextObject () ;
+    enumerator_32650.gotoNextObject () ;
   }
 //---
   return result_desc ;
@@ -3516,16 +3516,16 @@ static GALGAS_bool extensionGetter_sint_33__32_AttributeMinMax_contains (const c
   macroValidSharedObject (object, cPtr_sint_33__32_AttributeMinMax) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_33__32__5F_class) {
-      GALGAS_sint_33__32__5F_class cast_32869_intVal ((cPtr_sint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
-      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_32869_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1170)))) ;
+      GALGAS_sint_33__32__5F_class cast_32851_intVal ((cPtr_sint_33__32__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_32851_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1171)))) ;
       if (kBoolTrue == test_0.boolEnum ()) {
-        test_0 = GALGAS_bool (kIsInfOrEqual, cast_32869_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1170)).objectCompare (object->mProperty_max)) ;
+        test_0 = GALGAS_bool (kIsInfOrEqual, cast_32851_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1171)).objectCompare (object->mProperty_max)) ;
       }
       result_isInside = test_0 ;
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1173)), GALGAS_string ("SINT32 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1173)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1174)), GALGAS_string ("SINT32 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1174)) ;
     }
   }
 //---
@@ -3556,7 +3556,7 @@ static GALGAS_string extensionGetter_sint_33__32_AttributeMinMax_string (const c
   GALGAS_string result_desc ; // Returned variable
   const cPtr_sint_33__32_AttributeMinMax * object = (const cPtr_sint_33__32_AttributeMinMax *) inObject ;
   macroValidSharedObject (object, cPtr_sint_33__32_AttributeMinMax) ;
-  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1179)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1179)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1179)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1179)) ;
+  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1180)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1180)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1180)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1180)) ;
 //---
   return result_desc ;
 }
@@ -3588,17 +3588,17 @@ static GALGAS_bool extensionGetter_uint_36__34_AttributeSet_contains (const cPtr
   macroValidSharedObject (object, cPtr_uint_36__34_AttributeSet) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_36__34__5F_class) {
-      GALGAS_uint_36__34__5F_class cast_33244_intVal ((cPtr_uint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_uint_36__34__5F_class cast_33226_intVal ((cPtr_uint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
       result_isInside = GALGAS_bool (true) ;
-      cEnumerator_uint_36__34_List enumerator_33289 (object->mProperty_valueList, kENUMERATION_UP) ;
-      while (enumerator_33289.hasCurrentObject ()) {
-        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_33289.current_value (HERE).objectCompare (cast_33244_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1190)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1190)) ;
-        enumerator_33289.gotoNextObject () ;
+      cEnumerator_uint_36__34_List enumerator_33271 (object->mProperty_valueList, kENUMERATION_UP) ;
+      while (enumerator_33271.hasCurrentObject ()) {
+        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_33271.current_value (HERE).objectCompare (cast_33226_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1191)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1191)) ;
+        enumerator_33271.gotoNextObject () ;
       }
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray0 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1194)), GALGAS_string ("UINT64 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1194)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1195)), GALGAS_string ("UINT64 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1195)) ;
     }
   }
 //---
@@ -3630,13 +3630,13 @@ static GALGAS_string extensionGetter_uint_36__34_AttributeSet_string (const cPtr
   const cPtr_uint_36__34_AttributeSet * object = (const cPtr_uint_36__34_AttributeSet *) inObject ;
   macroValidSharedObject (object, cPtr_uint_36__34_AttributeSet) ;
   result_desc = GALGAS_string::makeEmptyString () ;
-  cEnumerator_uint_36__34_List enumerator_33518 (object->mProperty_valueList, kENUMERATION_UP) ;
-  while (enumerator_33518.hasCurrentObject ()) {
-    result_desc.plusAssign_operation(enumerator_33518.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1202)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1202)) ;
-    if (enumerator_33518.hasNextObject ()) {
-      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1204)) ;
+  cEnumerator_uint_36__34_List enumerator_33500 (object->mProperty_valueList, kENUMERATION_UP) ;
+  while (enumerator_33500.hasCurrentObject ()) {
+    result_desc.plusAssign_operation(enumerator_33500.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1203)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1203)) ;
+    if (enumerator_33500.hasNextObject ()) {
+      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1205)) ;
     }
-    enumerator_33518.gotoNextObject () ;
+    enumerator_33500.gotoNextObject () ;
   }
 //---
   return result_desc ;
@@ -3669,16 +3669,16 @@ static GALGAS_bool extensionGetter_uint_36__34_AttributeMinMax_contains (const c
   macroValidSharedObject (object, cPtr_uint_36__34_AttributeMinMax) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_36__34__5F_class) {
-      GALGAS_uint_36__34__5F_class cast_33719_intVal ((cPtr_uint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
-      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_33719_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1214)))) ;
+      GALGAS_uint_36__34__5F_class cast_33701_intVal ((cPtr_uint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_33701_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1215)))) ;
       if (kBoolTrue == test_0.boolEnum ()) {
-        test_0 = GALGAS_bool (kIsInfOrEqual, cast_33719_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1214)).objectCompare (object->mProperty_max)) ;
+        test_0 = GALGAS_bool (kIsInfOrEqual, cast_33701_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1215)).objectCompare (object->mProperty_max)) ;
       }
       result_isInside = test_0 ;
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1217)), GALGAS_string ("UINT64 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1217)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1218)), GALGAS_string ("UINT64 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1218)) ;
     }
   }
 //---
@@ -3709,7 +3709,7 @@ static GALGAS_string extensionGetter_uint_36__34_AttributeMinMax_string (const c
   GALGAS_string result_desc ; // Returned variable
   const cPtr_uint_36__34_AttributeMinMax * object = (const cPtr_uint_36__34_AttributeMinMax *) inObject ;
   macroValidSharedObject (object, cPtr_uint_36__34_AttributeMinMax) ;
-  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1223)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1223)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1223)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1223)) ;
+  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1224)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1224)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1224)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1224)) ;
 //---
   return result_desc ;
 }
@@ -3741,17 +3741,17 @@ static GALGAS_bool extensionGetter_sint_36__34_AttributeSet_contains (const cPtr
   macroValidSharedObject (object, cPtr_sint_36__34_AttributeSet) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_36__34__5F_class) {
-      GALGAS_sint_36__34__5F_class cast_34094_intVal ((cPtr_sint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_sint_36__34__5F_class cast_34076_intVal ((cPtr_sint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
       result_isInside = GALGAS_bool (true) ;
-      cEnumerator_sint_36__34_List enumerator_34139 (object->mProperty_valueList, kENUMERATION_UP) ;
-      while (enumerator_34139.hasCurrentObject ()) {
-        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_34139.current_value (HERE).objectCompare (cast_34094_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1234)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1234)) ;
-        enumerator_34139.gotoNextObject () ;
+      cEnumerator_sint_36__34_List enumerator_34121 (object->mProperty_valueList, kENUMERATION_UP) ;
+      while (enumerator_34121.hasCurrentObject ()) {
+        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_34121.current_value (HERE).objectCompare (cast_34076_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1235)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1235)) ;
+        enumerator_34121.gotoNextObject () ;
       }
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray0 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1238)), GALGAS_string ("SINT64 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1238)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1239)), GALGAS_string ("SINT64 expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1239)) ;
     }
   }
 //---
@@ -3783,13 +3783,13 @@ static GALGAS_string extensionGetter_sint_36__34_AttributeSet_string (const cPtr
   const cPtr_sint_36__34_AttributeSet * object = (const cPtr_sint_36__34_AttributeSet *) inObject ;
   macroValidSharedObject (object, cPtr_sint_36__34_AttributeSet) ;
   result_desc = GALGAS_string::makeEmptyString () ;
-  cEnumerator_sint_36__34_List enumerator_34368 (object->mProperty_valueList, kENUMERATION_UP) ;
-  while (enumerator_34368.hasCurrentObject ()) {
-    result_desc.plusAssign_operation(enumerator_34368.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1246)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1246)) ;
-    if (enumerator_34368.hasNextObject ()) {
-      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1248)) ;
+  cEnumerator_sint_36__34_List enumerator_34350 (object->mProperty_valueList, kENUMERATION_UP) ;
+  while (enumerator_34350.hasCurrentObject ()) {
+    result_desc.plusAssign_operation(enumerator_34350.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1247)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1247)) ;
+    if (enumerator_34350.hasNextObject ()) {
+      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1249)) ;
     }
-    enumerator_34368.gotoNextObject () ;
+    enumerator_34350.gotoNextObject () ;
   }
 //---
   return result_desc ;
@@ -3822,16 +3822,16 @@ static GALGAS_bool extensionGetter_sint_36__34_AttributeMinMax_contains (const c
   macroValidSharedObject (object, cPtr_sint_36__34_AttributeMinMax) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_36__34__5F_class) {
-      GALGAS_sint_36__34__5F_class cast_34570_intVal ((cPtr_sint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
-      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_34570_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1259)))) ;
+      GALGAS_sint_36__34__5F_class cast_34552_intVal ((cPtr_sint_36__34__5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_34552_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1260)))) ;
       if (kBoolTrue == test_0.boolEnum ()) {
-        test_0 = GALGAS_bool (kIsInfOrEqual, cast_34570_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1259)).objectCompare (object->mProperty_max)) ;
+        test_0 = GALGAS_bool (kIsInfOrEqual, cast_34552_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1260)).objectCompare (object->mProperty_max)) ;
       }
       result_isInside = test_0 ;
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1262)), GALGAS_string ("SINT64 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1262)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1263)), GALGAS_string ("SINT64 expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1263)) ;
     }
   }
 //---
@@ -3862,7 +3862,7 @@ static GALGAS_string extensionGetter_sint_36__34_AttributeMinMax_string (const c
   GALGAS_string result_desc ; // Returned variable
   const cPtr_sint_36__34_AttributeMinMax * object = (const cPtr_sint_36__34_AttributeMinMax *) inObject ;
   macroValidSharedObject (object, cPtr_sint_36__34_AttributeMinMax) ;
-  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1268)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1268)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1268)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1268)) ;
+  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1269)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1269)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1269)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1269)) ;
 //---
   return result_desc ;
 }
@@ -3894,17 +3894,17 @@ static GALGAS_bool extensionGetter_floatAttributeSet_contains (const cPtr_attrib
   macroValidSharedObject (object, cPtr_floatAttributeSet) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_float_5F_class) {
-      GALGAS_float_5F_class cast_34943_intVal ((cPtr_float_5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_float_5F_class cast_34925_intVal ((cPtr_float_5F_class *) constinArgument_obj.ptr ()) ;
       result_isInside = GALGAS_bool (true) ;
-      cEnumerator_floatList enumerator_34988 (object->mProperty_valueList, kENUMERATION_UP) ;
-      while (enumerator_34988.hasCurrentObject ()) {
-        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_34988.current_value (HERE).objectCompare (cast_34943_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1279)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1279)) ;
-        enumerator_34988.gotoNextObject () ;
+      cEnumerator_floatList enumerator_34970 (object->mProperty_valueList, kENUMERATION_UP) ;
+      while (enumerator_34970.hasCurrentObject ()) {
+        result_isInside = result_isInside.operator_and (GALGAS_bool (kIsEqual, enumerator_34970.current_value (HERE).objectCompare (cast_34925_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1280)))) COMMA_SOURCE_FILE ("implementation_types.galgas", 1280)) ;
+        enumerator_34970.gotoNextObject () ;
       }
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray0 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1283)), GALGAS_string ("FLOAT expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1283)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1284)), GALGAS_string ("FLOAT expected"), fixItArray0  COMMA_SOURCE_FILE ("implementation_types.galgas", 1284)) ;
     }
   }
 //---
@@ -3936,13 +3936,13 @@ static GALGAS_string extensionGetter_floatAttributeSet_string (const cPtr_attrib
   const cPtr_floatAttributeSet * object = (const cPtr_floatAttributeSet *) inObject ;
   macroValidSharedObject (object, cPtr_floatAttributeSet) ;
   result_desc = GALGAS_string::makeEmptyString () ;
-  cEnumerator_floatList enumerator_35215 (object->mProperty_valueList, kENUMERATION_UP) ;
-  while (enumerator_35215.hasCurrentObject ()) {
-    result_desc.plusAssign_operation(enumerator_35215.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1291)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1291)) ;
-    if (enumerator_35215.hasNextObject ()) {
-      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1293)) ;
+  cEnumerator_floatList enumerator_35197 (object->mProperty_valueList, kENUMERATION_UP) ;
+  while (enumerator_35197.hasCurrentObject ()) {
+    result_desc.plusAssign_operation(enumerator_35197.current_value (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 1292)), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1292)) ;
+    if (enumerator_35197.hasNextObject ()) {
+      result_desc.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 1294)) ;
     }
-    enumerator_35215.gotoNextObject () ;
+    enumerator_35197.gotoNextObject () ;
   }
 //---
   return result_desc ;
@@ -3975,16 +3975,16 @@ static GALGAS_bool extensionGetter_floatAttributeMinMax_contains (const cPtr_att
   macroValidSharedObject (object, cPtr_floatAttributeMinMax) ;
   if (constinArgument_obj.isValid ()) {
     if (constinArgument_obj.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_float_5F_class) {
-      GALGAS_float_5F_class cast_35414_intVal ((cPtr_float_5F_class *) constinArgument_obj.ptr ()) ;
-      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_35414_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1303)))) ;
+      GALGAS_float_5F_class cast_35396_intVal ((cPtr_float_5F_class *) constinArgument_obj.ptr ()) ;
+      GALGAS_bool test_0 = GALGAS_bool (kIsInfOrEqual, object->mProperty_min.objectCompare (cast_35396_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1304)))) ;
       if (kBoolTrue == test_0.boolEnum ()) {
-        test_0 = GALGAS_bool (kIsInfOrEqual, cast_35414_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1303)).objectCompare (object->mProperty_max)) ;
+        test_0 = GALGAS_bool (kIsInfOrEqual, cast_35396_intVal.getter_value (SOURCE_FILE ("implementation_types.galgas", 1304)).objectCompare (object->mProperty_max)) ;
       }
       result_isInside = test_0 ;
     }else{
       result_isInside = GALGAS_bool (false) ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1306)), GALGAS_string ("FLOAT expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1306)) ;
+      inCompiler->emitSemanticError (constinArgument_obj.getter_location (SOURCE_FILE ("implementation_types.galgas", 1307)), GALGAS_string ("FLOAT expected"), fixItArray1  COMMA_SOURCE_FILE ("implementation_types.galgas", 1307)) ;
     }
   }
 //---
@@ -4015,7 +4015,7 @@ static GALGAS_string extensionGetter_floatAttributeMinMax_string (const cPtr_att
   GALGAS_string result_desc ; // Returned variable
   const cPtr_floatAttributeMinMax * object = (const cPtr_floatAttributeMinMax *) inObject ;
   macroValidSharedObject (object, cPtr_floatAttributeMinMax) ;
-  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1312)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1312)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1312)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1312)) ;
+  result_desc = object->mProperty_min.getter_string (SOURCE_FILE ("implementation_types.galgas", 1313)).add_operation (GALGAS_string (".."), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1313)).add_operation (object->mProperty_max.getter_string (SOURCE_FILE ("implementation_types.galgas", 1313)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 1313)) ;
 //---
   return result_desc ;
 }
@@ -10689,11 +10689,11 @@ void routine_arxmlInsertObjectAttribute (GALGAS_implementationObjectMap & ioArgu
               {
               inArgument_type.insulate (HERE) ;
               cPtr_impType * ptr_68085 = (cPtr_impType *) inArgument_type.ptr () ;
-              callExtensionSetter_setDefaultObjectValue ((cPtr_impType *) ptr_68085, var_newDefault_67983, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1954)) ;
+              callExtensionSetter_setDefValue ((cPtr_impType *) ptr_68085, var_newDefault_67983, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1954)) ;
               }
               {
-              GALGAS_impType joker_68170 ; // Joker input parameter
-              ioArgument_objectAttributes.setter_del (inArgument_attributeName, joker_68170, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1956)) ;
+              GALGAS_impType joker_68160 ; // Joker input parameter
+              ioArgument_objectAttributes.setter_del (inArgument_attributeName, joker_68160, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1956)) ;
               }
               {
               ioArgument_objectAttributes.setter_put (inArgument_attributeName, inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1957)) ;
@@ -10707,8 +10707,8 @@ void routine_arxmlInsertObjectAttribute (GALGAS_implementationObjectMap & ioArgu
         test_7 = function_checkNewTypeWithinPreviousType (inArgument_attributeName, var_previousType_66335, inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1961)).boolEnum () ;
         if (kBoolTrue == test_7) {
           {
-          GALGAS_impType joker_68454 ; // Joker input parameter
-          ioArgument_objectAttributes.setter_del (inArgument_attributeName, joker_68454, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1964)) ;
+          GALGAS_impType joker_68444 ; // Joker input parameter
+          ioArgument_objectAttributes.setter_del (inArgument_attributeName, joker_68444, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1964)) ;
           }
           {
           ioArgument_objectAttributes.setter_put (inArgument_attributeName, inArgument_type, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 1965)) ;

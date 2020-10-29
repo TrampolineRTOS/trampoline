@@ -3568,9 +3568,9 @@ static void extensionSetter_gtlChar_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1186)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1186)) ;
         }
       }
-      GALGAS_gtlString var_descriptionToSet_37458 = temp_1 ;
+      GALGAS_gtlString var_descriptionToSet_37457 = temp_1 ;
       {
-      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_37458.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1187)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1187)) ;
+      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_37457.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1187)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1187)) ;
       }
       object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1188)) ;
     }
@@ -3592,19 +3592,19 @@ static void extensionSetter_gtlChar_performSetter (cPtr_gtlData * inObject,
         test_3 = callExtensionGetter_setterExists ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("char"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1192)).boolEnum () ;
         if (kBoolTrue == test_3) {
           const GALGAS_gtlChar temp_4 = object ;
-          GALGAS_gtlData var_copy_37754 = temp_4 ;
-          callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("char"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1194)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1195)), constinArgument_context, constinArgument_lib, var_copy_37754, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1194)) ;
+          GALGAS_gtlData var_copy_37753 = temp_4 ;
+          callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("char"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1194)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1195)), constinArgument_context, constinArgument_lib, var_copy_37753, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1194)) ;
           GALGAS_gtlChar temp_5 ;
-          if (var_copy_37754.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlChar *> (var_copy_37754.ptr ())) {
-              temp_5 = (cPtr_gtlChar *) var_copy_37754.ptr () ;
+          if (var_copy_37753.isValid ()) {
+            if (NULL != dynamic_cast <const cPtr_gtlChar *> (var_copy_37753.ptr ())) {
+              temp_5 = (cPtr_gtlChar *) var_copy_37753.ptr () ;
             }else{
-              inCompiler->castError ("gtlChar", var_copy_37754.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1201)) ;
+              inCompiler->castError ("gtlChar", var_copy_37753.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1201)) ;
             }
           }
           object->mProperty_value = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1201)) ;
-          object->mProperty_where = var_copy_37754.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 1202)) ;
-          object->mProperty_meta = var_copy_37754.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 1203)) ;
+          object->mProperty_where = var_copy_37753.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 1202)) ;
+          object->mProperty_meta = var_copy_37753.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 1203)) ;
         }
       }
       if (kBoolFalse == test_3) {
@@ -4307,10 +4307,10 @@ static GALGAS_gtlData extensionGetter_gtlInt_slOp (const cPtr_gtlData * inObject
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1348)) ;
         }
       }
-      GALGAS_bigint var_r_41587 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1348)) ;
+      GALGAS_bigint var_r_41585 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1348)) ;
       enumGalgasBool test_2 = kBoolTrue ;
       if (kBoolTrue == test_2) {
-        test_2 = GALGAS_bool (kIsSupOrEqual, var_r_41587.objectCompare (GALGAS_bigint ("0", inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1349)))).boolEnum () ;
+        test_2 = GALGAS_bool (kIsSupOrEqual, var_r_41585.objectCompare (GALGAS_bigint ("0", inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1349)))).boolEnum () ;
         if (kBoolTrue == test_2) {
           GALGAS_gtlInt temp_3 ;
           if (constinArgument_right.isValid ()) {
@@ -4376,12 +4376,12 @@ static GALGAS_gtlData extensionGetter_gtlInt_srOp (const cPtr_gtlData * inObject
           inCompiler->castError ("gtlInt", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1365)) ;
         }
       }
-      GALGAS_bigint var_r_42021 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1365)) ;
+      GALGAS_bigint var_r_42019 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1365)) ;
       enumGalgasBool test_2 = kBoolTrue ;
       if (kBoolTrue == test_2) {
-        test_2 = GALGAS_bool (kIsSupOrEqual, var_r_42021.objectCompare (GALGAS_bigint ("0", inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1366)))).boolEnum () ;
+        test_2 = GALGAS_bool (kIsSupOrEqual, var_r_42019.objectCompare (GALGAS_bigint ("0", inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1366)))).boolEnum () ;
         if (kBoolTrue == test_2) {
-          result_result = GALGAS_gtlInt::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367)), object->mProperty_value.right_shift_operation (var_r_42021.getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367)) ;
+          result_result = GALGAS_gtlInt::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367)), object->mProperty_value.right_shift_operation (var_r_42019.getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1367)) ;
         }
       }
       if (kBoolFalse == test_2) {
@@ -4802,9 +4802,9 @@ static GALGAS_gtlData extensionGetter_gtlInt_performGetter (const cPtr_gtlData *
             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1475)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1475)) ;
           }
         }
-        GALGAS_uint var_fieldSize_44843 = temp_3.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1475)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1475)) ;
+        GALGAS_uint var_fieldSize_44841 = temp_3.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1475)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1475)) ;
         const GALGAS_gtlInt temp_4 = object ;
-        result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1477)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1478)), callExtensionGetter_string ((const cPtr_gtlInt *) temp_4.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1479)).getter_stringByLeftAndRightPadding (var_fieldSize_44843, GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1479))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1476)) ;
+        result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1477)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1478)), callExtensionGetter_string ((const cPtr_gtlInt *) temp_4.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1479)).getter_stringByLeftAndRightPadding (var_fieldSize_44841, GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1479))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1476)) ;
       }
     }
     if (kBoolFalse == test_2) {
@@ -4823,9 +4823,9 @@ static GALGAS_gtlData extensionGetter_gtlInt_performGetter (const cPtr_gtlData *
               inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1483)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1483)) ;
             }
           }
-          GALGAS_uint var_fieldSize_45184 = temp_6.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1483)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1483)) ;
+          GALGAS_uint var_fieldSize_45182 = temp_6.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1483)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1483)) ;
           const GALGAS_gtlInt temp_7 = object ;
-          result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1485)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1486)), callExtensionGetter_string ((const cPtr_gtlInt *) temp_7.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1487)).getter_stringByLeftPadding (var_fieldSize_45184, GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1487))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1484)) ;
+          result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1485)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1486)), callExtensionGetter_string ((const cPtr_gtlInt *) temp_7.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1487)).getter_stringByLeftPadding (var_fieldSize_45182, GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1487))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1484)) ;
         }
       }
       if (kBoolFalse == test_5) {
@@ -4844,9 +4844,9 @@ static GALGAS_gtlData extensionGetter_gtlInt_performGetter (const cPtr_gtlData *
                 inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1491)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1491)) ;
               }
             }
-            GALGAS_uint var_fieldSize_45519 = temp_9.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1491)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1491)) ;
+            GALGAS_uint var_fieldSize_45517 = temp_9.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1491)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1491)) ;
             const GALGAS_gtlInt temp_10 = object ;
-            result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1493)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1494)), callExtensionGetter_string ((const cPtr_gtlInt *) temp_10.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1495)).getter_stringByRightPadding (var_fieldSize_45519, GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1495))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1492)) ;
+            result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1493)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1494)), callExtensionGetter_string ((const cPtr_gtlInt *) temp_10.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1495)).getter_stringByRightPadding (var_fieldSize_45517, GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1495))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1492)) ;
           }
         }
         if (kBoolFalse == test_8) {
@@ -5041,8 +5041,8 @@ static GALGAS_gtlData extensionGetter_gtlInt_performGetter (const cPtr_gtlData *
                                                   inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1607)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1607)) ;
                                                 }
                                               }
-                                              GALGAS_uint var_index_49715 = temp_28.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1607)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1607)) ;
-                                              result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1609)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1610)), object->mProperty_value.getter_bitAtIndex (var_index_49715 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1611))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1608)) ;
+                                              GALGAS_uint var_index_49713 = temp_28.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1607)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1607)) ;
+                                              result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1609)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1610)), object->mProperty_value.getter_bitAtIndex (var_index_49713 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1611))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1608)) ;
                                             }
                                           }
                                           if (kBoolFalse == test_27) {
@@ -5175,7 +5175,7 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlBool", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1657)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1657)) ;
         }
       }
-      GALGAS_bool var_bit_51421 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1657)) ;
+      GALGAS_bool var_bit_51419 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1657)) ;
       GALGAS_gtlInt temp_2 ;
       if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1658)).isValid ()) {
         if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1658)).ptr ())) {
@@ -5184,9 +5184,9 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1658)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1658)) ;
         }
       }
-      GALGAS_uint var_index_51486 = temp_2.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1658)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1658)) ;
+      GALGAS_uint var_index_51484 = temp_2.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1658)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1658)) ;
       {
-      object->mProperty_value.setter_setBitAtIndex (var_bit_51421, var_index_51486 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1659)) ;
+      object->mProperty_value.setter_setBitAtIndex (var_bit_51419, var_index_51484 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1659)) ;
       }
       object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1660)) ;
     }
@@ -5207,9 +5207,9 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)) ;
           }
         }
-        GALGAS_uint var_index_51737 = temp_4.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1663)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)) ;
+        GALGAS_uint var_index_51735 = temp_4.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1663)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1663)) ;
         {
-        object->mProperty_value.setter_complementBitAtIndex (var_index_51737 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1664)) ;
+        object->mProperty_value.setter_complementBitAtIndex (var_index_51735 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1664)) ;
         }
         object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1665)) ;
       }
@@ -5230,9 +5230,9 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
               inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1668)) ;
             }
           }
-          GALGAS_gtlString var_descriptionToSet_51994 = temp_6 ;
+          GALGAS_gtlString var_descriptionToSet_51992 = temp_6 ;
           {
-          object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_51994.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1669)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1669)) ;
+          object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_51992.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1669)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1669)) ;
           }
           object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1670)) ;
         }
@@ -5254,19 +5254,19 @@ static void extensionSetter_gtlInt_performSetter (cPtr_gtlData * inObject,
             test_8 = callExtensionGetter_setterExists ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("int"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1674)).boolEnum () ;
             if (kBoolTrue == test_8) {
               const GALGAS_gtlInt temp_9 = object ;
-              GALGAS_gtlData var_copy_52289 = temp_9 ;
-              callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("int"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1676)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1677)), constinArgument_context, constinArgument_lib, var_copy_52289, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1676)) ;
+              GALGAS_gtlData var_copy_52287 = temp_9 ;
+              callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("int"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1676)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1677)), constinArgument_context, constinArgument_lib, var_copy_52287, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1676)) ;
               GALGAS_gtlInt temp_10 ;
-              if (var_copy_52289.isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_copy_52289.ptr ())) {
-                  temp_10 = (cPtr_gtlInt *) var_copy_52289.ptr () ;
+              if (var_copy_52287.isValid ()) {
+                if (NULL != dynamic_cast <const cPtr_gtlInt *> (var_copy_52287.ptr ())) {
+                  temp_10 = (cPtr_gtlInt *) var_copy_52287.ptr () ;
                 }else{
-                  inCompiler->castError ("gtlInt", var_copy_52289.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1683)) ;
+                  inCompiler->castError ("gtlInt", var_copy_52287.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1683)) ;
                 }
               }
               object->mProperty_value = temp_10.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1683)) ;
-              object->mProperty_where = var_copy_52289.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 1684)) ;
-              object->mProperty_meta = var_copy_52289.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 1685)) ;
+              object->mProperty_where = var_copy_52287.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 1684)) ;
+              object->mProperty_meta = var_copy_52287.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 1685)) ;
             }
           }
           if (kBoolFalse == test_8) {
@@ -6455,8 +6455,8 @@ static GALGAS_gtlData extensionGetter_gtlFloat_performGetter (const cPtr_gtlData
                                   inCompiler->castError ("gtlFloat", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1958)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1958)) ;
                                 }
                               }
-                              GALGAS_double var_power_60535 = temp_14.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1958)) ;
-                              result_result = GALGAS_gtlFloat::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1960)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1960)), object->mProperty_value.getter_power (var_power_60535, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1960))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1959)) ;
+                              GALGAS_double var_power_60533 = temp_14.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 1958)) ;
+                              result_result = GALGAS_gtlFloat::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 1960)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1960)), object->mProperty_value.getter_power (var_power_60533, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1960))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 1959)) ;
                             }
                           }
                           if (kBoolFalse == test_13) {
@@ -6593,9 +6593,9 @@ static void extensionSetter_gtlFloat_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2011)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2011)) ;
         }
       }
-      GALGAS_gtlString var_descriptionToSet_62428 = temp_1 ;
+      GALGAS_gtlString var_descriptionToSet_62426 = temp_1 ;
       {
-      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_62428.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2012)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2012)) ;
+      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_62426.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2012)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2012)) ;
       }
       object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2013)) ;
     }
@@ -6617,19 +6617,19 @@ static void extensionSetter_gtlFloat_performSetter (cPtr_gtlData * inObject,
         test_3 = callExtensionGetter_setterExists ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("float"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2017)).boolEnum () ;
         if (kBoolTrue == test_3) {
           const GALGAS_gtlFloat temp_4 = object ;
-          GALGAS_gtlData var_copy_62725 = temp_4 ;
-          callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("float"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2019)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2020)), constinArgument_context, constinArgument_lib, var_copy_62725, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2019)) ;
+          GALGAS_gtlData var_copy_62723 = temp_4 ;
+          callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("float"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2019)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2020)), constinArgument_context, constinArgument_lib, var_copy_62723, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2019)) ;
           GALGAS_gtlFloat temp_5 ;
-          if (var_copy_62725.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlFloat *> (var_copy_62725.ptr ())) {
-              temp_5 = (cPtr_gtlFloat *) var_copy_62725.ptr () ;
+          if (var_copy_62723.isValid ()) {
+            if (NULL != dynamic_cast <const cPtr_gtlFloat *> (var_copy_62723.ptr ())) {
+              temp_5 = (cPtr_gtlFloat *) var_copy_62723.ptr () ;
             }else{
-              inCompiler->castError ("gtlFloat", var_copy_62725.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2026)) ;
+              inCompiler->castError ("gtlFloat", var_copy_62723.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2026)) ;
             }
           }
           object->mProperty_value = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2026)) ;
-          object->mProperty_where = var_copy_62725.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 2027)) ;
-          object->mProperty_meta = var_copy_62725.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 2028)) ;
+          object->mProperty_where = var_copy_62723.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 2027)) ;
+          object->mProperty_meta = var_copy_62723.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 2028)) ;
         }
       }
       if (kBoolFalse == test_3) {
@@ -7646,8 +7646,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2222)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2222)) ;
           }
         }
-        GALGAS_uint var_index_68331 = temp_2.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2222)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2222)) ;
-        result_result = GALGAS_gtlChar::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2224)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2224)), object->mProperty_value.getter_characterAtIndex (var_index_68331, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2224))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2223)) ;
+        GALGAS_uint var_index_68329 = temp_2.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2222)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2222)) ;
+        result_result = GALGAS_gtlChar::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2224)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2224)), object->mProperty_value.getter_characterAtIndex (var_index_68329, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2224))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2223)) ;
       }
     }
     if (kBoolFalse == test_1) {
@@ -7666,45 +7666,45 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
               inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2228)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2228)) ;
             }
           }
-          GALGAS_char var_lookedUpChar_68630 = temp_4.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2228)) ;
-          GALGAS_uint var_index_68695 = GALGAS_uint ((uint32_t) 0U) ;
-          GALGAS_uint var_length_68716 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2230)) ;
-          GALGAS_bool var_found_68749 = GALGAS_bool (false) ;
-          if (var_length_68716.isValid ()) {
-            uint32_t variant_68766 = var_length_68716.uintValue () ;
-            bool loop_68766 = true ;
-            while (loop_68766) {
-              GALGAS_bool test_5 = var_found_68749.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2233)) ;
+          GALGAS_char var_lookedUpChar_68628 = temp_4.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2228)) ;
+          GALGAS_uint var_index_68693 = GALGAS_uint ((uint32_t) 0U) ;
+          GALGAS_uint var_length_68714 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2230)) ;
+          GALGAS_bool var_found_68747 = GALGAS_bool (false) ;
+          if (var_length_68714.isValid ()) {
+            uint32_t variant_68764 = var_length_68714.uintValue () ;
+            bool loop_68764 = true ;
+            while (loop_68764) {
+              GALGAS_bool test_5 = var_found_68747.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2233)) ;
               if (kBoolTrue == test_5.boolEnum ()) {
-                test_5 = GALGAS_bool (kIsStrictInf, var_index_68695.objectCompare (var_length_68716)) ;
+                test_5 = GALGAS_bool (kIsStrictInf, var_index_68693.objectCompare (var_length_68714)) ;
               }
-              loop_68766 = test_5.isValid () ;
-              if (loop_68766) {
-                loop_68766 = test_5.boolValue () ;
+              loop_68764 = test_5.isValid () ;
+              if (loop_68764) {
+                loop_68764 = test_5.boolValue () ;
               }
-              if (loop_68766 && (0 == variant_68766)) {
-                loop_68766 = false ;
+              if (loop_68764 && (0 == variant_68764)) {
+                loop_68764 = false ;
                 inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_data_types.galgas", 2232)) ;
               }
-              if (loop_68766) {
-                variant_68766 -- ;
+              if (loop_68764) {
+                variant_68764 -- ;
                 enumGalgasBool test_6 = kBoolTrue ;
                 if (kBoolTrue == test_6) {
-                  test_6 = GALGAS_bool (kIsEqual, object->mProperty_value.getter_characterAtIndex (var_index_68695, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2234)).objectCompare (var_lookedUpChar_68630)).boolEnum () ;
+                  test_6 = GALGAS_bool (kIsEqual, object->mProperty_value.getter_characterAtIndex (var_index_68693, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2234)).objectCompare (var_lookedUpChar_68628)).boolEnum () ;
                   if (kBoolTrue == test_6) {
-                    var_found_68749 = GALGAS_bool (true) ;
+                    var_found_68747 = GALGAS_bool (true) ;
                   }
                 }
                 if (kBoolFalse == test_6) {
-                  var_index_68695.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2237)) ;
+                  var_index_68693.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2237)) ;
                 }
               }
             }
           }
           GALGAS_bigint temp_7 ;
-          const enumGalgasBool test_8 = var_found_68749.boolEnum () ;
+          const enumGalgasBool test_8 = var_found_68747.boolEnum () ;
           if (kBoolTrue == test_8) {
-            temp_7 = var_index_68695.getter_bigint (SOURCE_FILE ("gtl_data_types.galgas", 2243)) ;
+            temp_7 = var_index_68693.getter_bigint (SOURCE_FILE ("gtl_data_types.galgas", 2243)) ;
           }else if (kBoolFalse == test_8) {
             temp_7 = GALGAS_bigint ("-1", inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2243)) ;
           }
@@ -7727,7 +7727,7 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                 inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2247)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2247)) ;
               }
             }
-            GALGAS_char var_minChar_69219 = temp_10.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2247)) ;
+            GALGAS_char var_minChar_69217 = temp_10.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2247)) ;
             GALGAS_gtlChar temp_11 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2248)).isValid ()) {
               if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2248)).ptr ())) {
@@ -7736,50 +7736,50 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                 inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2248)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2248)) ;
               }
             }
-            GALGAS_char var_maxChar_69286 = temp_11.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2248)) ;
-            GALGAS_uint var_index_69351 = GALGAS_uint ((uint32_t) 0U) ;
-            GALGAS_uint var_length_69372 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2250)) ;
-            GALGAS_bool var_found_69405 = GALGAS_bool (false) ;
-            if (var_length_69372.isValid ()) {
-              uint32_t variant_69422 = var_length_69372.uintValue () ;
-              bool loop_69422 = true ;
-              while (loop_69422) {
-                GALGAS_bool test_12 = var_found_69405.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2253)) ;
+            GALGAS_char var_maxChar_69284 = temp_11.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2248)) ;
+            GALGAS_uint var_index_69349 = GALGAS_uint ((uint32_t) 0U) ;
+            GALGAS_uint var_length_69370 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2250)) ;
+            GALGAS_bool var_found_69403 = GALGAS_bool (false) ;
+            if (var_length_69370.isValid ()) {
+              uint32_t variant_69420 = var_length_69370.uintValue () ;
+              bool loop_69420 = true ;
+              while (loop_69420) {
+                GALGAS_bool test_12 = var_found_69403.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2253)) ;
                 if (kBoolTrue == test_12.boolEnum ()) {
-                  test_12 = GALGAS_bool (kIsStrictInf, var_index_69351.objectCompare (var_length_69372)) ;
+                  test_12 = GALGAS_bool (kIsStrictInf, var_index_69349.objectCompare (var_length_69370)) ;
                 }
-                loop_69422 = test_12.isValid () ;
-                if (loop_69422) {
-                  loop_69422 = test_12.boolValue () ;
+                loop_69420 = test_12.isValid () ;
+                if (loop_69420) {
+                  loop_69420 = test_12.boolValue () ;
                 }
-                if (loop_69422 && (0 == variant_69422)) {
-                  loop_69422 = false ;
+                if (loop_69420 && (0 == variant_69420)) {
+                  loop_69420 = false ;
                   inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_data_types.galgas", 2252)) ;
                 }
-                if (loop_69422) {
-                  variant_69422 -- ;
-                  GALGAS_char var_currentChar_69496 = object->mProperty_value.getter_characterAtIndex (var_index_69351, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2254)) ;
+                if (loop_69420) {
+                  variant_69420 -- ;
+                  GALGAS_char var_currentChar_69494 = object->mProperty_value.getter_characterAtIndex (var_index_69349, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2254)) ;
                   enumGalgasBool test_13 = kBoolTrue ;
                   if (kBoolTrue == test_13) {
-                    GALGAS_bool test_14 = GALGAS_bool (kIsSupOrEqual, var_currentChar_69496.objectCompare (var_minChar_69219)) ;
+                    GALGAS_bool test_14 = GALGAS_bool (kIsSupOrEqual, var_currentChar_69494.objectCompare (var_minChar_69217)) ;
                     if (kBoolTrue == test_14.boolEnum ()) {
-                      test_14 = GALGAS_bool (kIsInfOrEqual, var_currentChar_69496.objectCompare (var_maxChar_69286)) ;
+                      test_14 = GALGAS_bool (kIsInfOrEqual, var_currentChar_69494.objectCompare (var_maxChar_69284)) ;
                     }
                     test_13 = test_14.boolEnum () ;
                     if (kBoolTrue == test_13) {
-                      var_found_69405 = GALGAS_bool (true) ;
+                      var_found_69403 = GALGAS_bool (true) ;
                     }
                   }
                   if (kBoolFalse == test_13) {
-                    var_index_69351.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2258)) ;
+                    var_index_69349.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2258)) ;
                   }
                 }
               }
             }
             GALGAS_bigint temp_15 ;
-            const enumGalgasBool test_16 = var_found_69405.boolEnum () ;
+            const enumGalgasBool test_16 = var_found_69403.boolEnum () ;
             if (kBoolTrue == test_16) {
-              temp_15 = var_index_69351.getter_bigint (SOURCE_FILE ("gtl_data_types.galgas", 2264)) ;
+              temp_15 = var_index_69349.getter_bigint (SOURCE_FILE ("gtl_data_types.galgas", 2264)) ;
             }else if (kBoolFalse == test_16) {
               temp_15 = GALGAS_bigint ("-1", inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2264)) ;
             }
@@ -7802,8 +7802,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                   inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2268)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2268)) ;
                 }
               }
-              GALGAS_char var_lookedUpChar_69926 = temp_18.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2268)) ;
-              result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2270)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2271)), object->mProperty_value.getter_containsCharacter (var_lookedUpChar_69926 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2272))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2269)) ;
+              GALGAS_char var_lookedUpChar_69924 = temp_18.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2268)) ;
+              result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2270)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2271)), object->mProperty_value.getter_containsCharacter (var_lookedUpChar_69924 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2272))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2269)) ;
             }
           }
           if (kBoolFalse == test_17) {
@@ -7822,7 +7822,7 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                     inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2276)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2276)) ;
                   }
                 }
-                GALGAS_char var_minChar_70249 = temp_20.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2276)) ;
+                GALGAS_char var_minChar_70247 = temp_20.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2276)) ;
                 GALGAS_gtlChar temp_21 ;
                 if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2277)).isValid ()) {
                   if (NULL != dynamic_cast <const cPtr_gtlChar *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2277)).ptr ())) {
@@ -7831,8 +7831,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                     inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2277)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2277)) ;
                   }
                 }
-                GALGAS_char var_maxChar_70316 = temp_21.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2277)) ;
-                result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2279)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2280)), object->mProperty_value.getter_containsCharacterInRange (var_minChar_70249, var_maxChar_70316 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2278)) ;
+                GALGAS_char var_maxChar_70314 = temp_21.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2277)) ;
+                result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2279)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2280)), object->mProperty_value.getter_containsCharacterInRange (var_minChar_70247, var_maxChar_70314 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2281))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2278)) ;
               }
             }
             if (kBoolFalse == test_19) {
@@ -7943,41 +7943,41 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                       inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2326)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2326)) ;
                                     }
                                   }
-                                  GALGAS_string var_subString_72465 = temp_32.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2326)) ;
-                                  GALGAS_uint var_subStringLength_72542 = var_subString_72465.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2327)) ;
-                                  GALGAS_uint var_start_72579 = GALGAS_uint ((uint32_t) 0U) ;
-                                  GALGAS_uint var_stop_72598 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2329)).substract_operation (var_subStringLength_72542, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2329)) ;
-                                  GALGAS_bool var_exists_72650 = GALGAS_bool (false) ;
+                                  GALGAS_string var_subString_72463 = temp_32.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2326)) ;
+                                  GALGAS_uint var_subStringLength_72540 = var_subString_72463.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2327)) ;
+                                  GALGAS_uint var_start_72577 = GALGAS_uint ((uint32_t) 0U) ;
+                                  GALGAS_uint var_stop_72596 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2329)).substract_operation (var_subStringLength_72540, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2329)) ;
+                                  GALGAS_bool var_exists_72648 = GALGAS_bool (false) ;
                                   if (object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2331)).isValid ()) {
-                                    uint32_t variant_72668 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2331)).uintValue () ;
-                                    bool loop_72668 = true ;
-                                    while (loop_72668) {
-                                      GALGAS_bool test_33 = var_exists_72650.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2332)) ;
+                                    uint32_t variant_72666 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2331)).uintValue () ;
+                                    bool loop_72666 = true ;
+                                    while (loop_72666) {
+                                      GALGAS_bool test_33 = var_exists_72648.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2332)) ;
                                       if (kBoolTrue == test_33.boolEnum ()) {
-                                        test_33 = GALGAS_bool (kIsInfOrEqual, var_start_72579.objectCompare (var_stop_72598)) ;
+                                        test_33 = GALGAS_bool (kIsInfOrEqual, var_start_72577.objectCompare (var_stop_72596)) ;
                                       }
-                                      loop_72668 = test_33.isValid () ;
-                                      if (loop_72668) {
-                                        loop_72668 = test_33.boolValue () ;
+                                      loop_72666 = test_33.isValid () ;
+                                      if (loop_72666) {
+                                        loop_72666 = test_33.boolValue () ;
                                       }
-                                      if (loop_72668 && (0 == variant_72668)) {
-                                        loop_72668 = false ;
+                                      if (loop_72666 && (0 == variant_72666)) {
+                                        loop_72666 = false ;
                                         inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_data_types.galgas", 2331)) ;
                                       }
-                                      if (loop_72668) {
-                                        variant_72668 -- ;
+                                      if (loop_72666) {
+                                        variant_72666 -- ;
                                         enumGalgasBool test_34 = kBoolTrue ;
                                         if (kBoolTrue == test_34) {
-                                          test_34 = GALGAS_bool (kIsEqual, object->mProperty_value.getter_subString (var_start_72579, var_subStringLength_72542 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2333)).objectCompare (var_subString_72465)).boolEnum () ;
+                                          test_34 = GALGAS_bool (kIsEqual, object->mProperty_value.getter_subString (var_start_72577, var_subStringLength_72540 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2333)).objectCompare (var_subString_72463)).boolEnum () ;
                                           if (kBoolTrue == test_34) {
-                                            var_exists_72650 = GALGAS_bool (true) ;
+                                            var_exists_72648 = GALGAS_bool (true) ;
                                           }
                                         }
-                                        var_start_72579.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2336)) ;
+                                        var_start_72577.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2336)) ;
                                       }
                                     }
                                   }
-                                  result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2339)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2339)), var_exists_72650  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2338)) ;
+                                  result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2339)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2339)), var_exists_72648  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2338)) ;
                                 }
                               }
                               if (kBoolFalse == test_31) {
@@ -7996,8 +7996,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                         inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2343)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2343)) ;
                                       }
                                     }
-                                    GALGAS_uint var_index_73076 = temp_36.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2343)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2343)) ;
-                                    result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2345)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2345)), object->mProperty_value.getter_leftSubString (var_index_73076 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2345))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2344)) ;
+                                    GALGAS_uint var_index_73074 = temp_36.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2343)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2343)) ;
+                                    result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2345)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2345)), object->mProperty_value.getter_leftSubString (var_index_73074 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2345))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2344)) ;
                                   }
                                 }
                                 if (kBoolFalse == test_35) {
@@ -8016,8 +8016,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                           inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2349)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2349)) ;
                                         }
                                       }
-                                      GALGAS_uint var_index_73369 = temp_38.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2349)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2349)) ;
-                                      result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2351)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2351)), object->mProperty_value.getter_rightSubString (var_index_73369 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2351))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2350)) ;
+                                      GALGAS_uint var_index_73367 = temp_38.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2349)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2349)) ;
+                                      result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2351)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2351)), object->mProperty_value.getter_rightSubString (var_index_73367 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2351))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2350)) ;
                                     }
                                   }
                                   if (kBoolFalse == test_37) {
@@ -8036,7 +8036,7 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2355)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2355)) ;
                                           }
                                         }
-                                        GALGAS_uint var_start_73662 = temp_40.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2355)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2355)) ;
+                                        GALGAS_uint var_start_73660 = temp_40.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2355)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2355)) ;
                                         GALGAS_gtlInt temp_41 ;
                                         if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2356)).isValid ()) {
                                           if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2356)).ptr ())) {
@@ -8045,8 +8045,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                             inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2356)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2356)) ;
                                           }
                                         }
-                                        GALGAS_uint var_length_73734 = temp_41.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2356)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2356)) ;
-                                        result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2358)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2358)), object->mProperty_value.getter_subString (var_start_73662, var_length_73734 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2358))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2357)) ;
+                                        GALGAS_uint var_length_73732 = temp_41.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2356)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2356)) ;
+                                        result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2358)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2358)), object->mProperty_value.getter_subString (var_start_73660, var_length_73732 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2358))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2357)) ;
                                       }
                                     }
                                     if (kBoolFalse == test_39) {
@@ -8076,15 +8076,15 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                 inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2367)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2367)) ;
                                               }
                                             }
-                                            GALGAS_string var_separator_74268 = temp_44.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2367)) ;
-                                            GALGAS_stringlist var_stringlist_74346 = object->mProperty_value.getter_componentsSeparatedByString (var_separator_74268 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2368)) ;
-                                            GALGAS_list var_components_74416 = GALGAS_list::constructor_emptyList (SOURCE_FILE ("gtl_data_types.galgas", 2369)) ;
-                                            cEnumerator_stringlist enumerator_74457 (var_stringlist_74346, kENUMERATION_UP) ;
-                                            while (enumerator_74457.hasCurrentObject ()) {
-                                              var_components_74416.addAssign_operation (GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2372)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)), enumerator_74457.current_mValue (HERE)  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2371))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2371)) ;
-                                              enumerator_74457.gotoNextObject () ;
+                                            GALGAS_string var_separator_74266 = temp_44.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2367)) ;
+                                            GALGAS_stringlist var_stringlist_74344 = object->mProperty_value.getter_componentsSeparatedByString (var_separator_74266 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2368)) ;
+                                            GALGAS_list var_components_74414 = GALGAS_list::constructor_emptyList (SOURCE_FILE ("gtl_data_types.galgas", 2369)) ;
+                                            cEnumerator_stringlist enumerator_74455 (var_stringlist_74344, kENUMERATION_UP) ;
+                                            while (enumerator_74455.hasCurrentObject ()) {
+                                              var_components_74414.addAssign_operation (GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2372)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2372)), enumerator_74455.current_mValue (HERE)  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2371))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2371)) ;
+                                              enumerator_74455.gotoNextObject () ;
                                             }
-                                            result_result = GALGAS_gtlList::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2376)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2376)), var_components_74416  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2375)) ;
+                                            result_result = GALGAS_gtlList::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2376)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2376)), var_components_74414  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2375)) ;
                                           }
                                         }
                                         if (kBoolFalse == test_43) {
@@ -8114,8 +8114,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                     inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2383)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2383)) ;
                                                   }
                                                 }
-                                                GALGAS_string var_prefix_74909 = temp_49.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2383)) ;
-                                                result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2385)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2386)), var_prefix_74909.add_operation (object->mProperty_value, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2387)).getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_prefix_74909, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2387)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2387))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2384)) ;
+                                                GALGAS_string var_prefix_74907 = temp_49.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2383)) ;
+                                                result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2385)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2386)), var_prefix_74907.add_operation (object->mProperty_value, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2387)).getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_prefix_74907, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2387)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2387))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2384)) ;
                                               }
                                             }
                                             if (kBoolFalse == test_48) {
@@ -8134,7 +8134,7 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                       inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2391)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2391)) ;
                                                     }
                                                   }
-                                                  GALGAS_uint var_width_75246 = temp_51.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2391)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2391)) ;
+                                                  GALGAS_uint var_width_75244 = temp_51.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2391)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2391)) ;
                                                   GALGAS_gtlInt temp_52 ;
                                                   if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2392)).isValid ()) {
                                                     if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2392)).ptr ())) {
@@ -8143,39 +8143,39 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                       inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2392)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2392)) ;
                                                     }
                                                   }
-                                                  GALGAS_uint var_shift_75317 = temp_52.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2392)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2392)) ;
-                                                  GALGAS_string var_stringShift_75396 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift_75317  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2393)) ;
-                                                  GALGAS_stringlist var_paragraphs_75473 = object->mProperty_value.getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2394)) ;
-                                                  GALGAS_stringlist var_resultParagraphs_75554 = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("gtl_data_types.galgas", 2395)) ;
-                                                  cEnumerator_stringlist enumerator_75603 (var_paragraphs_75473, kENUMERATION_UP) ;
-                                                  while (enumerator_75603.hasCurrentObject ()) {
-                                                    GALGAS_stringlist var_words_75630 = enumerator_75603.current_mValue (HERE).getter_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)) ;
-                                                    GALGAS_uint var_lineWidth_75699 = GALGAS_uint ((uint32_t) 0U) ;
-                                                    GALGAS_string var_line_75722 = GALGAS_string::makeEmptyString () ;
-                                                    cEnumerator_stringlist enumerator_75753 (var_words_75630, kENUMERATION_UP) ;
-                                                    while (enumerator_75753.hasCurrentObject ()) {
+                                                  GALGAS_uint var_shift_75315 = temp_52.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2392)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2392)) ;
+                                                  GALGAS_string var_stringShift_75394 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift_75315  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2393)) ;
+                                                  GALGAS_stringlist var_paragraphs_75471 = object->mProperty_value.getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2394)) ;
+                                                  GALGAS_stringlist var_resultParagraphs_75552 = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("gtl_data_types.galgas", 2395)) ;
+                                                  cEnumerator_stringlist enumerator_75601 (var_paragraphs_75471, kENUMERATION_UP) ;
+                                                  while (enumerator_75601.hasCurrentObject ()) {
+                                                    GALGAS_stringlist var_words_75628 = enumerator_75601.current_mValue (HERE).getter_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2397)) ;
+                                                    GALGAS_uint var_lineWidth_75697 = GALGAS_uint ((uint32_t) 0U) ;
+                                                    GALGAS_string var_line_75720 = GALGAS_string::makeEmptyString () ;
+                                                    cEnumerator_stringlist enumerator_75751 (var_words_75628, kENUMERATION_UP) ;
+                                                    while (enumerator_75751.hasCurrentObject ()) {
                                                       enumGalgasBool test_53 = kBoolTrue ;
                                                       if (kBoolTrue == test_53) {
-                                                        test_53 = GALGAS_bool (kIsNotEqual, enumerator_75753.current_mValue (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+                                                        test_53 = GALGAS_bool (kIsNotEqual, enumerator_75751.current_mValue (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
                                                         if (kBoolTrue == test_53) {
                                                           enumGalgasBool test_54 = kBoolTrue ;
                                                           if (kBoolTrue == test_54) {
-                                                            test_54 = GALGAS_bool (kIsStrictSup, var_lineWidth_75699.add_operation (enumerator_75753.current_mValue (HERE).getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2402)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2402)).objectCompare (var_width_75246)).boolEnum () ;
+                                                            test_54 = GALGAS_bool (kIsStrictSup, var_lineWidth_75697.add_operation (enumerator_75751.current_mValue (HERE).getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2402)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2402)).objectCompare (var_width_75244)).boolEnum () ;
                                                             if (kBoolTrue == test_54) {
-                                                              var_line_75722.plusAssign_operation(GALGAS_string ("\n").add_operation (var_stringShift_75396, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2403)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2403)) ;
-                                                              var_lineWidth_75699 = var_shift_75317 ;
+                                                              var_line_75720.plusAssign_operation(GALGAS_string ("\n").add_operation (var_stringShift_75394, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2403)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2403)) ;
+                                                              var_lineWidth_75697 = var_shift_75315 ;
                                                             }
                                                           }
-                                                          var_lineWidth_75699.plusAssign_operation(enumerator_75753.current_mValue (HERE).getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2406)).add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2406)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2406)) ;
-                                                          var_line_75722.plusAssign_operation(enumerator_75753.current_mValue (HERE).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2407)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2407)) ;
+                                                          var_lineWidth_75697.plusAssign_operation(enumerator_75751.current_mValue (HERE).getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2406)).add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2406)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2406)) ;
+                                                          var_line_75720.plusAssign_operation(enumerator_75751.current_mValue (HERE).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2407)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2407)) ;
                                                         }
                                                       }
-                                                      enumerator_75753.gotoNextObject () ;
+                                                      enumerator_75751.gotoNextObject () ;
                                                     }
-                                                    var_resultParagraphs_75554.addAssign_operation (var_line_75722  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2410)) ;
-                                                    enumerator_75603.gotoNextObject () ;
+                                                    var_resultParagraphs_75552.addAssign_operation (var_line_75720  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2410)) ;
+                                                    enumerator_75601.gotoNextObject () ;
                                                   }
-                                                  result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2413)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2414)), GALGAS_string::constructor_componentsJoinedByString (var_resultParagraphs_75554, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2415))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2412)) ;
+                                                  result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2413)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2414)), GALGAS_string::constructor_componentsJoinedByString (var_resultParagraphs_75552, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2415))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2412)) ;
                                                 }
                                               }
                                               if (kBoolFalse == test_50) {
@@ -8194,7 +8194,7 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                         inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2419)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2419)) ;
                                                       }
                                                     }
-                                                    GALGAS_string var_find_76350 = temp_56.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2419)) ;
+                                                    GALGAS_string var_find_76348 = temp_56.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2419)) ;
                                                     GALGAS_gtlString temp_57 ;
                                                     if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2420)).isValid ()) {
                                                       if (NULL != dynamic_cast <const cPtr_gtlString *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2420)).ptr ())) {
@@ -8203,8 +8203,8 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                         inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2420)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2420)) ;
                                                       }
                                                     }
-                                                    GALGAS_string var_rep_76417 = temp_57.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2420)) ;
-                                                    result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2422)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2423)), object->mProperty_value.getter_stringByReplacingStringByString (var_find_76350, var_rep_76417, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2421)) ;
+                                                    GALGAS_string var_rep_76415 = temp_57.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2420)) ;
+                                                    result_result = GALGAS_gtlString::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2422)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2423)), object->mProperty_value.getter_stringByReplacingStringByString (var_find_76348, var_rep_76415, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2424))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2421)) ;
                                                   }
                                                 }
                                                 if (kBoolFalse == test_55) {
@@ -8223,37 +8223,37 @@ static GALGAS_gtlData extensionGetter_gtlString_performGetter (const cPtr_gtlDat
                                                           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2428)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2428)) ;
                                                         }
                                                       }
-                                                      GALGAS_string var_subString_76752 = callExtensionGetter_string ((const cPtr_gtlString *) temp_59.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2428)) ;
-                                                      GALGAS_uint var_subLength_76824 = var_subString_76752.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2429)) ;
-                                                      GALGAS_uint var_start_76861 = GALGAS_uint ((uint32_t) 0U) ;
-                                                      GALGAS_uint var_stop_76880 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2431)).substract_operation (var_subLength_76824, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2431)) ;
-                                                      GALGAS_bool var_exists_76926 = GALGAS_bool (false) ;
+                                                      GALGAS_string var_subString_76750 = callExtensionGetter_string ((const cPtr_gtlString *) temp_59.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2428)) ;
+                                                      GALGAS_uint var_subLength_76822 = var_subString_76750.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2429)) ;
+                                                      GALGAS_uint var_start_76859 = GALGAS_uint ((uint32_t) 0U) ;
+                                                      GALGAS_uint var_stop_76878 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2431)).substract_operation (var_subLength_76822, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2431)) ;
+                                                      GALGAS_bool var_exists_76924 = GALGAS_bool (false) ;
                                                       if (object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2433)).isValid ()) {
-                                                        uint32_t variant_76943 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2433)).uintValue () ;
-                                                        bool loop_76943 = true ;
-                                                        while (loop_76943) {
-                                                          loop_76943 = GALGAS_bool (kIsInfOrEqual, var_start_76861.objectCompare (var_stop_76880)).operator_and (var_exists_76926.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2434)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2434)).isValid () ;
-                                                          if (loop_76943) {
-                                                            loop_76943 = GALGAS_bool (kIsInfOrEqual, var_start_76861.objectCompare (var_stop_76880)).operator_and (var_exists_76926.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2434)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2434)).boolValue () ;
+                                                        uint32_t variant_76941 = object->mProperty_value.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 2433)).uintValue () ;
+                                                        bool loop_76941 = true ;
+                                                        while (loop_76941) {
+                                                          loop_76941 = GALGAS_bool (kIsInfOrEqual, var_start_76859.objectCompare (var_stop_76878)).operator_and (var_exists_76924.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2434)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2434)).isValid () ;
+                                                          if (loop_76941) {
+                                                            loop_76941 = GALGAS_bool (kIsInfOrEqual, var_start_76859.objectCompare (var_stop_76878)).operator_and (var_exists_76924.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2434)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2434)).boolValue () ;
                                                           }
-                                                          if (loop_76943 && (0 == variant_76943)) {
-                                                            loop_76943 = false ;
+                                                          if (loop_76941 && (0 == variant_76941)) {
+                                                            loop_76941 = false ;
                                                             inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_data_types.galgas", 2433)) ;
                                                           }
-                                                          if (loop_76943) {
-                                                            variant_76943 -- ;
+                                                          if (loop_76941) {
+                                                            variant_76941 -- ;
                                                             enumGalgasBool test_60 = kBoolTrue ;
                                                             if (kBoolTrue == test_60) {
-                                                              test_60 = GALGAS_bool (kIsEqual, object->mProperty_value.getter_subString (var_start_76861, var_subLength_76824 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2435)).objectCompare (var_subString_76752)).boolEnum () ;
+                                                              test_60 = GALGAS_bool (kIsEqual, object->mProperty_value.getter_subString (var_start_76859, var_subLength_76822 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2435)).objectCompare (var_subString_76750)).boolEnum () ;
                                                               if (kBoolTrue == test_60) {
-                                                                var_exists_76926 = GALGAS_bool (true) ;
+                                                                var_exists_76924 = GALGAS_bool (true) ;
                                                               }
                                                             }
-                                                            var_start_76861.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2438)) ;
+                                                            var_start_76859.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2438)) ;
                                                           }
                                                         }
                                                       }
-                                                      result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2441)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2442)), var_exists_76926  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2440)) ;
+                                                      result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2441)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2442)), var_exists_76924  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2440)) ;
                                                     }
                                                   }
                                                   if (kBoolFalse == test_58) {
@@ -8414,9 +8414,9 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2504)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2504)) ;
         }
       }
-      GALGAS_gtlString var_descriptionToSet_79269 = temp_1 ;
+      GALGAS_gtlString var_descriptionToSet_79267 = temp_1 ;
       {
-      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_79269.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)) ;
+      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_79267.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2505)) ;
       }
       object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2506)) ;
     }
@@ -8448,7 +8448,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
               inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2512)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2512)) ;
             }
           }
-          GALGAS_char var_charToSet_79625 = temp_4.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2512)) ;
+          GALGAS_char var_charToSet_79623 = temp_4.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2512)) ;
           GALGAS_gtlInt temp_5 ;
           if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2513)).isValid ()) {
             if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2513)).ptr ())) {
@@ -8457,9 +8457,9 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
               inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2513)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2513)) ;
             }
           }
-          GALGAS_uint var_index_79690 = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2513)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2513)) ;
+          GALGAS_uint var_index_79688 = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2513)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2513)) ;
           {
-          object->mProperty_value.setter_setCharacterAtIndex (var_charToSet_79625, var_index_79690, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2514)) ;
+          object->mProperty_value.setter_setCharacterAtIndex (var_charToSet_79623, var_index_79688, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2514)) ;
           }
           object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2515)) ;
         }
@@ -8480,7 +8480,7 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
                 inCompiler->castError ("gtlChar", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2518)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2518)) ;
               }
             }
-            GALGAS_char var_charToInsert_79953 = temp_7.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2518)) ;
+            GALGAS_char var_charToInsert_79951 = temp_7.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2518)) ;
             GALGAS_gtlInt temp_8 ;
             if (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2519)).isValid ()) {
               if (NULL != dynamic_cast <const cPtr_gtlInt *> (constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2519)).ptr ())) {
@@ -8489,9 +8489,9 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
                 inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2519)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2519)) ;
               }
             }
-            GALGAS_uint var_index_80018 = temp_8.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2519)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2519)) ;
+            GALGAS_uint var_index_80016 = temp_8.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2519)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2519)) ;
             {
-            object->mProperty_value.setter_insertCharacterAtIndex (var_charToInsert_79953, var_index_80018, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2520)) ;
+            object->mProperty_value.setter_insertCharacterAtIndex (var_charToInsert_79951, var_index_80016, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2520)) ;
             }
             object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2521)) ;
           }
@@ -8512,10 +8512,10 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
                   inCompiler->castError ("gtlInt", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2524)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2524)) ;
                 }
               }
-              GALGAS_uint var_index_80275 = temp_10.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2524)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2524)) ;
+              GALGAS_uint var_index_80273 = temp_10.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2524)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2524)) ;
               {
-              GALGAS_char joker_80368 ; // Joker input parameter
-              object->mProperty_value.setter_removeCharacterAtIndex (joker_80368, var_index_80275, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2525)) ;
+              GALGAS_char joker_80366 ; // Joker input parameter
+              object->mProperty_value.setter_removeCharacterAtIndex (joker_80366, var_index_80273, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2525)) ;
               }
               object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2526)) ;
             }
@@ -8526,19 +8526,19 @@ static void extensionSetter_gtlString_performSetter (cPtr_gtlData * inObject,
               test_11 = callExtensionGetter_setterExists ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("string"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2527)).boolEnum () ;
               if (kBoolTrue == test_11) {
                 const GALGAS_gtlString temp_12 = object ;
-                GALGAS_gtlData var_copy_80472 = temp_12 ;
-                callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("string"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2529)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2530)), constinArgument_context, constinArgument_lib, var_copy_80472, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2529)) ;
+                GALGAS_gtlData var_copy_80470 = temp_12 ;
+                callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("string"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2529)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2530)), constinArgument_context, constinArgument_lib, var_copy_80470, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2529)) ;
                 GALGAS_gtlString temp_13 ;
-                if (var_copy_80472.isValid ()) {
-                  if (NULL != dynamic_cast <const cPtr_gtlString *> (var_copy_80472.ptr ())) {
-                    temp_13 = (cPtr_gtlString *) var_copy_80472.ptr () ;
+                if (var_copy_80470.isValid ()) {
+                  if (NULL != dynamic_cast <const cPtr_gtlString *> (var_copy_80470.ptr ())) {
+                    temp_13 = (cPtr_gtlString *) var_copy_80470.ptr () ;
                   }else{
-                    inCompiler->castError ("gtlString", var_copy_80472.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2536)) ;
+                    inCompiler->castError ("gtlString", var_copy_80470.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2536)) ;
                   }
                 }
                 object->mProperty_value = temp_13.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2536)) ;
-                object->mProperty_where = var_copy_80472.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 2537)) ;
-                object->mProperty_meta = var_copy_80472.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 2538)) ;
+                object->mProperty_where = var_copy_80470.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 2537)) ;
+                object->mProperty_meta = var_copy_80470.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 2538)) ;
               }
             }
             if (kBoolFalse == test_11) {
@@ -9796,9 +9796,9 @@ static void extensionSetter_gtlBool_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2830)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2830)) ;
         }
       }
-      GALGAS_gtlString var_descriptionToSet_88909 = temp_1 ;
+      GALGAS_gtlString var_descriptionToSet_88907 = temp_1 ;
       {
-      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_88909.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2831)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2831)) ;
+      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_88907.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2831)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2831)) ;
       }
       object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2832)) ;
     }
@@ -9820,19 +9820,19 @@ static void extensionSetter_gtlBool_performSetter (cPtr_gtlData * inObject,
         test_3 = callExtensionGetter_setterExists ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("bool"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2836)).boolEnum () ;
         if (kBoolTrue == test_3) {
           const GALGAS_gtlBool temp_4 = object ;
-          GALGAS_gtlData var_copy_89205 = temp_4 ;
-          callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("bool"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2838)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2839)), constinArgument_context, constinArgument_lib, var_copy_89205, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2838)) ;
+          GALGAS_gtlData var_copy_89203 = temp_4 ;
+          callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("bool"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2838)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 2839)), constinArgument_context, constinArgument_lib, var_copy_89203, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2838)) ;
           GALGAS_gtlBool temp_5 ;
-          if (var_copy_89205.isValid ()) {
-            if (NULL != dynamic_cast <const cPtr_gtlBool *> (var_copy_89205.ptr ())) {
-              temp_5 = (cPtr_gtlBool *) var_copy_89205.ptr () ;
+          if (var_copy_89203.isValid ()) {
+            if (NULL != dynamic_cast <const cPtr_gtlBool *> (var_copy_89203.ptr ())) {
+              temp_5 = (cPtr_gtlBool *) var_copy_89203.ptr () ;
             }else{
-              inCompiler->castError ("gtlBool", var_copy_89205.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2845)) ;
+              inCompiler->castError ("gtlBool", var_copy_89203.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2845)) ;
             }
           }
           object->mProperty_value = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2845)) ;
-          object->mProperty_where = var_copy_89205.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 2846)) ;
-          object->mProperty_meta = var_copy_89205.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 2847)) ;
+          object->mProperty_where = var_copy_89203.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 2846)) ;
+          object->mProperty_meta = var_copy_89203.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 2847)) ;
         }
       }
       if (kBoolFalse == test_3) {
@@ -9867,14 +9867,14 @@ static GALGAS_string extensionGetter_gtlSet_desc (const cPtr_gtlData * inObject,
   const cPtr_gtlSet * object = (const cPtr_gtlSet *) inObject ;
   macroValidSharedObject (object, cPtr_gtlSet) ;
   result_result = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2873)).add_operation (GALGAS_string ("set: @!\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2873)) ;
-  cEnumerator_lstringset enumerator_90414 (object->mProperty_value, kENUMERATION_UP) ;
+  cEnumerator_lstringset enumerator_90412 (object->mProperty_value, kENUMERATION_UP) ;
   const bool bool_0 = true ;
-  if (enumerator_90414.hasCurrentObject () && bool_0) {
+  if (enumerator_90412.hasCurrentObject () && bool_0) {
     result_result.plusAssign_operation(GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2877))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2877)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2877)) ;
-    while (enumerator_90414.hasCurrentObject () && bool_0) {
-      result_result.plusAssign_operation(enumerator_90414.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2879)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2879)) ;
-      enumerator_90414.gotoNextObject () ;
-      if (enumerator_90414.hasCurrentObject () && bool_0) {
+    while (enumerator_90412.hasCurrentObject () && bool_0) {
+      result_result.plusAssign_operation(enumerator_90412.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2879)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2879)) ;
+      enumerator_90412.gotoNextObject () ;
+      if (enumerator_90412.hasCurrentObject () && bool_0) {
         result_result.plusAssign_operation(GALGAS_string (", "), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2881)) ;
       }
     }
@@ -10158,21 +10158,21 @@ static GALGAS_gtlData extensionGetter_gtlSet_addOp (const cPtr_gtlData * inObjec
   GALGAS_gtlData result_result ; // Returned variable
   const cPtr_gtlSet * object = (const cPtr_gtlSet *) inObject ;
   macroValidSharedObject (object, cPtr_gtlSet) ;
-  GALGAS_lstringset var_set_91579 = object->mProperty_value ;
-  GALGAS_lstring var_element_91606 = callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_right.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2922)) ;
+  GALGAS_lstringset var_set_91577 = object->mProperty_value ;
+  GALGAS_lstring var_element_91604 = callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_right.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2922)) ;
   enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    test_0 = var_set_91579.getter_hasKey (var_element_91606.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2923)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2923)).boolEnum () ;
+    test_0 = var_set_91577.getter_hasKey (var_element_91604.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2923)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2923)).boolEnum () ;
     if (kBoolTrue == test_0) {
       {
-      var_set_91579.setter_del (var_element_91606, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2924)) ;
+      var_set_91577.setter_del (var_element_91604, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2924)) ;
       }
     }
   }
   {
-  var_set_91579.setter_put (callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_right.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2926)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2926)) ;
+  var_set_91577.setter_put (callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_right.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2926)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2926)) ;
   }
-  result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2927)), var_set_91579  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2927)) ;
+  result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2927)), var_set_91577  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2927)) ;
 //---
   return result_result ;
 }
@@ -10206,7 +10206,7 @@ static GALGAS_gtlData extensionGetter_gtlSet_subOp (const cPtr_gtlData * inObjec
   if (kBoolTrue == test_0) {
     test_0 = GALGAS_bool (constinArgument_right.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlSet).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_lstringset var_resultSet_91903 = object->mProperty_value ;
+      GALGAS_lstringset var_resultSet_91901 = object->mProperty_value ;
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
         if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
@@ -10215,20 +10215,20 @@ static GALGAS_gtlData extensionGetter_gtlSet_subOp (const cPtr_gtlData * inObjec
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2933)) ;
         }
       }
-      cEnumerator_lstringset enumerator_91954 (temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2933)), kENUMERATION_UP) ;
-      while (enumerator_91954.hasCurrentObject ()) {
+      cEnumerator_lstringset enumerator_91952 (temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2933)), kENUMERATION_UP) ;
+      while (enumerator_91952.hasCurrentObject ()) {
         enumGalgasBool test_2 = kBoolTrue ;
         if (kBoolTrue == test_2) {
-          test_2 = var_resultSet_91903.getter_hasKey (enumerator_91954.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2934)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2934)).boolEnum () ;
+          test_2 = var_resultSet_91901.getter_hasKey (enumerator_91952.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2934)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2934)).boolEnum () ;
           if (kBoolTrue == test_2) {
             {
-            var_resultSet_91903.setter_del (enumerator_91954.current_lkey (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2935)) ;
+            var_resultSet_91901.setter_del (enumerator_91952.current_lkey (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2935)) ;
             }
           }
         }
-        enumerator_91954.gotoNextObject () ;
+        enumerator_91952.gotoNextObject () ;
       }
-      result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2939)), var_resultSet_91903  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2938)) ;
+      result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2939)), var_resultSet_91901  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2938)) ;
     }
   }
   if (kBoolFalse == test_0) {
@@ -10365,7 +10365,7 @@ static GALGAS_gtlData extensionGetter_gtlSet_andOp (const cPtr_gtlData * inObjec
   if (kBoolTrue == test_0) {
     test_0 = GALGAS_bool (constinArgument_right.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlSet).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_lstringset var_resultSet_92670 = GALGAS_lstringset::constructor_emptyMap (SOURCE_FILE ("gtl_data_types.galgas", 2960)) ;
+      GALGAS_lstringset var_resultSet_92668 = GALGAS_lstringset::constructor_emptyMap (SOURCE_FILE ("gtl_data_types.galgas", 2960)) ;
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
         if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
@@ -10374,20 +10374,20 @@ static GALGAS_gtlData extensionGetter_gtlSet_andOp (const cPtr_gtlData * inObjec
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2961)) ;
         }
       }
-      cEnumerator_lstringset enumerator_92729 (temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2961)), kENUMERATION_UP) ;
-      while (enumerator_92729.hasCurrentObject ()) {
+      cEnumerator_lstringset enumerator_92727 (temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2961)), kENUMERATION_UP) ;
+      while (enumerator_92727.hasCurrentObject ()) {
         enumGalgasBool test_2 = kBoolTrue ;
         if (kBoolTrue == test_2) {
-          test_2 = object->mProperty_value.getter_hasKey (enumerator_92729.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2962)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2962)).boolEnum () ;
+          test_2 = object->mProperty_value.getter_hasKey (enumerator_92727.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2962)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2962)).boolEnum () ;
           if (kBoolTrue == test_2) {
             {
-            var_resultSet_92670.setter_put (enumerator_92729.current_lkey (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2963)) ;
+            var_resultSet_92668.setter_put (enumerator_92727.current_lkey (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2963)) ;
             }
           }
         }
-        enumerator_92729.gotoNextObject () ;
+        enumerator_92727.gotoNextObject () ;
       }
-      result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2967)), var_resultSet_92670  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2966)) ;
+      result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2967)), var_resultSet_92668  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2966)) ;
     }
   }
   if (kBoolFalse == test_0) {
@@ -10436,21 +10436,21 @@ static GALGAS_gtlData extensionGetter_gtlSet_orOp (const cPtr_gtlData * inObject
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2976)) ;
         }
       }
-      GALGAS_lstringset var_resultSet_93082 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2976)) ;
-      cEnumerator_lstringset enumerator_93136 (object->mProperty_value, kENUMERATION_UP) ;
-      while (enumerator_93136.hasCurrentObject ()) {
+      GALGAS_lstringset var_resultSet_93080 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 2976)) ;
+      cEnumerator_lstringset enumerator_93134 (object->mProperty_value, kENUMERATION_UP) ;
+      while (enumerator_93134.hasCurrentObject ()) {
         enumGalgasBool test_2 = kBoolTrue ;
         if (kBoolTrue == test_2) {
-          test_2 = var_resultSet_93082.getter_hasKey (enumerator_93136.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2978)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2978)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2978)).boolEnum () ;
+          test_2 = var_resultSet_93080.getter_hasKey (enumerator_93134.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 2978)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2978)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 2978)).boolEnum () ;
           if (kBoolTrue == test_2) {
             {
-            var_resultSet_93082.setter_put (enumerator_93136.current_lkey (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2979)) ;
+            var_resultSet_93080.setter_put (enumerator_93134.current_lkey (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2979)) ;
             }
           }
         }
-        enumerator_93136.gotoNextObject () ;
+        enumerator_93134.gotoNextObject () ;
       }
-      result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2983)), var_resultSet_93082  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2982)) ;
+      result_result = GALGAS_gtlSet::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2983)), var_resultSet_93080  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 2982)) ;
     }
   }
   if (kBoolFalse == test_0) {
@@ -10701,7 +10701,7 @@ static GALGAS_gtlData extensionGetter_gtlSet_gtOp (const cPtr_gtlData * inObject
         }
       }
       if (kBoolFalse == test_1) {
-        GALGAS_bool var_included_94484 = GALGAS_bool (true) ;
+        GALGAS_bool var_included_94482 = GALGAS_bool (true) ;
         GALGAS_gtlSet temp_3 ;
         if (constinArgument_right.isValid ()) {
           if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
@@ -10710,24 +10710,24 @@ static GALGAS_gtlData extensionGetter_gtlSet_gtOp (const cPtr_gtlData * inObject
             inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3028)) ;
           }
         }
-        cEnumerator_lstringset enumerator_94535 (temp_3.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3028)), kENUMERATION_UP) ;
-        bool bool_4 = var_included_94484.isValidAndTrue () ;
-        if (enumerator_94535.hasCurrentObject () && bool_4) {
-          while (enumerator_94535.hasCurrentObject () && bool_4) {
+        cEnumerator_lstringset enumerator_94533 (temp_3.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3028)), kENUMERATION_UP) ;
+        bool bool_4 = var_included_94482.isValidAndTrue () ;
+        if (enumerator_94533.hasCurrentObject () && bool_4) {
+          while (enumerator_94533.hasCurrentObject () && bool_4) {
             enumGalgasBool test_5 = kBoolTrue ;
             if (kBoolTrue == test_5) {
-              test_5 = object->mProperty_value.getter_hasKey (enumerator_94535.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3029)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3029)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3029)).boolEnum () ;
+              test_5 = object->mProperty_value.getter_hasKey (enumerator_94533.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3029)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3029)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3029)).boolEnum () ;
               if (kBoolTrue == test_5) {
-                var_included_94484 = GALGAS_bool (false) ;
+                var_included_94482 = GALGAS_bool (false) ;
               }
             }
-            enumerator_94535.gotoNextObject () ;
-            if (enumerator_94535.hasCurrentObject ()) {
-              bool_4 = var_included_94484.isValidAndTrue () ;
+            enumerator_94533.gotoNextObject () ;
+            if (enumerator_94533.hasCurrentObject ()) {
+              bool_4 = var_included_94482.isValidAndTrue () ;
             }
           }
         }
-        result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3031)), var_included_94484  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3031)) ;
+        result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3031)), var_included_94482  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3031)) ;
       }
     }
   }
@@ -10769,7 +10769,7 @@ static GALGAS_gtlData extensionGetter_gtlSet_geOp (const cPtr_gtlData * inObject
   if (kBoolTrue == test_0) {
     test_0 = GALGAS_bool (constinArgument_right.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlSet).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_bool var_included_94874 = GALGAS_bool (true) ;
+      GALGAS_bool var_included_94872 = GALGAS_bool (true) ;
       GALGAS_gtlSet temp_1 ;
       if (constinArgument_right.isValid ()) {
         if (NULL != dynamic_cast <const cPtr_gtlSet *> (constinArgument_right.ptr ())) {
@@ -10778,24 +10778,24 @@ static GALGAS_gtlData extensionGetter_gtlSet_geOp (const cPtr_gtlData * inObject
           inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3041)) ;
         }
       }
-      cEnumerator_lstringset enumerator_94923 (temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3041)), kENUMERATION_UP) ;
-      bool bool_2 = var_included_94874.isValidAndTrue () ;
-      if (enumerator_94923.hasCurrentObject () && bool_2) {
-        while (enumerator_94923.hasCurrentObject () && bool_2) {
+      cEnumerator_lstringset enumerator_94921 (temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3041)), kENUMERATION_UP) ;
+      bool bool_2 = var_included_94872.isValidAndTrue () ;
+      if (enumerator_94921.hasCurrentObject () && bool_2) {
+        while (enumerator_94921.hasCurrentObject () && bool_2) {
           enumGalgasBool test_3 = kBoolTrue ;
           if (kBoolTrue == test_3) {
-            test_3 = object->mProperty_value.getter_hasKey (enumerator_94923.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3042)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3042)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3042)).boolEnum () ;
+            test_3 = object->mProperty_value.getter_hasKey (enumerator_94921.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3042)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3042)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3042)).boolEnum () ;
             if (kBoolTrue == test_3) {
-              var_included_94874 = GALGAS_bool (false) ;
+              var_included_94872 = GALGAS_bool (false) ;
             }
           }
-          enumerator_94923.gotoNextObject () ;
-          if (enumerator_94923.hasCurrentObject ()) {
-            bool_2 = var_included_94874.isValidAndTrue () ;
+          enumerator_94921.gotoNextObject () ;
+          if (enumerator_94921.hasCurrentObject ()) {
+            bool_2 = var_included_94872.isValidAndTrue () ;
           }
         }
       }
-      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3044)), var_included_94874  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3044)) ;
+      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3044)), var_included_94872  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3044)) ;
     }
   }
   if (kBoolFalse == test_0) {
@@ -10852,11 +10852,11 @@ static GALGAS_gtlData extensionGetter_gtlSet_ltOp (const cPtr_gtlData * inObject
         }
       }
       if (kBoolFalse == test_1) {
-        GALGAS_bool var_included_95367 = GALGAS_bool (true) ;
-        cEnumerator_lstringset enumerator_95399 (object->mProperty_value, kENUMERATION_UP) ;
-        bool bool_3 = var_included_95367.isValidAndTrue () ;
-        if (enumerator_95399.hasCurrentObject () && bool_3) {
-          while (enumerator_95399.hasCurrentObject () && bool_3) {
+        GALGAS_bool var_included_95365 = GALGAS_bool (true) ;
+        cEnumerator_lstringset enumerator_95397 (object->mProperty_value, kENUMERATION_UP) ;
+        bool bool_3 = var_included_95365.isValidAndTrue () ;
+        if (enumerator_95397.hasCurrentObject () && bool_3) {
+          while (enumerator_95397.hasCurrentObject () && bool_3) {
             enumGalgasBool test_4 = kBoolTrue ;
             if (kBoolTrue == test_4) {
               GALGAS_gtlSet temp_5 ;
@@ -10867,18 +10867,18 @@ static GALGAS_gtlData extensionGetter_gtlSet_ltOp (const cPtr_gtlData * inObject
                   inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3057)) ;
                 }
               }
-              test_4 = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3057)).getter_hasKey (enumerator_95399.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3057)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3057)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3057)).boolEnum () ;
+              test_4 = temp_5.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3057)).getter_hasKey (enumerator_95397.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3057)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3057)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3057)).boolEnum () ;
               if (kBoolTrue == test_4) {
-                var_included_95367 = GALGAS_bool (false) ;
+                var_included_95365 = GALGAS_bool (false) ;
               }
             }
-            enumerator_95399.gotoNextObject () ;
-            if (enumerator_95399.hasCurrentObject ()) {
-              bool_3 = var_included_95367.isValidAndTrue () ;
+            enumerator_95397.gotoNextObject () ;
+            if (enumerator_95397.hasCurrentObject ()) {
+              bool_3 = var_included_95365.isValidAndTrue () ;
             }
           }
         }
-        result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3059)), var_included_95367  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3059)) ;
+        result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3059)), var_included_95365  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3059)) ;
       }
     }
   }
@@ -10920,11 +10920,11 @@ static GALGAS_gtlData extensionGetter_gtlSet_leOp (const cPtr_gtlData * inObject
   if (kBoolTrue == test_0) {
     test_0 = GALGAS_bool (constinArgument_right.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlSet).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_bool var_included_95757 = GALGAS_bool (true) ;
-      cEnumerator_lstringset enumerator_95787 (object->mProperty_value, kENUMERATION_UP) ;
-      bool bool_1 = var_included_95757.isValidAndTrue () ;
-      if (enumerator_95787.hasCurrentObject () && bool_1) {
-        while (enumerator_95787.hasCurrentObject () && bool_1) {
+      GALGAS_bool var_included_95755 = GALGAS_bool (true) ;
+      cEnumerator_lstringset enumerator_95785 (object->mProperty_value, kENUMERATION_UP) ;
+      bool bool_1 = var_included_95755.isValidAndTrue () ;
+      if (enumerator_95785.hasCurrentObject () && bool_1) {
+        while (enumerator_95785.hasCurrentObject () && bool_1) {
           enumGalgasBool test_2 = kBoolTrue ;
           if (kBoolTrue == test_2) {
             GALGAS_gtlSet temp_3 ;
@@ -10935,18 +10935,18 @@ static GALGAS_gtlData extensionGetter_gtlSet_leOp (const cPtr_gtlData * inObject
                 inCompiler->castError ("gtlSet", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3070)) ;
               }
             }
-            test_2 = temp_3.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3070)).getter_hasKey (enumerator_95787.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3070)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3070)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3070)).boolEnum () ;
+            test_2 = temp_3.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3070)).getter_hasKey (enumerator_95785.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3070)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3070)).operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3070)).boolEnum () ;
             if (kBoolTrue == test_2) {
-              var_included_95757 = GALGAS_bool (false) ;
+              var_included_95755 = GALGAS_bool (false) ;
             }
           }
-          enumerator_95787.gotoNextObject () ;
-          if (enumerator_95787.hasCurrentObject ()) {
-            bool_1 = var_included_95757.isValidAndTrue () ;
+          enumerator_95785.gotoNextObject () ;
+          if (enumerator_95785.hasCurrentObject ()) {
+            bool_1 = var_included_95755.isValidAndTrue () ;
           }
         }
       }
-      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3072)), var_included_95757  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3072)) ;
+      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3072)), var_included_95755  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3072)) ;
     }
   }
   if (kBoolFalse == test_0) {
@@ -11062,14 +11062,14 @@ static GALGAS_gtlData extensionGetter_gtlSet_performGetter (const cPtr_gtlData *
         routine_argumentsCheck (constinArgument_methodName, function_noArgument (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3106)), constinArgument_arguments, inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3106)) ;
         }
         result_result = GALGAS_gtlList::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3108)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3108)), GALGAS_list::constructor_emptyList (SOURCE_FILE ("gtl_data_types.galgas", 3108))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3107)) ;
-        cEnumerator_lstringset enumerator_97057 (object->mProperty_value, kENUMERATION_UP) ;
-        while (enumerator_97057.hasCurrentObject ()) {
+        cEnumerator_lstringset enumerator_97055 (object->mProperty_value, kENUMERATION_UP) ;
+        while (enumerator_97055.hasCurrentObject ()) {
           {
           result_result.insulate (HERE) ;
-          cPtr_gtlData * ptr_97076 = (cPtr_gtlData *) result_result.ptr () ;
-          callExtensionSetter_appendItem ((cPtr_gtlData *) ptr_97076, GALGAS_gtlString::constructor_new (enumerator_97057.current_lkey (HERE).getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3111)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3111)), enumerator_97057.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3111))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3111)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3111)) ;
+          cPtr_gtlData * ptr_97074 = (cPtr_gtlData *) result_result.ptr () ;
+          callExtensionSetter_appendItem ((cPtr_gtlData *) ptr_97074, GALGAS_gtlString::constructor_new (enumerator_97055.current_lkey (HERE).getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3111)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3111)), enumerator_97055.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3111))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3111)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3111)) ;
           }
-          enumerator_97057.gotoNextObject () ;
+          enumerator_97055.gotoNextObject () ;
         }
       }
     }
@@ -11081,8 +11081,8 @@ static GALGAS_gtlData extensionGetter_gtlSet_performGetter (const cPtr_gtlData *
           {
           routine_argumentsCheck (constinArgument_methodName, function_anyArgument (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3114)), constinArgument_arguments, inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3114)) ;
           }
-          GALGAS_string var_key_97270 = callExtensionGetter_string ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3115)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3115)) ;
-          result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3117)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3117)), object->mProperty_value.getter_hasKey (var_key_97270 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3117))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3116)) ;
+          GALGAS_string var_key_97268 = callExtensionGetter_string ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3115)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3115)) ;
+          result_result = GALGAS_gtlBool::constructor_new (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3117)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3117)), object->mProperty_value.getter_hasKey (var_key_97268 COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3117))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3116)) ;
         }
       }
       if (kBoolFalse == test_2) {
@@ -11093,9 +11093,9 @@ static GALGAS_gtlData extensionGetter_gtlSet_performGetter (const cPtr_gtlData *
             {
             routine_argumentsCheck (constinArgument_methodName, function_anyArgument (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3120)), constinArgument_arguments, inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3120)) ;
             }
-            GALGAS_string var_key_97534 = callExtensionGetter_string ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3121)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3121)) ;
-            GALGAS_location var_loc_97590 = object->mProperty_value.getter_locationForKey (var_key_97534, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3122)) ;
-            result_result = GALGAS_gtlString::constructor_new (var_loc_97590, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3124)), var_key_97534  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3123)) ;
+            GALGAS_string var_key_97532 = callExtensionGetter_string ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3121)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3121)) ;
+            GALGAS_location var_loc_97588 = object->mProperty_value.getter_locationForKey (var_key_97532, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3122)) ;
+            result_result = GALGAS_gtlString::constructor_new (var_loc_97588, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3124)), var_key_97532  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3123)) ;
           }
         }
         if (kBoolFalse == test_3) {
@@ -11198,9 +11198,9 @@ static void extensionSetter_gtlSet_performSetter (cPtr_gtlData * inObject,
           inCompiler->castError ("gtlString", constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3166)).ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3166)) ;
         }
       }
-      GALGAS_gtlString var_descriptionToSet_99028 = temp_1 ;
+      GALGAS_gtlString var_descriptionToSet_99026 = temp_1 ;
       {
-      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_99028.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3167)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3167)) ;
+      object->setter_setMeta (callExtensionGetter_lstring ((const cPtr_gtlString *) var_descriptionToSet_99026.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3167)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3167)) ;
       }
       object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3168)) ;
     }
@@ -11224,18 +11224,18 @@ static void extensionSetter_gtlSet_performSetter (cPtr_gtlData * inObject,
           {
           routine_argumentsCheck (constinArgument_methodName, function_anyArgument (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3173)), constinArgument_arguments, inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3173)) ;
           }
-          GALGAS_lstring var_key_99370 = callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3174)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3174)) ;
+          GALGAS_lstring var_key_99368 = callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3174)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3174)) ;
           enumGalgasBool test_4 = kBoolTrue ;
           if (kBoolTrue == test_4) {
-            test_4 = object->mProperty_value.getter_hasKey (var_key_99370.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3175)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3175)).boolEnum () ;
+            test_4 = object->mProperty_value.getter_hasKey (var_key_99368.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3175)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3175)).boolEnum () ;
             if (kBoolTrue == test_4) {
               {
-              object->mProperty_value.setter_del (var_key_99370, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3176)) ;
+              object->mProperty_value.setter_del (var_key_99368, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3176)) ;
               }
             }
           }
           {
-          object->mProperty_value.setter_put (var_key_99370, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3178)) ;
+          object->mProperty_value.setter_put (var_key_99368, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3178)) ;
           }
           object->mProperty_where = constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3179)) ;
         }
@@ -11248,13 +11248,13 @@ static void extensionSetter_gtlSet_performSetter (cPtr_gtlData * inObject,
             {
             routine_argumentsCheck (constinArgument_methodName, function_anyArgument (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3181)), constinArgument_arguments, inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3181)) ;
             }
-            GALGAS_lstring var_key_99636 = callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3182)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3182)) ;
+            GALGAS_lstring var_key_99634 = callExtensionGetter_lstring ((const cPtr_gtlData *) constinArgument_arguments.getter_dataAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3182)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3182)) ;
             enumGalgasBool test_6 = kBoolTrue ;
             if (kBoolTrue == test_6) {
-              test_6 = object->mProperty_value.getter_hasKey (var_key_99636.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3183)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3183)).boolEnum () ;
+              test_6 = object->mProperty_value.getter_hasKey (var_key_99634.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3183)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3183)).boolEnum () ;
               if (kBoolTrue == test_6) {
                 {
-                object->mProperty_value.setter_del (var_key_99636, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3184)) ;
+                object->mProperty_value.setter_del (var_key_99634, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3184)) ;
                 }
               }
             }
@@ -11267,19 +11267,19 @@ static void extensionSetter_gtlSet_performSetter (cPtr_gtlData * inObject,
             test_7 = callExtensionGetter_setterExists ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("set"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3187)).boolEnum () ;
             if (kBoolTrue == test_7) {
               const GALGAS_gtlSet temp_8 = object ;
-              GALGAS_gtlData var_copy_99832 = temp_8 ;
-              callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("set"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3189)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3190)), constinArgument_context, constinArgument_lib, var_copy_99832, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3189)) ;
+              GALGAS_gtlData var_copy_99830 = temp_8 ;
+              callExtensionMethod_callSetter ((const cPtr_gtlSetter *) callExtensionGetter_getSetter ((const cPtr_library *) constinArgument_lib.ptr (), GALGAS_string ("set"), constinArgument_methodName, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3189)).ptr (), constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 3190)), constinArgument_context, constinArgument_lib, var_copy_99830, constinArgument_arguments, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3189)) ;
               GALGAS_gtlSet temp_9 ;
-              if (var_copy_99832.isValid ()) {
-                if (NULL != dynamic_cast <const cPtr_gtlSet *> (var_copy_99832.ptr ())) {
-                  temp_9 = (cPtr_gtlSet *) var_copy_99832.ptr () ;
+              if (var_copy_99830.isValid ()) {
+                if (NULL != dynamic_cast <const cPtr_gtlSet *> (var_copy_99830.ptr ())) {
+                  temp_9 = (cPtr_gtlSet *) var_copy_99830.ptr () ;
                 }else{
-                  inCompiler->castError ("gtlSet", var_copy_99832.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3196)) ;
+                  inCompiler->castError ("gtlSet", var_copy_99830.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3196)) ;
                 }
               }
               object->mProperty_value = temp_9.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3196)) ;
-              object->mProperty_where = var_copy_99832.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 3197)) ;
-              object->mProperty_meta = var_copy_99832.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 3198)) ;
+              object->mProperty_where = var_copy_99830.getter_where (SOURCE_FILE ("gtl_data_types.galgas", 3197)) ;
+              object->mProperty_meta = var_copy_99830.getter_meta (SOURCE_FILE ("gtl_data_types.galgas", 3198)) ;
             }
           }
           if (kBoolFalse == test_7) {
@@ -11316,10 +11316,10 @@ static GALGAS_string extensionGetter_gtlStruct_desc (const cPtr_gtlData * inObje
   const cPtr_gtlStruct * object = (const cPtr_gtlStruct *) inObject ;
   macroValidSharedObject (object, cPtr_gtlStruct) ;
   result_result = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3213)).add_operation (GALGAS_string ("struct: @{\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3213)) ;
-  cEnumerator_gtlVarMap enumerator_100581 (object->mProperty_value, kENUMERATION_UP) ;
-  while (enumerator_100581.hasCurrentObject ()) {
-    result_result.plusAssign_operation(GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).add_operation (enumerator_100581.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3217)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).add_operation (GALGAS_string (" :>\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3217)).add_operation (callExtensionGetter_desc ((const cPtr_gtlData *) enumerator_100581.current_value (HERE).ptr (), constinArgument_tab.add_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3218)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3218)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3217)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)) ;
-    enumerator_100581.gotoNextObject () ;
+  cEnumerator_gtlVarMap enumerator_100577 (object->mProperty_value, kENUMERATION_UP) ;
+  while (enumerator_100577.hasCurrentObject ()) {
+    result_result.plusAssign_operation(GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).add_operation (enumerator_100577.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3217)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)).add_operation (GALGAS_string (" :>\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3217)).add_operation (callExtensionGetter_desc ((const cPtr_gtlData *) enumerator_100577.current_value (HERE).ptr (), constinArgument_tab.add_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3218)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3218)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3217)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3216)) ;
+    enumerator_100577.gotoNextObject () ;
   }
   result_result.plusAssign_operation(GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3220)).add_operation (GALGAS_string ("}\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3220)), inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3220)) ;
 //---
@@ -11931,35 +11931,35 @@ static GALGAS_gtlData extensionGetter_gtlStruct_neqOp (const cPtr_gtlData * inOb
           inCompiler->castError ("gtlStruct", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3297)) ;
         }
       }
-      GALGAS_gtlVarMap var_rValue_103053 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3297)) ;
-      GALGAS_bool var_equal_103099 ;
+      GALGAS_gtlVarMap var_rValue_103049 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3297)) ;
+      GALGAS_bool var_equal_103095 ;
       enumGalgasBool test_2 = kBoolTrue ;
       if (kBoolTrue == test_2) {
-        test_2 = GALGAS_bool (kIsNotEqual, object->mProperty_value.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3299)).objectCompare (var_rValue_103053.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3299)))).boolEnum () ;
+        test_2 = GALGAS_bool (kIsNotEqual, object->mProperty_value.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3299)).objectCompare (var_rValue_103049.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3299)))).boolEnum () ;
         if (kBoolTrue == test_2) {
-          var_equal_103099 = GALGAS_bool (false) ;
+          var_equal_103095 = GALGAS_bool (false) ;
         }
       }
       if (kBoolFalse == test_2) {
-        var_equal_103099 = GALGAS_bool (true) ;
-        cEnumerator_gtlVarMap enumerator_103224 (object->mProperty_value, kENUMERATION_UP) ;
-        while (enumerator_103224.hasCurrentObject ()) {
+        var_equal_103095 = GALGAS_bool (true) ;
+        cEnumerator_gtlVarMap enumerator_103220 (object->mProperty_value, kENUMERATION_UP) ;
+        while (enumerator_103220.hasCurrentObject ()) {
           enumGalgasBool test_3 = kBoolTrue ;
           if (kBoolTrue == test_3) {
-            test_3 = var_rValue_103053.getter_hasKey (enumerator_103224.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3304)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3304)).boolEnum () ;
+            test_3 = var_rValue_103049.getter_hasKey (enumerator_103220.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3304)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3304)).boolEnum () ;
             if (kBoolTrue == test_3) {
-              GALGAS_gtlData var_rData_103309 ;
-              var_rValue_103053.method_get (enumerator_103224.current_lkey (HERE), var_rData_103309, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3305)) ;
-              var_equal_103099 = var_equal_103099.operator_and (callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_eqOp ((const cPtr_gtlData *) enumerator_103224.current_value (HERE).ptr (), var_rData_103309, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3306)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3306)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3306)) ;
+              GALGAS_gtlData var_rData_103305 ;
+              var_rValue_103049.method_get (enumerator_103220.current_lkey (HERE), var_rData_103305, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3305)) ;
+              var_equal_103095 = var_equal_103095.operator_and (callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_eqOp ((const cPtr_gtlData *) enumerator_103220.current_value (HERE).ptr (), var_rData_103305, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3306)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3306)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3306)) ;
             }
           }
           if (kBoolFalse == test_3) {
-            var_equal_103099 = GALGAS_bool (false) ;
+            var_equal_103095 = GALGAS_bool (false) ;
           }
-          enumerator_103224.gotoNextObject () ;
+          enumerator_103220.gotoNextObject () ;
         }
       }
-      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3312)), var_equal_103099.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3312))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3312)) ;
+      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3312)), var_equal_103095.operator_not (SOURCE_FILE ("gtl_data_types.galgas", 3312))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3312)) ;
     }
   }
   if (kBoolFalse == test_0) {
@@ -12008,35 +12008,35 @@ static GALGAS_gtlData extensionGetter_gtlStruct_eqOp (const cPtr_gtlData * inObj
           inCompiler->castError ("gtlStruct", constinArgument_right.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3320)) ;
         }
       }
-      GALGAS_gtlVarMap var_rValue_103685 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3320)) ;
-      GALGAS_bool var_equal_103731 ;
+      GALGAS_gtlVarMap var_rValue_103681 = temp_1.getter_value (SOURCE_FILE ("gtl_data_types.galgas", 3320)) ;
+      GALGAS_bool var_equal_103727 ;
       enumGalgasBool test_2 = kBoolTrue ;
       if (kBoolTrue == test_2) {
-        test_2 = GALGAS_bool (kIsNotEqual, object->mProperty_value.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3322)).objectCompare (var_rValue_103685.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3322)))).boolEnum () ;
+        test_2 = GALGAS_bool (kIsNotEqual, object->mProperty_value.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3322)).objectCompare (var_rValue_103681.getter_count (SOURCE_FILE ("gtl_data_types.galgas", 3322)))).boolEnum () ;
         if (kBoolTrue == test_2) {
-          var_equal_103731 = GALGAS_bool (false) ;
+          var_equal_103727 = GALGAS_bool (false) ;
         }
       }
       if (kBoolFalse == test_2) {
-        var_equal_103731 = GALGAS_bool (true) ;
-        cEnumerator_gtlVarMap enumerator_103856 (object->mProperty_value, kENUMERATION_UP) ;
-        while (enumerator_103856.hasCurrentObject ()) {
+        var_equal_103727 = GALGAS_bool (true) ;
+        cEnumerator_gtlVarMap enumerator_103852 (object->mProperty_value, kENUMERATION_UP) ;
+        while (enumerator_103852.hasCurrentObject ()) {
           enumGalgasBool test_3 = kBoolTrue ;
           if (kBoolTrue == test_3) {
-            test_3 = var_rValue_103685.getter_hasKey (enumerator_103856.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3327)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3327)).boolEnum () ;
+            test_3 = var_rValue_103681.getter_hasKey (enumerator_103852.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 3327)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3327)).boolEnum () ;
             if (kBoolTrue == test_3) {
-              GALGAS_gtlData var_rData_103941 ;
-              var_rValue_103685.method_get (enumerator_103856.current_lkey (HERE), var_rData_103941, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3328)) ;
-              var_equal_103731 = var_equal_103731.operator_and (callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_eqOp ((const cPtr_gtlData *) enumerator_103856.current_value (HERE).ptr (), var_rData_103941, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3329)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3329)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3329)) ;
+              GALGAS_gtlData var_rData_103937 ;
+              var_rValue_103681.method_get (enumerator_103852.current_lkey (HERE), var_rData_103937, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3328)) ;
+              var_equal_103727 = var_equal_103727.operator_and (callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_eqOp ((const cPtr_gtlData *) enumerator_103852.current_value (HERE).ptr (), var_rData_103937, inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3329)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3329)) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3329)) ;
             }
           }
           if (kBoolFalse == test_3) {
-            var_equal_103731 = GALGAS_bool (false) ;
+            var_equal_103727 = GALGAS_bool (false) ;
           }
-          enumerator_103856.gotoNextObject () ;
+          enumerator_103852.gotoNextObject () ;
         }
       }
-      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3335)), var_equal_103731  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3335)) ;
+      result_result = GALGAS_gtlBool::constructor_new (object->mProperty_where, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3335)), var_equal_103727  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 3335)) ;
     }
   }
   if (kBoolFalse == test_0) {
