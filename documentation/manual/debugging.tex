@@ -221,8 +221,18 @@ This corresponds to the tree shown in figure \ref{fig:bintree}.
 
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \begin{tikzpicture}
-   \node (rb) at (0,0) {read_button};
+   \begin{tikzpicture}[task/.style={rectangle split,rectangle split parts=2,rectangle split draw splits=true,draw}]
+   \node[task] (rb) at (0,0) {\nodepart{one} read_button \nodepart{two}$[45](2,13)$};
+   \node[task] (t2) at (-3,-2) {\nodepart{one} t2 \nodepart{two}$[29](1,13)$};
+   \node[task] (idle) at (-4.5,-4) {\nodepart{one} IDLE \nodepart{two}$[15](0,15)$};
+   \node[task] (t3) at (-1.5,-4) {\nodepart{one} t3 \nodepart{two}$[28](1,12)$};
+   \node[task] (t1-0) at (3,-2) {\nodepart{one} t1 \nodepart{two}$[30](1,14)$};
+   \node[task] (t1-1) at (1.4,-4) {\nodepart{one} t1 \nodepart{two}$[27](1,11)$};
+   \draw (rb) -- (t2);
+   \draw (rb) -- (t1-0);
+   \draw (t2) -- (idle);
+   \draw (t2) -- (t3);
+   \draw (t1-0) -- (t1-1);
    \end{tikzpicture}
    \caption{Binary heap tree from the example of \ref{sec:readylist}}
    \label{fig:bintree}
