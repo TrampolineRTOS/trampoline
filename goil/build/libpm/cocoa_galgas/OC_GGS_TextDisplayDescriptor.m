@@ -131,7 +131,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     [mScrollView setVerticalRulerView:mRulerView] ;
     [mScrollView.verticalRulerView setRuleThickness:50.0] ;
     [mScrollView setRulersVisible:YES] ;
-    [mScrollView setHasVerticalRuler:YES] ;
+//    [mScrollView setHasVerticalRuler:YES] ;
     OC_GGS_Scroller * scroller = [OC_GGS_Scroller new] ;
     [scroller setIsSourceTextViewScroller:YES] ;
     [mScrollView setVerticalScroller:scroller] ;

@@ -50,10 +50,10 @@ see https://www.gnu.org/licenses/.  */
 #endif
 
 #if defined (__GNUC__) && ! defined (__APPLE__)
-  #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wunused-value"
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -65,6 +65,10 @@ see https://www.gnu.org/licenses/.  */
 #if __GNUC__ < 6
   // #pragma GCC diagnostic ignored "-Werror"
   #pragma GCC diagnostic error "-w"
+#endif
+
+#if __GNUC__ >= 10
+  #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
 
 #ifdef __cplusplus
