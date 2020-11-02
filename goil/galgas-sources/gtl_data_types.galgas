@@ -2484,6 +2484,19 @@ override getter @gtlString performGetter
     result = @gtlString.new {
       ![methodName location] !emptylstring() ![where locationString]
     }
+  elsif "files" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    @stringlist  fileList = [value regularFiles !false]
+    @gtlList resultList = @gtlList.new {
+      ![methodName location] !emptylstring() !.emptyList
+    }
+    @lstringset files = .emptyMap
+    for (file) in fileList do
+      [!?files put !@lstring.new { !file ![methodName location] } ]
+    end
+    result = @gtlSet.new {
+      ![methodName location] !emptylstring() !files
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for string target"
       : result

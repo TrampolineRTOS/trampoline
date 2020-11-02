@@ -27,7 +27,7 @@ import "vectors"
 #------------------------------------------------------------------------------*
 # Check goil version is ok
 #
-let NEEDED_VERSION := "3.1.11"
+let NEEDED_VERSION := "3.1.12"
 
 if version() != NEEDED_VERSION then
   error here : "Goil version " + NEEDED_VERSION + " required"
@@ -1554,10 +1554,11 @@ if OS::WITHORTI then
 end if
 
 #
-# Output a GDB user defined command file if configured
+# Execute the root plugins
 #
-if exists OS::GDBCOMMANDS default (FALSE) then
-  write to "commands.gdb":
-    template gdb_commands in log
-  end write
-end if
+let rootDir := rootTemplatesDirectory()
+let files := [rootDir + "/root_plugins" files]
+foreach file in files do
+  println "executing plugin " + file
+  template from file in root_plugins
+end foreach
