@@ -1,0 +1,9 @@
+%#
+# Output a GDB user defined command file if configured
+#
+if exists OS::GDBCOMMANDS default (FALSE) then
+  write to "commands.gdb":
+    template gdb_commands in log
+  end write
+end if
+
