@@ -95,7 +95,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL and ARXML compiler
 
-Updated to version 3.1.11 on 2020, October 30.
+Updated to version 3.1.12 on 2020, November 2.
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
