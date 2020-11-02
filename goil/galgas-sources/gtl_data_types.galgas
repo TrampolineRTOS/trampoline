@@ -156,6 +156,11 @@ private func %once expressionArgument  -> @gtlTypedArgumentList result
   result = .listWithValue { !`@gtlExpr }
 } 
 
+private func %once setArgument  -> @gtlTypedArgumentList result
+{
+  result = .listWithValue { !`@gtlSet }
+} 
+
 private proc argumentsCheck
   ?let @lstring methodName
   ?@gtlTypedArgumentList abstractArgumentList
@@ -2487,6 +2492,23 @@ override getter @gtlString performGetter
   elsif "files" == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
     @stringlist  fileList = [value regularFiles !false]
+    @gtlList resultList = @gtlList.new {
+      ![methodName location] !emptylstring() !.emptyList
+    }
+    @lstringset files = .emptyMap
+    for (file) in fileList do
+      [!?files put !@lstring.new { !file ![methodName location] } ]
+    end
+    result = @gtlSet.new {
+      ![methodName location] !emptylstring() !files
+    }
+  elsif "filesWithExtensions" == methodName then
+    argumentsCheck(!methodName !setArgument() !arguments)
+    @stringlist extensions = .emptyList
+    for (ext) in [[arguments dataAtIndex !0] as @gtlSet value] do
+      extensions += ![ext string]
+    end
+    @stringlist  fileList = [value regularFilesWithExtensions !false !extensions]
     @gtlList resultList = @gtlList.new {
       ![methodName location] !emptylstring() !.emptyList
     }

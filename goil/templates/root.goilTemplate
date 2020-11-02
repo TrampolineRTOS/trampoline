@@ -1557,7 +1557,7 @@ end if
 # Execute the root plugins
 #
 let rootDir := rootTemplatesDirectory()
-let files := [rootDir + "/root_plugins" files]
+let files := [rootDir + "/root_plugins" filesWithExtensions: @! "goilTemplate" !]
 foreach file in files do
   println "executing plugin " + file
   template from file in root_plugins
