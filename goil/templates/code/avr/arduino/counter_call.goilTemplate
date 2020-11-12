@@ -29,7 +29,7 @@ void trampolineSystemCounter()
   %
   elsif counter::SOURCE != "" then
 %
-ISR(%!counter::SOURCE%)
+ISR(%!counter::SOURCE%_vect)
 {
   tpl_avr_counter_tick(&% !counter::NAME %_counter_desc);
 }

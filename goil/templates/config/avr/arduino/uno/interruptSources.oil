@@ -4,5 +4,7 @@
 ENUM [
   PIN2{ #include <sensibility.oil> },
   PIN3{ #include <sensibility.oil> },
-  TIMER0_OVF /*used in Arduino for micros(), millis(), ...*/
+  TIMER0_OVF, /*used in Arduino for micros(), millis(), ...*/
+  TIMER1_OVF, 
+  TIMER2_OVF 
 ] SOURCE;

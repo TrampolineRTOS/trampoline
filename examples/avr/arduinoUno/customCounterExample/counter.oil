@@ -1,0 +1,58 @@
+/* Running the following example:
+ * just call goil a first time using the command line:
+ * goil --target=avr/arduino/uno --templates=../../../../goil/templates/ counter.oil
+ * you may have to update ARDUINO section (l.13) for your configuration.
+ *
+ */
+
+OIL_VERSION = "2.5" : "test" ;
+
+CPU test {    
+  OS config {
+    STATUS = STANDARD;
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_NAME = "trampuinoBlink";
+      APP_SRC = "counter.cpp";
+      LDFLAGS = "-Wl,-Map=counter.map";
+      CPPCOMPILER = "avr-g++";
+      COMPILER = "avr-gcc";
+      LINKER = "avr-gcc";
+      ASSEMBLER = "avr-gcc";
+      COPIER = "avr-objcopy";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+  };
+
+  COUNTER MyCustomCounter {
+    SOURCE = TIMER2_OVF;
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 255;
+    MINCYCLE = 1;
+  };
+
+  APPMODE stdAppmode {};
+  
+  ALARM periodicAl {
+    COUNTER= MyCustomCounter;
+    ACTION = ACTIVATETASK {
+      TASK = periodicTask;
+    };
+    AUTOSTART = TRUE {
+      // note: no more than 255 => MAXALLOWEDVALUE in counter
+      ALARMTIME = 100; //activated each 100 ms
+      CYCLETIME = 100; //activated each 100 ms
+      APPMODE = stdAppmode;
+    };
+  };
+
+  TASK periodicTask {
+    PRIORITY = 20;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    STACKSIZE = 256;
+  };
+
+};

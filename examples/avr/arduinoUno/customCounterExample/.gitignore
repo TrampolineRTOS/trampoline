@@ -1,0 +1,7 @@
+Makefile
+counter
+build
+*_exe
+*.bin
+*.map
+*.py
