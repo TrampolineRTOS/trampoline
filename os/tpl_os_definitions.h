@@ -542,13 +542,13 @@
  * @param name the name (C identifier) of the task
  */
 #ifdef __cplusplus
-#define TASK(name)                                          \
-DeclareTask(name);                                          \
-extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
-FUNC(void, OS_APPL_CODE) name##_function(void)
+    #define TASK(name)                                          \
+    DeclareTask(name);                                          \
+    extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
+    FUNC(void, OS_APPL_CODE) name##_function(void)
 #else
-#define TASK(name)                             \
-DeclareTask(name);                             \
+    #define TASK(name)                                          \
+    DeclareTask(name);                                          \
 FUNC(void, OS_APPL_CODE) name##_function(void)
 #endif
 
@@ -560,12 +560,12 @@ FUNC(void, OS_APPL_CODE) name##_function(void)
  * @param name the name (C identifier) of the IRS
  */
 #ifdef __cplusplus
-#define ISR(name)                                           \
-extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
-FUNC(void, OS_APPL_CODE) name##_function(void)
+    #define ISR(name)                                           \
+    extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
+    FUNC(void, OS_APPL_CODE) name##_function(void)
 #else
-#define ISR(name)                               \
-FUNC(void, OS_APPL_CODE) name##_function(void)
+    #define ISR(name)                                           \
+    FUNC(void, OS_APPL_CODE) name##_function(void)
 #endif
 
 
@@ -591,8 +591,8 @@ extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
  * @warning don't be confused with ALARM_CALLBACK
  */
 #ifdef __cplusplus
-#define ALARMCALLBACK(name)               \
-    extern "C" void name##_callback(void) \
+#define ALARMCALLBACK(name)                \
+    extern "C" void name##_callback(void); \
     void name##_callback(void)
 #else
 #define ALARMCALLBACK(name)     \
