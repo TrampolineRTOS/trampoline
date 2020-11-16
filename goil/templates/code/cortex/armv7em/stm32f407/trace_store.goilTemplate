@@ -1,0 +1,25 @@
+%
+#
+# Template to generate a trace store
+#
+let traceFormat := [OS::TRACE_S::FORMAT uppercaseString]
+
+if traceFormat == "RAM"
+then
+  let queueSize := OS::TRACE_S::FORMAT_S::SIZE
+  %
+  /* Queue size and queue to store trace events */
+
+#define OS_START_SEC_CONST_32BIT
+#include "tpl_memmap.h"
+  CONST(uint32_t, OS_CONST) TRACE_FORMAT_RAM_QUEUE_SIZE = % !queueSize %;
+#define OS_STOP_SEC_CONST_32BIT
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+  VAR(uint8_t, OS_VAR) tpl_trace_queue[% !queueSize %];
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+  %
+end if
