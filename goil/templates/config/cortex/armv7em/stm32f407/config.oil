@@ -8,10 +8,22 @@ IMPLEMENTATION stm32f407 {
       },
       FALSE
     ] BUILD = FALSE;
-  };
 
-  OS {
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          RAM {
+            UINT32 SIZE = 1020;
+          },
+          SERIAL
+		] FORMAT = RAM;
+      },
+      FALSE
+    ] TRACE = FALSE;
+
     BOOLEAN TIMEENFORCEMENT = FALSE;
+
   };
   
   TASK {
@@ -1044,6 +1056,7 @@ CPU stm32f407 {
     CFILE = "startup_stm32f4xx.c";
     CFILE = "system_stm32f4xx.c";
     CFILE = "handlers_stm32f4xx.c";
+    CFILE = "tpl_trace.c";
   };
 
   PLATFORM_FILES stm32f407_std_libs_includes {

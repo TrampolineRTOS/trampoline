@@ -1154,6 +1154,15 @@ CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COU
 #include "tpl_memmap.h"
 %
 end foreach
+
+#temporary: call trace_store template if it exists
+if OS::TRACE then
+  template if exists trace_store
+end if
+#temporary
 %
+
+
+
 
 /* End of file tpl_app_config.c */

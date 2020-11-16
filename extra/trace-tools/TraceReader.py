@@ -3,6 +3,7 @@
 import json
 import sys
 import time
+import os
 
 class TraceReader:
     ''' Trace reader just… reads a trace!
@@ -73,7 +74,7 @@ class TraceReader:
             print('error, not implemented yet: '+evt['type'])
         return (evt,ts)
 
-class TraceReaderFile(TraceReader):
+class TraceReaderJSONFile(TraceReader):
     ''' Get trace events from a JSON file
         We only deal with ids for events here.
     '''
@@ -97,6 +98,42 @@ class TraceReaderFile(TraceReader):
         for event in self.trace:
             yield event
 
+class TraceReaderBinaryFile(TraceReader):
+    ''' Get trace events from a binary file
+        We only deal with ids for events here. TODO: why?
+    '''
+    def __init__(self,inputFileName):
+        super().__init__()
+        self.trace = []
+        self.timeStamp = 0  #to take into account overflows (events are in chronological order)
+
+        if inputFileName:
+            self.readBinaryTrace(inputFileName)
+
+    def readBinaryTrace(self,filename):
+        file_stats = os.stat(filename)
+        file_size = file_stats.st_size
+        event_count = file_size // 5
+        try:
+            with open(filename, mode='rb') as binaryStream: 
+                for x in range(event_count) :
+                    chunk = binaryStream.read(5)
+                    #checksum verif
+                    if (sum(chunk[:4]) & 0xff == chunk[4]):
+                        (evt, self.timeStamp) =  self.decodeBinaryEvent(chunk[:4],self.timeStamp)
+                        print(evt)
+                        self.trace.append(evt)
+        except OSError as e:
+            print('trace file not found ('+filename+'). '
+                    'Maybe, you should run your application first?')
+            sys.exit(1)
+                
+    def getEvent(self):
+        ''' Generator that send raw events one by one'''
+        for event in self.trace:
+            yield event
+
+        
 class TraceReaderSerial(TraceReader):
     ''' Get trace events from a Serial interface
         We only deal with ids for events here.
@@ -118,9 +155,9 @@ class TraceReaderSerial(TraceReader):
             print("Bad serial parameters. The format is 'device,speed'. Speed should be an integer")
             print("example: /dev/ttyACM0,115200")
             sys.exit(1)
-        self.ser = self.openSerial(device,speed)
-        self.timeStamp = 0  #to take into account overflows (events are in chronological order)
-        #thread related to serial reception
+            self.ser = self.openSerial(device,speed)
+            self.timeStamp = 0  #to take into account overflows (events are in chronological order)
+            #thread related to serial reception
         self.evStopSerial = threading.Event() #event to stop the serial reception
         self.serialEventQueue = queue.Queue() #queue between serial thread and main app.
         self.senderThread = threading.Thread(target=self.serialRead)
@@ -150,7 +187,7 @@ class TraceReaderSerial(TraceReader):
             self.serialEventQueue.put(evt)
         if self.verbose:
             print('{0} events in the serial queue at the end'.format(self.serialEventQueue.qsize()))
-        self.ser.close()
+            self.ser.close()
 
     def getEvent(self):
         ''' Generator that sends raw events one by one from serial. 

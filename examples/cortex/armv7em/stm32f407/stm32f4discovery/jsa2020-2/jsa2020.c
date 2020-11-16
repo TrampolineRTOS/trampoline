@@ -39,6 +39,8 @@ FUNC(void, OS_APPL_CODE) take_time(CONST(uint32, AUTOMATIC) ticks)
 
 VAR(uint32, OS_APPL_DATA) rgen_task1 = 42;
 
+#define TERMINATE_AFTER 3
+
 FUNC(uint32, OS_APPL_CODE) xorshift32(uint32 *state)
 {
   /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
@@ -52,12 +54,23 @@ FUNC(uint32, OS_APPL_CODE) xorshift32(uint32 *state)
 
 TASK(task1)
 {
+  static uint32 execution_count = 0;
   /*  exectime is 4, 5 or 6 */
   uint32 exectime = 4 + (xorshift32(&rgen_task1) % 3);
   ledOn(RED);
   take_time(exectime);
   ledOff(RED);
-  TerminateTask();
+
+  execution_count = execution_count + 1;
+  if (execution_count < TERMINATE_AFTER)
+  {
+    TerminateTask();
+  }
+  else
+  {
+    /* ledOn(ORANGE); */
+    ShutdownOS(E_OK);
+  }
 }
 
 #define APP_Task_task1_STOP_SEC_CODE
@@ -92,7 +105,7 @@ TASK(task3)
     // execute secondary
     ledOn(ORANGE);
     take_time(10);
-    ledOff(ORANGE);
+    /* ledOff(ORANGE); */
   }
   else
   {
