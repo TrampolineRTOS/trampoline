@@ -379,9 +379,9 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 #if WITH_TEMPORALENFORCEMENT == YES
             /* First pass, FALSE second argument */
             expire(t_obj, FALSE);
-            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 #else
             expire(t_obj);
+            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 #endif
             /*  rearm the alarm if needed               */
 
