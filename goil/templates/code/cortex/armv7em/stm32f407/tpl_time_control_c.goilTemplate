@@ -244,7 +244,7 @@ CONST(tpl_alarm_static, OS_CONST) timer_% !tim::NAME %_alarm_static = {
     /* pointer to counter           */  &SystemCounter_counter_desc,
     /* pointer to the expiration    */  tpl_raise_alarm
 #if (WITH_TRACE == YES)
-    /* id of the alarm for tracing  */  , -1
+    /* id of the alarm for tracing  */  , -% !INDEX %
 #endif
 #if WITH_OSAPPLICATION == YES
     /* OS application id            */  , 

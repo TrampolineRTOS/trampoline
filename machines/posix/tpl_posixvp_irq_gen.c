@@ -1,20 +1,20 @@
-#include "tpl_os.h"
 #include "tpl_posixvp_irq_gen.h"
+#include "tpl_os.h"
 
 #define _XOPEN_SOURCE 500
 
 #include <errno.h>
+#include <fcntl.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <termios.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <termios.h>
+#include <unistd.h>
 
 static pid_t tpl_pid = -1;
 static bool mode_is_raw = false;
@@ -22,14 +22,16 @@ static struct termios saved_mode;
 static volatile sig_atomic_t quit_vp = 0;
 
 static uint8_t tpl_posixvp_leds[4] = {0};
-static const char* tpl_posixvp_leds_on[4] = {"\033[41m \033[0m", "\033[42m \033[0m", "\033[44m \033[0m", "\033[43m \033[0m"};
-static const char* tpl_posixvp_leds_off= "_";
+static const char *tpl_posixvp_leds_on[4] = {
+    "\033[41m \033[0m", "\033[42m \033[0m", "\033[44m \033[0m",
+    "\033[43m \033[0m"};
+static const char *tpl_posixvp_leds_off = "_";
 
 void print_leds(void)
 {
   char output_string[64] = {'\0'};
   strcat(output_string, "LEDS: ");
-  for(uint8_t led = 0; led < 4; led++)
+  for (uint8_t led = 0; led < 4; led++)
   {
     if (tpl_posixvp_leds[led])
     {
@@ -41,43 +43,43 @@ void print_leds(void)
     }
   }
   strcat(output_string, "\r\n");
-  write(STDOUT_FILENO,output_string,64);
+  write(STDOUT_FILENO, output_string, 64);
 }
 
 void set_leds(uint8_t leds)
 {
-    size_t led = 0;
-    while (leds > 0 && led <4)
+  size_t led = 0;
+  while (leds > 0 && led < 4)
+  {
+    if (leds & 0x1)
     {
-      if (leds & 0x1)
-      {
-        tpl_posixvp_leds[led] = 0x1;
-      }
-      led++;
-      leds = leds >> 1;
+      tpl_posixvp_leds[led] = 0x1;
     }
+    led++;
+    leds = leds >> 1;
+  }
   print_leds();
 }
 
 void reset_leds(uint8_t leds)
 {
-    size_t led = 0;
-    while (leds > 0 && led < 4)
+  size_t led = 0;
+  while (leds > 0 && led < 4)
+  {
+    if (leds & 0x1)
     {
-      if (leds & 0x1)
-      {
-        tpl_posixvp_leds[led] = 0x0;
-      }
-      led++;
-      leds = leds >> 1;
+      tpl_posixvp_leds[led] = 0x0;
     }
+    led++;
+    leds = leds >> 1;
+  }
   print_leds();
 }
 
 void switch_to_raw()
 {
   struct termios new_mode;
-  if (! mode_is_raw)
+  if (!mode_is_raw)
   {
     tcgetattr(STDIN_FILENO, &saved_mode);
     new_mode = saved_mode;
@@ -99,7 +101,7 @@ void switch_to_cooked()
 void set_quit_vp(int sig)
 {
   quit_vp = 1;
-  if (sig = SIGCHLD)
+  if (sig == SIGCHLD)
   {
     wait(NULL);
   }
@@ -124,32 +126,31 @@ void tpl_posixvp_irq_gen_init()
     perror("Erreur lors de la creation de trampoline\n");
     exit(-1);
   }
-  else if(tpl_pid > 0)
+  else if (tpl_pid > 0)
   {
-//    printf("PID = %d\n",tpl_pid);
+    //    printf("PID = %d\n",tpl_pid);
     switch_to_raw();
-    while(! quit_vp)
+    while (!quit_vp)
     {
       int read_char;
       read_char = getchar();
-      switch(read_char)
+      switch (read_char)
       {
-        case 'a' :
-          if (kill(tpl_pid, SIGTERM) == -1)
-          {
-            fprintf(stderr, "posixvp:a:%s\r\n", strerror(errno));
-          }
-          break;
-        case 'b' :
-          if(kill(tpl_pid, SIGTRAP) == -1)
-          {
-            fprintf(stderr, "posixvp:b:%s\r\n", strerror(errno));
-          }
-          break;
-        case 'q' :
-          quit_vp = 1;
-        default :
-          ;
+      case 'a':
+        if (kill(tpl_pid, SIGTERM) == -1)
+        {
+          fprintf(stderr, "posixvp:a:%s\r\n", strerror(errno));
+        }
+        break;
+      case 'b':
+        if (kill(tpl_pid, SIGTRAP) == -1)
+        {
+          fprintf(stderr, "posixvp:b:%s\r\n", strerror(errno));
+        }
+        break;
+      case 'q':
+        quit_vp = 1;
+      default:;
       }
     }
     // kill trampolne process and raise SIGCHLD
@@ -175,4 +176,3 @@ void tpl_posixvp_irq_gen_init()
   fprintf(stderr, "Exiting virtual platform.\n");
   exit(0);
 }
-
