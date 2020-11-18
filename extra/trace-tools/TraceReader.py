@@ -121,7 +121,6 @@ class TraceReaderBinaryFile(TraceReader):
                     #checksum verif
                     if (sum(chunk[:4]) & 0xff == chunk[4]):
                         (evt, self.timeStamp) =  self.decodeBinaryEvent(chunk[:4],self.timeStamp)
-                        print(evt)
                         self.trace.append(evt)
         except OSError as e:
             print('trace file not found ('+filename+'). '

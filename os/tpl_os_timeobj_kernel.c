@@ -290,7 +290,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE)
 /*
  * tpl_counter_tick is called by the IT associated with a counter
  * The param is a pointer to the counter
- * It increment the counter tick and the counter value if needed
+ * It increments the counter tick and the counter value if needed
  * If the counter value is incremented, it checks the next alarm
  * date and raises alarms at that date.
  *
@@ -311,14 +311,14 @@ FUNC(void, OS_CODE)
 tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) t_obj;
-  /* temporary pointeur to adjust the next object of a counter when the first
+  /* temporary pointer to adjust the next object of a counter when the first
      time object at a date is a "BOOTSTRAP" time object (for schedule table
      only) */
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to_temp;
   /*
    * A non constant function pointer is used
    * This violate MISRA rule 104. This is used to call
-   * the action on each alarm. The function pointed is know at conception time,
+   * the action on each alarm. The function pointed is known at compile time,
    * because only 3 function can be pointed to.
    */
   VAR(tpl_expire_func, AUTOMATIC) expire;
@@ -376,12 +376,12 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
             /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
+            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 #if WITH_TEMPORALENFORCEMENT == YES
             /* First pass, FALSE second argument */
             expire(t_obj, FALSE);
 #else
             expire(t_obj);
-            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 #endif
             /*  rearm the alarm if needed               */
 
@@ -403,8 +403,8 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
             }
             else
             {
-              t_obj->state = TIME_OBJ_SLEEP;
               TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, TIME_OBJ_SLEEP)
+              t_obj->state = TIME_OBJ_SLEEP;
             }
             t_obj = next_to;
           } while (t_obj != NULL);
@@ -418,8 +418,8 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
             /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
+            /* TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id) */
             expire(t_obj, TRUE);
-            TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 
             t_obj = next_to;
           } while (t_obj != NULL);

@@ -105,7 +105,7 @@ TASK(task3)
     // execute secondary
     ledOn(ORANGE);
     take_time(10);
-    /* ledOff(ORANGE); */
+    ledOff(ORANGE);
   }
   else
   {

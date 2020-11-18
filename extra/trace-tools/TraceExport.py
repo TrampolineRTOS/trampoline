@@ -39,24 +39,24 @@ class TraceExportTxt(TraceExport):
     def handleEventProc(self,ev):
         ''' called by the evaluator when there is a proc change event.'''
         self.timeStamp(ev)
-        print('proc {0: <20} change to state {1}'.format(ev['procName'],ev['stateName']))
+        print('proc "{0}" change to state {1}'.format(ev['procName'],ev['stateName']))
 
     def handleEventTOExpire(self,ev):
         ''' called by the evaluator when a Time Object expires.'''
         self.timeStamp(ev)
-        print('time object expired: {0}'.format(ev['toName']))
+        print('time object "{0}" expired'.format(ev['toName']))
 
     def handleEventTOUpdate(self,ev):
         ''' called by the evaluator when a Time Object updates.'''
         self.timeStamp(ev)
-        print('time object "{0:>11}" change to state {1}'.format(
+        print('time object "{0}" change to state {1}'.format(
                ev['toName'],
                ev['toStateName']))
 
     def handleEventSetEvent(self,ev):
         ''' called by the evaluator when there is a Set Event.'''
         self.timeStamp(ev)
-        print('event {0:>12} (id {1}) sent to task {2}'.format(
+        print('event "{0}" (id "{1}") sent to task "{2}"'.format(
                 ev['evtName'],
                 ev['evtMask'],
                 ev['procName']))
@@ -64,7 +64,7 @@ class TraceExportTxt(TraceExport):
     def handleEventResetEvent(self,ev):
         ''' called by the evaluator when there is a Reset Event.'''
         self.timeStamp(ev)
-        print('task {0:>20} resets event {1:>10} (mask {2})'.format(
+        print('task "{0}" resets event "{1:>10}" (mask "{2}")'.format(
                 ev['procName'],
                 ev['evtName'],
                 ev['evtMask']))

@@ -33,13 +33,19 @@ class TraceEvaluate:
                 self.runningTask = i
         elif rawEvent['type'] == 'timeobj_expire': #alarm expire
             i = int(rawEvent['timeobj_id'])
-            to = self.staticInfo.timeObjNames[i]
+            if (i == 255) :
+                to = "strat timer"
+            else:
+                to = self.staticInfo.timeObjNames[i]
             event = {'ts':ts, 'id':i, 'toName':to}
             if self.export:
                 self.export.handleEventTOExpire(event)
         elif rawEvent['type'] == 'timeobj':   #alarm state update
             i = int(rawEvent['timeobj_id'])
-            to = self.staticInfo.timeObjNames[i]
+            if (i == 255) :
+                to = "strat timer"
+            else:
+                to = self.staticInfo.timeObjNames[i]
             toState = int(rawEvent['target_state'])
             toStateName = self.staticInfo.timeObjStates[toState]
             event = {'ts':ts, 'id':i, 'toName':to, 'state':toState, 'toStateName':toStateName}

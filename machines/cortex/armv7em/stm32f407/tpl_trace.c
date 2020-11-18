@@ -45,13 +45,19 @@ extern CONST(uint32_t, OS_CONST) TRACE_FORMAT_RAM_QUEUE_SIZE;
 #define OS_STOP_SEC_CONST_32BIT
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 extern VAR(uint8_t, OS_VAR) tpl_trace_queue[];
+static VAR(uint32_t, OS_VAR) tpl_trace_queue_index = 0;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(uint8_t, OS_VAR) tpl_trace_queue_index = 0;
+#endif /* TRACE_FORMAT == TRACE_FORMAT_RAM */
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+#if TRACE_FORMAT == TRACE_FORMAT_RAM
 
 FUNC(void, OS_CODE)
 tpl_trace_add_byte_to_queue(CONST(uint8_t, AUTOMATIC) byte)
@@ -66,10 +72,8 @@ tpl_trace_add_byte_to_queue(CONST(uint8_t, AUTOMATIC) byte)
     // queue is full, event is ignored
   }
 }
-#endif
 
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_RAM */
 
 FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
 {

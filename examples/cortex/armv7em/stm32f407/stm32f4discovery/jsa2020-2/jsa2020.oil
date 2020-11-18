@@ -154,8 +154,8 @@ CPU jsa2020 {
             APP_SRC = "jsa2020.c";
             APP_NAME = "jsa2020_exe";
             TRAMPOLINE_BASE_PATH = "../../../../../../";
-            CFLAGS = "-O0 -ggdb";
-            LDFLAGS = "-Map=blink.map";
+            CFLAGS = "-O0";
+            LDFLAGS = "-Map=jsa2020.map";
             COMPILER = "arm-none-eabi-gcc";
             ASSEMBLER = "arm-none-eabi-as";
             LINKER = "arm-none-eabi-ld";
