@@ -378,12 +378,11 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
             expire = t_obj->stat_part->expire;
             TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
 #if WITH_TEMPORALENFORCEMENT == YES
-            /* First pass, FALSE second argument */
+            /* First pass, FALSE second argument, only take the action */
             expire(t_obj, FALSE);
 #else
+            /* One passe, take the action and rearm or suspend the alarm */
             expire(t_obj);
-#endif
-            /*  rearm the alarm if needed               */
 
             if (t_obj->cycle != 0)
             {
@@ -406,21 +405,42 @@ tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
               TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, TIME_OBJ_SLEEP)
               t_obj->state = TIME_OBJ_SLEEP;
             }
+#endif
             t_obj = next_to;
           } while (t_obj != NULL);
 
 #if WITH_TEMPORALENFORCEMENT == YES
-          /* Second pass */
+          /* Second pass: rearm or suspend the alarm */
           t_obj = real_next_to_temp;
 
           do
           {
-            /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
-            /* TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id) */
+
             expire(t_obj, TRUE);
 
+            if (t_obj->cycle != 0)
+            {
+              /*  if the cycle is not 0, the new date
+               is computed by adding the cycle to
+               the current date                      */
+              new_date = t_obj->date + t_obj->cycle;
+              if (new_date > counter->max_allowed_value)
+              {
+                new_date -= (counter->max_allowed_value + 1);
+              }
+              t_obj->date = new_date;
+
+              /*  and the alarm is put back in the alarm
+               queue of the counter it belongs to    */
+              tpl_insert_time_obj(t_obj);
+            }
+            else
+            {
+              TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, TIME_OBJ_SLEEP)
+              t_obj->state = TIME_OBJ_SLEEP;
+            }
             t_obj = next_to;
           } while (t_obj != NULL);
 #endif
