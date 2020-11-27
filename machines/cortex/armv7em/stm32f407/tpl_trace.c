@@ -25,6 +25,7 @@
 #define TRACE_FORMAT_SERIAL 0
 #define TRACE_FORMAT_RAM 1
 
+#include "stm32f4xx.h"      /* SysTick */
 #include "tpl_app_define.h" /* WITH_TRACE */
 #include <stdint.h>
 
@@ -77,7 +78,10 @@ tpl_trace_add_byte_to_queue(CONST(uint8_t, AUTOMATIC) byte)
 
 FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
 {
-  return (0x0000FFFF & tpl_time_counter);
+  uint32_t micros = (167999 - SysTick->VAL) / 168;
+  uint32_t millis = tpl_time_counter * 1000;
+  return 0x0000FFFF & (millis + micros);
+  /* return tpl_time_counter; */
 }
 
 /**
@@ -96,7 +100,7 @@ FUNC(void, OS_CODE)
 tpl_trace_proc_change_state(CONST(tpl_proc_id, AUTOMATIC) proc_id,
                             CONST(tpl_proc_state, AUTOMATIC) target_state)
 {
-  const tpl_tick ts = tpl_time_counter;
+  const tpl_tick ts = tpl_trace_get_timestamp();
 #if TRACE_FORMAT == TRACE_FORMAT_RAM
   /* TTT 00 SSS (Type, State) */
   uint8_t byte = PROC_CHANGE_STATE << 5 | target_state;
