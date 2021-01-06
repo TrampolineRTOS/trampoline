@@ -6,18 +6,7 @@
 
 // init PB.3 as output (LED 1 on pin 13).
 void initUserLed() {
-  GPIO_InitTypeDef GPIO_InitStructure;
-
-  /* Enable the GPIO_LED Clock */
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-
-  /* Configure the GPIO_LED pin */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
+	pinMode(GPIOB,3,OUTPUT);
 }
 
 FUNC(int, OS_APPL_CODE) main(void) {
