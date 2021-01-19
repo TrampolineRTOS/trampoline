@@ -1,0 +1,51 @@
+%
+#
+# Template to generate functions to enable and disable interrupts
+# according to a vector
+#
+
+input(inputVector,name,subname)
+
+let lower32bitsMask := 1 << 32 - 1
+%
+/*=============================================================================
+ * To disable the % !name % interrupts, the corresponding ICER
+ * are set
+ */
+FUNC(void, OS_CODE) tpl_disable_% !subname %_interrupts(void)
+{%
+let icer_index := 0
+let vector := inputVector
+repeat ( [inputVector numberOfBytes] / 4 + 1)
+while vector != 0 do
+  let register_content := vector & lower32bitsMask
+  if register_content != 0 then
+%
+  NVIC->ICER[% !icer_index %] = % ![register_content hexString] %;%
+  end if
+  let vector >>= 32
+  let icer_index += 1
+end repeat
+%
+}
+
+/*=============================================================================
+ * To enable the % !name % interrupts, the corresponding ISER
+ * are set
+ */
+FUNC(void, OS_CODE) tpl_enable_% !subname %_interrupts(void)
+{%
+let iser_index := 0
+let vector := inputVector
+repeat ( [inputVector numberOfBytes] / 4 + 1)
+while vector != 0 do
+  let register_content := vector & lower32bitsMask
+  if register_content != 0 then
+%
+  NVIC->ISER[% !iser_index %] = % ![register_content hexString] %;%
+  end if
+  let vector >>= 32
+  let iser_index += 1
+end repeat
+%
+}

@@ -1,0 +1,6 @@
+//the READY tasks state definition conflicts 
+//with registers definition (in sam.h)
+#ifdef READY
+  #undef READY
+#endif
+#include "sam.h"

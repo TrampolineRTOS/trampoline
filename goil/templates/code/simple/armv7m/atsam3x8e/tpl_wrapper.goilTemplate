@@ -1,0 +1,2 @@
+#define __SAM3X8E__
+#include "sam.h"

@@ -1,0 +1,128 @@
+#include "tpl_machine.h"
+%
+%
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+let objForIRQ := @[ ]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @( )
+  end if
+  let isr::KIND := "ISR"
+  let isr::ACK := INTERRUPTMAP[key]::ACK
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @( )
+  end if
+  let cnt::KIND := "COUNTER"
+  let cnt::ACK := INTERRUPTMAP[key]::ACK
+  let objForIRQ[key] += cnt
+end foreach
+
+# Build the list of counters to call
+let counterForIRQ := @[ ]
+
+# Build a list of virtual objects (counters) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
+foreach objList in objForIRQ do
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let counterForIRQ[KEY] := @( )
+    end if
+  end foreach
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let  counterForIRQ[KEY] += obj::NAME
+    end if
+  end foreach
+end foreach
+
+#------------------------------------------------------------------------------*
+
+foreach objList in objForIRQ do
+  let objList_KEY := KEY
+  let indexISR2 := 0
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 then
+%  extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
+%
+      end if
+      if obj::ACK then
+%  extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
+%
+      end if
+    end if
+  end foreach
+end foreach
+
+foreach objList in objForIRQ do
+  let objList_KEY := KEY
+%
+FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
+{
+%
+  let indexISR2 := 0
+  foreach obj in objList do
+    template if exists tpl_interrupt_ack_with_no_vector_start
+    if obj::KIND == "ISR" then
+# ISR 1
+      if obj::CATEGORY == 1 then
+%  % !obj::NAME %_function();
+%
+      else
+        if obj::CATEGORY == 2 then
+# ISR2
+%  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+%
+          let indexISR2 := indexISR2 + 1
+        else
+          error obj::CATEGORY : "This interrupt category "+obj::CATEGORY+" does not exist"
+        end if
+      end if
+    end if
+    template if exists tpl_interrupt_ack_with_no_vector_stop
+  end foreach
+  foreach objCounter in counterForIRQ do
+    let objCounter_KEY := KEY
+    if objCounter_KEY == objList_KEY then
+      %  tpl_tick_% !objCounter_KEY %();
+%
+    end if
+  end foreach
+  let ackDone := false
+  foreach obj in objList do
+    if not ackDone then
+      if obj::ACK then
+        let ackDone := true
+%  %!objList_KEY%_ClearFlag();
+%
+      end if
+    end if
+  end foreach
+%
+}
+%
+end foreach
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+# vim:ft=goil_templates

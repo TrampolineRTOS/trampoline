@@ -1,0 +1,4 @@
+
+/* extra headers for % !BOARD % */
+#include "core_pins.h"
+#include "gpio.h"

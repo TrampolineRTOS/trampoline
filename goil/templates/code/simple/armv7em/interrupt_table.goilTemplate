@@ -1,0 +1,214 @@
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+let objForIRQ := @[]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @()
+  end if
+  let isr::KIND := "ISR"
+  let isr::ACK := INTERRUPTMAP[key]::ACK
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @()
+  end if
+  let cnt::KIND := "COUNTER"
+  let cnt::ACK := INTERRUPTMAP[key]::ACK
+  let objForIRQ[key] += cnt
+end foreach
+
+# Build the list of counters to call
+let counterForIRQ := @[ ]
+
+# Build a list of virtual objects (counters) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
+foreach objList in objForIRQ do
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let counterForIRQ[KEY] := @()
+    end if
+  end foreach
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let  counterForIRQ[KEY] += obj::NAME
+    end if
+  end foreach
+end foreach
+
+#------------------------------------------------------------------------------*
+
+let thereAreISR1 := false
+foreach objList in objForIRQ do
+  let objList_KEY := KEY
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 #& not thereAreISR1
+      then
+#        let thereAreISR1 := true
+%extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
+%
+      end if
+      let isExt := false
+      if exists obj::ACK_S::ACKTYPE then
+        let isExt := obj::ACK_S::ACKTYPE == "EXTERNAL"
+      end if
+      if obj::ACK & not isExt then
+%extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
+%
+      end if
+    elsif obj::KIND == "COUNTER" then
+      let isExt := false
+      if exists obj::ACK_S::ACKTYPE then
+        let isExt := obj::ACK_S::ACKTYPE == "EXTERNAL"
+      end if
+      if obj::ACK & not isExt then
+%extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
+%
+      end if      
+    end if
+  end foreach
+end foreach
+
+#
+# Build a map for interrupt sources
+#
+let it_map := [INTERRUPT mapBy: "NAME"]
+
+foreach objList in objForIRQ do
+  let objList_KEY := KEY
+%
+FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
+{
+%
+  #Ack for EXTERNAL ISR are a special case:
+  #  many lines can be associated to the same source.
+  let ackDone    := false
+  # ISR1
+%  /* ISR1s */
+%
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 then 
+        if obj::ACK then
+          if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+            let isISR1 := true
+            template tpl_external_interrupt_call_and_ack
+            unlet isISR1
+            let ackDone    := true
+          else #bit access?
+            error here: "not implemented yet"
+          end if
+        else
+          %  %!obj::NAME %_function();\n%
+        end if
+      end if
+    end if
+  end foreach
+
+  # ISR2 and COUNTER
+  # Test for ISR2
+%
+  /* ISR2s */
+%
+  let thereAreISR2forThisObjList := false
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 2 then
+        let thereAreISR2forThisObjList := true
+      end if
+    end if
+  end foreach
+
+  if thereAreISR2forThisObjList then
+    foreach obj in objList
+      before
+%  GET_CURRENT_CORE_ID(core_id)
+
+#if WITH_STACK_MONITORING == YES
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
+
+%
+      do
+      if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
+        if obj::ACK then
+          if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+            let isISR2 := true
+            template tpl_external_interrupt_call_and_ack
+            unlet isISR2
+            let ackDone := true
+          else #bit access?
+            error here: "not implemented yet"
+          end if
+        else
+%  tpl_fast_central_interrupt_handler(% !obj::NAME %_id);
+%
+        end if
+      end if
+    end foreach
+  end if
+
+  # COUNTER
+%  /* COUNTERs */
+%
+  foreach objCounter in counterForIRQ do
+    let objCounter_KEY := KEY
+    if objCounter_KEY == objList_KEY then
+      if it_map[objList_KEY]::ACK then
+        if it_map[objList_KEY]::ACK_S::ACKTYPE == "EXTERNAL" then
+          let isCounter := true
+          template tpl_external_interrupt_call_and_ack
+          unlet isCounter
+          let ackDone    := true
+        else #bit access?
+          error here: "not implemented yet"
+        end if
+      else
+        %  tpl_tick_% !objCounter_KEY %();\n%
+      end if
+    end if
+  end foreach
+
+  # ACK
+  if not ackDone then
+%  /* ACK */
+%   foreach obj in objList do
+      if obj::ACK then
+        if obj::ACK_S::ACKTYPE == "TEMPLATE" then
+          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
+            it_map[objList_KEY]::ACK_S::ACKTYPE_S::TEMPLATE_S::NAME or
+%  %!objList_KEY%_ClearFlag();%
+          end template
+        else
+%  %!objList_KEY%_ClearFlag();%
+        end if        
+      end if
+    end foreach
+  end if
+%
+}
+%
+end foreach
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+# vim:ft=goil_templates
