@@ -55,6 +55,18 @@ ISR(isr_button)
 #define APP_ISR_isr_button_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+#define APP_ISR_isr_button2_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(isr_button2)
+{
+  DisableAllInterrupts();
+  ledToggle(BLUE);
+  EnableAllInterrupts();
+}
+#define APP_ISR_isr_button2_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 /*

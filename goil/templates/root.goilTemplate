@@ -27,7 +27,7 @@ import "vectors"
 #------------------------------------------------------------------------------*
 # Check goil version is ok
 #
-let NEEDED_VERSION := "3.1.11"
+let NEEDED_VERSION := "3.1.12"
 
 if version() != NEEDED_VERSION then
   error here : "Goil version " + NEEDED_VERSION + " required"
@@ -130,6 +130,9 @@ if AUTOSAR then
     let OS::GLOBALTIME := OS::GLOBALTIME | st::LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION
   end foreach
 end if
+
+# Compute the OS::USEID
+let OS::USEID := OS::TRACE
 
 # Compute the OS:OSAPPLICATIONSTARTUPHOOK and OS:OSAPPLICATIONSHUTDOWNHOOK
 let OS::APPLICATIONSTARTUPHOOK := 0
@@ -1063,11 +1066,16 @@ foreach message in MESSAGE do
   if message::MESSAGEPROPERTY == "SEND_ZERO_INTERNAL" |
      message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL"
   then
-    # the target message if the last message in the linked
+    # the target message is the last message in the linked
     # list of destination messages
-    let target_message := [receiver[message::NAME] last]
-    let message::TARGET := target_message::NAME
-    let SENDMESSAGES += message
+    if not exists receiver[message::NAME]
+    then
+      warning message::NAME : "Since message " + message::NAME + " has no receiver, it will not be used."
+    else
+      let target_message := [receiver[message::NAME] last]
+      let message::TARGET := target_message::NAME
+      let SENDMESSAGES += message
+    end if
   end if
 end foreach
 
@@ -1501,13 +1509,28 @@ if OS::MEMMAP then
   end if
 end if
 
-if OS::TRACE then
-!PROJECT%.desc
+!PROJECT%/tpl_static_info.json
 %
-  write to PROJECT+".desc":
-    template trace_description in log
+write to PROJECT+"/tpl_static_info.json":
+  let obj := @[
+    "task"     : TASKS,
+    "isr"      : ISRS,
+    "event"    : EVENTS,
+    "resource" : RESOURCES,
+    "alarm"    : ALARMS
+  ]
+  let nbTab := 0
+  template export_json in log
+end write
+
+#temporary => posix related
+if OS::TRACE then
+  %readTrace.py%
+  write to executable "readTrace.py":
+    template readTrace_py in log
   end write
 end if
+#temporary
 
 template if exists custom_files in config
 
@@ -1529,3 +1552,13 @@ if OS::WITHORTI then
     template orti in code
   end write
 end if
+
+#
+# Execute the root plugins
+#
+let rootDir := rootTemplatesDirectory()
+let files := [rootDir + "/root_plugins" filesWithExtensions: @! "goilTemplate" !]
+foreach file in files do
+  println "executing plugin " + file
+  template from file in root_plugins
+end foreach

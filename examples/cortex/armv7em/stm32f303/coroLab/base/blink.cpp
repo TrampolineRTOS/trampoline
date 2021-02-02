@@ -5,6 +5,7 @@
 FUNC(int, OS_APPL_CODE) main(void)
 {
 	initCoroBoard();
+  Tft.print("Master CORO biard");
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }
@@ -19,4 +20,3 @@ TASK(blink)
 	i++;
 	TerminateTask();
 }
-

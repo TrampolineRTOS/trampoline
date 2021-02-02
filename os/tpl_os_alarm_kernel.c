@@ -79,7 +79,6 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
   CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
     stat_alarm->action;
 
-  TRACE_ALARM_EXPIRE(time_obj)
   /*  Call the action                                     */
   (action_desc->action)(action_desc) ;
 }
@@ -253,8 +252,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
       alarm->date = date;
       alarm->cycle = cycle;
       alarm->state = ALARM_ACTIVE;
+      TRACE_TIMEOBJ_CHANGE_STATE(alarm_id, alarm->state)
       tpl_insert_time_obj(alarm);
-      TRACE_ALARM_SCHEDULED(alarm)
     }
     else
     {
@@ -327,8 +326,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
       alarm->date = start;
       alarm->cycle = cycle;
       alarm->state = ALARM_ACTIVE;
+      TRACE_TIMEOBJ_CHANGE_STATE(alarm_id, alarm->state)
       tpl_insert_time_obj(alarm);
-      TRACE_ALARM_SCHEDULED(alarm)
     }
     else
     {
@@ -391,8 +390,8 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
     {
       tpl_remove_time_obj(alarm);
-      TRACE_ALARM_CANCEL(alarm_id)
       alarm->state = ALARM_SLEEP;
+      TRACE_TIMEOBJ_CHANGE_STATE(alarm_id, alarm->state)
     }
     else
     {

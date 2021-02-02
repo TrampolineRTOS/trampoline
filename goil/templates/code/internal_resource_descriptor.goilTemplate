@@ -1,3 +1,6 @@
+%
+if resource::NAME != "INTERNAL_RES_SCHEDULER" then
+%
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 /*-----------------------------------------------------------------------------
@@ -23,3 +26,5 @@ VAR(tpl_internal_resource, OS_VAR) % !resource::NAME %_rez_desc = {
 };
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+%
+end if

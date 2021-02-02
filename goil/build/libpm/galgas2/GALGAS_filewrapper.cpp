@@ -1,31 +1,29 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  GALGAS_filewrapper : class for GALGAS file wrappers                                                                *
-//                                                                                                                     *
-//  Started february 23th, 2008.                                                                                       *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2008, ..., 2015 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  GALGAS_filewrapper : class for GALGAS file wrappers                                          
+//
+//  Started february 23th, 2008.                                                                 
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2008, ..., 2015 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cRegularFileWrapper::cRegularFileWrapper (const char * inName,
                                           const char * inExtension,
@@ -39,7 +37,7 @@ mFileLength (inFileLength),
 mContents (inContents) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cDirectoryWrapper::cDirectoryWrapper (const char * inDirectoryName,
                                       const uint32_t inFileCount,
@@ -53,7 +51,7 @@ mDirectoryCount (inDirectoryCount),
 mDirectories (inDirectories) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper::GALGAS_filewrapper (const cDirectoryWrapper & inRootDirectory) :
 AC_GALGAS_root (),
@@ -61,14 +59,14 @@ mRootDirectoryPtr (& inRootDirectory),
 mCurrentDirectory ("/") {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper::GALGAS_filewrapper (void) :
 mRootDirectoryPtr (NULL),
 mCurrentDirectory () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper::GALGAS_filewrapper (const GALGAS_filewrapper & inSource) :
 AC_GALGAS_root (),
@@ -76,7 +74,7 @@ mRootDirectoryPtr (inSource.mRootDirectoryPtr),
 mCurrentDirectory (inSource.mCurrentDirectory) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_filewrapper & GALGAS_filewrapper::operator = (const GALGAS_filewrapper & inSource) {
   mRootDirectoryPtr = inSource.mRootDirectoryPtr ;
@@ -84,7 +82,7 @@ GALGAS_filewrapper & GALGAS_filewrapper::operator = (const GALGAS_filewrapper & 
   return * this ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalEnumerateFiles (const cDirectoryWrapper & inDirectory,
                                     const C_String & inWrapperPath,
@@ -110,7 +108,7 @@ static void internalEnumerateFiles (const cDirectoryWrapper & inDirectory,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allTextFilePathes (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -121,7 +119,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_allTextFilePathes (LOCATION_ARGS) c
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allBinaryFilePathes (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -132,7 +130,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_allBinaryFilePathes (LOCATION_ARGS)
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalEnumerateDirectories (const cDirectoryWrapper & inDirectory,
                                           const C_String & inWrapperPath,
@@ -149,7 +147,7 @@ static void internalEnumerateDirectories (const cDirectoryWrapper & inDirectory,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allDirectoryPathes (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -160,7 +158,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_allDirectoryPathes (LOCATION_ARGS) 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void internalEnumerateFilesWithExtension (const cDirectoryWrapper & inDirectory,
                                                  const C_String & inWrapperPath,
@@ -186,7 +184,7 @@ static void internalEnumerateFilesWithExtension (const cDirectoryWrapper & inDir
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_allFilePathesWithExtension (const GALGAS_string & inExtension
                                                                          COMMA_LOCATION_ARGS) const {
@@ -198,7 +196,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_allFilePathesWithExtension (const G
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_filewrapper::objectCompare (const GALGAS_filewrapper & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -215,7 +213,7 @@ typeComparisonResult GALGAS_filewrapper::objectCompare (const GALGAS_filewrapper
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void enumerateWrapper (C_String & ioString,
                               const cDirectoryWrapper * inDir,
@@ -238,7 +236,7 @@ static void enumerateWrapper (C_String & ioString,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_filewrapper::description (C_String & ioString,
                                       const int32_t inIndentation) const {
@@ -251,7 +249,7 @@ void GALGAS_filewrapper::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_filewrapper::getter_currentDirectory (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -261,7 +259,7 @@ GALGAS_string GALGAS_filewrapper::getter_currentDirectory (UNUSED_LOCATION_ARGS)
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cDirectoryWrapper * findDirectoryInDirectory (const cDirectoryWrapper * inDir,
                                                            const C_String & inSearchedDir) {
@@ -288,7 +286,7 @@ static const cDirectoryWrapper * findDirectoryInDirectory (const cDirectoryWrapp
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cRegularFileWrapper * findFileInDirectory (const cDirectoryWrapper * inDir,
                                                         const C_String & inSearchedFile) {
@@ -315,7 +313,7 @@ static const cRegularFileWrapper * findFileInDirectory (const cDirectoryWrapper 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cDirectoryWrapper * getDirectory (const C_String & inDirectory,
                                                const cDirectoryWrapper * inRootDirectoryPtr) {
@@ -328,7 +326,7 @@ static const cDirectoryWrapper * getDirectory (const C_String & inDirectory,
   return dir ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_filewrapper::getter_directoryExistsAtPath (const GALGAS_string & inPath,
                                                               C_Compiler * inCompiler
@@ -343,7 +341,7 @@ GALGAS_bool GALGAS_filewrapper::getter_directoryExistsAtPath (const GALGAS_strin
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_filewrapper::getter_fileExistsAtPath (const GALGAS_string & inPath,
                                                          C_Compiler * inCompiler
@@ -361,7 +359,7 @@ GALGAS_bool GALGAS_filewrapper::getter_fileExistsAtPath (const GALGAS_string & i
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_filewrapper::getter_textFileContentsAtPath (const GALGAS_string & inPath,
                                                                  C_Compiler * inCompiler
@@ -389,7 +387,7 @@ GALGAS_string GALGAS_filewrapper::getter_textFileContentsAtPath (const GALGAS_st
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_data GALGAS_filewrapper::getter_binaryFileContentsAtPath (const GALGAS_string & inPath,
                                                                  C_Compiler * inCompiler
@@ -417,7 +415,7 @@ GALGAS_data GALGAS_filewrapper::getter_binaryFileContentsAtPath (const GALGAS_st
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_filewrapper::setter_setCurrentDirectory (const GALGAS_string inNewDirectory,
                                                        C_Compiler * inCompiler
@@ -437,7 +435,7 @@ void GALGAS_filewrapper::setter_setCurrentDirectory (const GALGAS_string inNewDi
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_filewrapper::getter_absolutePathForPath (const GALGAS_string & inPath,
                                                               C_Compiler * inCompiler
@@ -497,7 +495,7 @@ GALGAS_string GALGAS_filewrapper::getter_absolutePathForPath (const GALGAS_strin
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_directoriesAtPath (const GALGAS_string & inPath,
                                                                 C_Compiler * inCompiler
@@ -520,7 +518,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_directoriesAtPath (const GALGAS_str
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_textFilesAtPath (const GALGAS_string & inPath,
                                                               C_Compiler * inCompiler
@@ -545,7 +543,7 @@ GALGAS_stringlist GALGAS_filewrapper::getter_textFilesAtPath (const GALGAS_strin
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist GALGAS_filewrapper::getter_binaryFilesAtPath (const GALGAS_string & inPath,
                                                                 C_Compiler * inCompiler
@@ -570,4 +568,4 @@ GALGAS_stringlist GALGAS_filewrapper::getter_binaryFilesAtPath (const GALGAS_str
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

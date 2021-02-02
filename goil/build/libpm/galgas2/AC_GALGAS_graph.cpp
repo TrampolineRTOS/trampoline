@@ -1,31 +1,29 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  AC_GALGAS_graph : Base class for GALGAS graph                                                                      *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2008, ..., 2016 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  AC_GALGAS_graph : Base class for GALGAS graph                                                
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2008, ..., 2016 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_Compiler.h"
 #include "utilities/C_DirectedGraph.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cGraphNode {
   public : cGraphNode * mInfPtr ;
@@ -52,14 +50,14 @@ class cGraphNode {
   private : cGraphNode & operator = (const cGraphNode &) ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cGraphNode::~ cGraphNode (void) {
   macroMyDelete (mInfPtr) ;
   macroMyDelete (mSupPtr) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cSharedGraph : public C_SharedObject {
 //--------------------------------- Attributes
@@ -161,7 +159,7 @@ class cSharedGraph : public C_SharedObject {
   private : cSharedGraph & operator = (const cSharedGraph &) ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cSharedGraph::cSharedGraph (LOCATION_ARGS) :
 C_SharedObject (THERE),
@@ -170,19 +168,19 @@ mDirectedGraph (),
 mNodeArray () {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cSharedGraph::~ cSharedGraph (void) {
   macroMyDelete (mRoot) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Copy
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cGraphNode::cGraphNode (cGraphNode * inNode) :
 mInfPtr (NULL),
@@ -206,7 +204,7 @@ mIsDefined (inNode->mIsDefined) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void buildNodeArray (cGraphNode * inNode,
                             TC_UniqueArray <cGraphNode *> & ioNodeArray) {
@@ -218,7 +216,7 @@ static void buildNodeArray (cGraphNode * inNode,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::copyFrom (const cSharedGraph * inSource) {
   macroUniqueSharedObject (this) ;
@@ -232,7 +230,7 @@ void cSharedGraph::copyFrom (const cSharedGraph * inSource) {
     checkGraph (HERE) ;
   #endif
 }
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::description (C_String & ioString,
                                 const int32_t /* inIndentation */) const {
@@ -244,7 +242,7 @@ void cSharedGraph::description (C_String & ioString,
            << ")" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cSharedGraph::checkGraph (LOCATION_ARGS) const {
@@ -259,22 +257,22 @@ void cSharedGraph::description (C_String & ioString,
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//    AC_GALGAS_graph                                                                                                  *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//    AC_GALGAS_graph                                                                            
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_graph::AC_GALGAS_graph (void) :
 AC_GALGAS_root (),
 mSharedGraph (NULL) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_graph::~ AC_GALGAS_graph (void) {
   macroDetachSharedObject (mSharedGraph) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_graph::AC_GALGAS_graph (const AC_GALGAS_graph & inSource) :
 AC_GALGAS_root (),
@@ -282,20 +280,20 @@ mSharedGraph (NULL) {
   macroAssignSharedObject (mSharedGraph, inSource.mSharedGraph) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 AC_GALGAS_graph & AC_GALGAS_graph::operator = (const AC_GALGAS_graph & inSource) {
   macroAssignSharedObject (mSharedGraph, inSource.mSharedGraph) ;
   return * this ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::makeNewEmptyGraph (LOCATION_ARGS) {
   macroMyNew (mSharedGraph, cSharedGraph (THERE)) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::description (C_String & ioString,
                                   const int32_t inIndentation) const {
@@ -309,7 +307,7 @@ void AC_GALGAS_graph::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 uint32_t AC_GALGAS_graph::count () const {
   uint32_t result = 0 ;
@@ -319,19 +317,19 @@ uint32_t AC_GALGAS_graph::count () const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint AC_GALGAS_graph::getter_count (UNUSED_LOCATION_ARGS) const {
   return GALGAS_uint (count ()) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::drop (void) {
   macroDetachSharedObject (mSharedGraph) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
   if ((mSharedGraph != NULL) && !mSharedGraph->isUniquelyReferenced ()) {
@@ -346,13 +344,13 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_hasKey
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool AC_GALGAS_graph::getter_isNodeDefined (const GALGAS_string & inKey
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
@@ -363,7 +361,7 @@ GALGAS_bool AC_GALGAS_graph::getter_isNodeDefined (const GALGAS_string & inKey
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool cSharedGraph::isNodeDefined (const C_String & inKey) const {
   bool result = false ;
@@ -374,13 +372,13 @@ bool cSharedGraph::isNodeDefined (const C_String & inKey) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_locationForKey
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location AC_GALGAS_graph::getter_locationForKey (const GALGAS_string & inKey,
                                                         C_Compiler * inCompiler
@@ -392,7 +390,7 @@ GALGAS_location AC_GALGAS_graph::getter_locationForKey (const GALGAS_string & in
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location cSharedGraph::locationForKey (const C_String & inKey,
                                               C_Compiler * inCompiler
@@ -417,13 +415,13 @@ GALGAS_location cSharedGraph::locationForKey (const C_String & inKey,
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_keyList
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist cSharedGraph::keyList (void) const {
   GALGAS_stringlist result = GALGAS_stringlist::constructor_emptyList (HERE) ;
@@ -433,7 +431,7 @@ GALGAS_stringlist cSharedGraph::keyList (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist AC_GALGAS_graph::getter_keyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -443,13 +441,13 @@ GALGAS_stringlist AC_GALGAS_graph::getter_keyList (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_lkeyList
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringlist cSharedGraph::lkeyList (void) const {
   GALGAS_lstringlist result = GALGAS_lstringlist::constructor_emptyList (HERE) ;
@@ -464,7 +462,7 @@ GALGAS_lstringlist cSharedGraph::lkeyList (void) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringlist AC_GALGAS_graph::getter_lkeyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
@@ -474,13 +472,13 @@ GALGAS_lstringlist AC_GALGAS_graph::getter_lkeyList (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark internalFindNode
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cGraphNode * findNode (const C_String & inKey,
                                     const cGraphNode * inNode) {
@@ -498,13 +496,13 @@ static const cGraphNode * findNode (const C_String & inKey,
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark subGraph
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::subGraph (AC_GALGAS_graph & outResultingGraph,
                              const GALGAS_lstringlist & inStartNodes,
@@ -592,7 +590,7 @@ void cSharedGraph::subGraph (AC_GALGAS_graph & outResultingGraph,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::subGraph (AC_GALGAS_graph & outResultingGraph,
                                 const GALGAS_lstringlist & inStartNodes,
@@ -609,13 +607,13 @@ void AC_GALGAS_graph::subGraph (AC_GALGAS_graph & outResultingGraph,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reversed Graph
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::copyReversedGraphFrom (const cSharedGraph * inSource) {
   macroUniqueSharedObject (this) ;
@@ -630,7 +628,7 @@ void cSharedGraph::copyReversedGraphFrom (const cSharedGraph * inSource) {
   #endif
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::reversedGraphFromGraph (const AC_GALGAS_graph & inGraph
                                               COMMA_LOCATION_ARGS) {
@@ -641,13 +639,13 @@ void AC_GALGAS_graph::reversedGraphFromGraph (const AC_GALGAS_graph & inGraph
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Object Compare
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cSharedGraph::graphCompare (const cSharedGraph * inOperand) const {
   int32_t r = ((int32_t) allNodeCount ()) - ((int32_t) inOperand->allNodeCount ()) ;
@@ -657,7 +655,7 @@ int32_t cSharedGraph::graphCompare (const cSharedGraph * inOperand) const {
   return r ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult AC_GALGAS_graph::objectCompare (const AC_GALGAS_graph & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -674,13 +672,13 @@ typeComparisonResult AC_GALGAS_graph::objectCompare (const AC_GALGAS_graph & inO
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Node Insertion
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void rotateLeft (cGraphNode * & ioRootPtr) {
   cGraphNode * b = ioRootPtr->mSupPtr ;
@@ -701,7 +699,7 @@ static void rotateLeft (cGraphNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void rotateRight (cGraphNode * & ioRootPtr) {
   cGraphNode * b = ioRootPtr->mInfPtr ;
@@ -721,7 +719,7 @@ static void rotateRight (cGraphNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cGraphNode::cGraphNode (const C_String & inKey,
                         const uint32_t inNodeID) :
@@ -736,7 +734,7 @@ mReferenceLocationArray (),
 mIsDefined (false) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cGraphNode * cSharedGraph::internalInsert (cGraphNode * & ioRootPtr,
                                            const C_String & inKey,
@@ -787,20 +785,20 @@ cGraphNode * cSharedGraph::internalInsert (cGraphNode * & ioRootPtr,
   return matchingEntry ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark internalAddNode
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 cGraphNode * cSharedGraph::findOrAddNodeForKey (const C_String & inKey) {
   bool extension = false ; // Unused here
   return internalInsert (mRoot, inKey, extension) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::internalAddNode (const GALGAS_lstring & inKey,
                                     const char * inErrorMessage,
@@ -820,7 +818,7 @@ void cSharedGraph::internalAddNode (const GALGAS_lstring & inKey,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::internalAddNode (const GALGAS_lstring & inKey,
                                        const char * inErrorMessage,
@@ -840,13 +838,13 @@ void AC_GALGAS_graph::internalAddNode (const GALGAS_lstring & inKey,
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark modifier noteNode
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::setter_noteNode (const GALGAS_lstring & inKey
                                          COMMA_LOCATION_ARGS) {
@@ -866,13 +864,13 @@ void AC_GALGAS_graph::setter_noteNode (const GALGAS_lstring & inKey
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Modifier addEdge
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::addEdge (const C_String & inSourceNodeKey,
                             const GALGAS_location & inSourceNodeLocation,
@@ -887,7 +885,7 @@ void cSharedGraph::addEdge (const C_String & inSourceNodeKey,
   mDirectedGraph.addEdge (sourceNode->mNodeID, targetNode->mNodeID) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::setter_addEdge (const GALGAS_lstring & inSourceNodeKey,
                                         const GALGAS_lstring & inTargetNodeKey
@@ -907,13 +905,13 @@ void AC_GALGAS_graph::setter_addEdge (const GALGAS_lstring & inSourceNodeKey,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Output graphviz text
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String cSharedGraph::getter_graphviz (void) const {
   TC_UniqueArray <C_String> nodeNameArray ;
@@ -923,7 +921,7 @@ C_String cSharedGraph::getter_graphviz (void) const {
   return mDirectedGraph.graphvizString (nodeNameArray) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string AC_GALGAS_graph::getter_graphviz (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -934,13 +932,13 @@ GALGAS_string AC_GALGAS_graph::getter_graphviz (UNUSED_LOCATION_ARGS) const {
 }
 
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Output arc list
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::edges (GALGAS__32_stringlist & ioList) const {
   TC_UniqueArray <cEdge> edgeArray ; mDirectedGraph.getEdges (edgeArray) ;
@@ -952,7 +950,7 @@ void cSharedGraph::edges (GALGAS__32_stringlist & ioList) const {
   }  
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS__32_stringlist AC_GALGAS_graph::getter_edges (LOCATION_ARGS) const {
   GALGAS__32_stringlist result ;
@@ -963,13 +961,13 @@ GALGAS__32_stringlist AC_GALGAS_graph::getter_edges (LOCATION_ARGS) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_undefinedNodeCount
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void countUndefinedNodeCount (const cGraphNode * inNode, uint32_t & ioCount) {
   if (NULL != inNode) {
@@ -981,7 +979,7 @@ static void countUndefinedNodeCount (const cGraphNode * inNode, uint32_t & ioCou
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint AC_GALGAS_graph::getter_undefinedNodeCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -993,13 +991,13 @@ GALGAS_uint AC_GALGAS_graph::getter_undefinedNodeCount (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_undefinedNodeKeyList
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void buildUndefinedNodeKeyList (const cGraphNode * inNode, GALGAS_stringlist & ioResult) {
   if (NULL != inNode) {
@@ -1011,7 +1009,7 @@ static void buildUndefinedNodeKeyList (const cGraphNode * inNode, GALGAS_stringl
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringlist AC_GALGAS_graph::getter_undefinedNodeKeyList (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -1022,13 +1020,13 @@ GALGAS_stringlist AC_GALGAS_graph::getter_undefinedNodeKeyList (LOCATION_ARGS) c
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Find circularities
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::internalFindCircularities (capCollectionElementArray & outInfoList,
                                               GALGAS_lstringlist & outNodeKeyList) const {
@@ -1049,7 +1047,7 @@ void cSharedGraph::internalFindCircularities (capCollectionElementArray & outInf
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::internalFindCircularities (capCollectionElementArray & outInfoList,
                                                  GALGAS_lstringlist & outNodeKeyList
@@ -1060,13 +1058,13 @@ void AC_GALGAS_graph::internalFindCircularities (capCollectionElementArray & out
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Nodes with no predecessor
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::internalNodesWithNoPredecessor (capCollectionElementArray & outInfoList,
                                                    GALGAS_lstringlist & outNodeKeyList) const {
@@ -1087,7 +1085,7 @@ void cSharedGraph::internalNodesWithNoPredecessor (capCollectionElementArray & o
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::internalNodesWithNoPredecessor (capCollectionElementArray & outInfoList,
                                                       GALGAS_lstringlist & outNodeKeyList
@@ -1098,13 +1096,13 @@ void AC_GALGAS_graph::internalNodesWithNoPredecessor (capCollectionElementArray 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Nodes with no successor
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::internalNodesWithNoSuccessor (capCollectionElementArray & outInfoList,
                                                  GALGAS_lstringlist & outNodeKeyList) const {
@@ -1125,7 +1123,7 @@ void cSharedGraph::internalNodesWithNoSuccessor (capCollectionElementArray & out
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::internalNodesWithNoSuccessor (capCollectionElementArray & outInfoList,
                                                     GALGAS_lstringlist & outNodeKeyList
@@ -1136,13 +1134,13 @@ void AC_GALGAS_graph::internalNodesWithNoSuccessor (capCollectionElementArray & 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Breath First Topological sort
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::internalTopologicalSort (capCollectionElementArray & outSortedList,
                                             GALGAS_lstringlist & outSortedNodeKeyList,
@@ -1181,7 +1179,7 @@ void cSharedGraph::internalTopologicalSort (capCollectionElementArray & outSorte
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::internalTopologicalSort (capCollectionElementArray & outSortedList,
                                                GALGAS_lstringlist & outSortedNodeKeyList,
@@ -1209,13 +1207,13 @@ void AC_GALGAS_graph::internalTopologicalSort (capCollectionElementArray & outSo
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Depth First Topological sort
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::internalDepthFirstTopologicalSort (capCollectionElementArray & outSortedList,
                                                       GALGAS_lstringlist & outSortedNodeKeyList,
@@ -1254,7 +1252,7 @@ void cSharedGraph::internalDepthFirstTopologicalSort (capCollectionElementArray 
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::internalDepthFirstTopologicalSort (capCollectionElementArray & outSortedList,
                                                          GALGAS_lstringlist & outSortedNodeKeyList,
@@ -1282,13 +1280,13 @@ void AC_GALGAS_graph::internalDepthFirstTopologicalSort (capCollectionElementArr
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark getter_undefinedNodeReferenceList
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void buildUndefinedNodeReferenceList (const cGraphNode * inNode,
                                              GALGAS_lstringlist & ioResult) {
@@ -1306,7 +1304,7 @@ static void buildUndefinedNodeReferenceList (const cGraphNode * inNode,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstringlist AC_GALGAS_graph::getter_undefinedNodeReferenceList (LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
@@ -1317,13 +1315,13 @@ GALGAS_lstringlist AC_GALGAS_graph::getter_undefinedNodeReferenceList (LOCATION_
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Modifier removeEdgesToNode
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::setter_removeEdgesToNode (const GALGAS_string & inNodeName,
                                                   C_Compiler * inCompiler
@@ -1337,7 +1335,7 @@ void AC_GALGAS_graph::setter_removeEdgesToNode (const GALGAS_string & inNodeName
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::removeEdgesToNode (const C_String & inNodeName,
                                       C_Compiler * inCompiler
@@ -1354,13 +1352,13 @@ void cSharedGraph::removeEdgesToNode (const C_String & inNodeName,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Modifier removeEdgesToDominators
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_graph::setter_removeEdgesToDominators (LOCATION_ARGS) {
   if (isValid ()) {
@@ -1372,7 +1370,7 @@ void AC_GALGAS_graph::setter_removeEdgesToDominators (LOCATION_ARGS) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cSharedGraph::removeEdgesToDominators (LOCATION_ARGS) {
 //--- Find start nodes
@@ -1389,4 +1387,4 @@ void cSharedGraph::removeEdgesToDominators (LOCATION_ARGS) {
   mDirectedGraph.removeNode (dummyNodeIndex) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

@@ -141,6 +141,12 @@ tpl_schedtable_static % !st::NAME %_st_stat = {
   { /* static time object part */
     /* counter            */  &% !st::COUNTER %_counter_desc,
     /* expire function    */  tpl_process_schedtable
+%
+if OS::USEID then
+%
+    /* timeobj id         */  , % !INDEX %
+end if
+%
 #if (WITH_TRACE == YES)
     /* id of the table for tracing  */  , % !st::NAME %_id
 #endif

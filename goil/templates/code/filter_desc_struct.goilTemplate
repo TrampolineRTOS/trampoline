@@ -8,7 +8,7 @@ typedef struct {
   tpl_filter_desc b_desc ;
   /*  mask                            */
   const % !filter::CDATATYPE % mask;
-} tpl_% !filter::KIND %_filter_% !filter::CDATATYPE %_desc;
+} tpl_% !filter::KIND %_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc;
 %
 elsif filter::KIND == "mask_x" then%
 typedef struct {
@@ -18,7 +18,7 @@ typedef struct {
   const % !filter::CDATATYPE % mask;
   /*  comparison value                */
   const % !filter::CDATATYPE % x;
-} tpl_% !filter::KIND %_filter_% !filter::CDATATYPE %_desc;
+} tpl_% !filter::KIND %_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc;
 %
 elsif filter::KIND == "interval" then %
 typedef struct {
@@ -28,6 +28,6 @@ typedef struct {
   const % !filter::CDATATYPE % min;
   /*  maximum value of the interval   */
   const % !filter::CDATATYPE % max;
-} tpl_% !filter::KIND %_filter_% !filter::CDATATYPE %_desc;
+} tpl_% !filter::KIND %_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc;
 %
 end if

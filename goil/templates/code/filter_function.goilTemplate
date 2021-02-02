@@ -3,29 +3,29 @@
  */
 %
 if filter::NAME == "MASKEDNEWEQUALSX" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
 {
   return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) &
-          ((tpl_mask_x_filter_% !filter::CDATATYPE %_desc *)fd)->mask)
-          == ((tpl_mask_x_filter_% !filter::CDATATYPE %_desc *)fd)->x);
+          ((tpl_mask_x_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->mask)
+          == ((tpl_mask_x_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->x);
 }
 %
 elsif filter::NAME == "MASKEDNEWDIFFERSX" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
 {
   return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) &
-          ((tpl_mask_x_filter_% !filter::CDATATYPE %_desc *)fd)->mask)
-          != ((tpl_mask_x_filter_% !filter::CDATATYPE %_desc *)fd)->x);
+          ((tpl_mask_x_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->mask)
+          != ((tpl_mask_x_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->x);
 }
 %
 elsif filter::NAME == "NEWISEQUAL" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
@@ -34,7 +34,7 @@ FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE 
 }
 %
 elsif filter::NAME == "NEWISDIFFERENT" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
@@ -43,47 +43,47 @@ FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE 
 }
 %
 elsif filter::NAME == "MASKEDNEWEQUALSMASKEDOLD" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
 {
-  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) & ((tpl_mask_filter_% !filter::CDATATYPE %_desc *)fd)->mask)
-            == ((*((% !filter::CDATATYPE % *)old_value)) & ((tpl_mask_filter_% !filter::CDATATYPE %_desc *)fd)->mask));
+  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) & ((tpl_mask_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->mask)
+            == ((*((% !filter::CDATATYPE % *)old_value)) & ((tpl_mask_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->mask));
 }
 %
 elsif filter::NAME == "MASKEDNEWDIFFERSMASKEDOLD" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
 {
-  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) & ((tpl_mask_filter_% !filter::CDATATYPE %_desc *)fd)->mask)
-            != ((*((% !filter::CDATATYPE % *)old_value)) & ((tpl_mask_filter_% !filter::CDATATYPE %_desc *)fd)->mask));
+  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) & ((tpl_mask_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->mask)
+            != ((*((% !filter::CDATATYPE % *)old_value)) & ((tpl_mask_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->mask));
 }
 %
 elsif filter::NAME == "NEWISWITHIN" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
 {
-  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) >= ((tpl_interval_filter_% !filter::CDATATYPE %_desc *)fd)->min) &&
-            ((*((% !filter::CDATATYPE % *)new_value)) <= ((tpl_interval_filter_% !filter::CDATATYPE %_desc *)fd)->max));
+  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) >= ((tpl_interval_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->min) &&
+            ((*((% !filter::CDATATYPE % *)new_value)) <= ((tpl_interval_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->max));
 }
 %
 elsif filter::NAME == "NEWISOUTSIDE" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
 {
-  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) < ((tpl_interval_filter_% !filter::CDATATYPE %_desc *)fd)->min) ||
-            ((*((% !filter::CDATATYPE % *)new_value)) > ((tpl_interval_filter_% !filter::CDATATYPE %_desc *)fd)->max));
+  return (tpl_bool)(((*((% !filter::CDATATYPE % *)new_value)) < ((tpl_interval_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->min) ||
+            ((*((% !filter::CDATATYPE % *)new_value)) > ((tpl_interval_filter_% ![filter::CDATATYPE identifierRepresentation] %_desc *)fd)->max));
 }
 %
 elsif filter::NAME == "NEWISGREATER" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
@@ -92,7 +92,7 @@ FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE 
 }
 %
 elsif filter::NAME == "NEWISLESSOREQUAL" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
@@ -101,7 +101,7 @@ FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE 
 }
 %
 elsif filter::NAME == "NEWISLESS" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)
@@ -110,7 +110,7 @@ FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE 
 }
 %
 elsif filter::NAME == "NEWISGREATEROREQUAL" then%
-FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% !filter::CDATATYPE %(
+FUNC(tpl_bool, OS_CODE) % ![filter::NAME lowercaseString]%_% ![filter::CDATATYPE identifierRepresentation] %(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
   CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value)

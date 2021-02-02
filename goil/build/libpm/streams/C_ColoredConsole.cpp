@@ -1,70 +1,68 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'C_ColoredConsole' : a class for colored console output                                                            *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2011, ..., 2011 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_ColoredConsole' : a class for colored console output                                      
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2011, ..., 2011 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "C_ColoredConsole.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef COMPILE_FOR_WINDOWS
   #error COMPILE_FOR_WINDOWS is undefined
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   #include <windows.h>
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gTextAttributesAreUsed = true ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_ColoredConsole::setUseTextAttributes (const bool inUsesTextAttributes) {
   gTextAttributesAreUsed = inUsesTextAttributes ;
 }
   
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_ColoredConsole::usesTextAttributes (void) {
   return gTextAttributesAreUsed ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-// http://ascii-table.com/ansi-escape-sequences.php                                                                    *
-//                                                                                                                     *
-// Win32 console:                                                                                                      *
-//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles1.html                                                       *
-//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles2.html                                                       *
-//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles3.html                                                       *
-//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles4.html                                                       *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// http://ascii-table.com/ansi-escape-sequences.php                                              
+//
+// Win32 console:                                                                                
+//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles1.html                                 
+//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles2.html                                 
+//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles3.html                                 
+//   http://www.adrianxw.dk/SoftwareSite/Consoles/Consoles4.html                                 
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 0
   void C_ColoredConsole::setForeColor (const consoleForeColorEnum inForeColor) {
@@ -83,7 +81,7 @@ bool C_ColoredConsole::usesTextAttributes (void) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setForeColor (const consoleForeColorEnum /* inForeColor */) {
@@ -101,7 +99,7 @@ bool C_ColoredConsole::usesTextAttributes (void) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 0
   void C_ColoredConsole::setBackgroundColor (const consoleBackgroundColorEnum inBackgroundColor) {
@@ -120,14 +118,14 @@ bool C_ColoredConsole::usesTextAttributes (void) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setBackgroundColor (const consoleBackgroundColorEnum /* inBackgroundColor */) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 0
   void C_ColoredConsole::setTextAttribute (const consoleTextAttributeEnum inTextAttribute) {
@@ -143,11 +141,11 @@ bool C_ColoredConsole::usesTextAttributes (void) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setTextAttribute (const consoleTextAttributeEnum /* inTextAttribute */) {
   }
 #endif
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

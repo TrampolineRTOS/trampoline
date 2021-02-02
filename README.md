@@ -33,7 +33,8 @@ Trampoline runs on the following platforms :
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
 | PULPino                      | RISC-V             | 1     | ZedBoard                          |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
-| STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303               |
+| STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303K8             |
+| STMicroelectronics STM32L432 | Cortex-M4          | 1     | Nucleo-32 STM32L432KC             |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
 | MSP430FR5969, MSP430FR5994   | CPUX               | 1     | Launchpad MSP-EXP430FR5969, Launchpad MSP-EXP430FR5994                       |
 
@@ -45,8 +46,12 @@ Some examples are available (check examples):
   * **readButton_isr**. Same but the button triggers an ISR.
   * **alarms**. It is the same example than readButton_isr but we test the return value of SetRelAlarm for return parameters when in kernel (system call) mode.
   * **timer**. ISR2 trigered by timer TIM2.
-* Cortex M4 with µC stm32f303K8: `cortex/armv7em/stm32f303/Nucleo-32`. There are few differences from the `stm32f407` target, and examples should be easily imported.
+* Cortex M4 with MCU stm32f303K8: `cortex/armv7em/stm32f303/Nucleo-32`. There are few differences from the `stm32f407` target, and examples should be easily imported.
   * **blink**. Blinks a LED using an alarm and a task.
+* Cortex M4 with MCU stm32L432KC: `cortex/armv7em/stm32l432/Nucleo-32`.
+  * **blink**. Blinks a LED using an alarm and a task.
+  * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
+  * **readButton_isr**. Same but the button triggers an ISR.
 * Cortex M4 with µC mk20dx256 : `cortex/armv7em/mk20dx256/teensy31`
   * **blink**. Blinks the Teensy 3.1 LED using an alarm and a task.
   * **startStopBlink**. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED.
@@ -90,7 +95,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL and ARXML compiler
 
-Updated to version 3.1.9 on 2017, November 28.
+Updated to version 3.1.12 on 2020, November 2.
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
@@ -100,7 +105,7 @@ Updated to version 3.1.9 on 2017, November 28.
 
 ## Useful links
 
-* [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various platforms.
+* [ARM development tools](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm) compiled for various platforms.
 
 The OSEK-VDX portal is down since at least june 2017 because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 

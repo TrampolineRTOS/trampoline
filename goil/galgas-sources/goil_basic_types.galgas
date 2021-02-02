@@ -50,7 +50,7 @@ map @identifierMap {
 }
 
 class @objectAttributes {
-  @identifierMap objectParams %setter
+  @identifierMap objectParams
 }
 
 setter @objectAttributes mergeAttributes
@@ -109,7 +109,7 @@ func multipleAttributeOrError
 
 class @boolAttribute : @object_t {
   @bool value
-  @objectAttributes subAttributes %setter
+  @objectAttributes subAttributes 
 }
 override setter @boolAttribute mergeSubAttributes
   ?@object_t withObject

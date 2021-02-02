@@ -1,6 +1,3 @@
-//first compilation:
-//goil --target=posix  --templates=../../../goil/templates/ periodic.oil
-
 OIL_VERSION = "4.0";
 
 IMPLEMENTATION trampoline {
@@ -25,6 +22,7 @@ CPU only_one_periodic_task {
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "ioc_exe";
       LINKER = "gcc";
+      SYSTEM = PYTHON;
     };
   };
 

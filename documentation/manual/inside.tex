@@ -1,6 +1,6 @@
 %!TEX root = ./main.tex
 
-\chapter{Implementation details}
+\chapter{Kernel Implementation}
 
 \section{The \var{tpl_kern} structure}
 
@@ -17,3 +17,64 @@ typedef struct
   VAR(u8, TYPEDEF)                            need_switch;
 } tpl_kern_state;
 \end{lstlisting}
+
+\section{Ready list implementation}
+
+The implementation of the ready list makes it possible to reconcile relative simplicity with good performance regardless of the number of processes\footnote{The term process here refers to a task or an SRI2}. The ready list is implemented by an array indexed by priority. Each element of this array is a FIFO that stores the process identifier. An activated process is stored at the tail of the FIFO. A pre-empted process is stored at the head of the FIFO. Furthermore, in order to quickly find the non-empty FIFO corresponding to the highest priority, a binary heap is used to store the indexes (i.e. priority) of the non-empty FIFOs, the highest index being of course at the root of the heap.
+ 
+FIFO sizes are determined during the OIL compilation. Once the priorities assigned to processes and resources are determined, the FIFO size corresponding to a priority is the sum of the activations of each task, the number of resources and the number of ISR2 for this priority. Priority level 0 is only occupied by the task \emph{idle}.
+
+Let's take for example an application composed of 4 tasks and 2 resources, declared in OIL file as shown below.
+
+\begin{lstlisting}[language=OIL]
+RESOURCE r1 { RESOURCEPROPERTY = STANDARD; };
+RESOURCE r2 { RESOURCEPROPERTY = STANDARD; };
+TASK t1 { PRIORITY = 2; ACTIVATION = 2; RESOURCE = r1; };
+TASK t2 { PRIORITY = 3; ACTIVATION = 1; };
+TASK t3 { PRIORITY = 1; ACTIVATION = 3; RESOURCE = r2; };
+TASK t4 { PRIORITY = 1; ACTIVATION = 2; RESOURCE = r1; RESOURCE = r2; };
+\end{lstlisting} 
+
+The missing attributes for all tasks are \oilattr{SCHEDULE = FULL} and \oilattr{AUTOSTART = FALSE}. 
+
+The OIL compiler calculates the priority of the resource \oilval{r1}. As it is likely to be taken by the tasks \oilval{t1} and \oilval{t4}, its calculated priority is 3 (1 higher than the maximum priorities of \oilval{t1} and \oilval{t4}). Therefore the priority of \oilval{t2} is increased by 1 to allow it to pre-empt \oilval{t1} or \oilval{t4} when it holds the resource. The same is done for \oilval{r2}, which leads to give it the priority of 2. Consequently, the priorities of \oilval{t1}, \oilval{t2} and \oilval{r1} are increased by 1 to make room for \oilval{r2}. The occupancy of the priority levels and the corresponding size of the FIFO is therefore as shown in the table \ref{tab:example-fifo}:
+
+% Requires the booktabs if the memoir class is not being used
+\begin{table}[htbp]
+   \centering
+   %\topcaption{Table captions are better up top} % requires the topcapt package
+   \begin{tabular}{|llc|} % Column formatting, @{} suppresses leading/trailing space
+      \hline
+      Priority level    & Content & FIFO size\\
+      \hline
+      0 & \emph{idle} & 1\\
+      1 & \oilval{t3}, \oilval{t4} & 5\\
+      2 & \oilval{r2} & 1\\
+      3 & \oilval{t1} & 2\\
+      4 & \oilval{r1} & 1\\
+      5 & \oilval{t2} & 1\\
+      \hline
+   \end{tabular}
+   \caption{Priority levels and FIFO size for the example.}
+   \label{tab:example-fifo}
+\end{table}% Requires the booktabs if the memoir class is not being used
+
+The data structure for this example is given in figure \ref{fig:array-fifo}. 
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \begin{tikzpicture}[yscale=-.8,xscale=.8]
+   \draw (-.5,2.5) node[anchor=south, rotate=90] {Priority};
+   \foreach \index/\size in {0/1,1/5,2/1,3/2,4/1,5/1} {
+      \draw (0,\index) node {\index};
+      \draw ($(0,\index)+(.5,-.5)$) rectangle ++(1,1);
+      \filldraw ($(0,\index)+(1,0)$) circle (.1);
+      \draw[->] ($(0,\index)+(1,0)$) -- ++(1,0);
+      \foreach \f in {1,...,\size} {
+        \draw ($(.7*\f+.3,\index)+(1,-.4)$) rectangle ++(.7,.7);
+      }
+   }
+   \end{tikzpicture}
+   \caption{Data structure for the example.}
+   \label{fig:array-fifo}
+\end{figure}

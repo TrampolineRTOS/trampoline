@@ -1,0 +1,100 @@
+#include "tpl_os_kernel.h"          /* tpl_schedule */
+#include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
+#include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
+
+#define OS_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+volatile VAR(uint32, OS_VAR) tpl_time_counter = 0;
+#define OS_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let objForIRQ := @[]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @()
+  end if
+  let isr::KIND := "ISR"
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @()
+  end if
+  let cnt::KIND := "COUNTER"
+  let objForIRQ[key] += cnt
+end foreach
+
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+# Build the list of counters to call
+let counterForIRQ := @[]
+
+# Build a list of virtual objects (counters) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
+foreach objList in objForIRQ do
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let counterForIRQ[KEY] := @()
+    end if
+  end foreach
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let  counterForIRQ[KEY] += obj::NAME
+    end if
+  end foreach
+end foreach
+
+#------------------------------------------------------------------------------*
+foreach objCounter in counterForIRQ do
+  let obj_KEY := KEY
+    %
+FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
+{
+%
+  foreach obj in objCounter do
+  %  tpl_counter_tick(&% !obj %_counter_desc);
+%
+  end foreach
+  if obj_KEY == "SysTick" then
+    %  tpl_time_counter++;
+%
+  end if
+  if OS::NUMBER_OF_CORES == 1 then
+%
+  if (tpl_kern.need_schedule == TRUE)
+  {
+    tpl_schedule_from_running();
+    LOCAL_SWITCH_CONTEXT()
+  }
+%
+  else
+%
+  GET_CURRENT_CORE_ID(core_id)
+  tpl_multi_schedule();
+  tpl_dispatch_context_switch();
+  LOCAL_SWITCH_CONTEXT()
+%
+  end if
+%
+  return TRUE;
+}
+%
+end foreach
+
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"

@@ -1,0 +1,9 @@
+/* Specify the memory areas of mk20dx256 */
+MEMORY
+{
+  VECTOR (rx)      : ORIGIN = 0x00000000, LENGTH = 0x400
+  FLASHCONFIG (rx) : ORIGIN = 0x00000400, LENGTH = 16
+  FLASH (rx)       : ORIGIN = 0x00000410, LENGTH = 256K - 0x410
+  RAM  (rwx)       : ORIGIN = 0x1FFF8000, LENGTH = 64K
+}
+

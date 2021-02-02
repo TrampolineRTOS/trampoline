@@ -1,0 +1,58 @@
+/* Running the following example:
+ * just call goil a first time using the command line:
+ * goil --target=avr/arduino/uno --templates=../../../../goil/templates/ trace.oil
+ * you may have to update ARDUINO section (l.13) for your configuration.
+ *
+ */
+
+OIL_VERSION = "2.5" : "test" ;
+
+CPU test {    
+  OS config {
+    STATUS = STANDARD;
+    TRACE = TRUE {
+        FORMAT = serial;
+        PROC = TRUE;
+        RESOURCE = TRUE;
+        ALARM = TRUE;
+        EVENT = TRUE;
+    };
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_NAME = "trampuinoSerial";
+      APP_SRC = "trace.cpp";
+      CPPCOMPILER = "avr-g++";
+      COMPILER = "avr-gcc";
+      LINKER = "avr-gcc";
+      ASSEMBLER = "avr-gcc";
+      COPIER = "avr-objcopy";
+      SYSTEM = PYTHON;
+
+      LIBRARY = serial;
+
+    };
+    SYSTEM_CALL = TRUE;
+  };
+
+  APPMODE stdAppmode {};
+  
+  ALARM periodicAl {
+    COUNTER= SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = periodicTask;
+    };
+    AUTOSTART = TRUE {
+      ALARMTIME = 1000; //activated each 1024 ms
+      CYCLETIME = 1000; //activated each 1024 ms
+      APPMODE = stdAppmode;
+    };
+  };
+
+  TASK periodicTask {
+    PRIORITY = 10;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    STACKSIZE = 256;
+  };
+};

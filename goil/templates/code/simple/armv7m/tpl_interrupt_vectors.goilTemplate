@@ -1,0 +1,138 @@
+/* Interrupt table vector */
+#include "tpl_compiler.h"
+#include "tpl_os.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_machine.h"
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let objForIRQ := @[ ]
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @( )
+  end if
+  let isr::KIND := "ISR"
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := @( )
+  end if
+  let cnt::KIND := "COUNTER"
+  let objForIRQ[key] += cnt
+end foreach
+
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+#------------------------------------------------------------------------------*
+
+foreach objList in objForIRQ do
+  let handlerAck := false
+  foreach obj in objList do
+    if INTERRUPTMAP[KEY]::ACK then
+      let handlerAck := true
+    end if
+%
+extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !obj::SOURCE %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+  end foreach
+  if handlerAck then
+%extern FUNC(void, OS_CODE) % !KEY %_ClearFlag(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+  end if
+  after
+end foreach
+
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  do
+    foreach int in INTERRUPT do
+      # Reach the declared interrupt in INTERRUPT 
+      if ENTRY == int::VECT then
+        if exists objForIRQ[int::NAME] then
+          foreach objList in objForIRQ do
+            if KEY == int::NAME then
+              # We have found the list of interrupts to call
+              let irqName := INTERRUPTMAP[KEY]::VECTOR_TYPE_S::NAME
+              %extern FUNC(void, OS_CODE) % !irqName%(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+            end if
+          end foreach
+        else
+          if int::EXCEPTION then
+            let handlerIsEmpty := false
+            if int::VECTOR_TYPE == "HANDLER" then
+              if int::VECTOR_TYPE_S::NAME != "NONE" then
+                %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+              end if
+            end if
+          end if
+        end if
+      end if
+    end foreach
+end loop
+
+%
+
+/* Interrupt table vector */
+%
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+  do
+    %  %#{ %
+    let handlerIsEmpty := true
+    foreach int in INTERRUPT do
+      # Reach the declared interrupt in INTERRUPT 
+      if ENTRY == int::VECT then
+        if exists objForIRQ[int::NAME] then
+          let handlerIsEmpty := false
+          foreach objList in objForIRQ do
+            if KEY == int::NAME then
+              # We have found the list of interrupts to call
+              %(tpl_it_handler) tpl_primary_irq_handler_% !KEY
+            end if
+          end foreach
+        else
+          if int::EXCEPTION then
+            let handlerIsEmpty := false
+            if int::VECTOR_TYPE == "HANDLER" then
+              if int::VECTOR_TYPE_S::NAME != "NONE" then
+                %(tpl_it_handler)% !int::VECTOR_TYPE_S::NAME
+              else
+                %(tpl_it_handler)tpl_null_it%
+              end if
+            else
+              if int::VECTOR_TYPE == "REFERENCE" then
+                %(tpl_it_handler)% !int::VECTOR_TYPE_S::NAME
+              end if
+            end if
+          end if
+        end if
+      end if
+    end foreach
+    if handlerIsEmpty then
+      %(tpl_it_handler)tpl_null_it%
+    end if
+#    % }%
+  between %,
+%
+  after
+%
+};
+%
+end loop
+%
+%
+
+# vim:ft=goil_templates

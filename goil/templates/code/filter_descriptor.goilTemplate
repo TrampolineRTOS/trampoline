@@ -15,9 +15,9 @@ tpl_noparam_filter_desc % !message::NAME %_filter = {
 };
 %
 elsif filter == "MASKEDNEWEQUALSX" | filter == "MASKEDNEWDIFFERSX" then%
-tpl_mask_x_filter_% !prop::CDATATYPE %_desc % !message::NAME %_filter = {
+tpl_mask_x_filter_% ![prop::CDATATYPE identifierRepresentation] %_desc % !message::NAME %_filter = {
     {
-    /*  filtering function          */  % ![filter lowercaseString]%_% !prop::CDATATYPE %
+    /*  filtering function          */  % ![filter lowercaseString]%_% ![prop::CDATATYPE identifierRepresentation] %
     },
     /*  mask                        */  % !filter_s::MASK %,
     /*  comparison value            */  % !filter_s::X %
@@ -30,21 +30,21 @@ elsif filter == "NEWISEQUAL" |
       filter == "NEWISLESS" |
       filter == "NEWISGREATEROREQUAL" then%
 tpl_noparam_filter_desc % !message::NAME %_filter = {
-    /*  filtering function          */  % ![filter lowercaseString]%_% !prop::CDATATYPE %
+    /*  filtering function          */  % ![filter lowercaseString]%_% ![prop::CDATATYPE identifierRepresentation] %
 };
 %
 elsif filter == "MASKEDNEWEQUALSMASKEDOLD" | filter == "MASKEDNEWDIFFERSMASKEDOLD" then%
-tpl_mask_filter_% !prop::CDATATYPE %_desc % !message::NAME %_filter = {
+tpl_mask_filter_% ![prop::CDATATYPE identifierRepresentation] %_desc % !message::NAME %_filter = {
     {
-    /*  filtering function          */  % ![filter lowercaseString]%_% !prop::CDATATYPE %
+    /*  filtering function          */  % ![filter lowercaseString]%_% ![prop::CDATATYPE identifierRepresentation] %
     },
     /*  mask                        */  % !filter_s::MASK %
 };
 %
 elsif filter == "NEWISWITHIN" | filter == "NEWISOUTSIDE" then%
-tpl_interval_filter_% !prop::CDATATYPE %_desc % !message::NAME %_filter = {
+tpl_interval_filter_% ![prop::CDATATYPE identifierRepresentation] %_desc % !message::NAME %_filter = {
     {
-    /*  filtering function          */  % ![filter lowercaseString]%_% !prop::CDATATYPE %
+    /*  filtering function          */  % ![filter lowercaseString]%_% ![prop::CDATATYPE identifierRepresentation] %
     },
     /*  min                         */  % !filter_s::MIN %,
     /*  max                         */  % !filter_s::MAX %

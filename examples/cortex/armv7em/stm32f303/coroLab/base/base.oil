@@ -17,11 +17,11 @@ CPU blink {
 		STATUS = EXTENDED;
 		PAINT_STACK = TRUE;
 		PAINT_REGISTERS = TRUE;
-	
+
 		BUILD = TRUE {
 			TRAMPOLINE_BASE_PATH = "../../../../../..";
-			APP_CPPSRC = "./blink.cpp";
-			APP_CPPSRC = "./buttonTasks.cpp";
+			APP_CPPSRC = "blink.cpp";
+			APP_CPPSRC = "buttonTasks.cpp";
 			APP_NAME = "base.elf";
 			CFLAGS	= "-Os -fstack-usage -Wno-strict-aliasing";
 			LIBRARY = coroBoard;
@@ -41,9 +41,9 @@ CPU blink {
 			MEMORY_PROTECTION = FALSE;
 		};
 	};
-	
+
 	APPMODE AppStd {};
-	
+
 	//a periodic task that just blink LED D6
 	TASK blink {
 		PRIORITY = 1;
@@ -51,7 +51,7 @@ CPU blink {
 		ACTIVATION = 1;
 		SCHEDULE = FULL;
 	};
-	
+
 	ALARM blink_blink {
 		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
@@ -109,4 +109,3 @@ CPU blink {
 		SCHEDULE = FULL;
 	};
 };
-

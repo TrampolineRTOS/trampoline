@@ -1,0 +1,136 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+  /* This fix the default STACKSIZE of tasks */
+  TASK {
+    UINT32 STACKSIZE = 32768 ;
+  };
+
+  /* This fix the default STACKSIZE of ISRs */
+  ISR {
+    UINT32 STACKSIZE = 32768 ;
+  };
+};
+
+CPU messages {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+    TRACE = FALSE;
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../";
+      APP_SRC  = "messages.c";
+      APP_NAME = "messages_exe";
+      CFLAGS="-ggdb";
+      LINKER = "gcc";
+      SYSTEM = PYTHON;
+    };
+  };
+
+  APPMODE AppStd {};
+
+  MESSAGE from_send {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "unsigned int";
+    };
+  };
+
+  MESSAGE from_send {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "unsigned int";
+    };
+  };
+
+  MESSAGE for_receive1 {
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+      SENDINGMESSAGE = from_send;
+      FILTER = NEWISOUTSIDE {
+        MIN = 0x0000CAFE;
+        MAX = 0xCAFE0000;
+      };
+      QUEUESIZE = 1;
+    };
+    NOTIFICATION = ACTIVATETASK {
+      TASK = receive1;
+    };
+  };
+
+  EVENT ev_new_message {
+    MASK = AUTO;
+  };
+
+  MESSAGE for_receive2 {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = from_send;
+      FILTER = NEWISWITHIN {
+        MIN = 0x0000CAFE;
+        MAX = 0xCAFE0000;
+      };
+      INITIALVALUE = 0x00FEFE00; 
+    };
+    NOTIFICATION = SETEVENT {
+      TASK = receive2;
+      EVENT = ev_new_message;
+    };
+  };
+
+  ALARM one_second {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = send; };
+    AUTOSTART = TRUE { APPMODE = AppStd; ALARMTIME = 100; CYCLETIME = 100; };
+  };
+
+  MESSAGE always_in {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "uint32_t";
+    };
+  };
+
+  MESSAGE never_out {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = always_in;
+      FILTER = NEWISOUTSIDE {
+        MIN = 0x00000000;
+        MAX = 0xFFFFFFFF;
+      };
+      INITIALVALUE = 0x00FEFE00;
+    };
+    NOTIFICATION = ACTIVATETASK {
+      TASK = dummy;
+    };
+  };
+
+  TASK send {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = AppStd; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = from_send;
+    MESSAGE = always_in;
+  };
+
+  TASK receive1 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK receive2 {
+    PRIORITY = 2;
+    AUTOSTART = TRUE { APPMODE = AppStd; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = ev_new_message;
+  };
+
+  TASK dummy {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = never_out;
+  };
+
+};

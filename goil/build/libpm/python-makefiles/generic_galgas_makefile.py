@@ -7,7 +7,7 @@ import sys, time, os
 import makefile, default_build_options
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   displayDurationFromStartTime                                                                                       *
+#   displayDurationFromStartTime                                                                 
 #----------------------------------------------------------------------------------------------------------------------*
 
 def displayDurationFromStartTime (startTime) :

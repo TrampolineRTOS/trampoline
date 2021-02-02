@@ -1,0 +1,239 @@
+%!TEX root = ./main.tex
+
+\chapter{Debugging an application}
+
+%\section*{Introduction}
+
+Debugging an application requires examining the internal structures of Trampoline. The information contained in these structures can be used to find out which task is running, which tasks are ready, which resources are held, the status of alarms, etc. Finding one's way around these data structures can be difficult for a user. 
+
+As GDB is the most frequently used debugger, it is possible for GDB to generate a command file to simplify the examination of the internal structures of Trampoline.
+
+\section{Command generation}
+
+The OIL object \oilobj{OS} has the boolean attribute \oilattr{GDBCOMMANDS} which, when true, leads to the generation of a file named \file{commands.gdb} in the same directory as the OIL file. An optionnal sub-attribute, \oilattr{PORT}, is used to specify the TCP/IP port on which the GDB server is listening and to generate the commands allowing GDB to connect to the GDB server, to load the program on the target and to set a breakpoint on the \cfunction{main}. For example:
+
+\begin{lstlisting}[language=OIL]
+GDBCOMMANDS = TRUE
+{
+    PORT = 4242;
+};
+\end{lstlisting}
+
+may be used on STMicroelectronics MCU (port 4242 is the default port of ST-LINK debugging system). 
+
+\section{Examining the tasks}
+
+For each task declared in the OIL file, 2 commands named \com{b_<task name>} and \com{_<task name>} are generated. The first command sets a breakpoint on the task. The second command displays the name of the task, its identifier and its type (basic or extended) as well as:
+
+\begin{pitemize}
+\item its state, \SUSPENDED, \READY, \RUNNING\ or \WAITING;
+\item its priority in the form \comoutput{<current priority>/<basic priority>};
+\item its activation count in the form \comoutput{<current activation>/<maximum activation>};
+\item its internal resource if it exists. For a non-preemptible task, \comoutput{INTERNAL_RES_SCHEDULER} is displayed. If the task has no internal resource, \comoutput{NONE} is displayed.
+\item a list of resources that the task holds. The list is displayed between a pair of square brackets from the most recently taken resource to the oldest taken resource. If no resource is held, only the pair of brackets is displayed. 
+\item if the task is extended, the events it is waiting for and those it has received are displayed. If a numerical value is displayed, these are events that are not present in the application and are probably related to a programming error. When no events are displayed, \comoutput{<NONE>} is displayed.
+\end{pitemize}
+
+Suppose, for example, that the OIL file declares a task named \oilobj{blink} as shown below.
+
+\begin{lstlisting}[language=OIL]
+TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    RESOURCE = r1;
+    RESOURCE = r2;
+};
+\end{lstlisting}
+
+and that the C code of the task \cfunction{blink} is the following:
+
+\begin{lstlisting}[language=C,escapechar=|,numbers=left]
+TASK(blink)
+{
+    GetResource(r1);
+    GetResource(r2);
+    ledToggle(GREEN);|\label{bp:between-rez}|
+    ReleaseResource(r2);
+    ReleaseResource(r1);|\label{bp:after-rez2-release}|
+    TerminateTask();
+}
+\end{lstlisting}
+ 
+and that a breakpoint has been set at the line \ref{bp:between-rez}. The command \com{_blink} will be generated and if invoked at the breakpoint it would display the following result:
+
+\begin{lstlisting}
+(gdb) _blink 
+Task blink (id = 0, BASIC):
+	state             = RUNNING
+	priority          = 2/1
+	activate_count    = 1/1
+	internal_resource = NONE
+	resources         = [ r2 r1 ]
+\end{lstlisting} 
+
+\warning{If the command is performed before reaching \cfunction{main}, i.e. possibly before the copy of the initialized variables has taken place, the variables may not be initialized yet and the state, the current priority or the current number of activations will be wrong. In addition, the pointer to the head of the list of resources held will be wrong, which may lead to an error message from GDB. If the task is in the \SUSPENDED\ state, its priority is meaningless.}
+
+\section{Examining the resources}
+
+For each resource, a command named \com{_<resource name>} is generated. This command displays the type (\oilval{STANDARD} or \oilval{INTERNAL}) of the resource, its name and identifier as well as for standard resources:
+
+\begin{pitemize}
+\item its ceiling priority;
+\item the name of the owning process. If the resource is not held, \comoutput{NONE} is displayed;
+\item if the resource is held, the previous priority of the process holding it is displayed.
+\end{pitemize}
+
+For an internal resource the following information is displayed:
+
+\begin{pitemize}
+\item its ceiling priority;
+\item if the resource is held;
+\item if the resource is held, the previous priority of the process holding it is displayed.
+\end{pitemize}
+
+Let's continue with the previous example. The execution of the command \com{_r2} when the execution has reached the line \ref{bp:between-rez} would display:
+
+\begin{lstlisting}
+(gdb) _r2
+Resource r2 (id = 0, STANDARD):
+	ceiling priority    = 2
+	owner               = blink
+	owner prev priority = 2
+\end{lstlisting} 
+
+After reaching the line \ref{bp:after-rez2-release}, the execution of the command \com{_r2} would display:
+
+\begin{lstlisting}
+(gdb) _r2
+Resource r2 (id = 0, STANDARD):
+	ceiling priority    = 2
+	owner               = NONE
+\end{lstlisting} 
+
+The following example shows the display of internal resource \oilval{oups} according to whether it is not held:
+
+\begin{lstlisting}
+(gdb) _oups 
+Resource oups (INTERNAL):
+	ceiling priority    = 4
+	taken               = 0
+\end{lstlisting} 
+
+or held:
+
+\begin{lstlisting}
+(gdb) _oups 
+Resource oups (INTERNAL):
+	ceiling priority    = 4
+	taken               = 1
+	owner prev priority = 3
+\end{lstlisting} 
+
+\section{Examining the alarms}
+
+For each alarm, a command \com{_<alarm name>} is generated. The command displays the alarm identifier as well as the following information:
+
+\begin{pitemize}
+\item the counter to which it is linked with the current date of the counter in brackets;
+\item its state (\comoutput{SLEEP}, \comoutput{ACTIVE} or \comoutput{AUTOSTART}\footnote{This state is only possible before starting the OS.});
+\item if the alarm is \comoutput{ACTIVE}, its expiry date;
+\item if the alarm is \comoutput{ACTIVE} and cyclic, its cycle;
+\item finally its action.
+\end{pitemize}
+
+The following output is an example of an alarm display:
+
+\begin{lstlisting}
+(gdb) _blink_alarm 
+Alarm blink_alarm (id = 0):
+	counter = SystemCounter(1461)
+	state   = ACTIVE
+	date    = 1561
+	cycle   = 100
+	action  = ActivateTask(blink)
+\end{lstlisting}
+
+\section{Examining the counters}
+
+For each counter used in the application, a command \com{_<counter name>} is generated. The command displays the following information:
+
+\begin{pitemize}
+\item the ticks per base of the counter, i.e. the number of ticks coming from the interrupt source and which are necessary to increase the counter value by 1;
+\item the maximum allowed value of the counter;
+\item the minimum cycle of the counter;
+\item the current number of ticks;
+\item the current date;
+\item the list of alarms that are currently scheduled by the counter. The first is the next alarm that will expire. Between the brackets, the date on which the alarm will expire is given.
+\end{pitemize}
+
+Here is for example the display of the \var{SystemCounter}:
+
+\begin{lstlisting}
+(gdb) _SystemCounter 
+Counter SystemCounter:
+	ticks per base    = 1
+	max allowed value = 65535
+	min cycle         = 1
+	current tick      = 0
+	current date      = 1224
+	alarms            = [ blink_alarm(1324) ]
+\end{lstlisting}
+
+\section{Examining the \var{tpl_kern} structure}
+
+The \var{tpl_kern} structure gathers several pieces of information: the identifier of the running process, the identifier of the process chosen by the scheduler to run, two pointers to the static and dynamic structures of the running process, two pointers to the static and dynamic structures of the process chosen by the scheduler to run, a boolean indicating that a rescheduling must be done, a boolean indicating if a context switch must be done and, finally, a boolean indicating that a context save must be done.  
+
+The \com{p_kernel} command displays the contents of the \var{tpl_kern} structure. An example of display, made during the step-by-step execution of the \comoutput{blink} task, is shown below:
+
+\begin{lstlisting}
+(gdb) p_kernel 
+tpl_kern:
+	running       = blink
+	elected       = blink
+	need schedule = 1
+	need switch   = 0
+	need save     = 0
+\end{lstlisting}
+
+\note{If \var{tpl_kern} is displayed when a process is running, the fields \var{running} and \var{elected} are always the same and the fields \var{need schedule}, \var{need switch} and \var{need save} have no meaning. Conversly, if \var{tpl_kern} is displayed while the kernel code is running, the fields \var{running} and \var{elected} may be different when the scheduler has executed and \var{need schedule}, \var{need switch} and \var{need save} reflect the decisions of the scheduler.}
+
+\section{Examining the \var{tpl_ready_list} structure}
+\label{sec:readylist}
+
+The structure \var{tpl_ready_list} is a binary max heap. Each element has two fields, the dynamic process priority and the process identifier. The dynamic priority is obtained by concatenating the static priority and an order number per priority level. This order number starts at the maximum value and decreases with each activation of a process for the concerned priority level.
+
+The \com{p_ready_list} command displays the \var{tpl_ready_list} structure as a tree giving the raw dynamic priority, the dynamic priority as a couple static priority / order number and the name of the process. A sample display is given below:
+
+\begin{lstlisting}
+(gdb) p_ready_list
+ready_list [6]:
+  [45](2,13) read_button
+    [29](1,13) t2
+      [15](0,15) IDLE
+      [28](1,12) t3
+    [30](1,14) t1
+      [27](1,11) t1
+\end{lstlisting}
+
+This corresponds to the tree shown in figure \ref{fig:bintree}.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \begin{tikzpicture}[task/.style={rectangle split,rectangle split parts=2,rectangle split draw splits=true,draw}]
+   \node[task] (rb) at (0,0) {\nodepart{one} read_button \nodepart{two}$[45](2,13)$};
+   \node[task] (t2) at (-3,-2) {\nodepart{one} t2 \nodepart{two}$[29](1,13)$};
+   \node[task] (idle) at (-4.5,-4) {\nodepart{one} IDLE \nodepart{two}$[15](0,15)$};
+   \node[task] (t3) at (-1.5,-4) {\nodepart{one} t3 \nodepart{two}$[28](1,12)$};
+   \node[task] (t1-0) at (3,-2) {\nodepart{one} t1 \nodepart{two}$[30](1,14)$};
+   \node[task] (t1-1) at (1.4,-4) {\nodepart{one} t1 \nodepart{two}$[27](1,11)$};
+   \draw (rb) -- (t2);
+   \draw (rb) -- (t1-0);
+   \draw (t2) -- (idle);
+   \draw (t2) -- (t3);
+   \draw (t1-0) -- (t1-1);
+   \end{tikzpicture}
+   \caption{Binary heap tree from the example of \ref{sec:readylist}}
+   \label{fig:bintree}
+\end{figure}

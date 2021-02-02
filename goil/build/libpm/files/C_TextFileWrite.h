@@ -1,42 +1,40 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'C_TextFileWrite' : a class for stream writing text files                                                          *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_TextFileWrite' : a class for stream writing text files                                    
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "strings/C_String.h"
 #include "streams/AC_OutputStream.h"
 #include "files/AC_FileHandleForWriting.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 const int32_t kFileBufferSize = 10000 ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_TextFileWrite : public AC_OutputStream, public AC_FileHandleForWriting {
 //--- Constructor : if inFileName is the empty string, no file is opened.
@@ -69,4 +67,4 @@ class C_TextFileWrite : public AC_OutputStream, public AC_FileHandleForWriting {
   private : char mBuffer [kFileBufferSize + 1] ;
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

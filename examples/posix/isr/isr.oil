@@ -1,0 +1,38 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 STACKSIZE = 32768;
+  };
+  ISR {
+    UINT32 STACKSIZE = 32768;
+  };
+};
+
+CPU test {
+  OS config {
+    STATUS = STANDARD;
+    BUILD = TRUE {
+        TRAMPOLINE_BASE_PATH = "/home/sfaucou/repos/projects/trampoline";
+        SYSTEM = PYTHON;
+        APP_SRC = "isr.c";
+        APP_NAME = "isr_exe";
+    };
+  };
+
+  APPMODE std {
+  };
+
+  ISR apushed {
+     SOURCE = SIGTERM;
+     CATEGORY = 2;
+     PRIORITY = 3;
+  };
+
+  ISR bpushed {
+     SOURCE = SIGTRAP;
+     CATEGORY = 2;
+     PRIORITY = 2;
+  };
+
+};

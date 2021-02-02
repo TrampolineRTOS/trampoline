@@ -1,66 +1,64 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  GALGAS_bool : this class implements introspection for GALGAS types                                                 *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  GALGAS_bool : this class implements introspection for GALGAS types                           
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//                     'GALGAS_type' class                                                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                     'GALGAS_type' class                                                       
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type::GALGAS_type (void) :
 AC_GALGAS_root (),
 mTypeDescriptor (NULL) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type::GALGAS_type (const C_galgas_type_descriptor * inTypeReference) :
 AC_GALGAS_root (),
 mTypeDescriptor (inTypeReference) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type::GALGAS_type (const GALGAS_type & inSource) :
 AC_GALGAS_root (),
 mTypeDescriptor (inSource.mTypeDescriptor) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type & GALGAS_type::operator = (const GALGAS_type & inSource) {
   mTypeDescriptor = inSource.mTypeDescriptor ;
   return *this ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type::~ GALGAS_type (void) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_type::description (C_String & ioString,
                                const int32_t /* inIndentation */) const {
@@ -73,7 +71,7 @@ void GALGAS_type::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_typelist GALGAS_type::constructor_typeList (LOCATION_ARGS) {
   TC_UniqueArray <C_galgas_type_descriptor *> typeList ;
@@ -85,19 +83,19 @@ GALGAS_typelist GALGAS_type::constructor_typeList (LOCATION_ARGS) {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_type::getter_name (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mTypeDescriptor->mGalgasTypeName) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_type::getter_hasSuperclass (UNUSED_LOCATION_ARGS) const {
   return GALGAS_bool (NULL != mTypeDescriptor->mSuperclassDescriptor) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_type GALGAS_type::getter_superclass (C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) const {
@@ -116,7 +114,7 @@ GALGAS_type GALGAS_type::getter_superclass (C_Compiler * inCompiler
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_type::objectCompare (const GALGAS_type & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -135,4 +133,4 @@ typeComparisonResult GALGAS_type::objectCompare (const GALGAS_type & inOperand) 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

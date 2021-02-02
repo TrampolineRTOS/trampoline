@@ -1,58 +1,55 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  Declaration and implementation of the template class 'TC_UniqueSparseArray'                                        *
-//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  Declaration and implementation of the template class 'TC_UniqueSparseArray'                  
+//
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR AND ASSIGNMENT OPERATOR.                    *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2008, ..., 2008 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2008, ..., 2008 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #pragma once
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/MF_Assert.h"
 #include "utilities/M_SourceLocation.h"
 #include "utilities/TF_Swap.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Template class predeclaration                                                                                     *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Template class predeclaration                                                               
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_UniqueSparseArray ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   swap function for TC_UniqueSparseArray <TYPE> classes                                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   swap function for TC_UniqueSparseArray <TYPE> classes                                       
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
-           TC_UniqueSparseArray <TYPE> & ioOperand2) ;
+template <typename TYPE> void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
+                                    TC_UniqueSparseArray <TYPE> & ioOperand2) ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Template class declaration                                                                                        *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Template class declaration                                                                  
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_UniqueSparseArray {
 //--- Default Constructor
@@ -105,39 +102,36 @@ template <typename TYPE> class TC_UniqueSparseArray {
 
 } ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Default Constructor                                                                                               *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Default Constructor                                                                         
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-TC_UniqueSparseArray <TYPE>::TC_UniqueSparseArray (const TYPE & inDefaultValue) :
+template <typename TYPE> TC_UniqueSparseArray <TYPE>::TC_UniqueSparseArray (const TYPE & inDefaultValue) :
 mDefaultValue (inDefaultValue) {
   for (int32_t i=0 ; i<256 ; i++) {
     mArray [i] = NULL ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Destructor                                                                                                        *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Destructor                                                                                  
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-TC_UniqueSparseArray <TYPE>::~TC_UniqueSparseArray (void) {
+template <typename TYPE> TC_UniqueSparseArray <TYPE>::~TC_UniqueSparseArray (void) {
   free () ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Remove all objects and deallocate                                                                                 *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Remove all objects and deallocate                                                           
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-void TC_UniqueSparseArray <TYPE>::freeArrayH (TC_arrayH * & ioArrayH) {
+template <typename TYPE> void TC_UniqueSparseArray <TYPE>::freeArrayH (TC_arrayH * & ioArrayH) {
   if (ioArrayH != NULL) {
     for (int32_t i=0 ; i<256 ; i++) {
       macroMyDelete (ioArrayH->mArrayL [i]) ;
@@ -146,10 +140,9 @@ void TC_UniqueSparseArray <TYPE>::freeArrayH (TC_arrayH * & ioArrayH) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-void TC_UniqueSparseArray <TYPE>::freeArrayU (TC_arrayU * & ioArrayU) {
+template <typename TYPE> void TC_UniqueSparseArray <TYPE>::freeArrayU (TC_arrayU * & ioArrayU) {
   if (ioArrayU != NULL) {
     for (int32_t i=0 ; i<256 ; i++) {
       freeArrayH (ioArrayU->mArrayH [i]) ;
@@ -158,25 +151,22 @@ void TC_UniqueSparseArray <TYPE>::freeArrayU (TC_arrayU * & ioArrayU) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-void TC_UniqueSparseArray <TYPE>::free (void) {
+template <typename TYPE> void TC_UniqueSparseArray <TYPE>::free (void) {
   for (int32_t i=0 ; i<256 ; i++) {
     freeArrayU (mArray [i]) ;
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Set entry                                                                                                         *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Set entry                                                                                   
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-void TC_UniqueSparseArray <TYPE>::
-setObjectAtIndex (const TYPE & inValue,
-                  const uint32_t inIndex) {
+template <typename TYPE> void TC_UniqueSparseArray <TYPE>::setObjectAtIndex (const TYPE & inValue,
+                                                                             const uint32_t inIndex) {
   const uint32_t primaryIndex = inIndex >> 24 ;
   const uint32_t indexU = (inIndex >> 16) & 255 ;
   const uint32_t indexH = (inIndex >> 8) & 255 ;
@@ -213,15 +203,13 @@ setObjectAtIndex (const TYPE & inValue,
   lowArrayRef->mExplicitValueFlags [indexL >> 5] |= 1 << (indexL & 31) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Object at index                                                                                                   *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Object at index                                                                             
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-TYPE TC_UniqueSparseArray <TYPE>::
-objectAtIndex (const uint32_t inIndex) const {
+template <typename TYPE> TYPE TC_UniqueSparseArray <TYPE>::objectAtIndex (const uint32_t inIndex) const {
   TYPE result = mDefaultValue ;
   const uint32_t primaryIndex = inIndex >> 24 ;
   TC_arrayU * upperArrayRef = mArray [primaryIndex] ;
@@ -241,15 +229,13 @@ objectAtIndex (const uint32_t inIndex) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Default object at index                                                                                           *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Default object at index                                                                     
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-bool TC_UniqueSparseArray <TYPE>::
-findFirstEntryWithIndex (uint32_t & ioIndex) const {
+template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::findFirstEntryWithIndex (uint32_t & ioIndex) const {
 //  const uint32_t start = ioIndex ; printf ("SEARCH FROM 0x%X\n", start) ;
   bool found = false ;
   uint32_t primaryIndex = ioIndex >> 24 ;
@@ -338,11 +324,9 @@ findFirstEntryWithIndex (uint32_t & ioIndex) const {
   return found ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-bool TC_UniqueSparseArray <TYPE>::
-findFirstEntryWithIndexAfterNotFound (uint32_t & ioIndex) const {
+template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::findFirstEntryWithIndexAfterNotFound (uint32_t & ioIndex) const {
   bool found = false ;
   if (ioIndex != 0) {
     found = findFirstEntryWithIndex (ioIndex) ;
@@ -350,15 +334,13 @@ findFirstEntryWithIndexAfterNotFound (uint32_t & ioIndex) const {
   return found ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   Default object at index                                                                                           *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   Default object at index                                                                     
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-bool TC_UniqueSparseArray <TYPE>::
-isDefaultObjectAtIndex (const uint32_t inIndex) const {
+template <typename TYPE> bool TC_UniqueSparseArray <TYPE>::isDefaultObjectAtIndex (const uint32_t inIndex) const {
   bool result = true ;
   const uint32_t primaryIndex = inIndex >> 24 ;
   TC_arrayU * upperArrayRef = mArray [primaryIndex] ;
@@ -378,17 +360,16 @@ isDefaultObjectAtIndex (const uint32_t inIndex) const {
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//   swap function for TC_UniqueSparseArray <TYPE> classes                                                             *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//   swap function for TC_UniqueSparseArray <TYPE> classes                                       
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-template <typename TYPE>
-void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
-           TC_UniqueSparseArray <TYPE> & ioOperand2) {
+template <typename TYPE> void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
+                                    TC_UniqueSparseArray <TYPE> & ioOperand2) {
   swap (ioOperand1.mDefaultValue, ioOperand2.mDefaultValue) ;
   swap (ioOperand1.mArray, ioOperand2.mArray) ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

@@ -1,44 +1,42 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  'C_TextFileWrite' : a class for stream writing text files                                                          *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 1999, ..., 2011 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_TextFileWrite' : a class for stream writing text files                                    
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 1999, ..., 2011 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "files/C_TextFileWrite.h"
 #include "time/C_DateTime.h"
 #include "strings/unicode_character_cpp.h"
 #include "files/C_FileManager.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_TextFileWrite::C_TextFileWrite (const C_String & inFileName) :
 AC_FileHandleForWriting (inFileName, "wt"),
 mBufferLength (0) {
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                Close                                                                                *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//                                Close                                                          
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_TextFileWrite::close (void) {
   bool ok = true ;
@@ -53,10 +51,10 @@ bool C_TextFileWrite::close (void) {
   return ok ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                             Destructor                                                                              *
-// Cannot call the virtual 'close' method in destructor                                                                *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//                             Destructor                                                        
+// Cannot call the virtual 'close' method in destructor                                          
+//----------------------------------------------------------------------------------------------------------------------
 
 C_TextFileWrite::~C_TextFileWrite (void) {
   if ((mFilePtr != NULL) && (mBufferLength > 0)) {
@@ -65,9 +63,9 @@ C_TextFileWrite::~C_TextFileWrite (void) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                  Write a character string into the file                                                             *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//                  Write a character string into the file                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
                                                     const int32_t inArrayCount) {
@@ -85,7 +83,7 @@ void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray,
                                                        const int32_t inArrayCount) {
@@ -103,9 +101,9 @@ void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                   Flush print                                                                                       *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//                   Flush print                                                                 
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_TextFileWrite::flush (void) {
   if (mFilePtr != NULL) {
@@ -117,4 +115,4 @@ void C_TextFileWrite::flush (void) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

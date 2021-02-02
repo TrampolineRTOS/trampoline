@@ -1,0 +1,99 @@
+%
+# WARNING: already defined in tpl_external_interrupt!!
+#list to associate the pin to its EIC number.
+let pin2EicList := @(
+  @{ PIN:"PA0",  EICNUM:0},
+  @{ PIN:"PA1",  EICNUM:1},
+  @{ PIN:"PA2",  EICNUM:2},
+  @{ PIN:"PA3",  EICNUM:3},
+  @{ PIN:"PA4",  EICNUM:4},
+  @{ PIN:"PA5",  EICNUM:5},
+  @{ PIN:"PA6",  EICNUM:6},
+  @{ PIN:"PA7",  EICNUM:7},
+  #PIN8 with NMI
+  @{ PIN:"PA9",  EICNUM:9},
+  @{ PIN:"PA10", EICNUM:10},
+  @{ PIN:"PA11", EICNUM:11},
+  @{ PIN:"PA12", EICNUM:12},
+  @{ PIN:"PA13", EICNUM:13},
+  @{ PIN:"PA14", EICNUM:14},
+  @{ PIN:"PA15", EICNUM:15},
+  @{ PIN:"PA16", EICNUM:0},
+  @{ PIN:"PA17", EICNUM:1},
+  @{ PIN:"PA18", EICNUM:2},
+  @{ PIN:"PA19", EICNUM:3},
+  @{ PIN:"PA20", EICNUM:4},
+  @{ PIN:"PA21", EICNUM:5},
+  @{ PIN:"PA22", EICNUM:6},
+  @{ PIN:"PA23", EICNUM:7},
+  @{ PIN:"PA24", EICNUM:12},
+  @{ PIN:"PA25", EICNUM:13},
+# no PA26
+  @{ PIN:"PA27", EICNUM:15},
+  @{ PIN:"PA28", EICNUM:8},
+# no PA29
+  @{ PIN:"PA30", EICNUM:10},
+  @{ PIN:"PA31", EICNUM:11},
+  
+  @{ PIN:"PB0",  EICNUM:0},
+  @{ PIN:"PB1",  EICNUM:1},
+  @{ PIN:"PB2",  EICNUM:2},
+  @{ PIN:"PB3",  EICNUM:3},
+  @{ PIN:"PB4",  EICNUM:4},
+  @{ PIN:"PB5",  EICNUM:5},
+  @{ PIN:"PB6",  EICNUM:6},
+  @{ PIN:"PB7",  EICNUM:7},
+  @{ PIN:"PB8",  EICNUM:7},
+  @{ PIN:"PB9",  EICNUM:9},
+  @{ PIN:"PB10", EICNUM:10},
+  @{ PIN:"PB11", EICNUM:11},
+  @{ PIN:"PB12", EICNUM:12},
+  @{ PIN:"PB13", EICNUM:13},
+  @{ PIN:"PB14", EICNUM:14},
+  @{ PIN:"PB15", EICNUM:15},
+  @{ PIN:"PB16", EICNUM:0},
+  @{ PIN:"PB17", EICNUM:1},
+  #no PB18
+  #no PB19
+  #no PB20
+  #no PB21
+  @{ PIN:"PB22", EICNUM:6},
+  @{ PIN:"PB23", EICNUM:7},
+  #no PB24
+  #no PB25
+  #no PB26
+  #no PB27
+  #no PB28
+  #no PB29
+  @{ PIN:"PB30", EICNUM:14},
+  @{ PIN:"PB31", EICNUM:15}
+)
+
+let pin2Eic := mapof pin2EicList by PIN
+if exists obj::SOURCE_S then
+  if exists obj::SOURCE_S::PIN_S then
+    if exists pin2Eic[obj::SOURCE_S::PIN]::EICNUM then
+      let eicNum := pin2Eic[obj::SOURCE_S::PIN]::EICNUM
+      %
+  if(EIC->INTFLAG.reg & (1 << %!eicNum%))
+  {
+    EIC->INTFLAG.reg = (1 << %!eicNum%); //ack
+  %
+    end if
+  end if
+end if
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

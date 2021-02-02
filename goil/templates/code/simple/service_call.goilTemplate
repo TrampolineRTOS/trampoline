@@ -1,0 +1,49 @@
+
+ /*============================================================================
+  * Service % !api_func::NAME %
+  */
+.global % !exists api_func::ACTUAL default ( api_func::NAME ) %
+.type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
+% !exists api_func::ACTUAL default ( api_func::NAME ) %:
+    /*-------------------------------------------------------------------------
+     * Check the ISR_NUMBER field of the PSR
+     * If 0 we are in thread mode and the system call is done by a svc
+     * If not 0 we are in handler mode and the system call is done by
+     * a function call
+     */
+    mrs  r3,IPSR
+    cmp  r3,#0
+    bne  % !api_func::NAME %_direct_call
+    /*-------------------------------------------------------------------------
+     * We are in thread mode so we set r3 to the identifier of the service
+     * and we do a svc
+     */
+    movs r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+    svc  #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME%
+    /*-------------------------------------------------------------------------
+     * return from the service wrapper
+     */
+    bx   lr
+% !api_func::NAME %_direct_call:
+    /*-------------------------------------------------------------------------
+     * We are in handler mode so we do a simple function call
+     */%
+    #
+    # If the service can be interrupted by a higher urgency ISR1, we have
+    # to disable interrupts.
+    #
+    if api_func::CALLABLE_BY_ISR1 then%
+    cpsid i   /* set PRIMASK */%
+    end if%
+    push {lr}
+    bl   % !api_func::KERNEL%
+    /*-------------------------------------------------------------------------
+     * return from the service wrapper
+     */%
+    #
+    # Symmetrically interrupts are enabled
+    #
+    if api_func::CALLABLE_BY_ISR1 then%
+    cpsie i   /* clear PRIMASK */%
+    end if%
+    pop  {pc}

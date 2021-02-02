@@ -1,38 +1,36 @@
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
-//                                                                                                                     *
-//  Generic Unsigned Command Line Interface Option                                                                     *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2018 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@ec-nantes.fr                                                                              *
-//                                                                                                                     *
-//  LS2N, Laboratoire des Sciences du Numérique de Nantes, ECN, École Centrale de Nantes (France)                      *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  Generic Unsigned Command Line Interface Option                                               
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2018 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/C_UIntCommandLineOption.h"
 #include "strings/C_String.h"
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 static C_UIntCommandLineOption * gFirstIntOption ;
 static C_UIntCommandLineOption * gLastIntOption ;
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_UIntCommandLineOption::C_UIntCommandLineOption (const char * inDomainName,
                                                   const char * inIdentifier,
@@ -52,7 +50,7 @@ mDefaultValue (inDefaultValue) {
   gLastIntOption = this ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntCommandLineOption::
 setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
@@ -79,7 +77,7 @@ setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntCommandLineOption::
 setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
@@ -121,7 +119,7 @@ setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
@@ -138,7 +136,7 @@ void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntCommandLineOption::printUIntOptions (void) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
@@ -164,7 +162,7 @@ void C_UIntCommandLineOption::printUIntOptions (void) {
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntCommandLineOption::getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
@@ -175,7 +173,7 @@ void C_UIntCommandLineOption::getUIntOptionNameList (TC_UniqueArray <C_String> &
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -190,7 +188,7 @@ utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & i
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_UIntCommandLineOption::getUIntOptionInvocationString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -205,7 +203,7 @@ C_String C_UIntCommandLineOption::getUIntOptionInvocationString (const C_String 
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_UIntCommandLineOption::getUIntOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -220,7 +218,7 @@ C_String C_UIntCommandLineOption::getUIntOptionCommentString (const C_String & i
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 uint32_t C_UIntCommandLineOption::getUIntOptionValue (const C_String & inDomainName,
                                                       const C_String & inIdentifier) {
@@ -235,7 +233,7 @@ uint32_t C_UIntCommandLineOption::getUIntOptionValue (const C_String & inDomainN
   return result ;
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_UIntCommandLineOption::setUIntOptionValue (const C_String & inDomainName,
                                                   const C_String & inIdentifier,
@@ -251,4 +249,4 @@ void C_UIntCommandLineOption::setUIntOptionValue (const C_String & inDomainName,
   }
 }
 
-//—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+//----------------------------------------------------------------------------------------------------------------------

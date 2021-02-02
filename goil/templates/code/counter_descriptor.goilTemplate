@@ -31,6 +31,10 @@ VAR(tpl_counter, OS_VAR) % !counter::NAME %_counter_desc = {
   /* minimum cycle        */  % !counter::MINCYCLE %,
   /* current tick         */  0,
   /* current date         */  0,%
+if OS::TRACE then
+%
+  /* trace id             */  % !INDEX %,%
+end if
 if AUTOSAR then
 %
     /* type the counter     */  % !counter::TYPE %_COUNTER,%

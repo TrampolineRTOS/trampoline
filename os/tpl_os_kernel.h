@@ -190,7 +190,7 @@ struct TPL_PROC_STATIC {
   CONST(tpl_activate_counter, TYPEDEF)
     max_activate_count; /**<  max activation count of a task/isr             */
   CONST(tpl_proc_type, TYPEDEF)
-    type;               /**<  type of the task/isr                           */
+    type;               /**<  TASK_BASIC,TASK_EXTENDED or IS_ROUTINE         */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   CONST(tpl_time, TYPEDEF)
     executionbudget ;   /**<  execution budget                               */

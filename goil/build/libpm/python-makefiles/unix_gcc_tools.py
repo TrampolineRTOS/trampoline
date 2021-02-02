@@ -23,6 +23,12 @@ def buildForUnix (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs, d
   gmf.mLinkerTool   = ["g++"]
   gmf.mStripTool    = ["strip"]
   gmf.mSudoTool     = ["sudo"]
+
+#   gmf.mCompilerTool = ["/usr/local/Cellar/gcc/10.2.0/bin/gcc-10"]
+#   gmf.mLinkerTool   = ["/usr/local/Cellar/gcc/10.2.0/bin/g++-10"]
+#   gmf.mStripTool    = ["strip"]
+#   gmf.mSudoTool     = ["sudo"]
+
   gmf.mCompilationMessage = "Compiling for Unix"
   gmf.mLinkingMessage = "Linking for Unix"
   gmf.mInstallationgMessage = "Installing"

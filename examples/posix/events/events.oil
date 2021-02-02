@@ -1,0 +1,76 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU only_one_periodic_task {
+  OS config {
+    STATUS = EXTENDED;
+	TRACE = TRUE {
+		FORMAT = json;
+		PROC = TRUE;
+        RESOURCE = TRUE;
+        ALARM = TRUE;
+        EVENT = TRUE;
+    };
+    BUILD = TRUE {
+      APP_SRC = "events.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      CFLAGS="-ggdb";
+      APP_NAME = "events_exe";
+      LINKER = "gcc";
+      SYSTEM = PYTHON;
+    };
+  };
+  
+  APPMODE stdAppmode {};
+  
+  ALARM one_second {
+    COUNTER = SystemCounter;
+    ACTION = SETEVENT { TASK = my_periodic_task; EVENT = ev_act; };
+    AUTOSTART = TRUE { APPMODE = stdAppmode; ALARMTIME = 100; CYCLETIME = 100; };
+  };
+  
+  ALARM stopper {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = stop; };
+    AUTOSTART = TRUE { APPMODE = stdAppmode; ALARMTIME = 1000; CYCLETIME = 0; };
+  };
+
+  EVENT ev_act {
+    MASK = AUTO;
+  };
+
+  EVENT ev_stop {
+    MASK = AUTO;
+  };
+
+  TASK my_periodic_task {
+    PRIORITY = 1;
+    AUTOSTART = TRUE {
+      APPMODE = stdAppmode;
+    };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = ev_act;
+    EVENT = ev_stop;
+  };
+
+  TASK stop {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+};

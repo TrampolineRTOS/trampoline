@@ -1,0 +1,22 @@
+/*
+ * % !proc::KIND % % !proc::NAME % stack
+ */
+#define APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
+#include "tpl_memmap.h"
+VAR(tpl_stack_word, OS_APPL_DATA) % !proc::NAME %_stack_zone[% !proc::STACKSIZE %/sizeof(tpl_stack_word)];
+#define APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
+#include "tpl_memmap.h"
+
+#define % !proc::NAME %_STACK {% !proc::NAME %_stack_zone, % !proc::STACKSIZE %}
+
+/*
+ * % !proc::KIND % % !proc::NAME % context
+ */
+#define OS_START_SEC_VAR_NOINIT_32BIT
+#include "tpl_memmap.h"
+VAR(arm_core_context, OS_VAR) % !proc::NAME %_int_context;
+
+#define % !proc::NAME %_CONTEXT &% !proc::NAME %_int_context
+
+#define OS_STOP_SEC_VAR_NOINIT_32BIT
+#include "tpl_memmap.h"

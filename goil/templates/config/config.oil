@@ -175,6 +175,11 @@ IMPLEMENTATION trampoline_common {
     /* Extra Trampoline attributes */
     BOOLEAN SYSTEM_CALL = FALSE;
     BOOLEAN DEBUG = FALSE;
+    /* When TRUE, output a user defined command file for GDB */
+    BOOLEAN [
+      TRUE { UINT32 PORT; },
+      FALSE
+    ] GDBCOMMANDS = FALSE;
     BOOLEAN INTERRUPTTABLE = FALSE;
     BOOLEAN PACKED_DATA = FALSE;
     BOOLEAN PAINT_STACK = FALSE;
@@ -185,10 +190,10 @@ IMPLEMENTATION trampoline_common {
     BOOLEAN [
       TRUE {
         ENUM [
-          elxr   { STRING SCRIPT = "script.ld"; },
-          cosmic_ld   { STRING SCRIPT = "script.lkf"; },
-          gnu_ld { STRING SCRIPT = "script.ld"; },
-          mwld   { STRING SCRIPT = "script.mcf"; }
+          elxr      { STRING SCRIPT = "script.ld"; },
+          cosmic_ld { STRING SCRIPT = "script.lkf"; },
+          gnu_ld    { STRING SCRIPT = "script.ld"; },
+          mwld      { STRING SCRIPT = "script.mcf"; }
         ] LINKER;
         ENUM [gcc, ghs, mwc, cosmic] COMPILER;
         ENUM [gnu_as, cosmic_as] ASSEMBLER;
@@ -222,14 +227,11 @@ IMPLEMENTATION trampoline_common {
     ] BUILD = FALSE;
     BOOLEAN [
       TRUE {
-        ENUM [ FILE { STRING NAME; } ] METHOD;
-        ENUM [xml, txt, bin] FORMAT;
-        BOOLEAN TRACE_TASK = TRUE;
-        BOOLEAN TRACE_ISR = TRUE;
-        BOOLEAN TRACE_RESOURCE = TRUE;
-        BOOLEAN TRACE_ALARM = TRUE;
-        BOOLEAN TRACE_USER = TRUE;
-        BOOLEAN DESCRIPTION = TRUE;
+        /* FORMAT is target specific */
+        BOOLEAN PROC        = TRUE;
+        BOOLEAN RESOURCE    = TRUE;
+        BOOLEAN ALARM       = TRUE;
+        BOOLEAN EVENT       = TRUE;
       },
       FALSE
     ] TRACE = FALSE;
@@ -264,7 +266,7 @@ IMPLEMENTATION trampoline_common {
 
   COUNTER [] {
     UINT32 MINCYCLE = 1;
-    UINT32 MAXALLOWEDVALUE = 32767;
+    UINT32 MAXALLOWEDVALUE = 65535;
     UINT32 TICKSPERBASE = 1;
   };
 

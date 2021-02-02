@@ -1951,7 +1951,7 @@ proc arxmlInsertObjectAttribute
         @object_t newDefault = @multipleAttribute.new{!desc !location !aList}
 
         # Replace the previous type
-        [!?type setDefaultValue !newDefault]
+        [!?type setDefValue !newDefault]
 
         [!?objectAttributes del !attributeName ?*]
         [!?objectAttributes put !attributeName !type]

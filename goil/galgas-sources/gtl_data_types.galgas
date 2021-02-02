@@ -156,6 +156,11 @@ private func %once expressionArgument  -> @gtlTypedArgumentList result
   result = .listWithValue { !`@gtlExpr }
 } 
 
+private func %once setArgument  -> @gtlTypedArgumentList result
+{
+  result = .listWithValue { !`@gtlSet }
+} 
+
 private proc argumentsCheck
   ?let @lstring methodName
   ?@gtlTypedArgumentList abstractArgumentList
@@ -188,8 +193,8 @@ func lstring ?@string string ->@lstring result
 }
 
 abstract class @gtlData {
-  @location where %setter
-  @lstring  meta  %setter
+  @location where 
+  @lstring  meta  
 }
 
 getter @gtlData location -> @location result {
@@ -927,7 +932,7 @@ override setter @gtlEnum performSetter
 #-----------------------------------------------------------------------------*
 # Int type and operations on int
 #-----------------------------------------------------------------------------*
-class @gtlChar : @gtlData { @char value %setter }
+class @gtlChar : @gtlData { @char value }
 
 override getter @gtlChar desc
   ?let @uint tab
@@ -1209,7 +1214,7 @@ override setter @gtlChar performSetter
 #-----------------------------------------------------------------------------*
 # Int type and operations on int
 #-----------------------------------------------------------------------------*
-class @gtlInt    : @gtlData { @bigint  value %setter }
+class @gtlInt    : @gtlData { @bigint  value }
 
 override getter @gtlInt desc
   ?let @uint tab
@@ -2484,6 +2489,36 @@ override getter @gtlString performGetter
     result = @gtlString.new {
       ![methodName location] !emptylstring() ![where locationString]
     }
+  elsif "files" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    @stringlist  fileList = [value regularFiles !false]
+    @gtlList resultList = @gtlList.new {
+      ![methodName location] !emptylstring() !.emptyList
+    }
+    @lstringset files = .emptyMap
+    for (file) in fileList do
+      [!?files put !@lstring.new { !file ![methodName location] } ]
+    end
+    result = @gtlSet.new {
+      ![methodName location] !emptylstring() !files
+    }
+  elsif "filesWithExtensions" == methodName then
+    argumentsCheck(!methodName !setArgument() !arguments)
+    @stringlist extensions = .emptyList
+    for (ext) in [[arguments dataAtIndex !0] as @gtlSet value] do
+      extensions += ![ext string]
+    end
+    @stringlist  fileList = [value regularFilesWithExtensions !false !extensions]
+    @gtlList resultList = @gtlList.new {
+      ![methodName location] !emptylstring() !.emptyList
+    }
+    @lstringset files = .emptyMap
+    for (file) in fileList do
+      [!?files put !@lstring.new { !file ![methodName location] } ]
+    end
+    result = @gtlSet.new {
+      ![methodName location] !emptylstring() !files
+    }
   else
     error methodName : "unknown getter '" + methodName +"' for string target"
       : result
@@ -2853,7 +2888,7 @@ override setter @gtlBool performSetter
 #-----------------------------------------------------------------------------*
 # foundation types for collections
 #-----------------------------------------------------------------------------*
-list @list { @gtlData value %setter }
+list @list { @gtlData value }
 
 #-----------------------------------------------------------------------------*
 # Set type and operations on set
@@ -2864,7 +2899,7 @@ map @lstringset {
   remove del error message "there is no set element named '%K' to delete"
 }
 
-class @gtlSet : @gtlData { @lstringset value %setter }
+class @gtlSet : @gtlData { @lstringset value }
 
 override getter @gtlSet desc
   ?let @uint tab
@@ -3204,7 +3239,7 @@ override setter @gtlSet performSetter
 #-----------------------------------------------------------------------------*
 # Struct type and operations on struct
 #-----------------------------------------------------------------------------*
-class @gtlStruct : @gtlData { @gtlVarMap  value  %setter }
+class @gtlStruct : @gtlData { @gtlVarMap  value }
 
 override getter @gtlStruct desc
   ?let @uint tab
@@ -3989,7 +4024,7 @@ override setter @gtlList appendItem
 #-----------------------------------------------------------------------------*
 # Map type and operations on maps
 #-----------------------------------------------------------------------------*
-class @gtlMap    : @gtlData { @gtlVarMap  value %setter }
+class @gtlMap    : @gtlData { @gtlVarMap  value }
 
 override getter @gtlMap desc
   ?let @uint tab
@@ -4313,7 +4348,7 @@ override getter @gtlMap hasMapItem
 #-----------------------------------------------------------------------------*
 # Expression type and operations on maps
 #-----------------------------------------------------------------------------*
-class @gtlExpr : @gtlData { @gtlExpression value %setter }
+class @gtlExpr : @gtlData { @gtlExpression value }
 
 override getter @gtlExpr desc
   ?let @uint tab

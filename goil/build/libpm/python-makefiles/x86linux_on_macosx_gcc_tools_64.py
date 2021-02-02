@@ -13,8 +13,8 @@ import cross_compiler_download
 
 def buildForLinux64OnMacOSX (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs, displayCommands) :
 #--- Too chain installation
-  GCC_VERSION = "9.1.0"
-  BINUTILS_VERSION = "2.29"
+  GCC_VERSION = "10.2.0"
+  BINUTILS_VERSION = "2.35.1"
   TOOL_CHAIN_NAME = "binutils-" + BINUTILS_VERSION + "-gcc-" + GCC_VERSION + "-for-linux64"
   installDir = tool_chain_installation_path.toolChainInstallationPath ()
   TOOL_CHAIN_INSTALL_PATH = installDir + "/" + TOOL_CHAIN_NAME

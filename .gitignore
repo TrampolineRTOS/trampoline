@@ -21,3 +21,5 @@
 *.out
 *.fdb_latexmk
 *.fls
+*.ilg
+*.ind

@@ -22,7 +22,7 @@ FUNC(void, OS_CODE) tpl_avr_counter_tick(
   # (arduinoLib)/hardware/cores/arduino/wiring.c
   if counter::SOURCE != "" then
 %
-ISR(%!counter::SOURCE%)
+ISR(%!counter::SOURCE%_vect)
 {
   tpl_avr_counter_tick(&% !counter::NAME %_counter_desc);
 }
