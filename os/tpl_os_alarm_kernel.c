@@ -263,14 +263,14 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
     alarm_id = _alarm_id;
     static volatile VAR(tpl_tick, AUTOMATIC)      increment ;
     increment = _increment;
-    static volatile VAR(tpl_tick, AUTOMATIC)      cycle ;
-    cycle = _cycle;
+    static volatile VAR(tpl_tick, AUTOMATIC)      tmpCycle ;
+    tmpCycle = _cycle;
     static volatile VAR(tpl_status, AUTOMATIC) result ;
     result = E_OK;
   #else
     #define alarm_id _alarm_id
     #define increment _increment
-    #define cycle _cycle
+    #define tmpCycle _cycle
     VAR(tpl_status, AUTOMATIC) result = E_OK;
   #endif
 
@@ -294,7 +294,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   STORE_SERVICE(OSServiceId_SetRelAlarm)
   STORE_ALARM_ID(alarm_id)
   STORE_TICK_1(increment)
-  STORE_TICK_2(cycle)
+  STORE_TICK_2(tmpCycle)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
@@ -302,7 +302,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
 
   CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
-  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,tmpCycle,result)
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -323,7 +323,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
           date -= (cnt->max_allowed_value + 1);
       }
       alarm->date = date;
-      alarm->cycle = cycle;
+      alarm->cycle = tmpCycle;
       alarm->state = ALARM_ACTIVE;
       tpl_insert_time_obj(alarm);
       TRACE_ALARM_SCHEDULED(alarm)
@@ -348,7 +348,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   #ifndef VOLATILE_ARGS_AND_LOCALS
     #undef alarm_id
     #undef increment
-    #undef cycle
+    #undef tmpCycle
   #endif
 
   return result;
@@ -370,14 +370,14 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
     alarm_id = _alarm_id;
     static volatile VAR(tpl_tick, AUTOMATIC)      start ;
     start = _start;
-    static volatile VAR(tpl_tick, AUTOMATIC)      cycle ;
-    cycle = _cycle;
+    static volatile VAR(tpl_tick, AUTOMATIC)      tmpCycle ;
+    tmpCycle = _cycle;
     static volatile VAR(tpl_status, AUTOMATIC) result ;
     result = E_OK;
   #else
     #define alarm_id _alarm_id
     #define start _start
-    #define cycle _cycle
+    #define tmpCycle _cycle
     VAR(tpl_status, AUTOMATIC) result = E_OK;
   #endif
 
@@ -397,7 +397,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   STORE_SERVICE(OSServiceId_SetAbsAlarm)
   STORE_ALARM_ID(alarm_id)
   STORE_TICK_1(start)
-  STORE_TICK_2(cycle)
+  STORE_TICK_2(tmpCycle)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
@@ -405,7 +405,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
 
   CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
-  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,tmpCycle,result)
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -420,7 +420,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
     {
       /*  the alarm is not in use, proceed    */
       alarm->date = start;
-      alarm->cycle = cycle;
+      alarm->cycle = tmpCycle;
       alarm->state = ALARM_ACTIVE;
       tpl_insert_time_obj(alarm);
       TRACE_ALARM_SCHEDULED(alarm)
@@ -445,7 +445,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   #ifndef VOLATILE_ARGS_AND_LOCALS
     #undef alarm_id
     #undef start
-    #undef cycle
+    #undef tmpCycle
   #endif
 
   return result;
