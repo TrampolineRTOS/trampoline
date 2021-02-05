@@ -44,7 +44,6 @@ see https://www.gnu.org/licenses/.  */
 #include "longlong.h"
 #include "utilities/switch-fallthrough.h"
 
-
 void
 mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
 	     mp_srcptr np, mp_size_t nn, mp_srcptr dp, mp_size_t dn)
@@ -60,7 +59,7 @@ mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
   switch (dn)
     {
     case 0:
-      DIVIDE_BY_ZERO; FALLTHROUGH;
+      DIVIDE_BY_ZERO; FALLTHROUGH ;
 
     case 1:
       {

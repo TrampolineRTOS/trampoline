@@ -3,11 +3,11 @@
 
 #----------------------------------------------------------------------------------------------------------------------*
 
-import sys, time, os, json
+import sys, time, os
 import makefile, default_build_options
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   displayDurationFromStartTime                                                                                       *
+#   displayDurationFromStartTime                                                                 
 #----------------------------------------------------------------------------------------------------------------------*
 
 def displayDurationFromStartTime (startTime) :
@@ -26,6 +26,7 @@ def displayDurationFromStartTime (startTime) :
 #----------------------------------------------------------------------------------------------------------------------*
 
 class GenericGalgasMakefile :
+  mJSONfilePath = ""
   mDictionary = {}
   mExecutable = ""
   mGoal = ""
@@ -118,6 +119,7 @@ class GenericGalgasMakefile :
     rule.mOnErrorDeleteTarget = True
     rule.deleteTargetFileOnClean ()
     rule.mDependences += objectFileList
+    rule.mDependences.append (self.mJSONfilePath)
     rule.mCommand += self.mLinkerTool
     rule.mCommand += objectFileList
     rule.mCommand += ["-o", EXECUTABLE]
@@ -161,6 +163,7 @@ class GenericGalgasMakefile :
     rule.mOnErrorDeleteTarget = True
     rule.deleteTargetFileOnClean ()
     rule.mDependences += debugObjectFileList
+    rule.mDependences.append (self.mJSONfilePath)
     rule.mCommand += self.mLinkerTool
     rule.mCommand += debugObjectFileList
     rule.mCommand += ["-o", EXECUTABLE_DEBUG]
@@ -200,6 +203,7 @@ class GenericGalgasMakefile :
     rule.mOnErrorDeleteTarget = True
     rule.deleteTargetFileOnClean ()
     rule.mDependences += ltoObjectFileList
+    rule.mDependences.append (self.mJSONfilePath)
     rule.mCommand += self.mLinkerTool
     rule.mCommand += ltoObjectFileList
     rule.mCommand += ["-o", EXECUTABLE_LTO]

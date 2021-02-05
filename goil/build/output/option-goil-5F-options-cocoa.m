@@ -2,17 +2,17 @@
 
 
 //--- END OF USER ZONE 1
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "option-goil-5F-options-cocoa.h"
 #import "OC_GGS_CommandLineOption.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
-                                                       NSMutableArray * ioUIntOptionArray,
-                                                       NSMutableArray * ioStringOptionArray,
-                                                       NSMutableArray * ioStringListOptionArray) {
+                                      NSMutableArray * ioUIntOptionArray,
+                                      NSMutableArray * ioStringOptionArray,
+                                      NSMutableArray * ioStringListOptionArray) {
   OC_GGS_CommandLineOption * option ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"goil_options"
@@ -106,7 +106,7 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
   [ioStringOptionArray addObject:option] ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 //--- START OF USER ZONE 2
 

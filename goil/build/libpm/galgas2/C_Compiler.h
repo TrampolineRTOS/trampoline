@@ -1,29 +1,26 @@
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//  'C_Compiler' : the compiler base class ;                                                                           *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2016 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
-//                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  'C_Compiler' : the compiler base class ;                                                     
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2016 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-#ifndef GALGAS_COMPILER_CLASS_DEFINED
-#define GALGAS_COMPILER_CLASS_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "collections/TC_UniqueArray.h"
 #include "strings/C_String.h"
@@ -31,33 +28,24 @@
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 #include "galgas2/C_IssueWithFixIt.h"
+#include "galgas2/cIssueDescriptor.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <exception>
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  #define ACCEPT_TERMINAL(t) t
-  #define FORMAL_ARG_ACCEPT_TERMINAL const int16_t inExpectedTerminal
-#else
-  #define ACCEPT_TERMINAL(t)
-  #define FORMAL_ARG_ACCEPT_TERMINAL
-#endif
-
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_location ;
 class GALGAS_string ;
 class GALGAS_lstring ;
 class C_galgas_type_descriptor ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                 Compiler class                                                                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                 Compiler class                                                                
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_Compiler : public C_SharedObject {
 //--- Constructor and destructor
@@ -71,6 +59,11 @@ class C_Compiler : public C_SharedObject {
 
 //--- Caller compiler (is NULL for top compiler)
   protected : C_Compiler * mCallerCompiler ;
+
+//--- Issue array
+  private : TC_UniqueArray <cIssueDescriptor> mIssueArray ;
+  public : void appendIssue (const cIssueDescriptor & inIssue) ;
+  public : void writeIssueJSONFile (const C_String & inFile) ;
 
 //--- Sent string 
   private : C_String mSentString ;
@@ -126,6 +119,9 @@ class C_Compiler : public C_SharedObject {
   public : inline int32_t columnNumber (void) const {
     return mCurrentLocation.columnNumber () ;
   }
+
+//--- Get separator string
+  public : virtual C_String separatorString (void) const { return "" ; }
 
 //--- Init scanner from source file (for Cocoa GALGAS)
   public : void resetAndLoadSourceFromText (const C_SourceTextInString & inSourceText) ;
@@ -225,6 +221,4 @@ class C_Compiler : public C_SharedObject {
                                         const C_String & inContents) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-#endif
+//----------------------------------------------------------------------------------------------------------------------

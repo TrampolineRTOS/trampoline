@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #----------------------------------------------------------------------------------------------------------------------*
- 
+
 from __future__ import print_function
 import os, sys, subprocess
 import tool_chain_installation_path
@@ -12,7 +12,7 @@ else:
   import urllib.request
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   runCommand                                                                                                         *
+#   runCommand                                                                                   
 #----------------------------------------------------------------------------------------------------------------------*
 
 def runCommand (cmd) :
@@ -26,12 +26,12 @@ def runCommand (cmd) :
     sys.exit (childProcess.returncode)
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   ARCHIVE DOWNLOAD                                                                                                   *
+#   ARCHIVE DOWNLOAD                                                                             
 #----------------------------------------------------------------------------------------------------------------------*
 
 gPerCentLoaded = 0
 
-def downloadReportHook (a,b,fileSize): 
+def downloadReportHook (a,b,fileSize):
   if fileSize < (1 << 10):
     sizeString = str (fileSize)
   else:
@@ -66,7 +66,7 @@ def downloadArchive (archiveURL, archivePath):
     sys.exit (1)
 
 #----------------------------------------------------------------------------------------------------------------------*
-#  MAIN                                                                                                                *
+#  MAIN                                                                                          
 #----------------------------------------------------------------------------------------------------------------------*
 
 def downloadToolChain (TOOL_CHAIN):
@@ -90,7 +90,7 @@ def downloadToolChain (TOOL_CHAIN):
   downloadArchive (url, LOCAL_ARCHIVE)
   #--------------------------------------------------------------------------- Unzip
   runCommand (["bunzip2", TOOL_CHAIN + ".tar.bz2"])
-  runCommand (["tar", "xf", TOOL_CHAIN + ".tar"])
+  runCommand (["tar", "xmf", TOOL_CHAIN + ".tar"])
   runCommand (["rm", TOOL_CHAIN + ".tar"])
   #--------------------------------------------------------------------------- Restore current dir
   os.chdir (currentDir)

@@ -3,10 +3,9 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-declarations-8.h"
-
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -6025,11 +6024,11 @@ int32_t cGrammar_gtl_5F_grammar::select_gtl_5F_instruction_5F_parser_6 (C_Lexiqu
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Function 'invokeGTL'                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'invokeGTL'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string function_invokeGTL (GALGAS_gtlString inArgument_rootTemplateFileName,
                                   GALGAS_gtlContext inArgument_context,
@@ -6039,10 +6038,13 @@ GALGAS_string function_invokeGTL (GALGAS_gtlString inArgument_rootTemplateFileNa
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   GALGAS_library var_lib_1098 = function_emptyLib (inCompiler COMMA_SOURCE_FILE ("gtl_interface.galgas", 36)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (gOption_gtl_5F_options_debug.getter_value ()).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    inCompiler->printMessage (GALGAS_string ("Starting debugger, type help for command list\n")  COMMA_SOURCE_FILE ("gtl_interface.galgas", 39)) ;
-    extensionMethod_loadCommandFile (GALGAS_string (".gtlinit"), inArgument_context, inArgument_vars, var_lib_1098, inCompiler COMMA_SOURCE_FILE ("gtl_interface.galgas", 40)) ;
+    test_0 = GALGAS_bool (gOption_gtl_5F_options_debug.getter_value ()).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      inCompiler->printMessage (GALGAS_string ("Starting debugger, type help for command list\n")  COMMA_SOURCE_FILE ("gtl_interface.galgas", 39)) ;
+      extensionMethod_loadCommandFile (GALGAS_string (".gtlinit"), inArgument_context, inArgument_vars, var_lib_1098, inCompiler COMMA_SOURCE_FILE ("gtl_interface.galgas", 40)) ;
+    }
   }
   GALGAS_gtlTemplateInstruction var_rootTemplateInstruction_1367 = GALGAS_gtlTemplateInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_interface.galgas", 45)), GALGAS_string::makeEmptyString (), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_interface.galgas", 47)), GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_interface.galgas", 49)), inArgument_rootTemplateFileName  COMMA_SOURCE_FILE ("gtl_interface.galgas", 48)), GALGAS_bool (false), GALGAS_bool (true), GALGAS_gtlExpressionList::constructor_emptyList (SOURCE_FILE ("gtl_interface.galgas", 54)), GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_interface.galgas", 55))  COMMA_SOURCE_FILE ("gtl_interface.galgas", 44)) ;
   callExtensionMethod_execute ((const cPtr_gtlTemplateInstruction *) var_rootTemplateInstruction_1367.ptr (), inArgument_context, inArgument_vars, var_lib_1098, result_result, inCompiler COMMA_SOURCE_FILE ("gtl_interface.galgas", 59)) ;
@@ -6051,9 +6053,9 @@ GALGAS_string function_invokeGTL (GALGAS_gtlString inArgument_rootTemplateFileNa
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_invokeGTL [4] = {
   & kTypeDescriptor_GALGAS_gtlString,
@@ -6062,7 +6064,7 @@ static const C_galgas_type_descriptor * functionArgs_invokeGTL [4] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_invokeGTL (C_Compiler * inCompiler,
                                                           const cObjectArray & inEffectiveParameterArray,
@@ -6084,7 +6086,7 @@ static GALGAS_object functionWithGenericHeader_invokeGTL (C_Compiler * inCompile
                              COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_invokeGTL ("invokeGTL",
                                                            functionWithGenericHeader_invokeGTL,
@@ -6092,11 +6094,11 @@ C_galgas_function_descriptor functionDescriptor_invokeGTL ("invokeGTL",
                                                            3,
                                                            functionArgs_invokeGTL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'emptyVarContainer'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'emptyVarContainer'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData function_emptyVarContainer (C_Compiler * inCompiler
                                            COMMA_UNUSED_LOCATION_ARGS) {
@@ -6107,15 +6109,15 @@ GALGAS_gtlData function_emptyVarContainer (C_Compiler * inCompiler
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyVarContainer [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_emptyVarContainer (C_Compiler * inCompiler,
                                                                   const cObjectArray & /* inEffectiveParameterArray */,
@@ -6124,7 +6126,7 @@ static GALGAS_object functionWithGenericHeader_emptyVarContainer (C_Compiler * i
   return function_emptyVarContainer (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_emptyVarContainer ("emptyVarContainer",
                                                                    functionWithGenericHeader_emptyVarContainer,
@@ -6132,11 +6134,11 @@ C_galgas_function_descriptor functionDescriptor_emptyVarContainer ("emptyVarCont
                                                                    0,
                                                                    functionArgs_emptyVarContainer) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'lstringToGtlString'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'lstringToGtlString'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlString function_lstringToGtlString (GALGAS_lstring inArgument_input,
                                               C_Compiler * inCompiler
@@ -6148,16 +6150,16 @@ GALGAS_gtlString function_lstringToGtlString (GALGAS_lstring inArgument_input,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_lstringToGtlString [2] = {
   & kTypeDescriptor_GALGAS_lstring,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_lstringToGtlString (C_Compiler * inCompiler,
                                                                    const cObjectArray & inEffectiveParameterArray,
@@ -6171,7 +6173,7 @@ static GALGAS_object functionWithGenericHeader_lstringToGtlString (C_Compiler * 
                                       COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_lstringToGtlString ("lstringToGtlString",
                                                                     functionWithGenericHeader_lstringToGtlString,
@@ -6179,11 +6181,11 @@ C_galgas_function_descriptor functionDescriptor_lstringToGtlString ("lstringToGt
                                                                     1,
                                                                     functionArgs_lstringToGtlString) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'stringToGtlString'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'stringToGtlString'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlString function_stringToGtlString (GALGAS_string inArgument_input,
                                              C_Compiler * inCompiler
@@ -6195,16 +6197,16 @@ GALGAS_gtlString function_stringToGtlString (GALGAS_string inArgument_input,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_stringToGtlString [2] = {
   & kTypeDescriptor_GALGAS_string,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_stringToGtlString (C_Compiler * inCompiler,
                                                                   const cObjectArray & inEffectiveParameterArray,
@@ -6218,7 +6220,7 @@ static GALGAS_object functionWithGenericHeader_stringToGtlString (C_Compiler * i
                                      COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_stringToGtlString ("stringToGtlString",
                                                                    functionWithGenericHeader_stringToGtlString,
@@ -6226,11 +6228,11 @@ C_galgas_function_descriptor functionDescriptor_stringToGtlString ("stringToGtlS
                                                                    1,
                                                                    functionArgs_stringToGtlString) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                               Function 'emptyContext'                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'emptyContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlContext function_emptyContext (C_Compiler * inCompiler
                                          COMMA_UNUSED_LOCATION_ARGS) {
@@ -6241,15 +6243,15 @@ GALGAS_gtlContext function_emptyContext (C_Compiler * inCompiler
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyContext [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_emptyContext (C_Compiler * inCompiler,
                                                              const cObjectArray & /* inEffectiveParameterArray */,
@@ -6258,7 +6260,7 @@ static GALGAS_object functionWithGenericHeader_emptyContext (C_Compiler * inComp
   return function_emptyContext (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_emptyContext ("emptyContext",
                                                               functionWithGenericHeader_emptyContext,
@@ -6266,21 +6268,25 @@ C_galgas_function_descriptor functionDescriptor_emptyContext ("emptyContext",
                                                               0,
                                                               functionArgs_emptyContext) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'pathWithExtension'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'pathWithExtension'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string function_pathWithExtension (GALGAS_gtlContext inArgument_context,
                                           GALGAS_string inArgument_path,
                                           C_Compiler * inCompiler
                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_extendedPath ; // Returned variable
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, inArgument_path.getter_pathExtension (SOURCE_FILE ("gtl_types.galgas", 96)).objectCompare (inArgument_context.getter_templateExtension (SOURCE_FILE ("gtl_types.galgas", 96)))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    result_extendedPath = inArgument_path.add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 97)).add_operation (inArgument_context.getter_templateExtension (SOURCE_FILE ("gtl_types.galgas", 97)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 97)) ;
-  }else if (kBoolFalse == test_0) {
+    test_0 = GALGAS_bool (kIsNotEqual, inArgument_path.getter_pathExtension (SOURCE_FILE ("gtl_types.galgas", 96)).objectCompare (inArgument_context.getter_templateExtension (SOURCE_FILE ("gtl_types.galgas", 96)))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      result_extendedPath = inArgument_path.add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 97)).add_operation (inArgument_context.getter_templateExtension (SOURCE_FILE ("gtl_types.galgas", 97)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 97)) ;
+    }
+  }
+  if (kBoolFalse == test_0) {
     result_extendedPath = inArgument_path ;
   }
 //---
@@ -6288,9 +6294,9 @@ GALGAS_string function_pathWithExtension (GALGAS_gtlContext inArgument_context,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_pathWithExtension [3] = {
   & kTypeDescriptor_GALGAS_gtlContext,
@@ -6298,7 +6304,7 @@ static const C_galgas_type_descriptor * functionArgs_pathWithExtension [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_pathWithExtension (C_Compiler * inCompiler,
                                                                   const cObjectArray & inEffectiveParameterArray,
@@ -6316,7 +6322,7 @@ static GALGAS_object functionWithGenericHeader_pathWithExtension (C_Compiler * i
                                      COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_pathWithExtension ("pathWithExtension",
                                                                    functionWithGenericHeader_pathWithExtension,
@@ -6324,11 +6330,11 @@ C_galgas_function_descriptor functionDescriptor_pathWithExtension ("pathWithExte
                                                                    2,
                                                                    functionArgs_pathWithExtension) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                 Function 'emptyLib'                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'emptyLib'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_library function_emptyLib (C_Compiler * /* inCompiler */
                                   COMMA_UNUSED_LOCATION_ARGS) {
@@ -6339,15 +6345,15 @@ GALGAS_library function_emptyLib (C_Compiler * /* inCompiler */
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptyLib [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_emptyLib (C_Compiler * inCompiler,
                                                          const cObjectArray & /* inEffectiveParameterArray */,
@@ -6356,7 +6362,7 @@ static GALGAS_object functionWithGenericHeader_emptyLib (C_Compiler * inCompiler
   return function_emptyLib (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_emptyLib ("emptyLib",
                                                           functionWithGenericHeader_emptyLib,
@@ -6364,11 +6370,11 @@ C_galgas_function_descriptor functionDescriptor_emptyLib ("emptyLib",
                                                           0,
                                                           functionArgs_emptyLib) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlStruct overrideMap'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlStruct overrideMap'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlStruct extensionGetter_gtlStruct_overrideMap (const cPtr_gtlData * inObject,
                                                                C_Compiler * inCompiler
@@ -6382,22 +6388,22 @@ static GALGAS_gtlStruct extensionGetter_gtlStruct_overrideMap (const cPtr_gtlDat
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlStruct_overrideMap (void) {
   enterExtensionGetter_overrideMap (kTypeDescriptor_GALGAS_gtlStruct.mSlotID,
                                     extensionGetter_gtlStruct_overrideMap) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlStruct_overrideMap (defineExtensionGetter_gtlStruct_overrideMap, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlStruct overriddenMap'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlStruct overriddenMap'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlStruct extensionGetter_gtlStruct_overriddenMap (const cPtr_gtlData * inObject,
                                                                  C_Compiler * inCompiler
@@ -6411,22 +6417,22 @@ static GALGAS_gtlStruct extensionGetter_gtlStruct_overriddenMap (const cPtr_gtlD
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlStruct_overriddenMap (void) {
   enterExtensionGetter_overriddenMap (kTypeDescriptor_GALGAS_gtlStruct.mSlotID,
                                       extensionGetter_gtlStruct_overriddenMap) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlStruct_overriddenMap (defineExtensionGetter_gtlStruct_overriddenMap, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              Function 'wantGtlStruct'                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'wantGtlStruct'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData function_wantGtlStruct (GALGAS_gtlData inArgument_inData,
                                        C_Compiler * inCompiler
@@ -6445,16 +6451,16 @@ GALGAS_gtlData function_wantGtlStruct (GALGAS_gtlData inArgument_inData,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_wantGtlStruct [2] = {
   & kTypeDescriptor_GALGAS_gtlData,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_wantGtlStruct (C_Compiler * inCompiler,
                                                               const cObjectArray & inEffectiveParameterArray,
@@ -6468,7 +6474,7 @@ static GALGAS_object functionWithGenericHeader_wantGtlStruct (C_Compiler * inCom
                                  COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_wantGtlStruct ("wantGtlStruct",
                                                                functionWithGenericHeader_wantGtlStruct,
@@ -6476,11 +6482,11 @@ C_galgas_function_descriptor functionDescriptor_wantGtlStruct ("wantGtlStruct",
                                                                1,
                                                                functionArgs_wantGtlStruct) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Function 'wantGtlMap'                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'wantGtlMap'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData function_wantGtlMap (GALGAS_gtlData inArgument_inData,
                                     C_Compiler * inCompiler
@@ -6499,16 +6505,16 @@ GALGAS_gtlData function_wantGtlMap (GALGAS_gtlData inArgument_inData,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_wantGtlMap [2] = {
   & kTypeDescriptor_GALGAS_gtlData,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_wantGtlMap (C_Compiler * inCompiler,
                                                            const cObjectArray & inEffectiveParameterArray,
@@ -6522,7 +6528,7 @@ static GALGAS_object functionWithGenericHeader_wantGtlMap (C_Compiler * inCompil
                               COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_wantGtlMap ("wantGtlMap",
                                                             functionWithGenericHeader_wantGtlMap,
@@ -6530,11 +6536,11 @@ C_galgas_function_descriptor functionDescriptor_wantGtlMap ("wantGtlMap",
                                                             1,
                                                             functionArgs_wantGtlMap) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                               Function 'wantGtlList'                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'wantGtlList'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData function_wantGtlList (GALGAS_gtlData inArgument_inData,
                                      C_Compiler * inCompiler
@@ -6553,16 +6559,16 @@ GALGAS_gtlData function_wantGtlList (GALGAS_gtlData inArgument_inData,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_wantGtlList [2] = {
   & kTypeDescriptor_GALGAS_gtlData,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_wantGtlList (C_Compiler * inCompiler,
                                                             const cObjectArray & inEffectiveParameterArray,
@@ -6576,7 +6582,7 @@ static GALGAS_object functionWithGenericHeader_wantGtlList (C_Compiler * inCompi
                                COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_wantGtlList ("wantGtlList",
                                                              functionWithGenericHeader_wantGtlList,
@@ -6584,11 +6590,11 @@ C_galgas_function_descriptor functionDescriptor_wantGtlList ("wantGtlList",
                                                              1,
                                                              functionArgs_wantGtlList) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlVarItemField location'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemField location'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_location extensionGetter_gtlVarItemField_location (const cPtr_gtlVarItem * inObject,
                                                                  C_Compiler * /* inCompiler */
@@ -6602,22 +6608,22 @@ static GALGAS_location extensionGetter_gtlVarItemField_location (const cPtr_gtlV
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemField_location (void) {
   enterExtensionGetter_location (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
                                  extensionGetter_gtlVarItemField_location) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemField_location (defineExtensionGetter_gtlVarItemField_location, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Overriding extension getter '@gtlVarItemField stringPath'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemField stringPath'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_string extensionGetter_gtlVarItemField_stringPath (const cPtr_gtlVarItem * inObject,
                                                                  const GALGAS_gtlContext /* constinArgument_exeContext */,
@@ -6634,22 +6640,22 @@ static GALGAS_string extensionGetter_gtlVarItemField_stringPath (const cPtr_gtlV
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemField_stringPath (void) {
   enterExtensionGetter_stringPath (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
                                    extensionGetter_gtlVarItemField_stringPath) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemField_stringPath (defineExtensionGetter_gtlVarItemField_stringPath, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension method '@gtlVarItemField setInContext'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension method '@gtlVarItemField setInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_gtlVarItemField_setInContext (const cPtr_gtlVarItem * inObject,
                                                           const GALGAS_gtlContext constinArgument_exeContext,
@@ -6663,14 +6669,18 @@ static void extensionMethod_gtlVarItemField_setInContext (const cPtr_gtlVarItem 
   const cPtr_gtlVarItemField * object = (const cPtr_gtlVarItemField *) inObject ;
   macroValidSharedObject (object, cPtr_gtlVarItemField) ;
   ioArgument_context = function_wantGtlStruct (ioArgument_context, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 184)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 185)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    {
-    ioArgument_context.insulate (HERE) ;
-    cPtr_gtlData * ptr_5576 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-    callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_5576, object->mProperty_field, constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 186)) ;
+    test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 185)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      {
+      ioArgument_context.insulate (HERE) ;
+      cPtr_gtlData * ptr_5576 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+      callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_5576, object->mProperty_field, constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 186)) ;
+      }
     }
-  }else if (kBoolFalse == test_0) {
+  }
+  if (kBoolFalse == test_0) {
     GALGAS_gtlData var_data_5662 ;
     GALGAS_bool joker_5664 ; // Joker input parameter
     callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_5662, joker_5664, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 188)) ;
@@ -6683,22 +6693,22 @@ static void extensionMethod_gtlVarItemField_setInContext (const cPtr_gtlVarItem 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_gtlVarItemField_setInContext (void) {
   enterExtensionMethod_setInContext (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
                                      extensionMethod_gtlVarItemField_setInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_gtlVarItemField_setInContext (defineExtensionMethod_gtlVarItemField_setInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlVarItemField getInContext'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemField getInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlVarItemField_getInContext (const cPtr_gtlVarItem * inObject,
                                                                     const GALGAS_gtlContext constinArgument_exeContext,
@@ -6714,17 +6724,25 @@ static GALGAS_gtlData extensionGetter_gtlVarItemField_getInContext (const cPtr_g
   GALGAS_gtlData var_data_6317 ;
   GALGAS_bool var_found_6330 ;
   callExtensionMethod_structField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, var_data_6317, var_found_6330, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 212)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 213)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    const enumGalgasBool test_1 = var_found_6330.boolEnum () ;
-    if (kBoolTrue == test_1) {
-      result_result = var_data_6317 ;
-    }else if (kBoolFalse == test_1) {
-      TC_Array <C_FixItDescription> fixItArray2 ;
-      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) var_data_6317.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 217)), GALGAS_string ("Variable or field does not exist"), fixItArray2  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 217)) ;
-      result_result.drop () ; // Release error dropped variable
+    test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 213)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      enumGalgasBool test_1 = kBoolTrue ;
+      if (kBoolTrue == test_1) {
+        test_1 = var_found_6330.boolEnum () ;
+        if (kBoolTrue == test_1) {
+          result_result = var_data_6317 ;
+        }
+      }
+      if (kBoolFalse == test_1) {
+        TC_Array <C_FixItDescription> fixItArray2 ;
+        inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) var_data_6317.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 217)), GALGAS_string ("Variable or field does not exist"), fixItArray2  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 217)) ;
+        result_result.drop () ; // Release error dropped variable
+      }
     }
-  }else if (kBoolFalse == test_0) {
+  }
+  if (kBoolFalse == test_0) {
     result_result = callExtensionGetter_getInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 220)).ptr (), constinArgument_exeContext, var_data_6317, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 225)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 220)) ;
   }
 //---
@@ -6732,22 +6750,22 @@ static GALGAS_gtlData extensionGetter_gtlVarItemField_getInContext (const cPtr_g
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemField_getInContext (void) {
   enterExtensionGetter_getInContext (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
                                      extensionGetter_gtlVarItemField_getInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemField_getInContext (defineExtensionGetter_gtlVarItemField_getInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlVarItemField existsInContext'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemField existsInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_gtlVarItemField_existsInContext (const cPtr_gtlVarItem * inObject,
                                                                     const GALGAS_gtlContext constinArgument_exeContext,
@@ -6760,18 +6778,26 @@ static GALGAS_bool extensionGetter_gtlVarItemField_existsInContext (const cPtr_g
   GALGAS_bool result_result ; // Returned variable
   const cPtr_gtlVarItemField * object = (const cPtr_gtlVarItemField *) inObject ;
   macroValidSharedObject (object, cPtr_gtlVarItemField) ;
-  const enumGalgasBool test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 241)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 242)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      result_result = GALGAS_bool (true) ;
-    }else if (kBoolFalse == test_1) {
-      GALGAS_gtlData var_subContext_7193 ;
-      GALGAS_bool joker_7195 ; // Joker input parameter
-      callExtensionMethod_structField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, var_subContext_7193, joker_7195, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 245)) ;
-      result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 246)).ptr (), constinArgument_exeContext, var_subContext_7193, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 251)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 246)) ;
+    test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 241)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      enumGalgasBool test_1 = kBoolTrue ;
+      if (kBoolTrue == test_1) {
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 242)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          result_result = GALGAS_bool (true) ;
+        }
+      }
+      if (kBoolFalse == test_1) {
+        GALGAS_gtlData var_subContext_7193 ;
+        GALGAS_bool joker_7195 ; // Joker input parameter
+        callExtensionMethod_structField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, var_subContext_7193, joker_7195, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 245)) ;
+        result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 246)).ptr (), constinArgument_exeContext, var_subContext_7193, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 251)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 246)) ;
+      }
     }
-  }else if (kBoolFalse == test_0) {
+  }
+  if (kBoolFalse == test_0) {
     result_result = GALGAS_bool (false) ;
   }
 //---
@@ -6779,22 +6805,22 @@ static GALGAS_bool extensionGetter_gtlVarItemField_existsInContext (const cPtr_g
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemField_existsInContext (void) {
   enterExtensionGetter_existsInContext (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
                                         extensionGetter_gtlVarItemField_existsInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemField_existsInContext (defineExtensionGetter_gtlVarItemField_existsInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension method '@gtlVarItemField deleteInContext'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension method '@gtlVarItemField deleteInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_gtlVarItemField_deleteInContext (const cPtr_gtlVarItem * inObject,
                                                              const GALGAS_gtlContext constinArgument_exeContext,
@@ -6806,45 +6832,52 @@ static void extensionMethod_gtlVarItemField_deleteInContext (const cPtr_gtlVarIt
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_gtlVarItemField * object = (const cPtr_gtlVarItemField *) inObject ;
   macroValidSharedObject (object, cPtr_gtlVarItemField) ;
-  const enumGalgasBool test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 269)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 270)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      {
-      ioArgument_context.insulate (HERE) ;
-      cPtr_gtlData * ptr_7882 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-      callExtensionSetter_deleteStructField ((cPtr_gtlData *) ptr_7882, object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 271)) ;
+    test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 269)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      enumGalgasBool test_1 = kBoolTrue ;
+      if (kBoolTrue == test_1) {
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 270)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          {
+          ioArgument_context.insulate (HERE) ;
+          cPtr_gtlData * ptr_7882 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+          callExtensionSetter_deleteStructField ((cPtr_gtlData *) ptr_7882, object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 271)) ;
+          }
+        }
       }
-    }else if (kBoolFalse == test_1) {
-      GALGAS_gtlData var_data_7966 ;
-      GALGAS_bool joker_7968 ; // Joker input parameter
-      callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_7966, joker_7968, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 273)) ;
-      callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 274)).ptr (), constinArgument_exeContext, var_data_7966, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 279)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 274)) ;
-      {
-      ioArgument_context.insulate (HERE) ;
-      cPtr_gtlData * ptr_8138 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-      callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_8138, object->mProperty_field, var_data_7966, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 281)) ;
+      if (kBoolFalse == test_1) {
+        GALGAS_gtlData var_data_7966 ;
+        GALGAS_bool joker_7968 ; // Joker input parameter
+        callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_7966, joker_7968, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 273)) ;
+        callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 274)).ptr (), constinArgument_exeContext, var_data_7966, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 279)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 274)) ;
+        {
+        ioArgument_context.insulate (HERE) ;
+        cPtr_gtlData * ptr_8138 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+        callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_8138, object->mProperty_field, var_data_7966, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 281)) ;
+        }
       }
     }
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_gtlVarItemField_deleteInContext (void) {
   enterExtensionMethod_deleteInContext (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
                                         extensionMethod_gtlVarItemField_deleteInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_gtlVarItemField_deleteInContext (defineExtensionMethod_gtlVarItemField_deleteInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlVarItemCollection stringPath'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemCollection stringPath'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_string extensionGetter_gtlVarItemCollection_stringPath (const cPtr_gtlVarItem * inObject,
                                                                       const GALGAS_gtlContext constinArgument_exeContext,
@@ -6872,22 +6905,22 @@ static GALGAS_string extensionGetter_gtlVarItemCollection_stringPath (const cPtr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemCollection_stringPath (void) {
   enterExtensionGetter_stringPath (kTypeDescriptor_GALGAS_gtlVarItemCollection.mSlotID,
                                    extensionGetter_gtlVarItemCollection_stringPath) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemCollection_stringPath (defineExtensionGetter_gtlVarItemCollection_stringPath, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Overriding extension method '@gtlVarItemCollection setInContext'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension method '@gtlVarItemCollection setInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_gtlVarItemCollection_setInContext (const cPtr_gtlVarItem * inObject,
                                                                const GALGAS_gtlContext constinArgument_exeContext,
@@ -6908,14 +6941,18 @@ static void extensionMethod_gtlVarItemCollection_setInContext (const cPtr_gtlVar
       GALGAS_bool joker_9442 ; // Joker input parameter
       callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_9440, joker_9442, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 322)) ;
       var_data_9440 = function_wantGtlMap (var_data_9440, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 323)) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 324)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        {
-        var_data_9440.insulate (HERE) ;
-        cPtr_gtlData * ptr_9518 = (cPtr_gtlData *) var_data_9440.ptr () ;
-        callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_9518, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_9354_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 325)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 325)) ;
+        test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 324)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          {
+          var_data_9440.insulate (HERE) ;
+          cPtr_gtlData * ptr_9518 = (cPtr_gtlData *) var_data_9440.ptr () ;
+          callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_9518, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_9354_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 325)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 325)) ;
+          }
         }
-      }else if (kBoolFalse == test_0) {
+      }
+      if (kBoolFalse == test_0) {
         GALGAS_gtlData var_subContext_9611 ;
         callExtensionMethod_mapItem ((const cPtr_gtlData *) var_data_9440.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_9354_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 327)), var_subContext_9611, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 327)) ;
         callExtensionMethod_setInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 328)).ptr (), constinArgument_exeContext, var_subContext_9611, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 333)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 328)) ;
@@ -6937,14 +6974,18 @@ static void extensionMethod_gtlVarItemCollection_setInContext (const cPtr_gtlVar
       GALGAS_bool joker_9997 ; // Joker input parameter
       callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_9995, joker_9997, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 341)) ;
       var_data_9995 = function_wantGtlList (var_data_9995, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 342)) ;
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 343)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        {
-        var_data_9995.insulate (HERE) ;
-        cPtr_gtlData * ptr_10074 = (cPtr_gtlData *) var_data_9995.ptr () ;
-        callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_10074, constinArgument_newData, cast_9909_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 344)) ;
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 343)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          {
+          var_data_9995.insulate (HERE) ;
+          cPtr_gtlData * ptr_10074 = (cPtr_gtlData *) var_data_9995.ptr () ;
+          callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_10074, constinArgument_newData, cast_9909_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 344)) ;
+          }
         }
-      }else if (kBoolFalse == test_1) {
+      }
+      if (kBoolFalse == test_1) {
         GALGAS_gtlData var_subContext_10161 ;
         callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_data_9995.ptr (), var_subContext_10161, cast_9909_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 346)) ;
         callExtensionMethod_setInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 347)).ptr (), constinArgument_exeContext, var_subContext_10161, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 352)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 347)) ;
@@ -6966,22 +7007,22 @@ static void extensionMethod_gtlVarItemCollection_setInContext (const cPtr_gtlVar
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_gtlVarItemCollection_setInContext (void) {
   enterExtensionMethod_setInContext (kTypeDescriptor_GALGAS_gtlVarItemCollection.mSlotID,
                                      extensionMethod_gtlVarItemCollection_setInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_gtlVarItemCollection_setInContext (defineExtensionMethod_gtlVarItemCollection_setInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Overriding extension getter '@gtlVarItemCollection getInContext'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemCollection getInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlVarItemCollection_getInContext (const cPtr_gtlVarItem * inObject,
                                                                          const GALGAS_gtlContext constinArgument_exeContext,
@@ -7000,20 +7041,28 @@ static GALGAS_gtlData extensionGetter_gtlVarItemCollection_getInContext (const c
   if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 375)).isValid ()) {
     if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 375)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
       GALGAS_gtlString cast_11037_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 375)).ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 377)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        callExtensionMethod_mapItem ((const cPtr_gtlData *) var_collection_10961.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_11037_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 378)), result_result, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 378)) ;
-      }else if (kBoolFalse == test_0) {
+        test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 377)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          callExtensionMethod_mapItem ((const cPtr_gtlData *) var_collection_10961.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_11037_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 378)), result_result, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 378)) ;
+        }
+      }
+      if (kBoolFalse == test_0) {
         GALGAS_gtlData var_subContext_11182 ;
         callExtensionMethod_mapItem ((const cPtr_gtlData *) var_collection_10961.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_11037_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 380)), var_subContext_11182, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 380)) ;
         result_result = callExtensionGetter_getInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 381)).ptr (), constinArgument_exeContext, var_subContext_11182, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 386)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 381)) ;
       }
     }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 375)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
       GALGAS_gtlInt cast_11378_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 375)).ptr ()) ;
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 390)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_collection_10961.ptr (), result_result, cast_11378_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 391)) ;
-      }else if (kBoolFalse == test_1) {
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 390)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_collection_10961.ptr (), result_result, cast_11378_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 391)) ;
+        }
+      }
+      if (kBoolFalse == test_1) {
         GALGAS_gtlData var_subContext_11517 ;
         callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_collection_10961.ptr (), var_subContext_11517, cast_11378_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 393)) ;
         result_result = callExtensionGetter_getInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 394)).ptr (), constinArgument_exeContext, var_subContext_11517, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 399)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 394)) ;
@@ -7029,22 +7078,22 @@ static GALGAS_gtlData extensionGetter_gtlVarItemCollection_getInContext (const c
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemCollection_getInContext (void) {
   enterExtensionGetter_getInContext (kTypeDescriptor_GALGAS_gtlVarItemCollection.mSlotID,
                                      extensionGetter_gtlVarItemCollection_getInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemCollection_getInContext (defineExtensionGetter_gtlVarItemCollection_getInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                         Overriding extension getter '@gtlVarItemCollection existsInContext'                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemCollection existsInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_gtlVarItemCollection_existsInContext (const cPtr_gtlVarItem * inObject,
                                                                          const GALGAS_gtlContext constinArgument_exeContext,
@@ -7057,49 +7106,69 @@ static GALGAS_bool extensionGetter_gtlVarItemCollection_existsInContext (const c
   GALGAS_bool result_result ; // Returned variable
   const cPtr_gtlVarItemCollection * object = (const cPtr_gtlVarItemCollection *) inObject ;
   macroValidSharedObject (object, cPtr_gtlVarItemCollection) ;
-  const enumGalgasBool test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 419)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    GALGAS_gtlData var_collection_12285 ;
-    GALGAS_bool joker_12287 ; // Joker input parameter
-    callExtensionMethod_structField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, var_collection_12285, joker_12287, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 420)) ;
-    if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).isValid ()) {
-      if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
-        GALGAS_gtlString cast_12365_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).ptr ()) ;
-        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 423)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_1) {
-          result_result = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) var_collection_12285.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_12365_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 424)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 424)) ;
-        }else if (kBoolFalse == test_1) {
-          const enumGalgasBool test_2 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) var_collection_12285.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_12365_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 426)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 426)).boolEnum () ;
-          if (kBoolTrue == test_2) {
-            GALGAS_gtlData var_subContext_12575 ;
-            callExtensionMethod_mapItem ((const cPtr_gtlData *) var_collection_12285.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_12365_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 427)), var_subContext_12575, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 427)) ;
-            result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 428)).ptr (), constinArgument_exeContext, var_subContext_12575, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 433)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 428)) ;
-          }else if (kBoolFalse == test_2) {
-            result_result = GALGAS_bool (false) ;
+    test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 419)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      GALGAS_gtlData var_collection_12285 ;
+      GALGAS_bool joker_12287 ; // Joker input parameter
+      callExtensionMethod_structField ((const cPtr_gtlData *) constinArgument_context.ptr (), object->mProperty_field, var_collection_12285, joker_12287, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 420)) ;
+      if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).isValid ()) {
+        if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
+          GALGAS_gtlString cast_12365_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).ptr ()) ;
+          enumGalgasBool test_1 = kBoolTrue ;
+          if (kBoolTrue == test_1) {
+            test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 423)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            if (kBoolTrue == test_1) {
+              result_result = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) var_collection_12285.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_12365_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 424)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 424)) ;
+            }
           }
-        }
-      }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
-        GALGAS_gtlInt cast_12856_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).ptr ()) ;
-        const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 440)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_3) {
-          result_result = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) var_collection_12285.ptr (), cast_12856_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 441)) ;
-        }else if (kBoolFalse == test_3) {
-          const enumGalgasBool test_4 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) var_collection_12285.ptr (), cast_12856_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 443)).boolEnum () ;
-          if (kBoolTrue == test_4) {
-            GALGAS_gtlData var_subContext_13061 ;
-            callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_collection_12285.ptr (), var_subContext_13061, cast_12856_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 444)) ;
-            result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 445)).ptr (), constinArgument_exeContext, var_subContext_13061, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 450)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 445)) ;
-          }else if (kBoolFalse == test_4) {
-            result_result = GALGAS_bool (false) ;
+          if (kBoolFalse == test_1) {
+            enumGalgasBool test_2 = kBoolTrue ;
+            if (kBoolTrue == test_2) {
+              test_2 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) var_collection_12285.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_12365_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 426)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 426)).boolEnum () ;
+              if (kBoolTrue == test_2) {
+                GALGAS_gtlData var_subContext_12575 ;
+                callExtensionMethod_mapItem ((const cPtr_gtlData *) var_collection_12285.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_12365_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 427)), var_subContext_12575, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 427)) ;
+                result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 428)).ptr (), constinArgument_exeContext, var_subContext_12575, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 433)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 428)) ;
+              }
+            }
+            if (kBoolFalse == test_2) {
+              result_result = GALGAS_bool (false) ;
+            }
           }
+        }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
+          GALGAS_gtlInt cast_12856_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 421)).ptr ()) ;
+          enumGalgasBool test_3 = kBoolTrue ;
+          if (kBoolTrue == test_3) {
+            test_3 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 440)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            if (kBoolTrue == test_3) {
+              result_result = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) var_collection_12285.ptr (), cast_12856_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 441)) ;
+            }
+          }
+          if (kBoolFalse == test_3) {
+            enumGalgasBool test_4 = kBoolTrue ;
+            if (kBoolTrue == test_4) {
+              test_4 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) var_collection_12285.ptr (), cast_12856_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 443)).boolEnum () ;
+              if (kBoolTrue == test_4) {
+                GALGAS_gtlData var_subContext_13061 ;
+                callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_collection_12285.ptr (), var_subContext_13061, cast_12856_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 444)) ;
+                result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 445)).ptr (), constinArgument_exeContext, var_subContext_13061, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 450)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 445)) ;
+              }
+            }
+            if (kBoolFalse == test_4) {
+              result_result = GALGAS_bool (false) ;
+            }
+          }
+        }else{
+          TC_Array <C_FixItDescription> fixItArray5 ;
+          inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 457)), GALGAS_string ("string ot int expected"), fixItArray5  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 457)) ;
+          result_result.drop () ; // Release error dropped variable
         }
-      }else{
-        TC_Array <C_FixItDescription> fixItArray5 ;
-        inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 457)), GALGAS_string ("string ot int expected"), fixItArray5  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 457)) ;
-        result_result.drop () ; // Release error dropped variable
       }
     }
-  }else if (kBoolFalse == test_0) {
+  }
+  if (kBoolFalse == test_0) {
     result_result = GALGAS_bool (false) ;
   }
 //---
@@ -7107,22 +7176,22 @@ static GALGAS_bool extensionGetter_gtlVarItemCollection_existsInContext (const c
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemCollection_existsInContext (void) {
   enterExtensionGetter_existsInContext (kTypeDescriptor_GALGAS_gtlVarItemCollection.mSlotID,
                                         extensionGetter_gtlVarItemCollection_existsInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemCollection_existsInContext (defineExtensionGetter_gtlVarItemCollection_existsInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                         Overriding extension method '@gtlVarItemCollection deleteInContext'                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension method '@gtlVarItemCollection deleteInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_gtlVarItemCollection_deleteInContext (const cPtr_gtlVarItem * inObject,
                                                                   const GALGAS_gtlContext constinArgument_exeContext,
@@ -7137,68 +7206,88 @@ static void extensionMethod_gtlVarItemCollection_deleteInContext (const cPtr_gtl
   if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 474)).isValid ()) {
     if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 474)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
       GALGAS_gtlString cast_13893_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 474)).ptr ()) ;
-      const enumGalgasBool test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 476)).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        GALGAS_gtlData var_data_13987 ;
-        GALGAS_bool joker_13989 ; // Joker input parameter
-        callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_13987, joker_13989, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 477)) ;
-        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 478)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_1) {
-          const enumGalgasBool test_2 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) var_data_13987.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 479)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 479)).boolEnum () ;
-          if (kBoolTrue == test_2) {
-            {
-            var_data_13987.insulate (HERE) ;
-            cPtr_gtlData * ptr_14087 = (cPtr_gtlData *) var_data_13987.ptr () ;
-            callExtensionSetter_deleteMapItem ((cPtr_gtlData *) ptr_14087, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 480)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 480)) ;
+        test_0 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 476)).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          GALGAS_gtlData var_data_13987 ;
+          GALGAS_bool joker_13989 ; // Joker input parameter
+          callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_13987, joker_13989, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 477)) ;
+          enumGalgasBool test_1 = kBoolTrue ;
+          if (kBoolTrue == test_1) {
+            test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 478)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            if (kBoolTrue == test_1) {
+              enumGalgasBool test_2 = kBoolTrue ;
+              if (kBoolTrue == test_2) {
+                test_2 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) var_data_13987.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 479)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 479)).boolEnum () ;
+                if (kBoolTrue == test_2) {
+                  {
+                  var_data_13987.insulate (HERE) ;
+                  cPtr_gtlData * ptr_14087 = (cPtr_gtlData *) var_data_13987.ptr () ;
+                  callExtensionSetter_deleteMapItem ((cPtr_gtlData *) ptr_14087, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 480)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 480)) ;
+                  }
+                }
+              }
             }
           }
-        }else if (kBoolFalse == test_1) {
-          GALGAS_gtlData var_subContext_14190 ;
-          callExtensionMethod_mapItem ((const cPtr_gtlData *) var_data_13987.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 483)), var_subContext_14190, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 483)) ;
-          callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 484)).ptr (), constinArgument_exeContext, var_subContext_14190, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 489)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 484)) ;
-          {
-          var_data_13987.insulate (HERE) ;
-          cPtr_gtlData * ptr_14378 = (cPtr_gtlData *) var_data_13987.ptr () ;
-          callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_14378, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 491)), var_subContext_14190, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 491)) ;
+          if (kBoolFalse == test_1) {
+            GALGAS_gtlData var_subContext_14190 ;
+            callExtensionMethod_mapItem ((const cPtr_gtlData *) var_data_13987.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 483)), var_subContext_14190, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 483)) ;
+            callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 484)).ptr (), constinArgument_exeContext, var_subContext_14190, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 489)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 484)) ;
+            {
+            var_data_13987.insulate (HERE) ;
+            cPtr_gtlData * ptr_14378 = (cPtr_gtlData *) var_data_13987.ptr () ;
+            callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_14378, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_13893_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 491)), var_subContext_14190, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 491)) ;
+            }
           }
-        }
-        {
-        ioArgument_context.insulate (HERE) ;
-        cPtr_gtlData * ptr_14440 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-        callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_14440, object->mProperty_field, var_data_13987, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 493)) ;
+          {
+          ioArgument_context.insulate (HERE) ;
+          cPtr_gtlData * ptr_14440 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+          callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_14440, object->mProperty_field, var_data_13987, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 493)) ;
+          }
         }
       }
     }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 474)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
       GALGAS_gtlInt cast_14502_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 474)).ptr ()) ;
-      const enumGalgasBool test_3 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 496)).boolEnum () ;
+      enumGalgasBool test_3 = kBoolTrue ;
       if (kBoolTrue == test_3) {
-        GALGAS_gtlData var_data_14596 ;
-        GALGAS_bool joker_14598 ; // Joker input parameter
-        callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_14596, joker_14598, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 497)) ;
-        const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 498)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_4) {
-          const enumGalgasBool test_5 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) var_data_14596.ptr (), cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 499)).boolEnum () ;
-          if (kBoolTrue == test_5) {
-            {
-            var_data_14596.insulate (HERE) ;
-            cPtr_gtlData * ptr_14697 = (cPtr_gtlData *) var_data_14596.ptr () ;
-            callExtensionSetter_deleteItemAtIndex ((cPtr_gtlData *) ptr_14697, cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 500)) ;
+        test_3 = callExtensionGetter_hasStructField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 496)).boolEnum () ;
+        if (kBoolTrue == test_3) {
+          GALGAS_gtlData var_data_14596 ;
+          GALGAS_bool joker_14598 ; // Joker input parameter
+          callExtensionMethod_structField ((const cPtr_gtlData *) ioArgument_context.ptr (), object->mProperty_field, var_data_14596, joker_14598, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 497)) ;
+          enumGalgasBool test_4 = kBoolTrue ;
+          if (kBoolTrue == test_4) {
+            test_4 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 498)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            if (kBoolTrue == test_4) {
+              enumGalgasBool test_5 = kBoolTrue ;
+              if (kBoolTrue == test_5) {
+                test_5 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) var_data_14596.ptr (), cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 499)).boolEnum () ;
+                if (kBoolTrue == test_5) {
+                  {
+                  var_data_14596.insulate (HERE) ;
+                  cPtr_gtlData * ptr_14697 = (cPtr_gtlData *) var_data_14596.ptr () ;
+                  callExtensionSetter_deleteItemAtIndex ((cPtr_gtlData *) ptr_14697, cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 500)) ;
+                  }
+                }
+              }
             }
           }
-        }else if (kBoolFalse == test_4) {
-          GALGAS_gtlData var_subContext_14794 ;
-          callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_data_14596.ptr (), var_subContext_14794, cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 503)) ;
-          callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 504)).ptr (), constinArgument_exeContext, var_subContext_14794, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 509)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 504)) ;
-          {
-          var_data_14596.insulate (HERE) ;
-          cPtr_gtlData * ptr_14990 = (cPtr_gtlData *) var_data_14596.ptr () ;
-          callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_14990, var_subContext_14794, cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 511)) ;
+          if (kBoolFalse == test_4) {
+            GALGAS_gtlData var_subContext_14794 ;
+            callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) var_data_14596.ptr (), var_subContext_14794, cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 503)) ;
+            callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 504)).ptr (), constinArgument_exeContext, var_subContext_14794, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 509)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 504)) ;
+            {
+            var_data_14596.insulate (HERE) ;
+            cPtr_gtlData * ptr_14990 = (cPtr_gtlData *) var_data_14596.ptr () ;
+            callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_14990, var_subContext_14794, cast_14502_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 511)) ;
+            }
           }
-        }
-        {
-        ioArgument_context.insulate (HERE) ;
-        cPtr_gtlData * ptr_15053 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-        callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_15053, object->mProperty_field, var_data_14596, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 513)) ;
+          {
+          ioArgument_context.insulate (HERE) ;
+          cPtr_gtlData * ptr_15053 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+          callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_15053, object->mProperty_field, var_data_14596, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 513)) ;
+          }
         }
       }
     }else{
@@ -7208,22 +7297,22 @@ static void extensionMethod_gtlVarItemCollection_deleteInContext (const cPtr_gtl
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_gtlVarItemCollection_deleteInContext (void) {
   enterExtensionMethod_deleteInContext (kTypeDescriptor_GALGAS_gtlVarItemCollection.mSlotID,
                                         extensionMethod_gtlVarItemCollection_deleteInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_gtlVarItemCollection_deleteInContext (defineExtensionMethod_gtlVarItemCollection_deleteInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlVarItemSubCollection location'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemSubCollection location'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_location extensionGetter_gtlVarItemSubCollection_location (const cPtr_gtlVarItem * inObject,
                                                                          C_Compiler * /* inCompiler */
@@ -7237,22 +7326,22 @@ static GALGAS_location extensionGetter_gtlVarItemSubCollection_location (const c
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemSubCollection_location (void) {
   enterExtensionGetter_location (kTypeDescriptor_GALGAS_gtlVarItemSubCollection.mSlotID,
                                  extensionGetter_gtlVarItemSubCollection_location) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemSubCollection_location (defineExtensionGetter_gtlVarItemSubCollection_location, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Overriding extension getter '@gtlVarItemSubCollection stringPath'                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemSubCollection stringPath'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_string extensionGetter_gtlVarItemSubCollection_stringPath (const cPtr_gtlVarItem * inObject,
                                                                          const GALGAS_gtlContext constinArgument_exeContext,
@@ -7280,22 +7369,22 @@ static GALGAS_string extensionGetter_gtlVarItemSubCollection_stringPath (const c
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemSubCollection_stringPath (void) {
   enterExtensionGetter_stringPath (kTypeDescriptor_GALGAS_gtlVarItemSubCollection.mSlotID,
                                    extensionGetter_gtlVarItemSubCollection_stringPath) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemSubCollection_stringPath (defineExtensionGetter_gtlVarItemSubCollection_stringPath, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                         Overriding extension method '@gtlVarItemSubCollection setInContext'                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension method '@gtlVarItemSubCollection setInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_gtlVarItemSubCollection_setInContext (const cPtr_gtlVarItem * inObject,
                                                                   const GALGAS_gtlContext constinArgument_exeContext,
@@ -7312,14 +7401,18 @@ static void extensionMethod_gtlVarItemSubCollection_setInContext (const cPtr_gtl
     if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 565)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
       GALGAS_gtlString cast_16506_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 565)).ptr ()) ;
       ioArgument_context = function_wantGtlMap (ioArgument_context, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 567)) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 568)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        {
-        ioArgument_context.insulate (HERE) ;
-        cPtr_gtlData * ptr_16590 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-        callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_16590, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_16506_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 569)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 569)) ;
+        test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 568)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          {
+          ioArgument_context.insulate (HERE) ;
+          cPtr_gtlData * ptr_16590 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+          callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_16590, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_16506_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 569)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 569)) ;
+          }
         }
-      }else if (kBoolFalse == test_0) {
+      }
+      if (kBoolFalse == test_0) {
         GALGAS_gtlData var_subContext_16686 ;
         callExtensionMethod_mapItem ((const cPtr_gtlData *) ioArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_16506_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 571)), var_subContext_16686, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 571)) ;
         callExtensionMethod_setInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 572)).ptr (), constinArgument_exeContext, var_subContext_16686, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 577)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 572)) ;
@@ -7332,14 +7425,18 @@ static void extensionMethod_gtlVarItemSubCollection_setInContext (const cPtr_gtl
     }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 565)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
       GALGAS_gtlInt cast_16943_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 565)).ptr ()) ;
       ioArgument_context = function_wantGtlList (ioArgument_context, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 583)) ;
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 584)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        {
-        ioArgument_context.insulate (HERE) ;
-        cPtr_gtlData * ptr_17028 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-        callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_17028, constinArgument_newData, cast_16943_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 585)) ;
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 584)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          {
+          ioArgument_context.insulate (HERE) ;
+          cPtr_gtlData * ptr_17028 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+          callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_17028, constinArgument_newData, cast_16943_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 585)) ;
+          }
         }
-      }else if (kBoolFalse == test_1) {
+      }
+      if (kBoolFalse == test_1) {
         GALGAS_gtlData var_subContext_17118 ;
         callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) ioArgument_context.ptr (), var_subContext_17118, cast_16943_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 587)) ;
         callExtensionMethod_setInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 588)).ptr (), constinArgument_exeContext, var_subContext_17118, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 593)), constinArgument_newData, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 588)) ;
@@ -7356,22 +7453,22 @@ static void extensionMethod_gtlVarItemSubCollection_setInContext (const cPtr_gtl
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_gtlVarItemSubCollection_setInContext (void) {
   enterExtensionMethod_setInContext (kTypeDescriptor_GALGAS_gtlVarItemSubCollection.mSlotID,
                                      extensionMethod_gtlVarItemSubCollection_setInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_gtlVarItemSubCollection_setInContext (defineExtensionMethod_gtlVarItemSubCollection_setInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                         Overriding extension getter '@gtlVarItemSubCollection getInContext'                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemSubCollection getInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlVarItemSubCollection_getInContext (const cPtr_gtlVarItem * inObject,
                                                                             const GALGAS_gtlContext constinArgument_exeContext,
@@ -7387,20 +7484,28 @@ static GALGAS_gtlData extensionGetter_gtlVarItemSubCollection_getInContext (cons
   if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 614)).isValid ()) {
     if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 614)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
       GALGAS_gtlString cast_17901_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 614)).ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 616)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        callExtensionMethod_mapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_17901_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 617)), result_result, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 617)) ;
-      }else if (kBoolFalse == test_0) {
+        test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 616)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          callExtensionMethod_mapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_17901_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 617)), result_result, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 617)) ;
+        }
+      }
+      if (kBoolFalse == test_0) {
         GALGAS_gtlData var_subContext_18040 ;
         callExtensionMethod_mapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_17901_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 619)), var_subContext_18040, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 619)) ;
         result_result = callExtensionGetter_getInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 620)).ptr (), constinArgument_exeContext, var_subContext_18040, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 625)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 620)) ;
       }
     }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 614)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
       GALGAS_gtlInt cast_18236_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 614)).ptr ()) ;
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 629)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_1 = kBoolTrue ;
       if (kBoolTrue == test_1) {
-        callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), result_result, cast_18236_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 630)) ;
-      }else if (kBoolFalse == test_1) {
+        test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 629)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), result_result, cast_18236_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 630)) ;
+        }
+      }
+      if (kBoolFalse == test_1) {
         GALGAS_gtlData var_subContext_18369 ;
         callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), var_subContext_18369, cast_18236_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 632)) ;
         result_result = callExtensionGetter_getInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 633)).ptr (), constinArgument_exeContext, var_subContext_18369, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 638)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 633)) ;
@@ -7416,22 +7521,22 @@ static GALGAS_gtlData extensionGetter_gtlVarItemSubCollection_getInContext (cons
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemSubCollection_getInContext (void) {
   enterExtensionGetter_getInContext (kTypeDescriptor_GALGAS_gtlVarItemSubCollection.mSlotID,
                                      extensionGetter_gtlVarItemSubCollection_getInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemSubCollection_getInContext (defineExtensionGetter_gtlVarItemSubCollection_getInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Overriding extension getter '@gtlVarItemSubCollection existsInContext'                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarItemSubCollection existsInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_gtlVarItemSubCollection_existsInContext (const cPtr_gtlVarItem * inObject,
                                                                             const GALGAS_gtlContext constinArgument_exeContext,
@@ -7447,31 +7552,47 @@ static GALGAS_bool extensionGetter_gtlVarItemSubCollection_existsInContext (cons
   if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 657)).isValid ()) {
     if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 657)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
       GALGAS_gtlString cast_19119_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 657)).ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 659)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        result_result = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_19119_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 660)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 660)) ;
-      }else if (kBoolFalse == test_0) {
-        const enumGalgasBool test_1 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_19119_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 662)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 662)).boolEnum () ;
+        test_0 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 659)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          result_result = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_19119_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 660)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 660)) ;
+        }
+      }
+      if (kBoolFalse == test_0) {
+        enumGalgasBool test_1 = kBoolTrue ;
         if (kBoolTrue == test_1) {
-          GALGAS_gtlData var_subContext_19310 ;
-          callExtensionMethod_mapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_19119_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 663)), var_subContext_19310, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 663)) ;
-          result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 664)).ptr (), constinArgument_exeContext, var_subContext_19310, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 669)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 664)) ;
-        }else if (kBoolFalse == test_1) {
+          test_1 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_19119_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 662)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 662)).boolEnum () ;
+          if (kBoolTrue == test_1) {
+            GALGAS_gtlData var_subContext_19310 ;
+            callExtensionMethod_mapItem ((const cPtr_gtlData *) constinArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_19119_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 663)), var_subContext_19310, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 663)) ;
+            result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 664)).ptr (), constinArgument_exeContext, var_subContext_19310, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 669)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 664)) ;
+          }
+        }
+        if (kBoolFalse == test_1) {
           result_result = GALGAS_bool (false) ;
         }
       }
     }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 657)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
       GALGAS_gtlInt cast_19567_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 657)).ptr ()) ;
-      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 676)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      enumGalgasBool test_2 = kBoolTrue ;
       if (kBoolTrue == test_2) {
-        result_result = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), cast_19567_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 677)) ;
-      }else if (kBoolFalse == test_2) {
-        const enumGalgasBool test_3 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), cast_19567_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 679)).boolEnum () ;
+        test_2 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 676)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_2) {
+          result_result = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), cast_19567_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 677)) ;
+        }
+      }
+      if (kBoolFalse == test_2) {
+        enumGalgasBool test_3 = kBoolTrue ;
         if (kBoolTrue == test_3) {
-          GALGAS_gtlData var_subContext_19753 ;
-          callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), var_subContext_19753, cast_19567_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 680)) ;
-          result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 681)).ptr (), constinArgument_exeContext, var_subContext_19753, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 686)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 681)) ;
-        }else if (kBoolFalse == test_3) {
+          test_3 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), cast_19567_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 679)).boolEnum () ;
+          if (kBoolTrue == test_3) {
+            GALGAS_gtlData var_subContext_19753 ;
+            callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) constinArgument_context.ptr (), var_subContext_19753, cast_19567_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 680)) ;
+            result_result = callExtensionGetter_existsInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 681)).ptr (), constinArgument_exeContext, var_subContext_19753, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 686)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 681)) ;
+          }
+        }
+        if (kBoolFalse == test_3) {
           result_result = GALGAS_bool (false) ;
         }
       }
@@ -7486,22 +7607,22 @@ static GALGAS_bool extensionGetter_gtlVarItemSubCollection_existsInContext (cons
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarItemSubCollection_existsInContext (void) {
   enterExtensionGetter_existsInContext (kTypeDescriptor_GALGAS_gtlVarItemSubCollection.mSlotID,
                                         extensionGetter_gtlVarItemSubCollection_existsInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarItemSubCollection_existsInContext (defineExtensionGetter_gtlVarItemSubCollection_existsInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Overriding extension method '@gtlVarItemSubCollection deleteInContext'                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension method '@gtlVarItemSubCollection deleteInContext'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void extensionMethod_gtlVarItemSubCollection_deleteInContext (const cPtr_gtlVarItem * inObject,
                                                                      const GALGAS_gtlContext constinArgument_exeContext,
@@ -7516,45 +7637,59 @@ static void extensionMethod_gtlVarItemSubCollection_deleteInContext (const cPtr_
   if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 707)).isValid ()) {
     if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 707)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlString) {
       GALGAS_gtlString cast_20531_keyString ((cPtr_gtlString *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 707)).ptr ()) ;
-      const enumGalgasBool test_0 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) ioArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 709)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 709)).boolEnum () ;
+      enumGalgasBool test_0 = kBoolTrue ;
       if (kBoolTrue == test_0) {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 710)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_1) {
-          {
-          ioArgument_context.insulate (HERE) ;
-          cPtr_gtlData * ptr_20628 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-          callExtensionSetter_deleteMapItem ((cPtr_gtlData *) ptr_20628, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 711)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 711)) ;
+        test_0 = callExtensionGetter_hasMapItem ((const cPtr_gtlData *) ioArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 709)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 709)).boolEnum () ;
+        if (kBoolTrue == test_0) {
+          enumGalgasBool test_1 = kBoolTrue ;
+          if (kBoolTrue == test_1) {
+            test_1 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 710)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            if (kBoolTrue == test_1) {
+              {
+              ioArgument_context.insulate (HERE) ;
+              cPtr_gtlData * ptr_20628 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+              callExtensionSetter_deleteMapItem ((cPtr_gtlData *) ptr_20628, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 711)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 711)) ;
+              }
+            }
           }
-        }else if (kBoolFalse == test_1) {
-          GALGAS_gtlData var_subContext_20722 ;
-          callExtensionMethod_mapItem ((const cPtr_gtlData *) ioArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 713)), var_subContext_20722, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 713)) ;
-          callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 714)).ptr (), constinArgument_exeContext, var_subContext_20722, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 719)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 714)) ;
-          {
-          ioArgument_context.insulate (HERE) ;
-          cPtr_gtlData * ptr_20913 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-          callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_20913, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 721)), var_subContext_20722, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 721)) ;
+          if (kBoolFalse == test_1) {
+            GALGAS_gtlData var_subContext_20722 ;
+            callExtensionMethod_mapItem ((const cPtr_gtlData *) ioArgument_context.ptr (), callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 713)), var_subContext_20722, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 713)) ;
+            callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 714)).ptr (), constinArgument_exeContext, var_subContext_20722, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 719)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 714)) ;
+            {
+            ioArgument_context.insulate (HERE) ;
+            cPtr_gtlData * ptr_20913 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+            callExtensionSetter_setMapItem ((cPtr_gtlData *) ptr_20913, callExtensionGetter_lstring ((const cPtr_gtlString *) cast_20531_keyString.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 721)), var_subContext_20722, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 721)) ;
+            }
           }
         }
       }
     }else if (callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 707)).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlInt) {
       GALGAS_gtlInt cast_20991_keyInt ((cPtr_gtlInt *) callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_key.ptr (), constinArgument_exeContext, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 707)).ptr ()) ;
-      const enumGalgasBool test_2 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) ioArgument_context.ptr (), cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 725)).boolEnum () ;
+      enumGalgasBool test_2 = kBoolTrue ;
       if (kBoolTrue == test_2) {
-        const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 726)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_3) {
-          {
-          ioArgument_context.insulate (HERE) ;
-          cPtr_gtlData * ptr_21089 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-          callExtensionSetter_deleteItemAtIndex ((cPtr_gtlData *) ptr_21089, cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 727)) ;
+        test_2 = callExtensionGetter_hasItemAtIndex ((const cPtr_gtlData *) ioArgument_context.ptr (), cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 725)).boolEnum () ;
+        if (kBoolTrue == test_2) {
+          enumGalgasBool test_3 = kBoolTrue ;
+          if (kBoolTrue == test_3) {
+            test_3 = GALGAS_bool (kIsEqual, constinArgument_path.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 726)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            if (kBoolTrue == test_3) {
+              {
+              ioArgument_context.insulate (HERE) ;
+              cPtr_gtlData * ptr_21089 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+              callExtensionSetter_deleteItemAtIndex ((cPtr_gtlData *) ptr_21089, cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 727)) ;
+              }
+            }
           }
-        }else if (kBoolFalse == test_3) {
-          GALGAS_gtlData var_subContext_21177 ;
-          callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) ioArgument_context.ptr (), var_subContext_21177, cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 729)) ;
-          callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 730)).ptr (), constinArgument_exeContext, var_subContext_21177, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 735)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 730)) ;
-          {
-          ioArgument_context.insulate (HERE) ;
-          cPtr_gtlData * ptr_21376 = (cPtr_gtlData *) ioArgument_context.ptr () ;
-          callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_21376, var_subContext_21177, cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 737)) ;
+          if (kBoolFalse == test_3) {
+            GALGAS_gtlData var_subContext_21177 ;
+            callExtensionMethod_itemAtIndex ((const cPtr_gtlData *) ioArgument_context.ptr (), var_subContext_21177, cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 729)) ;
+            callExtensionMethod_deleteInContext ((const cPtr_gtlVarItem *) constinArgument_path.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 730)).ptr (), constinArgument_exeContext, var_subContext_21177, constinArgument_vars, constinArgument_lib, constinArgument_path.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 735)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 730)) ;
+            {
+            ioArgument_context.insulate (HERE) ;
+            cPtr_gtlData * ptr_21376 = (cPtr_gtlData *) ioArgument_context.ptr () ;
+            callExtensionSetter_setItemAtIndex ((cPtr_gtlData *) ptr_21376, var_subContext_21177, cast_20991_keyInt, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 737)) ;
+            }
           }
         }
       }
@@ -7565,22 +7700,22 @@ static void extensionMethod_gtlVarItemSubCollection_deleteInContext (const cPtr_
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionMethod_gtlVarItemSubCollection_deleteInContext (void) {
   enterExtensionMethod_deleteInContext (kTypeDescriptor_GALGAS_gtlVarItemSubCollection.mSlotID,
                                         extensionMethod_gtlVarItemSubCollection_deleteInContext) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gMethod_gtlVarItemSubCollection_deleteInContext (defineExtensionMethod_gtlVarItemSubCollection_deleteInContext, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Overriding extension getter '@gtlTerminal eval'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlTerminal eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlTerminal_eval (const cPtr_gtlExpression * inObject,
                                                         const GALGAS_gtlContext /* constinArgument_context */,
@@ -7597,22 +7732,22 @@ static GALGAS_gtlData extensionGetter_gtlTerminal_eval (const cPtr_gtlExpression
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlTerminal_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlTerminal.mSlotID,
                              extensionGetter_gtlTerminal_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlTerminal_eval (defineExtensionGetter_gtlTerminal_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Overriding extension getter '@gtlVarRef eval'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlVarRef eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlVarRef_eval (const cPtr_gtlExpression * inObject,
                                                       const GALGAS_gtlContext constinArgument_context,
@@ -7632,22 +7767,22 @@ static GALGAS_gtlData extensionGetter_gtlVarRef_eval (const cPtr_gtlExpression *
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlVarRef_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlVarRef.mSlotID,
                              extensionGetter_gtlVarRef_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlVarRef_eval (defineExtensionGetter_gtlVarRef_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Overriding extension getter '@gtlAllVarsRef eval'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlAllVarsRef eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlAllVarsRef_eval (const cPtr_gtlExpression * /* inObject */,
                                                           const GALGAS_gtlContext /* constinArgument_context */,
@@ -7662,22 +7797,22 @@ static GALGAS_gtlData extensionGetter_gtlAllVarsRef_eval (const cPtr_gtlExpressi
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlAllVarsRef_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlAllVarsRef.mSlotID,
                              extensionGetter_gtlAllVarsRef_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlAllVarsRef_eval (defineExtensionGetter_gtlAllVarsRef_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlParenthesizedExpression eval'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlParenthesizedExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlParenthesizedExpression_eval (const cPtr_gtlExpression * inObject,
                                                                        const GALGAS_gtlContext constinArgument_context,
@@ -7697,22 +7832,22 @@ static GALGAS_gtlData extensionGetter_gtlParenthesizedExpression_eval (const cPt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlParenthesizedExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlParenthesizedExpression.mSlotID,
                              extensionGetter_gtlParenthesizedExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlParenthesizedExpression_eval (defineExtensionGetter_gtlParenthesizedExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlMinusExpression eval'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlMinusExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlMinusExpression_eval (const cPtr_gtlExpression * inObject,
                                                                const GALGAS_gtlContext constinArgument_context,
@@ -7729,22 +7864,22 @@ static GALGAS_gtlData extensionGetter_gtlMinusExpression_eval (const cPtr_gtlExp
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlMinusExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlMinusExpression.mSlotID,
                              extensionGetter_gtlMinusExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlMinusExpression_eval (defineExtensionGetter_gtlMinusExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlPlusExpression eval'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlPlusExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlPlusExpression_eval (const cPtr_gtlExpression * inObject,
                                                               const GALGAS_gtlContext constinArgument_context,
@@ -7761,22 +7896,22 @@ static GALGAS_gtlData extensionGetter_gtlPlusExpression_eval (const cPtr_gtlExpr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlPlusExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlPlusExpression.mSlotID,
                              extensionGetter_gtlPlusExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlPlusExpression_eval (defineExtensionGetter_gtlPlusExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlNotExpression eval'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlNotExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlNotExpression_eval (const cPtr_gtlExpression * inObject,
                                                              const GALGAS_gtlContext constinArgument_context,
@@ -7793,22 +7928,22 @@ static GALGAS_gtlData extensionGetter_gtlNotExpression_eval (const cPtr_gtlExpre
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlNotExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlNotExpression.mSlotID,
                              extensionGetter_gtlNotExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlNotExpression_eval (defineExtensionGetter_gtlNotExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlAddExpression eval'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlAddExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlAddExpression_eval (const cPtr_gtlExpression * inObject,
                                                              const GALGAS_gtlContext constinArgument_context,
@@ -7825,22 +7960,22 @@ static GALGAS_gtlData extensionGetter_gtlAddExpression_eval (const cPtr_gtlExpre
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlAddExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlAddExpression.mSlotID,
                              extensionGetter_gtlAddExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlAddExpression_eval (defineExtensionGetter_gtlAddExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlSubstractExpression eval'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlSubstractExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlSubstractExpression_eval (const cPtr_gtlExpression * inObject,
                                                                    const GALGAS_gtlContext constinArgument_context,
@@ -7857,22 +7992,22 @@ static GALGAS_gtlData extensionGetter_gtlSubstractExpression_eval (const cPtr_gt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlSubstractExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlSubstractExpression.mSlotID,
                              extensionGetter_gtlSubstractExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlSubstractExpression_eval (defineExtensionGetter_gtlSubstractExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Overriding extension getter '@gtlMultiplyExpression eval'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlMultiplyExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlMultiplyExpression_eval (const cPtr_gtlExpression * inObject,
                                                                   const GALGAS_gtlContext constinArgument_context,
@@ -7889,22 +8024,22 @@ static GALGAS_gtlData extensionGetter_gtlMultiplyExpression_eval (const cPtr_gtl
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlMultiplyExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlMultiplyExpression.mSlotID,
                              extensionGetter_gtlMultiplyExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlMultiplyExpression_eval (defineExtensionGetter_gtlMultiplyExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlDivideExpression eval'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlDivideExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlDivideExpression_eval (const cPtr_gtlExpression * inObject,
                                                                 const GALGAS_gtlContext constinArgument_context,
@@ -7921,22 +8056,22 @@ static GALGAS_gtlData extensionGetter_gtlDivideExpression_eval (const cPtr_gtlEx
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlDivideExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlDivideExpression.mSlotID,
                              extensionGetter_gtlDivideExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlDivideExpression_eval (defineExtensionGetter_gtlDivideExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Overriding extension getter '@gtlModulusExpression eval'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlModulusExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlModulusExpression_eval (const cPtr_gtlExpression * inObject,
                                                                  const GALGAS_gtlContext constinArgument_context,
@@ -7953,22 +8088,22 @@ static GALGAS_gtlData extensionGetter_gtlModulusExpression_eval (const cPtr_gtlE
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlModulusExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlModulusExpression.mSlotID,
                              extensionGetter_gtlModulusExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlModulusExpression_eval (defineExtensionGetter_gtlModulusExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlAndExpression eval'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlAndExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlAndExpression_eval (const cPtr_gtlExpression * inObject,
                                                              const GALGAS_gtlContext constinArgument_context,
@@ -7985,22 +8120,22 @@ static GALGAS_gtlData extensionGetter_gtlAndExpression_eval (const cPtr_gtlExpre
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlAndExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlAndExpression.mSlotID,
                              extensionGetter_gtlAndExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlAndExpression_eval (defineExtensionGetter_gtlAndExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Overriding extension getter '@gtlOrExpression eval'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlOrExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlOrExpression_eval (const cPtr_gtlExpression * inObject,
                                                             const GALGAS_gtlContext constinArgument_context,
@@ -8017,22 +8152,22 @@ static GALGAS_gtlData extensionGetter_gtlOrExpression_eval (const cPtr_gtlExpres
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlOrExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlOrExpression.mSlotID,
                              extensionGetter_gtlOrExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlOrExpression_eval (defineExtensionGetter_gtlOrExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlXorExpression eval'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlXorExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlXorExpression_eval (const cPtr_gtlExpression * inObject,
                                                              const GALGAS_gtlContext constinArgument_context,
@@ -8049,22 +8184,22 @@ static GALGAS_gtlData extensionGetter_gtlXorExpression_eval (const cPtr_gtlExpre
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlXorExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlXorExpression.mSlotID,
                              extensionGetter_gtlXorExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlXorExpression_eval (defineExtensionGetter_gtlXorExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlShiftLeftExpression eval'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlShiftLeftExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlShiftLeftExpression_eval (const cPtr_gtlExpression * inObject,
                                                                    const GALGAS_gtlContext constinArgument_context,
@@ -8081,22 +8216,22 @@ static GALGAS_gtlData extensionGetter_gtlShiftLeftExpression_eval (const cPtr_gt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlShiftLeftExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlShiftLeftExpression.mSlotID,
                              extensionGetter_gtlShiftLeftExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlShiftLeftExpression_eval (defineExtensionGetter_gtlShiftLeftExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlShiftRightExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlShiftRightExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlShiftRightExpression_eval (const cPtr_gtlExpression * inObject,
                                                                     const GALGAS_gtlContext constinArgument_context,
@@ -8113,22 +8248,22 @@ static GALGAS_gtlData extensionGetter_gtlShiftRightExpression_eval (const cPtr_g
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlShiftRightExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlShiftRightExpression.mSlotID,
                              extensionGetter_gtlShiftRightExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlShiftRightExpression_eval (defineExtensionGetter_gtlShiftRightExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Overriding extension getter '@gtlNotEqualExpression eval'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlNotEqualExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlNotEqualExpression_eval (const cPtr_gtlExpression * inObject,
                                                                   const GALGAS_gtlContext constinArgument_context,
@@ -8145,22 +8280,22 @@ static GALGAS_gtlData extensionGetter_gtlNotEqualExpression_eval (const cPtr_gtl
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlNotEqualExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlNotEqualExpression.mSlotID,
                              extensionGetter_gtlNotEqualExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlNotEqualExpression_eval (defineExtensionGetter_gtlNotEqualExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlEqualExpression eval'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlEqualExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlEqualExpression_eval (const cPtr_gtlExpression * inObject,
                                                                const GALGAS_gtlContext constinArgument_context,
@@ -8177,22 +8312,22 @@ static GALGAS_gtlData extensionGetter_gtlEqualExpression_eval (const cPtr_gtlExp
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlEqualExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlEqualExpression.mSlotID,
                              extensionGetter_gtlEqualExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlEqualExpression_eval (defineExtensionGetter_gtlEqualExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlLowerThanExpression eval'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlLowerThanExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlLowerThanExpression_eval (const cPtr_gtlExpression * inObject,
                                                                    const GALGAS_gtlContext constinArgument_context,
@@ -8209,22 +8344,22 @@ static GALGAS_gtlData extensionGetter_gtlLowerThanExpression_eval (const cPtr_gt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlLowerThanExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlLowerThanExpression.mSlotID,
                              extensionGetter_gtlLowerThanExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlLowerThanExpression_eval (defineExtensionGetter_gtlLowerThanExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Overriding extension getter '@gtlLowerOrEqualExpression eval'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlLowerOrEqualExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlLowerOrEqualExpression_eval (const cPtr_gtlExpression * inObject,
                                                                       const GALGAS_gtlContext constinArgument_context,
@@ -8241,22 +8376,22 @@ static GALGAS_gtlData extensionGetter_gtlLowerOrEqualExpression_eval (const cPtr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlLowerOrEqualExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlLowerOrEqualExpression.mSlotID,
                              extensionGetter_gtlLowerOrEqualExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlLowerOrEqualExpression_eval (defineExtensionGetter_gtlLowerOrEqualExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Overriding extension getter '@gtlGreaterThanExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlGreaterThanExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlGreaterThanExpression_eval (const cPtr_gtlExpression * inObject,
                                                                      const GALGAS_gtlContext constinArgument_context,
@@ -8273,22 +8408,22 @@ static GALGAS_gtlData extensionGetter_gtlGreaterThanExpression_eval (const cPtr_
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlGreaterThanExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlGreaterThanExpression.mSlotID,
                              extensionGetter_gtlGreaterThanExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlGreaterThanExpression_eval (defineExtensionGetter_gtlGreaterThanExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlGreaterOrEqualExpression eval'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlGreaterOrEqualExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlGreaterOrEqualExpression_eval (const cPtr_gtlExpression * inObject,
                                                                         const GALGAS_gtlContext constinArgument_context,
@@ -8305,22 +8440,22 @@ static GALGAS_gtlData extensionGetter_gtlGreaterOrEqualExpression_eval (const cP
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlGreaterOrEqualExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlGreaterOrEqualExpression.mSlotID,
                              extensionGetter_gtlGreaterOrEqualExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlGreaterOrEqualExpression_eval (defineExtensionGetter_gtlGreaterOrEqualExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlGetterCallExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlGetterCallExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlGetterCallExpression_eval (const cPtr_gtlExpression * inObject,
                                                                     const GALGAS_gtlContext constinArgument_context,
@@ -8344,22 +8479,22 @@ static GALGAS_gtlData extensionGetter_gtlGetterCallExpression_eval (const cPtr_g
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlGetterCallExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlGetterCallExpression.mSlotID,
                              extensionGetter_gtlGetterCallExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlGetterCallExpression_eval (defineExtensionGetter_gtlGetterCallExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Routine 'checkArgumentError'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'checkArgumentError'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_checkArgumentError (const GALGAS_lstring constinArgument_name,
                                  const GALGAS_type constinArgument_formalType,
@@ -8367,19 +8502,22 @@ void routine_checkArgumentError (const GALGAS_lstring constinArgument_name,
                                  const GALGAS_uint constinArgument_argumentNum,
                                  C_Compiler * inCompiler
                                  COMMA_UNUSED_LOCATION_ARGS) {
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_formalType.objectCompare (callExtensionGetter_embeddedType ((const cPtr_gtlData *) constinArgument_actualArgument.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1280)))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    TC_Array <C_FixItDescription> fixItArray1 ;
-    inCompiler->emitSemanticError (constinArgument_name.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1281)), extensionGetter_typeName (constinArgument_formalType, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)).add_operation (GALGAS_string (" expected for argument "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)).add_operation (constinArgument_argumentNum.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1281)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)).add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)).add_operation (extensionGetter_typeName (constinArgument_actualArgument.getter_dynamicType (SOURCE_FILE ("gtl_expressions.galgas", 1282)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)).add_operation (GALGAS_string (" provided"), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)), fixItArray1  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)) ;
+    test_0 = GALGAS_bool (kIsNotEqual, constinArgument_formalType.objectCompare (callExtensionGetter_embeddedType ((const cPtr_gtlData *) constinArgument_actualArgument.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1280)))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      TC_Array <C_FixItDescription> fixItArray1 ;
+      inCompiler->emitSemanticError (constinArgument_name.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1281)), extensionGetter_typeName (constinArgument_formalType, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)).add_operation (GALGAS_string (" expected for argument "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)).add_operation (constinArgument_argumentNum.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1281)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)).add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)).add_operation (extensionGetter_typeName (constinArgument_actualArgument.getter_dynamicType (SOURCE_FILE ("gtl_expressions.galgas", 1282)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)).add_operation (GALGAS_string (" provided"), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1282)), fixItArray1  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1281)) ;
+    }
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Function 'validateReturnValue'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'validateReturnValue'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlData function_validateReturnValue (const GALGAS_lstring & constinArgument_functionName,
                                              const GALGAS_object & constinArgument_returnedValue,
@@ -8388,26 +8526,46 @@ GALGAS_gtlData function_validateReturnValue (const GALGAS_lstring & constinArgum
   GALGAS_gtlData result_result ; // Returned variable
   GALGAS_type var_returnedType_39188 = constinArgument_returnedValue.getter_objectDynamicType (SOURCE_FILE ("gtl_expressions.galgas", 1292)) ;
   GALGAS_location var_loc_39240 = constinArgument_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1293)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bigint))).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    result_result = GALGAS_gtlInt::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1295)), GALGAS_bigint::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1295))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1295)) ;
-  }else if (kBoolFalse == test_0) {
-    const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_double))).boolEnum () ;
+    test_0 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bigint))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      result_result = GALGAS_gtlInt::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1295)), GALGAS_bigint::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1295))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1295)) ;
+    }
+  }
+  if (kBoolFalse == test_0) {
+    enumGalgasBool test_2 = kBoolTrue ;
     if (kBoolTrue == test_2) {
-      result_result = GALGAS_gtlFloat::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1297)), GALGAS_double::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1297))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1297)) ;
-    }else if (kBoolFalse == test_2) {
-      const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_string))).boolEnum () ;
+      test_2 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_double))).boolEnum () ;
+      if (kBoolTrue == test_2) {
+        result_result = GALGAS_gtlFloat::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1297)), GALGAS_double::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1297))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1297)) ;
+      }
+    }
+    if (kBoolFalse == test_2) {
+      enumGalgasBool test_4 = kBoolTrue ;
       if (kBoolTrue == test_4) {
-        result_result = GALGAS_gtlString::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1299)), GALGAS_string::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1299))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1299)) ;
-      }else if (kBoolFalse == test_4) {
-        const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bool))).boolEnum () ;
+        test_4 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_string))).boolEnum () ;
+        if (kBoolTrue == test_4) {
+          result_result = GALGAS_gtlString::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1299)), GALGAS_string::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1299))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1299)) ;
+        }
+      }
+      if (kBoolFalse == test_4) {
+        enumGalgasBool test_6 = kBoolTrue ;
         if (kBoolTrue == test_6) {
-          result_result = GALGAS_gtlBool::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1301)), GALGAS_bool::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1301))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1301)) ;
-        }else if (kBoolFalse == test_6) {
-          const enumGalgasBool test_8 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_list))).boolEnum () ;
+          test_6 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bool))).boolEnum () ;
+          if (kBoolTrue == test_6) {
+            result_result = GALGAS_gtlBool::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1301)), GALGAS_bool::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1301))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1301)) ;
+          }
+        }
+        if (kBoolFalse == test_6) {
+          enumGalgasBool test_8 = kBoolTrue ;
           if (kBoolTrue == test_8) {
-            result_result = GALGAS_gtlList::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1303)), GALGAS_list::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1303))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1303)) ;
-          }else if (kBoolFalse == test_8) {
+            test_8 = GALGAS_bool (kIsEqual, var_returnedType_39188.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_list))).boolEnum () ;
+            if (kBoolTrue == test_8) {
+              result_result = GALGAS_gtlList::constructor_new (var_loc_39240, function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1303)), GALGAS_list::extractObject (constinArgument_returnedValue, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1303))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1303)) ;
+            }
+          }
+          if (kBoolFalse == test_8) {
             TC_Array <C_FixItDescription> fixItArray10 ;
             inCompiler->emitSemanticError (constinArgument_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1305)), GALGAS_string ("this function does not return a compatible type"), fixItArray10  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1305)) ;
             result_result.drop () ; // Release error dropped variable
@@ -8421,9 +8579,9 @@ GALGAS_gtlData function_validateReturnValue (const GALGAS_lstring & constinArgum
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_validateReturnValue [3] = {
   & kTypeDescriptor_GALGAS_lstring,
@@ -8431,7 +8589,7 @@ static const C_galgas_type_descriptor * functionArgs_validateReturnValue [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_validateReturnValue (C_Compiler * inCompiler,
                                                                     const cObjectArray & inEffectiveParameterArray,
@@ -8449,7 +8607,7 @@ static GALGAS_object functionWithGenericHeader_validateReturnValue (C_Compiler *
                                        COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_validateReturnValue ("validateReturnValue",
                                                                      functionWithGenericHeader_validateReturnValue,
@@ -8457,11 +8615,11 @@ C_galgas_function_descriptor functionDescriptor_validateReturnValue ("validateRe
                                                                      2,
                                                                      functionArgs_validateReturnValue) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Overriding extension getter '@gtlFunctionCallExpression eval'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlFunctionCallExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlFunctionCallExpression_eval (const cPtr_gtlExpression * inObject,
                                                                       const GALGAS_gtlContext constinArgument_context,
@@ -8473,59 +8631,71 @@ static GALGAS_gtlData extensionGetter_gtlFunctionCallExpression_eval (const cPtr
   const cPtr_gtlFunctionCallExpression * object = (const cPtr_gtlFunctionCallExpression *) inObject ;
   macroValidSharedObject (object, cPtr_gtlFunctionCallExpression) ;
   GALGAS_uint var_currentErrorCount_40468 = GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_expressions.galgas", 1324)) ;
-  const enumGalgasBool test_0 = GALGAS_function::constructor_isFunctionDefined (object->mProperty_functionName.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1326))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1326)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    GALGAS_objectlist var_arguments_40605 = GALGAS_objectlist::constructor_emptyList (SOURCE_FILE ("gtl_expressions.galgas", 1328)) ;
-    GALGAS_gtlDataList var_dataArguments_40649 = GALGAS_gtlDataList::constructor_emptyList (SOURCE_FILE ("gtl_expressions.galgas", 1329)) ;
-    cEnumerator_gtlExpressionList enumerator_40695 (object->mProperty_functionArguments, kENUMERATION_UP) ;
-    while (enumerator_40695.hasCurrentObject ()) {
-      GALGAS_gtlData var_arg_40717 = callExtensionGetter_eval ((const cPtr_gtlExpression *) enumerator_40695.current_expression (HERE).ptr (), constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1332)) ;
-      var_dataArguments_40649.addAssign_operation (var_arg_40717  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1333)) ;
-      callExtensionMethod_addMyValue ((const cPtr_gtlData *) var_arg_40717.ptr (), var_arguments_40605, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1334)) ;
-      enumerator_40695.gotoNextObject () ;
-    }
-    GALGAS_function var_function_40856 = GALGAS_function::constructor_functionWithName (object->mProperty_functionName.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1337))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1337)) ;
-    GALGAS_typelist var_formalParameterList_40942 = var_function_40856.getter_formalParameterTypeList (SOURCE_FILE ("gtl_expressions.galgas", 1339)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_formalParameterList_40942.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1340)).objectCompare (var_arguments_40605.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1340)))).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      GALGAS_string temp_2 ;
-      const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_arguments_40605.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1343)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
-      if (kBoolTrue == test_3) {
-        temp_2 = GALGAS_string ("s") ;
-      }else if (kBoolFalse == test_3) {
-        temp_2 = GALGAS_string::makeEmptyString () ;
+    test_0 = GALGAS_function::constructor_isFunctionDefined (object->mProperty_functionName.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1326))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1326)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      GALGAS_objectlist var_arguments_40605 = GALGAS_objectlist::constructor_emptyList (SOURCE_FILE ("gtl_expressions.galgas", 1328)) ;
+      GALGAS_gtlDataList var_dataArguments_40649 = GALGAS_gtlDataList::constructor_emptyList (SOURCE_FILE ("gtl_expressions.galgas", 1329)) ;
+      cEnumerator_gtlExpressionList enumerator_40695 (object->mProperty_functionArguments, kENUMERATION_UP) ;
+      while (enumerator_40695.hasCurrentObject ()) {
+        GALGAS_gtlData var_arg_40717 = callExtensionGetter_eval ((const cPtr_gtlExpression *) enumerator_40695.current_expression (HERE).ptr (), constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1332)) ;
+        var_dataArguments_40649.addAssign_operation (var_arg_40717  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1333)) ;
+        callExtensionMethod_addMyValue ((const cPtr_gtlData *) var_arg_40717.ptr (), var_arguments_40605, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1334)) ;
+        enumerator_40695.gotoNextObject () ;
       }
-      GALGAS_string temp_4 ;
-      const enumGalgasBool test_5 = GALGAS_bool (kIsStrictSup, var_formalParameterList_40942.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1345)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
-      if (kBoolTrue == test_5) {
-        temp_4 = GALGAS_string ("s") ;
-      }else if (kBoolFalse == test_5) {
-        temp_4 = GALGAS_string::makeEmptyString () ;
-      }
-      TC_Array <C_FixItDescription> fixItArray6 ;
-      inCompiler->emitSemanticError (object->mProperty_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1341)), GALGAS_string ("this function is invoked with ").add_operation (var_arguments_40605.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1342)).getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1341)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1341)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1342)).add_operation (temp_2, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1342)).add_operation (GALGAS_string (", but requires "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1343)).add_operation (var_formalParameterList_40942.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1344)).getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1344)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1344)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1344)).add_operation (temp_4, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1344)), fixItArray6  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1341)) ;
-      result_result.drop () ; // Release error dropped variable
-    }else if (kBoolFalse == test_1) {
-      cEnumerator_typelist enumerator_41409 (var_formalParameterList_40942, kENUMERATION_UP) ;
-      cEnumerator_gtlDataList enumerator_41436 (var_dataArguments_40649, kENUMERATION_UP) ;
-      GALGAS_uint index_41377 ((uint32_t) 0) ;
-      while (enumerator_41409.hasCurrentObject () && enumerator_41436.hasCurrentObject ()) {
-        {
-        routine_checkArgumentError (object->mProperty_functionName, enumerator_41409.current_mValue (HERE), enumerator_41436.current_data (HERE), index_41377, inCompiler  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1349)) ;
+      GALGAS_function var_function_40856 = GALGAS_function::constructor_functionWithName (object->mProperty_functionName.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1337))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1337)) ;
+      GALGAS_typelist var_formalParameterList_40942 = var_function_40856.getter_formalParameterTypeList (SOURCE_FILE ("gtl_expressions.galgas", 1339)) ;
+      enumGalgasBool test_1 = kBoolTrue ;
+      if (kBoolTrue == test_1) {
+        test_1 = GALGAS_bool (kIsNotEqual, var_formalParameterList_40942.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1340)).objectCompare (var_arguments_40605.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1340)))).boolEnum () ;
+        if (kBoolTrue == test_1) {
+          GALGAS_string temp_2 ;
+          const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_arguments_40605.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1343)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
+          if (kBoolTrue == test_3) {
+            temp_2 = GALGAS_string ("s") ;
+          }else if (kBoolFalse == test_3) {
+            temp_2 = GALGAS_string::makeEmptyString () ;
+          }
+          GALGAS_string temp_4 ;
+          const enumGalgasBool test_5 = GALGAS_bool (kIsStrictSup, var_formalParameterList_40942.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1345)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
+          if (kBoolTrue == test_5) {
+            temp_4 = GALGAS_string ("s") ;
+          }else if (kBoolFalse == test_5) {
+            temp_4 = GALGAS_string::makeEmptyString () ;
+          }
+          TC_Array <C_FixItDescription> fixItArray6 ;
+          inCompiler->emitSemanticError (object->mProperty_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1341)), GALGAS_string ("this function is invoked with ").add_operation (var_arguments_40605.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1342)).getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1341)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1341)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1342)).add_operation (temp_2, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1342)).add_operation (GALGAS_string (", but requires "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1343)).add_operation (var_formalParameterList_40942.getter_length (SOURCE_FILE ("gtl_expressions.galgas", 1344)).getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1344)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1344)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1344)).add_operation (temp_4, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1344)), fixItArray6  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1341)) ;
+          result_result.drop () ; // Release error dropped variable
         }
-        enumerator_41409.gotoNextObject () ;
-        enumerator_41436.gotoNextObject () ;
-        index_41377.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1348)) ;
       }
-      const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_currentErrorCount_40468.objectCompare (GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_expressions.galgas", 1351)))).boolEnum () ;
-      if (kBoolTrue == test_7) {
-        GALGAS_object var_returnedValue_41608 = var_function_40856.getter_invoke (var_arguments_40605, object->mProperty_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1353)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1353)) ;
-        result_result = function_validateReturnValue (object->mProperty_functionName, var_returnedValue_41608, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1354)) ;
-      }else if (kBoolFalse == test_7) {
-        result_result = GALGAS_gtlUnconstructed::constructor_new (object->mProperty_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1357)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1358))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1356)) ;
+      if (kBoolFalse == test_1) {
+        cEnumerator_typelist enumerator_41409 (var_formalParameterList_40942, kENUMERATION_UP) ;
+        cEnumerator_gtlDataList enumerator_41436 (var_dataArguments_40649, kENUMERATION_UP) ;
+        GALGAS_uint index_41377 ((uint32_t) 0) ;
+        while (enumerator_41409.hasCurrentObject () && enumerator_41436.hasCurrentObject ()) {
+          {
+          routine_checkArgumentError (object->mProperty_functionName, enumerator_41409.current_mValue (HERE), enumerator_41436.current_data (HERE), index_41377, inCompiler  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1349)) ;
+          }
+          enumerator_41409.gotoNextObject () ;
+          enumerator_41436.gotoNextObject () ;
+          index_41377.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1348)) ;
+        }
+        enumGalgasBool test_7 = kBoolTrue ;
+        if (kBoolTrue == test_7) {
+          test_7 = GALGAS_bool (kIsEqual, var_currentErrorCount_40468.objectCompare (GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_expressions.galgas", 1351)))).boolEnum () ;
+          if (kBoolTrue == test_7) {
+            GALGAS_object var_returnedValue_41608 = var_function_40856.getter_invoke (var_arguments_40605, object->mProperty_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1353)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1353)) ;
+            result_result = function_validateReturnValue (object->mProperty_functionName, var_returnedValue_41608, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1354)) ;
+          }
+        }
+        if (kBoolFalse == test_7) {
+          result_result = GALGAS_gtlUnconstructed::constructor_new (object->mProperty_functionName.getter_location (SOURCE_FILE ("gtl_expressions.galgas", 1357)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1358))  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1356)) ;
+        }
       }
     }
-  }else if (kBoolFalse == test_0) {
+  }
+  if (kBoolFalse == test_0) {
     GALGAS_gtlFunction var_function_41916 = callExtensionGetter_getFunction ((const cPtr_library *) constinArgument_lib.ptr (), object->mProperty_functionName, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1363)) ;
     GALGAS_gtlDataList var_arguments_41977 = GALGAS_gtlDataList::constructor_emptyList (SOURCE_FILE ("gtl_expressions.galgas", 1364)) ;
     cEnumerator_gtlExpressionList enumerator_42022 (object->mProperty_functionArguments, kENUMERATION_UP) ;
@@ -8540,22 +8710,22 @@ static GALGAS_gtlData extensionGetter_gtlFunctionCallExpression_eval (const cPtr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlFunctionCallExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlFunctionCallExpression.mSlotID,
                              extensionGetter_gtlFunctionCallExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlFunctionCallExpression_eval (defineExtensionGetter_gtlFunctionCallExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlExistsExpression eval'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlExistsExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlExistsExpression_eval (const cPtr_gtlExpression * inObject,
                                                                 const GALGAS_gtlContext constinArgument_context,
@@ -8572,22 +8742,22 @@ static GALGAS_gtlData extensionGetter_gtlExistsExpression_eval (const cPtr_gtlEx
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlExistsExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlExistsExpression.mSlotID,
                              extensionGetter_gtlExistsExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlExistsExpression_eval (defineExtensionGetter_gtlExistsExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlExistsDefaultExpression eval'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlExistsDefaultExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlExistsDefaultExpression_eval (const cPtr_gtlExpression * inObject,
                                                                        const GALGAS_gtlContext constinArgument_context,
@@ -8598,10 +8768,14 @@ static GALGAS_gtlData extensionGetter_gtlExistsDefaultExpression_eval (const cPt
   GALGAS_gtlData result_result ; // Returned variable
   const cPtr_gtlExistsDefaultExpression * object = (const cPtr_gtlExistsDefaultExpression *) inObject ;
   macroValidSharedObject (object, cPtr_gtlExistsDefaultExpression) ;
-  const enumGalgasBool test_0 = extensionGetter_exists (object->mProperty_variable, constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1404)).boolEnum () ;
+  enumGalgasBool test_0 = kBoolTrue ;
   if (kBoolTrue == test_0) {
-    result_result = extensionGetter_get (object->mProperty_variable, constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1405)) ;
-  }else if (kBoolFalse == test_0) {
+    test_0 = extensionGetter_exists (object->mProperty_variable, constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1404)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      result_result = extensionGetter_get (object->mProperty_variable, constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1405)) ;
+    }
+  }
+  if (kBoolFalse == test_0) {
     result_result = callExtensionGetter_eval ((const cPtr_gtlExpression *) object->mProperty_defaultValue.ptr (), constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1407)) ;
   }
 //---
@@ -8609,22 +8783,22 @@ static GALGAS_gtlData extensionGetter_gtlExistsDefaultExpression_eval (const cPt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlExistsDefaultExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlExistsDefaultExpression.mSlotID,
                              extensionGetter_gtlExistsDefaultExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlExistsDefaultExpression_eval (defineExtensionGetter_gtlExistsDefaultExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlTypeOfExpression eval'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlTypeOfExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlTypeOfExpression_eval (const cPtr_gtlExpression * inObject,
                                                                 const GALGAS_gtlContext constinArgument_context,
@@ -8642,22 +8816,22 @@ static GALGAS_gtlData extensionGetter_gtlTypeOfExpression_eval (const cPtr_gtlEx
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlTypeOfExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlTypeOfExpression.mSlotID,
                              extensionGetter_gtlTypeOfExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlTypeOfExpression_eval (defineExtensionGetter_gtlTypeOfExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Overriding extension getter '@gtlMapOfStructExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlMapOfStructExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlMapOfStructExpression_eval (const cPtr_gtlExpression * inObject,
                                                                      const GALGAS_gtlContext constinArgument_context,
@@ -8684,22 +8858,22 @@ static GALGAS_gtlData extensionGetter_gtlMapOfStructExpression_eval (const cPtr_
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlMapOfStructExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlMapOfStructExpression.mSlotID,
                              extensionGetter_gtlMapOfStructExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlMapOfStructExpression_eval (defineExtensionGetter_gtlMapOfStructExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlMapOfListExpression eval'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlMapOfListExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlMapOfListExpression_eval (const cPtr_gtlExpression * inObject,
                                                                    const GALGAS_gtlContext constinArgument_context,
@@ -8721,14 +8895,18 @@ static GALGAS_gtlData extensionGetter_gtlMapOfListExpression_eval (const cPtr_gt
         if (enumerator_45397.current_value (HERE).isValid ()) {
           if (enumerator_45397.current_value (HERE).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlStruct) {
             GALGAS_gtlStruct cast_45460_itemStruct ((cPtr_gtlStruct *) enumerator_45397.current_value (HERE).ptr ()) ;
-            const enumGalgasBool test_0 = cast_45460_itemStruct.getter_value (SOURCE_FILE ("gtl_expressions.galgas", 1474)).getter_hasKey (object->mProperty_key.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1474)) COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1474)).boolEnum () ;
+            enumGalgasBool test_0 = kBoolTrue ;
             if (kBoolTrue == test_0) {
-              GALGAS_gtlData var_keyValue_45577 ;
-              cast_45460_itemStruct.getter_value (SOURCE_FILE ("gtl_expressions.galgas", 1475)).method_get (object->mProperty_key, var_keyValue_45577, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1475)) ;
-              {
-              var_resultMap_45339.setter_put (callExtensionGetter_lstring ((const cPtr_gtlData *) var_keyValue_45577.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1477)), enumerator_45397.current_value (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1476)) ;
+              test_0 = cast_45460_itemStruct.getter_value (SOURCE_FILE ("gtl_expressions.galgas", 1474)).getter_hasKey (object->mProperty_key.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1474)) COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1474)).boolEnum () ;
+              if (kBoolTrue == test_0) {
+                GALGAS_gtlData var_keyValue_45577 ;
+                cast_45460_itemStruct.getter_value (SOURCE_FILE ("gtl_expressions.galgas", 1475)).method_get (object->mProperty_key, var_keyValue_45577, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1475)) ;
+                {
+                var_resultMap_45339.setter_put (callExtensionGetter_lstring ((const cPtr_gtlData *) var_keyValue_45577.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1477)), enumerator_45397.current_value (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1476)) ;
+                }
               }
-            }else if (kBoolFalse == test_0) {
+            }
+            if (kBoolFalse == test_0) {
               TC_Array <C_FixItDescription> fixItArray1 ;
               inCompiler->emitSemanticError (var_expressionValue_45211.getter_where (SOURCE_FILE ("gtl_expressions.galgas", 1481)), GALGAS_string ("item at index ").add_operation (index_45359.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1481)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1481)).add_operation (GALGAS_string (" does not have field named "), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1481)).add_operation (object->mProperty_key.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1482)), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1482)), fixItArray1  COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1481)) ;
             }
@@ -8752,22 +8930,22 @@ static GALGAS_gtlData extensionGetter_gtlMapOfListExpression_eval (const cPtr_gt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlMapOfListExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlMapOfListExpression.mSlotID,
                              extensionGetter_gtlMapOfListExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlMapOfListExpression_eval (defineExtensionGetter_gtlMapOfListExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlListOfExpression eval'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlListOfExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlListOfExpression_eval (const cPtr_gtlExpression * inObject,
                                                                 const GALGAS_gtlContext constinArgument_context,
@@ -8800,22 +8978,22 @@ static GALGAS_gtlData extensionGetter_gtlListOfExpression_eval (const cPtr_gtlEx
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlListOfExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlListOfExpression.mSlotID,
                              extensionGetter_gtlListOfExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlListOfExpression_eval (defineExtensionGetter_gtlListOfExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Overriding extension getter '@gtlLiteralStructExpression eval'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlLiteralStructExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlLiteralStructExpression_eval (const cPtr_gtlExpression * inObject,
                                                                        const GALGAS_gtlContext constinArgument_context,
@@ -8840,22 +9018,22 @@ static GALGAS_gtlData extensionGetter_gtlLiteralStructExpression_eval (const cPt
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlLiteralStructExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlLiteralStructExpression.mSlotID,
                              extensionGetter_gtlLiteralStructExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlLiteralStructExpression_eval (defineExtensionGetter_gtlLiteralStructExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlLiteralMapExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlLiteralMapExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlLiteralMapExpression_eval (const cPtr_gtlExpression * inObject,
                                                                     const GALGAS_gtlContext constinArgument_context,
@@ -8880,22 +9058,22 @@ static GALGAS_gtlData extensionGetter_gtlLiteralMapExpression_eval (const cPtr_g
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlLiteralMapExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlLiteralMapExpression.mSlotID,
                              extensionGetter_gtlLiteralMapExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlLiteralMapExpression_eval (defineExtensionGetter_gtlLiteralMapExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Overriding extension getter '@gtlLiteralListExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlLiteralListExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlLiteralListExpression_eval (const cPtr_gtlExpression * inObject,
                                                                      const GALGAS_gtlContext constinArgument_context,
@@ -8918,22 +9096,22 @@ static GALGAS_gtlData extensionGetter_gtlLiteralListExpression_eval (const cPtr_
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlLiteralListExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlLiteralListExpression.mSlotID,
                              extensionGetter_gtlLiteralListExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlLiteralListExpression_eval (defineExtensionGetter_gtlLiteralListExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Overriding extension getter '@gtlLiteralSetExpression eval'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlLiteralSetExpression eval'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlLiteralSetExpression_eval (const cPtr_gtlExpression * inObject,
                                                                     const GALGAS_gtlContext constinArgument_context,
@@ -8948,10 +9126,13 @@ static GALGAS_gtlData extensionGetter_gtlLiteralSetExpression_eval (const cPtr_g
   cEnumerator_gtlExpressionList enumerator_49137 (object->mProperty_value, kENUMERATION_UP) ;
   while (enumerator_49137.hasCurrentObject ()) {
     GALGAS_lstring var_itemValue_49163 = callExtensionGetter_lstring ((const cPtr_gtlData *) callExtensionGetter_eval ((const cPtr_gtlExpression *) enumerator_49137.current_expression (HERE).ptr (), constinArgument_context, constinArgument_vars, constinArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1595)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1595)) ;
-    const enumGalgasBool test_0 = var_resultSet_49103.getter_hasKey (var_itemValue_49163.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1596)) COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1596)).boolEnum () ;
+    enumGalgasBool test_0 = kBoolTrue ;
     if (kBoolTrue == test_0) {
-      {
-      var_resultSet_49103.setter_del (var_itemValue_49163, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1597)) ;
+      test_0 = var_resultSet_49103.getter_hasKey (var_itemValue_49163.getter_string (SOURCE_FILE ("gtl_expressions.galgas", 1596)) COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1596)).boolEnum () ;
+      if (kBoolTrue == test_0) {
+        {
+        var_resultSet_49103.setter_del (var_itemValue_49163, inCompiler COMMA_SOURCE_FILE ("gtl_expressions.galgas", 1597)) ;
+        }
       }
     }
     {
@@ -8965,22 +9146,22 @@ static GALGAS_gtlData extensionGetter_gtlLiteralSetExpression_eval (const cPtr_g
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlLiteralSetExpression_eval (void) {
   enterExtensionGetter_eval (kTypeDescriptor_GALGAS_gtlLiteralSetExpression.mSlotID,
                              extensionGetter_gtlLiteralSetExpression_eval) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlLiteralSetExpression_eval (defineExtensionGetter_gtlLiteralSetExpression_eval, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             Once function 'noArgument'                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'noArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_noArgument (C_Compiler * /* inCompiler */
                                                             COMMA_UNUSED_LOCATION_ARGS) {
@@ -8992,14 +9173,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_noArgument (C_Compiler * /* inCo
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_noArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_noArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_noArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9010,26 +9191,26 @@ GALGAS_gtlTypedArgumentList function_noArgument (class C_Compiler * inCompiler
   return gOnceFunctionResult_noArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_noArgument (void) {
   gOnceFunctionResult_noArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_noArgument (NULL,
                                                         releaseOnceFunctionResult_noArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_noArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_noArgument (C_Compiler * inCompiler,
                                                            const cObjectArray & /* inEffectiveParameterArray */,
@@ -9038,7 +9219,7 @@ static GALGAS_object functionWithGenericHeader_noArgument (C_Compiler * inCompil
   return function_noArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_noArgument ("noArgument",
                                                             functionWithGenericHeader_noArgument,
@@ -9046,11 +9227,11 @@ C_galgas_function_descriptor functionDescriptor_noArgument ("noArgument",
                                                             0,
                                                             functionArgs_noArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             Once function 'intArgument'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'intArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_intArgument (C_Compiler * /* inCompiler */
                                                              COMMA_UNUSED_LOCATION_ARGS) {
@@ -9062,14 +9243,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_intArgument (C_Compiler * /* inC
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_intArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_intArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_intArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9080,26 +9261,26 @@ GALGAS_gtlTypedArgumentList function_intArgument (class C_Compiler * inCompiler
   return gOnceFunctionResult_intArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_intArgument (void) {
   gOnceFunctionResult_intArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_intArgument (NULL,
                                                          releaseOnceFunctionResult_intArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_intArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_intArgument (C_Compiler * inCompiler,
                                                             const cObjectArray & /* inEffectiveParameterArray */,
@@ -9108,7 +9289,7 @@ static GALGAS_object functionWithGenericHeader_intArgument (C_Compiler * inCompi
   return function_intArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_intArgument ("intArgument",
                                                              functionWithGenericHeader_intArgument,
@@ -9116,11 +9297,11 @@ C_galgas_function_descriptor functionDescriptor_intArgument ("intArgument",
                                                              0,
                                                              functionArgs_intArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Once function 'charArgument'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'charArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_charArgument (C_Compiler * /* inCompiler */
                                                               COMMA_UNUSED_LOCATION_ARGS) {
@@ -9132,14 +9313,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_charArgument (C_Compiler * /* in
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_charArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_charArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_charArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9150,26 +9331,26 @@ GALGAS_gtlTypedArgumentList function_charArgument (class C_Compiler * inCompiler
   return gOnceFunctionResult_charArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_charArgument (void) {
   gOnceFunctionResult_charArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_charArgument (NULL,
                                                           releaseOnceFunctionResult_charArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_charArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_charArgument (C_Compiler * inCompiler,
                                                              const cObjectArray & /* inEffectiveParameterArray */,
@@ -9178,7 +9359,7 @@ static GALGAS_object functionWithGenericHeader_charArgument (C_Compiler * inComp
   return function_charArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_charArgument ("charArgument",
                                                               functionWithGenericHeader_charArgument,
@@ -9186,11 +9367,11 @@ C_galgas_function_descriptor functionDescriptor_charArgument ("charArgument",
                                                               0,
                                                               functionArgs_charArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Once function 'charCharArguments'                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'charCharArguments'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_charCharArguments (C_Compiler * /* inCompiler */
                                                                    COMMA_UNUSED_LOCATION_ARGS) {
@@ -9203,14 +9384,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_charCharArguments (C_Compiler * 
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_charCharArguments = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_charCharArguments ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_charCharArguments (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9221,26 +9402,26 @@ GALGAS_gtlTypedArgumentList function_charCharArguments (class C_Compiler * inCom
   return gOnceFunctionResult_charCharArguments ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_charCharArguments (void) {
   gOnceFunctionResult_charCharArguments.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_charCharArguments (NULL,
                                                                releaseOnceFunctionResult_charCharArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_charCharArguments [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_charCharArguments (C_Compiler * inCompiler,
                                                                   const cObjectArray & /* inEffectiveParameterArray */,
@@ -9249,7 +9430,7 @@ static GALGAS_object functionWithGenericHeader_charCharArguments (C_Compiler * i
   return function_charCharArguments (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_charCharArguments ("charCharArguments",
                                                                    functionWithGenericHeader_charCharArguments,
@@ -9257,11 +9438,11 @@ C_galgas_function_descriptor functionDescriptor_charCharArguments ("charCharArgu
                                                                    0,
                                                                    functionArgs_charCharArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Once function 'charIntArguments'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'charIntArguments'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_charIntArguments (C_Compiler * /* inCompiler */
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
@@ -9274,14 +9455,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_charIntArguments (C_Compiler * /
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_charIntArguments = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_charIntArguments ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_charIntArguments (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9292,26 +9473,26 @@ GALGAS_gtlTypedArgumentList function_charIntArguments (class C_Compiler * inComp
   return gOnceFunctionResult_charIntArguments ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_charIntArguments (void) {
   gOnceFunctionResult_charIntArguments.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_charIntArguments (NULL,
                                                               releaseOnceFunctionResult_charIntArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_charIntArguments [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_charIntArguments (C_Compiler * inCompiler,
                                                                  const cObjectArray & /* inEffectiveParameterArray */,
@@ -9320,7 +9501,7 @@ static GALGAS_object functionWithGenericHeader_charIntArguments (C_Compiler * in
   return function_charIntArguments (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_charIntArguments ("charIntArguments",
                                                                   functionWithGenericHeader_charIntArguments,
@@ -9328,11 +9509,11 @@ C_galgas_function_descriptor functionDescriptor_charIntArguments ("charIntArgume
                                                                   0,
                                                                   functionArgs_charIntArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Once function 'floatArgument'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'floatArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_floatArgument (C_Compiler * /* inCompiler */
                                                                COMMA_UNUSED_LOCATION_ARGS) {
@@ -9344,14 +9525,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_floatArgument (C_Compiler * /* i
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_floatArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_floatArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_floatArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9362,26 +9543,26 @@ GALGAS_gtlTypedArgumentList function_floatArgument (class C_Compiler * inCompile
   return gOnceFunctionResult_floatArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_floatArgument (void) {
   gOnceFunctionResult_floatArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_floatArgument (NULL,
                                                            releaseOnceFunctionResult_floatArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_floatArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_floatArgument (C_Compiler * inCompiler,
                                                               const cObjectArray & /* inEffectiveParameterArray */,
@@ -9390,7 +9571,7 @@ static GALGAS_object functionWithGenericHeader_floatArgument (C_Compiler * inCom
   return function_floatArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_floatArgument ("floatArgument",
                                                                functionWithGenericHeader_floatArgument,
@@ -9398,11 +9579,11 @@ C_galgas_function_descriptor functionDescriptor_floatArgument ("floatArgument",
                                                                0,
                                                                functionArgs_floatArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Once function 'stringArgument'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'stringArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_stringArgument (C_Compiler * /* inCompiler */
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
@@ -9414,14 +9595,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_stringArgument (C_Compiler * /* 
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_stringArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_stringArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_stringArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9432,26 +9613,26 @@ GALGAS_gtlTypedArgumentList function_stringArgument (class C_Compiler * inCompil
   return gOnceFunctionResult_stringArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_stringArgument (void) {
   gOnceFunctionResult_stringArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_stringArgument (NULL,
                                                             releaseOnceFunctionResult_stringArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_stringArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_stringArgument (C_Compiler * inCompiler,
                                                                const cObjectArray & /* inEffectiveParameterArray */,
@@ -9460,7 +9641,7 @@ static GALGAS_object functionWithGenericHeader_stringArgument (C_Compiler * inCo
   return function_stringArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_stringArgument ("stringArgument",
                                                                 functionWithGenericHeader_stringArgument,
@@ -9468,11 +9649,11 @@ C_galgas_function_descriptor functionDescriptor_stringArgument ("stringArgument"
                                                                 0,
                                                                 functionArgs_stringArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Once function 'stringStringArgument'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'stringStringArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_stringStringArgument (C_Compiler * /* inCompiler */
                                                                       COMMA_UNUSED_LOCATION_ARGS) {
@@ -9485,14 +9666,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_stringStringArgument (C_Compiler
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_stringStringArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_stringStringArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_stringStringArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9503,26 +9684,26 @@ GALGAS_gtlTypedArgumentList function_stringStringArgument (class C_Compiler * in
   return gOnceFunctionResult_stringStringArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_stringStringArgument (void) {
   gOnceFunctionResult_stringStringArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_stringStringArgument (NULL,
                                                                   releaseOnceFunctionResult_stringStringArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_stringStringArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_stringStringArgument (C_Compiler * inCompiler,
                                                                      const cObjectArray & /* inEffectiveParameterArray */,
@@ -9531,7 +9712,7 @@ static GALGAS_object functionWithGenericHeader_stringStringArgument (C_Compiler 
   return function_stringStringArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_stringStringArgument ("stringStringArgument",
                                                                       functionWithGenericHeader_stringStringArgument,
@@ -9539,11 +9720,11 @@ C_galgas_function_descriptor functionDescriptor_stringStringArgument ("stringStr
                                                                       0,
                                                                       functionArgs_stringStringArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Once function 'boolIntArguments'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'boolIntArguments'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_boolIntArguments (C_Compiler * /* inCompiler */
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
@@ -9556,14 +9737,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_boolIntArguments (C_Compiler * /
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_boolIntArguments = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_boolIntArguments ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_boolIntArguments (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9574,26 +9755,26 @@ GALGAS_gtlTypedArgumentList function_boolIntArguments (class C_Compiler * inComp
   return gOnceFunctionResult_boolIntArguments ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_boolIntArguments (void) {
   gOnceFunctionResult_boolIntArguments.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_boolIntArguments (NULL,
                                                               releaseOnceFunctionResult_boolIntArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_boolIntArguments [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_boolIntArguments (C_Compiler * inCompiler,
                                                                  const cObjectArray & /* inEffectiveParameterArray */,
@@ -9602,7 +9783,7 @@ static GALGAS_object functionWithGenericHeader_boolIntArguments (C_Compiler * in
   return function_boolIntArguments (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_boolIntArguments ("boolIntArguments",
                                                                   functionWithGenericHeader_boolIntArguments,
@@ -9610,11 +9791,11 @@ C_galgas_function_descriptor functionDescriptor_boolIntArguments ("boolIntArgume
                                                                   0,
                                                                   functionArgs_boolIntArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Once function 'intIntArguments'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'intIntArguments'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_intIntArguments (C_Compiler * /* inCompiler */
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
@@ -9627,14 +9808,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_intIntArguments (C_Compiler * /*
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_intIntArguments = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_intIntArguments ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_intIntArguments (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9645,26 +9826,26 @@ GALGAS_gtlTypedArgumentList function_intIntArguments (class C_Compiler * inCompi
   return gOnceFunctionResult_intIntArguments ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_intIntArguments (void) {
   gOnceFunctionResult_intIntArguments.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_intIntArguments (NULL,
                                                              releaseOnceFunctionResult_intIntArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_intIntArguments [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_intIntArguments (C_Compiler * inCompiler,
                                                                 const cObjectArray & /* inEffectiveParameterArray */,
@@ -9673,7 +9854,7 @@ static GALGAS_object functionWithGenericHeader_intIntArguments (C_Compiler * inC
   return function_intIntArguments (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_intIntArguments ("intIntArguments",
                                                                  functionWithGenericHeader_intIntArguments,
@@ -9681,11 +9862,11 @@ C_galgas_function_descriptor functionDescriptor_intIntArguments ("intIntArgument
                                                                  0,
                                                                  functionArgs_intIntArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Once function 'intAnyArguments'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'intAnyArguments'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_intAnyArguments (C_Compiler * /* inCompiler */
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
@@ -9698,14 +9879,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_intAnyArguments (C_Compiler * /*
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_intAnyArguments = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_intAnyArguments ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_intAnyArguments (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9716,26 +9897,26 @@ GALGAS_gtlTypedArgumentList function_intAnyArguments (class C_Compiler * inCompi
   return gOnceFunctionResult_intAnyArguments ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_intAnyArguments (void) {
   gOnceFunctionResult_intAnyArguments.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_intAnyArguments (NULL,
                                                              releaseOnceFunctionResult_intAnyArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_intAnyArguments [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_intAnyArguments (C_Compiler * inCompiler,
                                                                 const cObjectArray & /* inEffectiveParameterArray */,
@@ -9744,7 +9925,7 @@ static GALGAS_object functionWithGenericHeader_intAnyArguments (C_Compiler * inC
   return function_intAnyArguments (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_intAnyArguments ("intAnyArguments",
                                                                  functionWithGenericHeader_intAnyArguments,
@@ -9752,11 +9933,11 @@ C_galgas_function_descriptor functionDescriptor_intAnyArguments ("intAnyArgument
                                                                  0,
                                                                  functionArgs_intAnyArguments) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             Once function 'anyArgument'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'anyArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_anyArgument (C_Compiler * /* inCompiler */
                                                              COMMA_UNUSED_LOCATION_ARGS) {
@@ -9768,14 +9949,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_anyArgument (C_Compiler * /* inC
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_anyArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_anyArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_anyArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9786,26 +9967,26 @@ GALGAS_gtlTypedArgumentList function_anyArgument (class C_Compiler * inCompiler
   return gOnceFunctionResult_anyArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_anyArgument (void) {
   gOnceFunctionResult_anyArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_anyArgument (NULL,
                                                          releaseOnceFunctionResult_anyArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_anyArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_anyArgument (C_Compiler * inCompiler,
                                                             const cObjectArray & /* inEffectiveParameterArray */,
@@ -9814,7 +9995,7 @@ static GALGAS_object functionWithGenericHeader_anyArgument (C_Compiler * inCompi
   return function_anyArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_anyArgument ("anyArgument",
                                                              functionWithGenericHeader_anyArgument,
@@ -9822,11 +10003,11 @@ C_galgas_function_descriptor functionDescriptor_anyArgument ("anyArgument",
                                                              0,
                                                              functionArgs_anyArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Once function 'structArgument'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'structArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_structArgument (C_Compiler * /* inCompiler */
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
@@ -9838,14 +10019,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_structArgument (C_Compiler * /* 
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_structArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_structArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_structArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9856,26 +10037,26 @@ GALGAS_gtlTypedArgumentList function_structArgument (class C_Compiler * inCompil
   return gOnceFunctionResult_structArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_structArgument (void) {
   gOnceFunctionResult_structArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_structArgument (NULL,
                                                             releaseOnceFunctionResult_structArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_structArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_structArgument (C_Compiler * inCompiler,
                                                                const cObjectArray & /* inEffectiveParameterArray */,
@@ -9884,7 +10065,7 @@ static GALGAS_object functionWithGenericHeader_structArgument (C_Compiler * inCo
   return function_structArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_structArgument ("structArgument",
                                                                 functionWithGenericHeader_structArgument,
@@ -9892,11 +10073,11 @@ C_galgas_function_descriptor functionDescriptor_structArgument ("structArgument"
                                                                 0,
                                                                 functionArgs_structArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         Once function 'expressionArgument'                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'expressionArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlTypedArgumentList onceFunction_expressionArgument (C_Compiler * /* inCompiler */
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
@@ -9908,14 +10089,14 @@ static GALGAS_gtlTypedArgumentList onceFunction_expressionArgument (C_Compiler *
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_expressionArgument = false ;
 static GALGAS_gtlTypedArgumentList gOnceFunctionResult_expressionArgument ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_gtlTypedArgumentList function_expressionArgument (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -9926,26 +10107,26 @@ GALGAS_gtlTypedArgumentList function_expressionArgument (class C_Compiler * inCo
   return gOnceFunctionResult_expressionArgument ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_expressionArgument (void) {
   gOnceFunctionResult_expressionArgument.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_expressionArgument (NULL,
                                                                 releaseOnceFunctionResult_expressionArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_expressionArgument [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_expressionArgument (C_Compiler * inCompiler,
                                                                    const cObjectArray & /* inEffectiveParameterArray */,
@@ -9954,7 +10135,7 @@ static GALGAS_object functionWithGenericHeader_expressionArgument (C_Compiler * 
   return function_expressionArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_expressionArgument ("expressionArgument",
                                                                     functionWithGenericHeader_expressionArgument,
@@ -9962,65 +10143,142 @@ C_galgas_function_descriptor functionDescriptor_expressionArgument ("expressionA
                                                                     0,
                                                                     functionArgs_expressionArgument) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              Routine 'argumentsCheck'                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'setArgument'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-void routine_argumentsCheck (const GALGAS_lstring constinArgument_methodName,
-                             GALGAS_gtlTypedArgumentList inArgument_abstractArgumentList,
-                             GALGAS_gtlDataList inArgument_concreteArgumentList,
-                             C_Compiler * inCompiler
-                             COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_uint var_concreteLength_4945 = inArgument_concreteArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 164)) ;
-  GALGAS_uint var_abstractLength_5000 = inArgument_abstractArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 165)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, inArgument_abstractArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 166)).objectCompare (inArgument_concreteArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 166)))).boolEnum () ;
-  if (kBoolTrue == test_0) {
-    TC_Array <C_FixItDescription> fixItArray1 ;
-    inCompiler->emitSemanticError (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 167)), constinArgument_methodName.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 167)).add_operation (GALGAS_string (" expects "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 167)).add_operation (var_abstractLength_5000.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 167)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 167)).add_operation (GALGAS_string (" arguments. "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 167)).add_operation (var_concreteLength_4945.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 168)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 168)).add_operation (GALGAS_string (" arguments provided."), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 168)), fixItArray1  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 167)) ;
-  }else if (kBoolFalse == test_0) {
-    cEnumerator_gtlDataList enumerator_5303 (inArgument_concreteArgumentList, kENUMERATION_UP) ;
-    cEnumerator_gtlTypedArgumentList enumerator_5331 (inArgument_abstractArgumentList, kENUMERATION_UP) ;
-    GALGAS_uint index_5276 ((uint32_t) 0) ;
-    while (enumerator_5303.hasCurrentObject () && enumerator_5331.hasCurrentObject ()) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, enumerator_5303.current_data (HERE).getter_dynamicType (SOURCE_FILE ("gtl_data_types.galgas", 171)).objectCompare (enumerator_5331.current_type (HERE))).operator_and (GALGAS_bool (kIsNotEqual, enumerator_5331.current_type (HERE).objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlData))) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 171)).boolEnum () ;
-      if (kBoolTrue == test_2) {
-        TC_Array <C_FixItDescription> fixItArray3 ;
-        inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) enumerator_5303.current_data (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)), extensionGetter_typeName (enumerator_5331.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)).add_operation (GALGAS_string (" expected for argument "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)).add_operation (index_5276.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 174)).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 173)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 173)), fixItArray3  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)) ;
-      }
-      enumerator_5303.gotoNextObject () ;
-      enumerator_5331.gotoNextObject () ;
-      index_5276.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 170)) ;
-    }
-  }
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Once function 'emptylstring'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_lstring onceFunction_emptylstring (C_Compiler * /* inCompiler */
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_lstring result_result ; // Returned variable
-  result_result = GALGAS_lstring::constructor_new (GALGAS_string::makeEmptyString (), GALGAS_location::constructor_nowhere (SOURCE_FILE ("gtl_data_types.galgas", 182))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 182)) ;
+static GALGAS_gtlTypedArgumentList onceFunction_setArgument (C_Compiler * /* inCompiler */
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlTypedArgumentList result_result ; // Returned variable
+  result_result = GALGAS_gtlTypedArgumentList::constructor_listWithValue (GALGAS_type (& kTypeDescriptor_GALGAS_gtlSet)  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 161)) ;
 //---
   return result_result ;
 }
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
+
+static bool gOnceFunctionResultAvailable_setArgument = false ;
+static GALGAS_gtlTypedArgumentList gOnceFunctionResult_setArgument ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_gtlTypedArgumentList function_setArgument (class C_Compiler * inCompiler
+              COMMA_LOCATION_ARGS) {
+  if (! gOnceFunctionResultAvailable_setArgument) {
+    gOnceFunctionResult_setArgument = onceFunction_setArgument (inCompiler COMMA_THERE) ;
+    gOnceFunctionResultAvailable_setArgument = true ;
+  }
+  return gOnceFunctionResult_setArgument ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void releaseOnceFunctionResult_setArgument (void) {
+  gOnceFunctionResult_setArgument.drop () ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gEpilogueForOnceFunction_setArgument (NULL,
+                                                         releaseOnceFunctionResult_setArgument) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
+
+static const C_galgas_type_descriptor * functionArgs_setArgument [1] = {
+  NULL
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_object functionWithGenericHeader_setArgument (C_Compiler * inCompiler,
+                                                            const cObjectArray & /* inEffectiveParameterArray */,
+                                                            const GALGAS_location & /* inErrorLocation */
+                                                            COMMA_LOCATION_ARGS) {
+  return function_setArgument (inCompiler COMMA_THERE).getter_object (THERE) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_galgas_function_descriptor functionDescriptor_setArgument ("setArgument",
+                                                             functionWithGenericHeader_setArgument,
+                                                             & kTypeDescriptor_GALGAS_gtlTypedArgumentList,
+                                                             0,
+                                                             functionArgs_setArgument) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'argumentsCheck'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void routine_argumentsCheck (const GALGAS_lstring constinArgument_methodName,
+                             GALGAS_gtlTypedArgumentList inArgument_abstractArgumentList,
+                             GALGAS_gtlDataList inArgument_concreteArgumentList,
+                             C_Compiler * inCompiler
+                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_uint var_concreteLength_5055 = inArgument_concreteArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 169)) ;
+  GALGAS_uint var_abstractLength_5110 = inArgument_abstractArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 170)) ;
+  enumGalgasBool test_0 = kBoolTrue ;
+  if (kBoolTrue == test_0) {
+    test_0 = GALGAS_bool (kIsNotEqual, inArgument_abstractArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 171)).objectCompare (inArgument_concreteArgumentList.getter_length (SOURCE_FILE ("gtl_data_types.galgas", 171)))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      TC_Array <C_FixItDescription> fixItArray1 ;
+      inCompiler->emitSemanticError (constinArgument_methodName.getter_location (SOURCE_FILE ("gtl_data_types.galgas", 172)), constinArgument_methodName.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 172)).add_operation (GALGAS_string (" expects "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)).add_operation (var_abstractLength_5110.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 172)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)).add_operation (GALGAS_string (" arguments. "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)).add_operation (var_concreteLength_5055.getter_string (SOURCE_FILE ("gtl_data_types.galgas", 173)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 173)).add_operation (GALGAS_string (" arguments provided."), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 173)), fixItArray1  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 172)) ;
+    }
+  }
+  if (kBoolFalse == test_0) {
+    cEnumerator_gtlDataList enumerator_5413 (inArgument_concreteArgumentList, kENUMERATION_UP) ;
+    cEnumerator_gtlTypedArgumentList enumerator_5441 (inArgument_abstractArgumentList, kENUMERATION_UP) ;
+    GALGAS_uint index_5386 ((uint32_t) 0) ;
+    while (enumerator_5413.hasCurrentObject () && enumerator_5441.hasCurrentObject ()) {
+      enumGalgasBool test_2 = kBoolTrue ;
+      if (kBoolTrue == test_2) {
+        test_2 = GALGAS_bool (kIsNotEqual, enumerator_5413.current_data (HERE).getter_dynamicType (SOURCE_FILE ("gtl_data_types.galgas", 176)).objectCompare (enumerator_5441.current_type (HERE))).operator_and (GALGAS_bool (kIsNotEqual, enumerator_5441.current_type (HERE).objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_gtlData))) COMMA_SOURCE_FILE ("gtl_data_types.galgas", 176)).boolEnum () ;
+        if (kBoolTrue == test_2) {
+          TC_Array <C_FixItDescription> fixItArray3 ;
+          inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) enumerator_5413.current_data (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 177)), extensionGetter_typeName (enumerator_5441.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 177)).add_operation (GALGAS_string (" expected for argument "), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 177)).add_operation (index_5386.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 179)).getter_string (SOURCE_FILE ("gtl_data_types.galgas", 178)), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 178)), fixItArray3  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 177)) ;
+        }
+      }
+      enumerator_5413.gotoNextObject () ;
+      enumerator_5441.gotoNextObject () ;
+      index_5386.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 175)) ;
+    }
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Once function 'emptylstring'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_lstring onceFunction_emptylstring (C_Compiler * /* inCompiler */
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_lstring result_result ; // Returned variable
+  result_result = GALGAS_lstring::constructor_new (GALGAS_string::makeEmptyString (), GALGAS_location::constructor_nowhere (SOURCE_FILE ("gtl_data_types.galgas", 187))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 187)) ;
+//---
+  return result_result ;
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//  Function implementation                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_emptylstring = false ;
 static GALGAS_lstring gOnceFunctionResult_emptylstring ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring function_emptylstring (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -10031,26 +10289,26 @@ GALGAS_lstring function_emptylstring (class C_Compiler * inCompiler
   return gOnceFunctionResult_emptylstring ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_emptylstring (void) {
   gOnceFunctionResult_emptylstring.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_emptylstring (NULL,
                                                           releaseOnceFunctionResult_emptylstring) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_emptylstring [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_emptylstring (C_Compiler * inCompiler,
                                                              const cObjectArray & /* inEffectiveParameterArray */,
@@ -10059,7 +10317,7 @@ static GALGAS_object functionWithGenericHeader_emptylstring (C_Compiler * inComp
   return function_emptylstring (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_emptylstring ("emptylstring",
                                                               functionWithGenericHeader_emptylstring,
@@ -10067,32 +10325,32 @@ C_galgas_function_descriptor functionDescriptor_emptylstring ("emptylstring",
                                                               0,
                                                               functionArgs_emptylstring) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                 Function 'lstring'                                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'lstring'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_lstring function_lstring (GALGAS_string inArgument_string,
                                  C_Compiler * /* inCompiler */
                                  COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_lstring result_result ; // Returned variable
-  result_result = GALGAS_lstring::constructor_new (inArgument_string, GALGAS_location::constructor_nowhere (SOURCE_FILE ("gtl_data_types.galgas", 187))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 187)) ;
+  result_result = GALGAS_lstring::constructor_new (inArgument_string, GALGAS_location::constructor_nowhere (SOURCE_FILE ("gtl_data_types.galgas", 192))  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 192)) ;
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//  Function introspection                                                                       
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_lstring [2] = {
   & kTypeDescriptor_GALGAS_string,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_lstring (C_Compiler * inCompiler,
                                                         const cObjectArray & inEffectiveParameterArray,
@@ -10106,7 +10364,7 @@ static GALGAS_object functionWithGenericHeader_lstring (C_Compiler * inCompiler,
                            COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_lstring ("lstring",
                                                          functionWithGenericHeader_lstring,
@@ -10114,39 +10372,39 @@ C_galgas_function_descriptor functionDescriptor_lstring ("lstring",
                                                          1,
                                                          functionArgs_lstring) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlUnconstructed desc'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed desc'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_string extensionGetter_gtlUnconstructed_desc (const cPtr_gtlData * /* inObject */,
                                                             const GALGAS_uint constinArgument_tab,
                                                             C_Compiler * inCompiler
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 372)).add_operation (GALGAS_string ("unconstructed\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 372)) ;
+  result_result = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), constinArgument_tab  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 377)).add_operation (GALGAS_string ("unconstructed\n"), inCompiler COMMA_SOURCE_FILE ("gtl_data_types.galgas", 377)) ;
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_desc (void) {
   enterExtensionGetter_desc (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                              extensionGetter_gtlUnconstructed_desc) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_desc (defineExtensionGetter_gtlUnconstructed_desc, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlUnconstructed string'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed string'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_string extensionGetter_gtlUnconstructed_string (const cPtr_gtlData * inObject,
                                                               C_Compiler * inCompiler
@@ -10155,29 +10413,29 @@ static GALGAS_string extensionGetter_gtlUnconstructed_string (const cPtr_gtlData
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a string"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 377)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a string"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 382)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_string (void) {
   enterExtensionGetter_string (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                                extensionGetter_gtlUnconstructed_string) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_string (defineExtensionGetter_gtlUnconstructed_string, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlUnconstructed lstring'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed lstring'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_lstring extensionGetter_gtlUnconstructed_lstring (const cPtr_gtlData * inObject,
                                                                 C_Compiler * inCompiler
@@ -10186,29 +10444,29 @@ static GALGAS_lstring extensionGetter_gtlUnconstructed_lstring (const cPtr_gtlDa
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a lstring"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 381)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a lstring"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 386)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_lstring (void) {
   enterExtensionGetter_lstring (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                                 extensionGetter_gtlUnconstructed_lstring) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_lstring (defineExtensionGetter_gtlUnconstructed_lstring, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlUnconstructed bool'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed bool'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bool extensionGetter_gtlUnconstructed_bool (const cPtr_gtlData * inObject,
                                                           C_Compiler * inCompiler
@@ -10217,29 +10475,29 @@ static GALGAS_bool extensionGetter_gtlUnconstructed_bool (const cPtr_gtlData * i
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a bool"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 385)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a bool"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 390)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_bool (void) {
   enterExtensionGetter_bool (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                              extensionGetter_gtlUnconstructed_bool) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_bool (defineExtensionGetter_gtlUnconstructed_bool, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Overriding extension getter '@gtlUnconstructed int'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed int'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_bigint extensionGetter_gtlUnconstructed_int (const cPtr_gtlData * inObject,
                                                            C_Compiler * inCompiler
@@ -10248,29 +10506,29 @@ static GALGAS_bigint extensionGetter_gtlUnconstructed_int (const cPtr_gtlData * 
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to an int"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 389)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to an int"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 394)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_int (void) {
   enterExtensionGetter_int (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                             extensionGetter_gtlUnconstructed_int) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_int (defineExtensionGetter_gtlUnconstructed_int, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlUnconstructed float'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed float'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_double extensionGetter_gtlUnconstructed_float (const cPtr_gtlData * inObject,
                                                              C_Compiler * inCompiler
@@ -10279,29 +10537,29 @@ static GALGAS_double extensionGetter_gtlUnconstructed_float (const cPtr_gtlData 
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a float"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 393)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("cannot cast an unconstructed to a float"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 398)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_float (void) {
   enterExtensionGetter_float (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                               extensionGetter_gtlUnconstructed_float) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_float (defineExtensionGetter_gtlUnconstructed_float, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlUnconstructed plusOp'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed plusOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_plusOp (const cPtr_gtlData * inObject,
                                                                C_Compiler * inCompiler
@@ -10310,29 +10568,29 @@ static GALGAS_gtlData extensionGetter_gtlUnconstructed_plusOp (const cPtr_gtlDat
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 397)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 402)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_plusOp (void) {
   enterExtensionGetter_plusOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                                extensionGetter_gtlUnconstructed_plusOp) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_plusOp (defineExtensionGetter_gtlUnconstructed_plusOp, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Overriding extension getter '@gtlUnconstructed minusOp'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed minusOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_minusOp (const cPtr_gtlData * inObject,
                                                                 C_Compiler * inCompiler
@@ -10341,29 +10599,29 @@ static GALGAS_gtlData extensionGetter_gtlUnconstructed_minusOp (const cPtr_gtlDa
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 400)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 405)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_minusOp (void) {
   enterExtensionGetter_minusOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                                 extensionGetter_gtlUnconstructed_minusOp) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_minusOp (defineExtensionGetter_gtlUnconstructed_minusOp, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlUnconstructed notOp'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed notOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_notOp (const cPtr_gtlData * inObject,
                                                               C_Compiler * inCompiler
@@ -10372,29 +10630,29 @@ static GALGAS_gtlData extensionGetter_gtlUnconstructed_notOp (const cPtr_gtlData
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 403)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 408)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_notOp (void) {
   enterExtensionGetter_notOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                               extensionGetter_gtlUnconstructed_notOp) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_notOp (defineExtensionGetter_gtlUnconstructed_notOp, NULL) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Overriding extension getter '@gtlUnconstructed addOp'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed addOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_addOp (const cPtr_gtlData * inObject,
                                                               const GALGAS_gtlData /* constinArgument_right */,
@@ -10404,21 +10662,405 @@ static GALGAS_gtlData extensionGetter_gtlUnconstructed_addOp (const cPtr_gtlData
   const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
   macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
   TC_Array <C_FixItDescription> fixItArray0 ;
-  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 406)) ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 411)) ;
   result_result.drop () ; // Release error dropped variable
 //---
   return result_result ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void defineExtensionGetter_gtlUnconstructed_addOp (void) {
   enterExtensionGetter_addOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
                               extensionGetter_gtlUnconstructed_addOp) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gGetter_gtlUnconstructed_addOp (defineExtensionGetter_gtlUnconstructed_addOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed subOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_subOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 414)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_subOp (void) {
+  enterExtensionGetter_subOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_subOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_subOp (defineExtensionGetter_gtlUnconstructed_subOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed mulOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_mulOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 417)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_mulOp (void) {
+  enterExtensionGetter_mulOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_mulOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_mulOp (defineExtensionGetter_gtlUnconstructed_mulOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed divOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_divOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 420)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_divOp (void) {
+  enterExtensionGetter_divOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_divOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_divOp (defineExtensionGetter_gtlUnconstructed_divOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed modOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_modOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 423)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_modOp (void) {
+  enterExtensionGetter_modOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_modOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_modOp (defineExtensionGetter_gtlUnconstructed_modOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed andOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_andOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 426)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_andOp (void) {
+  enterExtensionGetter_andOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_andOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_andOp (defineExtensionGetter_gtlUnconstructed_andOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed orOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_orOp (const cPtr_gtlData * inObject,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 429)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_orOp (void) {
+  enterExtensionGetter_orOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                             extensionGetter_gtlUnconstructed_orOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_orOp (defineExtensionGetter_gtlUnconstructed_orOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed xorOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_xorOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 432)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_xorOp (void) {
+  enterExtensionGetter_xorOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_xorOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_xorOp (defineExtensionGetter_gtlUnconstructed_xorOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed slOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_slOp (const cPtr_gtlData * inObject,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 435)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_slOp (void) {
+  enterExtensionGetter_slOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                             extensionGetter_gtlUnconstructed_slOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_slOp (defineExtensionGetter_gtlUnconstructed_slOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed srOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_srOp (const cPtr_gtlData * inObject,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 438)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_srOp (void) {
+  enterExtensionGetter_srOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                             extensionGetter_gtlUnconstructed_srOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_srOp (defineExtensionGetter_gtlUnconstructed_srOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed neqOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_neqOp (const cPtr_gtlData * inObject,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 441)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_neqOp (void) {
+  enterExtensionGetter_neqOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                              extensionGetter_gtlUnconstructed_neqOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_neqOp (defineExtensionGetter_gtlUnconstructed_neqOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed eqOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_eqOp (const cPtr_gtlData * inObject,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 444)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_eqOp (void) {
+  enterExtensionGetter_eqOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                             extensionGetter_gtlUnconstructed_eqOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_eqOp (defineExtensionGetter_gtlUnconstructed_eqOp, NULL) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Overriding extension getter '@gtlUnconstructed gtOp'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+static GALGAS_gtlData extensionGetter_gtlUnconstructed_gtOp (const cPtr_gtlData * inObject,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_gtlData result_result ; // Returned variable
+  const cPtr_gtlUnconstructed * object = (const cPtr_gtlUnconstructed *) inObject ;
+  macroValidSharedObject (object, cPtr_gtlUnconstructed) ;
+  TC_Array <C_FixItDescription> fixItArray0 ;
+  inCompiler->emitSemanticError (object->mProperty_where, GALGAS_string ("unconstructed forbidden"), fixItArray0  COMMA_SOURCE_FILE ("gtl_data_types.galgas", 447)) ;
+  result_result.drop () ; // Release error dropped variable
+//---
+  return result_result ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void defineExtensionGetter_gtlUnconstructed_gtOp (void) {
+  enterExtensionGetter_gtOp (kTypeDescriptor_GALGAS_gtlUnconstructed.mSlotID,
+                             extensionGetter_gtlUnconstructed_gtOp) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+C_PrologueEpilogue gGetter_gtlUnconstructed_gtOp (defineExtensionGetter_gtlUnconstructed_gtOp, NULL) ;
 

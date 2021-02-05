@@ -28,15 +28,15 @@
 # @gtlContext is used to store the execution context of a template
 #-----------------------------------------------------------------------------*
 class @gtlContext {
-  @lstring         prefix                 %setter
-  @string          path                   %setter
-  @string          templateDirectory      %setter
-  @string          userTemplateDirectory  %setter
-  @string          templateExtension      %setter
+  @lstring         prefix
+  @string          path
+  @string          templateDirectory
+  @string          userTemplateDirectory
+  @string          templateExtension
   @stringlist      importPath
-  @gtlDataList     inputVars              %setter
-  @bool            propagateError         %setter
-  @debuggerContext debuggerContext        %setter
+  @gtlDataList     inputVars
+  @bool            propagateError
+  @debuggerContext debuggerContext
 }
 
 func emptyContext
@@ -134,7 +134,7 @@ getter @gtlContext fullTemplateFileName
         !simpleName
        ]
     )
-#    message "Search in " + fullPath + "... \n"    
+#    message "Search in " + fullPath + "... "    
     if [fullPath fileExists] then
 #      message "found\n"
       rootPath = fullPath

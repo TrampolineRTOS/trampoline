@@ -1,17 +1,16 @@
-#ifndef all_2D_declarations_2D__36__ENTITIES_DEFINED
-#define all_2D_declarations_2D__36__ENTITIES_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-declarations-5.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  GRAMMAR options_grammar
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
 //------------------------------------- 'list_option_value' non terminal
@@ -79,12 +78,12 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
   public : virtual int32_t select_options_5F_parser_3 (C_Lexique_options_5F_scanner *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Parser class 'arxml_parser' declaration                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Parser class 'arxml_parser' declaration
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cParser_arxml_5F_parser {
 //--- Virtual destructor
@@ -156,11 +155,11 @@ class cParser_arxml_5F_parser {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                               @arxmlCommentNode class                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @arxmlCommentNode class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_arxmlCommentNode : public GALGAS_arxmlNode {
 //--- Constructor
@@ -193,6 +192,9 @@ class GALGAS_arxmlCommentNode : public GALGAS_arxmlNode {
   public : typeComparisonResult objectCompare (const GALGAS_arxmlCommentNode & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setComment (class GALGAS_lstring inArgument0
+                                                    COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -201,21 +203,23 @@ class GALGAS_arxmlCommentNode : public GALGAS_arxmlNode {
   public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_comment (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_arxmlCommentNode class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlCommentNode ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Pointer class for @arxmlCommentNode class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @arxmlCommentNode class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_arxmlCommentNode : public cPtr_arxmlNode {
 //--- Attributes
@@ -230,6 +234,7 @@ class cPtr_arxmlCommentNode : public cPtr_arxmlNode {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_comment (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setComment (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -240,21 +245,21 @@ class cPtr_arxmlCommentNode : public cPtr_arxmlNode {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Function 'templates_directory'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'templates_directory'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string function_templates_5F_directory (class GALGAS_string inArgument0,
                                                      class C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Parser class 'arxmlmetaparser_syntax' declaration                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Parser class 'arxmlmetaparser_syntax' declaration
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cParser_arxmlmetaparser_5F_syntax {
 //--- Virtual destructor
@@ -693,9 +698,9 @@ class cParser_arxmlmetaparser_5F_syntax {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  GRAMMAR arxmlmetaparser_grammar
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_syntax {
 //------------------------------------- 'arxmlmetaparser_start_symbol' non terminal
@@ -1063,23 +1068,23 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
   public : virtual int32_t select_arxmlmetaparser_5F_syntax_56 (C_Lexique_arxmlmetaparser_5F_scanner *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                  Routine 'addText'                                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'addText'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addText (class GALGAS_arxmlNodeList & ioArgument0,
                       const class GALGAS_bool constinArgument1,
                       class C_Compiler * inCompiler
                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                               Routine 'convertToOil'                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'convertToOil'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_convertToOil (class GALGAS_implementation & ioArgument0,
                            class GALGAS_applicationDefinition & ioArgument1,
@@ -1087,21 +1092,21 @@ void routine_convertToOil (class GALGAS_implementation & ioArgument0,
                            class C_Compiler * inCompiler
                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Routine 'displayOil'                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'displayOil'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_displayOil (class GALGAS_string inArgument0,
                          class C_Compiler * inCompiler
                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             Routine 'getAutosarVersion'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'getAutosarVersion'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_getAutosarVersion (class GALGAS_arxmlNode inArgument0,
                                 class GALGAS_lstring & outArgument1,
@@ -1109,11 +1114,11 @@ void routine_getAutosarVersion (class GALGAS_arxmlNode inArgument0,
                                 class C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              Routine 'includeConfigs'                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'includeConfigs'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_includeConfigs (class GALGAS_implementation & ioArgument0,
                              class GALGAS_applicationDefinition & ioArgument1,
@@ -1122,11 +1127,11 @@ void routine_includeConfigs (class GALGAS_implementation & ioArgument0,
                              class C_Compiler * inCompiler
                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Routine 'nodeToClass'                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'nodeToClass'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_nodeToClass (class GALGAS_arxmlNode inArgument0,
                           class GALGAS_arxmlMetaClassMap & ioArgument1,
@@ -1134,34 +1139,34 @@ void routine_nodeToClass (class GALGAS_arxmlNode inArgument0,
                           class C_Compiler * inCompiler
                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension method '@arxmlElementNode getSubElements'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getSubElements'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementNode_getSubElements) (const class cPtr_arxmlElementNode * inObject,
                                                                           class GALGAS_arxmlElementList & outArgument0,
                                                                           class C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getSubElements (const int32_t inClassIndex,
                                           extensionMethodSignature_arxmlElementNode_getSubElements inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getSubElements (const class cPtr_arxmlElementNode * inObject,
                                          GALGAS_arxmlElementList & out_nodeList,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension method '@arxmlElementNode getText'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getText'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementNode_getText) (const class cPtr_arxmlElementNode * inObject,
                                                                    class GALGAS_lstring & ioArgument0,
@@ -1169,12 +1174,12 @@ typedef void (*extensionMethodSignature_arxmlElementNode_getText) (const class c
                                                                    class C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getText (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlElementNode_getText inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getText (const class cPtr_arxmlElementNode * inObject,
                                   GALGAS_lstring & io_value,
@@ -1182,11 +1187,11 @@ void callExtensionMethod_getText (const class cPtr_arxmlElementNode * inObject,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                @arxmlTextNode class                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @arxmlTextNode class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_arxmlTextNode : public GALGAS_arxmlNode {
 //--- Constructor
@@ -1219,6 +1224,9 @@ class GALGAS_arxmlTextNode : public GALGAS_arxmlNode {
   public : typeComparisonResult objectCompare (const GALGAS_arxmlTextNode & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setText (class GALGAS_lstring inArgument0
+                                                 COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -1227,21 +1235,23 @@ class GALGAS_arxmlTextNode : public GALGAS_arxmlNode {
   public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_text (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_arxmlTextNode class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlTextNode ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Pointer class for @arxmlTextNode class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @arxmlTextNode class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_arxmlTextNode : public cPtr_arxmlNode {
 //--- Attributes
@@ -1256,6 +1266,7 @@ class cPtr_arxmlTextNode : public cPtr_arxmlNode {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_text (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setText (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -1266,57 +1277,57 @@ class cPtr_arxmlTextNode : public cPtr_arxmlNode {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension method '@arxmlTextNode getText'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlTextNode getText'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlTextNode_getText) (const class cPtr_arxmlTextNode * inObject,
                                                                 class GALGAS_lstring & outArgument0,
                                                                 class C_Compiler * inCompiler
                                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getText (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlTextNode_getText inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getText (const class cPtr_arxmlTextNode * inObject,
                                   GALGAS_lstring & out_outText,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension method '@arxmlElementNode getAttributes'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getAttributes'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementNode_getAttributes) (const class cPtr_arxmlElementNode * inObject,
                                                                          class GALGAS_arxmlAttributeMap & ioArgument0,
                                                                          class C_Compiler * inCompiler
                                                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getAttributes (const int32_t inClassIndex,
                                          extensionMethodSignature_arxmlElementNode_getAttributes inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAttributes (const class cPtr_arxmlElementNode * inObject,
                                         GALGAS_arxmlAttributeMap & io_outAttributes,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension method '@arxmlElementNode getAttribute'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getAttribute'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementNode_getAttribute) (const class cPtr_arxmlElementNode * inObject,
                                                                         class GALGAS_string inArgument0,
@@ -1324,12 +1335,12 @@ typedef void (*extensionMethodSignature_arxmlElementNode_getAttribute) (const cl
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getAttribute (const int32_t inClassIndex,
                                         extensionMethodSignature_arxmlElementNode_getAttribute inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAttribute (const class cPtr_arxmlElementNode * inObject,
                                        GALGAS_string in_attributeName,
@@ -1337,34 +1348,34 @@ void callExtensionMethod_getAttribute (const class cPtr_arxmlElementNode * inObj
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension method '@arxmlElementNode getName'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementNode getName'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementNode_getName) (const class cPtr_arxmlElementNode * inObject,
                                                                    class GALGAS_lstring & outArgument0,
                                                                    class C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getName (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlElementNode_getName inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getName (const class cPtr_arxmlElementNode * inObject,
                                   GALGAS_lstring & out_outName,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension setter '@arxmlElementValue insertElement'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlElementValue insertElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionSetterSignature_arxmlElementValue_insertElement) (class cPtr_arxmlElementValue * inObject,
                                                                           class GALGAS_lstring inArgument0,
@@ -1372,12 +1383,12 @@ typedef void (*extensionSetterSignature_arxmlElementValue_insertElement) (class 
                                                                           class C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_insertElement (const int32_t inClassIndex,
                                          extensionSetterSignature_arxmlElementValue_insertElement inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_insertElement (class cPtr_arxmlElementValue * inObject,
                                         GALGAS_lstring in_key,
@@ -1385,11 +1396,11 @@ void callExtensionSetter_insertElement (class cPtr_arxmlElementValue * inObject,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension method '@arxmlElementValue getElementsByPath'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getElementsByPath'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementValue_getElementsByPath) (const class cPtr_arxmlElementValue * inObject,
                                                                               class GALGAS_stringlist inArgument0,
@@ -1397,12 +1408,12 @@ typedef void (*extensionMethodSignature_arxmlElementValue_getElementsByPath) (co
                                                                               class C_Compiler * inCompiler
                                                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getElementsByPath (const int32_t inClassIndex,
                                              extensionMethodSignature_arxmlElementValue_getElementsByPath inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElementsByPath (const class cPtr_arxmlElementValue * inObject,
                                             GALGAS_stringlist in_path,
@@ -1410,11 +1421,11 @@ void callExtensionMethod_getElementsByPath (const class cPtr_arxmlElementValue *
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension method '@arxmlElementValue getElements'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getElements'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementValue_getElements) (const class cPtr_arxmlElementValue * inObject,
                                                                         class GALGAS_string inArgument0,
@@ -1422,12 +1433,12 @@ typedef void (*extensionMethodSignature_arxmlElementValue_getElements) (const cl
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getElements (const int32_t inClassIndex,
                                        extensionMethodSignature_arxmlElementValue_getElements inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElements (const class cPtr_arxmlElementValue * inObject,
                                       GALGAS_string in_elementName,
@@ -1435,11 +1446,11 @@ void callExtensionMethod_getElements (const class cPtr_arxmlElementValue * inObj
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension method '@arxmlElementValue getElement'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementValue_getElement) (const class cPtr_arxmlElementValue * inObject,
                                                                        class GALGAS_string inArgument0,
@@ -1447,12 +1458,12 @@ typedef void (*extensionMethodSignature_arxmlElementValue_getElement) (const cla
                                                                        class C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getElement (const int32_t inClassIndex,
                                       extensionMethodSignature_arxmlElementValue_getElement inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElement (const class cPtr_arxmlElementValue * inObject,
                                      GALGAS_string in_elementName,
@@ -1460,57 +1471,57 @@ void callExtensionMethod_getElement (const class cPtr_arxmlElementValue * inObje
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@arxmlElementValue hasElement'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlElementValue hasElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_bool (*enterExtensionGetter_arxmlElementValue_hasElement) (const class cPtr_arxmlElementValue * inObject,
                                                                                 class GALGAS_string inArgument0,
                                                                                 C_Compiler * inCompiler
                                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_hasElement (const int32_t inClassIndex,
                                       enterExtensionGetter_arxmlElementValue_hasElement inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue * inObject,
                                                   GALGAS_string in_elementName,
                                                   class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension getter '@arxmlElementValue getTextFromElement'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlElementValue getTextFromElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_lstring (*enterExtensionGetter_arxmlElementValue_getTextFromElement) (const class cPtr_arxmlElementValue * inObject,
                                                                                            class GALGAS_string inArgument0,
                                                                                            C_Compiler * inCompiler
                                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_getTextFromElement (const int32_t inClassIndex,
                                               enterExtensionGetter_arxmlElementValue_getTextFromElement inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlElementValue * inObject,
                                                              GALGAS_string in_elementName,
                                                              class C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension method '@arxmlElementValue getAllTextsInSelf'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlElementValue getAllTextsInSelf'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlElementValue_getAllTextsInSelf) (const class cPtr_arxmlElementValue * inObject,
                                                                               class GALGAS_string inArgument0,
@@ -1518,12 +1529,12 @@ typedef void (*extensionMethodSignature_arxmlElementValue_getAllTextsInSelf) (co
                                                                               class C_Compiler * inCompiler
                                                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_getAllTextsInSelf (const int32_t inClassIndex,
                                              extensionMethodSignature_arxmlElementValue_getAllTextsInSelf inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAllTextsInSelf (const class cPtr_arxmlElementValue * inObject,
                                             GALGAS_string in_separator,
@@ -1531,24 +1542,24 @@ void callExtensionMethod_getAllTextsInSelf (const class cPtr_arxmlElementValue *
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                         Extension getter '@arxmlElementValue getAttributeValueFromElement'                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlElementValue getAttributeValueFromElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_lstring (*enterExtensionGetter_arxmlElementValue_getAttributeValueFromElement) (const class cPtr_arxmlElementValue * inObject,
                                                                                                      class GALGAS_string inArgument0,
                                                                                                      class GALGAS_string inArgument1,
                                                                                                      C_Compiler * inCompiler
                                                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_getAttributeValueFromElement (const int32_t inClassIndex,
                                                         enterExtensionGetter_arxmlElementValue_getAttributeValueFromElement inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPtr_arxmlElementValue * inObject,
                                                                        GALGAS_string in_elementName,
@@ -1556,11 +1567,11 @@ class GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPt
                                                                        class C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension setter '@arxmlMetaClass legacyAddParameters'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass legacyAddParameters'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionSetterSignature_arxmlMetaClass_legacyAddParameters) (class cPtr_arxmlMetaClass * inObject,
                                                                              class GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -1568,12 +1579,12 @@ typedef void (*extensionSetterSignature_arxmlMetaClass_legacyAddParameters) (cla
                                                                              class C_Compiler * inCompiler
                                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_legacyAddParameters (const int32_t inClassIndex,
                                                extensionSetterSignature_arxmlMetaClass_legacyAddParameters inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_legacyAddParameters (class cPtr_arxmlMetaClass * inObject,
                                               GALGAS_arxmlMetaClassMap & io_classMap,
@@ -1581,80 +1592,80 @@ void callExtensionSetter_legacyAddParameters (class cPtr_arxmlMetaClass * inObje
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension setter '@arxmlMetaClass setDescription'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaClass setDescription'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionSetterSignature_arxmlMetaClass_setDescription) (class cPtr_arxmlMetaClass * inObject,
                                                                         class GALGAS_lstring inArgument0,
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_setDescription (const int32_t inClassIndex,
                                           extensionSetterSignature_arxmlMetaClass_setDescription inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_setDescription (class cPtr_arxmlMetaClass * inObject,
                                          GALGAS_lstring in_iDesc,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension getter '@arxmlMetaClass hasElement'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlMetaClass hasElement'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_bool (*enterExtensionGetter_arxmlMetaClass_hasElement) (const class cPtr_arxmlMetaClass * inObject,
                                                                              class GALGAS_string inArgument0,
                                                                              C_Compiler * inCompiler
                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_hasElement (const int32_t inClassIndex,
                                       enterExtensionGetter_arxmlMetaClass_hasElement inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * inObject,
                                                   GALGAS_string in_eleName,
                                                   class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension getter '@arxmlMetaClass hasAttribute'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@arxmlMetaClass hasAttribute'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_bool (*enterExtensionGetter_arxmlMetaClass_hasAttribute) (const class cPtr_arxmlMetaClass * inObject,
                                                                                class GALGAS_string inArgument0,
                                                                                C_Compiler * inCompiler
                                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_hasAttribute (const int32_t inClassIndex,
                                         enterExtensionGetter_arxmlMetaClass_hasAttribute inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasAttribute (const cPtr_arxmlMetaClass * inObject,
                                                     GALGAS_string in_attrName,
                                                     class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @arxmlMetaSimpletype class                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @arxmlMetaSimpletype class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_arxmlMetaSimpletype : public AC_GALGAS_class {
 //--- Constructor
@@ -1687,6 +1698,18 @@ class GALGAS_arxmlMetaSimpletype : public AC_GALGAS_class {
   public : typeComparisonResult objectCompare (const GALGAS_arxmlMetaSimpletype & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setBase (class GALGAS_restrictionBaseType inArgument0
+                                                 COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setName (class GALGAS_lstring inArgument0
+                                                 COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setType (class GALGAS_restrictionType inArgument0
+                                                 COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setValues (class GALGAS_lstringlist inArgument0
+                                                   COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -1701,21 +1724,23 @@ class GALGAS_arxmlMetaSimpletype : public AC_GALGAS_class {
   public : VIRTUAL_IN_DEBUG class GALGAS_lstringlist getter_values (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_arxmlMetaSimpletype class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaSimpletype ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @arxmlMetaSimpletype class                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @arxmlMetaSimpletype class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_arxmlMetaSimpletype : public acPtr_class {
 //--- Attributes
@@ -1736,9 +1761,13 @@ class cPtr_arxmlMetaSimpletype : public acPtr_class {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_name (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setName (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_restrictionType getter_type (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setType (GALGAS_restrictionType inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_restrictionBaseType getter_base (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setBase (GALGAS_restrictionBaseType inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_values (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValues (GALGAS_lstringlist inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -1749,11 +1778,11 @@ class cPtr_arxmlMetaSimpletype : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension method '@arxmlMetaSimpletype display'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@arxmlMetaSimpletype display'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_arxmlMetaSimpletype_display) (const class cPtr_arxmlMetaSimpletype * inObject,
                                                                       class GALGAS_arxmlMetaClassMap inArgument0,
@@ -1761,12 +1790,12 @@ typedef void (*extensionMethodSignature_arxmlMetaSimpletype_display) (const clas
                                                                       class C_Compiler * inCompiler
                                                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_display (const int32_t inClassIndex,
                                    extensionMethodSignature_arxmlMetaSimpletype_display inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_display (const class cPtr_arxmlMetaSimpletype * inObject,
                                   GALGAS_arxmlMetaClassMap in_classMap,
@@ -1774,95 +1803,48 @@ void callExtensionMethod_display (const class cPtr_arxmlMetaSimpletype * inObjec
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension setter '@arxmlMetaSimpletype setType'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_arxmlMetaSimpletype_setType) (class cPtr_arxmlMetaSimpletype * inObject,
-                                                                      class GALGAS_restrictionType inArgument0,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setType (const int32_t inClassIndex,
-                                   extensionSetterSignature_arxmlMetaSimpletype_setType inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setType (class cPtr_arxmlMetaSimpletype * inObject,
-                                  GALGAS_restrictionType in_iType,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension setter '@arxmlMetaSimpletype setBase'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_arxmlMetaSimpletype_setBase) (class cPtr_arxmlMetaSimpletype * inObject,
-                                                                      class GALGAS_restrictionBaseType inArgument0,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setBase (const int32_t inClassIndex,
-                                   extensionSetterSignature_arxmlMetaSimpletype_setBase inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setBase (class cPtr_arxmlMetaSimpletype * inObject,
-                                  GALGAS_restrictionBaseType in_iBase,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension setter '@arxmlMetaSimpletype addValue'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@arxmlMetaSimpletype addValue'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionSetterSignature_arxmlMetaSimpletype_addValue) (class cPtr_arxmlMetaSimpletype * inObject,
                                                                        class GALGAS_lstring inArgument0,
                                                                        class C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionSetter_addValue (const int32_t inClassIndex,
                                     extensionSetterSignature_arxmlMetaSimpletype_addValue inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionSetter_addValue (class cPtr_arxmlMetaSimpletype * inObject,
                                    GALGAS_lstring in_value,
                                    C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Routine 'fillLegacy'                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'fillLegacy'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_fillLegacy (class GALGAS_arxmlMetaClassMap & ioArgument0,
                          class GALGAS_arxmlMetaClassGraph & ioArgument1,
                          class C_Compiler * inCompiler
                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Routine 'lstringhere'                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'lstringhere'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_lstringhere (class GALGAS_lstring & outArgument0,
                           class GALGAS_string inArgument1,
                           class C_Compiler * inCompiler
                           COMMA_LOCATION_ARGS) ;
 
-#endif

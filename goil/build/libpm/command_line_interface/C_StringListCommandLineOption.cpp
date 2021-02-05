@@ -1,39 +1,36 @@
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//  Generic String Command Line Interface Option                                                                       *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
-//                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-#include <string.h>
-#include <stdio.h>
-
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  Generic String Command Line Interface Option                                                 
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2009, ..., 2017 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/C_StringListCommandLineOption.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+
+#include <string.h>
+
+//----------------------------------------------------------------------------------------------------------------------
 
 static C_StringListCommandLineOption * gFirstStringListOption ;
 static C_StringListCommandLineOption * gLastStringListOption ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_StringListCommandLineOption::C_StringListCommandLineOption (const char * inDomainName,
                                                               const char * inIdentifier,
@@ -51,7 +48,7 @@ mValue () {
   gLastStringListOption = this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::setStringListOptionForCommandChar (const char * inCommandString,
                                                                        bool & outFound,
@@ -71,7 +68,7 @@ void C_StringListCommandLineOption::setStringListOptionForCommandChar (const cha
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::setStringListOptionForCommandString (const char * inCommandString,
                                                                          bool & outFound,
@@ -105,7 +102,7 @@ void C_StringListCommandLineOption::setStringListOptionForCommandString (const c
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::printUsageOfStringOptions (void) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -122,42 +119,41 @@ void C_StringListCommandLineOption::printUsageOfStringOptions (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void C_StringListCommandLineOption::printStringOptions (const uint32_t inDisplayLength) {
+void C_StringListCommandLineOption::printStringOptions (void) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
   while (p != NULL) {
-    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
-      co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) strlen ("=string") ;
-      if (p->mCommandString [0] != '\0') {
-        co << ", " ;
-        charCount += 2 ;
+      for (uint32_t i=0 ; i<2 ; i++) {
+        if (i != 0) {
+          co << " " ;
+        }
+        co.setForeColor (kBlueForeColor) ;
+        co.setTextAttribute (kBoldTextAttribute) ;
+        co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
+        co.setTextAttribute (kAllAttributesOff) ;
       }
+      co << " ...\n" ;
     }
     if (p->mCommandString [0] != '\0') {
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << "--" << p->mCommandString << "=string" ;
-      co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (uint32_t) (strlen (p->mCommandString) + strlen ("=string")) ;
+      for (uint32_t i=0 ; i<2 ; i++) {
+        if (i != 0) {
+          co << " " ;
+        }
+        co.setForeColor (kBlueForeColor) ;
+        co.setTextAttribute (kBoldTextAttribute) ;
+        co << "--" << p->mCommandString << "=string" ;
+        co.setTextAttribute (kAllAttributesOff) ;
+      }
+      co << " ...\n" ;
     }
-    if (charCount > inDisplayLength) {
-      co << "\n" ;
-      charCount = 0 ;
-    }
-    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
-      co << " " ;
-    }
+    co << "    " << p->mComment  << "\n" ;
     p = p->mNext ;
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::releaseStrings (void) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -167,11 +163,11 @@ void C_StringListCommandLineOption::releaseStrings (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gReleaseStringList (NULL, C_StringListCommandLineOption::releaseStrings) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -182,7 +178,7 @@ void C_StringListCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_S
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 utf32 C_StringListCommandLineOption::getStringOptionInvocationLetter (const C_String & inDomainName,
                                                                       const C_String & inIdentifier) {
@@ -197,7 +193,7 @@ utf32 C_StringListCommandLineOption::getStringOptionInvocationLetter (const C_St
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_StringListCommandLineOption::getStringOptionInvocationString (const C_String & inDomainName,
                                                                          const C_String & inIdentifier) {
@@ -212,7 +208,7 @@ C_String C_StringListCommandLineOption::getStringOptionInvocationString (const C
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_StringListCommandLineOption::getStringOptionCommentString (const C_String & inDomainName,
                                                                       const C_String & inIdentifier) {
@@ -227,4 +223,4 @@ C_String C_StringListCommandLineOption::getStringOptionCommentString (const C_St
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

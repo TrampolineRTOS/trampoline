@@ -1,24 +1,22 @@
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//  Routine 'F_Analyze_CLI_Options' : a way for automatic command line options analysis for MacOS, Win32 and Unix.                                                                   *
-//                                                                                                                     *
-//  This file is part of libpm library                                                                                 *
-//                                                                                                                     *
-//  Copyright (C) 2001, ..., 2015 Pierre Molinaro.                                                                     *
-//                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
-//                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
-//                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
-//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
-//  any later version.                                                                                                 *
-//                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
-//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
-//  more details.                                                                                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//  Routine 'F_Analyze_CLI_Options' : a way for automatic command line options analysis for MacOS, Win32 and Unix.     *
+//
+//  This file is part of libpm library                                                           
+//
+//  Copyright (C) 2001, ..., 2017 Pierre Molinaro.
+//
+//  e-mail : pierre@pcmolinaro.name
+//
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
+//  any later version.
+//
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+//  more details.
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "command_line_interface/C_BoolCommandLineOption.h"
@@ -29,54 +27,49 @@
 #include "streams/C_ConsoleOut.h"
 #include "files/C_FileManager.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef COMPILE_FOR_WINDOWS
   #error COMPILE_FOR_WINDOWS is undefined
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   #include <windows.h>
   #include <direct.h>
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                        C O C O A   O U T P U T                                                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//                        C O C O A   O U T P U T                                                
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gCocoaOutput = false ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool cocoaOutput (void) {
   return gCocoaOutput ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-
-static const uint32_t kDisplayLength = 20 ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 const char * galgasVersionString (void) {
-  return "3.2.15" ;
+  return "GALGASBETAVERSION" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     print_usage                                                                                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     print_usage                                                                               
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void print_usage (int argv, const char * argc []) {
   co.setForeColor (kMagentaForeColor) ;
@@ -93,25 +86,25 @@ static void print_usage (int argv, const char * argc []) {
   co << " file...\n" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     print_options                                                                                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     print_options                                                                             
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void print_option_list (void) {
   printf ("*** Available command line options:\n") ;
-  C_BoolCommandLineOption::printBoolOptions (kDisplayLength) ;
-  C_UIntCommandLineOption::printUIntOptions (kDisplayLength) ;
-  C_StringCommandLineOption::printStringOptions (kDisplayLength) ;
-  C_StringListCommandLineOption::printStringOptions (kDisplayLength) ;
+  C_BoolCommandLineOption::printBoolOptions () ;
+  C_UIntCommandLineOption::printUIntOptions () ;
+  C_StringCommandLineOption::printStringOptions () ;
+  C_StringListCommandLineOption::printStringOptions () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     print_help                                                                                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     print_help                                                                                
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void print_help (int argv,
                         const char * argc [],
@@ -142,10 +135,10 @@ static void print_help (int argv,
   co << "Options:\n" ;
   co.setTextAttribute (kAllAttributesOff) ;
   co << "You can place options anywhere in the command line: they will be executed before the files are processed.\n" ;
-  C_BoolCommandLineOption::printBoolOptions (kDisplayLength) ;
-  C_UIntCommandLineOption::printUIntOptions (kDisplayLength) ;
-  C_StringCommandLineOption::printStringOptions (kDisplayLength) ;
-  C_StringListCommandLineOption::printStringOptions (kDisplayLength) ;
+  C_BoolCommandLineOption::printBoolOptions () ;
+  C_UIntCommandLineOption::printUIntOptions () ;
+  C_StringCommandLineOption::printStringOptions () ;
+  C_StringListCommandLineOption::printStringOptions () ;
 
   int32_t extensionIndex = 0 ;
   while (inExtensions [extensionIndex] != NULL) {
@@ -162,6 +155,7 @@ static void print_help (int argv,
     co << "." << inExtensions [extensionIndex] ;
     co.setTextAttribute (kAllAttributesOff) ;
     const uint32_t extensionLength = (uint32_t) (strlen (inExtensions [extensionIndex]) & UINT32_MAX) ;
+    const uint32_t kDisplayLength = 20 ;
     if (extensionLength < kDisplayLength) {
       for (uint32_t i=extensionLength ; i<kDisplayLength ; i++) {
         co << " " ;
@@ -175,11 +169,11 @@ static void print_help (int argv,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     Command line option beginning with a single '-'                                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     Command line option beginning with a single '-'                                           
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void option_beginning_with_single_minus_sign (const char * inCommand,
                                                      bool & outOk) {
@@ -217,11 +211,11 @@ static void option_beginning_with_single_minus_sign (const char * inCommand,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     Command line option beginning with '--'                                                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     Command line option beginning with '--'                                                   
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void option_beginning_with_double_minus_sign (const char * inCommand,
                                                      bool & outFound) {
@@ -248,11 +242,11 @@ static void option_beginning_with_double_minus_sign (const char * inCommand,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     analyze_one_option                                                                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     analyze_one_option                                                                        
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 static void analyze_one_option (const char * inCommand,
                                 TC_UniqueArray <C_String> & outSourceFileArray,
@@ -302,7 +296,7 @@ static void analyze_one_option (const char * inCommand,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #if COMPILE_FOR_WINDOWS == 1
   static void getSourceFileFromWin32OpenDialog (TC_UniqueArray <C_String> & outSourceFileArray,
@@ -362,11 +356,11 @@ static void analyze_one_option (const char * inCommand,
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//     F_Analyze_CLI_Options                                                                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//     F_Analyze_CLI_Options                                                                     
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void F_Analyze_CLI_Options (const int argv,
                             const char * argc [],
@@ -414,4 +408,4 @@ void F_Analyze_CLI_Options (const int argv,
   #endif
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

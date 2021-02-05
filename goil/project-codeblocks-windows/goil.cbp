@@ -27,7 +27,8 @@
      <Add option="-Wall" />
      <Add option="-W" />
      <Add option="-DDO_NOT_GENERATE_CHECKINGS" />
-<Add option="-D_WIN32_WINNT=0x501" />    </Compiler>
+     <Add option="-D_WIN32_WINNT=0x501" />
+    </Compiler>
    </Target>
    <Target title="Debug">
     <Option platforms="Windows;" />
@@ -50,7 +51,8 @@
      <Add option="-Wshadow" />
      <Add option="-Wall" />
      <Add option="-W" />
-<Add option="-D_WIN32_WINNT=0x501" />    </Compiler>
+     <Add option="-D_WIN32_WINNT=0x501" />
+    </Compiler>
    </Target>
   </Build>
   <VirtualTargets>
@@ -63,11 +65,11 @@
   </Compiler>
   <Linker>
    <Add library="Ws2_32" />
-   <Add library="Comdlg32" />  </Linker>
+   <Add library="Comdlg32" />
+  </Linker>
   <Unit filename="../build/libpm/all-libpm.cpp" />
   <Unit filename="../build/libpm/galgas2/all-galgas.cpp" />
   <Unit filename="../build/libpm/galgas2/C_galgas_quiet_option.cpp" />
-  <Unit filename="../build/output/all-declarations-12.cpp" />
   <Unit filename="../build/output/all-declarations-11.cpp" />
   <Unit filename="../build/output/all-declarations-10.cpp" />
   <Unit filename="../build/output/all-declarations-9.cpp" />
@@ -81,7 +83,6 @@
   <Unit filename="../build/output/all-declarations-1.cpp" />
   <Unit filename="../build/output/all-declarations-0.cpp" />
   <Unit filename="../build/output/all-predefined-types.cpp" />
-
   <Unit filename="../build/libpm/gmp/32-mp_bases.c" />
   <Unit filename="../build/libpm/gmp/64-mp_bases.c" />
   <Unit filename="../build/libpm/gmp/mpn-add.c" />
@@ -193,8 +194,8 @@
   <Unit filename="../build/libpm/gmp/root-mp_bpl.c" />
   <Unit filename="../build/libpm/gmp/root-mp_clz_tab.c" />
   <Unit filename="../build/libpm/gmp/root-mp_dv_tab.c" />
-  <Unit filename="../build/libpm/gmp/root-mp_minv_tab.c" />" />" />
-  <Unit filename="../build/libpm/gmp/root-tal-notreent.c"
+  <Unit filename="../build/libpm/gmp/root-mp_minv_tab.c" />
+  <Unit filename="../build/libpm/gmp/root-tal-notreent.c" />
   <Extensions>
    <code_completion />
    <envvars />

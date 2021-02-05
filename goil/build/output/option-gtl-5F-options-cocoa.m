@@ -2,17 +2,17 @@
 
 
 //--- END OF USER ZONE 1
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "option-gtl-5F-options-cocoa.h"
 #import "OC_GGS_CommandLineOption.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterOptionsFor_gtl_5F_options (NSMutableArray * ioBoolOptionArray,
-                                                       NSMutableArray * ioUIntOptionArray,
-                                                       NSMutableArray * ioStringOptionArray,
-                                                       NSMutableArray * ioStringListOptionArray) {
+                                     NSMutableArray * ioUIntOptionArray,
+                                     NSMutableArray * ioStringOptionArray,
+                                     NSMutableArray * ioStringListOptionArray) {
   OC_GGS_CommandLineOption * option ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"gtl_options"
@@ -34,7 +34,7 @@ void enterOptionsFor_gtl_5F_options (NSMutableArray * ioBoolOptionArray,
   [ioBoolOptionArray addObject:option] ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 //--- START OF USER ZONE 2
 

@@ -41,12 +41,14 @@ see https://www.gnu.org/licenses/.  */
 
 // http://nadeausoftware.com/articles/2011/12/c_c_tip_how_list_compiler_predefined_macros
 
-#ifndef __GMP_IMPL_H__
-#define __GMP_IMPL_H__
+#pragma once
+//#ifndef __GMP_IMPL_H__
+//#define __GMP_IMPL_H__
 
-#if __clang_major__ > 3
+#if defined (__clang_major__) && (__clang_major__ > 3)
   #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
+
 #if defined (__GNUC__) && ! defined (__APPLE__)
   #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
@@ -61,7 +63,7 @@ see https://www.gnu.org/licenses/.  */
 #pragma GCC diagnostic ignored "-Wpointer-arith"
 #pragma GCC diagnostic ignored "-Wundef"
 #if __GNUC__ < 6
-  #pragma GCC diagnostic ignored "-Werror"
+  // #pragma GCC diagnostic ignored "-Werror"
   #pragma GCC diagnostic error "-w"
 #endif
 
@@ -484,7 +486,7 @@ struct tmp_debug_t {
 };
 struct tmp_debug_entry_t {
   struct tmp_debug_entry_t  *next;
-  char                      *block;
+  charblock;
   size_t                    size;
 };
 __GMP_DECLSPEC void  __gmp_tmp_debug_mark (const char *, int, struct tmp_debug_t **,
@@ -5264,4 +5266,4 @@ extern const struct doprnt_funs_t  __gmp_asprintf_funs_noformat;
 
 #endif /* __cplusplus */
 
-#endif /* __GMP_IMPL_H__ */
+//#endif /* __GMP_IMPL_H__ */

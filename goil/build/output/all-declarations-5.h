@@ -1,19 +1,18 @@
-#ifndef all_2D_declarations_2D__35__ENTITIES_DEFINED
-#define all_2D_declarations_2D__35__ENTITIES_DEFINED
+#pragma once
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-predefined-types.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-declarations-4.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                     @void class                                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void : public GALGAS_object_5F_t {
 //--- Constructor
@@ -53,21 +52,23 @@ class GALGAS_void : public GALGAS_object_5F_t {
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Pointer class for @void class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void : public cPtr_object_5F_t {
 //--- Attributes
@@ -91,57 +92,57 @@ class cPtr_void : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension setter '@impType setDefaultValue'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension setter '@impType setDefValue'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*extensionSetterSignature_impType_setDefaultValue) (class cPtr_impType * inObject,
-                                                                  class GALGAS_object_5F_t inArgument0,
-                                                                  class C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_impType_setDefValue) (class cPtr_impType * inObject,
+                                                              class GALGAS_object_5F_t inArgument0,
+                                                              class C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterExtensionSetter_setDefaultValue (const int32_t inClassIndex,
-                                           extensionSetterSignature_impType_setDefaultValue inModifier) ;
+void enterExtensionSetter_setDefValue (const int32_t inClassIndex,
+                                       extensionSetterSignature_impType_setDefValue inModifier) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void callExtensionSetter_setDefaultValue (class cPtr_impType * inObject,
-                                          GALGAS_object_5F_t in_inDefaultValue,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) ;
+void callExtensionSetter_setDefValue (class cPtr_impType * inObject,
+                                      GALGAS_object_5F_t in_inDefaultValue,
+                                      C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension method '@impAutoDefaultType setDefault'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@impAutoDefaultType setDefault'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_impAutoDefaultType_setDefault) (const class cPtr_impAutoDefaultType * inObject,
                                                                         class GALGAS_objectAttributes & ioArgument0,
                                                                         class C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_setDefault (const int32_t inClassIndex,
                                       extensionMethodSignature_impAutoDefaultType_setDefault inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_setDefault (const class cPtr_impAutoDefaultType * inObject,
                                      GALGAS_objectAttributes & io_attributes,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                   @refType class                                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @refType class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_refType : public GALGAS_impType {
 //--- Constructor
@@ -176,6 +177,9 @@ class GALGAS_refType : public GALGAS_impType {
   public : typeComparisonResult objectCompare (const GALGAS_refType & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setRef (class GALGAS_lstring inArgument0
+                                                COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -184,21 +188,23 @@ class GALGAS_refType : public GALGAS_impType {
   public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_ref (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_refType class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_refType ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Pointer class for @refType class                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @refType class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_refType : public cPtr_impType {
 //--- Attributes
@@ -218,6 +224,7 @@ class cPtr_refType : public cPtr_impType {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_ref (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setRef (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -228,129 +235,34 @@ class cPtr_refType : public cPtr_impType {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                @impRangedType class                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_impRangedType : public GALGAS_impAutoDefaultType {
-//--- Constructor
-  public : GALGAS_impRangedType (void) ;
-
-//---
-  public : inline const class cPtr_impRangedType * ptr (void) const { return (const cPtr_impRangedType *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_impRangedType (const cPtr_impRangedType * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_impRangedType extractObject (const GALGAS_object & inObject,
-                                                      C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_impRangedType constructor_new (const class GALGAS_locationList & inOperand0,
-                                                              const class GALGAS_dataType & inOperand1,
-                                                              const class GALGAS_lstring & inOperand2,
-                                                              const class GALGAS_bool & inOperand3,
-                                                              const class GALGAS_lstringlist & inOperand4,
-                                                              const class GALGAS_bool & inOperand5,
-                                                              const class GALGAS_object_5F_t & inOperand6,
-                                                              const class GALGAS_attributeRange & inOperand7
-                                                              COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_impRangedType & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_attributeRange getter_setOrRange (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_impRangedType class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impRangedType ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Pointer class for @impRangedType class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_impRangedType : public cPtr_impAutoDefaultType {
-//--- Attributes
-  public : GALGAS_attributeRange mProperty_setOrRange ;
-
-//--- Constructor
-  public : cPtr_impRangedType (const GALGAS_locationList & in_locations,
-                               const GALGAS_dataType & in_type,
-                               const GALGAS_lstring & in_name,
-                               const GALGAS_bool & in_multiple,
-                               const GALGAS_lstringlist & in_descs,
-                               const GALGAS_bool & in_withAuto,
-                               const GALGAS_object_5F_t & in_defaultValue,
-                               const GALGAS_attributeRange & in_setOrRange
-                               COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_attributeRange getter_setOrRange (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Extension getter '@implementationObject mergeImplementationObjectWith'                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@implementationObject mergeImplementationObjectWith'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_implementationObject (*enterExtensionGetter_implementationObject_mergeImplementationObjectWith) (const class cPtr_implementationObject * inObject,
                                                                                                                       const class GALGAS_implementationObject constinArgument0,
                                                                                                                       C_Compiler * inCompiler
                                                                                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_mergeImplementationObjectWith (const int32_t inClassIndex,
                                                          enterExtensionGetter_implementationObject_mergeImplementationObjectWith inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_implementationObject callExtensionGetter_mergeImplementationObjectWith (const cPtr_implementationObject * inObject,
                                                                                      const GALGAS_implementationObject constin_objToMerge,
                                                                                      class C_Compiler * inCompiler
                                                                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @uint_33__32__5F_class class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_33__32__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_uint_33__32__5F_class : public GALGAS_object_5F_t {
 //--- Constructor
@@ -385,6 +297,9 @@ class GALGAS_uint_33__32__5F_class : public GALGAS_object_5F_t {
   public : typeComparisonResult objectCompare (const GALGAS_uint_33__32__5F_class & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_uint inArgument0
+                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -393,21 +308,23 @@ class GALGAS_uint_33__32__5F_class : public GALGAS_object_5F_t {
   public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_value (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_uint_33__32__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @uint32_class class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint32_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_uint_33__32__5F_class : public cPtr_object_5F_t {
 //--- Attributes
@@ -424,6 +341,7 @@ class cPtr_uint_33__32__5F_class : public cPtr_object_5F_t {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_uint getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -434,11 +352,11 @@ class cPtr_uint_33__32__5F_class : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @sint_33__32__5F_class class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @sint_33__32__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_sint_33__32__5F_class : public GALGAS_object_5F_t {
 //--- Constructor
@@ -473,6 +391,9 @@ class GALGAS_sint_33__32__5F_class : public GALGAS_object_5F_t {
   public : typeComparisonResult objectCompare (const GALGAS_sint_33__32__5F_class & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_sint inArgument0
+                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -481,21 +402,23 @@ class GALGAS_sint_33__32__5F_class : public GALGAS_object_5F_t {
   public : VIRTUAL_IN_DEBUG class GALGAS_sint getter_value (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_sint_33__32__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @sint32_class class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint32_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_sint_33__32__5F_class : public cPtr_object_5F_t {
 //--- Attributes
@@ -512,6 +435,7 @@ class cPtr_sint_33__32__5F_class : public cPtr_object_5F_t {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_sint getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_sint inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -522,11 +446,11 @@ class cPtr_sint_33__32__5F_class : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @uint_36__34__5F_class class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_36__34__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_uint_36__34__5F_class : public GALGAS_object_5F_t {
 //--- Constructor
@@ -561,6 +485,9 @@ class GALGAS_uint_36__34__5F_class : public GALGAS_object_5F_t {
   public : typeComparisonResult objectCompare (const GALGAS_uint_36__34__5F_class & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_uint_36__34_ inArgument0
+                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -569,21 +496,23 @@ class GALGAS_uint_36__34__5F_class : public GALGAS_object_5F_t {
   public : VIRTUAL_IN_DEBUG class GALGAS_uint_36__34_ getter_value (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_uint_36__34__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @uint64_class class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint64_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_uint_36__34__5F_class : public cPtr_object_5F_t {
 //--- Attributes
@@ -600,6 +529,7 @@ class cPtr_uint_36__34__5F_class : public cPtr_object_5F_t {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_uint_36__34_ inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -610,11 +540,11 @@ class cPtr_uint_36__34__5F_class : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @sint_36__34__5F_class class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @sint_36__34__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_sint_36__34__5F_class : public GALGAS_object_5F_t {
 //--- Constructor
@@ -649,6 +579,9 @@ class GALGAS_sint_36__34__5F_class : public GALGAS_object_5F_t {
   public : typeComparisonResult objectCompare (const GALGAS_sint_36__34__5F_class & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_sint_36__34_ inArgument0
+                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -657,21 +590,23 @@ class GALGAS_sint_36__34__5F_class : public GALGAS_object_5F_t {
   public : VIRTUAL_IN_DEBUG class GALGAS_sint_36__34_ getter_value (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_sint_36__34__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @sint64_class class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint64_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_sint_36__34__5F_class : public cPtr_object_5F_t {
 //--- Attributes
@@ -688,6 +623,7 @@ class cPtr_sint_36__34__5F_class : public cPtr_object_5F_t {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_sint_36__34_ getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_sint_36__34_ inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -698,11 +634,11 @@ class cPtr_sint_36__34__5F_class : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                @float_5F_class class                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @float_5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_float_5F_class : public GALGAS_object_5F_t {
 //--- Constructor
@@ -737,6 +673,9 @@ class GALGAS_float_5F_class : public GALGAS_object_5F_t {
   public : typeComparisonResult objectCompare (const GALGAS_float_5F_class & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_double inArgument0
+                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -745,21 +684,23 @@ class GALGAS_float_5F_class : public GALGAS_object_5F_t {
   public : VIRTUAL_IN_DEBUG class GALGAS_double getter_value (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_float_5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_float_5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @float_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @float_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_float_5F_class : public cPtr_object_5F_t {
 //--- Attributes
@@ -776,6 +717,7 @@ class cPtr_float_5F_class : public cPtr_object_5F_t {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_double getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_double inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -786,11 +728,11 @@ class cPtr_float_5F_class : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                  @bool_5F_t class                                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @bool_5F_t class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool_5F_t : public GALGAS_object_5F_t {
 //--- Constructor
@@ -825,6 +767,9 @@ class GALGAS_bool_5F_t : public GALGAS_object_5F_t {
   public : typeComparisonResult objectCompare (const GALGAS_bool_5F_t & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_bool inArgument0
+                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -833,21 +778,23 @@ class GALGAS_bool_5F_t : public GALGAS_object_5F_t {
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_value (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_bool_5F_t class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bool_5F_t ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Pointer class for @bool_t class                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @bool_t class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_bool_5F_t : public cPtr_object_5F_t {
 //--- Attributes
@@ -864,6 +811,7 @@ class cPtr_bool_5F_t : public cPtr_object_5F_t {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_bool getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -874,11 +822,11 @@ class cPtr_bool_5F_t : public cPtr_object_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_uint_33__32__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_uint_33__32__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_uint_33__32__5F_class : public GALGAS_uint_33__32__5F_class {
 //--- Constructor
@@ -919,21 +867,23 @@ class GALGAS_void_5F_uint_33__32__5F_class : public GALGAS_uint_33__32__5F_class
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_uint_33__32__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_uint_33__32__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_uint32_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_uint32_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_uint_33__32__5F_class : public cPtr_uint_33__32__5F_class {
 //--- Attributes
@@ -958,11 +908,11 @@ class cPtr_void_5F_uint_33__32__5F_class : public cPtr_uint_33__32__5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_sint_33__32__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_sint_33__32__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_sint_33__32__5F_class : public GALGAS_sint_33__32__5F_class {
 //--- Constructor
@@ -1003,21 +953,23 @@ class GALGAS_void_5F_sint_33__32__5F_class : public GALGAS_sint_33__32__5F_class
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_sint_33__32__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_sint_33__32__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_sint32_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_sint32_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_sint_33__32__5F_class : public cPtr_sint_33__32__5F_class {
 //--- Attributes
@@ -1042,11 +994,11 @@ class cPtr_void_5F_sint_33__32__5F_class : public cPtr_sint_33__32__5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_uint_36__34__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_uint_36__34__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_uint_36__34__5F_class : public GALGAS_uint_36__34__5F_class {
 //--- Constructor
@@ -1087,21 +1039,23 @@ class GALGAS_void_5F_uint_36__34__5F_class : public GALGAS_uint_36__34__5F_class
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_uint_36__34__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_uint_36__34__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_uint64_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_uint64_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_uint_36__34__5F_class : public cPtr_uint_36__34__5F_class {
 //--- Attributes
@@ -1126,11 +1080,11 @@ class cPtr_void_5F_uint_36__34__5F_class : public cPtr_uint_36__34__5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_sint_36__34__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_sint_36__34__5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_sint_36__34__5F_class : public GALGAS_sint_36__34__5F_class {
 //--- Constructor
@@ -1171,21 +1125,23 @@ class GALGAS_void_5F_sint_36__34__5F_class : public GALGAS_sint_36__34__5F_class
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_sint_36__34__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_sint_36__34__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_sint64_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_sint64_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_sint_36__34__5F_class : public cPtr_sint_36__34__5F_class {
 //--- Attributes
@@ -1210,11 +1166,11 @@ class cPtr_void_5F_sint_36__34__5F_class : public cPtr_sint_36__34__5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @void_5F_float_5F_class class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_float_5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_float_5F_class : public GALGAS_float_5F_class {
 //--- Constructor
@@ -1255,21 +1211,23 @@ class GALGAS_void_5F_float_5F_class : public GALGAS_float_5F_class {
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_float_5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_float_5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Pointer class for @void_float_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_float_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_float_5F_class : public cPtr_float_5F_class {
 //--- Attributes
@@ -1294,11 +1252,11 @@ class cPtr_void_5F_float_5F_class : public cPtr_float_5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           @void_5F_string_5F_class class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_string_5F_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_string_5F_class : public GALGAS_string_5F_class {
 //--- Constructor
@@ -1339,21 +1297,23 @@ class GALGAS_void_5F_string_5F_class : public GALGAS_string_5F_class {
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_string_5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_string_5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_string_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_string_class class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_string_5F_class : public cPtr_string_5F_class {
 //--- Attributes
@@ -1378,11 +1338,11 @@ class cPtr_void_5F_string_5F_class : public cPtr_string_5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              @void_5F_bool_5F_t class                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @void_5F_bool_5F_t class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_bool_5F_t : public GALGAS_bool_5F_t {
 //--- Constructor
@@ -1423,21 +1383,23 @@ class GALGAS_void_5F_bool_5F_t : public GALGAS_bool_5F_t {
 
 //--------------------------------- Getters
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_void_5F_bool_5F_t class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_bool_5F_t ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @void_bool_t class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @void_bool_t class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_bool_5F_t : public cPtr_bool_5F_t {
 //--- Attributes
@@ -1462,11 +1424,11 @@ class cPtr_void_5F_bool_5F_t : public cPtr_bool_5F_t {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                  @oil_5F_obj class                                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @oil_5F_obj class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_oil_5F_obj : public AC_GALGAS_class {
 //--- Constructor
@@ -1492,6 +1454,9 @@ class GALGAS_oil_5F_obj : public AC_GALGAS_class {
   public : typeComparisonResult objectCompare (const GALGAS_oil_5F_obj & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setDesc (class GALGAS_lstring inArgument0
+                                                 COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -1500,21 +1465,23 @@ class GALGAS_oil_5F_obj : public AC_GALGAS_class {
   public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_desc (LOCATION_ARGS) const ;
 
 
+//--------------------------------- Optional Methods
+
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
  
 } ; // End of GALGAS_oil_5F_obj class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_oil_5F_obj ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Pointer class for @oil_obj class                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @oil_obj class
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_oil_5F_obj : public acPtr_class {
 //--- Attributes
@@ -1526,6 +1493,7 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_desc (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setDesc (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const = 0 ;
@@ -1536,114 +1504,114 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Extension getter '@applicationDefinition applicationWithDefaults'                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension getter '@applicationDefinition applicationWithDefaults'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef class GALGAS_applicationDefinition (*enterExtensionGetter_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
                                                                                                                   const class GALGAS_implementation constinArgument0,
                                                                                                                   C_Compiler * inCompiler
                                                                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+ 
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionGetter_applicationWithDefaults (const int32_t inClassIndex,
                                                    enterExtensionGetter_applicationDefinition_applicationWithDefaults inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
                                                                                 const GALGAS_implementation constin_imp,
                                                                                 class C_Compiler * inCompiler
                                                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension method '@impType verifyApplication'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@impType verifyApplication'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_impType_verifyApplication) (const class cPtr_impType * inObject,
                                                                     const class GALGAS_objectAttributes constinArgument0,
                                                                     class C_Compiler * inCompiler
                                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
                                              extensionMethodSignature_impType_verifyApplication inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyApplication (const class cPtr_impType * inObject,
                                             const GALGAS_objectAttributes constin_attrs,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension method '@impType verifyMultipleType'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@impType verifyMultipleType'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_impType_verifyMultipleType) (const class cPtr_impType * inObject,
                                                                      const class GALGAS_object_5F_t constinArgument0,
                                                                      class C_Compiler * inCompiler
                                                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_verifyMultipleType (const int32_t inClassIndex,
                                               extensionMethodSignature_impType_verifyMultipleType inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyMultipleType (const class cPtr_impType * inObject,
                                              const GALGAS_object_5F_t constin_attr,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension method '@impType verifyType'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@impType verifyType'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_impType_verifyType) (const class cPtr_impType * inObject,
                                                              const class GALGAS_object_5F_t constinArgument0,
                                                              class C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_verifyType (const int32_t inClassIndex,
                                       extensionMethodSignature_impType_verifyType inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyType (const class cPtr_impType * inObject,
                                      const GALGAS_object_5F_t constin_attr,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension method '@objectsMap verifyCrossReferences'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@objectsMap verifyCrossReferences'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void extensionMethod_verifyCrossReferences (const class GALGAS_objectsMap inObject,
                                             const class GALGAS_implementation constin_imp,
                                             class C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension method '@objectKind verifyCrossReferences'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@objectKind verifyCrossReferences'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_objectKind_verifyCrossReferences) (const class cPtr_objectKind * inObject,
                                                                            const class GALGAS_objectsMap constinArgument0,
@@ -1651,12 +1619,12 @@ typedef void (*extensionMethodSignature_objectKind_verifyCrossReferences) (const
                                                                            class C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
                                                  extensionMethodSignature_objectKind_verifyCrossReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyCrossReferences (const class cPtr_objectKind * inObject,
                                                 const GALGAS_objectsMap constin_allObjects,
@@ -1664,45 +1632,45 @@ void callExtensionMethod_verifyCrossReferences (const class cPtr_objectKind * in
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Extension method '@applicationDefinition verifyCrossReferences'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Extension method '@applicationDefinition verifyCrossReferences'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef void (*extensionMethodSignature_applicationDefinition_verifyCrossReferences) (const class cPtr_applicationDefinition * inObject,
                                                                                       const class GALGAS_implementation constinArgument0,
                                                                                       class C_Compiler * inCompiler
                                                                                       COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
                                                  extensionMethodSignature_applicationDefinition_verifyCrossReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyCrossReferences (const class cPtr_applicationDefinition * inObject,
                                                 const GALGAS_implementation constin_imp,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Function 'attributeRangeWithNumberList'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'attributeRangeWithNumberList'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_attributeRange function_attributeRangeWithNumberList (const class GALGAS_numberList & constinArgument0,
                                                                    const class GALGAS_dataType & constinArgument1,
                                                                    class C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Function 'buildRange'                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'buildRange'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_attributeRange function_buildRange (const class GALGAS_dataType & constinArgument0,
                                                  const class GALGAS_object_5F_t & constinArgument1,
@@ -1710,11 +1678,11 @@ class GALGAS_attributeRange function_buildRange (const class GALGAS_dataType & c
                                                  class C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Function 'checkNewTypeWithinPreviousType'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'checkNewTypeWithinPreviousType'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool function_checkNewTypeWithinPreviousType (const class GALGAS_lstring & constinArgument0,
                                                            const class GALGAS_impType & constinArgument1,
@@ -1722,9 +1690,9 @@ class GALGAS_bool function_checkNewTypeWithinPreviousType (const class GALGAS_ls
                                                            class C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  GRAMMAR goil_implementation_level_include
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cGrammar_goil_5F_implementation_5F_level_5F_include : public cParser_goil_5F_syntax,
                                                             public cParser_implementation_5F_parser {
@@ -2172,10 +2140,10 @@ class cGrammar_goil_5F_implementation_5F_level_5F_include : public cParser_goil_
   public : virtual int32_t select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 //  GRAMMAR goil_type_level_include
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cGrammar_goil_5F_type_5F_level_5F_include : public cParser_goil_5F_syntax,
                                                   public cParser_implementation_5F_parser {
@@ -2623,15 +2591,14 @@ class cGrammar_goil_5F_type_5F_level_5F_include : public cParser_goil_5F_syntax,
   public : virtual int32_t select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                Routine 'verifyEnum'                                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'verifyEnum'
+//
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_verifyEnum (const class GALGAS_impType constinArgument0,
                          class C_Compiler * inCompiler
                          COMMA_LOCATION_ARGS) ;
 
-#endif
