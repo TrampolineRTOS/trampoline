@@ -60,7 +60,9 @@ end if
 #---     produced. This is done by the build.py file.
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
+
 import sys, os, subprocess, string, distutils.spawn
+from string import Template
 
 #--- Add some function for Python3 support
 
@@ -102,10 +104,10 @@ make = makefile.Make(goal)
 #----------------------------------------------------------------------
 #--- Various variables used after
 #----------------------------------------------------------------------
-compiler = "% !OS::BUILD_S::COMPILER %"
-cppCompiler = "% !OS::BUILD_S::CPPCOMPILER %"
-linker = "% !OS::BUILD_S::LINKER %"
-assembler = "% !OS::BUILD_S::ASSEMBLER %"
+compiler = r"% !OS::BUILD_S::COMPILER %"
+cppCompiler = r"% !OS::BUILD_S::CPPCOMPILER %"
+linker = r"% !OS::BUILD_S::LINKER %"
+assembler = r"% !OS::BUILD_S::ASSEMBLER %"
 autosar = % ! TrueFalse(AUTOSAR) %
 autosar_sc = % !OS::SCALABILITYCLASS %
 autosar_osapplications = % !TrueFalse(OS::SCALABILITYCLASS == 3 | OS::SCALABILITYCLASS == 4) %
@@ -264,7 +266,7 @@ foreach flags in exists OS::BUILD_S::PREASFLAGS default ( @() ) do
 preasflags += "% !flags::VALUE %".split()%
 end foreach
 
-if TARGET != "posix" then
+if [TARGET  leftSubString: 5] != "posix" then
 %
 
 #----------------------------------------------------------------------
@@ -291,10 +293,11 @@ if "gcc" in compiler:
     libcPath = os.path.dirname(procLibc.stdout.readline().strip())
     libgccPath = os.path.dirname(procLibgcc.stdout.readline().strip())
     #--- Add both to linker flags
-    ldflags += ['-L' + libcPath, '-lc']
-    ldflags += ['-L' + libgccPath, '-lgcc']
+    ldflags += ['-L' + bytesdecode(libcPath), '-lc']
+    ldflags += ['-L' + bytesdecode(libgccPath), '-lgcc']
 %
 end if
+
 %
 #----------------------------------------------------------------------
 #--- Build the source files list
@@ -386,6 +389,7 @@ do
 %
 cSourceList.append(projfile.ProjectFile("% !src::VALUE %"))%
 end foreach
+
 foreach src in exists OS::BUILD_S::APP_CPPSRC default ( @() )
 before
 %
@@ -547,7 +551,7 @@ if True:%
 #    end if
     if    command::TYPE == "COPIER" then %
   postCommand = makefile.PostCommand("Generating binary % !outFile % from % !inFile %")
-  postCommand.mCommand.append("% !OS::BUILD_S::COPIER %")%
+  postCommand.mCommand.append(r"% !OS::BUILD_S::COPIER %")%
     elsif command::TYPE == "COMPILER" then
     elsif command::TYPE == "ASSEMBLER" then
     elsif command::TYPE == "LINKER" then
@@ -600,6 +604,14 @@ end foreach
 %
 
 make.runGoal(maxParallelJobs, maxParallelJobs == 1)
+
+postVariableMapping = dict(
+  MACHINE_PATH='% ! MACHINESPATH %',
+  ARCH_PATH='% ! MACHINESPATH + "/" + ARCH %',
+  BOARD_PATH='% ! MACHINESPATH + "/" + TARGET %',
+  TARGET='% ! TARGET %'
+)
+
 %
 foreach pc in exists POSTCOMMAND default ( @() )
   before%
@@ -644,8 +656,10 @@ if make.errorCount() == 0:%
     commandLine += "% !commandLine %"%
     end if
     %
+    commandLineTemplate = Template(commandLine)
+    commandLine = commandLineTemplate.safe_substitute(postVariableMapping)
     if makefile.find_executable("% !cmd::COMMAND %") != None:
-      print(commandLine)
+      print("\033[1m\033[95m% !cmd::MESSAGE % % !OS::BUILD_S::APP_NAME % on % ! TARGET %\033[0m")
       subprocess.call(commandLine, shell=True)
     else:
       print("Command '% !cmd::COMMAND %' not in PATH")%
