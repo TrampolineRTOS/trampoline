@@ -690,18 +690,30 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID) {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_INVALID;
+    #endif
     state = OS_INIT;
   }
   else if (TPL_KERN_REF(kern).running_id >= (TASK_COUNT + ISR_COUNT))
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_IDLE;
+    #endif
     state = OS_IDLE;
   }
   else if (TPL_KERN_REF(kern).running_id < TASK_COUNT)
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_TASK;
+    #endif
     state = OS_TASK;
   }
   else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT) )
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_ISR2;
+    #endif
     state = OS_ISR2;
   }
 
@@ -801,6 +813,9 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 
   if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_NOT_ELECTED_ID;
+    #endif
     /*
      * since running and elected are different, the elected proc
      * is preempted but has not yet run. so it is put
@@ -854,6 +869,9 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 
   if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_STATE_IS_NOT_WAITING;
+    #endif
     /*
      * The running task is preempted, so it is time to call the
      * PostTaskHook while the soon descheduled task is running
@@ -955,6 +973,9 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
    */
   if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_NOT_ELECTED_ID;
+    #endif
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
 #endif
@@ -967,6 +988,9 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 
   if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_ELECTED_STATE_IS_READY_AND_NEW;
+    #endif
     /*
      * the object has not be preempted. So its
      * descriptor must be initialized
@@ -1076,6 +1100,9 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   /* and checked to compute its state. */
   if (TPL_KERN_REF(kern).running->activate_count > 0)
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ACTIVATE_COUNT_NOT_NULL;
+    #endif
     /*
      * there is at least one instance of the dying running object in
      * the ready list. So it is put in the READY_AND_NEW state. This
@@ -1088,6 +1115,9 @@ FUNC(void, OS_CODE) tpl_terminate(void)
     /*  if the object is an extended task, init the events          */
     if (TPL_KERN_REF(kern).running_id < EXTENDED_TASK_COUNT)
     {
+      #if (LEVEL_KERNEL_MONITORING >= 5)
+		reg_OS_instru_kernel_functions_7 = HW_RUNNING_ID_IS_EXTENDED_TASK;
+      #endif
       CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
         tpl_task_events_table[TPL_KERN_REF(kern).running_id];
       events->evt_set = events->evt_wait = 0;
@@ -1097,6 +1127,9 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   }
   else
   {
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_ACTIVATE_COUNT_NULL;
+    #endif
     /*
      * there is no instance of the dying running object in the ready
      * list. So it is put in the SUSPENDED state.
@@ -1648,6 +1681,9 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 #if RESOURCE_COUNT > 0
   /* release resources if held */
   if ((TPL_KERN_REF(kern).running->resources) != NULL){
+      #if (LEVEL_KERNEL_MONITORING >= 5)
+		reg_OS_instru_kernel_functions_7 = HW_RUNNING_RESOURCES_NOT_NULL;
+      #endif
       tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   }
 #endif
@@ -1695,6 +1731,9 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 #if RESOURCE_COUNT > 0
   /* release resources if held */
   if( (TPL_KERN_REF(kern).running->resources) != NULL ){
+    #if (LEVEL_KERNEL_MONITORING >= 5)
+	  reg_OS_instru_kernel_functions_7 = HW_RUNNING_RESOURCES_NOT_NULL;
+    #endif
     tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     result = E_OS_RESOURCE;
   }

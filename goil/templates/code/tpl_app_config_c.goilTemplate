@@ -1168,5 +1168,9 @@ end foreach
 	VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_5 __attribute__((section(".FPGA.OsInstru"))) = 0x00000000;
 	VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_6 __attribute__((section(".FPGA.OsInstru"))) = 0x00000000;
 #endif
+#if (LEVEL_KERNEL_MONITORING >= 5)
+	VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_7 __attribute__((section(".FPGA.OsInstru"))) = 0x00000000;
+	VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_8 __attribute__((section(".FPGA.OsInstru"))) = 0x00000000;
+#endif
 
 /* End of file tpl_app_config.c */

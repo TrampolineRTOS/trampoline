@@ -45,6 +45,11 @@
 #define ALIGNED
 #endif
 
+#if (LEVEL_KERNEL_MONITORING >= 5)
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_7;
+	extern VAR(uint32, TYPEDEF) reg_OS_instru_kernel_functions_8;
+#endif
+
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore.h"
 #endif

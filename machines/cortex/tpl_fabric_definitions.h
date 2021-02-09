@@ -92,6 +92,24 @@
 /*tpl_ctx_switch*/
 	#define ID_CALL_SAVE_ENTER				BIT(2)
 	#define ID_CALL_SAVE_EXIT				BIT(3)
+
+#define AD_REG_OS_INSTRU_KERNEL_FUNCTIONS_7 0x5000001C
+	#define HW_RUNNING_ID_IS_INVALID           BIT(0)	/* tpl_kern.running_id == INVALID_PROC_ID */
+	#define HW_RUNNING_ID_IS_IDLE              BIT(1)	/* tpl_kern.running_id >= TASK_COUNT + ISR_COUNT */
+	#define HW_RUNNING_ID_IS_TASK              BIT(2)	/* tpl_kern.running_id < TASK_COUNT */
+    /* TASK_COUNT <= tpl_kern.running_id < TASK_COUNT+ISR_COUNT */
+	#define HW_RUNNING_ID_IS_ISR2              BIT(3)	
+    /* tpl_kern.running_id != tpl_kern.elected_id */
+	#define HW_RUNNING_ID_IS_NOT_ELECTED_ID    BIT(4)
+	#define HW_RUNNING_STATE_IS_NOT_WAITING    BIT(5) /* tpl_kern.running->state != WAITING */
+	#define HW_ELECTED_STATE_IS_READY_AND_NEW  BIT(6) /* tpl_kern.elected->state == READY_AND_NEW*/
+	#define HW_RUNNING_ACTIVATE_COUNT_NOT_NULL BIT(7) /* tpl_kern.running->activate_count > 0 */
+	#define HW_RUNNING_ID_IS_EXTENDED_TASK     BIT(8) /* tpl_kern.running_id < EXTENDED_TASK_COUNT */
+	#define HW_RUNNING_ID_IS_EXTENDED_TASK     BIT(8) /* tpl_kern.running_id < EXTENDED_TASK_COUNT */
+	#define HW_RUNNING_RESOURCES_NOT_NULL      BIT(9) /* tpl_kern.running->resources != NULL */
+
+#define AD_REG_OS_INSTRU_KERNEL_FUNCTIONS_8 0x50000020
+	#define HW_RUNNING_ACTIVATE_COUNT_NULL     BIT(0) /* tpl_kern.running->activate_count == 0 */
 /*********************************************************************************************************************************************/
 
 
