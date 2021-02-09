@@ -81,6 +81,39 @@ let TRANSACTION := exists TRANSACTION default (@())
 let OBJECT := exists OBJECT default (@())
 let SPINLOCK := exists SPINLOCK default (@())
 
+#--------------------------------------------------------------------
+#add checkpointing specific part - MSP430 support only for now
+#  - should be here because one can only deal
+#  with a copy of data structures in included files 21/2/2)
+#  - it adds manually periodic checkpointing task
+if exists OS::CHECKPOINTING default (false) then
+  let task_tpl_chkpt_energy := @{
+    ACTIVATION :1,
+    AUTOSTART:true,
+    AUTOSTART_S :@{APPMODE :@(@{VALUE :"Std"})},
+    NAME :"task_tpl_chkpt_energy",
+    PRIORITY : 6,
+    SCHEDULE : "FULL",
+    STACKSIZE : 100} #may be updated
+  let TASK := TASK + task_tpl_chkpt_energy
+  let alarm_tpl_chkpt_energy := @{
+    ACTION :"ACTIVATETASK",
+    ACTION_S : @{TASK : "task_tpl_chkpt_energy"},
+    AUTOSTART : true,
+    AUTOSTART_S : @{
+      ALARMTIME :OS::CHECKPOINTING_S::CYCLETIME,
+      CYCLETIME :OS::CHECKPOINTING_S::CYCLETIME,
+      APPMODE :@(@{VALUE :"Std"})},
+    COUNTER : "SystemCounter",
+    NAME : "alarm_tpl_chkpt_energy"
+  }
+  let ALARM := ALARM + alarm_tpl_chkpt_energy
+end if
+
+
+# end of checkpointing specific part.
+#--------------------------------------------------------------------
+
 template if exists configCheck
 
 let ioc_queued_list := @()

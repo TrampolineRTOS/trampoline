@@ -16,17 +16,15 @@
 #include "tpl_os.h"
 #include "tpl_clocks.h"
 #include "msp430.h"
-#include "tpl_chkpt_checkpoint_kernel.h"
+#include "tpl_app_define.h"
+#if WITH_CHECKPOINTING == YES
+#  include "tpl_chkpt_checkpoint_kernel.h"
+#  include "tpl_chkpt_io.h"
+#  include "tpl_chkpt_adc.h"
+#endif
 
 extern int main (void);
 extern int restart_main (void);
-
-extern void framUpWrite8(const uint16 address, const uint8 data);
-extern void framUpWrite16(const uint16 address, const uint16 data);
-extern uint8 framUpRead8(const uint16 address);
-extern uint16 framUpRead16(const uint16 address);
-extern void tpl_save_checkpoint(const uint16 buffer);
-extern void tpl_load_checkpoint(const uint16 buffer);
 
 /*
  * Lower MPU boundary defined in link script
@@ -85,26 +83,11 @@ FUNC(void, OS_CODE) memInit(
 #endif
 }
 
-FUNC(void, OS_CODE) tpl_init_io_for_reset_handler(void)
-{
-  /*
-   * Disable the GPIO power-on default high-impedance mode
-   * to activate previously configured port settings
-   */
-  PM5CTL0 &= ~LOCKLPM5;
-  /* set GPIO P1.0 and 1.1 (red LED1 and green LED2) as an output */
-  P1DIR |= 0x03;
-  P1OUT &= ~1; /* red led off */
-  P1OUT &= ~2; /* green led off */
-  /* set GPIO P5.6 (button S1) as an input, with internal pull-up */
-  P5DIR &= ~(1<<6); /* input                        */
-  P5REN |= 1<<6;    /* pull-up/down resistor enable */
-  P5OUT |= 1<<6;    /* pull-up                      */
-}
-
 FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
 {
+#if WITH_CHECKPOINTING == YES
   tpl_init_io_for_reset_handler();
+#endif
 
   /* Init .bss section */
   extern unsigned __bss_start__;
@@ -179,17 +162,21 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
     ptr ++ ;
   }
 
-  if ((((P5IN >> 6) & 1) == 0) //button pushed during startup ?
+#if WITH_CHECKPOINTING == YES
+  tpl_adc_init_simple();
+  if (tpl_cold_startup() //button pushed during startup ?
       || (tpl_checkpoint_buffer == NO_CHECKPOINT) // no checkpoint available ?
       ) {
     /* Exec user program */
     main();
   }
   else {
-    P1OUT |= 1;   /* light on red led */
     /* Exec user program */
     restart_main();
   }
+#else
+  main();
+#endif
 
   /* should not get there */
   /* so we don't call global destructors... */

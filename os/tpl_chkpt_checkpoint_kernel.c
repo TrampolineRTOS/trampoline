@@ -99,7 +99,7 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   tpl_save_checkpoint(l_buffer);
   tpl_checkpoint_buffer = l_buffer;
 
-  //  while(1);
+  tpl_shutdown(); //on msp430 => LPM4
 
   PROCESS_ERROR(result)
 }

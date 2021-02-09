@@ -1,3 +1,5 @@
+#include "tpl_app_define.h"
+#if WITH_CHECKPOINTING == YES
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
 
@@ -156,3 +158,4 @@ exit_loadCheckpoint:
 
 #define OS_STOP_SEC_CODE
 #include "AsMemMap.h"
+#endif //WITH_CHECKPOINTING

@@ -11,10 +11,6 @@
  *
  * @section File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #ifndef TPL_OS_H
@@ -103,6 +99,17 @@ FUNC(% !exists sc::RETURN_TYPE default("void") %, % !api::ID_PREFIX %_CODE) % !s
 %   end if
   end foreach
 end foreach
+
+if exists OS::CHECKPOINTING default (false) then
+# RestartOS() is defined in API as ACTUAL => definition made manually.
+%
+/**
+ * Re-Starts Trampoline after a checkpoint.
+ *
+ */
+extern FUNC(void, OS_CODE) RestartOS();
+%
+end if
 
 
 #---------------------------------------------------------------------------*

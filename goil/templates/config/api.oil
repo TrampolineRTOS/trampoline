@@ -371,8 +371,8 @@ CPU api {
       KERNEL = tpl_restart_os_service;
       LOCK_KERNEL = FALSE;
       CALLABLE_BY_ISR1 = FALSE;
-      ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
-        : "The application mode";
+      //ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
+      //  : "The application mode";
     } : "The user can call this system service to start the operating system in case their exists a checkpoint.";
   };
 

@@ -13,7 +13,8 @@ IMPLEMENTATION lauchpad {
             UINT32 TXBUFFER = 16;
           },
           adc,
-          ref_a
+          ref_a,
+          checkpointing
         ] LIBRARY[];
       },
       FALSE
@@ -36,5 +37,17 @@ CPU launchpad {
     PATH = "msp430x/small/msp430fr5994/launchpad/ref_a";
     CHEADER = "ref_a.h";
     CFILE = "ref_a.c";
+  };
+  LIBRARY checkpointing {
+    PATH = "msp430x/small/msp430fr5994/launchpad/checkpointing";
+    CHEADER = "ref_a.h";
+    CHEADER = "adc12_b.h";
+    CFILE = "ref_a.c";
+    CFILE = "adc12_b.c";
+	CFILE = "tpl_chkpt_adc.c";
+	CFILE = "tpl_chkpt_io.c";
+    //TODO: use dependency
+    // NEEDS = adc;
+    // NEEDS = ref_a;
   };
 };

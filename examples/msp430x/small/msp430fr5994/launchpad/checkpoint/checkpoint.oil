@@ -19,20 +19,22 @@ CPU checkpoint {
     PAINT_REGISTERS = TRUE;
     CPU_FREQ_MHZ = 8;
     IDLE_POWER_MODE = LPM3;
+	CHECKPOINTING = TRUE {CYCLETIME = 5000;};
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "checkpoint.c";
-      APP_SRC = "framtr.S";
+      //APP_SRC = "framtr.S";
       APP_NAME = "checkpoint_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=checkpoint.map";
       LIBRARY = serial {
-        TXBUFFER = 16;
+        TXBUFFER = 0;//16;
         RXBUFFER = 16;
       };
-      LIBRARY = ref_a;
-      LIBRARY = adc;
+      //LIBRARY = ref_a;
+      //LIBRARY = adc;
+      LIBRARY = checkpointing;
       //use either msp-gcc (provided with Energia)..
       CPPCOMPILER  = "msp430-g++";
       COMPILER  = "msp430-gcc";
@@ -67,13 +69,6 @@ CPU checkpoint {
     SCHEDULE = FULL;
   };
 
-  TASK task_energy {
-    PRIORITY = 6;
-    AUTOSTART = TRUE {APPMODE = Std;};
-    ACTIVATION = 1;
-    SCHEDULE = FULL;
-  };
-
   TASK task_fibo {
     PRIORITY = 4;
     AUTOSTART = TRUE {APPMODE = Std;};
@@ -88,18 +83,6 @@ CPU checkpoint {
     SCHEDULE = FULL;
   };
 
-  /* ALARMS */
-  ALARM Alarm_task_energy {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK {
-      TASK = task_energy;
-    };
-    AUTOSTART = TRUE {
-      APPMODE = Std;
-      ALARMTIME = 5000;
-      CYCLETIME = 5000;
-    };
-  };
 
   ALARM Alarm_task_serial_TX {
     COUNTER = SystemCounter;

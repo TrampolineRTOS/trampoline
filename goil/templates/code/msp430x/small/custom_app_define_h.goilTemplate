@@ -25,5 +25,10 @@
  * If YES, init the .data section using the DMA
  */
 #define WITH_INIT_WITH_DMA    % ! yesNo(OS::INIT_WITH_DMA) %
+
+/*
+ * If YES, use checkpointing with the msp430
+ */
+#define WITH_CHECKPOINTING    % ! yesNo(OS::CHECKPOINTING) %
 %
 template if exists tpl_library_defines
