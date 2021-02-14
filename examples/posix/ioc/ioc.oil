@@ -22,10 +22,6 @@ CPU only_one_periodic_task {
     STATUS = EXTENDED;
 	TRACE = TRUE {
 		  FORMAT = json;
-		  PROC = FALSE;
-      RESOURCE = FALSE;
-      ALARM = FALSE;
-      EVENT = FALSE;
       IOC = TRUE;
     };
     BUILD = TRUE {
