@@ -69,6 +69,18 @@ class TraceExportTxt(TraceExport):
                 ev['evtName'],
                 ev['evtMask']))
 
+# event = {'ts':ts, 'id':i, 'toName':to}
+# event = {'ts':ts, 'id':i, 'iocName':iocName}     
+
+    def handleEventSendIoc(self,ev):
+        ''' called by the evaluator when a message is sent.'''
+        self.timeStamp(ev)
+        print('ioc  sent: {0}'.format(ev['iocName']))
+    def handleEventReceiveIoc(self,ev):
+        ''' called by the evaluator when a message is received.'''
+        self.timeStamp(ev)
+        print('ioc  received: {0}'.format(ev['iocName']))
+
     def handleEventOverflow(self,ev):
         ''' called by the evaluator when there is an overflow (i.e. communication is too slow)'''
         self.timeStamp(ev)

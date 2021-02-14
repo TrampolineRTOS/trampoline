@@ -67,5 +67,19 @@ class TraceEvaluate:
             event = {'ts':ts}
             if self.export:
                 self.export.handleEventOverflow(event)
+        #---------------------------------------------------------------
+        elif rawEvent['type'] == 'send_ioc': #send ioc
+            i = int(rawEvent['ioc_id'])
+            iocName = self.staticInfo.iocNames[i]
+            event = {'ts':ts, 'id':i, 'iocName':iocName}     
+            if self.export:
+                self.export.handleEventSendIoc(event)
+        elif rawEvent['type'] == 'receive_ioc': #receive ioc 
+            i = int(rawEvent['ioc_id'])
+            iocName = self.staticInfo.iocNames[i]
+            event = {'ts':ts, 'id':i, 'iocName':iocName}   
+            if self.export:
+                self.export.handleEventReceiveIoc(event)
+        #---------------------------------------------------------------
         else:
             print('unhandled type: {0}'.format(rawEvent['type']))

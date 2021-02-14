@@ -227,6 +227,7 @@ IMPLEMENTATION trampoline_common {
         BOOLEAN RESOURCE    = TRUE;
         BOOLEAN ALARM       = TRUE;
         BOOLEAN EVENT       = TRUE;
+        BOOLEAN IOC         = TRUE;
       },
       FALSE
     ] TRACE = FALSE;

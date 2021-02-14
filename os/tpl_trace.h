@@ -120,6 +120,23 @@ typedef uint8 tpl_trace_resource_state;
 #    define TRACE_TIMEOBJ_CHANGE_STATE(timeobj_id,target_state)
 #    define TRACE_TIMEOBJ_EXPIRE(timeobj_id)
 #  endif
+
+   /**
+   *  functions tracing the ioc
+   */
+#  if TRACE_IOC == YES
+     /**
+     * Trace the ioc
+     */
+#    define TRACE_IOC_SEND(ioc_id)\
+       tpl_trace_ioc_send(ioc_id);
+#    define TRACE_IOC_RECEIVE(ioc_id)\
+       tpl_trace_ioc_receive(ioc_id);
+#  else
+#    define TRACE_IOC_SEND(ioc_id)
+#    define TRACE_IOC_RECEIVE(ioc_id)
+#  endif
+
 #else /* no trace at all */
 #    define TRACE_CLOSE()
 #    define TRACE_PROC_CHANGE_STATE(proc_id, target_state) 
@@ -128,6 +145,8 @@ typedef uint8 tpl_trace_resource_state;
 #    define TRACE_TIMEOBJ_EXPIRE(timeobj_id)
 #    define TRACE_EVENT_SET(task_target_id, event)
 #    define TRACE_EVENT_RESET(event)
+#    define TRACE_IOC_SEND(ioc_id)
+#    define TRACE_IOC_RECEIVE(ioc_id)
 #endif
 
 #if WITH_TRACE == YES
@@ -189,6 +208,21 @@ FUNC(void, OS_CODE) tpl_trace_event_set(
 FUNC(void, OS_CODE) tpl_trace_event_reset(
     CONST(tpl_event_mask, AUTOMATIC)    event);
        
+
+/**
+* trace the ioc:
+* - when a message is sent
+* - when a message is received 
+*
+*/
+    #if (WITH_IOC == YES)
+    FUNC(void, OS_CODE) tpl_trace_ioc_send(
+        VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
+
+    FUNC(void, OS_CODE) tpl_trace_ioc_receive(
+        VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
+    #endif /* WITH_IOC == YES */
+                
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

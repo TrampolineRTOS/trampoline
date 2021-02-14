@@ -23,12 +23,18 @@ The first time, goil should be called directly. It will generate the appropriate
 
     $ cd examples/posix/periodic
     $ goil --target=posix  --templates=../../../goil/templates/ periodic.oil
+    or (if GOAL_TEMPLATES has been set in bashrc)
+    $ goil --target=posix periodic.oil 
 
 Then, the makefile is generated, and it will call goil again when the .oil file is updated
 
-    $ make -s
+    $./make.py
 
 Then, run the trampoline binary. This program will start another process to run ViPER silently.
 
     $ ./periodic_exe
+
+If the trace tools are enabled in OIL file, the execution will create a trace file named "trace.json" and a python script to check the log generated.
+
+    $ ./readtrace.py
 

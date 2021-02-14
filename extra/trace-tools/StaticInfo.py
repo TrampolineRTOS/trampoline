@@ -7,7 +7,10 @@ import sys
 #read static information JSON file
 #---------------------------------
 class StaticInfo:
-    '''This class reads static information json file. The static information is produced by goil (tpl_static_info.json). This files helps to make the link between the ids (integers) and the name  of Trampoline objects (alarms, tasks, events, resources, …)
+    '''This class reads static information json file.
+     The static information is produced by goil (tpl_static_info.json). 
+     This files helps to make the link between the ids (integers) and the name  of 
+     Trampoline objects (alarms, tasks, events, resources, …)
     '''
     def __init__(self,filename):
         self.staticInfo    = [] #JSON raw data
@@ -17,6 +20,9 @@ class StaticInfo:
 
         self.procStates    = [] #tasks  states (trampoline specific)
         self.timeObjStates = [] #alarms states (trampoline specific)
+        
+        self.iocNames = [] #ioc Names
+
         self.readJSON(filename)
 
     #convert event mask to index.
@@ -41,9 +47,13 @@ class StaticInfo:
         for proc in self.staticInfo['isr']:
             self.procNames.append(proc['NAME'])
         self.procNames.append('idle') #idle task is the last one.
-        #time objs
+        #time objs names
         for to in self.staticInfo['alarm']:
             self.timeObjNames.append(to['NAME'])
+        #ioc names
+        for ioc in self.staticInfo['ioc']:
+            self.iocNames.append(ioc['NAME'])
+
         # OS constant names (task states, alarm states)
         self.procStates = ['SUSPENDED','READY','RUNNING','WAITING','AUTOSTART','READY_AND_NEW']
         self.timeObjStates = ['SUSPENDED','READY','RUNNING','WAITING','AUTOSTART','READY_AND_NEW']
