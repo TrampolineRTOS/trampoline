@@ -12,6 +12,8 @@ int main(void)
     return 0;
 }
 
+DeclareEvent(ev_1);
+DeclareEvent(ev_2);
 
 
 TASK(receiver_1)
@@ -25,6 +27,12 @@ TASK(receiver_1)
 TASK(sender_1)
 {
   snd_message_1 +=10;
+  
+  printf("sender_1 waiting for ev_1 \r\n");
+  WaitEvent(ev_1);
+  printf("sender_1 continue \r\n");
+  ClearEvent(ev_1);
+
   IocWrite_test_ioc(snd_message_1);
   printf("! Sender Task 1 Sends : #%ld\r\n", snd_message_1);
   TerminateTask();

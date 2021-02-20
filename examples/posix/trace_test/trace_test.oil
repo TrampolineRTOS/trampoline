@@ -21,7 +21,11 @@ CPU only_one_periodic_task {
     NUMBER_OF_CORES = 1;
     STATUS = EXTENDED;
     TRACE = TRUE {
-		  FORMAT = json;
+      FORMAT = json;  
+      // PROC = FALSE;
+      // ALARM = FALSE;
+      // EVENT = FALSE;
+      // IOC = FALSE;
     };
     BUILD = TRUE {
       APP_SRC = "trace_test.c";
@@ -36,6 +40,8 @@ CPU only_one_periodic_task {
   APPLICATION receiver_1_application {
     TASK = receiver_1;
     ALARM = activate_rec_1;
+    ALARM = one_second;
+    ALARM = two_second;
     COUNTER = SystemCounter_0;
   };
 
@@ -93,6 +99,26 @@ CPU only_one_periodic_task {
     ACTION = ACTIVATETASK { TASK = sender_2; };
     AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 50; CYCLETIME = 50; };
   };
+
+  ALARM one_second {
+    COUNTER = SystemCounter_0;
+    ACTION = SETEVENT { TASK = sender_1; EVENT = ev_1; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 100; CYCLETIME = 100; };
+  };
+  ALARM two_second {
+    COUNTER = SystemCounter_0;
+    ACTION = SETEVENT { TASK = sender_1; EVENT = ev_2; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 200; CYCLETIME = 200; };
+  };
+
+  EVENT ev_1 {
+    MASK = AUTO;
+  };
+
+  EVENT ev_2 {
+    MASK = AUTO;
+  };
+
   
   TASK receiver_1 {
     PRIORITY = 1;
@@ -106,6 +132,8 @@ CPU only_one_periodic_task {
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    EVENT = ev_1;
+    EVENT = ev_2;
   };
 
   TASK receiver_2 {
@@ -156,6 +184,9 @@ CPU only_one_periodic_task {
 
   IOC test_ioc_3 {
     DATATYPENAME uint32 {
+      DATATYPEPROPERTY = DATA;  
+    };
+    DATATYPENAME uint8 {
       DATATYPEPROPERTY = DATA;  
     };
     SEMANTICS = QUEUED {
