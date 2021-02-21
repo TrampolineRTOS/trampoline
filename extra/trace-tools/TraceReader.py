@@ -15,7 +15,7 @@ class TraceReader:
     '''
     def __init__(self):
         # trace event ids
-        self.eventType = ['proc','res','set_event','reset_event','timeobj','timeobj_expire','overflow']
+        self.eventType = ['proc','res','set_event','reset_event','timeobj','timeobj_expire','ioc','overflow']
 
     def getEvent(self):
         ''' Generator that sends raw events one by one to the main thread'''
@@ -69,6 +69,12 @@ class TraceReader:
             evt['timeobj_id']  = evtBin[3]
         elif evt['type'] == 'timeobj_expire':
             evt['timeobj_id']  = evtBin[3]
+        elif evt['type'] == 'ioc':
+            evt['ioc_id'] = evtBin[0] & 0x1F
+            if (evtBin[3] & 0x01 == 1) : 
+                evt['type'] == 'send_ioc'
+            else :
+                evt['type'] == 'receive_ioc'
         else:
             print('error, not implemented yet: '+evt['type'])
         return (evt,ts)

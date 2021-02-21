@@ -76,7 +76,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_unqueued_service(
     {
       data_ptr=ioc_stat->buffer[message];
 
-      /* Trace */
+      /*  trace  */
       TRACE_IOC_SEND(ioc_id)
 
       /*tpl_memcpy(data_ptr, ioc_data[message].data, ioc_stat->element_size[message]);*/
@@ -153,7 +153,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_receive_unqueued_service(
   {
     ioc_stat = tpl_ioc_unqueued_table[ioc_id-IOC_QUEUED_COUNT];
     
-    // Trace 
+    /*  trace  */
     TRACE_IOC_RECEIVE(ioc_id)
 
     /* loop on all message to receive, which means all parameters

@@ -69,7 +69,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_queued_service(
   {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
 
-    /* Trace */
+    /* trace */
     TRACE_IOC_SEND(ioc_id)
 
     /* loop on all message to send, which means all parameters
@@ -164,7 +164,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_receive_queued_service(
   {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
 
-    // Trace 
+    /* trace */
     TRACE_IOC_RECEIVE(ioc_id)
 
     /* loop on all message to receive, which means all parameters

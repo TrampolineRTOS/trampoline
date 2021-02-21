@@ -276,6 +276,75 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 #endif
 }
 
+/**
+* trace the ioc:
+* - when a message is sent
+*
+*/
+# if (WITH_IOC == YES)
+FUNC(void, OS_CODE) tpl_trace_ioc_send(
+    VAR(tpl_ioc_id, AUTOMATIC) ioc_id)
+{
+  const tpl_tick ts=tpl_trace_get_timestamp();
+  tpl_trace_start();
+#  if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT IIIII (Type, IOC) */
+  uint8_t byte = IOC<<5 | (ioc_id & 0x1F);
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = IOC_SEND; //1
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
+#  else
+#    error "unsupported trace mode: TRACE_FORMAT"
+#  endif /* TRACE_FORMAT == TRACE_FORMAT_SERIAL */
+}
+/**
+* trace the ioc:
+* - when a message is received 
+*
+*/
+FUNC(void, OS_CODE) tpl_trace_ioc_receive(
+    VAR(tpl_ioc_id, AUTOMATIC) ioc_id)
+{
+  const tpl_tick ts=tpl_trace_get_timestamp();
+  tpl_trace_start();
+#  if TRACE_FORMAT == TRACE_FORMAT_SERIAL
+  /* TTT IIIII (Type, IOC) */
+  uint8_t byte = IOC<<5 | (ioc_id & 0x1F);
+  uint8_t chksum = byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts >> 8;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = ts & 0xff;
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  byte = IOC_RECEIVE; //0
+  chksum += byte;
+  tpl_serial_putchar(byte);
+
+  tpl_serial_putchar(chksum);
+#  else
+#    error "unsupported trace mode: TRACE_FORMAT"
+#  endif /* TRACE_FORMAT == TRACE_FORMAT_SERIAL */
+}
+# endif /*WITH_IOC == YES*/
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

@@ -43,8 +43,9 @@ typedef uint8 tpl_trace_resource_state;
 #define EVENT_RESET          3
 #define TIMEOBJ_CHANGE_STATE 4 // ALARM_SLEEP or ALARM_ACTIVE
 #define TIMEOBJ_EXPIRE       5
+#define IOC                  6 // SEND OR RECEIVED
 /* special case sent by target when there is no more place*/
-#define OVERFLOW             6 
+#define OVERFLOW             7
 
 
 /* define the trace output types */
@@ -215,17 +216,20 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 * - when a message is received 
 *
 */
-    #if (WITH_IOC == YES)
-    FUNC(void, OS_CODE) tpl_trace_ioc_send(
-        VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
+# if (WITH_IOC == YES)
+FUNC(void, OS_CODE) tpl_trace_ioc_send(
+    VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
 
-    FUNC(void, OS_CODE) tpl_trace_ioc_receive(
-        VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
-    #endif /* WITH_IOC == YES */
+FUNC(void, OS_CODE) tpl_trace_ioc_receive(
+    VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
+
+#  define IOC_SEND    1
+#  define IOC_RECEIVE 0
+# endif /* WITH_IOC == YES */
                 
 
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
+# define OS_STOP_SEC_CODE
+# include "tpl_memmap.h"
 
 #endif /* WITH_TRACE == YES */
 
