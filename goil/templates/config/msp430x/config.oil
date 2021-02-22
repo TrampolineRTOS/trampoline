@@ -17,7 +17,12 @@ IMPLEMENTATION  msp430x {
   /* Add to ISR objects target interrupt sources */
   ISR [] {
     #include <interruptSources.oil>
-    BOOLEAN EXIT_FROM_LPM = FALSE;
+    BOOLEAN [
+      TRUE {
+         UINT32 SOURCE;
+       },
+       FALSE 
+       ] EXIT_FROM_LPM = FALSE;
   };
 
   /* Additional OS attributes */
@@ -44,7 +49,7 @@ IMPLEMENTATION  msp430x {
             UINT32 ADDRESS = 0;
           },
           serial
-		] FORMAT = serial;
+  ] FORMAT = serial;
       },
       FALSE
     ] TRACE = FALSE;
@@ -62,7 +67,7 @@ CPU msp430x {
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
     CFILE  = "tpl_trace.c";
-	//checkpointing
+ //checkpointing
     ASFILE = "framtr.S";
     CFILE  = "tpl_checkpointing.c";
   };
