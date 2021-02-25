@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "goil_autosar_st_s3" ;
+OIL_VERSION = "3.1" : "goil_autosar_st_s3" ;
 
 IMPLEMENTATION trampoline {
 
@@ -50,7 +50,9 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-        TRAMPOLINE_BASE_PATH = "../../..";	
+	BUILD = TRUE {
+        	TRAMPOLINE_BASE_PATH = "../../..";
+	};	
 	};
 
     APPMODE std {};
@@ -70,7 +72,7 @@ IMPLEMENTATION trampoline {
 	};
 	SCHEDULETABLE sched1 {
 		COUNTER = Software_Counter;
-		AUTOSTART = FALSE ;
+		AUTOSTART = NONE ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = TRUE;
 		LENGTH = 10;
@@ -83,7 +85,7 @@ IMPLEMENTATION trampoline {
 	};
 	SCHEDULETABLE sched2 {
 		COUNTER = Software_Counter;
-		AUTOSTART = FALSE ;
+		AUTOSTART = NONE ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = TRUE;
 		LENGTH = 6;
@@ -102,7 +104,7 @@ IMPLEMENTATION trampoline {
 	};
 	SCHEDULETABLE sched3 {
 		COUNTER = Software_Counter;
-		AUTOSTART = FALSE ;
+		AUTOSTART = NONE ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = TRUE;
 		LENGTH = 11;
@@ -121,7 +123,7 @@ IMPLEMENTATION trampoline {
 	};
 	SCHEDULETABLE sched4 {
 		COUNTER = Software_Counter;
-		AUTOSTART = FALSE ;
+		AUTOSTART = NONE ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = TRUE;
 		LENGTH = 24;
@@ -140,7 +142,7 @@ IMPLEMENTATION trampoline {
 	};
 	SCHEDULETABLE sched5 {
 		COUNTER = Software_Counter;
-		AUTOSTART = FALSE ;
+		AUTOSTART = NONE ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = TRUE;
 		LENGTH = 33;

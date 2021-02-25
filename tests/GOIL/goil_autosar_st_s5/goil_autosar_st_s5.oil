@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "goil_autosar_st_s5" ;
+OIL_VERSION = "3.1" : "goil_autosar_st_s5" ;
 
 IMPLEMENTATION trampoline {
 
@@ -50,7 +50,9 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-        TRAMPOLINE_BASE_PATH = "../../..";	
+	BUILD = TRUE {
+        	TRAMPOLINE_BASE_PATH = "../../..";
+	};	
 	};
 
     APPMODE std {};
@@ -76,7 +78,7 @@ IMPLEMENTATION trampoline {
 	};
 	SCHEDULETABLE sched {
 		COUNTER = Software_Counter;
-		AUTOSTART = FALSE;
+		AUTOSTART = NONE;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = FALSE;
 		LENGTH = 5;

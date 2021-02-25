@@ -1,0 +1,315 @@
+%
+# @file spinlock_check.goilTemplate
+#
+# @section desc File description
+#
+# Spinlock Checks template file for goil
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+let C_keyword := @("auto", "break", "case", "char", "const", "continue", "default", "do", "double", "else", "enum", "extern", "float", "for", "goto", "if", "int", "long", "register", "return", "short", "signed", "sizeof", "static", "struct", "typedef", "union", "unsigned", "void", "volatile", "while")
+
+foreach appmode in APPMODE do
+  foreach C_kw in C_keyword do
+    if appmode::NAME == C_kw then
+      error appmode : "APPMODE " + appmode::NAME + " name conflicts with C key word"
+    end if
+  end foreach
+end foreach
+
+foreach task in TASK do
+
+  foreach C_kw in C_keyword do
+    if task::NAME == C_kw then
+      error task : "TASK " + task::NAME + " name conflicts with C key word"
+    end if
+  end foreach
+
+  # L.511 root.goilTemplate
+  let internal_found := false
+  if exists task::RESOURCE then
+    foreach owned_resource in task::RESOURCE do
+      foreach resource in RESOURCE do
+        if resource::NAME == owned_resource::VALUE & resource::RESOURCEPROPERTY == "INTERNAL" then
+          if internal_found then
+            error owned_resource : "No more than one internal resource may be assigned to a task"
+          else
+            let internal_found := true
+          end if
+        end if
+      end foreach
+    end foreach
+  end if
+  
+  # L.532 root.goilTemplate
+  if task::SCHEDULE == "NON" then
+    if internal_found then
+      error internal_name : "Internal resource cannot be assigned"
+      error task::SCHEDULE : "to a non-preemptable task"
+    end if
+  end if
+  
+  # L.704 root.goilTemplate
+  if exists task::EVENT then
+    if task::ACTIVATION > 1 then
+      error task::ACTIVATION : "An extended task cannot have ACTIVATION greater than 1"
+    end if
+  end if
+  
+end foreach
+
+foreach isr in ISR do
+  foreach C_kw in C_keyword do
+    if isr::NAME == C_kw then
+      error isr : "ISR " + isr::NAME + " name conflicts with C key word"
+    end if
+  end foreach
+end foreach
+
+foreach sel_event (sel_INDEX) in EVENT do
+
+  foreach C_kw in C_keyword do
+    if sel_event::NAME == C_kw then
+      error sel_event : "EVENT " + sel_event::NAME + " name conflicts with C key word"
+    end if
+  end foreach
+  
+  let tasks_for_event := mapof EVENT by NAME
+  
+  #User events only
+  if typeof sel_event::MASK == @int then
+  
+    # L.859 root.goilTemplate
+    if sel_event::MASK == 0 then
+      error sel_event::MASK : "0 is not allowed in MASK"
+    end if
+    
+    # L.864 root.goilTemplate
+    #Test case 41
+    let more_than_one_bit := false
+    loop bit from 0 to 63 do
+      let mask := 1 << bit
+      let masked_evt := sel_event::MASK & mask
+      if masked_evt != 0 & masked_evt != sel_event::MASK then
+        let more_than_one_bit := true
+      end if
+    end loop
+    if more_than_one_bit then
+      warning sel_event::MASK : "Event " + sel_event::NAME + " uses more than one bit"
+    end if
+    
+  end if
+end foreach
+
+foreach counter in COUNTER do
+  foreach C_kw in C_keyword do
+    if counter::NAME == C_kw then
+      error counter : "COUNTER " + counter::NAME + " conflicts with C key word"
+    end if
+  end foreach
+end foreach
+
+# L.970 root.goilTemplate
+foreach alarm in ALARM do
+
+  foreach C_kw in C_keyword do
+    if alarm::NAME == C_kw then
+      error alarm : "ALARM " + alarm::NAME + " name conflicts C key word"
+    end if
+  end foreach
+  
+  let counterMap := mapof COUNTER by NAME
+
+  if alarm::AUTOSTART then
+    let counter := counterMap[alarm::COUNTER]
+    if alarm::AUTOSTART_S::CYCLETIME < counter::MINCYCLE & alarm::AUTOSTART_S::CYCLETIME != 0 then
+      error alarm::AUTOSTART_S::CYCLETIME : "CYCLETIME is lower than MINCYCLE "
+      error counter::MINCYCLE : "as declared there"
+    end if
+  end if
+  if exists alarm::ACTION then
+    #Test cases 5, 7
+    if alarm::ACTION == "INCREMENTCOUNTER" then
+      if counterMap[alarm::ACTION_S::COUNTER]::TYPE != "SOFTWARE" then
+        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter (" + alarm::ACTION_S::COUNTER + " is not a software counter)"
+      end if
+    elsif alarm::ACTION == "SETEVENT" then
+      #Test case 3
+      if not exists TASK[alarm::ACTION_S::TASK]::EVENT then
+        error alarm::ACTION_S::TASK : "An alarm can't set an Event to a basic task (Task " + alarm::ACTION_S::TASK + " is a basic task)"
+      end if
+    end if
+  end if
+end foreach
+
+foreach resource in RESOURCE do
+  foreach C_kw in C_keyword do
+    if resource::NAME == C_kw then
+      error resource : "RESOURCE " + resource::NAME + " name conflicts C key word"
+    end if
+  end foreach
+end foreach
+
+foreach message in MESSAGE do
+  foreach C_kw in C_keyword do
+    if message::NAME == C_kw then
+      error message : "MESSAGE " + message::NAME + " name conflicts C key word"
+    end if
+  end foreach
+end foreach
+
+let ISRS2 := @()
+foreach isr in ISR do
+  if isr::CATEGORY == 2 then
+    let ISRS2 += isr
+  end if
+end foreach
+
+foreach app in APPLICATION do
+
+  foreach C_kw in C_keyword do
+    if app::NAME == C_kw then
+      error app : "APPLICATION " + app::NAME + " name conflicts with C key word"
+    end if
+  end foreach
+
+  let isr_map := mapof ISRS2 by NAME
+  
+  # L.1144 root.goilTemplate
+  #Test case 43
+  if not exists app::TASK & isr_map == @[] then
+    error app::NAME : "OS445 - An application should have at least one Task OR ISR2"
+  end if
+end foreach
+
+if AUTOSAR then
+  foreach st in SCHEDULETABLE do
+
+    foreach C_kw in C_keyword do
+      if st::NAME == C_kw then
+        error st : "SCHEDULETABLE " + st::NAME + " name conflicts with C key word"
+      end if
+    end foreach
+
+    if not exists st::COUNTER then
+      #Test case 47
+      error st::NAME : "OS409 - COUNTER is not defined in " + st::NAME
+    else
+      let counter_map := mapof COUNTER by NAME
+      let st_counter := counter_map[st::COUNTER]
+      if not exists st::EXPIRY_POINT then
+        #Test case 42
+        error st::NAME : "OS401 - no EXPIRY_POINT found for SCHEDULETABLE " + st::NAME
+      else
+      
+        foreach ep in st::EXPIRY_POINT do
+          if not exists ep::ACTION then
+            #Test case 44
+            error ep : "OS407 - no ACTION found for EXPIRY_POINT " + ep::NAME
+          elsif not exists ep::OFFSET then
+            #Test case 50
+            error ep : "OS404 - OFFSET is missing for EXPIRY_POINT " + ep::NAME
+          end if
+          
+          #Test cases 57, 59
+          foreach eps in st::EXPIRY_POINT do
+            if ep::NAME != eps::NAME then
+              if ep::OFFSET > eps::OFFSET then
+                if ep::OFFSET - eps::OFFSET < st_counter::MINCYCLE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::name + " and " + eps::NAME + " is lower than MINCYCLE of the driving counter"
+                elsif ep::OFFSET - eps::OFFSET > st_counter::MAXALLOWEDVALUE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::NAME + " and " + eps::NAME + " is greater than MAXALLOWEDVALUE of the driving counter"
+                end if
+              else
+                if eps::OFFSET - ep::OFFSET < st_counter::MINCYCLE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::NAME + " and " + eps::NAME + " is lower than MINCYCLE of the driving counter"
+                elsif eps::OFFSET - ep::OFFSET > st_counter::MAXALLOWEDVALUE then
+                  error st::NAME : "OS408 - Delay between expiry point " + ep::NAME + " and " + eps::NAME + " is greater than MAXALLOWEDVALUE of the driving counter"
+                end if
+              end if
+            end if
+          end foreach
+          
+          #Test case 33
+          foreach action in ep::ACTION do
+            if action::VALUE == "SETEVENT" then
+              let task_map := mapof TASK by NAME
+              let target := task_map[action::VALUE_S::TASK]
+              if not exists target::EVENT then
+                error st::NAME : "Error : An action can't set an Event to a basic task (Task " + action::VALUE_S::TASK + " is a basic task)."
+              end if
+            end if
+          end foreach
+        end foreach
+        
+        let lep_off := st::EXPIRY_POINT
+        sort lep_off by OFFSET <
+        let first_ep := [lep_off first]
+        let last_ep := [lep_off last]
+        #Test cases 54, 56
+        if first_ep::OFFSET < st_counter::MINCYCLE then
+          error st::NAME : "OS443 - OFFSET of first EXPIRY_POINT is lower than MINCYCLE of the driving counter and not equal to 0"
+        elsif first_ep::OFFSET > st_counter::MAXALLOWEDVALUE then
+          error st::NAME : "OS443 - OFFSET of first EXPIRY_POINT is greater than MAXALLOWEDVALUE of the driving COUNTER"
+        end if
+      end if
+      
+      #Test case 67
+      if st::AUTOSTART == "ABSOLUTE" then
+        if st::AUTOSTART_S::START > st_counter::MAXALLOWEDVALUE then
+          error st::NAME : "OS349 - " + st::NAME + " autostart's offset is greater than MAXALLOWEDVALUE of the driving counter."
+        end if
+      #Test cases 68, 70
+      elsif st::AUTOSTART == "RELATIVE" then
+        let eps := st::EXPIRY_POINT
+        sort eps by OFFSET <
+        let first_ep := [eps first]
+        if st::AUTOSTART_S::OFFSET == 0 then
+          error st::NAME : "OS332 - " + st::NAME + " autostart's offset is equal to 0"
+        elsif st::AUTOSTART_S::OFFSET > (st_counter::MAXALLOWEDVALUE - first_ep::OFFSET) then
+          error st::NAME : "OS276 - " + st::NAME + " autostart's offset is greater than MAXALLOWEDVALUE of the driving counter minus the Initial Offset"
+        end if
+      end if
+      
+    end if
+  end foreach
+end if
+
+foreach ioc in IOC do
+  foreach C_kw in C_keyword do
+    if ioc::NAME == C_kw then
+      error ioc : "IOC " + ioc::NAME + " name conflicts C key word"
+    end if
+  end foreach
+end foreach
+
+foreach transaction in TRANSACTION do
+  foreach C_kw in C_keyword do
+    if transaction::NAME == C_kw then
+      error transaction : "TRANSACTION " + transaction::NAME + " name conflicts with C key word"
+    end if
+  end foreach
+end foreach
+
+foreach spinlock in SPINLOCK do
+  foreach C_kw in C_keyword do
+    if spinlock::NAME == C_kw then
+      error spinlock : "SPINLOCK " + spinlock::NAME + " name conflicts C key word"
+    end if
+  end foreach
+end foreach

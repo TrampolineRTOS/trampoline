@@ -97,7 +97,7 @@ CPU test {
     COUNTER = Software_Counter;
     COUNTER = Hardware_Counter;
     ALARM = Alarm_SetEvent_basictask;
-    ALARM = Alarm_IncrementCounter;
+    /*ALARM = Alarm_IncrementCounter;*/
   };
   EVENT Event1 {
     MASK = AUTO;
