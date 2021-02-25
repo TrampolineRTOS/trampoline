@@ -1,6 +1,6 @@
 #ifndef _ADAFRUIT_SPITFT_MACROS
 #define _ADAFRUIT_SPITFT_MACROS
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 
 /*
  * Control Pins

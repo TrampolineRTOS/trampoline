@@ -1,4 +1,4 @@
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 #include "mcp23s17.h"
 #include "pinAccess.h"
 #include "tft.h"
