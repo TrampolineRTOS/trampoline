@@ -302,8 +302,38 @@ end foreach
  /* reserve space for data init value */
     . += SIZEOF(.data);
   } >FRAM
-}
 
+%
+foreach proc in PROCESSES do
+%
+
+/* Initialized LEA variables section of % !proc::KIND % % !proc::NAME % */
+.data_lea : {
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_LEA_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+
+foreach app in APPLICATIONS do
+%/* Initialized variables section of OS_APP % !app::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_POWER_ON_INIT_" ) do
+%    *(.OS_APP_% !app::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+%
+    . = ALIGN(4);
+    __data_end = .;        /* define a global symbol at data end */
+    __data_size = SIZEOF(.data);
+  } >LEA_RAM
+}
   /*
    * private data of processes
    */
@@ -491,8 +521,8 @@ SECTIONS {
   .osVarKernStack :
   {
     . = ALIGN(2);
-    __os_kern_stack_start = .;	/* OS kernel stack symbol start */
-    *(.osVarKernStack)	        /* OS Kernel stack */
+    __os_kern_stack_start = .; /* OS kernel stack symbol start */
+    *(.osVarKernStack)         /* OS Kernel stack */
     __os_kern_stack_end   = .;  /* OS kernel stack symbol start */
   } >RAM
 }

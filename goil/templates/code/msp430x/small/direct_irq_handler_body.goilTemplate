@@ -18,6 +18,52 @@ else
 %
   end foreach
 end if
+let nameVector := ""
+if handlerSource == "ADC12_VECTOR" then
+   let nameVector := "ADC12IV"
+elsif handlerSource == "RTC_VECTOR" then
+   let nameVector := "RTCIV"
+elsif handlerSource == "EUSCI_B3_VECTOR" then
+   let nameVector := "UCB3IV"
+elsif handlerSource == "EUSCI_B2_VECTOR" then
+   let nameVector := "UCB2IV"
+elsif handlerSource == "EUSCI_B1_VECTOR" then
+   let nameVector := "UCB1IV"
+elsif handlerSource == "EUSCI_A3_VECTOR" then
+   let nameVector := "UCA3IV"
+elsif handlerSource == "EUSCI_A2_VECTOR" then
+   let nameVector := "UCA2IV"
+elsif handlerSource == "TIMER4_A1_VECTOR" then
+   let nameVector := "TA4IV"
+elsif handlerSource == "TIMER4_A0_VECTOR" then
+   let nameVector := "TA4IV"
+elsif handlerSource == "TIMER3_A1_VECTOR" then
+   let nameVector := "TA3IV"
+elsif handlerSource == "TIMER3_A0_VECTOR" then
+   let nameVector := "TA3IV"
+elsif handlerSource == "TIMER2_A1_VECTOR" then
+   let nameVector := "TA2IV"
+elsif handlerSource == "TIMER2_A0_VECTOR" then
+   let nameVector := "TA2IV"
+elsif handlerSource == "TIMER1_A1_VECTOR" then
+   let nameVector := "TA1IV"
+elsif handlerSource == "TIMER1_A0_VECTOR" then
+   let nameVector := "TA1IV"
+elsif handlerSource == "TIMER0_A1_VECTOR" then
+   let nameVector := "TA0IV"
+elsif handlerSource == "TIMER0_A0_VECTOR" then
+   let nameVector := "TA0IV"
+elsif handlerSource == "TIMER0_B1_VECTOR" then
+   let nameVector := "TB0IV"
+elsif handlerSource == "TIMER0_B0_VECTOR" then
+   let nameVector := "TB0IV"
+elsif handlerSource == "USCI_A1_VECTOR" then
+   let nameVector := "UCA1IV"
+elsif handlerSource == "USCI_A0_VECTOR" then
+   let nameVector := "UCA0IV"
+elsif handlerSource == "USCI_B0_VECTOR" then
+   let nameVector := "UCB0IV"
+end if
 %
 .global tpl_direct_irq_handler_% !handlerSource %
 .type   tpl_direct_irq_handler_% !handlerSource %, \%function
@@ -33,6 +79,7 @@ if [obj type] == @struct then%
 /*-----------------------------------------------------------------------------
  * -2- Call the ISR1.
  */
+  mov.w     &%!nameVector%, r10
   call      #% ! obj::NAME + "_function"
   if [PORT_IRQ contains: obj::SOURCE] then
     # PORT IRQ, ack the interrupt
@@ -49,7 +96,8 @@ else
   ! [obj[0]::SOURCE charAtIndex: 4] %IV 
  * and jump to the handler
  */
-  add       &__P% ! [obj[0]::SOURCE charAtIndex: 4] %IV, pc
+  mov.w     &__P% ! [obj[0]::SOURCE charAtIndex: 4] %IV, r10
+  add       r10, pc
   jmp       tpl_direct_irq_handler_exit_% !handlerSource
   # A set of handler is linked to the same port
   let bitMap := [obj mapBy: "BIT"]
@@ -78,20 +126,29 @@ if [obj type] == @struct then
 /*-----------------------------------------------------------------------------
  * -3b- exit from LPM if required
  */
-  bic   #0xF0, 0(SP)%
+  sub.w    #%!obj::EXIT_FROM_LPM_S::SOURCE%, r10 
+  jeq      exit_from_lpm
+  jmp      return
+exit_from_lpm:
+  bic      #0xF0, 0(SP)%
   end if
 else
   if obj[0]::EXIT_FROM_LPM then %
 /*-----------------------------------------------------------------------------
  * -3b- exit from LPM if required
  */
-  bic   #0xF0, 0(SP)%
+  sub.w    #%!obj[0]::EXIT_FROM_LPM_S::SOURCE%, r10
+  jeq      exit_from_lpm
+  jmp      return
+exit_from_lpm:
+  bic      #0xF0, 0(SP)%
   end if
 end if
 % 
 /*-----------------------------------------------------------------------------
  * -4- Return.
  */
+return:
   reti
 /*-----------------------------------------------------------------------------
 */
