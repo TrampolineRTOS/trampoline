@@ -117,15 +117,8 @@ tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
    we pushed 5 volatile registers so SR is 2*5 bytes deep
  */%
 let vector_value:= handler::BIT * 2 + 2
-  if [obj type] == @struct then
-    if obj::EXIT_FROM_LPM then
-      if obj::EXIT_FROM_LPM_S::SOURCE == vector_value then%
-  bic      #0xF0, 10(SP)%
-      end if
-    end if
-  end if
-  if obj[0]::EXIT_FROM_LPM then
-     if obj[0]::EXIT_FROM_LPM_S::SOURCE == vector_value then%
+  if handler::EXIT_FROM_LPM then
+     if handler::EXIT_FROM_LPM_S::SOURCE == vector_value then%
   bic      #0xF0, 10(SP)%
      end if
   end if
