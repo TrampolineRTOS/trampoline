@@ -96,8 +96,7 @@ else
   ! [obj[0]::SOURCE charAtIndex: 4] %IV 
  * and jump to the handler
  */
-  mov.w     &__P% ! [obj[0]::SOURCE charAtIndex: 4] %IV, r10
-  add       r10, pc
+  add       &__P% ! [obj[0]::SOURCE charAtIndex: 4] %IV, pc
   jmp       tpl_direct_irq_handler_exit_% !handlerSource
   # A set of handler is linked to the same port
   let bitMap := [obj mapBy: "BIT"]
@@ -112,6 +111,24 @@ else
   foreach handler in bitMap do%
 tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
   call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+let vector_value:= handler::BIT * 2 + 2
+  if [obj type] == @struct then
+    if obj::EXIT_FROM_LPM then
+      if obj::EXIT_FROM_LPM_S::SOURCE == vector_value then%
+  bic      #0xF0, 10(SP)%
+      end if
+    end if
+  end if
+  if obj[0]::EXIT_FROM_LPM then
+     if obj[0]::EXIT_FROM_LPM_S::SOURCE == vector_value then%
+  bic      #0xF0, 10(SP)%
+     end if
+  end if
   between %
   jmp       tpl_direct_irq_handler_exit_% !handlerSource 
   end foreach
@@ -133,16 +150,6 @@ exit_from_lpm:
   bic      #0xF0, 0(SP)%
   end if
 else
-  if obj[0]::EXIT_FROM_LPM then %
-/*-----------------------------------------------------------------------------
- * -3b- exit from LPM if required
- */
-  sub.w    #%!obj[0]::EXIT_FROM_LPM_S::SOURCE%, r10
-  jeq      exit_from_lpm
-  jmp      return
-exit_from_lpm:
-  bic      #0xF0, 0(SP)%
-  end if
 end if
 % 
 /*-----------------------------------------------------------------------------
