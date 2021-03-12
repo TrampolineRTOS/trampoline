@@ -302,13 +302,15 @@ end foreach
  /* reserve space for data init value */
     . += SIZEOF(.data);
   } >FRAM
-
+}
+%
+%
+SECTIONS {
+.data_lea : {
 %
 foreach proc in PROCESSES do
 %
-
 /* Initialized LEA variables section of % !proc::KIND % % !proc::NAME % */
-.data_lea : {
 %
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
     foreach SECTION_KIND in @( "_LEA_" ) do
@@ -329,9 +331,6 @@ foreach app in APPLICATIONS do
   end foreach
 end foreach
 %
-    . = ALIGN(4);
-    __data_end = .;        /* define a global symbol at data end */
-    __data_size = SIZEOF(.data);
   } >LEA_RAM
 }
   /*
