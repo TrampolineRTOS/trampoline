@@ -1,6 +1,6 @@
 #ifndef _ADAFRUIT_SPITFT_MACROS
 #define _ADAFRUIT_SPITFT_MACROS
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 
 /*
  * Control Pins
@@ -8,8 +8,8 @@
 
 #define SPI_DC_HIGH()           {GPIOA->BSRR = GPIO_BSRR_BS_12;}
 #define SPI_DC_LOW()            {GPIOA->BSRR = GPIO_BSRR_BR_12;}
-#define SPI_CS_HIGH()           {GPIOA->BSRR = GPIO_BSRR_BS_2;}
-#define SPI_CS_LOW()            {GPIOA->BSRR = GPIO_BSRR_BR_2;}
+#define SPI_CS_HIGH()           {GPIOA->BSRR = GPIO_BSRR_BS_4;}
+#define SPI_CS_LOW()            {GPIOA->BSRR = GPIO_BSRR_BR_4;}
 
 /*
  * Software SPI Macros
