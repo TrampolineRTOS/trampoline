@@ -29,9 +29,17 @@ extern "C" {
 #include "tpl_os_kernel.h"
 #include "tpl_os_timeobj_kernel.h"
 
+
 #define RESOURCE_FREE  0
 #define RESOURCE_TAKEN 1
 typedef uint8 tpl_trace_resource_state;
+
+#  define IOC_SEND               1
+#  define IOC_RECEIVE            0
+#  define SEND_NONZERO_MESSAGE   0
+#  define SEND_ZERO_MESSAGE      1
+#  define MESSAGE_RECEIVE        2
+
 
 /**
 * @def IDs of the different traces
@@ -43,7 +51,7 @@ typedef uint8 tpl_trace_resource_state;
 #define EVENT_RESET          3
 #define TIMEOBJ_CHANGE_STATE 4 // ALARM_SLEEP or ALARM_ACTIVE
 #define TIMEOBJ_EXPIRE       5
-#define IOC                  6 // SEND OR RECEIVED
+#define MESSAGE              6 // SEND_ZERO_MESSAGE or SEND or RECEIVE
 /* special case sent by target when there is no more place*/
 #define OVERFLOW             7
 
@@ -138,6 +146,23 @@ typedef uint8 tpl_trace_resource_state;
 #    define TRACE_IOC_RECEIVE(ioc_id)
 #  endif
 
+   /**
+   *  functions tracing the message
+   */
+#  if TRACE_MESSAGE == YES
+     /**
+     * Trace the message
+     */
+#    define TRACE_MSG_SEND(mess_id,is_zero_message)\
+       tpl_trace_msg_send(mess_id,is_zero_message);
+#    define TRACE_MSG_RECEIVE(mess_id)\
+       tpl_trace_msg_receive(mess_id);
+#  else
+#    define TRACE_MSG_SEND(mess_id,is_zero_message)
+#    define TRACE_MSG_RECEIVE(mess_id)
+#  endif
+
+
 #else /* no trace at all */
 #    define TRACE_CLOSE()
 #    define TRACE_PROC_CHANGE_STATE(proc_id, target_state) 
@@ -148,6 +173,8 @@ typedef uint8 tpl_trace_resource_state;
 #    define TRACE_EVENT_RESET(event)
 #    define TRACE_IOC_SEND(ioc_id)
 #    define TRACE_IOC_RECEIVE(ioc_id)
+#    define TRACE_MSG_SEND(ioc_id,is_zero_message)
+#    define TRACE_MSG_RECEIVE(ioc_id)
 #endif
 
 #if WITH_TRACE == YES
@@ -212,8 +239,8 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 
 /**
 * trace the ioc:
-* - when a message is sent
-* - when a message is received 
+* - when an ioc message is sent
+* - when an ioc message is received 
 *
 */
 # if (WITH_IOC == YES)
@@ -223,9 +250,25 @@ FUNC(void, OS_CODE) tpl_trace_ioc_send(
 FUNC(void, OS_CODE) tpl_trace_ioc_receive(
     VAR(tpl_ioc_id, AUTOMATIC) ioc_id);
 
-#  define IOC_SEND    1
-#  define IOC_RECEIVE 0
 # endif /* WITH_IOC == YES */
+
+#if WITH_COM == YES
+# include "tpl_com_internal.h"
+
+/**
+* trace the message:
+* - when a message is sent
+* - when a message is received 
+*
+*/
+
+FUNC(void, OS_CODE) tpl_trace_msg_send(
+    CONST(tpl_message_id, AUTOMATIC)   mess_id,
+    CONST(tpl_bool,AUTOMATIC)          is_zero_message);
+
+FUNC(void, OS_CODE) tpl_trace_msg_receive(
+    VAR(tpl_message_id, AUTOMATIC) mess_id);
+#endif  /* WITH_COM == YES */
                 
 
 # define OS_STOP_SEC_CODE

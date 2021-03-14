@@ -20,8 +20,11 @@ class StaticInfo:
 
         self.procStates    = [] #tasks  states (trampoline specific)
         self.timeObjStates = [] #alarms states (trampoline specific)
-        
-        self.iocNames = [] #ioc Names
+
+        self.msgSendNames  = [] #message sender Names
+        self.msgRcvNames   = [] #message receiver Names
+
+        self.iocNames      = [] #ioc Names
 
         self.readJSON(filename)
 
@@ -50,6 +53,12 @@ class StaticInfo:
         #time objs names
         for to in self.staticInfo['alarm']:
             self.timeObjNames.append(to['NAME'])
+        #msg names
+        for msg in self.staticInfo['message']:
+            if(msg['MESSAGEPROPERTY']=='RECEIVE_QUEUED_INTERNAL' or msg['MESSAGEPROPERTY']=='RECEIVE_UNQUEUED_INTERNAL' or msg['MESSAGEPROPERTY']=='RECEIVE_ZERO_INTERNAL'):
+                self.msgRcvNames.append(msg['NAME'])
+            elif (msg['MESSAGEPROPERTY']=='SEND_STATIC_INTERNAL' or msg['MESSAGEPROPERTY']=='SEND_ZERO_INTERNAL'):
+                self.msgSendNames.append(msg['NAME'])
         #ioc names
         for ioc in self.staticInfo['ioc']:
             self.iocNames.append(ioc['NAME'])

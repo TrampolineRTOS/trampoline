@@ -246,7 +246,7 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 //----------------------------------------------------
 /**
 * trace the ioc:
-* - when a message is sent
+* - when a ioc message is sent
 *
 */
 #if (WITH_IOC == YES)
@@ -271,7 +271,7 @@ FUNC(void, OS_CODE) tpl_trace_ioc_send(
 }
 /**
 * trace the ioc:
-* - when a message is received 
+* - when a ioc message is received 
 *
 */
 FUNC(void, OS_CODE) tpl_trace_ioc_receive(
@@ -296,7 +296,72 @@ FUNC(void, OS_CODE) tpl_trace_ioc_receive(
 
 
 //-----------------------------------------------------
+/**
+* trace the message:
+* - when a message is sent
+*
+*/
+#if WITH_COM == YES
+FUNC(void, OS_CODE) tpl_trace_msg_send(
+    CONST(tpl_message_id, AUTOMATIC)   mess_id,
+    CONST(tpl_bool,AUTOMATIC)          is_zero_message)
+{
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  if(is_zero_message==SEND_ZERO_MESSAGE)
+  {
+    fprintf(trace_file,
+    "\n\t{\n"
+    "\t\t\"type\":\"send_zero_msg\",\n"
+    "\t\t\"ts\":\"%ld\",\n"
+    "\t\t\"msg_id\":\"%d\"\n"
+    "\t}"
+    ,ts,mess_id);
+  }
+  else 
+  {
+    fprintf(trace_file,
+    "\n\t{\n"
+    "\t\t\"type\":\"send_msg\",\n"
+    "\t\t\"ts\":\"%ld\",\n"
+    "\t\t\"msg_id\":\"%d\"\n"
+    "\t}"
+    ,ts,mess_id);
+  }
 
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_JSON */
+
+}
+/**
+* trace the message:
+* - when a message is received 
+*
+*/
+FUNC(void, OS_CODE) tpl_trace_msg_receive(
+    VAR(tpl_message_id, AUTOMATIC) mess_id)
+{
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"type\":\"receive_msg\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"msg_id\":\"%d\"\n"
+	"\t}"
+	,ts,mess_id);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_JSON */
+}
+#endif /* WITH_TRACE == YES */
+
+//----------------------------------------------------
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

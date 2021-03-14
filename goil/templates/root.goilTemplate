@@ -1516,6 +1516,7 @@ write to PROJECT+"/tpl_static_info.json":
     "event"                 : EVENTS,
     "resource"              : RESOURCES,
     "alarm"                 : ALARMS,
+    "message"               : MESSAGE,
     "ioc"                   : ioc_reordered
   ]
   let nbTab := 0

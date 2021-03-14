@@ -76,6 +76,7 @@ if OS::TRACE then%
 #define TRACE_RES                        % !yesNo(OS::TRACE_S::RESOURCE) %
 #define TRACE_EVENT                      % !yesNo(OS::TRACE_S::EVENT) %
 #define TRACE_ALARM                      % !yesNo(OS::TRACE_S::ALARM) %
+#define TRACE_MESSAGE                    % !yesNo(OS::TRACE_S::MESSAGE) %
 #define TRACE_IOC                        % !yesNo(OS::TRACE_S::IOC) %
 #define TRACE_FORMAT                     TRACE_FORMAT_% ![OS::TRACE_S::FORMAT uppercaseString]
 end if
