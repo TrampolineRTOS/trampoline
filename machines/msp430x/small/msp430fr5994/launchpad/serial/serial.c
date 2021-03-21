@@ -186,8 +186,14 @@ char tpl_serial_read(void)
 	return result;
 }
 
+#if __GXX_ABI_VERSION == 1011 || __GXX_ABI_VERSION == 1013
 /* ISR1 related to USCI_A0_VECTOR */
+__interrupt void tpl_direct_irq_handler_USCI_A0_VECTOR(void)
+#elif __GXX_ABI_VERSION == 1002
 void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_VECTOR()
+#else
+    #error "Unsupported ABI"
+#endif
 {
 #if (SERIAL_TX_BUFFER_SIZE > 0) && (SERIAL_TX_BUFFER_SIZE > 0)
 	uint8_t c;
