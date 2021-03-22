@@ -63,6 +63,10 @@ elsif handlerSource == "USCI_A0_VECTOR" then
    let nameVector := "UCA0IV"
 elsif handlerSource == "USCI_B0_VECTOR" then
    let nameVector := "UCB0IV"
+elsif handlerSource == "DMA_VECTOR" then
+   let nameVector := "DMAIV"
+elsif handlerSource == "COMP_E_VECTOR" then
+   let nameVector := "CEIV"
 end if
 %
 .global tpl_direct_irq_handler_% !handlerSource %
@@ -74,12 +78,11 @@ tpl_direct_irq_handler_% !handlerSource %:
 /*-----------------------------------------------------------------------------
  * -1- Push volatile registers
  */
-  pushm.w   #5, r15%
+  pushm.w   #5, r15%  
 if [obj type] == @struct then%
 /*-----------------------------------------------------------------------------
  * -2- Call the ISR1.
  */
-  mov.w     &%!nameVector%, r10
   call      #% ! obj::NAME + "_function"
   if [PORT_IRQ contains: obj::SOURCE] then
     # PORT IRQ, ack the interrupt
@@ -89,6 +92,679 @@ if [obj type] == @struct then%
  */
   mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
   end if
+  
+elsif  obj[0]::SOURCE == "ADC12_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 23 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "RTC_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 7 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+  
+elsif  obj[0]::SOURCE == "DMA_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 7 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+  
+elsif  obj[0]::SOURCE == "EUSCI_B3_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 14 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "EUSCI_B2_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 14 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "EUSCI_B1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 14 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "USCI_B0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 14 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "USCI_A0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 3 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "USCI_A1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 3 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "EUSCI_A2_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 3 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "EUSCI_A3_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 3 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER4_A1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER4_A0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER3_A1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER3_A0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER2_A1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER2_A0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER1_A1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER1_A0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER0_A1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER0_A0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER0_B0_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "TIMER0_B1_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 6 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
+
+elsif  obj[0]::SOURCE == "COMP_E_VECTOR" then
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to 4 do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach %
+%
 else
 %
 /*-----------------------------------------------------------------------------
@@ -116,11 +792,8 @@ tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
  * -2b- exit from LPM if required
    we pushed 5 volatile registers so SR is 2*5 bytes deep
  */%
-let vector_value:= handler::BIT * 2 + 2
   if handler::EXIT_FROM_LPM then
-     if handler::EXIT_FROM_LPM_S::SOURCE == vector_value then%
   bic      #0xF0, 10(SP)%
-     end if
   end if
   between %
   jmp       tpl_direct_irq_handler_exit_% !handlerSource 
@@ -148,7 +821,6 @@ end if
 /*-----------------------------------------------------------------------------
  * -4- Return.
  */
-return:
   reti
 /*-----------------------------------------------------------------------------
 */

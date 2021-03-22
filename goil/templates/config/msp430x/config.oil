@@ -18,11 +18,9 @@ IMPLEMENTATION  msp430x {
   ISR [] {
     #include <interruptSources.oil>
     BOOLEAN [
-      TRUE {
-         UINT32 SOURCE;
-       },
-       FALSE 
-       ] EXIT_FROM_LPM = FALSE;
+      TRUE,
+      FALSE 
+    ] EXIT_FROM_LPM = FALSE;
   };
 
   /* Additional OS attributes */
