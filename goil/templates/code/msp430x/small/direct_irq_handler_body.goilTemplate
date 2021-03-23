@@ -792,7 +792,7 @@ tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
  * -2b- exit from LPM if required
    we pushed 5 volatile registers so SR is 2*5 bytes deep
  */%
-  if handler::EXIT_FROM_LPM then
+  if handler::EXIT_FROM_LPM then%
   bic      #0xF0, 10(SP)%
   end if
   between %
