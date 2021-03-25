@@ -37,7 +37,11 @@ IMPLEMENTATION  msp430x {
       TRUE {UINT32 CYCLETIME = 5000;},
       FALSE
     ] CHECKPOINTING = FALSE;
-
+    /* enable use of LEA and size of LEA RAM */
+    BOOLEAN [
+     TRUE {UINT32 LEA_RAM = 4096;},
+     FALSE {UINT32 LEA_RAM = 0;}
+    ] LEA = FALSE; 
     /* trace */
     BOOLEAN [
       TRUE {
