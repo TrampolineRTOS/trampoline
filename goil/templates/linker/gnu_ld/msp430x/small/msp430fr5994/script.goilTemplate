@@ -304,6 +304,7 @@ end foreach
   } >FRAM
 }
 %
+if OS::LEA then
 %
 SECTIONS {
 .data_lea : {
@@ -333,6 +334,9 @@ end foreach
 %
   } >LEA_RAM
 }
+%
+end if
+%
   /*
    * private data of processes
    */
