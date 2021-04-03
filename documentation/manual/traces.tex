@@ -56,6 +56,12 @@ backend (see section~\ref{sec:trace:targetbackend} below).
       \item \texttt{alarm\_id}: identifier of the timeobj.
     \end{itemize}
 
+  \item[MESSAGE]: a message is sent or received.
+  \begin{itemize}
+  	\item \texttt{mess\_id}: identifier of the message.
+  \end{itemize}
+  
+
 \end{description}
 
 Notice that each event contains the minimal information that is needed
@@ -77,6 +83,7 @@ TRACE = TRUE {
     RESOURCE = TRUE;
     ALARM = TRUE;
     EVENT = TRUE;
+    MESSAGE = TRUE;
 };
 \end{lstlisting}
 
@@ -92,6 +99,8 @@ TRACE = TRUE {
 
   \item[EVENT]  controls the tracing of events \texttt{EVENT\_SET}
     and \texttt{EVENT\_RESET};
+  
+  \item[MESSAGE]  controls the tracing of events \texttt{MESSAGE};
 \end{description}
 
 \subsection{Target specific part}
@@ -151,6 +160,13 @@ For now, the script can read from a json file (posix or saved trace) or a serial
 
 \note{When receiving an endless trace (serial line for instance), you can terminate the reception with \texttt{Ctrl+C}}.
 
+In addition, 2 other scripts for processing \texttt{trace.json} are provided:
+\begin{description}
+	\item[TraceCPU] shows the cpu usage information of each task during excution, and  also detects if a task has exceeded its deadline.
+	\item[TraceGantt] plots the information therein in the form of a Gantt chart.
+\end{description}
+
+These two scripts also provide user guide in the same way as \lstinline{readTrace.py}.
 
 \section{Implementation}
 The implementation is split in 2 parts:
@@ -214,13 +230,18 @@ For each type, we define the specific bits:
 		TIMEOBJ\_EXPIRE        & \texttt{00000 TTTTTTTT}& \texttt{R} (8 bits): time obj id    \\ \hline
 		TIMEOBJ\_CHANGE\_STATE & \texttt{00SSS TTTTTTTT}& \texttt{S} (3 bits): time obj. state \\
 		                       &                        & \texttt{T} (8 bits): time obj id    \\ \hline
+		MESSAGE & \texttt{MMMMM 000000TT}& \texttt{M} (3 bits): message id \\
+	&                        & \texttt{T} (2 bits): message event type   \\ \hline        
 	\end{longtable}
 	\caption{Specific bits for each event type}
 	\label{tab:traceBin}
 \end{table}
 
+
 Due to frame size limits, the number of events is limited to 31, the number of procs (task/isr) to 255, as well as time objects (alarms, schedule tables) and resources.
 The state 
+
+The message event type bits is used to indicate the specific type of event associated with the message, such as send and receive.
 
 \subsection{How to port \texttt{trace} to another target}
 
