@@ -332,6 +332,7 @@ foreach app in APPLICATIONS do
   end foreach
 end foreach
 %
+   . = ALIGN(4);
   } >LEA_RAM
 }
 %
