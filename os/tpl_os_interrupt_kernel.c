@@ -49,18 +49,18 @@
 #endif
 
 
-#define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 /*
  * the following variableѕ should not be initialized at definition,
  * or Memmap section is not the right one
  */
 #if NUMBER_OF_CORES > 1
-volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES];
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES];
-VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All[NUMBER_OF_CORES];
-VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES];
-VAR(uint32, OS_VAR) tpl_cpt_os_task_lock[NUMBER_OF_CORES];
+volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES] = {0};
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES] = {0};
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All[NUMBER_OF_CORES] = {0};
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES] = {0};
+VAR(uint32, OS_VAR) tpl_cpt_os_task_lock[NUMBER_OF_CORES] = {0};
 #else
 volatile VAR(uint32, OS_VAR) tpl_locking_depth = 0;
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
@@ -79,7 +79,7 @@ extern CONST(tpl_enable_disable_func, OS_CONST) tpl_disable_table[];
 
 #endif /* ISR_COUNT > 0 */
 
-#define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE

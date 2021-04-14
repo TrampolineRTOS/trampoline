@@ -30,5 +30,10 @@
  * If YES, use checkpointing with the msp430
  */
 #define WITH_CHECKPOINTING    % ! yesNo(OS::CHECKPOINTING) %
+
+/*
+ * If YES, use lea with the msp430
+ */
+#define WITH_LEA             % ! yesNo(OS::LEA) %
 %
 template if exists tpl_library_defines
