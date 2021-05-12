@@ -303,7 +303,40 @@ end foreach
     . += SIZEOF(.data);
   } >FRAM
 }
-
+%
+if OS::LEA then
+%
+SECTIONS {
+.data_lea : {
+%
+foreach proc in PROCESSES do
+%
+/* Initialized LEA variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+	foreach SECTION_KIND in @( "_LEA_" ) do
+%	 *(.% !proc::KIND %_% !proc::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+	end foreach
+  end foreach
+end foreach
+foreach app in APPLICATIONS do
+%/* Initialized variables sections of OS_APP % !app::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+	foreach SECTION_KIND in @( "_POWER_ON_INIT_" ) do
+%	 *(.OS_APP_% !app::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+	end foreach
+  end foreach
+end foreach
+%
+	. = ALIGN(4);
+   } > LEA_RAM
+}
+%
+end if
+%
   /*
    * private data of processes
    */
