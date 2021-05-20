@@ -842,9 +842,13 @@ void AC_GALGAS_map::performInsert (const capCollectionElement & inAttributes,
                                    COMMA_LOCATION_ARGS) {
 //--- If all attributes are built, perform insertion
   if (isValid ()) {
-    insulate (HERE) ;
-    if (NULL != mSharedMap) {
-      mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
+    if (inAttributes.isValid ()) {
+      insulate (HERE) ;
+      if (NULL != mSharedMap) {
+        mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
+      }
+    }else{
+      drop () ;
     }
   }
 }
