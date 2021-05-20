@@ -97,7 +97,8 @@ More examples are coming.
 
 Updated to version 3.1.12 on 2020, November 2.
 
-* Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
+* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](http://trampolinebin.rts-software.org/goil-mac-os-x-silicon.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
 * Linux 32 bits: [goil-linux-32.zip](http://trampolinebin.rts-software.org/goil-linux-32.zip)
 * Linux 64 bits: [goil-linux-64.zip](http://trampolinebin.rts-software.org/goil-linux-64.zip)
