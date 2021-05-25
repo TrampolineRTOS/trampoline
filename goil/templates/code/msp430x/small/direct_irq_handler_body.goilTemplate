@@ -218,10 +218,11 @@ if [obj type] == @struct then
 /*-----------------------------------------------------------------------------
  * -3b- exit from LPM if required
  */
-  sub.w    #%!obj::EXIT_FROM_LPM_S::SOURCE%, r10 
-  jeq      exit_from_lpm
-  jmp      return
-exit_from_lpm:
+ %
+  #sub.w    #%!obj::EXIT_FROM_LPM_S::SOURCE%, r10 
+  #jeq      exit_from_lpm
+  #jmp      return
+  %
   bic      #0xF0, 0(SP)%
   end if
 else
