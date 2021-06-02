@@ -1,0 +1,8 @@
+CPU pico {
+  PLATFORM_FILES pico {
+    PATH = "cortex/armv6m/rp2040/pico";
+    CFILE = "boot2_w25q080_2_padded_checksum.s"; //should use C compiler, not ASM
+    CFILE = "crt0.S";                            //should use C compiler, not ASM
+  };
+};
+    
