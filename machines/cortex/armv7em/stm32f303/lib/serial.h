@@ -29,4 +29,5 @@ void tpl_serial_print_int(int32_t val, int base, int fieldWidth);
  */
 void tpl_serial_wait_for_tx_complete();
 
+void itUsart();
 #endif // SERIAL_H

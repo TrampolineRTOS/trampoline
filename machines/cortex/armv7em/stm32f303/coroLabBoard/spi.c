@@ -1,5 +1,5 @@
 #include "spi.h"
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 
 
 //use SPI1:
@@ -25,7 +25,7 @@ void setupSPI()
 					 GPIO_OSPEEDER_OSPEEDR4 |
 					 GPIO_OSPEEDER_OSPEEDR5 ;
 	GPIOA->MODER |= GPIO_MODER_MODER11_0 |	//PA11 output (CS)
-	                GPIO_MODER_MODER2_0;		//PA2  output (CS)
+	                GPIO_MODER_MODER4_0;		//PA2  output (CS)
 	GPIOB->AFR[0] |= 5 << 12 | //alternate func AF5 
 	                 5 << 16 | //for 3 pins
 	                 5 << 20;

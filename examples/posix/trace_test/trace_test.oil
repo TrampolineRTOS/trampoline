@@ -1,0 +1,203 @@
+//first compilation:
+//goil --target=posix  --templates=../../../goil/templates/ periodic.oil
+
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU only_one_periodic_task {
+  OS config {
+    NUMBER_OF_CORES = 1;
+    STATUS = EXTENDED;
+    TRACE = TRUE {
+      FORMAT = json;  
+      // PROC = FALSE;
+      // ALARM = FALSE;
+      // EVENT = FALSE;
+      // IOC = FALSE;
+    };
+    BUILD = TRUE {
+      APP_SRC = "trace_test.c";
+      LDFLAGS = "-lrt -pthread"; 
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "test_exe";
+      LINKER = "gcc";
+      SYSTEM = PYTHON;
+    };
+  };
+
+  APPLICATION receiver_1_application {
+    TASK = receiver_1;
+    ALARM = activate_rec_1;
+    ALARM = one_second;
+    ALARM = two_second;
+    COUNTER = SystemCounter_0;
+  };
+
+  APPLICATION sender_1_application {
+    TASK = sender_1;
+    ALARM = activate_send_1;
+    COUNTER = SystemCounter_1;
+  };
+
+  APPLICATION receiver_2_application {
+    TASK = receiver_2;
+    ALARM = activate_rec_2;
+    COUNTER = SystemCounter_2;
+  };
+
+  APPLICATION sender_2_application {
+    TASK = sender_2;
+    ALARM = activate_send_2;
+    COUNTER = SystemCounter_3;
+  };
+
+  APPMODE std {};
+
+  COUNTER SystemCounter_0
+  {
+  };
+  COUNTER SystemCounter_1
+  {
+  };
+  COUNTER SystemCounter_2
+  {
+  };
+  COUNTER SystemCounter_3
+  {
+  };
+
+  ALARM activate_rec_1 {
+    COUNTER = SystemCounter_0;
+    ACTION = ACTIVATETASK { TASK = receiver_1; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 200; CYCLETIME = 200; };
+  };
+
+  ALARM activate_send_1 {
+    COUNTER = SystemCounter_1;
+    ACTION = ACTIVATETASK { TASK = sender_1; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 50; CYCLETIME = 50; };
+  };
+  ALARM activate_rec_2 {
+    COUNTER = SystemCounter_0;
+    ACTION = ACTIVATETASK { TASK = receiver_2; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 150; CYCLETIME = 150; };
+  };  
+  ALARM activate_send_2 {
+    COUNTER = SystemCounter_0;
+    ACTION = ACTIVATETASK { TASK = sender_2; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 50; CYCLETIME = 50; };
+  };
+
+  ALARM one_second {
+    COUNTER = SystemCounter_0;
+    ACTION = SETEVENT { TASK = sender_1; EVENT = ev_1; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 100; CYCLETIME = 100; };
+  };
+  ALARM two_second {
+    COUNTER = SystemCounter_0;
+    ACTION = SETEVENT { TASK = sender_1; EVENT = ev_2; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 200; CYCLETIME = 200; };
+  };
+
+  EVENT ev_1 {
+    MASK = AUTO;
+  };
+
+  EVENT ev_2 {
+    MASK = AUTO;
+  };
+
+  
+  TASK receiver_1 {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK sender_1 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = ev_1;
+    EVENT = ev_2;
+  };
+
+  TASK receiver_2 {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK sender_2 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+
+  IOC test_ioc {
+    DATATYPENAME uint32 {
+      DATATYPEPROPERTY = DATA;  
+    };
+     SEMANTICS = LAST_IS_BEST {
+       INIT_VALUE_SYMBOL = AUTO;
+     };
+    RECEIVER rcv {
+      RCV_OSAPPLICATION = receiver_1_application;
+    };
+    SENDER snd {
+      SND_OSAPPLICATION = sender_1_application;
+    };
+  };
+
+  IOC test_ioc_2 {
+    DATATYPENAME uint32 {
+      DATATYPEPROPERTY = DATA;
+    };
+    SEMANTICS = QUEUED {
+      BUFFER_LENGTH = 5;
+    };
+
+    RECEIVER rcv {
+      RCV_OSAPPLICATION = receiver_2_application;
+    };
+    SENDER snd {
+      SND_OSAPPLICATION = sender_2_application;
+    };
+  };
+
+  IOC test_ioc_3 {
+    DATATYPENAME uint32 {
+      DATATYPEPROPERTY = DATA;  
+    };
+    DATATYPENAME uint8 {
+      DATATYPEPROPERTY = DATA;  
+    };
+    SEMANTICS = QUEUED {
+      BUFFER_LENGTH = 5;
+    };
+    RECEIVER rcv {
+      RCV_OSAPPLICATION = sender_1_application;
+    };
+    SENDER snd {
+      SND_OSAPPLICATION = receiver_1_application;
+    };
+  };
+
+};

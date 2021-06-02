@@ -27,7 +27,7 @@ import "vectors"
 #------------------------------------------------------------------------------*
 # Check goil version is ok
 #
-let NEEDED_VERSION := "3.1.11"
+let NEEDED_VERSION := "3.1.12"
 
 if version() != NEEDED_VERSION then
   error here : "Goil version " + NEEDED_VERSION + " required"
@@ -1504,15 +1504,20 @@ if OS::MEMMAP then
   end if
 end if
 
+#display ioc_unqueued_list
+#display ioc_queued_list
+
 !PROJECT%/tpl_static_info.json
 %
 write to PROJECT+"/tpl_static_info.json":
   let obj := @[
-    "task"     : TASKS,
-    "isr"      : ISRS,
-    "event"    : EVENTS,
-    "resource" : RESOURCES,
-    "alarm"    : ALARMS
+    "task"                  : TASKS,
+    "isr"                   : ISRS,
+    "event"                 : EVENTS,
+    "resource"              : RESOURCES,
+    "alarm"                 : ALARMS,
+    "message"               : MESSAGE,
+    "ioc"                   : ioc_reordered
   ]
   let nbTab := 0
   template export_json in log
@@ -1523,6 +1528,10 @@ if OS::TRACE then
   %readTrace.py%
   write to executable "readTrace.py":
     template readTrace_py in log
+  end write
+  %TraceCPU.py%
+  write to executable "traceCPU.py":
+    template from "trace_cpu_py" in log
   end write
 end if
 #temporary
