@@ -1,6 +1,3 @@
-//first compilation:
-//goil --target=posix  --templates=../../../goil/templates/ periodic.oil
-
 OIL_VERSION = "4.0";
 
 IMPLEMENTATION trampoline {
@@ -20,13 +17,8 @@ CPU only_one_periodic_task {
   OS config {
     NUMBER_OF_CORES = 1;
     STATUS = EXTENDED;
-	TRACE = TRUE {
-		  FORMAT = json;
-      IOC = TRUE;
-    };
     BUILD = TRUE {
       APP_SRC = "ioc.c";
-      LDFLAGS = "-lrt -pthread"; //
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "ioc_exe";
       LINKER = "gcc";
@@ -37,8 +29,7 @@ CPU only_one_periodic_task {
   APPLICATION receiver_application {
     TASK = receiver;
     ALARM = check_every_seconds;
-    // COUNTER = SystemCounter_App0;
-    COUNTER = SystemCounter;
+    COUNTER = SystemCounter_App0;
   };
 
   APPLICATION sender_application {
@@ -49,30 +40,24 @@ CPU only_one_periodic_task {
 
   APPMODE std {};
 
-  // COUNTER SystemCounter_App0
-  // {
-  // };
+  COUNTER SystemCounter_App0
+  {
+  };
 
   COUNTER SystemCounter_App1
   {
   };
 
-  COUNTER SystemCounter
-  {
-  };
-
   ALARM check_every_seconds {
-    // COUNTER = SystemCounter_App0;
-    COUNTER = SystemCounter;
+    COUNTER = SystemCounter_App0;
     ACTION = ACTIVATETASK { TASK = receiver; };
-    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 300; CYCLETIME = 300; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 100; CYCLETIME = 100; };
   };
 
   ALARM please_send_a_message {
-    // COUNTER = SystemCounter_App1; //why 2 counter ?
     COUNTER = SystemCounter_App1;
     ACTION = ACTIVATETASK { TASK = sender; };
-    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 50; CYCLETIME = 50; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 350; CYCLETIME = 300; };
   };
 
   TASK receiver {
@@ -89,28 +74,7 @@ CPU only_one_periodic_task {
     SCHEDULE = FULL;
   };
 
-  IOC his_ioc_zero {
-    DATATYPENAME uint32 {
-        DATATYPEPROPERTY = DATA;  //DATA代表传数据
-    };
-    DATATYPENAME uint8 {
-        DATATYPEPROPERTY = REFERENCE; //REFERENCE 代表传地址
-    };
-    SEMANTICS = QUEUED {
-        BUFFER_LENGTH = 5;
-    };
-//    SEMANTICS = LAST_IS_BEST {
-//      INIT_VALUE_SYMBOL = AUTO;
-//    };
-    RECEIVER rcv {
-        RCV_OSAPPLICATION = sender_application;
-    };
-    SENDER snd {
-        SND_OSAPPLICATION = receiver_application;
-    };
-  };
-
-  IOC my_ioc_one {
+  IOC my_ioc_name {
     DATATYPENAME uint32 {
         DATATYPEPROPERTY = DATA;
     };
@@ -127,26 +91,4 @@ CPU only_one_periodic_task {
         SND_OSAPPLICATION = sender_application;
     };
   };
-
-  IOC his_ioc_two {
-    DATATYPENAME uint32 {
-        DATATYPEPROPERTY = DATA;  //DATA代表传数据
-    };
-    DATATYPENAME uint8 {
-        DATATYPEPROPERTY = REFERENCE; //REFERENCE 代表传地址
-    };
-    SEMANTICS = QUEUED {
-        BUFFER_LENGTH = 5;
-    };
-//    SEMANTICS = LAST_IS_BEST {
-//      INIT_VALUE_SYMBOL = AUTO;
-//    };
-    RECEIVER rcv {
-        RCV_OSAPPLICATION = sender_application;
-    };
-    SENDER snd {
-        SND_OSAPPLICATION = receiver_application;
-    };
-  };
-
 };
