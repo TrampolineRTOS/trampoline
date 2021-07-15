@@ -34,27 +34,32 @@ extern "C" {
 #define RESOURCE_TAKEN 1
 typedef uint8 tpl_trace_resource_state;
 
-#  define IOC_SEND               1
-#  define IOC_RECEIVE            0
-#  define SEND_NONZERO_MESSAGE   0
-#  define SEND_ZERO_MESSAGE      1
-#  define MESSAGE_RECEIVE        2
 
 
 /**
 * @def IDs of the different traces
 * value used in the binary export implementation. do not modify.
 */
-#define PROC_CHANGE_STATE    0
-#define RES_CHANGE_STATE     1
-#define EVENT_SET            2
-#define EVENT_RESET          3
-#define TIMEOBJ_CHANGE_STATE 4 // ALARM_SLEEP or ALARM_ACTIVE
-#define TIMEOBJ_EXPIRE       5
-#define MESSAGE              6 // SEND_ZERO_MESSAGE or SEND or RECEIVE
-/* special case sent by target when there is no more place*/
-#define OVERFLOW             7
 
+/* special case sent by target when there is no more place*/
+#define OVERFLOW     0
+#define PROC_TYPE    1
+#define RES_TYPE     2
+#define EVENT_TYPE   3
+#define TIMEOBJ_TYPE 4 // ALARM_SLEEP, ALARM_ACTIVE, ALARM EXPIRE
+#define MESSAGE_TYPE 5 // SEND_ZERO_MESSAGE, SEND or RECEIVE
+#define IOC_TYPE     6
+
+/* sub types */
+#define SEND_NONZERO_MESSAGE_KIND 0
+#define SEND_ZERO_MESSAGE_KIND    1
+#define MESSAGE_RECEIVE_KIND      2
+
+#define TIMEOBJ_CHANGE_STATE_KIND 0
+#define TIMEOBJ_EXPIRE_KIND       1
+
+#define EVENT_SET_KIND            0
+#define EVENT_RESET_KIND          1
 
 /* define the trace output types */
 #if WITH_TRACE == YES

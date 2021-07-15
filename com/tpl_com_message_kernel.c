@@ -144,8 +144,8 @@ FUNC(tpl_status, OS_CODE) tpl_send_message_service(
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
-    /*  trace the message sending                    */
-    TRACE_MSG_SEND(mess_id,SEND_NONZERO_MESSAGE);
+    /*  trace the sending message                    */
+    TRACE_MSG_SEND(mess_id,SEND_NONZERO_MESSAGE_KIND);
     /*  get the message object from its id          */
     smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
     /*  call the sending function                   */
@@ -226,8 +226,8 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_message_service(
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
-    /*  trace the message sending                    */
-    TRACE_MSG_SEND(mess_id,SEND_ZERO_MESSAGE);
+    /*  trace the sending message                    */
+    TRACE_MSG_SEND(mess_id,SEND_ZERO_MESSAGE_KIND);
     /*  get the message object from its id          */
     smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
     /*  call the sending function                   */

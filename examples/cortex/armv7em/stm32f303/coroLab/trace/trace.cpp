@@ -2,6 +2,7 @@
 #include "mcp23s17.h"
 #include "pinAccess.h"
 #include "tft.h"
+#include "serial.h"
 
 
 static  uint32 x=123456789, y=362436069, z=521288629;
@@ -22,8 +23,10 @@ uint32 xorshf96(void) {
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
+
     initCoroBoard();
     ioExt.digitalWrite(mcp23s17::PORTA, 1, 1);
+	tpl_serial_begin();
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }

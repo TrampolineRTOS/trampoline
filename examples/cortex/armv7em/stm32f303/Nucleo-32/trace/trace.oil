@@ -48,31 +48,104 @@ CPU blink {
     };
   };
   
-  APPMODE std {};
+  APPMODE appStd {};
   
-  TASK blink {
+  //first periodic task, standard
+  TASK taskPeriodicSend {
     PRIORITY = 1;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    RESOURCE = resGPIO;
   };
 
-  ISR usart {
-    CATEGORY = 1;
-    PRIORITY = 10;
-    SOURCE = USART2_IRQ;
-  };
   
-  ALARM blink_blink {
+  ALARM alTask1 {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = blink;
+      TASK = taskPeriodicSend;
     };
     AUTOSTART = TRUE {
-      APPMODE = std;
+      APPMODE = appStd;
       ALARMTIME = 100;
       CYCLETIME = 100;
     };
+  };
+
+  EVENT evMsgIn1 {
+    MASK = AUTO;
+  };
+
+  EVENT evMsgIn2 {
+    MASK = AUTO;
+  };
+
+  RESOURCE resGPIO {
+    RESOURCEPROPERTY = STANDARD;
+  };
+
+  //second task, extended
+  TASK taskReceiver1 {
+    PRIORITY = 3;
+    AUTOSTART = TRUE {APPMODE = appStd;} ;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = evMsgIn1;
+    RESOURCE = resGPIO;
+  };
+
+  //third task, extended
+  TASK taskReceiver2 {
+    PRIORITY = 5;
+    AUTOSTART = TRUE {APPMODE = appStd;} ;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = evMsgIn2;
+    RESOURCE = resGPIO;
+  };
+
+  //internal communication.  
+  MESSAGE msgDataSend {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "uint32";
+    };
+  };
+
+  MESSAGE msgDataReceive1 {
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+      SENDINGMESSAGE = msgDataSend;
+      FILTER = ONEEVERYN{
+        PERIOD = 3;
+        OFFSET = 0;
+      };
+      QUEUESIZE = 2;
+    };
+    NOTIFICATION = SETEVENT {
+      TASK = taskReceiver1;
+      EVENT = evMsgIn1;
+    };
+  };
+
+  MESSAGE msgDataReceive2 {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = msgDataSend;
+      FILTER = ONEEVERYN{
+        PERIOD = 3;
+        OFFSET = 1;
+      };
+      INITIALVALUE = 0;
+    };
+    NOTIFICATION = SETEVENT {
+      TASK = taskReceiver2;
+      EVENT = evMsgIn2;
+    };
+  };
+
+  //ISR to retrieve the trace
+  ISR usart {
+    CATEGORY = 1;
+    PRIORITY = 10;
+    SOURCE = USART2_IRQ; //TX on PA2/A7
   };
 };
 

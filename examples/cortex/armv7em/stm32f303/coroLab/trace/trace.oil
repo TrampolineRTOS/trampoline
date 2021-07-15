@@ -113,8 +113,8 @@ CPU message {
     MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
       SENDINGMESSAGE = outMessage;
       FILTER = ONEEVERYN {
-      PERIOD = 3;
-      OFFSET = 1;
+        PERIOD = 3;
+        OFFSET = 1;
       };
       QUEUESIZE = 4 ; 
     };
@@ -126,9 +126,10 @@ CPU message {
   MESSAGE inMessage_emergency{
     MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
       SENDINGMESSAGE = outMessage;
-      FILTER = NEWISWITHIN
-      {MIN = 20 ;
-      MAX = 60;};
+      FILTER = NEWISWITHIN {
+        MIN = 20 ;
+        MAX = 60;
+      };
       QUEUESIZE = 4 ; 
     };
     NOTIFICATION = ACTIVATETASK{
@@ -139,9 +140,10 @@ CPU message {
   MESSAGE inMessage_NormalOperation{
     MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
       SENDINGMESSAGE = outMessage;
-      FILTER = NEWISOUTSIDE
-      {MIN =20;
-      MAX = 60;};
+      FILTER = NEWISOUTSIDE{
+        MIN =20;
+        MAX = 60;
+      };
       QUEUESIZE = 4 ; 
     };
     NOTIFICATION = SETEVENT {

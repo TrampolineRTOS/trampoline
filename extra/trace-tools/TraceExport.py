@@ -9,24 +9,28 @@ class TraceExport:
         ''' called by the evaluator when there is a proc change event.'''
         pass
 
-    def handleEventTOExpire(self,ev):
-        ''' called by the evaluator when a Time Object expires.'''
+    def handleEventResource(self,ev):
+        ''' called by the evaluator when a resource is taken/free event.'''
         pass
 
-    def handleEventTOUpdate(self,ev):
-        ''' called by the evaluator when a Time Object updates.'''
+    def handleEventTO(self,ev):
+        ''' called by the evaluator when a Time Object is updated.'''
         pass
 
-    def handleEventSetEvent(self,ev):
-        ''' called by the evaluator when there is a Set Event.'''
-        pass
-
-    def handleEventResetEvent(self,ev):
-        ''' called by the evaluator when there is a Reset Event.'''
+    def handleEventEvent(self,ev):
+        ''' called by the evaluator when there is a Set/Reset Event.'''
         pass
 
     def handleEventOverflow(self,ev):
         ''' called by the evaluator when there is an overflow (i.e. communication is too slow)'''
+        pass
+
+    def handleEventTrace(self,ev):
+        ''' called by the evaluator a pb is detected when retrieving the trace (bad checksum)'''
+        pass
+
+    def handleEventMessage(self,ev):
+        ''' called by the evaluator when a message is sent/received.'''
         pass
 
 class TraceExportTxt(TraceExport):
@@ -41,60 +45,63 @@ class TraceExportTxt(TraceExport):
         self.timeStamp(ev)
         print('proc {0: <20} change to state {1}'.format(ev['procName'],ev['stateName']))
 
-    def handleEventTOExpire(self,ev):
-        ''' called by the evaluator when a Time Object expires.'''
+    def handleEventResource(self,ev):
+        ''' called by the evaluator when a resource is taken/free event.'''
         self.timeStamp(ev)
-        print('time object expired: {0}'.format(ev['toName']))
+        print('proc {0: <20} change resource {1} to state {2}'.format(ev['procName'],ev['resourceName'],ev['stateName']))
 
-    def handleEventTOUpdate(self,ev):
-        ''' called by the evaluator when a Time Object updates.'''
+    def handleEventTO(self,ev):
+        ''' called by the evaluator when a Time Object is updated.'''
         self.timeStamp(ev)
-        print('time object "{0:>11}" change to state {1}'.format(
+        if ev['kind'] == 'expire':
+            print('time object expired: {0}'.format(ev['toName']))
+        elif ev['kind'] == 'update_state':
+            print('time object "{0:>11}" change to state {1}'.format(
                ev['toName'],
                ev['toStateName']))
+        else:
+            print('ERROR in Trace Export. Unknown time object kind {1}'.format(ev['kind']))
 
-    def handleEventSetEvent(self,ev):
-        ''' called by the evaluator when there is a Set Event.'''
+    def handleEventEvent(self,ev):
+        ''' called by the evaluator when there is a Set/Reset Event.'''
         self.timeStamp(ev)
-        print('event {0:>12} (id {1}) sent to task {2}'.format(
-                ev['evtName'],
-                ev['evtMask'],
-                ev['procName']))
-
-    def handleEventResetEvent(self,ev):
-        ''' called by the evaluator when there is a Reset Event.'''
-        self.timeStamp(ev)
-        print('task {0:>20} resets event {1:>10} (mask {2})'.format(
-                ev['procName'],
-                ev['evtName'],
-                ev['evtMask']))
-
-    
+        if ev['kind'] == 0: #set
+            print('event {0:>12} (id {1}) sent to task {2}'.format(
+                    ev['evtName'],
+                    ev['evtMask'],
+                    ev['procName']))
+        else: #reset
+            print('task {0:>20} resets event {1:>10} (mask {2})'.format(
+                    ev['procName'],
+                    ev['evtName'],
+                    ev['evtMask']))
 
     def handleEventSendIoc(self,ev):
         ''' called by the evaluator when an ioc message is sent.'''
         self.timeStamp(ev)
         print('ioc  sent: {0}'.format(ev['iocName']))
+
     def handleEventReceiveIoc(self,ev):
         ''' called by the evaluator when an ioc message is received.'''
         self.timeStamp(ev)
         print('ioc  received: {0}'.format(ev['iocName']))
 
-
-    def handleEventSendZeroMsg(self,ev):
+    def handleEventMessage(self,ev):
         ''' called by the evaluator when a zero message is sent.'''
         self.timeStamp(ev)
-        print('zero msg sent: {0}'.format(ev['msgName']))
-    def handleEventSendMsg(self,ev):
-        ''' called by the evaluator when a nonzero message is received.'''
-        self.timeStamp(ev)
-        print('msg  sent: {0}'.format(ev['msgName']))
-    def handleEventReceiveMsg(self,ev):
-        ''' called by the evaluator when a message is received.'''
-        self.timeStamp(ev)
-        print('msg  received: {0}'.format(ev['msgName']))
+        kind = ev['kind']
+        if kind == 'send_zero':
+            print('zero message sent: {0}'.format(ev['msgName']))
+        elif kind == 'send':
+            print('message sent: {0}'.format(ev['msgName']))
+        elif kind == 'receive':
+            print('msg  received: {0}'.format(ev['msgName']))
+        else:
+            print('ERROR in Trace Export. Unknown message kind {1}'.format(ev['kind']))
 
     def handleEventOverflow(self,ev):
         ''' called by the evaluator when there is an overflow (i.e. communication is too slow)'''
-        self.timeStamp(ev)
-        print(' ##### OVERFLOW ####')
+        print('*** ERROR, OVERFLOW : some messages may have been deleted ***')
+    def handleEventTrace(self,ev):
+        ''' called by the evaluator a pb is detected when retrieving the trace (bad checksum)'''
+        print('*** ERROR, TRACE CHECKSUM : some messages may have been deleted ***')

@@ -246,7 +246,7 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 //----------------------------------------------------
 /**
 * trace the ioc:
-* - when a ioc message is sent
+* - when an ioc message is sent
 *
 */
 #if (WITH_IOC == YES)
@@ -259,7 +259,8 @@ FUNC(void, OS_CODE) tpl_trace_ioc_send(
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"type\":\"send_ioc\",\n"
+	"\t\t\"type\":\"ioc\",\n"
+	"\t\t\"kind\":\"send\",\n"
 	"\t\t\"ts\":\"%ld\",\n"
 	"\t\t\"ioc_id\":\"%d\"\n"
 	"\t}"
@@ -283,7 +284,8 @@ FUNC(void, OS_CODE) tpl_trace_ioc_receive(
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"type\":\"receive_ioc\",\n"
+	"\t\t\"type\":\"ioc\",\n"
+	"\t\t\"kind\":\"receive\",\n"
 	"\t\t\"ts\":\"%ld\",\n"
 	"\t\t\"ioc_id\":\"%d\"\n"
 	"\t}"
@@ -314,7 +316,8 @@ FUNC(void, OS_CODE) tpl_trace_msg_send(
   {
     fprintf(trace_file,
     "\n\t{\n"
-    "\t\t\"type\":\"send_zero_msg\",\n"
+    "\t\t\"type\":\"message\",\n"
+    "\t\t\"kind\":\"send_zero_msg\",\n"
     "\t\t\"ts\":\"%ld\",\n"
     "\t\t\"msg_id\":\"%d\"\n"
     "\t}"
@@ -324,7 +327,8 @@ FUNC(void, OS_CODE) tpl_trace_msg_send(
   {
     fprintf(trace_file,
     "\n\t{\n"
-    "\t\t\"type\":\"send_msg\",\n"
+    "\t\t\"type\":\"message\",\n"
+    "\t\t\"kind\":\"send_msg\",\n"
     "\t\t\"ts\":\"%ld\",\n"
     "\t\t\"msg_id\":\"%d\"\n"
     "\t}"
@@ -350,7 +354,8 @@ FUNC(void, OS_CODE) tpl_trace_msg_receive(
   if(!first) fprintf(trace_file,",");
   fprintf(trace_file,
 	"\n\t{\n"
-	"\t\t\"type\":\"receive_msg\",\n"
+    "\t\t\"type\":\"message\",\n"
+	"\t\t\"kind\":\"receive_msg\",\n"
 	"\t\t\"ts\":\"%ld\",\n"
 	"\t\t\"msg_id\":\"%d\"\n"
 	"\t}"
