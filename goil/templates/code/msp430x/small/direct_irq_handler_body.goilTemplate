@@ -57,7 +57,7 @@ elsif handlerSource == "TIMER4_A1_VECTOR" then
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER4_A0_VECTOR" then
-   let nameVector := "TA4IV"
+   let nameVector := "TA4IV_0"
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER3_A1_VECTOR" then
@@ -65,7 +65,7 @@ elsif handlerSource == "TIMER3_A1_VECTOR" then
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER3_A0_VECTOR" then
-   let nameVector := "TA3IV"
+   let nameVector := "TA3IV_0"
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER2_A1_VECTOR" then
@@ -73,7 +73,7 @@ elsif handlerSource == "TIMER2_A1_VECTOR" then
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER2_A0_VECTOR" then
-   let nameVector := "TA2IV"
+   let nameVector := "TA2IV_0"
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER1_A1_VECTOR" then
@@ -81,7 +81,7 @@ elsif handlerSource == "TIMER1_A1_VECTOR" then
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER1_A0_VECTOR" then
-   let nameVector := "TA1IV"
+   let nameVector := "TA1IV_0"
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER0_A1_VECTOR" then
@@ -89,7 +89,7 @@ elsif handlerSource == "TIMER0_A1_VECTOR" then
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER0_A0_VECTOR" then
-   let nameVector := "TA0IV"
+   let nameVector := "TA0IV_0"
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER0_B1_VECTOR" then
@@ -97,7 +97,7 @@ elsif handlerSource == "TIMER0_B1_VECTOR" then
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "TIMER0_B0_VECTOR" then
-   let nameVector := "TB0IV"
+   let nameVector := "TB0IV_0"
    let bitMAX := 6
    let useAntoine := 1
 elsif handlerSource == "USCI_A1_VECTOR" then
@@ -140,14 +140,22 @@ if [obj type] == @struct then%
   call      #% ! obj::NAME + "_function"
   if [PORT_IRQ contains: obj::SOURCE] then
     # PORT IRQ, ack the interrupt
+    if obj::SOURCE == "TIMER0_A0_VECTOR" | obj::SOURCE == "TIMER1_A0_VECTOR" | obj::SOURCE == "TIMER2_A0_VECTOR" | obj::SOURCE == "TIMER3_A0_VECTOR" | obj::SOURCE == "TIMER4_A0_VECTOR" | obj::SOURCE == "TIMER0_B0_VECTOR" then 
+    
+    else
 %
 /*-----------------------------------------------------------------------------
  * -2b- Ackowledge the interrupt
  */
   mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
   end if
+  end if
   
 elsif  useAntoine == 1 then
+  if nameVector == "TA4IV_0" | nameVector == "TA3IV_0" | nameVector == "TA2IV_0" | nameVector == "TA1IV_0" | nameVector == "TA0IV_0" | nameVector == "TB0IV_0" then
+%
+  call      #% ! handler::NAME %_function%
+  else
 %
   add       &__% ! nameVector %, pc
   jmp       tpl_direct_irq_handler_exit_% !handlerSource
@@ -174,6 +182,7 @@ tpl_% ! nameVector %_% ! handler::BIT %_handler:
   between %
   jmp       tpl_direct_irq_handler_exit_% !handlerSource 
   end foreach
+  end if
 else
 %
 /*-----------------------------------------------------------------------------
