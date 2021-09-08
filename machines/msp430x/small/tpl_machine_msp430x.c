@@ -89,6 +89,37 @@ FUNC(void, OS_CODE) tpl_init_context(
 #endif
 }
 
+FUNC(uint8, OS_CODE) tpl_check_stack_footprint (
+    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
+{
+	//pointer to the static descriptor of the process
+	CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc =
+		tpl_stat_proc_table[proc_id];
+
+	//pointer to the stack of the process
+	CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack =
+		the_proc->stack.stack_zone;
+
+	//size of the stack in 16 bit words above the frame
+	CONST(uint16, AUTOMATIC) size_of_stack_above_frame =
+		(the_proc->stack.stack_size - MSP430X_SMALL_FRAME_SIZE) >> 1;
+		
+	VAR(int, AUTOMATIC) i;
+	VAR(int, AUTOMATIC) result;
+	for(i = size_of_stack_above_frame; i > 0; i--)
+	{
+		if(stack[i] != OS_STACK_PATTERN)
+		{
+			result = 0;
+		}
+		else
+		{
+			result = 1;
+		}
+	}
+  return result;
+}
+
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
 	#if WITH_MEMORY_PROTECTION == YES
