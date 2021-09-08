@@ -312,6 +312,8 @@ SECTIONS {
 foreach proc in PROCESSES do
 %
 /* Initialized LEA variables section of % !proc::KIND % % !proc::NAME % */
+   . = ALIGN(512);
+
 %
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
     foreach SECTION_KIND in @( "_LEA_" ) do
@@ -323,8 +325,6 @@ end foreach
 
 foreach app in APPLICATIONS do
 %/* Initialized variables section of OS_APP % !app::NAME % */
-   . = ALIGN(512);
-
 %
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
     foreach SECTION_KIND in @( "_POWER_ON_INIT_" ) do
