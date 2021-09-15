@@ -33,6 +33,9 @@
 #include "tpl_os_hooks.h"
 #include "tpl_chkpt_checkpoint_kernel.h"
 
+#include "msp430.h"
+#include "tpl_chkpt_adc.h"
+
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore_kernel.h"
 # if SPINLOCK_COUNT > 0
@@ -50,6 +53,25 @@ VAR (sint16,OS_VAR) tpl_checkpoint_buffer = -1;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+//void disable_irq_for_hibernate(){
+	///* Disable TIMER3_A0 interrupt */
+	//TA3CCTL0 &= ~CCIE;
+//}
+
+//void restore_irq_for_hibernate(){
+	///* Restore TIMER3_A0 interrupt */
+	//TA3CCTL0 |= CCIE;
+//}
+
+//uint16 conversion_adc(){
+	//ADC12CTL0 |= ADC12ON;
+	//ADC12CTL0 |= ADC12ENC | ADC12SC;
+	//while(ADC12CTL1 & ADC12BUSY);
+	//ADC12CTL0 &= ~(ADC12ENC);
+	//ADC12CTL0 &= ~(ADC12ON);
+	//REFCTL0 &= ~(REFON);
+	//return ADC12MEM0;
+//}
 
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
@@ -98,9 +120,44 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
   tpl_save_checkpoint(l_buffer);
   tpl_checkpoint_buffer = l_buffer;
+  
+  /* Choose one: Shutdown or periodic check of battery */
+  
+  // Shutdown
 
   tpl_shutdown(); //on msp430 => LPM4
-
+	
+  // Periodic check
+  //RTCCTL0_H = RTCKEY_H;                     						// Unlock RTC key protected registers
+  //RTCCTL0_L = RTCRDYIE;
+  //RTCCTL1 = RTCBCD | RTCHOLD;
+  //RTCYEAR = 0x2021;
+  //RTCMON = 0x9;
+  //RTCDAY = 0x11;
+  //RTCDOW = 0x03;
+  //RTCHOUR = 0x10;
+  //RTCMIN = 0x32;
+  //RTCSEC = 0x15;
+  //RTCCTL1 &= ~(RTCHOLD);
+  
+  //#define RESUME_FROM_HIBERNATE_THRESHOLD (3000)
+  //uint16 flag = 1;
+  //uint16 vcc = 0;
+  
+  //while(flag){
+	  //vcc = conversion_adc();
+	  //if(vcc>RESUME_FROM_HIBERNATE_THRESHOLD){
+		  //RTCCTL1 |= RTCHOLD;
+		  //flag = 0;
+		  //break;
+	  //}
+	  //else{
+		  //disable_irq_for_hibernate();	
+		  //__bis_SR_register(LPM3_bits);
+		  //__bic_SR_register(GIE);
+		  //restore_irq_for_hibernate();
+	  //}
+  //}	  
   PROCESS_ERROR(result)
 }
 
