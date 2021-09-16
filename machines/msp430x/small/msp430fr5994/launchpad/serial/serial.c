@@ -39,6 +39,10 @@ struct tpl_serial_tx_ring_buffer
 };
 
 struct tpl_serial_tx_ring_buffer tx_buffer = { { 0 }, 0, 0 };
+
+/* workaround to get out LPM3 only when the tx buffer has been full */
+volatile uint8_t tx_buffer_full = 0;
+
 #endif /* SERIAL_TX_BUFFER_SIZE */
 
 /* RX buffer */
@@ -82,7 +86,10 @@ void tpl_serial_putchar(char c)
 {
 #if SERIAL_TX_BUFFER_SIZE > 0
 	const uint16_t next = (tx_buffer.head + 1) % SERIAL_TX_BUFFER_SIZE;
-	while(next == tx_buffer.tail) LPM3; /* wait until it is not full */
+	while(next == tx_buffer.tail) { 
+		tx_buffer_full = 1;
+		LPM3; /* wait until it is not full */
+	}
 	/* add in ring buffer */
 	tx_buffer.buffer[tx_buffer.head] = c;
 	tx_buffer.head = next;
@@ -207,16 +214,23 @@ void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_V
 		c = tx_buffer.buffer[tx_buffer.tail];
 		tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_TX_BUFFER_SIZE;
 		if(tx_buffer.tail == tx_buffer.head) /* empty */
+		{
 			UCA0IE &= ~UCTXIE; /* disable TX interrupt */
-		else 
+		} else { 
+			
 			/* RAZ. If empty, does not remove the flag 
 			 * so that next time a char is written, the interrupt
 			 * is re-enabled, and the interrupt will occur 
 			 * immediately
 			 */
 			UCA0IFG &= ~UCTXIFG;
+		}
 		UCA0TXBUF = c; /* send char */
-		LPM3_EXIT; /* if buffer is full, we entered in LPM */
+		if(tx_buffer_full) {
+			tx_buffer_full = 0;
+			/* WARNING, if we were in LPM from user space, we get out!!! */
+			LPM3_EXIT; /* if buffer is full, we have entered in LPM */
+		}
 	//}
 	break;
 #endif
