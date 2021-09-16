@@ -124,10 +124,12 @@ uint16_t readPowerVoltage(void)
 
 uint16_t readPowerVoltage_simple(void)
 {
+  ADC12CTL0 |= ADC12ON;
   ADC12CTL0 |= ADC12ENC | ADC12SC;        // enable ADC and start conversion
-  while(adc_conv_ready != 1);
+  	while(ADC12CTL1 & ADC12BUSY);
   adc_conv_ready = 0;
-
+  ADC12CTL0 &= ~(ADC12ENC);
+  ADC12CTL0 &= ~(ADC12ON);
   return ADC12MEM0;
 }
 
