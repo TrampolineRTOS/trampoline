@@ -21,8 +21,9 @@ CPU blink {
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
-      APP_SRC = "blink.c";
-      APP_NAME = "blink_exe";
+      APP_SRC = "serial.c";
+	  LIBRARY = serial;
+      APP_NAME = "serial.elf";
       CFLAGS  = "-O0";
       LDFLAGS = "-Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
@@ -42,23 +43,29 @@ CPU blink {
   
   APPMODE std {};
   
-  TASK blink {
+  TASK blinkSerial {
     PRIORITY = 1;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
   
-  ALARM blink_blink {
+  ALARM al_blinkSerial {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = blink;
+      TASK = blinkSerial;
     };
     AUTOSTART = TRUE {
       APPMODE = std;
       ALARMTIME = 100;
       CYCLETIME = 100;
     };
+  };
+  //ISR required by the serial TX
+  ISR usart {
+    CATEGORY = 1;
+    PRIORITY = 10;
+    SOURCE = USART2_IRQ; //TX on PA2/A7
   };
 };
 
