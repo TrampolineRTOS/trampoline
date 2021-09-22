@@ -2,7 +2,7 @@
 
 This application show how to use the trampoline trace with a simple example that
 use many features: periodic tasks, events, resources and internal communication:
- * task **taskPeriodicSend** is periodic (100ms) and:
+ * task **taskPeriodicSend** is periodic (500ms) and:
 	 * take/release an external resource (**resGPIO**)
 	 * send a message **msgDataSend**
  * the message is associated to 2 receive messages with filters (1 every 3). 
@@ -18,39 +18,30 @@ The trace documentation is set in one chapter in documentation/manual/main.pdf
 1 - Step into the example directory
 
 ```sh
-cd examples/cortex/armv7em/stm32f303/Nucleo-32/trace 
+cd examples/msp430x/small/msp430fr5994/launchpad/trace
 ```
 
-2 - Generate all source files from a configuration with the command 
+Configure the application with
 
 ```sh
-goil --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ trace.oil
+goil --target=msp430x/small/msp430fr5994/launchpad --templates=../../../../../../goil/templates/ trace.oil
 ```
 
-3 - Connect a stm32f303 board with a USB cable, you can find your board through this command
-
+then compile and flash:
 ```sh
-lsusb
+./make.py flash
 ```
 
-4 - Flash the binary file
+To get the trace from serial and export the results on the command line, try the following command, the device name may vary from system to system, here the board name is `ttyACM0`.
 
 ```sh
-./make.py burn 
-```
-
-5 - You should see the green LED blinks, if not, press the reset button.
-
-6.1 - To get the trace from serial and export the results on the command line, try the following command, the device name may vary from system to system, here the board name is `ttyACM0`.
-
-```sh
-./readTrace.py -s /dev/ttyACM0,115200 
+./readTrace.py -s /dev/ttyACM1,9600 
 ```
 
 6.2 - You can also save the trace info in a json file, try the following command, use `Ctrl + C` to interrupt, and `./readTrace.py` to explain the `trace.json` generated, the device name may vary from system to system, here the board name is `ttyACM0`.
 
 ```sh
-./readTrace.py -s /dev/ttyACM0,115200 -o trace.json 
+./readTrace.py -s /dev/ttyACM1,9600 -o trace.json 
 ```
 
 

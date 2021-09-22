@@ -11,17 +11,22 @@
  **/
 void tpl_serial_update_freq();
 
-/** simply put one char on the serial line */
-void tpl_serial_putchar(char c);
+/** simply put one char on the serial line 
+ * @return 0 if there is no overflow (TX buffer)
+ * */
+int tpl_serial_putchar(char c);
 
-/** print a standard null terminated string on the serial line*/
-void tpl_serial_print_string(const char *str);
+/** print a standard null terminated string on the serial line
+ * @return 0 if there is no overflow (TX buffer)
+ **/
+int tpl_serial_print_string(const char *str);
 
 /** print an integer to the serial line
  *  @param val value to be printed  
  *  @param fieldWidth width (in char) of the value printed (right aligned)
+ *  @return 0 if there is no overflow (TX buffer)
  **/
-void tpl_serial_print_int(int16_t val, uint8_t fieldWidth);
+int tpl_serial_print_int(int16_t val, uint8_t fieldWidth);
 
 /** configure the serial line. Should be called at startup.*/
 void tpl_serial_begin();
