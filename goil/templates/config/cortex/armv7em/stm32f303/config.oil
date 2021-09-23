@@ -27,7 +27,10 @@ IMPLEMENTATION stm32f303 {
     BOOLEAN [
       TRUE {
         ENUM [
-          serial
+          serial {
+            UINT32 RXBUFFER = 32;
+            UINT32 TXBUFFER = 16;
+          }
         ] LIBRARY[];
       },
       FALSE
