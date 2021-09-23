@@ -1,5 +1,6 @@
 #include "pinAccess.h"
 #include "serial.h"
+#include "tpl_app_define.h" /* buffer sizes */ 
 
 /* TX FIFO buffer
  * updated in interrupt handler

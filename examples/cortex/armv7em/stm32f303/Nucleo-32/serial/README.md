@@ -1,10 +1,10 @@
-# Blink example
+# Serial example
 
-This application is a simple example using the serial communication over the USB
+This application is a simple periodic example wich toggles the green led (LD3 - pin 13) of the board and sends a charcter string on the serial line. Have a look into "serial.oil" file.
 
 The SystemCounter is at 1ms.
 
-The serial library should be declared in the .oil file, with the size (in bytes) of the 2 buffers (TX and RX). If any buffers is set to 0, no buffer is used and the related interrupt is not enabled.
+The serial library should be declared in the .oil file, with the size (in bytes) of the TX buffer (should not be set to 0!)
 
 ```
       LIBRARY = serial {

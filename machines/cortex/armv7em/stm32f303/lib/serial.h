@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-/** basic serial line (TX only) for debug prupose
+/** basic serial line (TX only) for debug purpose
  *  We use USART2 on PA2 (alternative config 7)
  *  => compatible with Nucleo32 F303K8 and Nucleo64 F303RE and 
  *  available through the ST-Link MCU to support a virtual COM port.

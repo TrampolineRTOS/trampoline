@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-#define SERIAL_TX_BUFFER_SIZE 128
-
 /** basic serial line (TX only) for debug purpose
  *  We use USART2 on PA2 (alternative config 7)
  *  => compatible with Nucleo32 L432 

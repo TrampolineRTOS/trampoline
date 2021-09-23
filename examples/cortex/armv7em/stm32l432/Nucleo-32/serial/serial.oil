@@ -1,7 +1,6 @@
 OIL_VERSION = "2.5";
 
 IMPLEMENTATION trampoline {
-
     /* This fix the default STACKSIZE of tasks */
     TASK {
         UINT32 STACKSIZE = 300 ;
@@ -13,7 +12,7 @@ IMPLEMENTATION trampoline {
     } ;
 };
 
-CPU blink {
+CPU serial {
   OS config {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
@@ -22,10 +21,12 @@ CPU blink {
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "serial.c";
-	  LIBRARY = serial;
-      APP_NAME = "serial.elf";
+      APP_NAME = "serial_exe";
+      LIBRARY = serial {
+        TXBUFFER = 16;
+      };
       CFLAGS  = "-O0";
-      LDFLAGS = "-Map=blink.map";
+      LDFLAGS = "-Map=serial.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
@@ -41,24 +42,24 @@ CPU blink {
     };
   };
   
-  APPMODE std {};
+  APPMODE appStd {};
   
-  TASK blinkSerial {
-    PRIORITY = 1;
+  TASK serial_TX {
+    PRIORITY = 2;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
-  
-  ALARM al_blinkSerial {
+
+  ALARM ALSerial_TX {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = blinkSerial;
+      TASK = serial_TX;
     };
     AUTOSTART = TRUE {
-      APPMODE = std;
-      ALARMTIME = 100;
-      CYCLETIME = 100;
+      APPMODE = appStd;
+      ALARMTIME = 250;
+      CYCLETIME = 250;
     };
   };
   //ISR required by the serial TX

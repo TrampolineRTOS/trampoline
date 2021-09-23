@@ -1,6 +1,9 @@
 #include "tpl_os.h"
 #include "pinAccess.h"
 
+//see machines/cortex/armv7em/stm32f303/lib/serial.h
+#include "serial.h"
+
 #define APP_Task_serial_TX_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -17,7 +20,7 @@ TASK(serial_TX)
 {
   static int i = 0;
   tpl_serial_print_string("count: ");
-  tpl_serial_print_int(i,10,6); //val, base, field size
+  tpl_serial_print_int(i,10,6); //val, base, field width
   tpl_serial_print_string("\r\n");
   i++;
   digitalToggle(GPIOB,3); //led

@@ -62,8 +62,7 @@ CPU serial {
       CYCLETIME = 250;
     };
   };
-
-  //ISR to retrieve the trace
+  //ISR required by the serial TX
   ISR usart {
     CATEGORY = 1;
     PRIORITY = 10;
