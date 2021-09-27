@@ -13,6 +13,9 @@ This little scenario generates a lot of trace information.
 
 The trace documentation is set in one chapter in documentation/manual/main.pdf
 
+You may limit the TXBUFFER parameter to get some overflow errors (too much data 
+on the serial line). There are some overflows with TXBUFFER = 128 bytes.
+
 ## How to run an example
 
 1 - Step into the example directory
