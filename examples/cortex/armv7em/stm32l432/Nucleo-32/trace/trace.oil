@@ -32,7 +32,7 @@ CPU trace {
       APP_SRC = "trace.c";
       APP_NAME = "trace_exe";
       CFLAGS  = "-O0";
-      LIBRARY = serial;
+      LIBRARY = serial {TXBUFFER = 256;};
       LDFLAGS = "-Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";

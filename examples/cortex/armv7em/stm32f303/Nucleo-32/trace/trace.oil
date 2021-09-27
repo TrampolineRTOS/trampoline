@@ -13,17 +13,18 @@ IMPLEMENTATION trampoline {
     } ;
 };
 
-CPU blink {
+CPU trace {
   OS config {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
+
     TRACE = TRUE {
-        FORMAT = serial;
-        PROC = TRUE;
-        RESOURCE = TRUE;
-        ALARM = TRUE;
-        EVENT = TRUE;
+      FORMAT = serial;
+      PROC = TRUE;
+      RESOURCE = TRUE;
+      ALARM = TRUE;
+      EVENT = TRUE;
     };
     
     BUILD = TRUE {
