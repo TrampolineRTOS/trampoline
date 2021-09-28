@@ -1530,9 +1530,6 @@ if OS::TRACE then
     template readTrace_py in log
   end write
   %TraceCPU.py%
-  write to executable "traceCPU.py":
-    template from "trace_cpu_py" in log
-  end write
 end if
 #temporary
 
