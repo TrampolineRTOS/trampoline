@@ -34,20 +34,20 @@ if __name__ == '__main__':
 
         If no input argument given, same as '-i trace.json', output on stdout.
     '''.format(sys.argv[0])))
-    parser.add_argument("-i", "--input", type=str, nargs='?', default='trace.json', metavar='input', help='input can either be a saved file (json format), or the serial line to get events. In that last case, the device name and the speed should be given, e.g. "/dev/ttyACM0,9600" (default %(default)s)')
+    parser.add_argument("-i", "--input", type=str, nargs='?', default='trace.json', metavar='input', help='input can either be a saved file (json format), or the serial line to get events. In that last case, the device name and the speed should be given, e.g. "/dev/ttyACM0,9600" (default \%(default)s)')
     parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultOutput, metavar='outputFile', help='Store the raw event list into a JSON format for later use.')
-    parser.add_argument("-a", "--analysis", type=str, nargs='?', const='all', choices=['load','list'],default=None,metavar='data', help="Analysis tool to apply on the trace: allowed 'load','list' (default %(default)s)")
+    parser.add_argument("-a", "--analysis", type=str, nargs='?', const='all', choices=['load','list'],default=None,metavar='data', help="Analysis tool to apply on the trace: allowed 'load','list' (default \%(default)s)")
     parser.add_argument("-v", "--verbose", default=False, action="store_true", help="verbose mode")
     args = parser.parse_args()
 
     #first, get access to files.
     traceToolFolder = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/extra/trace-tools"
     sys.path.append(traceToolFolder)
+    sys.path.append(traceToolFolder+'/analysis')
     try:
         import StaticInfo
         import TraceReader
         import TraceEvaluate
-        import TraceExport
         import TraceAnalysis
         from TraceAnalysisCpuLoad import *
         from TraceAnalysisList import *
