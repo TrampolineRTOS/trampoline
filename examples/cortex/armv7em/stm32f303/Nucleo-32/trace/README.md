@@ -47,13 +47,12 @@ lsusb
 6.1 - To get the trace from serial and export the results on the command line, try the following command, the device name may vary from system to system, here the board name is `ttyACM0`.
 
 ```sh
-./readTrace.py -s /dev/ttyACM0,115200 
+./readTrace.py -i /dev/ttyACM0,115200 -a list
 ```
 
-6.2 - You can also save the trace info in a json file, try the following command, use `Ctrl + C` to interrupt, and `./readTrace.py` to explain the `trace.json` generated, the device name may vary from system to system, here the board name is `ttyACM0`.
-
+Other features are defined in the help:
 ```sh
-./readTrace.py -s /dev/ttyACM0,115200 -o trace.json 
+./readTrace.py --help
 ```
 
 
