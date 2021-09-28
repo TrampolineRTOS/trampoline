@@ -166,6 +166,10 @@ class TraceReaderSerial(TraceReader):
             print("here: https://pythonhosted.org/pyserial/index.html")
         try:
             ser = serial.Serial(device, speed, timeout=1)
+            #we flush the input buffer.
+            # https://stackoverflow.com/questions/7266558/pyserial-buffer-wont-flush
+            time.sleep(0.2)
+            ser.reset_input_buffer()
         except serial.serialutil.SerialException:
             print('Serial line {0} not found'.format(device))
             sys.exit(1)
@@ -182,6 +186,7 @@ class TraceReaderSerial(TraceReader):
             if gotPb and not firstReception:
                 evtPb = {}
                 evtPb['ts'] = evt['ts']
+                evt['bin'] = ':'.join('{:02x}'.format(i) for i in evtBin) #debug
                 evtPb['type'] = 'trace'
                 self.serialEventQueue.put(evtPb)
             self.serialEventQueue.put(evt)
@@ -203,5 +208,62 @@ class TraceReaderSerial(TraceReader):
         self.evStopSerial.set()
 
     def readData(self,nb):
-        return self.ser.read(nb)
+        data = self.ser.read(nb)
+        return data
 
+class TraceReaderDump(TraceReader):
+    ''' Get trace events from a file dump (binary file)
+        not well tested, for debug.
+    '''
+    def __init__(self,filename,verbose):
+        '''
+        :param str device: serial device name ('/dev/ttyACM1' for instance on Linux)
+        :param int speed : serial speed in bauds
+        '''
+        import threading, queue
+        super().__init__()
+        self.verbose = verbose
+        self.data = []
+        #open serial
+        self.infile=open(filename,'rb')
+        self.timeStamp = 0  #to take into account overflows (events are in chronological order)
+        #thread related to serial reception
+        self.evStopSerial = threading.Event() #event to stop the serial reception
+        self.serialEventQueue = queue.Queue() #queue between serial thread and main app.
+        self.senderThread = threading.Thread(target=self.dumpRead)
+        self.senderThread.start()
+
+    def dumpRead(self):
+        ''' reception thread. Reads events on the serial line and put it it the queue'''
+        firstReception = True
+        while not self.evStopSerial.is_set():
+            #read serial
+            (gotPb, evtBin) = self.readBinaryEvent()
+            (evt,self.timeStamp) = self.decodeBinaryEvent(evtBin,self.timeStamp) 
+            #we tolerate a bad serial reception at begining (synchro)
+            if gotPb and not firstReception:
+                evtPb = {}
+                evtPb['ts'] = evt['ts']
+                evt['bin'] = ':'.join('{:02x}'.format(i) for i in evtBin) #debug
+                evtPb['type'] = 'trace'
+                self.serialEventQueue.put(evtPb)
+            self.serialEventQueue.put(evt)
+            firstReception = False
+        if self.verbose:
+            print('{0} events in the serial queue at the end'.format(self.serialEventQueue.qsize()))
+        self.infile.close()
+
+    def getEvent(self):
+        ''' Generator that sends raw events one by one from serial. 
+            This is executed on the main thread
+        '''
+        while True:
+            event = self.serialEventQueue.get()
+            yield event
+
+    def stop(self):
+        ''' We need to stop the serial connexion => stop the thread'''
+        self.evStopSerial.set()
+
+    def readData(self,nb):
+        return self.infile.read(nb)
