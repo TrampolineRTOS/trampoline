@@ -10,7 +10,7 @@ class TraceEvaluate:
     """
     def __init__(self,staticInfo):
         self.staticInfo = staticInfo
-        self.runningTask = staticInfo.getIdleTaskId()
+        self.runningTask = -1 #unknown task (application may run before, so it's not necessary idle)
 
     def evaluate(self,rawEvent):
         '''evaluate one raw event, and return event with real names'''
@@ -28,17 +28,21 @@ class TraceEvaluate:
             elif rawType == 'resource': #resources
                 i = int(rawEvent['resource_id'])
                 st= int(rawEvent['target_state'])
-                procId = self.runningTask
-                procName  = self.staticInfo.procNames[procId]
                 resourceName  = self.staticInfo.resourceNames[i]
                 stateName = self.staticInfo.resourceStates[st]
-                found = False
-                tasksAllowed = self.staticInfo.staticInfo['resource'][i]['TASKUSAGE']
-                for task in tasksAllowed:
-                    if task['VALUE']==procName:
-                        found = True
-                if not found:
-                    print('ERROR configuration: the task {0} is not allowed to access resource {1}'.format(procName,resourceName))
+                procId = self.runningTask
+                if procId == -1: #unknown
+                    procName  = '<unknown>'
+                    #found = True #task unknown => cannot check anything
+                else:
+                    found = False
+                    procName  = self.staticInfo.procNames[procId]
+                    tasksAllowed = self.staticInfo.staticInfo['resource'][i]['TASKUSAGE']
+                    for task in tasksAllowed:
+                        if task['VALUE']==procName:
+                            found = True
+                    if not found:
+                        print('ERROR configuration: the task {0} is not allowed to access resource {1}, at date {2}'.format(procName,resourceName,ts))
                 event = {'ts':ts,'type':rawType, 'procName':procName, 'state':st, 'resourceName':resourceName, 'stateName':stateName}
             elif rawType == 'timeobj': #alarm expire
                 i = int(rawEvent['timeobj_id'])
@@ -67,10 +71,14 @@ class TraceEvaluate:
                             'procName':procName, 'evtName':evtName}
                 elif kind == 'reset': #reset event
                     target  = self.runningTask
-                    evtName = self.staticInfo.getEventName(target,evtMask)
-                    procName  = self.staticInfo.procNames[target]
+                    if target == -1: #unknown
+                        procName = '<unknown>'
+                        evtName = '<unknown>'
+                    else:
+                        evtName = self.staticInfo.getEventName(target,evtMask)
+                        procName  = self.staticInfo.procNames[target]
                     event = {'ts':ts, 'type':evType,'proc':target, 'evtMask':evtMask,
-                            'procName':procName, 'evtName':evtName}
+                             'procName':procName, 'evtName':evtName}
                 else:
                     print('ERROR unhandled event kind: {0}'.format(rawEvent['kind']))
                     event = {'ts':ts,'type':'trace','info':evType}
