@@ -12,7 +12,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 /* periodic task, each 100ms */
 TASK(taskPeriodicSend)
 {
-  for(volatile uint32_t i = 0; i<100000;i++);
+  for(volatile uint32_t i = 0; i<10000;i++);
   static uint32 data = 0;
   data = (data+1)%5;
   GetResource(resGPIO);
@@ -33,7 +33,7 @@ TASK(taskReceiver1)
 	  ClearEvent(evMsgIn1);
 	  //job stuff
 	  ReceiveMessage(msgDataReceive1,&incomingData);
-      for(volatile uint32_t i = 0; i<200000;i++);
+      for(volatile uint32_t i = 0; i<20000;i++);
       GetResource(resGPIO);
       digitalWrite(GPIOB,0,0);
       ReleaseResource(resGPIO);
@@ -51,7 +51,7 @@ TASK(taskReceiver2)
 	  //job stuff
 	  ReceiveMessage(msgDataReceive2,&incomingData);
       GetResource(resGPIO);
-      for(volatile uint32_t i = 0; i<300000;i++);
+      for(volatile uint32_t i = 0; i<30000;i++);
       digitalWrite(GPIOB,0,1);
       ReleaseResource(resGPIO);
   }

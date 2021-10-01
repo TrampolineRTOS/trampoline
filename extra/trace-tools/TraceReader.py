@@ -42,7 +42,8 @@ class TraceReader:
                 #nok, read one more byte, and check again
                 d = self.readData(1)
                 if(len(frame) == 5):
-                    print('ERROR: Serial read pb')
+                    f= ':'.join('{:02x}'.format(i) for i in frame) #debug
+                    print('ERROR: Serial read problem. Frame is '+f)
                     gotPb = True
                     frame = frame[1:] + d
                 else:
