@@ -37,3 +37,7 @@ Then, run the trampoline binary. This program will start another process to run 
 
     $ ./periodic_exe
 
+If the trace tools are enabled in OIL file, the execution will create a trace file named "trace.json" and a python script to check the log generated.
+
+    $ ./readtrace.py
+

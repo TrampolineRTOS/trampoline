@@ -38,6 +38,7 @@
 #include "tpl_com_app_def.h"
 #include "tpl_com_errorhook.h" /*added by Florent 090303*/
 #include "tpl_os_definitions.h"
+#include "tpl_trace.h"
 
 /*#if COM_EXTENDED == YES*/
 #include "tpl_com_internal_com.h"
@@ -139,10 +140,12 @@ FUNC(tpl_status, OS_CODE) tpl_send_message_service(
 #if SEND_MESSAGE_COUNT > 0
   CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
 #endif
-	
+  
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
+    /*  trace the sending message                    */
+    TRACE_MSG_SEND(mess_id,SEND_NONZERO_MESSAGE_KIND);
     /*  get the message object from its id          */
     smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
     /*  call the sending function                   */
@@ -181,6 +184,8 @@ FUNC(tpl_status, OS_CODE) tpl_receive_message_service(
 #if RECEIVE_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
+    /*  trace                                       */
+    TRACE_MSG_RECEIVE(mess_id);
     /*  get the message object from its id          */
     rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
     /*  call the sending function                   */
@@ -221,6 +226,8 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_message_service(
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
+    /*  trace the sending message                    */
+    TRACE_MSG_SEND(mess_id,SEND_ZERO_MESSAGE_KIND);
     /*  get the message object from its id          */
     smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
     /*  call the sending function                   */
