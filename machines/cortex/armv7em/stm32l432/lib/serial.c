@@ -130,7 +130,7 @@ int tpl_serial_print_int(int32_t val, int base, int fieldWidth)
 
 void tpl_serial_tx_fifo_flush()
 {
-	//the current transmittint byte is sent, but
+	//the current transmitting byte is sent, but
 	//won't generate any interrupt.
     USART2->CR1 &= ~USART_CR1_TXEIE; //remove the interrupt.
 	//reinit TX fifo.

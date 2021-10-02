@@ -48,8 +48,8 @@ FUNC(void, OS_CODE) tpl_trace_start()
   static char serialOk = 0;
   if(serialOk == 0)
   {
-    tpl_serial_begin();
-	  serialOk = 1;
+    tpl_serial_begin(SERIAL_TX_MODE_SKIP);
+    serialOk = 1;
   }
 # else
 #  error "unsupported trace mode: TRACE_FORMAT"
@@ -75,6 +75,7 @@ FUNC(void, OS_CODE) tpl_trace_close()
 * (the TX serial line fifo should be > 5 bytes).
 *
 */
+#include "msp430.h"
 FUNC(void, OS_CODE) tpl_trace_overflow()
 {
   const tpl_tick ts=tpl_trace_get_timestamp();
@@ -84,7 +85,7 @@ FUNC(void, OS_CODE) tpl_trace_overflow()
   //we do not generate any overflow here of course
   //to prevent recursive calls.
   //
-  //tpl_serial_tx_fifo_flush();
+  tpl_serial_tx_fifo_flush();
   /* TTT 00000 (Type) */
   uint8_t byte = OVERFLOW << 5;
   uint8_t chksum = byte;

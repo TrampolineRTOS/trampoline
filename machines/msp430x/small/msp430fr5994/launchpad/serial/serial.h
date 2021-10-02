@@ -2,6 +2,13 @@
 #define __TPL_SERIAL_H__
 #include <stdint.h>
 
+/* define TX MODE when TX buffer is full
+ * SERIAL_TX_MODE_BLOCK: active waiting loop. Get in LPM3 between characters.
+ * SERIAL_TX_MODE_SKIP : the data is not sent. Overflow return value is set.
+ * */
+#define SERIAL_TX_MODE_BLOCK  0
+#define SERIAL_TX_MODE_SKIP   1
+
 /* function that should be called each time 
  * the DCO frequency is changed to recalculate the
  * correct baud rate parameters.
@@ -28,8 +35,14 @@ int tpl_serial_print_string(const char *str);
  **/
 int tpl_serial_print_int(int16_t val, uint8_t fieldWidth);
 
-/** configure the serial line. Should be called at startup.*/
-void tpl_serial_begin();
+/** configure the serial line. Should be called at startup.
+ *
+ * txMode defines the behavior when TX buffer is full
+ * SERIAL_TX_MODE_BLOCK: active waiting loop. Get in LPM3 between characters.
+ * SERIAL_TX_MODE_SKIP : the data is not sent. Overflow return value is set.
+ * There is only the blocking mode if no buffer is defined.
+ **/
+void tpl_serial_begin(uint8_t txMode);
 
 /** return the nb of available chars in the rx buffer */
 uint16_t tpl_serial_available();
@@ -38,4 +51,6 @@ uint16_t tpl_serial_available();
  * it returns 0xff
  */
 char tpl_serial_read();
+
+void tpl_serial_tx_fifo_flush();
 #endif
