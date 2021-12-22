@@ -1,6 +1,7 @@
 /* Specify the memory areas for stm32f407 */
 MEMORY
 {
+  /* (81 External + 15 system + 2) * 4 = 0x188 */
   VECTOR (rx)     : ORIGIN = 0x08000000, LENGTH = 0x188
   FLASH (rx)      : ORIGIN = 0x08000188, LENGTH = 0xFE78
   RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 128K
