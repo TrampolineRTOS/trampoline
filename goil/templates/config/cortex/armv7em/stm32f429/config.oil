@@ -258,8 +258,22 @@ CPU stm32f429 {
     VECTOR = USART6_IRQ;
   };
   
+  
+  DEVICE UART7 {
+    KIND = UART;
+    ADDRESS = 0x40078000; 
+    VECTOR = UART7_IRQ;
+  };
+  
+  
+  DEVICE UART8 {
+    KIND = UART;
+    ADDRESS = 0x4007C000; 
+    VECTOR = UART8_IRQ;
+  };
+  
   INTERRUPT_COUNT nb_it {
-    IT_TABLE_SIZE = 98;
+    IT_TABLE_SIZE = 107;
   };
   
   INTERRUPT NMI {
@@ -731,11 +745,6 @@ CPU stm32f429 {
     VECT = 68;
     SETPRIO = TRUE { NUMBER = 52; };
     ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
-    //ACK = TRUE {
-    //  TEMPLATE = TRUE {
-    //    NAME = "uart_ack";
-    //  };
-    //};
     VECTOR_TYPE = HANDLER {
       NAME = "UART4_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -746,11 +755,6 @@ CPU stm32f429 {
     VECT = 69;
     SETPRIO = TRUE { NUMBER = 53; };
     ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
-    //ACK = TRUE {
-    //  TEMPLATE = TRUE {
-    //    NAME = "uart_ack";
-    //  };
-    //};
     VECTOR_TYPE = HANDLER {
       NAME =  "UART5_Handler";
       TEMPLATE = TRUE { NAME = "uart_dispatch"; };
@@ -983,6 +987,85 @@ CPU stm32f429 {
       NAME = "FPU_Handler";
     };
   } : "FPU global interrupt";
+  
+  /****** Added Handlers ******/
+  INTERRUPT UART7_IRQ {
+    VECT = 98;
+    SETPRIO = TRUE { NUMBER = 82; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART7_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "UART7 global Interrupt";
+
+  INTERRUPT UART8_IRQ {
+    VECT = 99;
+    SETPRIO = TRUE { NUMBER = 83; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART8_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "UART8 global Interrupt";
+
+  INTERRUPT SPI4_IRQ {
+    VECT = 100;
+    SETPRIO = TRUE { NUMBER = 84; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI4_Handler";
+    };
+  } : "SPI4 global Interrupt";
+
+  INTERRUPT SPI5_IRQ {
+    VECT = 101;
+    SETPRIO = TRUE { NUMBER = 85; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI5_Handler";
+    };
+  } : "SPI5 global Interrupt";
+
+  INTERRUPT SPI6_IRQ {
+    VECT = 102;
+    SETPRIO = TRUE { NUMBER = 86; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI6_Handler";
+    };
+  } : "SPI6 global Interrupt";
+
+  /**** Not Sure ****/
+
+  INTERRUPT SAI1_IRQ {
+    VECT = 103;
+    SETPRIO = TRUE { NUMBER = 87; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SAI1_Handler";
+    };
+  } : "SAI1 global Interrupt";
+
+  INTERRUPT LTDC_IRQ {
+    VECT = 104;
+    SETPRIO = TRUE { NUMBER = 88; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LTDC_Handler";
+    };
+  } : "LTDC global Interrupt";
+
+  INTERRUPT LTDC_ER_IRQ {
+    VECT = 105;
+    SETPRIO = TRUE { NUMBER = 89; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "LTDC_ER_Handler";
+    };
+  } : "LTDC ER global Interrupt";
+
+  INTERRUPT DMA2D_IRQ {
+    VECT = 106;
+    SETPRIO = TRUE { NUMBER = 90; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2D_Handler";
+    };
+  } : "DMA2D global Interrupt";
 
   PLATFORM_FILES stm32f429 {
     PATH = "cortex/armv7em/stm32f429";
