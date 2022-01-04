@@ -13,4 +13,11 @@
 .equ TPL_KERN_OFFSET_NEED_SWITCH,   16
 .equ TPL_KERN_OFFSET_NEED_SCHEDULE, 17
 
+/* Init values for various fields of tpl_kern */
+.equ NO_NEED_SWITCH_NOR_SCHEDULE,   0
+.equ NO_NEED_SWITCH,                0
+.equ NEED_SWITCH,                   1
+.equ NEED_SAVE,                     2
+
+
 #endif

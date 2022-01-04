@@ -53,16 +53,31 @@
 
 #define GPR_ON_EXCEPTION_FRAME  (13<<1) //we reserve 32bits/GPR
 
-extern volatile uint8 tpl_reentrancy_counter;
+/*
+ * The reentrancy flag is used to distinguish between a service call`
+ * from the application and from a hook.
+ * If 0, it ia a call from the application
+ * if 1, it is a call from a hook
+ */
+extern volatile uint8 tpl_reentrancy_flag;
 
 typedef struct MSP430X_CONTEXT
 {
 	uint16 stackPointer;  /* General purpose register r4 */
 } msp430x_core_context;
 
+/*
+ * Datatypes to store something on the stack and to store the size of
+ * the stack (in bytes).
+ */
 typedef uint16 tpl_stack_word;
 typedef uint16 tpl_stack_size;
 
+/*
+ * structure used in the static descriptor of a task/ISR2
+ * 1 - pointer to the stack
+ * 2 - size of the stack (in bytes)
+ */
 typedef struct TPL_STACK {
     tpl_stack_word  *stack_zone;
     tpl_stack_size  stack_size;
