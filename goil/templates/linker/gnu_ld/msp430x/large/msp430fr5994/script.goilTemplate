@@ -25,6 +25,7 @@
 %
 template symbols
 template periph
+
 %
 
 /*----------------------------------------------------------------------------*/
@@ -36,8 +37,20 @@ template periph
 ENTRY(tpl_reset_handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x3C00;    /* end of 8K RAM */
-
+%
+if OS::LEA then
+  if OS::LEA_S::LEA_RAM > 4096 then
+    let OS::LEA_S::LEA_RAM := 4096
+  end if
+  let estack := 0x3C00 - OS::LEA_S::LEA_RAM
+  %_estack = %!estack%; /* end of RAM*/
+%
+  else
+   let estack := 0x3C00
+   %_estack = %!estack%; /* end of RAM */
+%
+end if
+%
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0;      /* required amount of heap  */
 _Min_Stack_Size = 0x100; /* required amount of stack */
