@@ -1,0 +1,39 @@
+/**
+ * set the CPU default frequency at startup in MHz.
+ * Value defined with .oil key CPU->OS->CPU_FREQ_MHZ;
+ *
+ * This frequency may be overriden using at runtime with
+ * void tpl_set_mcu_clock(uint16_t freqInMHz);
+ * (defined in tpl_clocks.h)
+ */
+#define CPU_FREQ_MHZ    % ! exists OS::CPU_FREQ_MHZ default (1) %
+
+/*
+ * Power mode to be used in the idle task
+ */
+#define ACTIVE_POWER_MODE  -1
+#define LPM0_POWER_MODE     0
+#define LPM1_POWER_MODE     1
+#define LPM2_POWER_MODE     2
+#define LPM3_POWER_MODE     3
+
+#define IDLE_POWER_MODE   % ! OS::IDLE_POWER_MODE %_POWER_MODE
+#define IDLE_LPM          % ! OS::IDLE_POWER_MODE
+%
+
+/*
+ * If YES, init the .data section using the DMA
+ */
+#define WITH_INIT_WITH_DMA    % ! yesNo(OS::INIT_WITH_DMA) %
+
+/*
+ * If YES, use checkpointing with the msp430
+ */
+#define WITH_CHECKPOINTING    % ! yesNo(OS::CHECKPOINTING) %
+
+/*
+ * If YES, use lea with the msp430
+ */
+#define WITH_LEA             % ! yesNo(OS::LEA) %
+%
+template if exists tpl_library_defines

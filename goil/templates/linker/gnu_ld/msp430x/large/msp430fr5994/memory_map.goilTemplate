@@ -45,7 +45,7 @@ if OS::LEA then
   let lea_origin := 0x3BFF - OS::LEA_S::LEA_RAM
   let size_ram := 0x1000 + 0x1000 - OS::LEA_S::LEA_RAM
 %  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = %!size_ram% /* size is 4k */
-  LEA_RAM (xrw)  : ORIGIN = %!lea_origin%, LENGTH = %!OS::LEA_S::LEA_RAM% /* size max = 4096 */
+  LEA_RAM (xrw)  : ORIGIN = %![lea_origin hexString]%, LENGTH = %![OS::LEA_S::LEA_RAM hexString]% /* size max = 4096 */
 %
 else%  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = 0x2000 /* size is 8k */%
 end if  

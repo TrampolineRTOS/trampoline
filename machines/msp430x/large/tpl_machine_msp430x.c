@@ -10,6 +10,7 @@
 	#include "tpl_as_definitions.h"
 #endif
 #include "tpl_os_interrupt.h"
+#include "tpl_kern_stack.h"
 
 #include "msp430.h"
 

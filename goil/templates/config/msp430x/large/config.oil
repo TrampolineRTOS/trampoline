@@ -31,7 +31,6 @@ IMPLEMENTATION  msp430x {
     ENUM [ ACTIVE, LPM0, LPM1, LPM2, LPM3 ] IDLE_POWER_MODE = ACTIVE;
     /* Initialize variables in .data section with DMA */
     BOOLEAN INIT_WITH_DMA = FALSE;
-
     /* enable checkpointing. Define the default period */
     BOOLEAN [
       TRUE {UINT32 CYCLETIME = 5000;},
@@ -62,15 +61,15 @@ IMPLEMENTATION  msp430x {
 CPU msp430x {
 
   PLATFORM_FILES msp430x {
-    PATH   = "msp430x/small";
+    PATH   = "msp430x/large";
     CFILE  = "tpl_machine_msp430x.c";
     CFILE  = "tpl_startup.c";
     CFILE  = "tpl_clocks.c";
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
-    CFILE  = "tpl_trace.c";
- //checkpointing
-    ASFILE = "framtr.S";
+//    CFILE  = "tpl_trace.c";
+    /* Checkpointing */
+//    ASFILE = "framtr.S";
     CFILE  = "tpl_checkpointing.c";
   };
 

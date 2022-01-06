@@ -40,14 +40,14 @@
 	.type tpl_reset_handler, %function
 
 tpl_reset_handler:
-	movx #0xA500, &MPUCTL0 /* unlock MPU */
-	movx #0xA500, &MPUCTL0 /* unlock MPU */
+	movx.w #0xA500, &MPUCTL0 /* unlock MPU */
+	movx.w #0xA500, &MPUCTL0 /* unlock MPU */
 	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
-	movx     #0x5a80, &__WDTCTL 
+	movx.w     #0x5a80, &__WDTCTL
 /* #else 
 	movx.b	&__WDTCTL, r5
-	bisx	#0x5a08, r5
+	bisx	#0x05a08, r5
 	movx	r5, &__wdt_clear_value  
 #endif */
 
@@ -55,9 +55,9 @@ tpl_reset_handler:
 	 * they will be enabled when the first task wil start (including idle task)
 	*/
 	dint
-
+    nop
 	/* init stack */
-	movx     #_estack-2, r1
+	mova     #_estack-2, r1
 
 	calla    #tpl_continue_reset_handler
 #define OS_STOP_SEC_CODE

@@ -31,11 +31,12 @@ CPU msp430fr5994 {
     COMMONFLAGS = "-ffunction-sections";
     // Each data is put in its own section. Required to deleted unused data
     COMMONFLAGS = "-fdata-sections";
-    // Use large code memory model
-    COMMONFLAGS = "-code_model=large";
-    // Use large data memory model
-    COMMONFLAGS = "data_model=large";
-    // 
+    // Use large code/data memory model
+      COMMONFLAGS    = "-mlarge";
+      COMMONFLAGS    = "-mdata-region=none";
+      COMMONFLAGS    = "-mcode-region=none";
+//      COMMONFLAGS    = "-muse-430x-for-mem";
+    
     /*
      * C++ compiler flags
      */
@@ -66,7 +67,9 @@ CPU msp430fr5994 {
     ASFLAGS = "-mmcu=msp430fr5994";
     // A warning is an error
     /* ASFLAGS = "--fatal-warnings"; */
-
+    ASFLAGS = "-mlarge";
+    ASFLAGS = "-mdata-region=none";
+    ASFLAGS = "-mcode-region=none";
     /*
      * Linker flags
      */
