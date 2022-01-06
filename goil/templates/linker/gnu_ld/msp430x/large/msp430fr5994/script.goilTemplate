@@ -65,7 +65,7 @@ template memory_map
 SECTIONS {
   .isr_vector : {
     . = ALIGN(4);
-    KEEP(*(.isr_vector)) /* vector table */
+	INCLUDE "% !PROJECT %/tpl_interrupt_vectors.ld"
     . = ALIGN(4);
   } >VECTOR
 }

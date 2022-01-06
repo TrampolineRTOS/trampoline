@@ -24,8 +24,8 @@
 
 
 
-write to PROJECT+"/tpl_interrupt_vectors.c":
- let EXTENSIONINTERRUPTVECTORS := "c"
+write to PROJECT+"/tpl_interrupt_vectors.ld":
+ let EXTENSIONINTERRUPTVECTORS := "ld"
  template tpl_interrupt_vectors in code
 end write
 

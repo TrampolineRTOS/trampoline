@@ -75,7 +75,6 @@ CPU msp430x {
 
   GENERATED_FILES msp430x {
     ASFILE = "tpl_irq_handlers.S";
-    CFILE  = "tpl_interrupt_vectors.c";
   };
 
 };

@@ -1,10 +1,5 @@
 /* Interrupt table vector */
-#include "tpl_compiler.h"
-#include "tpl_os.h"
-#include "tpl_os_interrupt_kernel.h"
-#include "tpl_machine.h"
-%
-if exists OS::BUILD_S::LIBRARY then
+%if exists OS::BUILD_S::LIBRARY then
   let libMap := [OS::BUILD_S::LIBRARY mapBy: "VALUE"]
   if exists libMap["serial"] then
     let any_buffer := exists libMap["serial"]::VALUE_S::TXBUFFER default(16)+
@@ -63,7 +58,7 @@ end foreach
 
 foreach int in INTERRUPT do
   if exists int::LINKED then %
-extern FUNC(void, OS_CODE) % !int::LINKED % (P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+/* KEEP(% !int::LINKED %) */%
   end if
 end foreach
 
@@ -80,22 +75,30 @@ foreach int in INTERRUPT do
       # check whether we have an ISR or a COUNTER
       if obj::KIND == "ISR" then
         if obj::CATEGORY == 1 then %
-extern FUNC(void, OS_CODE) tpl_direct_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+/* KEEP(tpl_direct_irq_handler_% !int::NAME %) */%
         elsif obj::CATEGORY == 2 then %
-extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+/* KEEP(tpl_primary_irq_handler_% !int::NAME %) */%
         else %
 #error unknown CATEGORY % !obj::CATEGORY
         end if
       else # this is a counter
         %
-extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !int::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));%
+/* KEEP(tpl_primary_irq_handler_% !int::NAME %) */%
       end if
     end if
   end if
 end foreach
 %
 
-/* Interrupt table vector */
+/* Interrupt table vector 
+ *
+ * The table is hardcoded in the link script, because the large model
+ * uses 32-bit pointers, but interrupt vector requires 16-bit pointers.
+ * The conversion can not be done in C. In the link script, the SHORT() 
+ * keyword can convert addresses.
+ * Of course, all the interrupt routine must reside in the lower 
+ * memory (below 64K)
+ */
 %
 # Check there is no duplicate address in INTERRUPT list
 let maxNameWidth := 0
@@ -130,34 +133,27 @@ loop entry
   to end_address
   step 2
   before
-%
-__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !(end_address - start_address + 2) / 2 %] = {
-%
   do
     foreach int in INTERRUPT do
       if int::ADDRESS == entry then
         if exists int::LINKED then %
-  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)% ! int::LINKED
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ SHORT(% ! int::LINKED%)%
         elsif exists objForIRQ[int::NAME] then
           let obj := objForIRQ[int::NAME]
           if obj::KIND == "ISR" then
             if obj::CATEGORY == 1 then %
-  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_direct_irq_handler_% ! int::NAME
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ SHORT(tpl_direct_irq_handler_% ! int::NAME %)%
             elsif obj::CATEGORY == 2 then %
-  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_primary_irq_handler_% ! int::NAME           
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ SHORT(tpl_primary_irq_handler_% ! int::NAME %)%       
             end if
           else %
-  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ (tpl_it_handler)tpl_primary_irq_handler_% ! int::NAME
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth % */ SHORT(tpl_primary_irq_handler_% ! int::NAME %)%
           end if
         else %
-  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth  % */ (tpl_it_handler)tpl_null_it%
+  /* % ! [int::ADDRESS hexString] %, % ! int::NAME tab maxNameWidth  % */ SHORT(tpl_null_it)%
         end if
       end if
     end foreach
-  between %,%
-  after %
-};
-%
 end loop
 
 %
