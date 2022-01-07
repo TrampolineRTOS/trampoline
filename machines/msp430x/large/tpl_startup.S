@@ -40,11 +40,11 @@
 	.type tpl_reset_handler, %function
 
 tpl_reset_handler:
-	movx.w #0xA500, &MPUCTL0 /* unlock MPU */
-	movx.w #0xA500, &MPUCTL0 /* unlock MPU */
+	movx.a #0xA500, &MPUCTL0 /* unlock MPU */
+	movx.a #0xA500, &MPUCTL0 /* unlock MPU */
 	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
-	movx.w     #0x5a80, &__WDTCTL
+	movx.a     #0x5a80, &__WDTCTL
 /* #else 
 	movx.b	&__WDTCTL, r5
 	bisx	#0x05a08, r5

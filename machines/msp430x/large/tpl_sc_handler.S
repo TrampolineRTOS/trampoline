@@ -87,7 +87,7 @@ tpl_sc_handler_id_ok:
   movx.a     2(r1), r11     /* Saved PC [19..16] -> r11                  */
   movx.a     r1, 2(r1)      /* Copy saved PC [15..0] at the good place   */
   swpbx.a    r11            /* Get saved PC [19..16] in bits 11..8       */
-  rlam.a   #4, r11        /* Shift them to bits 19..16                 */
+  rlam.a     #4, r11        /* Shift them to bits 19..16                 */
   bisx.a     r2, r11        /* Add the SR in its location at 11..0       */
   bisx.a     #8, r11        /* set GIE bit (reset just before with dint) */
   movx.a     r11, 20(r1)    /* The stack is ok                           */
@@ -107,32 +107,42 @@ tpl_sc_handler_id_ok:
  *-----------------------------------------------------------------------------
  * -4- Obviously volatile registers (r12 to r15 because we take into account
  * both ABIs) are not saved in tpl_sc_handler since the caller does not expect
- * their values to be preserved but we need to make room (8 bytes) on the
+ * their values to be preserved but we need to make room (2*8 bytes) on the
  * stack for them because an interrupt handler will save these registers at
  * this location.
  * The tpl_sc_handler needs one working register and we choose to use r11
  * which has to be saved on the process stack before using it.
  */
-  subx.a        #8, sp
+  subx.a        #16, sp
   pushm.a       #1,r11
 /*
  * PROCESS STACK:
  *    +-------------------+
- *  0 |        r11        | + 00
+ *  0 |   0  | r11.19:16  | + 00
  *    +-------------------+
- *  1 |        r12        | + 02
+ *  1 |      r11.15:0     | + 02
  *    +-------------------+
- *  2 |        r13        | + 04
+ *  2 |   0  | r12.19:16  | + 04
  *    +-------------------+
- *  3 |        r14        | + 06
+ *  3 |      r12.15:0     | + 06
  *    +-------------------+
- *  4 |        r15        | + 08
+ *  4 |   0  | r13.19:16  | + 08
+ *    +-------------------+
+ *  5 |      r13.15:0     | + 10
+ *    +-------------------+
+ *  6 |   0  | r14.19:16  | + 12
+ *    +-------------------+
+ *  7 |      r14.15:0     | + 14
+ *    +-------------------+
+ *  8 |   0  | r15.19:16  | + 16
+ *    +-------------------+
+ *  9 |      r15.15:0     | + 18
  *    +----+--------------+
- *  5 | PC.19:16 |   SR   | + 10
+ *  10 | PC.19:16 |SR.11:0| + 20
  *    +----+--------------+
- *  6 |      PC.15:0      | + 12
+ * 11 |      PC.15:0      | + 22
  *    +-------------------+
- *  7 | CallTerminateXXX  | + 14
+ * 12 | CallTerminateXXX  | + 24
  *    +-------------------+
  *
  *-----------------------------------------------------------------------------
@@ -140,41 +150,52 @@ tpl_sc_handler_id_ok:
  * pointer (PSP) is saved in r11, then SP is loaded to the kernel stack bottom
  * and the PSP is saved on the kernel stack.
  */
-  movx.a      r1, r11                         /* save the PSP into r11          */
-  movx.a    #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* on kernel stack    */
+  mova      r1, r11                         /* save the PSP into r11          */
+  mova      #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* on kernel stack    */
   pushx.a     r11                             /* push the PSP on it             */
 /*
  * PROCESS STACK:                 KERNEL STACK:
- *    +-------------------+          +-------------------+
- *  0 |        r11        | + 00     |        PSP        |
- *    +-------------------+          +-------------------+
- *  1 |        r12        | + 02
- *    +-------------------+
- *  2 |        r13        | + 04
- *    +-------------------+
- *  3 |        r14        | + 06
- *    +-------------------+
- *  4 |        r15        | + 08
- *    +----+--------------+
- *  5 | PC |      SR      | + 10
- *    +----+--------------+
- *  6 |         PC        | + 12
- *    +-------------------+
- *  7 | CallTerminateXXX  | + 14
- *    +-------------------+
+ * PROCESS STACK:                 KERNEL STACK:
+ *    +--------------------+            +-------------------+
+ *  0 |   0  | r11.19:16   | + 0      0 |  0 |  PSP.19:16   | + 0
+ *    +--------------------+            +-------------------+
+ *  1 |      r11.15:0      | + 2      1 |     PSP.15:0      | + 2
+ *    +--------------------+            +-------------------+
+ *  2 |   0  | r12.19:16   | + 4
+ *    +--------------------+
+ *  3 |      r12.15:0      | + 6
+ *    +--------------------+
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0      | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+
  *
  *-----------------------------------------------------------------------------
  * -6- Init the NEED_SWITCH/NEED_SAVE in tpl_kern.
  */
   movx.a      #tpl_kern, r11
-  movx.a    #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-  movx.a    #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
+  movx.a      #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  movx.a      #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 /*-----------------------------------------------------------------------------
 * -7- Call the service. The reentrancy flag is incremented before and
  * decremented after.
  */
   incx.a    &tpl_reentrancy_flag         /* surround the call by inc ...  */
-  rlax.a      REG_SID                      /* index -> offset               */
+  rlax.a    REG_SID                      /* index -> offset               */
   calla     tpl_dispatch_table(REG_SID)  /* func ptrs in dispatch table   */
   decx.a    &tpl_reentrancy_flag         /* ... and dec of the flag.      */
 /*-----------------------------------------------------------------------------
@@ -185,32 +206,42 @@ tpl_sc_handler_id_ok:
   movx.a      REG_RETARG, REG_RETARG_OFFSET(r13) /* put in Process's stack  */
 /*
  * PROCESS STACK:                 KERNEL STACK:
- *    +-------------------+
- *  0 |        r11        | + 00             EMPTY
- *    +-------------------+
- *  1 |        r12 *      | + 02
- *    +-------------------+
- *  2 |        r13        | + 04
- *    +-------------------+
- *  3 |        r14        | + 06
- *    +-------------------+
- *  4 |        r15 †      | + 08
- *    +----+--------------+
- *  5 | PC |      SR      | + 10
- *    +----+--------------+
- *  6 |         PC        | + 12
- *    +-------------------+
- *  7 | CallTerminateXXX  | + 14
- *    +-------------------+
+ *    +--------------------+            EMPTY
+ *  0 |   0  | r11.19:16   | + 0
+ *    +--------------------+
+ *  1 |      r11.15:0      | + 2
+ *    +--------------------+
+ *  2 |   0  | r12.19:16   | + 4
+ *    +--------------------+
+ *  3 |      r12.15:0 *    | + 6
+ *    +--------------------+
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0 †    | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+
  *
  *    * updated if GCC for MSP ABI
  *    † updated if MSPGCC ABI
  *-----------------------------------------------------------------------------
  * -9- Check the context switch condition in tpl_kern.
  */
-  movx.a      #tpl_kern, r11
+  mova      #tpl_kern, r11
   tstx.a    TPL_KERN_OFFSET_NEED_SWITCH(r11)
-  jz       tpl_sc_handler_no_context_switch
+  jz        tpl_sc_handler_no_context_switch
 /*
  * From here we are doing a context switching
  *
@@ -228,58 +259,82 @@ tpl_sc_handler_id_ok:
  * "move multiple word". So, we get back to process stack to benefit this
  * instruction
  */
-  movx.a      r1, r14          /* get a copy of the KSP to restore it later */
-  movx.a      r13, r1          /* change stack to process stack             */
-  pushm.a  #7, r10          /* Push r4 to r10 on process stack (save)    */
+  mova      r1, r14          /* get a copy of the KSP to restore it later */
+  mova      r13, r1          /* change stack to process stack             */
+  pushm.a   #7, r10          /* Push r4 to r10 on process stack (save)    */
 /*
  * The whole context is now saved on process stack and the kernel stack
  * has been cleaned. r14 points to the kernel stack.
  *
  * PROCESS STACK:                 KERNEL STACK:
- *    +-------------------+
- *  0 |         r4        | + 00             EMPTY
- *    +-------------------+
- *  1 |         r5        | + 02
- *    +-------------------+
- *  2 |         r6        | + 04
- *    +-------------------+
- *  3 |         r7        | + 06
- *    +-------------------+
- *  4 |         r8        | + 08
- *    +-------------------+
- *  5 |         r9        | + 10
- *    +-------------------+
- *  6 |        r10        | + 12
- *    +-------------------+
- *  7 |        r11        | + 14
- *    +-------------------+
- *  8 |        r12        | + 16
- *    +-------------------+
- *  9 |        r13        | + 18
- *    +-------------------+
- * 10 |        r14        | + 20
- *    +-------------------+
- * 11 |        r15        | + 22
- *    +----+--------------+
- * 12 | PC |      SR      | + 24
- *    +----+--------------+
- * 13 |         PC        | + 26
- *    +-------------------+
- * 14 | CallTerminateXXX  | + 28
- *    +-------------------+
+ *    +--------------------+
+ *  0 |   0  |  r4.19:16   | + 0
+ *    +--------------------+
+ *  1 |       r4.15:0      | + 2
+ *    +--------------------+
+ *  2 |   0  |  r5.19:16   | + 4
+ *    +--------------------+
+ *  3 |       r5.15:0      | + 6
+ *    +--------------------+
+ *  4 |   0  |  r6.19:16   | + 8
+ *    +--------------------+
+ *  5 |       r6.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  |  r7.19:16   | + 12
+ *    +--------------------+
+ *  7 |       r7.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  |  r8.19:16   | + 16
+ *    +--------------------+
+ *  9 |       r8.15:0      | + 18
+ *    +--------------------+
+ * 10 |   0  |  r9.19:16   | + 20
+ *    +--------------------+
+ * 11 |       r9.15:0      | + 22
+ *    +--------------------+
+ * 12 |   0  | r10.19:16   | + 24
+ *    +--------------------+
+ * 13 |      r10.15:0      | + 26
+ *    +--------------------+
+ * 14 |   0  | r11.19:16   | + 28
+ *    +--------------------+
+ * 15 |      r11.15:0      | + 30
+ *    +--------------------+
+ * 16 |   0  | r12.19:16   | + 32
+ *    +--------------------+
+ * 17 |      r12.15:0      | + 34
+ *    +--------------------+
+ * 18 |   0  | r13.19:16   | + 36
+ *    +--------------------+
+ * 19 |      r13.15:0      | + 38
+ *    +--------------------+
+ * 20 |   0  | r14.19:16   | + 40
+ *    +--------------------+
+ * 21 |      r14.15:0      | + 42
+ *    +--------------------+
+ * 22 |   0  | r15.19:16   | + 44
+ *    +--------------------+
+ * 23 |      r15.15:0      | + 46
+ *    +--------------------+
+ * 24 | PC.19:16 | SR.11:0 | + 48
+ *    +--------------------+
+ * 25 |      PC.15:0       | + 50
+ *    +--------------------+
+ * 26 | CallTerminateXXX   | + 52
+ *    +--------------------+
  *
  *-----------------------------------------------------------------------------
  * -13- Now the stack pointer is saved in the dedicated location.
  */
-  movx.a      &tpl_kern, r11   /* Get the s_running slot of tpl_kern in r11 */
-  movx.a      @r11, r11        /* Get the pointer to the context (SP alone) */
+  mova        &tpl_kern, r11   /* Get the s_running slot of tpl_kern in r11 */
+  mova        @r11, r11        /* Get the pointer to the context (SP alone) */
   movx.a      r1, @r11         /* Save the stack pointer                    */
 /*-----------------------------------------------------------------------------
  * -14- Prepare the argument of tpl_run_elected: 1 (aka save) and call it after
  * switching back to the kernel stack.
  */
-  movx.a      r14, r1          /* get back to kernel stack                  */
-  movx.a      #1, REG_RETARG
+  mova      r14, r1          /* get back to kernel stack                  */
+  movx.a    #1, REG_RETARG
 tpl_sc_handler_no_save_running_context:
 /*
  * Note: when getting there with a jump, we are coming from stage 11 where we
@@ -290,42 +345,66 @@ tpl_sc_handler_no_save_running_context:
  * -15- tpl_run_elected has copied the elected process slot of tpl_kern to the
  * running slot. We load the stack pointer of the new running process.
  */
-  movx.a      &tpl_kern, r11   /* Get the s_running slot of tpl_kern in r11 */
-  movx.a      @r11, r11        /* Get the pointer to the context (SP alone) */
-  movx.a      @r11, r1         /* Get the stack pointer                     */
+  mova      &tpl_kern, r11   /* Get the s_running slot of tpl_kern in r11 */
+  mova      @r11, r11        /* Get the pointer to the context (SP alone) */
+  movx.a    @r11, r1         /* Get the stack pointer                     */
 /*
  * PROCESS STACK:                 KERNEL STACK:
- *    +-------------------+
- *  0 |         r4        | + 00             EMPTY
- *    +-------------------+
- *  1 |         r5        | + 02
- *    +-------------------+
- *  2 |         r6        | + 04
- *    +-------------------+
- *  3 |         r7        | + 06
- *    +-------------------+
- *  4 |         r8        | + 08
- *    +-------------------+
- *  5 |         r9        | + 10
- *    +-------------------+
- *  6 |        r10        | + 12
- *    +-------------------+
- *  7 |        r11        | + 14
- *    +-------------------+
- *  8 |        r12        | + 16
- *    +-------------------+
- *  9 |        r13        | + 18
- *    +-------------------+
- * 10 |        r14        | + 20
- *    +-------------------+
- * 11 |        r15        | + 22
- *    +----+--------------+
- * 12 | PC |      SR      | + 24
- *    +----+--------------+
- * 13 |         PC        | + 26
- *    +-------------------+
- * 14 | CallTerminateXXX  | + 28
- *    +-------------------+
+ *    +--------------------+
+ *  0 |   0  |  r4.19:16   | + 0
+ *    +--------------------+
+ *  1 |       r4.15:0      | + 2
+ *    +--------------------+
+ *  2 |   0  |  r5.19:16   | + 4
+ *    +--------------------+
+ *  3 |       r5.15:0      | + 6
+ *    +--------------------+
+ *  4 |   0  |  r6.19:16   | + 8
+ *    +--------------------+
+ *  5 |       r6.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  |  r7.19:16   | + 12
+ *    +--------------------+
+ *  7 |       r7.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  |  r8.19:16   | + 16
+ *    +--------------------+
+ *  9 |       r8.15:0      | + 18
+ *    +--------------------+
+ * 10 |   0  |  r9.19:16   | + 20
+ *    +--------------------+
+ * 11 |       r9.15:0      | + 22
+ *    +--------------------+
+ * 12 |   0  | r10.19:16   | + 24
+ *    +--------------------+
+ * 13 |      r10.15:0      | + 26
+ *    +--------------------+
+ * 14 |   0  | r11.19:16   | + 28
+ *    +--------------------+
+ * 15 |      r11.15:0      | + 30
+ *    +--------------------+
+ * 16 |   0  | r12.19:16   | + 32
+ *    +--------------------+
+ * 17 |      r12.15:0      | + 34
+ *    +--------------------+
+ * 18 |   0  | r13.19:16   | + 36
+ *    +--------------------+
+ * 19 |      r13.15:0      | + 38
+ *    +--------------------+
+ * 20 |   0  | r14.19:16   | + 40
+ *    +--------------------+
+ * 21 |      r14.15:0      | + 42
+ *    +--------------------+
+ * 22 |   0  | r15.19:16   | + 44
+ *    +--------------------+
+ * 23 |      r15.15:0      | + 46
+ *    +--------------------+
+ * 24 | PC.19:16 | SR.11:0 | + 48
+ *    +--------------------+
+ * 25 |      PC.15:0       | + 50
+ *    +--------------------+
+ * 26 | CallTerminateXXX   | + 52
+ *    +--------------------+
  *
  *-----------------------------------------------------------------------------
  * -16- Now, the context of the new running process is loaded. Registers r4 to
@@ -339,32 +418,42 @@ tpl_sc_handler_no_save_running_context:
  * we go back to the process stack which is as follow:
  *
  * PROCESS STACK:
- *    +-------------------+
- *  0 |        r11        | + 00
- *    +-------------------+
- *  1 |        r12        | + 02
- *    +-------------------+
- *  2 |        r13        | + 04
- *    +-------------------+
- *  3 |        r14        | + 06
- *    +-------------------+
- *  4 |        r15        | + 08
- *    +----+--------------+
- *  5 | PC |      SR      | + 10
- *    +----+--------------+
- *  6 |         PC        | + 12
- *    +-------------------+
- *  7 | CallTerminateXXX  | + 14
- *    +-------------------+
+ *    +--------------------+
+ *  0 |   0  | r11.19:16   | + 0
+ *    +--------------------+
+ *  1 |      r11.15:0      | + 2
+ *    +--------------------+
+ *  2 |   0  | r12.19:16   | + 4
+ *    +--------------------+
+ *  3 |      r12.15:0 *    | + 6
+ *    +--------------------+
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0 †    | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+
  *
  * We have to restore r11 and REG_RETARG and clean the stack before returning.
  */
 tpl_sc_handler_no_context_switch:
-  movx.a      r13, r1                 /* get back to process stack          */
-  movx.a      REG_RETARG_OFFSET(r1), REG_RETARG  /* get back REG_RETARG     */
-  popx.a      r11                                /* get back r11            */
-  addx.a      #8, r1                             /* clean the stack         */
-  reti                                        /* return with int enabled */
+  mova        r13, r1                               /* get back to process stack          */
+  movx.a      REG_RETARG_OFFSET(r1), REG_RETARG     /* get back REG_RETARG     */
+  popx.a      #1,r11                                /* get back r11            */
+  addx.a      #16, r1                               /* clean the stack         */
+  reti                                              /* return with int enabled */
 /*-----------------------------------------------------------------------------
  * -18- We get here coming from stage 2. We are on the kernel stack because
  * the tpl_sc_handler has been called from a hook. We do not have to init the
