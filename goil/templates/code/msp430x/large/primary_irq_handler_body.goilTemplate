@@ -114,6 +114,7 @@ elsif handlerSource == "COMP_E_VECTOR" then
 end if
 
 %
+.section .irq_func, "ax"
 .global tpl_primary_irq_handler_% !handlerSource %
 .type   tpl_primary_irq_handler_% !handlerSource %, \%function
 

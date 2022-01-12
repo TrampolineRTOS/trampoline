@@ -65,7 +65,7 @@ template memory_map
 SECTIONS {
   .isr_vector : {
     . = ALIGN(4);
-	INCLUDE "% !PROJECT %/tpl_interrupt_vectors.ld"
+ INCLUDE "% !PROJECT %/tpl_interrupt_vectors.ld"
     . = ALIGN(4);
   } >VECTOR
 }
@@ -131,6 +131,15 @@ SECTIONS {
   } > FRAM
 }
 
+/* For large model, we put irq function in a specfific section
+ * because we need to 
+ */
+SECTIONS {
+  irq_func_text : {
+    KEEP(*(.irq_func))
+  } > FRAM
+} 
+ 
 /*
  * code and const of the operating system (Trampoline).
  * this section is not accessible from an untrusted process
