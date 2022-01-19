@@ -386,15 +386,50 @@ target_link_libraries(${PROJECT_NAME}
 )%
 end if%
 
-#post command (bin file, flash, …)
+#post build commands (bin file, flash, …)
+%let postgoals := @[]
+if exists POSTBUILD then
+  let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
+%#POSTBUILD rules%
+end if
+
+if exists postgoals["all"] then
+  let inFile := "${PROJECT_NAME}"
+  foreach command in postgoals["all"]::COMMAND do
+	#inFile def
+	# TODO: TARGET and INTERMEDIATE not taken into account…
+    if command::INPUT == "ORIGINAL_TARGET" then
+     let inFile := OS::BUILD_S::APP_NAME
+	end if
+	#if exists command::INPUT then
+	#  if command::INPUT != "TARGET" then
+    #   let inFile := command::INPUT
+    #  end if
+	#end if
+	#outFile def
+    let outFile := inFile + exists command::OUTPUT default("")
+
+    if    command::TYPE == "COPIER" then %
+add_custom_command(OUTPUT %!outFile%
+    DEPENDS ${PROJECT_NAME}
+    COMMAND ${CMAKE_OBJCOPY} %
+		foreach option in exists command::PREOPTION default ( @() ) do
+			!option::VALUE
+		end foreach
+		% %!inFile % %!outFile%
+	WORKING_DIRECTORY ${CMAKE_BUILD_DIR}
+)%
+    elsif command::TYPE == "COMPILER" then
+    elsif command::TYPE == "ASSEMBLER" then
+    elsif command::TYPE == "LINKER" then
+    elsif command::TYPE == "CUSTOM" then 
+    end if
+    let inFile := outFile
+  end foreach
+end if
+%
 
 #TODO:hardcoded for now
-
-add_custom_command(OUTPUT ${PROJECT_NAME}.bin
-    DEPENDS ${PROJECT_NAME}
-    COMMAND ${CMAKE_OBJCOPY} -Obinary ${PROJECT_NAME} ${PROJECT_NAME}.bin
-    WORKING_DIRECTORY ${CMAKE_BUILD_DIR}
-)
 
 add_custom_target(bin
     DEPENDS "${PROJECT_NAME}.bin"
