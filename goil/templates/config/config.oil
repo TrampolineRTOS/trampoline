@@ -220,6 +220,7 @@ IMPLEMENTATION trampoline_common {
         ENUM [
           MAKE,
           PYTHON { BOOLEAN GUESSLIBPATH; },
+          CMAKE,
           ATMELSTUDIO
         ] SYSTEM = MAKE;
       },
