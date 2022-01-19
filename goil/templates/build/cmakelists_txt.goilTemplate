@@ -1,7 +1,7 @@
 #to compile the project:
 # mkdir _build
 # cd _build
-# cmake -D CMAKE_TOOLCHAIN_FILE=../../sys/cmake/arm-none-eabi.cmake ..
+# cmake -D CMAKE_TOOLCHAIN_FILE=../% !PROJECT %/compiler.cmake ..
 # make
 # make flash
 cmake_minimum_required(VERSION 3.5)
@@ -17,7 +17,7 @@ enable_language(C CXX ASM)
 set(TRAMPOLINE_BASE_PATH ${CMAKE_SOURCE_DIR}/% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %)
 set(TRAMPOLINE_MACHINE_PATH ${TRAMPOLINE_BASE_PATH}/machines)
 set(TRAMPOLINE_GOIL_TEMPLATES ${TRAMPOLINE_BASE_PATH}/goil/templates)
-set(APP_GENERATED_PATH ${CMAKE_SOURCE_DIR}/base)
+set(APP_GENERATED_PATH ${CMAKE_SOURCE_DIR}/% !PROJECT %)
 
 #goil
 set(OILFILE ${CMAKE_SOURCE_DIR}/% !OILFILENAME %)
@@ -364,15 +364,16 @@ function(add_gcc_library libCmd)
     get_filename_component(libgcc_path ${full_lib_path} DIRECTORY)
     set(libpath ${libgcc_path} PARENT_SCOPE)
   else()
-    message("libgcc not found!")
+    message("library ${libCmd} not found!")
   endif()
 endfunction()
 
-#TODO: check that gcc is the compiler!!
-add_gcc_library("-print-libgcc-file-name") #try to find libgcc
-list(APPEND LINKER_FLAGS -L${libpath} -lgcc)
-add_gcc_library("-print-file-name=libc.a") #try to find libc
-list(APPEND LINKER_FLAGS -L${libpath} -lc)
+if(${CMAKE_C_COMPILER_ID} STREQUAL "GNU")
+	add_gcc_library("-print-libgcc-file-name") #try to find libgcc
+	list(APPEND LINKER_FLAGS -L${libpath} -lgcc)
+	add_gcc_library("-print-file-name=libc.a") #try to find libc
+	list(APPEND LINKER_FLAGS -L${libpath} -lc)
+endif()
 
 #should be defined after 'add_executable'
 target_link_libraries(${PROJECT_NAME}
@@ -387,7 +388,7 @@ end if%
 
 #post command (bin file, flash, …)
 
-
+#TODO:hardcoded for now
 
 add_custom_command(OUTPUT ${PROJECT_NAME}.bin
     DEPENDS ${PROJECT_NAME}
