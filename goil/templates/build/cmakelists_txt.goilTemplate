@@ -440,6 +440,8 @@ add_custom_target(% !pc::NAME %
     foreach opt in exists cmd::PREOPTION default ( @() ) do
       let commandLine := commandLine + opt::VALUE + " "
     end foreach
+	#TODO: environment variable not handled yet.
+	#
     #foreach opt in exists cmd::PREOPT default ( @() ) do
     #  if opt::VALUE == "ENVAR" then%
     #if os.environ.get('% !opt::VALUE_S::NAME %') != None:
@@ -452,6 +454,7 @@ add_custom_target(% !pc::NAME %
     #  end if
     #end foreach
 	#input
+	
 	let depend := ""
     if exists cmd::INPUT then
       if cmd::INPUT == "TARGET" then
@@ -469,6 +472,11 @@ add_custom_target(% !pc::NAME %
     foreach opt in exists cmd::POSTOPTION default ( @() ) do
       let commandLine := commandLine + " " + opt::VALUE
     end foreach
+	#dedicated keyword allowed inside the command line.
+	let commandLine := [commandLine replaceString : "$MACHINE_PATH","${TRAMPOLINE_MACHINE_PATH}"]
+	let commandLine := [commandLine replaceString : "$ARCH_PATH","${TRAMPOLINE_MACHINE_PATH}/"+ARCH]
+	let commandLine := [commandLine replaceString : "$BOARD_PATH","${TRAMPOLINE_MACHINE_PATH}/"+TARGET]
+	let commandLine := [commandLine replaceString : "$TARGET",TARGET]
 %	COMMAND % !commandLine %
 )
 %
