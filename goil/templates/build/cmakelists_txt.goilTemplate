@@ -390,7 +390,7 @@ end if%
 %let postgoals := @[]
 if exists POSTBUILD then
   let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
-%#POSTBUILD rules%
+%# POSTBUILD rules%
 end if
 
 if exists postgoals["all"] then
@@ -427,26 +427,62 @@ add_custom_command(OUTPUT %!outFile%
     let inFile := outFile
   end foreach
 end if
+
+foreach pc in exists POSTCOMMAND default ( @() )
+  before%
+
+# POSTCOMMAND rules%
+  do%
+add_custom_target(% !pc::NAME %
+%  foreach cmd in pc::COMMAND do
+	#cmd line
+    let commandLine := cmd::COMMAND + " "
+    foreach opt in exists cmd::PREOPTION default ( @() ) do
+      let commandLine := commandLine + opt::VALUE + " "
+    end foreach
+    #foreach opt in exists cmd::PREOPT default ( @() ) do
+    #  if opt::VALUE == "ENVAR" then%
+    #if os.environ.get('% !opt::VALUE_S::NAME %') != None:
+    #  commandLine += "% !opt::VALUE_S::OPT %" + os.environ['% !opt::VALUE_S::NAME %'] + " "
+    #else:
+    #  print("Cannot % !pc::NAME %, environment variable % !opt::VALUE_S::NAME % is not defined")
+    #  exit(1)%
+    #  elsif opt::VALUE == "LITERAL" then%
+    #commandLine += "% !opt::VALUE_S::OPT + opt::VALUE_S::VALUE %"%
+    #  end if
+    #end foreach
+	#input
+	let depend := ""
+    if exists cmd::INPUT then
+      if cmd::INPUT == "TARGET" then
+	    let depend := "${PROJECT_NAME}" + cmd::INPUT_S::EXT
+      else
+        let depend := cmd::INPUT_S::SOURCE
+      end if
+    end if
+%	DEPENDS % !depend %
+%
+	let commandLine := commandLine + depend
+    if exists cmd::OUTPUT then
+		let commandLine := commandLine + " " + cmd::OUTPUT
+    end if
+    foreach opt in exists cmd::POSTOPTION default ( @() ) do
+      let commandLine := commandLine + " " + opt::VALUE
+    end foreach
+%	COMMAND % !commandLine %
+)
+%
+  end foreach
+end foreach
 %
 
-#TODO:hardcoded for now
-
-add_custom_target(bin
-    DEPENDS "${PROJECT_NAME}.bin"
-)
-
-add_custom_target(flash
-    DEPENDS ${PROJECT_NAME}.bin
-	COMMAND st-flash write ${PROJECT_NAME}.bin 0x8000000
-	COMMAND st-flash reset
-)
-
-add_custom_target(burn
-    DEPENDS flash
-)
+#TODO: add alias avec dependance.
+#add_custom_target(burn
+#    DEPENDS flash
+#)
 
 #goil (will update generated files, and depends on .oil input file)
-add_custom_command(OUTPUT ${APP_GENERATED_SRCS}
+add_custom_command(OUTPUT ${APP_GENERATED_SRCS} 
     DEPENDS ${OILFILE}
     COMMAND ${OILCOMPILER} ${OILFLAGS} ${OILFILE}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} #build dir
