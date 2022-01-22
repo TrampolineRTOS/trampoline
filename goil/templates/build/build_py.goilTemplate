@@ -241,7 +241,8 @@ end foreach
 
 if exists OS::MEMMAP_S::LINKER then
 %
-ldflags += ["-T", "% !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
+ldflags += ["-L", "% !PROJECT %"]
+ldflags += ["-T", "%!OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
 end if
 #ASFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do

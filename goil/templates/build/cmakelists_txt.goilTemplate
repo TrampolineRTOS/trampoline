@@ -346,7 +346,8 @@ foreach flags in OS::BUILD_S::LDFLAGS do
 end foreach
 if exists OS::MEMMAP_S::LINKER then
   %	#link script\n%
-  %	-T${LINKER_DIR}/${LINKER_SCRIPT}\n%
+  %	-L${LINKER_DIR}\n%
+  % -T${LINKER_SCRIPT}\n%
 end if
 %)
 
