@@ -15,5 +15,5 @@ This alarm has a 50ms (CYCLETIME) period.
 Configure the application with
 
 `
-goil --target=msp430x/small/msp430fr5994/launchpad --templates=../../../../../../goil/templates/ blink.oil
+goil --target=msp430x/large/msp430fr5994/launchpad --templates=../../../../../../goil/templates/ blink.oil
 `

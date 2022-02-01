@@ -3,12 +3,12 @@ OIL_VERSION = "2.5";
 IMPLEMENTATION trampoline {
   /* This fix the default STACKSIZE of tasks */
   TASK {
-    UINT32 STACKSIZE = 100 ;
+    UINT32 STACKSIZE = 200 ;
   } ;
 
   /* This fix the default STACKSIZE of ISRs */
   ISR {
-    UINT32 STACKSIZE = 100 ;
+    UINT32 STACKSIZE = 200 ;
   } ;
 };
 

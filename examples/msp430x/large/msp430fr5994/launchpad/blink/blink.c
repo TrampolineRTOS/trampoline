@@ -11,7 +11,6 @@ FUNC(int, OS_APPL_CODE) main(void)
 	PM5CTL0 &= ~LOCKLPM5;
   //set GPIO P1.0 (LED1) as an output
 	P1DIR = 0x01;
-
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }

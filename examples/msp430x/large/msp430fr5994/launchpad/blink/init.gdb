@@ -1,4 +1,5 @@
 target remote localhost:2000
+layout split
 delete
-b blink_function
+b main
 
