@@ -60,7 +60,7 @@ CPU msp430fr5994 {
      */
 
     // Produce debugging information     
-    ASFLAGS = "-g";
+    ASFLAGS = "-Wa,-g,--gdwarf-2,--gdwarf-sections";
     // All warnings on
     ASFLAGS = "-Wall";
     // Assemble for msp430fr5994

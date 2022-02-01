@@ -85,12 +85,12 @@ tpl_sc_handler_id_ok:
  * an interrupt handler which calls the operating system. 
  */
   movx.a     2(r1), r11     /* Saved PC [19..16] -> r11                  */
-  movx.a     r1, 2(r1)      /* Copy saved PC [15..0] at the good place   */
+  movx.a     1(r1), 2(r1)   /* Copy saved PC [15..0] at the good place   */
   swpbx.a    r11            /* Get saved PC [19..16] in bits 11..8       */
   rlam.a     #4, r11        /* Shift them to bits 19..16                 */
   bisx.a     r2, r11        /* Add the SR in its location at 11..0       */
   bisx.a     #8, r11        /* set GIE bit (reset just before with dint) */
-  movx.a     r11, 20(r1)    /* The stack is ok                           */
+  movx     r11, 1(r1)       /* The stack is ok                           */
 ;   pushx         sr
 ;   bicx.b        #0xF0, 1(r1)           /* reset the 4 higher bits of saved SR */
 ;   bisx.b        #0x08, 0(r1)           /* set the GIE bit in the saved SR     */
@@ -116,7 +116,7 @@ tpl_sc_handler_id_ok:
   subx.a        #16, sp
   pushm.a       #1,r11
 /*
- * PROCESS STACK:
+ * PROCESS STACK:                                                     
  *    +-------------------+
  *  0 |   0  | r11.19:16  | + 00
  *    +-------------------+
@@ -154,7 +154,6 @@ tpl_sc_handler_id_ok:
   mova      #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* on kernel stack    */
   pushx.a     r11                             /* push the PSP on it             */
 /*
- * PROCESS STACK:                 KERNEL STACK:
  * PROCESS STACK:                 KERNEL STACK:
  *    +--------------------+            +-------------------+
  *  0 |   0  | r11.19:16   | + 0      0 |  0 |  PSP.19:16   | + 0
@@ -195,6 +194,7 @@ tpl_sc_handler_id_ok:
  * decremented after.
  */
   incx.a    &tpl_reentrancy_flag         /* surround the call by inc ...  */
+  rlax.a    REG_SID                      /* index -> offset               */
   rlax.a    REG_SID                      /* index -> offset               */
   calla     tpl_dispatch_table(REG_SID)  /* func ptrs in dispatch table   */
   decx.a    &tpl_reentrancy_flag         /* ... and dec of the flag.      */
@@ -451,9 +451,9 @@ tpl_sc_handler_no_save_running_context:
 tpl_sc_handler_no_context_switch:
   mova        r13, r1                               /* get back to process stack          */
   movx.a      REG_RETARG_OFFSET(r1), REG_RETARG     /* get back REG_RETARG     */
-  popx.a      #1,r11                                /* get back r11            */
+  popx.a      r11                                   /* get back r11            */
   addx.a      #16, r1                               /* clean the stack         */
-  reti                                              /* return with int enabled */
+  reti                                             /* return with int enabled */
 /*-----------------------------------------------------------------------------
  * -18- We get here coming from stage 2. We are on the kernel stack because
  * the tpl_sc_handler has been called from a hook. We do not have to init the
@@ -462,6 +462,7 @@ tpl_sc_handler_no_context_switch:
  * a ret because the sr has not been pushed when coming from stage 2.
  */
 tpl_sc_handler_from_hook:
+  rlax.a      REG_SID                      /* index -> offset               */
   rlax.a      REG_SID                      /* index -> offset               */
   calla     tpl_dispatch_table(REG_SID)
   reta
