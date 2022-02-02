@@ -165,7 +165,7 @@ tpl_primary_irq_handler_% !handlerSource %:
  */
   mova         r1, r11                          /* Copy the PSP in r11        */
   mova         #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* On kernel stack */
-  pushm.a      #1,r11                              /* Save PSP to kernel stack   */
+  pushx.a      r11                              /* Save PSP to kernel stack   */
 /* 
  * PROCESS STACK:                 KERNEL STACK:
  *    +--------------------+            +-------------------+
@@ -355,8 +355,8 @@ end if
  */
 tpl_direct_irq_handler_exit_% !handlerSource %:
   mova       r1, r13 /* get a copy of the KSP to restore it later        */
-  addx       #4, r13 /* and forget the pushed PSP (not useful anymore).  */
-  popm.a     #1,r1   /* get the saved process stack pointer back         */
+  addx.a       #4, r13 /* and forget the pushed PC (not useful anymore).  */
+  popx.a     r1   /* get the saved process stack pointer back         */
 /*  
  * PROCESS STACK:                
  *    +--------------------+

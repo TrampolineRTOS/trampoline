@@ -42,7 +42,7 @@
 /* The register used to return a value from a function is r12 */
     #define REG_RETARG r12
 /* The offset of this register once stored in the process stack */
-    #define REG_RETARG_OFFSET 2
+    #define REG_RETARG_OFFSET 4
 #else
     #error "Unsupported ABI"
 #endif

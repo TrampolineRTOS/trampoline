@@ -45,13 +45,13 @@
 // |  2  R5  - low                         | 
 // |  1  R4  - high                        | 
 // |  0  R4  - low                         | 
-#define MSP430X_CORE_EXCEPTION_FRAME_SIZE ((uint16)54)
+#define MSP430X_CORE_EXCEPTION_FRAME_SIZE ((uint16)56)
 
 #define SR_IDX    24
 #define PC_IDX    25
 #define CALL_IDX  26 //call to terminateTask/ISR2.
 
-#define GPR_ON_EXCEPTION_FRAME  (13<<1) //we reserve 32bits/GPR
+#define GPR_ON_EXCEPTION_FRAME  (12<<1) //we reserve 32bits/GPR
 
 /*
  * The reentrancy flag is used to distinguish between a service call`
@@ -63,7 +63,7 @@ extern volatile uint8 tpl_reentrancy_flag;
 
 typedef struct MSP430X_CONTEXT
 {
-	uint16 stackPointer;  /* General purpose register r4 */
+	uint32 stackPointer;  /* General purpose register r4 */
 } msp430x_core_context;
 
 /*

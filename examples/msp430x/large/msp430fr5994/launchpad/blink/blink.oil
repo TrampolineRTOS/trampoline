@@ -61,8 +61,8 @@ CPU blink {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 50;
-      CYCLETIME = 50;
+      ALARMTIME = 1000;
+      CYCLETIME = 1000;
     };
   };
 };

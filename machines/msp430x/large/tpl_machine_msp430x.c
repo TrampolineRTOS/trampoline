@@ -75,8 +75,8 @@ FUNC(void, OS_CODE) tpl_init_context(
 	#endif
 #endif
 	//status register. Set the GIE bit (Global interrupt)
-	exception_frame[SR_IDX] = 0x8;
-	exception_frame[PC_IDX] = (uint16)(the_proc->entry);
+	exception_frame[SR_IDX] = (((uint32)(the_proc->entry) & (0xF0000))  >> 4 )| 0x8;
+	exception_frame[PC_IDX] = (uint16)(the_proc->entry) & 0xffff;
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
 	(*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
