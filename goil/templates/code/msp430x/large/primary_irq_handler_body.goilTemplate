@@ -285,7 +285,7 @@ else # handler is an ISR2
  * the id of % !obj::NAME % (% !obj::IDENT %) as argument. 
  */
   movx       #% !obj::IDENT + [TASKS length] %, REG_RETARG
-  call      #tpl_fast_central_interrupt_handler%
+  calla      #tpl_fast_central_interrupt_handler%
     if [PORT_IRQ contains: obj::SOURCE] then
       # PORT IRQ, ack the interrupt
 %
@@ -317,7 +317,7 @@ else # handler is an ISR2
 tpl_% ! nameVector %_% ! handler::BIT %_handler:
   movx       #0,__% ! nameVector%
   movx       #% !handler::IDENT + [TASKS length] %, REG_RETARG
-  call      #tpl_fast_central_interrupt_handler%
+  calla      #tpl_fast_central_interrupt_handler%
     between %
   jmp       tpl_direct_irq_handler_exit_% !handlerSource 
     end foreach    
@@ -343,7 +343,7 @@ tpl_% ! nameVector %_% ! handler::BIT %_handler:
     foreach handler in bitMap do%
 tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
   movx       #% !handler::IDENT + [TASKS length] %, REG_RETARG
-  call      #tpl_fast_central_interrupt_handler%
+  calla      #tpl_fast_central_interrupt_handler%
     between %
   jmp       tpl_direct_irq_handler_exit_% !handlerSource 
     end foreach    

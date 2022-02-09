@@ -61,15 +61,29 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 #if TASK_COUNT > 0
 	#if   ISR_COUNT > 0
-		exception_frame[CALL_IDX] = (IS_ROUTINE == the_proc->type) ? 
-			(uint16)(CallTerminateISR2) :
-			(uint16)(CallTerminateTask) ;
+		uint32 addr_CallTerminateISR2 = (uint32)(CallTerminateISR2);
+		uint32 addr_CallTerminateTask = (uint32)(CallTerminateTask);	
+
+		exception_frame[CALL_IDX_LOW] = (IS_ROUTINE == the_proc->type) ? 
+			(uint16)(addr_CallTerminateISR2 & 0xffff) :
+			(uint16)(addr_CallTerminateTask & 0xffff) ;
+		exception_frame[CALL_IDX_HIGH] = (IS_ROUTINE == the_proc->type) ? 
+			(uint16)((addr_CallTerminateISR2 >> 16) & 0x000f):
+			(uint16)((addr_CallTerminateTask >> 16) & 0x000f);
 	#else 
-		exception_frame[CALL_IDX] = (uint16)(CallTerminateTask);
+		uint32 addr_CallTerminateTask = (uint32)(CallTerminateTask);	
+
+		exception_frame[CALL_IDX_LOW] = (uint16)(addr_CallTerminateTask & 0xffff);
+		exception_frame[CALL_IDX_HIGH] = (uint16)((addr_CallTerminateTask >> 16) & 0x000f);
+
 	#endif
 #else
 	#if ISR_COUNT > 0
-		exception_frame[CALL_IDX] = (uint16)(CallTerminateISR2);
+		uint32 addr_CallTerminateISR2 = (uint32)(CallTerminateISR2);
+
+		exception_frame[CALL_IDX_LOW] = (uint16)(CallTerminateISR2 & 0xffff);
+		exception_frame[CALL_IDX_HIGH] = (uint16)((CallTerminateISR2 >> 16) & 0x000f);
+
 	#else
 		exception_frame[CALL_IDX] = NULL;
 	#endif

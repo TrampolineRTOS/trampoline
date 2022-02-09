@@ -18,7 +18,8 @@
 //we save 14 registers: from top
 // Each register uses 32 bits (20 bits in hardware), but SR and SP are merged.
 // -----------------------------------------
-// | 26  @ of CallTerminate(ISR/Task)      |
+// | 27  @ of CallTerminate(ISR/Task)      |
+// | 26  @ of CallTerminate(ISR/Task)	    |
 // | 25  PC (high)                         | 
 // | 24  PC (low) & SR                     | 
 // | 23  REG_RETARG (ABI dependent) - high | 
@@ -49,7 +50,8 @@
 
 #define SR_IDX    24
 #define PC_IDX    25
-#define CALL_IDX  26 //call to terminateTask/ISR2.
+#define CALL_IDX_LOW  26 		//call to terminateTask/ISR2.
+#define CALL_IDX_HIGH  27 		//call to terminateTask/ISR2.
 
 #define GPR_ON_EXCEPTION_FRAME  (12<<1) //we reserve 32bits/GPR
 
