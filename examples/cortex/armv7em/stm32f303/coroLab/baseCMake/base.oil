@@ -1,0 +1,111 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+	/* This fix the default STACKSIZE of tasks */
+	TASK {
+		UINT32 STACKSIZE = 300 ;
+	} ;
+
+	/* This fix the default STACKSIZE of ISRs */
+	ISR {
+		UINT32 STACKSIZE = 200 ;
+	} ;
+};
+
+CPU blink {
+	OS config {
+		STATUS = EXTENDED;
+		PAINT_STACK = TRUE;
+		PAINT_REGISTERS = TRUE;
+
+		BUILD = TRUE {
+			TRAMPOLINE_BASE_PATH = "../../../../../..";
+			APP_CPPSRC = "blink.cpp";
+			APP_CPPSRC = "buttonTasks.cpp";
+			APP_NAME = "base.elf";
+			CFLAGS	= "-Os -fstack-usage -Wno-strict-aliasing";
+			LIBRARY = coroBoard;
+			LDFLAGS = "-Map=blink.map";
+			COMPILER = "arm-none-eabi-gcc";
+			CPPCOMPILER = "arm-none-eabi-g++";
+			ASSEMBLER = "arm-none-eabi-as";
+			LINKER = "arm-none-eabi-ld";
+			COPIER = "arm-none-eabi-objcopy";
+			SYSTEM = CMAKE {VSCODE=TRUE;};
+		};
+		SYSTEM_CALL = TRUE;
+		MEMMAP = TRUE {
+			COMPILER = gcc;
+			LINKER = gnu_ld { SCRIPT = "script.ld"; };
+			ASSEMBLER = gnu_as;
+			MEMORY_PROTECTION = FALSE;
+		};
+	};
+
+	APPMODE AppStd {};
+
+	//a periodic task that just blink LED D6
+	TASK blink {
+		PRIORITY = 1;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+
+	ALARM blink_blink {
+		COUNTER = SystemCounter;
+		ACTION = ACTIVATETASK {
+			TASK = blink;
+		};
+		AUTOSTART = TRUE {
+			APPMODE = AppStd;
+			ALARMTIME = 100;
+			CYCLETIME = 100;
+		};
+	};
+
+	//The interrupt generated when a button is pushed.
+	//the isr will activate one of task TaskBx
+	ISR mcp23s17 { //on PA9
+		CATEGORY = 2;
+		PRIORITY = 10;
+		SOURCE = EXTI9_5_IRQ {
+			PINON9 = PA9 {
+				TRIGGER = FALLING;
+				PULL = NONE;
+			};
+		};
+	};
+
+	TASK TaskB4
+	{
+		PRIORITY = 2;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+
+	TASK TaskB5
+	{
+		PRIORITY = 2;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+
+	TASK TaskB6
+	{
+		PRIORITY = 2;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+
+	TASK TaskB7
+	{
+		PRIORITY = 2;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+};
