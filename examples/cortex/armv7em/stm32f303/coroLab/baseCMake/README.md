@@ -19,3 +19,5 @@ To build the application:
 * select the correct toolkit (cross compiler)
 * build the application (F7)
 * start the debug (F5). ST-link should be installed
+
+**Note:** the VScode configuration (json files in '.vscode/') can be modified. The files won't be overwritten by another run of goil.

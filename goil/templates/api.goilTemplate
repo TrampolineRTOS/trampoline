@@ -123,15 +123,21 @@ if OS::BUILD then
       template if exists compiler_cmake in build
     end write
     if OS::BUILD_S::SYSTEM_S::VSCODE then
-      write to ".vscode/c_cpp_properties.json":
-        template if exists vscode_c_cpp_properties_json in build
-      end write
-      write to ".vscode/launch.json":
-        template if exists vscode_launch_json in build
-      end write
-      write to ".vscode/settings.json":
-        template if exists vscode_settings_json in build
-      end write
+      if not [".vscode/c_cpp_properties.json" fileExists] then
+        write to ".vscode/c_cpp_properties.json":
+          template if exists vscode_c_cpp_properties_json in build
+        end write
+      end if
+      if not [".vscode/launch.json" fileExists] then
+        write to ".vscode/launch.json":
+          template if exists vscode_launch_json in build
+        end write
+      end if
+      if not [".vscode/settings.json" fileExists] then
+        write to ".vscode/settings.json":
+          template if exists vscode_settings_json in build
+        end write
+      end if
     end if 
   end if
 end if
