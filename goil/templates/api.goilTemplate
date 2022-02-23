@@ -111,10 +111,6 @@ if OS::BUILD then
     write to executable "make.py":
       template if exists make_py in build
     end write
-  elsif OS::BUILD_S::SYSTEM == "ATMELSTUDIO" then
-    write to "atmelStudio_"+PROJECT+"/"+PROJECT+".cproj":
-      template if exists atmelStudioProject in build
-    end write
   elsif OS::BUILD_S::SYSTEM == "CMAKE" then
     write to "CMakeLists.txt":
       template if exists cmakelists_txt in build
