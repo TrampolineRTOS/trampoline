@@ -359,7 +359,7 @@ end if
 function(add_gcc_library libCmd)
   #use gcc to get the full path to libs (libgcc, libc)
   execute_process(
-    COMMAND ${CMAKE_CXX_COMPILER} ${PRECOMMONFLAGS} ${PRECFLAGS} ${COMMONFLAGS} ${CFLAGS} ${libCmd}
+    COMMAND ${CMAKE_C_COMPILER} ${PRECOMMONFLAGS} ${PRECFLAGS} ${COMMONFLAGS} ${CFLAGS} ${libCmd}
     RESULT_VARIABLE returnValue
     OUTPUT_VARIABLE full_lib_path
     OUTPUT_STRIP_TRAILING_WHITESPACE)
