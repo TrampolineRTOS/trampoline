@@ -1,3 +1,7 @@
+%let basePath := OS::BUILD_S::TRAMPOLINE_BASE_PATH
+if [basePath charAtIndex: 0] != '/' then
+	let basePath := "${workspaceFolder}/"+basePath
+end if%
 {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
@@ -15,7 +19,7 @@
         "runToEntryPoint": "main",
         "device": "STM32F303K8",
         "v1": false,
-        //"svdFile": "${workspaceFolder}/../sys/CMSIS/SVD/STM32F303x.svd",
+        "svdFile": "% !basePath %/machines/cortex/armv7em/stm32f303/CMSIS-ST/STM32F303x.svd",
     }
     ]
 }
