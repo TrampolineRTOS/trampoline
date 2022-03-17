@@ -185,6 +185,8 @@ IMPLEMENTATION trampoline_common {
     BOOLEAN PAINT_STACK = FALSE;
     BOOLEAN PAINT_REGISTERS = FALSE;
     BOOLEAN ISR2_PRIORITY_MASKING = FALSE;
+    /* ISR2 ack is done in tpl_terminate_isr2_service */
+    BOOLEAN ACK_ISR2_ON_TERMINATE = FALSE;
     
     IDENTIFIER SCHEDULER = osek;
     BOOLEAN [
