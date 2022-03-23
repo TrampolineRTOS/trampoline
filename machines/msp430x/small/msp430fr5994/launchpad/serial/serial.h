@@ -21,7 +21,7 @@ void tpl_serial_print_string(const char *str);
  *  @param val value to be printed  
  *  @param fieldWidth width (in char) of the value printed (right aligned)
  **/
-void tpl_serial_print_int(int16_t val, uint8_t fieldWidth);
+void tpl_serial_print_int(int32_t val, uint8_t fieldWidth);
 
 /** configure the serial line. Should be called at startup.*/
 void tpl_serial_begin();

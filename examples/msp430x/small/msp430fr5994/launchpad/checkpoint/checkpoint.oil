@@ -60,19 +60,19 @@ CPU checkpoint {
     };
   };
   
-  APPMODE appStd {};
+  APPMODE Std {};
   
   
   TASK task_fibo {
     PRIORITY = 4;
-    AUTOSTART = TRUE {APPMODE = appStd;};
+    AUTOSTART = TRUE {APPMODE = Std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
   TASK task_check_button {
     PRIORITY = 3;
-    AUTOSTART = TRUE {APPMODE = appStd;};
+    AUTOSTART = TRUE {APPMODE = Std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
@@ -83,7 +83,7 @@ CPU checkpoint {
       TASK = task_fibo;
     };
     AUTOSTART = TRUE {
-      APPMODE = appStd;
+      APPMODE = Std;
       ALARMTIME = 1000;
       CYCLETIME = 500;
     };
@@ -95,10 +95,18 @@ CPU checkpoint {
       TASK = task_check_button;
     };
     AUTOSTART = TRUE {
-      APPMODE = appStd;
+      APPMODE = Std;
       ALARMTIME = 10;
       CYCLETIME = 10;
     };
   };
+
+  /* ISR */
+  ISR handler_adc_end_conversion {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = ADC12_VECTOR; /* */
+  };
+
 };
 

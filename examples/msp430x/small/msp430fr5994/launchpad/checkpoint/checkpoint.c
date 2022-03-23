@@ -90,9 +90,9 @@ TASK(task_check_button)
 #include "tpl_memmap.h"
 TASK(task_fibo)
 {
-  static uint16 Un0 = 0;
-  static uint16 Un1 = 1;
-  uint16 temp;
+  static uint32 Un0 = 0;
+  static uint32 Un1 = 1;
+  uint32 temp;
 
   /* Print last value of fibo */
   tpl_serial_print_string("fibo :");
@@ -100,7 +100,7 @@ TASK(task_fibo)
   tpl_serial_print_string("\r\n");
 
   /* Compute next value of fibo */
-  if (Un0 > 28000) {
+  if (Un0 > INT32_MAX/2) {
     /* No overflow, restart fibo */
     Un0 = 0;
     Un1 = 1;
