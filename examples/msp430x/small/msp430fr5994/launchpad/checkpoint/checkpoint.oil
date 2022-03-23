@@ -36,18 +36,18 @@ CPU checkpoint {
       //LIBRARY = adc;
       LIBRARY = checkpointing;
       //use either msp-gcc (provided with Energia)..
-      //CPPCOMPILER  = "msp430-g++";
-      //COMPILER  = "msp430-gcc";
-      //ASSEMBLER = "msp430-gcc";
-      //LINKER    = "msp430-ld";
-      //COPIER    = "msp430-objcopy";
+      CPPCOMPILER  = "msp430-g++";
+      COMPILER  = "msp430-gcc";
+      ASSEMBLER = "msp430-gcc";
+      LINKER    = "msp430-ld";
+      COPIER    = "msp430-objcopy";
       //or GCC for MSP (provided by TI)
-      CPPCOMPILER  = "msp430-elf-g++";
-      COMPILER  = "msp430-elf-gcc";
-      ASSEMBLER = "msp430-elf-gcc";
-      LINKER    = "msp430-elf-ld";
-      COPIER    = "msp430-elf-objcopy";
-      CFLAGS    = "-I/opt/ti/msp430-gcc/include";
+      //CPPCOMPILER  = "msp430-elf-g++";
+      //COMPILER  = "msp430-elf-gcc";
+      //ASSEMBLER = "msp430-elf-gcc";
+      //LINKER    = "msp430-elf-ld";
+      //COPIER    = "msp430-elf-objcopy";
+      //CFLAGS    = "-I/opt/ti/msp430-gcc/msp430-elf/include";
       //CFLAGS    = "-I/opt/ti/ccs920/ccs/ccs_base/msp430/include_gcc";
       SYSTEM = PYTHON;
     };
@@ -60,41 +60,21 @@ CPU checkpoint {
     };
   };
   
-  APPMODE Std {}; // Warning: std will make a problem iwth the namespace std!
+  APPMODE appStd {};
   
-  /* TASKS */
-  TASK task_serial_TX {
-    PRIORITY = 2;
-    AUTOSTART = TRUE {APPMODE = Std;};
-    ACTIVATION = 1;
-    SCHEDULE = FULL;
-  };
-
+  
   TASK task_fibo {
     PRIORITY = 4;
-    AUTOSTART = TRUE {APPMODE = Std;};
+    AUTOSTART = TRUE {APPMODE = appStd;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
   TASK task_check_button {
     PRIORITY = 3;
-    AUTOSTART = TRUE {APPMODE = Std;};
+    AUTOSTART = TRUE {APPMODE = appStd;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
-  };
-
-
-  ALARM Alarm_task_serial_TX {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK {
-      TASK = task_serial_TX;
-    };
-    AUTOSTART = TRUE {
-      APPMODE = Std;
-      ALARMTIME = 2000;
-      CYCLETIME = 1000;
-    };
   };
 
   ALARM Alarm_task_fibo {
@@ -103,9 +83,9 @@ CPU checkpoint {
       TASK = task_fibo;
     };
     AUTOSTART = TRUE {
-      APPMODE = Std;
+      APPMODE = appStd;
       ALARMTIME = 1000;
-      CYCLETIME = 200;
+      CYCLETIME = 500;
     };
   };
 
@@ -115,18 +95,10 @@ CPU checkpoint {
       TASK = task_check_button;
     };
     AUTOSTART = TRUE {
-      APPMODE = Std;
-      ALARMTIME = 5000;
-      CYCLETIME = 2000;
+      APPMODE = appStd;
+      ALARMTIME = 10;
+      CYCLETIME = 10;
     };
   };
-
-  /* ISR */
-  ISR handler_adc_end_conversion {
-    CATEGORY = 1;
-    PRIORITY = 1;
-    SOURCE = ADC12_VECTOR; /* */
-  };
-
 };
 
