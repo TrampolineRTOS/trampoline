@@ -33,7 +33,7 @@ goil --target=cortex/armv6m/rp2040/pico --templates=../../../../../../goil/templ
 The `goil` compiler generates the `make.py` [python build script](https://github.com/TrampolineRTOS/trampoline/wiki/Application-Build-system). Then run the script:
 
 ```
-./make.py all
+./make.py uf2
 ```
 
 The `blink_exe` should be generated. To flash the board, plug it while pressing the reset button (it should be understood as a USB key). Then just copy the .uf2 file on the USB key.
