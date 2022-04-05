@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     Options for all compilers                                                                  
-#                                                                                                
+#
+#     Options for all compilers
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def allCompilerOptions (platformOptions):
@@ -26,9 +26,9 @@ def allCompilerOptions (platformOptions):
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     Release options                                                                            
-#                                                                                                
+#
+#     Release options
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def compilerReleaseOptions (platformOptions):
@@ -38,9 +38,9 @@ def compilerReleaseOptions (platformOptions):
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     Debug options                                                                              
-#                                                                                                
+#
+#     Debug options
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def compilerDebugOptions (platformOptions):
@@ -49,9 +49,9 @@ def compilerDebugOptions (platformOptions):
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     C compiler options                                                                         
-#                                                                                                
+#
+#     C compiler options
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def C_CompilerOptions (platformOptions):
@@ -60,21 +60,21 @@ def C_CompilerOptions (platformOptions):
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     C++ compiler options                                                                       
-#                                                                                                
+#
+#     C++ compiler options
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def Cpp_CompilerOptions (platformOptions):
   result = platformOptions
-#  result.append ("-std=c++17")
+  result.append ("-std=c++14")
   result.append ("-Woverloaded-virtual")
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     Objective C compiler options                                                               
-#                                                                                                
+#
+#     Objective C compiler options
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def ObjectiveC_CompilerOptions (platformOptions):
@@ -82,9 +82,9 @@ def ObjectiveC_CompilerOptions (platformOptions):
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*
-#                                                                                                
-#     Objective C++ compiler options                                                             
-#                                                                                                
+#
+#     Objective C++ compiler options
+#
 #----------------------------------------------------------------------------------------------------------------------*
 
 def ObjectiveCpp_CompilerOptions (platformOptions):

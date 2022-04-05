@@ -26,12 +26,12 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  uint32_t mTHEN ;
-  uint32_t mELSE ;
-  uint32_t mVariableIndex ;
-  uint32_t mAuxiliary ;
-} cBDDnode ;
+class cBDDnode {
+  public: uint32_t mTHEN ;
+  public: uint32_t mELSE ;
+  public: uint32_t mVariableIndex ;
+  public: uint32_t mAuxiliary ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //

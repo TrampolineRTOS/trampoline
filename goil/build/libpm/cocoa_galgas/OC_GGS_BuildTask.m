@@ -57,19 +57,19 @@
         defaultButton: nil
         alternateButton: nil
         otherButton: nil
-        informativeTextWithFormat:@"Compilation must be performed by an embedded Command line Tool; no command line Tool are currently embedded by application."
+        informativeTextWithFormat: @"Compilation must be performed by an embedded Command line Tool; no command line Tool are currently embedded by application."
       ] ;
       [alert
-        beginSheetModalForWindow:inDocument.windowForSheet
-        modalDelegate:nil
-        didEndSelector:0
-        contextInfo:NULL
+        beginSheetModalForWindow: inDocument.windowForSheet
+        modalDelegate: nil
+        didEndSelector: 0
+        contextInfo: NULL
       ] ;
     }else{
       NSMutableArray * arguments = [NSMutableArray new] ;
-      [arguments addObjectsFromArray:[commandLineArray subarrayWithRange:NSMakeRange (1, [commandLineArray count]-1)]] ;
-      [arguments addObject:inFilePath] ;
-      [arguments addObject:@"--cocoa"] ;
+      [arguments addObjectsFromArray: [commandLineArray subarrayWithRange:NSMakeRange (1, [commandLineArray count]-1)]] ;
+      [arguments addObject: inFilePath] ;
+      [arguments addObject: @"--cocoa"] ;
       if (inIsBuildRun) {
         NSString * option = buildRunOption () ;
         if ([option length] > 0) {
@@ -89,22 +89,22 @@
       }
     //--- Set standard output notification
       mTaskOutputPipe = [NSPipe pipe] ;
-      [mTask setStandardOutput:mTaskOutputPipe] ;
-      [mTask setStandardError:mTaskOutputPipe] ;
+      [mTask setStandardOutput: mTaskOutputPipe] ;
+      [mTask setStandardError: mTaskOutputPipe] ;
     //---
       [[NSNotificationCenter defaultCenter]
-        addObserver:self
-        selector:@selector (getDataFromTaskOutput:)
-        name:NSFileHandleReadCompletionNotification
-        object:mTaskOutputPipe.fileHandleForReading
+        addObserver: self
+        selector: @selector (getDataFromTaskOutput:)
+        name: NSFileHandleReadCompletionNotification
+        object: mTaskOutputPipe.fileHandleForReading
       ] ;
       [mTaskOutputPipe.fileHandleForReading readInBackgroundAndNotify] ;
     //---
       [[NSNotificationCenter defaultCenter]
-        addObserver:self
-        selector:@selector (taskDidTerminate:) 
-        name:NSTaskDidTerminateNotification
-        object:mTask
+        addObserver: self
+        selector: @selector (taskDidTerminate:)
+        name: NSTaskDidTerminateNotification
+        object: mTask
       ] ;
     //--- Start task
       [mTask launch] ;
@@ -131,14 +131,14 @@
     [inNotification.object readInBackgroundAndNotify] ;
   }else{
     [[NSNotificationCenter defaultCenter]
-      removeObserver:self
-      name:NSFileHandleReadCompletionNotification
-      object:mTaskOutputPipe.fileHandleForReading
+      removeObserver: self
+      name: NSFileHandleReadCompletionNotification
+      object: mTaskOutputPipe.fileHandleForReading
     ] ;
     [[NSNotificationCenter defaultCenter]
-      removeObserver:self
-      name:NSTaskDidTerminateNotification
-      object:mTask
+      removeObserver: self
+      name: NSTaskDidTerminateNotification
+      object: mTask
     ] ;
     [mTaskOutputPipe.fileHandleForReading closeFile] ;
     mOutputBufferedDataHasBeenTransmitted = YES ;

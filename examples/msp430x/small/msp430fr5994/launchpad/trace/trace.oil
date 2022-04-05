@@ -1,0 +1,154 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+  /* This fix the default STACKSIZE of tasks */
+  TASK {
+    UINT32 STACKSIZE = 100 ;
+  } ;
+
+  /* This fix the default STACKSIZE of ISRs */
+  ISR {
+    UINT32 STACKSIZE = 100 ;
+  } ;
+};
+
+CPU trace {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+
+    TRACE = TRUE {
+      FORMAT = serial;
+      PROC = TRUE;
+      RESOURCE = TRUE;
+      ALARM = TRUE;
+      EVENT = TRUE;
+      MESSAGE = TRUE;
+    };
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "trace.c";
+      APP_NAME = "trace_exe";
+      CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
+      LDFLAGS = "-Map=trace.map";
+      //use either msp-gcc (provided with Energia)..
+      COMPILER  = "msp430-gcc";
+      ASSEMBLER = "msp430-gcc";
+      LINKER    = "msp430-ld";
+      COPIER    = "msp430-objcopy";
+      LIBRARY = serial{
+        TXBUFFER = 256;
+      };
+      //or GCC for MSP (provided by TI)
+      //COMPILER  = "msp430-elf-gcc";
+      //ASSEMBLER = "msp430-elf-gcc";
+      //LINKER    = "msp430-elf-ld";
+      //COPIER    = "msp430-elf-objcopy";
+      //CFLAGS    = "-I/opt/ti/ccs920/ccs/ccs_base/msp430/include_gcc";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE appStd {};
+  
+  //first periodic task, standard
+  TASK taskPeriodicSend {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    RESOURCE = resGPIO;
+  };
+
+  
+  ALARM alTask1 {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = taskPeriodicSend;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = appStd;
+      ALARMTIME = 500;
+      CYCLETIME = 500;
+    };
+  };
+
+  EVENT evMsgIn1 {
+    MASK = AUTO;
+  };
+
+  EVENT evMsgIn2 {
+    MASK = AUTO;
+  };
+
+  RESOURCE resGPIO {
+    RESOURCEPROPERTY = STANDARD;
+  };
+
+  //second task, extended
+  TASK taskReceiver1 {
+    PRIORITY = 3;
+    AUTOSTART = TRUE {APPMODE = appStd;} ;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = evMsgIn1;
+    RESOURCE = resGPIO;
+  };
+
+  //third task, extended
+  TASK taskReceiver2 {
+    PRIORITY = 5;
+    AUTOSTART = TRUE {APPMODE = appStd;} ;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = evMsgIn2;
+    RESOURCE = resGPIO;
+  };
+
+  //internal communication.  
+  MESSAGE msgDataSend {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "uint32";
+    };
+  };
+
+  MESSAGE msgDataReceive1 {
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+      SENDINGMESSAGE = msgDataSend;
+      FILTER = ONEEVERYN{
+        PERIOD = 3;
+        OFFSET = 0;
+      };
+      QUEUESIZE = 2;
+    };
+    NOTIFICATION = SETEVENT {
+      TASK = taskReceiver1;
+      EVENT = evMsgIn1;
+    };
+  };
+
+  MESSAGE msgDataReceive2 {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = msgDataSend;
+      FILTER = ONEEVERYN{
+        PERIOD = 3;
+        OFFSET = 1;
+      };
+      INITIALVALUE = 0;
+    };
+    NOTIFICATION = SETEVENT {
+      TASK = taskReceiver2;
+      EVENT = evMsgIn2;
+    };
+  };
+};
+

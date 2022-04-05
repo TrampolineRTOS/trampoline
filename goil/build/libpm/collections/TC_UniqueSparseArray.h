@@ -83,9 +83,9 @@ template <typename TYPE> class TC_UniqueSparseArray {
   public : bool findFirstEntryWithIndex (uint32_t & ioIndex) const ;
 
 //--- Embedded classes
-  protected : typedef struct { TYPE mObjectArray [256] ; uint32_t mExplicitValueFlags [32] ; } TC_arrayL ;
-  protected : typedef struct { TC_arrayL * mArrayL [256] ; } TC_arrayH ;
-  protected : typedef struct { TC_arrayH * mArrayH [256] ; } TC_arrayU ;
+  protected : class TC_arrayL { public: TYPE mObjectArray [256] ; public: uint32_t mExplicitValueFlags [32] ; } ;
+  protected : class TC_arrayH { public: TC_arrayL * mArrayL [256] ; } ;
+  protected : class TC_arrayU { public: TC_arrayH * mArrayH [256] ; } ;
 
 //--- Protected attributes
   protected : TC_arrayU * mArray [256] ;

@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1996, ..., 2018 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -1027,7 +1027,47 @@ GALGAS_stringlist GALGAS_string::getter_componentsSeparatedByString (const GALGA
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint GALGAS_string::getter_system (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_sint (::system (mString.cString (HERE))) ;
+  GALGAS_sint result ;
+  if (isValid ()) {
+    result = GALGAS_sint (::system (mString.cString (HERE))) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_sint GALGAS_string::getter_commandWithArguments (const GALGAS_stringlist & inArguments,
+                                                        C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) const {
+  GALGAS_sint result ;
+  if (isValid () && inArguments.isValid ()) {
+    C_String command = C_String ("'") + mString + "'" ;
+    for (uint32_t i=0 ; i<inArguments.count () ; i++) {
+      command.appendString (" '") ;
+      command.appendString (inArguments.getter_mValueAtIndex (GALGAS_uint (i), inCompiler COMMA_THERE).stringValue ()) ;
+      command.appendString ("'") ;
+    }
+    result = GALGAS_sint (::system (command.cString (HERE))) ;
+  }
+  return result ;
+}
+
+ //----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_string GALGAS_string::getter_hiddenCommandWithArguments (const GALGAS_stringlist & inArguments,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid () && inArguments.isValid ()) {
+    C_String command = C_String ("'") + mString + "'" ;
+    for (uint32_t i=0 ; i<inArguments.count () ; i++) {
+      command.appendString (" '") ;
+      command.appendString (inArguments.getter_mValueAtIndex (GALGAS_uint (i), inCompiler COMMA_THERE).stringValue ()) ;
+      command.appendString ("'") ;
+    }
+    result = GALGAS_string (command).getter_popen (inCompiler COMMA_THERE) ;
+  }
+  return result ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -13,7 +13,10 @@ FUNC(int, OS_APPL_CODE) main(void)
 	PM5CTL0 &= ~LOCKLPM5;
 	//set GPIO P1.0 (LED2) as an output
 	P1DIR = 0x01;
-	tpl_serial_begin();
+	// 2 modes:
+	// * SERIAL_TX_MODE_BLOCK: active waiting loop. Get in LPM3 between characters.
+ 	// * SERIAL_TX_MODE_SKIP : the data is not sent. Overflow return value is set.
+	tpl_serial_begin(SERIAL_TX_MODE_SKIP);
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }

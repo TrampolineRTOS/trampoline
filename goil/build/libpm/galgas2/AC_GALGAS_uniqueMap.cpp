@@ -33,10 +33,10 @@ class cUniqueMapNode ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  cUniqueMapNode * mSource ;
-  cUniqueMapNode * mTarget ;
-} structDependanceEdge ;
+class structDependanceEdge {
+  public: cUniqueMapNode * mSource ;
+  public: cUniqueMapNode * mTarget ;
+}  ;
 
 //----------------------------------------------------------------------------------------------------------------------
 

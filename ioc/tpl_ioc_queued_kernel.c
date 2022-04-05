@@ -69,6 +69,9 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_queued_service(
   {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
 
+    /* trace */
+    TRACE_IOC_SEND(ioc_id)
+
     /* loop on all message to send, which means all parameters
        which can be passed to API call */
     for(message=0; message<ioc_stat->nb_mo; message++)
@@ -160,6 +163,9 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_receive_queued_service(
   IF_NO_EXTENDED_ERROR(result)
   {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
+
+    /* trace */
+    TRACE_IOC_RECEIVE(ioc_id)
 
     /* loop on all message to receive, which means all parameters
        which can be passed to API call */

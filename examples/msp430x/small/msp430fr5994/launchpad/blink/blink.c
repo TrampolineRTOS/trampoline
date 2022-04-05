@@ -3,7 +3,6 @@
 
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"
-#include "i2c.h"
 
 FUNC(int, OS_APPL_CODE) main(void)
 {
@@ -12,7 +11,6 @@ FUNC(int, OS_APPL_CODE) main(void)
 	PM5CTL0 &= ~LOCKLPM5;
   //set GPIO P1.0 (LED1) as an output
 	P1DIR = 0x01;
-	i2c_init();
 
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;

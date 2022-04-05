@@ -14,7 +14,7 @@ WPC/.style ={WPCColorLine,fill=WPCColor,thick},
 WPD/.style ={WPDColorLine,fill=WPDColor,thick},
 txt/.style = {font=\Large},
 boxTxt/.style = {txt,text width=3cm, text centered,text=black},
-box/.style ={draw,drop shadow={opacity=0.25},boxTxt,minimum height=2cm,minimum width=3.8cm},
+box/.style ={draw,drop shadow={opacity=0.25},boxTxt,minimum height=2cm,minimum width=4cm, inner sep=3mm},
 cercle/.style ={draw,circle,drop shadow={opacity=0.25},boxTxt,minimum height=3cm,minimum width=3.5cm},
 boxLegende/.style={box,minimum width=1.5cm,text width = 0cm,minimum height=1cm},
 fleche/.style={->,>=stealth,line width=0.5mm},
@@ -26,7 +26,7 @@ srcFile/.style={draw,tape,drop shadow={opacity=0.25},boxTxt, minimum height=1.3c
   \node[WPD,srcFile,text width = 3cm] (traceTarget) at (0,7) {compressed event list};
   \node[fill=WPCColor,box,minimum height=1cm] (TraceReader)   at (0,3) {\texttt{TraceReader}};
   \node[fill=WPCColor,box,minimum height=1cm] (TraceEvaluate) at (0,0) {\texttt{TraceEvaluate}};
-  \node[fill=WPCColor,box,minimum height=1cm] (TraceExport)   at (0,-3) {\texttt{TraceExport}};
+  \node[fill=WPCColor,box,minimum height=1cm] (TraceAnalysis)   at (0,-3) {\texttt{TraceAnalysis}};
 
   \draw[fleche] (traceJson) to[bend left] (TraceReader);
   \draw[fleche] (TraceReader) to[bend left] (traceJson);
@@ -34,7 +34,7 @@ srcFile/.style={draw,tape,drop shadow={opacity=0.25},boxTxt, minimum height=1.3c
 
 
   \draw[fleche] (traceStaticJson) -- (TraceEvaluate) node[midway,below left] {id $\Leftrightarrow$ name}; 
-  \draw[fleche] (TraceEvaluate) -- (TraceExport) node[midway,right] {event list with names}; 
+  \draw[fleche] (TraceEvaluate) -- (TraceAnalysis) node[midway,right] {event list with names}; 
  % \draw[fleche] (readBin) -- (traceJson) node[midway,right] {event list}; 
 
   \draw[fleche,<-] ($(TraceReader.north)+( 1,0)$) -- ($(traceTarget.south)+(+1,0)$) node[midway,right,text width = 2cm] {serial comm}; 
@@ -42,6 +42,6 @@ srcFile/.style={draw,tape,drop shadow={opacity=0.25},boxTxt, minimum height=1.3c
   \draw[fleche,<-] ($(TraceReader.north)+(0.3,0)$) -- ($(traceTarget.south)+(0.3,0)$) node[midway,left] {…}; 
   \draw[line width=0.2mm,dashed] (-10,6.5) -- ++(0,-1) node[above right] {target}-- ++(13,0) -- ++(0,1);
   \draw[line width=0.2mm,dashed] (-10,3.3) -- ++(0,+1) node[below right] {host}-- ++(13,0) -- ++(0,-1);
-  \draw[fleche] (TraceExport) -- ++(0,-1) node[below] {event list (text based, gui)};
+  \draw[fleche] (TraceAnalysis) -- ++(0,-1) node[below] {high level information based on event analysis (text based, gui)};
 
 \end{tikzpicture}

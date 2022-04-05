@@ -34,10 +34,10 @@ static const int32_t kSingleOperandOperationCacheInitialSize = 131101 ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  uint32_t mOperand ;
-  uint32_t mResult ;
-} tStructSingleOperandOperationCacheEntry ;
+class tStructSingleOperandOperationCacheEntry {
+  public: uint32_t mOperand ;
+  public: uint32_t mResult ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 

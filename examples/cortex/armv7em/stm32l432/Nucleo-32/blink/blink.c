@@ -1,5 +1,7 @@
 #include "tpl_os.h"
 #include "stm32l4xx.h"
+// see in machines/cortex/armv7em/stm32l432/lib/
+#include "pinAccess.h"
 
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"
