@@ -118,59 +118,60 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   UNLOCK_KERNEL()
 
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
-  tpl_save_checkpoint(l_buffer);
+  // tpl_save_checkpoint(l_buffer);
+  tpl_save_checkpoint();
   tpl_checkpoint_buffer = l_buffer;
   
   /* Choose one: Shutdown or periodic check of battery */
   
   /* Shutdown */
 
-  tpl_shutdown(); //on msp430 => LPM4
+  // tpl_shutdown(); //on msp430 => LPM4
 	
-  /* Periodic check */
-  // Unlock RTC key protected registers
-  RTCCTL0_H = RTCKEY_H;
-  // Interrupt from alarm                     						
-  RTCCTL0_L = RTCAIE;
-  // Calendar + Hold, Hexa code
-  RTCCTL1 = RTCHOLD | RTCMODE;
-  // Random year, day, month, day of week, hour, set minute and sec to 0
-  RTCYEAR = 0x0000;
-  RTCMON = 0x0;
-  RTCDAY = 0x00;
-  RTCDOW = 0x00;
-  RTCHOUR = 0x0;
-  RTCMIN = 0x00;
-  RTCSEC = 0x00;
-  // reset all register alarm because they are in undefined state when reset
-	RTCAHOUR &= ~(0x80);
-	RTCADOW &= ~(0x80);
-	RTCADAY &= ~(0x80);
-  // set alarm in next '1' minutes + enable interrupt
-  #define PERIOD_WAKE_UP 0x01
-  RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
-  // start rtc
-  RTCCTL1 &= ~(RTCHOLD);
+  // /* Periodic check */
+  // // Unlock RTC key protected registers
+  // RTCCTL0_H = RTCKEY_H;
+  // // Interrupt from alarm                     						
+  // RTCCTL0_L = RTCAIE;
+  // // Calendar + Hold, Hexa code
+  // RTCCTL1 = RTCHOLD | RTCMODE;
+  // // Random year, day, month, day of week, hour, set minute and sec to 0
+  // RTCYEAR = 0x0000;
+  // RTCMON = 0x0;
+  // RTCDAY = 0x00;
+  // RTCDOW = 0x00;
+  // RTCHOUR = 0x0;
+  // RTCMIN = 0x00;
+  // RTCSEC = 0x00;
+  // // reset all register alarm because they are in undefined state when reset
+	// RTCAHOUR &= ~(0x80);
+	// RTCADOW &= ~(0x80);
+	// RTCADAY &= ~(0x80);
+  // // set alarm in next '1' minutes + enable interrupt
+  // #define PERIOD_WAKE_UP 0x01
+  // RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
+  // // start rtc
+  // RTCCTL1 &= ~(RTCHOLD);
   
-  #define RESUME_FROM_HIBERNATE_THRESHOLD (3000)
-  uint16_t flag = 1;
-  uint16_t vcc = 0;
+  // #define RESUME_FROM_HIBERNATE_THRESHOLD (3000)
+  // uint16_t flag = 1;
+  // uint16_t vcc = 0;
   
-  while(flag){
-	  vcc = conversion_adc();
-	  if(vcc>RESUME_FROM_HIBERNATE_THRESHOLD){
-      // stop rtc
-		  RTCCTL1 |= RTCHOLD;
-		  flag = 0;
-		  break;
-	  }
-	  else{
-		  disable_irq_for_hibernate();	
-		  __bis_SR_register(LPM3_bits);
-		  __bic_SR_register(GIE);
-		  restore_irq_for_hibernate();
-	  }
-  }	  
+  // while(flag){
+	//   vcc = conversion_adc();
+	//   if(vcc>RESUME_FROM_HIBERNATE_THRESHOLD){
+  //     // stop rtc
+	// 	  RTCCTL1 |= RTCHOLD;
+	// 	  flag = 0;
+	// 	  break;
+	//   }
+	//   else{
+	// 	  disable_irq_for_hibernate();	
+	// 	  __bis_SR_register(LPM3_bits);
+	// 	  __bic_SR_register(GIE);
+	// 	  restore_irq_for_hibernate();
+	//   }
+  // }	  
   PROCESS_ERROR(result)
 }
 
@@ -239,7 +240,8 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
      * if such a task exists.
      */
 
-  tpl_load_checkpoint(tpl_checkpoint_buffer);
+  // tpl_load_checkpoint(tpl_checkpoint_buffer);
+  tpl_load_checkpoint();
 
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)

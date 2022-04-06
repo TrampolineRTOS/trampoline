@@ -78,6 +78,16 @@ SECTIONS {
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
+/* 
+ * Section for checkpoint. For the moment, number = 1, inserted at the end
+ * of high fram memory.
+ */
+SECTIONS {
+  .chkpt :{
+      _chkptStartAddress = .;
+  } > FRAM_CHKPT
+}
+
 /*
  * Sections for Non Volatile variables. They should be inserted
  * at the beginning of the FRAM, so that the MPU is easier to configure.
@@ -131,8 +141,7 @@ SECTIONS {
   } > FRAM
 }
 
-/* For large model, we put irq function in a specfific section
- * because we need to 
+/* For large model, we put irq function in a specific section
  */
 SECTIONS {
   irq_func_text : {

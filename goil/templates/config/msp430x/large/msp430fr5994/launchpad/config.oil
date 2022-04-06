@@ -25,22 +25,22 @@ IMPLEMENTATION lauchpad {
 
 CPU launchpad {
   LIBRARY serial {
-    PATH = "msp430x/small/msp430fr5994/launchpad/serial";
+    PATH = "msp430x/large/msp430fr5994/launchpad/serial";
     CHEADER = "serial.h";
     CFILE   = "serial.c";
   };
   LIBRARY adc {
-    PATH = "msp430x/small/msp430fr5994/launchpad/adc";
+    PATH = "msp430x/large/msp430fr5994/launchpad/adc";
     CHEADER = "adc12_b.h";
     CFILE = "adc12_b.c";
   };
   LIBRARY ref_a {
-    PATH = "msp430x/small/msp430fr5994/launchpad/ref_a";
+    PATH = "msp430x/large/msp430fr5994/launchpad/ref_a";
     CHEADER = "ref_a.h";
     CFILE = "ref_a.c";
   };
   LIBRARY checkpointing {
-    PATH = "msp430x/small/msp430fr5994/launchpad/checkpointing";
+    PATH = "msp430x/large/msp430fr5994/launchpad/checkpointing";
     CHEADER = "ref_a.h";
     CHEADER = "adc12_b.h";
     CFILE = "ref_a.c";
@@ -52,7 +52,7 @@ CPU launchpad {
     // NEEDS = ref_a;
   };
   LIBRARY dsplib {
-    PATH = "msp430x/small/msp430fr5994/launchpad/dsplib";
+    PATH = "msp430x/large/msp430fr5994/launchpad/dsplib";
     CHEADER = "include/DSPLib.h";
     CFILE = "source/filter/msp_biquad_cascade_df1_q15.c";
     CFILE = "source/filter/msp_biquad_cascade_df2_ext_q15.c";
