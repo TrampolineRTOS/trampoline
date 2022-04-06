@@ -68,6 +68,11 @@ IMPLEMENTATION trampoline_common {
    * Libraries to add to the build system
    */
   LIBRARY [] {
+	BOOLEAN [
+      TRUE { 
+        STRING VARIABLE = "";
+      }, FALSE
+	] USE_PREFIX = FALSE;
     LIBRARY_TYPE NEEDS [];
     STRING CHEADER[];
     STRING CPPHEADER[];
