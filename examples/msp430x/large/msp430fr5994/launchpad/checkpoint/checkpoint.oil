@@ -3,33 +3,32 @@ OIL_VERSION = "2.5";
 IMPLEMENTATION trampoline {
   /* This fix the default STACKSIZE of tasks */
   TASK {
-    UINT32 STACKSIZE = 256 ;
+    UINT32 STACKSIZE = 200 ;
   } ;
 
   /* This fix the default STACKSIZE of ISRs */
   ISR {
-    UINT32 STACKSIZE = 256 ;
+    UINT32 STACKSIZE = 200 ;
   } ;
 };
 
-CPU serial {
+CPU blink {
   OS config {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
- CPU_FREQ_MHZ = 24;
-    IDLE_POWER_MODE = LPM3;
-    
+    CHECKPOINTING = TRUE {CYCLETIME = 5000;};
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
-      APP_SRC = "serial.c";
-      APP_NAME = "serial_exe";
+      APP_SRC = "checkpoint.c";
+      APP_NAME = "checkpoint_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
-      LDFLAGS = "-Map=serial.map";
+      LDFLAGS = "-Map=checkpoint.map";
       LIBRARY = serial {
-        TXBUFFER = 16;
+        TXBUFFER = 0;//16;
         RXBUFFER = 16;
       };
+      LIBRARY = checkpointing;
       //use either msp-gcc (provided with Energia)..
 //      COMPILER  = "msp430-gcc";
 //      ASSEMBLER = "msp430-gcc";
@@ -51,33 +50,73 @@ CPU serial {
       MEMORY_PROTECTION = FALSE;
     };
   };
+
+  APPMODE Std {}; // Warning: std will make a problem iwth the namespace std!
   
-  APPMODE std {};
-  
-  TASK serial_TX {
+  /* TASKS */
+  TASK task_serial_TX {
     PRIORITY = 2;
-    AUTOSTART = TRUE {APPMODE = std;};
+    AUTOSTART = TRUE {APPMODE = Std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  TASK serial_RX {
+  TASK task_fibo {
     PRIORITY = 4;
-    AUTOSTART = FALSE;
+    AUTOSTART = TRUE {APPMODE = Std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  ALARM ALSerial_RX {
+  TASK task_check_button {
+    PRIORITY = 3;
+    AUTOSTART = TRUE {APPMODE = Std;};
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+
+  ALARM Alarm_task_serial_TX {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = serial_RX;
+      TASK = task_serial_TX;
     };
     AUTOSTART = TRUE {
-      APPMODE = std;
-      ALARMTIME = 200;
+      APPMODE = Std;
+      ALARMTIME = 2000;
+      CYCLETIME = 1000;
+    };
+  };
+
+  ALARM Alarm_task_fibo {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = task_fibo;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = Std;
+      ALARMTIME = 1000;
       CYCLETIME = 200;
     };
   };
-};
 
+  ALARM Alarm_task_check_button {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = task_check_button;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = Std;
+      ALARMTIME = 5000;
+      CYCLETIME = 2000;
+    };
+  };
+
+  /* ISR */
+  ISR handler_adc_end_conversion {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = ADC12_VECTOR; /* */
+  };
+
+};
