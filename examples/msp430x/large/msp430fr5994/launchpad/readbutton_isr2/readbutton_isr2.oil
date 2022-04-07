@@ -16,7 +16,8 @@ IMPLEMENTATION trampoline {
 CPU readbutton {
   OS config {
     STATUS = EXTENDED;
-    
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "readbutton_isr2.c";
@@ -47,26 +48,26 @@ CPU readbutton {
     
   TASK blink {
     PRIORITY = 1;
-    AUTOSTART = FALSE;
+    AUTOSTART = TRUE {APPMODE=std;};
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
   
-  ALARM blink_alarm {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK {
-      TASK = blink;
-    };
-    AUTOSTART = TRUE {
-      APPMODE = std;
-      ALARMTIME = 100;
-      CYCLETIME = 100;
-    };                                                                      
-  };
+  // ALARM blink_alarm {
+  //   COUNTER = SystemCounter;
+  //   ACTION = ACTIVATETASK {
+  //     TASK = blink;
+  //   };
+  //   AUTOSTART = TRUE {
+  //     APPMODE = std;
+  //     ALARMTIME = 100;
+  //     CYCLETIME = 100;
+  //   };                                                                      
+  // };
   
   ISR buttonS1 {
     CATEGORY = 2;
-    PRIORITY = 1;
+    PRIORITY = 2;
       SOURCE = PORT5_VECTOR {
       BIT = 6;
     }; /* Button S1 is on GPIO port 4, bit 5 */

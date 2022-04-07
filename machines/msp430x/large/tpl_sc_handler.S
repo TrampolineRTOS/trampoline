@@ -74,19 +74,19 @@ tpl_sc_handler_id_ok:
  */
   dint
   nop	                              /*required after dint instruction*/
-  tstx.a       &tpl_reentrancy_flag
+  tstx.b       &tpl_reentrancy_flag
   jnz          tpl_sc_handler_from_hook
 /*-----------------------------------------------------------------------------
  * -3- We need to have the same stack pattern for both the tpl_sc_handler and
  * an interrupt handler which calls the operating system. 
  */
-  movx.a     2(r1), r11     /* Saved PC [19..16] -> r11                  */
+  movx.a     2(r1), r13     /* Saved PC [19..16] -> r13                  */
   movx.a     1(r1), 2(r1)   /* Copy saved PC [15..0] at the good place   */
-  swpbx.a    r11            /* Get saved PC [19..16] in bits 11..8       */
-  rlam.a     #4, r11        /* Shift them to bits 19..16                 */
-  bisx.a     r2, r11        /* Add the SR in its location at 11..0       */
-  bisx.a     #8, r11        /* set GIE bit (reset just before with dint) */
-  movx     r11, 1(r1)       /* The stack is ok                           */
+  swpbx.a    r13            /* Get saved PC [19..16] in bits 11..8       */
+  rlam.a     #4, r13        /* Shift them to bits 19..16                 */
+  bisx.a     r2, r13        /* Add the SR in its location at 11..0       */
+  bisx.a     #8, r13        /* set GIE bit (reset just before with dint) */
+  movx     r13, 1(r1)       /* The stack is ok                           */
 ;   pushx         sr
 ;   bicx.b        #0xF0, 1(r1)           /* reset the 4 higher bits of saved SR */
 ;   bisx.b        #0x08, 0(r1)           /* set the GIE bit in the saved SR     */
@@ -183,17 +183,17 @@ tpl_sc_handler_id_ok:
  * -6- Init the NEED_SWITCH/NEED_SAVE in tpl_kern.
  */
   movx.a      #tpl_kern, r11
-  movx.a      #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-  movx.a      #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
+  movx.b      #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  movx.b      #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)
 /*-----------------------------------------------------------------------------
 * -7- Call the service. The reentrancy flag is incremented before and
  * decremented after.
  */
-  incx.a    &tpl_reentrancy_flag         /* surround the call by inc ...  */
+  incx.b    &tpl_reentrancy_flag         /* surround the call by inc ...  */
   rlax.a    REG_SID                      /* index -> offset               */
   rlax.a    REG_SID                      /* index -> offset               */
   calla     tpl_dispatch_table(REG_SID)  /* func ptrs in dispatch table   */
-  decx.a    &tpl_reentrancy_flag         /* ... and dec of the flag.      */
+  decx.b    &tpl_reentrancy_flag         /* ... and dec of the flag.      */
 /*-----------------------------------------------------------------------------
  -8- From there, REG_RETARG holds the return value. It is put at its location
  * in the process stack. Also r13 and r14 become usable whatever is the ABI.
@@ -236,7 +236,7 @@ tpl_sc_handler_id_ok:
  * -9- Check the context switch condition in tpl_kern.
  */
   mova      #tpl_kern, r11
-  tstx.a    TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  tstx.b    TPL_KERN_OFFSET_NEED_SWITCH(r11)
   jz        tpl_sc_handler_no_context_switch
 /*
  * From here we are doing a context switching
@@ -248,7 +248,7 @@ tpl_sc_handler_id_ok:
 /*-----------------------------------------------------------------------------
  * -11- Test the NEED_SAVE condition.
  */
-  bitx.a    #NEED_SAVE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  bitx.b    #NEED_SAVE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
   jz       tpl_sc_handler_no_save_running_context
 /*-----------------------------------------------------------------------------
 * -12- Save the context. The MSP430 have a "push multiple words", but no

@@ -49,7 +49,13 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(blink)
 {
-	P1OUT ^= 1 << 1;      /* toggle green led */
+	while(1){
+    __asm("nop");
+    __asm("nop");
+    __asm("nop");
+    __asm("nop");
+
+  }      /* toggle green led */
 	TerminateTask();
 }
 

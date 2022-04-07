@@ -199,8 +199,8 @@ tpl_primary_irq_handler_% !handlerSource %:
  * -3- Init the NEED_SWITCH/SAVE in tpl_kern.
  */
   mova       #tpl_kern, r11
-  movx.a     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
-  movx.a     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)%
+  movx.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  movx.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)%
   
 #
 # Check the kind of function to call, ISR2 or Counter ?
@@ -259,7 +259,7 @@ if handlerIsACounter then
   ! [handlerSource charAtIndex: 4] %IV 
  * and jump to the handler
  */
-  addx       &__P% ! [handlerSource charAtIndex: 4] %IV, pc
+  addx.a       &__P% ! [handlerSource charAtIndex: 4] %IV, pc
   jmp       tpl_direct_irq_handler_exit_% !handlerSource
     let bitMap := [obj mapBy: "BIT"]
     loop bit from 0 to 7 do
@@ -391,7 +391,7 @@ tpl_direct_irq_handler_exit_% !handlerSource %:
  * -6- Check the context switch condition in tpl_kern.
  */
   mova       #tpl_kern, r11
-  tstx.a     TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  tstx.b     TPL_KERN_OFFSET_NEED_SWITCH(r11)
   jz        tpl_% !handlerSource %_no_context_switch
 /*-----------------------------------------------------------------------------
  * -7- Save the rest of the context.
