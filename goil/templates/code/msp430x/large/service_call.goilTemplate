@@ -12,5 +12,14 @@
     /*-------------------------------------------------------------------------
      * Does the system call
      */
-    bra #tpl_sc_handler
+     %
+    if api_func::NAME == "CallTerminateTask" | api_func::NAME == "CallTerminateISR2" then
     
+    %/*
+      * Calla to avoid stack underflow
+      */
+    calla #tpl_sc_handler
+    %
+    else%bra #tpl_sc_handler
+    %
+    end if
