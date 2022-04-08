@@ -35,7 +35,8 @@
 #if defined(MSP_USE_LEA)
 
 #if __GXX_ABI_VERSION == 1011 || __GXX_ABI_VERSION == 1013
-__interrupt void tpl_direct_irq_handler_LEA_VECTOR(void)
+__attribute__((section ( ".irq_func"))) 
+void __attribute__ ((interrupt())) tpl_direct_irq_handler_LEA_VECTOR (void)
 #elif __GXX_ABI_VERSION == 1002
 void __attribute__ ((interrupt(LEA_VECTOR))) tpl_direct_irq_handler_LEA_VECTOR(void)
 #else

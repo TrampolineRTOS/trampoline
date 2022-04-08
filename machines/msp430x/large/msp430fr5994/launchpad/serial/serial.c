@@ -233,10 +233,8 @@ void tpl_serial_tx_fifo_flush()
 /* ISR1 related to USCI_A0_VECTOR */
 __attribute__((section ( ".irq_func"))) 
 void __attribute__ ((interrupt())) tpl_direct_irq_handler_USCI_A0_VECTOR (void)
-// void tpl_direct_irq_handler_USCI_A0_VECTOR(void)
-// __interrupt void tpl_direct_irq_handler_USCI_A0_VECTOR(void)
 #elif __GXX_ABI_VERSION == 1002
-void tpl_direct_irq_handler_USCI_A0_VECTOR(void)
+void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_VECTOR()
 #else
     #error "Unsupported ABI"
 #endif
