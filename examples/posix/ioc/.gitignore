@@ -1,0 +1,6 @@
+ioc
+build
+*_exe
+*.bin
+*.map
+*.py
