@@ -1,4 +1,6 @@
 *~
+#goil compiler
+goil/makefile-unix/goil
 ## Vim...
 .*.swp
 ##python
