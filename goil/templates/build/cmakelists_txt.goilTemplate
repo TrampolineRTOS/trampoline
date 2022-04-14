@@ -286,14 +286,23 @@ foreach library in exists USEDLIB default ( @() ) do
   if not exists library::CFILE then let library::CFILE := @() end if
   if not exists library::CPPFILE then let library::CPPFILE := @() end if
   if not exists library::ASFILE then let library::ASFILE := @() end if
+  let base_path := "${TRAMPOLINE_MACHINE_PATH}"
+  if library::USE_PREFIX then
+    #yes
+    let base_path := [library::USE_PREFIX_S::VARIABLE envVar]
+	if [base_path length] == 0 then
+      #not defined through a variable
+      error library : "External library needs an environment variable: "+library::USE_PREFIX_S::VARIABLE
+    end if
+  end if
   foreach file in library::CFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/% !library::PATH+"/"+file::VALUE %\n%
+    %	% !base_path+"/"+library::PATH+"/"+file::VALUE %\n%
   end foreach
   foreach file in library::CPPFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/% !library::PATH+"/"+file::VALUE %\n%
+    %	% !base_path+"/"+library::PATH+"/"+file::VALUE %\n%
   end foreach
   foreach file in library::ASFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/% !library::PATH+"/"+file::VALUE %\n%
+    %	% !base_path+"/"+library::PATH+"/"+file::VALUE %\n%
   end foreach
 end foreach
 %)
@@ -313,7 +322,7 @@ foreach library in exists USEDLIB default ( @() ) do
     let base_path := [library::USE_PREFIX_S::VARIABLE envVar]
 	if [base_path length] == 0 then
       #not defined through a variable
-      error library : "External library needs an enviroment variable: "+library::USE_PREFIX_S::VARIABLE
+      error library : "External library needs an environment variable: "+library::USE_PREFIX_S::VARIABLE
     end if
     let includeDirSet += base_path+"/"+library::PATH
   else

@@ -27,6 +27,7 @@ CPU blink {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
+      LIBRARY = pico_base;
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;
