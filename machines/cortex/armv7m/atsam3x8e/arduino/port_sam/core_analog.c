@@ -18,6 +18,10 @@
 
 #include "Arduino.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -412,3 +416,4 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
 #ifdef __cplusplus
 }
 #endif
+#pragma GCC diagnostic pop

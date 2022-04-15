@@ -22,7 +22,6 @@ CPU readbutton_isr {
       APP_NAME = "readbutton_isr_exe";
       CFLAGS  = "-O0"; 
       LDFLAGS = "-Map=readbutton_isr.map";
-      LIBRARY = IO;
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
