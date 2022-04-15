@@ -1,8 +1,0 @@
-CPU SmartFusion2_StarterKit {
-//  PLATFORM_FILES stm32f4discovery {
-//    PATH = "cortex/armv7m/stm32f407/stm32f4discovery";
-//    CFILE = "stm32f4_discovery.c";
-//    CFILE = "tp.c";
-//  };
-};
-    
