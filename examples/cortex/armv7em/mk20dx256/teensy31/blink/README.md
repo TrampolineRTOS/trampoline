@@ -17,7 +17,9 @@ Look at the CFLAGS in the blink.oil file. The tools are arm-none-eabi-xxx and th
 
 Configure the application with:
 
-`goil --target=cortex/armv7em/mk20dx256/teensy31 --templates=../../../../../../goil/templates blink.oil`
+```
+goil --target=cortex/armv7em/mk20dx256/teensy31 --templates=../../../../../../goil/templates blink.oil
+```
 
 Then compile the application:
 

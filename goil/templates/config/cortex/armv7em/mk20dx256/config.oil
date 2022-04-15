@@ -17,6 +17,10 @@ IMPLEMENTATION mk20dx256 {
 
 
 CPU mk20dx256 {
+  CORTEX mk20dx256 {
+    PRIO_BITS = 4; //16 priority levels
+    CLOCK = 72000000;
+  };
 
   PLATFORM_FILES cortex_armv7em_mk20dx256 {
     PATH = "cortex/armv7em/mk20dx256";

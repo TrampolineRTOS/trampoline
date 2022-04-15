@@ -9,7 +9,9 @@ The system is based scheduled with a 1ms SysTick "SystemCounter".
 
 Configure the application with:
 
-`goil --target=cortex/armv7em/mk20dx256/teensy31 --templates=../../../../../../goil/templates liquidCrystal.oil`
+```
+goil --target=cortex/armv7em/mk20dx256/teensy31 --templates=../../../../../../goil/templates liquidCrystal.oil
+```
 
 Then compile the application:
 

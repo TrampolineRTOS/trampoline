@@ -11,10 +11,6 @@
  *
  * @section infos File informations
  *
- * $$Date$$
- * $$Rev$$
- * $$Author$$
- * $$URL$$
  */
 
 #include "tpl_compiler.h"
@@ -156,4 +152,4 @@ template (ISR2_vector, "OS", "os") enable_disable_it
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/* End of file tpl_init_it_priority.c */
+/* End of file tpl_app_interrupts.c */
