@@ -84,9 +84,10 @@ def getOILCmd(oilDir):
                 if regexGoilCmd.match(line):
                     cmd = line
                     break       #first occurence is ok
-        if 'linux' in cmd: #specific case with posix target…
-            if sys.platform.startswith('darwin'):
-                cmd = cmd.replace('linux','darwin')
+        if cmd:
+            if 'linux' in cmd: #specific case with posix target…
+                if sys.platform.startswith('darwin'):
+                    cmd = cmd.replace('linux','darwin')
     else:
         debug('skip example, no README.md file')
     return cmd
