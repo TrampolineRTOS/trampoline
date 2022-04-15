@@ -1,10 +1,11 @@
-ioc
-ioc_exe
+trace_test
+trace_test_exe
+
 trace.json
-readTrace.py
 build
 *.elf
 *.bin
 *.map
 make.py
 build.py
+readTrace.py
