@@ -37,7 +37,7 @@ FUNC(void, OS_APPL_CODE) io_init()
   //NOTE: button S1 is defined in the OS to switch from 
   //cold/hot start just after the reset
 
-  tpl_serial_begin();
+  tpl_serial_begin(SERIAL_TX_MODE_BLOCK);
 }
 
 /*----------------------------------------------------------------------------*/

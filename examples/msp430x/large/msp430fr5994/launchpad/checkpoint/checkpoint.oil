@@ -25,7 +25,7 @@ CPU blink {
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=checkpoint.map";
       LIBRARY = serial {
-        TXBUFFER = 0;//16;
+        TXBUFFER = 16;//16;
         RXBUFFER = 16;
       };
       LIBRARY = checkpointing;

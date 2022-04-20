@@ -1,0 +1,7 @@
+checkpoint
+build
+*_exe
+*.bin
+*.map
+build.py
+make.py
