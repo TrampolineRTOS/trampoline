@@ -29,9 +29,11 @@
 
 #include "tpl_os_kernel.h"
 
-extern void tpl_save_checkpoint(const uint16 buffer);
-extern void tpl_load_checkpoint(const uint16 buffer);
+// extern void tpl_save_checkpoint(const uint16 buffer);
+// extern void tpl_load_checkpoint(const uint16 buffer);
 
+extern void tpl_save_checkpoint(void);
+extern void tpl_load_checkpoint(void);
 #define OS_START_SEC_CONST_16BIT
 #include "tpl_memmap.h"
 static CONST (sint16,OS_CONST) NO_CHECKPOINT = -1;

@@ -18,6 +18,110 @@ else
 %
   end foreach
 end if
+
+let nameVector := ""
+let bitMAX := 0
+# TODO : find a way to distinguish IO and other
+let isNotExternalInterrupt := 0
+
+if handlerSource == "ADC12_VECTOR" then
+   let nameVector := "ADC12IV"
+   let bitMAX := 23
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "RTC_VECTOR" then
+   let nameVector := "RTCIV"
+   let bitMAX := 7
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B3_VECTOR" then
+   let nameVector := "UCB3IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B2_VECTOR" then
+   let nameVector := "UCB2IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B1_VECTOR" then
+   let nameVector := "UCB1IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_A3_VECTOR" then
+   let nameVector := "UCA3IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_A2_VECTOR" then
+   let nameVector := "UCA2IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER4_A1_VECTOR" then
+   let nameVector := "TA4IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER4_A0_VECTOR" then
+   let nameVector := "TA4IV_0"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER3_A1_VECTOR" then
+   let nameVector := "TA3IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER3_A0_VECTOR" then
+   let nameVector := "TA3IV_0"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER2_A1_VECTOR" then
+   let nameVector := "TA2IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER2_A0_VECTOR" then
+   let nameVector := "TA2IV_0"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER1_A1_VECTOR" then
+   let nameVector := "TA1IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER1_A0_VECTOR" then
+   let nameVector := "TA1IV_0"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_A1_VECTOR" then
+   let nameVector := "TA0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_A0_VECTOR" then
+   let nameVector := "TA0IV_0"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_B1_VECTOR" then
+   let nameVector := "TB0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_B0_VECTOR" then
+   let nameVector := "TB0IV_0"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_A1_VECTOR" then
+   let nameVector := "UCA1IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_A0_VECTOR" then
+   let nameVector := "UCA0IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_B0_VECTOR" then
+   let nameVector := "UCB0IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "DMA_VECTOR" then
+   let nameVector := "DMAIV"
+   let bitMAX := 7
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "COMP_E_VECTOR" then
+   let nameVector := "CEIV"
+   let bitMAX := 4
+   let isNotExternalInterrupt := 1
+end if
+
 %
 .global tpl_direct_irq_handler_% !handlerSource %
 .type   tpl_direct_irq_handler_% !handlerSource %, \%function
@@ -36,11 +140,48 @@ if [obj type] == @struct then%
   call      #% ! obj::NAME + "_function"
   if [PORT_IRQ contains: obj::SOURCE] then
     # PORT IRQ, ack the interrupt
+    if obj::SOURCE == "TIMER0_A0_VECTOR" | obj::SOURCE == "TIMER1_A0_VECTOR" | obj::SOURCE == "TIMER2_A0_VECTOR" | obj::SOURCE == "TIMER3_A0_VECTOR" | obj::SOURCE == "TIMER4_A0_VECTOR" | obj::SOURCE == "TIMER0_B0_VECTOR" then 
+    
+    else
 %
 /*-----------------------------------------------------------------------------
  * -2b- Ackowledge the interrupt
  */
   mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
+  end if
+  end if
+  
+elsif  isNotExternalInterrupt == 1 then
+  if nameVector == "TA4IV_0" | nameVector == "TA3IV_0" | nameVector == "TA2IV_0" | nameVector == "TA1IV_0" | nameVector == "TA0IV_0" | nameVector == "TB0IV_0" then
+%
+  call      #% ! handler::NAME %_function%
+  else
+%
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+  let bitMap := [obj mapBy: "BIT"]
+  loop bit from 0 to bitMAX do
+    if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+    else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    end if
+  tab(60) %/* bit % ! bit % */%
+  end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
+  between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+  end foreach
   end if
 else
 %
@@ -64,6 +205,14 @@ else
   foreach handler in bitMap do%
 tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
   call      #% ! handler::NAME %_function%
+%
+/*-----------------------------------------------------------------------------
+ * -2b- exit from LPM if required
+   we pushed 5 volatile registers so SR is 2*5 bytes deep
+ */%
+  if handler::EXIT_FROM_LPM then%
+  bic      #0xF0, 10(SP)%
+  end if
   between %
   jmp       tpl_direct_irq_handler_exit_% !handlerSource 
   end foreach
@@ -78,15 +227,14 @@ if [obj type] == @struct then
 /*-----------------------------------------------------------------------------
  * -3b- exit from LPM if required
  */
-  bic   #0xF0, 0(SP)%
+ %
+  #sub.w    #%!obj::EXIT_FROM_LPM_S::SOURCE%, r10 
+  #jeq      exit_from_lpm
+  #jmp      return
+  %
+  bic      #0xF0, 0(SP)%
   end if
 else
-  if obj[0]::EXIT_FROM_LPM then %
-/*-----------------------------------------------------------------------------
- * -3b- exit from LPM if required
- */
-  bic   #0xF0, 0(SP)%
-  end if
 end if
 % 
 /*-----------------------------------------------------------------------------

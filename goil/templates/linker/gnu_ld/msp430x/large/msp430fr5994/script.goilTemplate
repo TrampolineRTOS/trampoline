@@ -1,0 +1,628 @@
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Link script                              */
+/*                                                                            */
+/*                                   msp430fr5994                             */
+/*                                                                            */
+/* <INIT_POLICY>                                                              */
+/* - NO_INIT :          used for variables that are never cleared and never   */
+/*                      initialized.                                          */
+/* - CLEARED :          used for variables that are cleared to zero after     */
+/*                      every reset.                                          */
+/* - POWER_ON_CLEARED : used for variables that are cleared to zero only      */
+/*                      after power on reset.                                 */
+/* - INIT :             used for variables that are initialized with values   */
+/*                      after every  reset.                                   */
+/* - POWER_ON_INIT :    used for variables that are initialized with values   */
+/*                      only after power on reset.                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Peripheral registers definition    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+%
+template symbols
+template periph
+
+%
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Configuration                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+ENTRY(tpl_reset_handler)
+
+/* Highest address of the user mode stack */
+_estack = 0x2C00;    /* end of 4K RAM */
+
+/* Generate a link error if heap and stack don't fit into RAM */
+_Min_Heap_Size = 0;      /* required amount of heap  */
+_Min_Stack_Size = 0x100; /* required amount of stack */
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Memory                                   */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+%
+template memory_map
+%
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                ISR Vectors                                 */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {
+  .isr_vector : {
+    . = ALIGN(4);
+ INCLUDE "% !PROJECT %/tpl_interrupt_vectors.ld"
+    . = ALIGN(4);
+  } >VECTOR
+}
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Code                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/* 
+ * Section for checkpoint. For the moment, number = 1, inserted at the end
+ * of high fram memory.
+ */
+SECTIONS {
+  .chkpt :{
+      _chkptStartAddress = .;
+  } > FRAM_CHKPT
+}
+
+/*
+ * Sections for Non Volatile variables. They should be inserted
+ * at the beginning of the FRAM, so that the MPU is easier to configure.
+ */
+SECTIONS {
+  .NVdata ORIGIN(FRAM) : AT ( __nvdata_load_start) {
+    . = ALIGN(4);
+    __nvdata_start = .; /* create a global symbol at non volatile data start */%
+foreach SECTION_KIND in @("_NON_VOLATILE_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
+
+foreach proc in PROCESSES do%
+
+    /* --- Non volatile variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_NON_VOLATILE_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE% )
+%
+    end foreach
+   end foreach
+  end foreach%
+
+    . = ALIGN(2);
+    __nvdata_end = .;        /* define a global symbol at non volatile data end */
+    __nvdata_size = SIZEOF(.NVdata); /* define a global symbol at non volatile data end */
+  } >FRAM
+
+  .NVdataInit : {
+    . = ALIGN(1024);         /* MSP430 MPU minimal segment size */
+    TPL_MPU_B1_BOUNDARY = .; /* useful for MPU initialization - start of code */
+    __nvdata_load_start = .;
+    . += SIZEOF(.NVdata);    /* reserve space for NVdata init values*/
+ __nvdata_load_end = .;
+  } >FRAM
+}
+
+/* init section for msp430. 
+ * execution starts at the beginning of the fram. */
+SECTIONS {
+ /* we make sure that both 
+  * - VMA (virtual memory address) and 
+  * - LMA (load memory address) 
+  * are the same */
+  .textInit __nvdata_load_end : AT(__nvdata_load_end) {
+    KEEP(*(.init)) /* start here after reset */
+  } > FRAM
+}
+
+/* For large model, we put irq function in a specific section
+ */
+SECTIONS {
+  irq_func_text : {
+    KEEP(*(.irq_func))
+  } > FRAM
+} 
+ 
+/*
+ * code and const of the operating system (Trampoline).
+ * this section is not accessible from an untrusted process
+ */
+SECTIONS {
+  . = ALIGN(4);
+  /* --- code of OS --- */
+  ostext : {
+    *(.SC_handler)
+    *(.EI_handler)
+    *(.osCode)
+    *(.osApiCode)  /* API functions */
+    *(.appCommonCode)
+  } >FRAM
+  . = ALIGN(4);
+  /* --- const of OS --- */
+  osconst : {
+    *(.osConst)
+    *(.osApiConst) /* API constants */
+  } >FRAM
+}
+
+/*
+ * code and const of the processes of the applications ]
+ */
+SECTIONS {
+  . = ALIGN(4);
+  apptext : {
+    __PROGCONST_SECTION_START = .;
+    __SEG_START_APP_CODE_CONST_RGN = .;
+  . = ALIGN(4);
+  /* --- Sections for application code --- */
+
+  /* --- Sections for code of tasks and ISR --- */%
+foreach proc in PROCESSES do
+%
+    *(.% !proc::KIND %_% !proc::NAME %Code)
+%
+end foreach
+foreach isr in ISRS1 do
+%
+    *(.ISR_% !isr::NAME %Code)
+%
+end foreach
+%
+  } >FRAM
+  . = ALIGN(4);
+  appconst : {
+  /* --- Sections for application const --- */
+    *(.rodata)     /* litteral strings (constants, strings, etc.) */
+    *(.rodata*)    /* litteral strings (constants, strings, etc.) */
+%
+foreach app in APPLICATIONS do
+ foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+  foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+%      *(.OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end foreach
+ end foreach
+end foreach
+%
+  } >FRAM
+}
+
+/*
+ * Sections for const of tasks and ISR
+ */
+SECTIONS {
+  . = ALIGN(4);
+  procconst : {
+%
+foreach proc in PROCESSES do
+ foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+  foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+%      *(.% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end foreach
+ end foreach
+end foreach
+%    
+    . = ALIGN(4);
+    __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
+    __PROGCONST_SECTION_STOP = . - 1;
+  } >FRAM
+}
+
+  /* remaining .text (ie no section given) */
+SECTIONS {
+  .text :
+  {
+    . = ALIGN(4);
+    *(.text)           /* .text sections (code) */
+    *(.text*)          /* .text* sections (code) */
+ *(.eh_frame)
+
+    /* Constructors sections (list of pointers)
+     * from https://gcc.gnu.org/onlinedocs/gccint/Initialization.html 
+  * set in .text section to be effectively loaded in flash
+     **/
+    PROVIDE_HIDDEN (__ctors_start = .);
+    KEEP (*(.ctors*))
+    KEEP (*(SORT(.ctors.*)))
+    PROVIDE_HIDDEN (__ctors_end = .);
+
+    /* Destructors sections (list of pointers)
+     * from https://gcc.gnu.org/onlinedocs/gccint/Initialization.html 
+  * set in .text section to be effectively loaded in flash
+     **/
+    PROVIDE_HIDDEN (__dtors_start = .);
+    KEEP (*(.dtors*))
+    KEEP (*(SORT(.dtors.*)))
+    PROVIDE_HIDDEN (__dtors_end = .);
+
+    . = ALIGN(4);
+    _etext = .;        /* define a global symbols at end of code */
+    _exit = .;
+  } >FRAM
+}
+
+/* used by the startup to initialize data */
+SECTIONS {
+  _sramStartAddress = .;
+  /* Initialized data sections goes into RAM, load LMA copy after code */
+  .data : AT ( __data_load_start )
+  {
+    . = ALIGN(4);
+    __data_start = .;        /* create a global symbol at data start */
+    *(.data)           /* .data sections */
+    *(.data*)          /* .data* sections */
+
+    *(.osVar)%
+foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+  foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_" ) do
+%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
+foreach proc in PROCESSES do
+%
+
+/* Initialized variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_POWER_ON_INIT_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+
+foreach app in APPLICATIONS do
+%/* Initialized variables section of OS_APP % !app::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_POWER_ON_INIT_" ) do
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+%
+    . = ALIGN(4);
+    __data_end = .;        /* define a global symbol at data end */
+    __data_size = SIZEOF(.data);
+  } >RAM
+
+  .dataInit : {
+ . = ALIGN(16);
+    __data_load_start = .;
+ /* reserve space for data init value */
+    . += SIZEOF(.data);
+  } >FRAM
+}
+
+SECTIONS {
+.data_framup : {
+%
+foreach proc in PROCESSES do
+%
+/* Initialized FRAM_UP variables sections of % !proc::KIND % % !proc::NAME % */
+    . = ALIGN(4);
+
+%
+ foreach DATA_SIZE in @("32BIT", "16BIT", "8BIT", "BOOLEAN", "UNSPECIFIED") do
+    foreach SECTION_KIND in @("_FRAM_UP_") do
+%      *(.% !proc::KIND %_% !proc::NAME %_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+     end foreach
+   end foreach
+end foreach
+
+foreach app in APPLICATIONS do
+%/* Initialized variable section of OS_APP% !app::NAME % */
+%
+   foreach DATA_SIZE in @("32BIT", "16BIT", "8BIT", "BOOLEAN", "UNSPECIFIED") do
+      foreach SECTION_KIND in @("_POWER_ON_INIT") do
+%       *(.OS_APP_% !app::NAME %_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+      end foreach
+    end foreach
+end foreach
+%
+  } >FRAM_UP
+}   
+%
+if OS::LEA then
+%
+SECTIONS {
+.data_lea : {
+%
+foreach proc in PROCESSES do
+%
+/* Initialized LEA variables section of % !proc::KIND % % !proc::NAME % */
+   . = ALIGN(512);
+
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_LEA_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+
+foreach app in APPLICATIONS do
+%/* Initialized variables section of OS_APP % !app::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_POWER_ON_INIT_" ) do
+%    *(.OS_APP_% !app::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+end foreach
+%
+  } >LEA_RAM
+}
+%
+end if
+%
+  /*
+   * private data of processes
+   */
+SECTIONS {
+%
+
+foreach proc in PROCESSES do
+%  .% !proc::KIND %_% !proc::NAME %_SEC_VAR : {
+    /* . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN); TODO check alignment*/
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+  /* --- Initialized variables section of % !proc::KIND % % !proc::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_NOINIT_","_FAST_","_" ) do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+%     __SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 4K ? 4K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 1K ? 1K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 512 ? 512 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 256 ? 256 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 128 ? 128 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 64 ? 64 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 32 ? 32 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN = __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+  } >RAM
+%
+end foreach
+%}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                Stack of processes                          */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {%
+foreach proc in PROCESSES do %
+  /* --- Section of stack of % !proc::KIND % % !proc::NAME %  */
+  .% !proc::KIND %_% !proc::NAME %_SEC_STACK : {
+    /* . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN); TODO: check alignment */
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+    *(.% !proc::KIND %_% !proc::NAME %Stack)
+    . = ALIGN(4);
+    __SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 4K ? 4K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 1K ? 1K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 512 ? 512 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 256 ? 256 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 128 ? 128 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 64 ? 64 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 32 ? 32 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN = __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+  } >RAM
+%
+end foreach
+%
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                OS application data                         */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {
+  /*
+   * os application data
+   */
+   appvars : {
+%
+foreach app in APPLICATIONS do
+%    /* . = ALIGN(__SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) TODO: check alignment */
+    __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
+  /* --- Initialized variables section of OS_APP % !app::NAME % */
+%
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+    foreach SECTION_KIND in @( "_NOINIT_","_FAST_","_" ) do
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end foreach
+%    . = ALIGN(4);
+    __SEG_END_OS_APP_% !app::NAME %_VAR_RGN = .;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 4K ? 4K : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 1K ? 1K : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 512 ? 512 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 256 ? 256 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 128 ? 128 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 64 ? 64 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 32 ? 32 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+%
+end foreach
+% 
+  } >RAM
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          OS unitialized data (useful?)                     */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SECTIONS {
+  . = ALIGN(4);
+  .osVarNoInit :
+  {%
+foreach SECTION_KIND in @("_NOINIT_") do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+    *(.osVar%!SECTION_KIND !DATA_SIZE%)%
+  end foreach
+end foreach
+%
+  } >RAM
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          Data (initialized data)                           */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          BSS (uninitialized data)                          */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {
+  . = ALIGN(4);
+  .bss :
+  {
+    /* This is used by the startup in order to initialize the .bss secion */
+    _sbss = .;         /* define a global symbol at bss start */
+    __bss_start__ = _sbss;
+    *(.bss)
+    *(.bss*)
+    *(COMMON)
+    . = ALIGN(4);
+    _ebss = .;         /* define a global symbol at bss end */
+    __bss_end__ = _ebss;
+  } >RAM
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Heap                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+  /* _user_heap_stack section, used to check that there is enough RAM left */
+SECTIONS {
+  ._user_heap_stack :
+  {
+    . = ALIGN(4);
+    __heap_start__ = . ;
+    PROVIDE ( end = . );
+    PROVIDE ( _end = . );
+    . = . + _Min_Heap_Size;
+    . = . + _Min_Stack_Size;
+    . = ALIGN(4);
+  } >RAM
+}
+
+%
+template if exists script_specific
+%
+
+  /* Remove information from the standard libraries */
+SECTIONS {
+  /DISCARD/ :
+  {
+    libc.a ( * )
+    libm.a ( * )
+    libgcc.a ( * )
+  }
+}
+
+SECTIONS {
+  __tpl_end_of_checkpointing_zone = .;
+  .osVarKernStack :
+  {
+    . = ALIGN(2);
+    __os_kern_stack_start = .; /* OS kernel stack symbol start */
+    *(.osVarKernStack)         /* OS Kernel stack */
+    __os_kern_stack_end   = .;  /* OS kernel stack symbol start */
+  } >RAM
+}
+
+SECTIONS {
+  /* Stabs debugging sections.  */
+  .stab          0 : { *(.stab) }
+  .stabstr       0 : { *(.stabstr) }
+  .stab.excl     0 : { *(.stab.excl) }
+  .stab.exclstr  0 : { *(.stab.exclstr) }
+  .stab.index    0 : { *(.stab.index) }
+  .stab.indexstr 0 : { *(.stab.indexstr) }
+  .comment       0 : { *(.comment) }
+  /* DWARF debug sections.
+     Symbols in the DWARF debugging sections are relative to the beginning
+     of the section so we begin them at 0.  */
+  /* DWARF 1.  */
+  .debug          0 : { *(.debug) }
+  .line           0 : { *(.line) }
+  /* GNU DWARF 1 extensions.  */
+  .debug_srcinfo  0 : { *(.debug_srcinfo) }
+  .debug_sfnames  0 : { *(.debug_sfnames) }
+  /* DWARF 1.1 and DWARF 2.  */
+  .debug_aranges  0 : { *(.debug_aranges) }
+  .debug_pubnames 0 : { *(.debug_pubnames) }
+  /* DWARF 2.  */
+  .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }
+  .debug_abbrev   0 : { *(.debug_abbrev) }
+  .debug_line     0 : { *(.debug_line .debug_line.* .debug_line_end ) }
+  .debug_frame    0 : { *(.debug_frame) }
+  .debug_str      0 : { *(.debug_str) }
+  .debug_loc      0 : { *(.debug_loc) }
+  .debug_macinfo  0 : { *(.debug_macinfo) }
+  /* SGI/MIPS DWARF 2 extensions.  */
+  .debug_weaknames 0 : { *(.debug_weaknames) }
+  .debug_funcnames 0 : { *(.debug_funcnames) }
+  .debug_typenames 0 : { *(.debug_typenames) }
+  .debug_varnames  0 : { *(.debug_varnames) }
+  /* DWARF 3 */
+  .debug_pubtypes 0 : { *(.debug_pubtypes) }
+  .debug_ranges   0 : { *(.debug_ranges) }
+  /* DWARF Extension.  */
+  .debug_macro    0 : { *(.debug_macro) }
+
+  /DISCARD/ : { *(.note.GNU-stack) }
+}
+/* vim:ft=ld
+ */

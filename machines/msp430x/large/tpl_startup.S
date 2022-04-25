@@ -40,24 +40,25 @@
 	.type tpl_reset_handler, %function
 
 tpl_reset_handler:
-
+	movx.a #0xA500, &MPUCTL0 /* unlock MPU */
+	movx.a #0xA500, &MPUCTL0 /* unlock MPU */
 	/* watchdog support */
 /* #if WITH_DISABLE_WDT */
-	mov     #0x5a80, &__WDTCTL 
+	movx.a     #0x5a80, &__WDTCTL
 /* #else 
-	mov.b	&__WDTCTL, r5
-	bis	#0x5a08, r5
-	mov	r5, &__wdt_clear_value  
+	movx.b	&__WDTCTL, r5
+	bisx	#0x05a08, r5
+	movx	r5, &__wdt_clear_value  
 #endif */
 
 	/* disable interrupts at startup
 	 * they will be enabled when the first task wil start (including idle task)
 	*/
 	dint
-
+    nop
 	/* init stack */
-	mov     #_estack-2, r1
+	mova     #_estack-2, r1
 
-	call    #tpl_continue_reset_handler
+	calla    #tpl_continue_reset_handler
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

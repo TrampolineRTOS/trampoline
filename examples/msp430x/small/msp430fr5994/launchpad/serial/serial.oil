@@ -3,12 +3,12 @@ OIL_VERSION = "2.5";
 IMPLEMENTATION trampoline {
   /* This fix the default STACKSIZE of tasks */
   TASK {
-    UINT32 STACKSIZE = 100 ;
+    UINT32 STACKSIZE = 256 ;
   } ;
 
   /* This fix the default STACKSIZE of ISRs */
   ISR {
-    UINT32 STACKSIZE = 100 ;
+    UINT32 STACKSIZE = 256 ;
   } ;
 };
 
@@ -17,7 +17,7 @@ CPU serial {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-	CPU_FREQ_MHZ = 24;
+ CPU_FREQ_MHZ = 24;
     IDLE_POWER_MODE = LPM3;
     
     BUILD = TRUE {
@@ -31,16 +31,16 @@ CPU serial {
         RXBUFFER = 16;
       };
       //use either msp-gcc (provided with Energia)..
-      COMPILER  = "msp430-gcc";
-      ASSEMBLER = "msp430-gcc";
-      LINKER    = "msp430-ld";
-      COPIER    = "msp430-objcopy";
+//      COMPILER  = "msp430-gcc";
+//      ASSEMBLER = "msp430-gcc";
+//      LINKER    = "msp430-ld";
+//      COPIER    = "msp430-objcopy";
       //or GCC for MSP (provided by TI)
-      //COMPILER  = "msp430-elf-gcc";
-      //ASSEMBLER = "msp430-elf-gcc";
-      //LINKER    = "msp430-elf-ld";
-      //COPIER    = "msp430-elf-objcopy";
-      //CFLAGS    = "-I/opt/ti/ccs920/ccs/ccs_base/msp430/include_gcc";
+      COMPILER  = "msp430-elf-gcc";
+      ASSEMBLER = "msp430-elf-gcc";
+      LINKER    = "msp430-elf-ld";
+      COPIER    = "msp430-elf-objcopy";
+      CFLAGS    = "-I/opt/msp430-gcc-support-files/include";
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;

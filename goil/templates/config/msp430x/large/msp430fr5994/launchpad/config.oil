@@ -1,0 +1,164 @@
+
+/*
+ * MSP430 Specific configuration file for Launchpad SDK
+ */
+
+IMPLEMENTATION lauchpad {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial {
+            UINT32 RXBUFFER = 32;
+            UINT32 TXBUFFER = 16;
+          },
+          adc,
+          ref_a,
+          checkpointing,
+          dsplib
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+CPU launchpad {
+  LIBRARY serial {
+    PATH = "msp430x/large/msp430fr5994/launchpad/serial";
+    CHEADER = "serial.h";
+    CFILE   = "serial.c";
+  };
+  LIBRARY adc {
+    PATH = "msp430x/large/msp430fr5994/launchpad/adc";
+    CHEADER = "adc12_b.h";
+    CFILE = "adc12_b.c";
+  };
+  LIBRARY ref_a {
+    PATH = "msp430x/large/msp430fr5994/launchpad/ref_a";
+    CHEADER = "ref_a.h";
+    CFILE = "ref_a.c";
+  };
+  LIBRARY checkpointing {
+    PATH = "msp430x/large/msp430fr5994/launchpad/checkpointing";
+    CHEADER = "ref_a.h";
+    CHEADER = "adc12_b.h";
+    CFILE = "ref_a.c";
+    CFILE = "adc12_b.c";
+ CFILE = "tpl_chkpt_adc.c";
+ CFILE = "tpl_chkpt_io.c";
+    //TODO: use dependency
+    // NEEDS = adc;
+    // NEEDS = ref_a;
+  };
+  LIBRARY dsplib {
+    PATH = "msp430x/large/msp430fr5994/launchpad/dsplib";
+    CHEADER = "include/DSPLib.h";
+    CFILE = "source/filter/msp_biquad_cascade_df1_q15.c";
+    CFILE = "source/filter/msp_biquad_cascade_df2_ext_q15.c";
+    CFILE = "source/filter/msp_biquad_cascade_df2_q15.c";
+    CFILE = "source/filter/msp_biquad_df1_q15.c";
+    CFILE = "source/filter/msp_biquad_df2_ext_q15.c";
+    CFILE = "source/filter/msp_biquad_df2_q15.c";
+    CFILE = "source/filter/msp_cmplx_fir_iq31.c";
+    CFILE = "source/filter/msp_cmplx_fir_q15.c";
+    CFILE = "source/filter/msp_fir_q15.c";
+    CFILE = "source/filter/msp_fir_iq31.c";
+    CFILE = "source/lea/msp_lea_flags.c";
+    CFILE = "source/lea/msp_lea_init.c";
+    CFILE = "source/lea/msp_lea_isr.c";
+    CFILE = "source/lea/msp_lea_patch.c";
+    CFILE = "source/matrix/msp_matrix_abs_iq31.c";
+    CFILE = "source/matrix/msp_matrix_abs_q15.c";
+    CFILE = "source/matrix/msp_matrix_add_iq31.c";
+    CFILE = "source/matrix/msp_matrix_add_q15.c";
+    CFILE = "source/matrix/msp_matrix_mpy_iq31.c";
+    CFILE = "source/matrix/msp_matrix_mpy_q15.c";
+    CFILE = "source/matrix/msp_matrix_neg_iq31.c";
+    CFILE = "source/matrix/msp_matrix_neg_q15.c";
+    CFILE = "source/matrix/msp_matrix_offset_iq31.c";
+    CFILE = "source/matrix/msp_matrix_offset_q15.c";
+    CFILE = "source/matrix/msp_matrix_scale_iq31.c";
+    CFILE = "source/matrix/msp_matrix_scale_q15.c";
+    CFILE = "source/matrix/msp_matrix_shift_iq31.c";
+    CFILE = "source/matrix/msp_matrix_shift_q15.c";
+    CFILE = "source/matrix/msp_matrix_sub_iq31.c";
+    CFILE = "source/matrix/msp_matrix_sub_q15.c";
+    CFILE = "source/matrix/msp_matrix_trans_iq31.c";
+    CFILE = "source/matrix/msp_matrix_trans_q15.c";
+    CFILE = "source/transform/msp_cmplx_bitrev_iq31.c";
+    CFILE = "source/transform/msp_cmplx_bitrev_q15.c";
+    CFILE = "source/transform/msp_cmplx_fft_auto_q15.c";
+    CFILE = "source/transform/msp_cmplx_fft_fixed_q15.c";
+    CFILE = "source/transform/msp_cmplx_fft_iq31.c";
+    CFILE = "source/transform/msp_cmplx_ifft_auto_q15.c";
+    CFILE = "source/transform/msp_cmplx_ifft_fixed_q15.c";
+    CFILE = "source/transform/msp_cmplx_ifft_iq31.c";
+    CFILE = "source/transform/msp_fft_auto_q15.c";
+    CFILE = "source/transform/msp_fft_fixed_q15.c";
+    CFILE = "source/transform/msp_fft_iq31.c";
+    CFILE = "source/transform/msp_ifft_auto_q15.c";
+    CFILE = "source/transform/msp_ifft_fixed_q15.c";
+    CFILE = "source/transform/msp_ifft_iq31.c";
+    CFILE = "source/transform/msp_split_iq31.c";
+    CFILE = "source/transform/msp_split_q15.c";
+    CFILE = "source/transform/msp_transform_tables.c";
+    CFILE = "source/utility/msp_cmplx_fill_iq31.c";
+    CFILE = "source/utility/msp_cmplx_fill_q15.c";
+    CFILE = "source/utility/msp_cmplx_iq31.c";
+    CFILE = "source/utility/msp_cmplx_q15.c";
+    CFILE = "source/utility/msp_copy_iq31.c";
+    CFILE = "source/utility/msp_copy_q15.c";
+    CFILE = "source/utility/msp_deinterleave_iq31.c";
+    CFILE = "source/utility/msp_deinterleave_q15.c";
+    CFILE = "source/utility/msp_fill_iq31.c";
+    CFILE = "source/utility/msp_fill_q15.c";
+    CFILE = "source/utility/msp_interleave_iq31.c";
+    CFILE = "source/utility/msp_interleave_q15.c";
+    CFILE = "source/utility/msp_iq31_to_q15.c";
+    CFILE = "source/utility/msp_q15_to_iq31.c";
+    CFILE = "source/utility/msp_sinusoid_q15.c";
+    CFILE = "source/vector/msp_abs_iq31.c";    
+    CFILE = "source/vector/msp_abs_q15.c";
+    CFILE = "source/vector/msp_add_iq31.c";    
+    CFILE = "source/vector/msp_add_q15.c";    
+    CFILE = "source/vector/msp_cmplx_add_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_add_q15.c";
+    CFILE = "source/vector/msp_cmplx_conj_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_conj_q15.c";
+    CFILE = "source/vector/msp_cmplx_mac_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_mac_q15.c";
+    CFILE = "source/vector/msp_cmplx_mpy_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_mpy_q15.c";
+    CFILE = "source/vector/msp_cmplx_mpy_real_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_mpy_real_q15.c"; 
+    CFILE = "source/vector/msp_cmplx_scale_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_scale_q15.c"; 
+    CFILE = "source/vector/msp_cmplx_shift_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_shift_q15.c"; 
+    CFILE = "source/vector/msp_cmplx_sub_iq31.c";    
+    CFILE = "source/vector/msp_cmplx_sub_q15.c";
+    CFILE = "source/vector/msp_mac_iq31.c";    
+    CFILE = "source/vector/msp_mac_q15.c";
+    CFILE = "source/vector/msp_max_iq31.c";    
+    CFILE = "source/vector/msp_max_q15.c";
+    CFILE = "source/vector/msp_max_uq31.c";    
+    CFILE = "source/vector/msp_max_uq15.c";
+    CFILE = "source/vector/msp_min_iq31.c";    
+    CFILE = "source/vector/msp_min_q15.c";
+    CFILE = "source/vector/msp_min_uq31.c";    
+    CFILE = "source/vector/msp_min_uq15.c";
+    CFILE = "source/vector/msp_mpy_iq31.c";    
+    CFILE = "source/vector/msp_mpy_q15.c";
+    CFILE = "source/vector/msp_neg_iq31.c";    
+    CFILE = "source/vector/msp_neg_q15.c";
+    CFILE = "source/vector/msp_offset_iq31.c";    
+    CFILE = "source/vector/msp_offset_q15.c";
+    CFILE = "source/vector/msp_scale_iq31.c";    
+    CFILE = "source/vector/msp_scale_q15.c";
+    CFILE = "source/vector/msp_shift_iq31.c";    
+    CFILE = "source/vector/msp_shift_q15.c";
+    CFILE = "source/vector/msp_sub_iq31.c";    
+    CFILE = "source/vector/msp_sub_q15.c";
+  };
+};

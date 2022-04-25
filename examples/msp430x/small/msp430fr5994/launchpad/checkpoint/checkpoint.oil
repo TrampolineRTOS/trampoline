@@ -19,7 +19,7 @@ CPU checkpoint {
     PAINT_REGISTERS = TRUE;
     CPU_FREQ_MHZ = 8;
     IDLE_POWER_MODE = LPM3;
-	CHECKPOINTING = TRUE {CYCLETIME = 5000;};
+ CHECKPOINTING = TRUE {CYCLETIME = 5000;};
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
@@ -36,18 +36,19 @@ CPU checkpoint {
       //LIBRARY = adc;
       LIBRARY = checkpointing;
       //use either msp-gcc (provided with Energia)..
-      CPPCOMPILER  = "msp430-g++";
-      COMPILER  = "msp430-gcc";
-      ASSEMBLER = "msp430-gcc";
-      LINKER    = "msp430-ld";
-      COPIER    = "msp430-objcopy";
+//      CPPCOMPILER  = "msp430-g++";
+//      COMPILER  = "msp430-gcc";
+//      ASSEMBLER = "msp430-gcc";
+//      LINKER    = "msp430-ld";
+//      COPIER    = "msp430-objcopy";
       //or GCC for MSP (provided by TI)
-      //CPPCOMPILER  = "msp430-elf-g++";
-      //COMPILER  = "msp430-elf-gcc";
-      //ASSEMBLER = "msp430-elf-gcc";
-      //LINKER    = "msp430-elf-ld";
-      //COPIER    = "msp430-elf-objcopy";
-      //CFLAGS    = "-I/opt/ti/msp430-gcc/msp430-elf/include";
+      CPPCOMPILER  = "msp430-elf-g++";
+      COMPILER  = "msp430-elf-gcc";
+      ASSEMBLER = "msp430-elf-gcc";
+      LINKER    = "msp430-elf-ld";
+      COPIER    = "msp430-elf-objcopy";
+      CFLAGS    = "-I/opt/msp430-gcc-support-files/include";
+
       //CFLAGS    = "-I/opt/ti/ccs920/ccs/ccs_base/msp430/include_gcc";
       SYSTEM = PYTHON;
     };

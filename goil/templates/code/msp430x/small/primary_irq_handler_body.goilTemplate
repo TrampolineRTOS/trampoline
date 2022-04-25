@@ -9,6 +9,110 @@ else
   let handlerSource := obj[0]::SOURCE
   let handlerIsACounter := obj[0]::KIND == "COUNTER"
 end if
+
+let nameVector := ""
+let bitMAX := 0
+# TODO : find a way to distinguish IO and other
+let isNotExternalInterrupt := 0
+
+if handlerSource == "ADC12_VECTOR" then
+   let nameVector := "ADC12IV"
+   let bitMAX := 23
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "RTC_VECTOR" then
+   let nameVector := "RTCIV"
+   let bitMAX := 7
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B3_VECTOR" then
+   let nameVector := "UCB3IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B2_VECTOR" then
+   let nameVector := "UCB2IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B1_VECTOR" then
+   let nameVector := "UCB1IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_A3_VECTOR" then
+   let nameVector := "UCA3IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_A2_VECTOR" then
+   let nameVector := "UCA2IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER4_A1_VECTOR" then
+   let nameVector := "TA4IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER4_A0_VECTOR" then
+   let nameVector := "TA4IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER3_A1_VECTOR" then
+   let nameVector := "TA3IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER3_A0_VECTOR" then
+   let nameVector := "TA3IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER2_A1_VECTOR" then
+   let nameVector := "TA2IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER2_A0_VECTOR" then
+   let nameVector := "TA2IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER1_A1_VECTOR" then
+   let nameVector := "TA1IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER1_A0_VECTOR" then
+   let nameVector := "TA1IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_A1_VECTOR" then
+   let nameVector := "TA0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_A0_VECTOR" then
+   let nameVector := "TA0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_B1_VECTOR" then
+   let nameVector := "TB0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_B0_VECTOR" then
+   let nameVector := "TB0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_A1_VECTOR" then
+   let nameVector := "UCA1IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_A0_VECTOR" then
+   let nameVector := "UCA0IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_B0_VECTOR" then
+   let nameVector := "UCB0IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "DMA_VECTOR" then
+   let nameVector := "DMAIV"
+   let bitMAX := 7
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "COMP_E_VECTOR" then
+   let nameVector := "CEIV"
+   let bitMAX := 4
+   let isNotExternalInterrupt := 1
+end if
+
 %
 .global tpl_primary_irq_handler_% !handlerSource %
 .type   tpl_primary_irq_handler_% !handlerSource %, \%function
@@ -54,7 +158,7 @@ if handlerIsACounter then
 /*-----------------------------------------------------------------------------
  * -4b- Ackowledge the interrupt
  */
-  mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
+  mov       #0,__% ! [obj::SOURCE charAtIndex: 4] %IV%
     end if
   else
     # A set of handler is linked to the same port
@@ -97,8 +201,35 @@ else # handler is an ISR2
 /*-----------------------------------------------------------------------------
  * -4b- Ackowledge the interrupt
  */
-  mov       #0,__P% ! [obj::SOURCE charAtIndex: 4] %IV%
+  mov       #0,__% ! nameVector % % 
     end if
+    
+  elsif isNotExternalInterrupt == 1 then
+%
+/*-----------------------------------------------------------------------------
+ * -4- Get the highest priority interrupt of the port from P%
+  ! nameVector %IV 
+ * and jump to the handler
+ */
+  add       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    let bitMap := [obj mapBy: "BIT"]
+    loop bit from 0 to bitMAX do
+      if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+      else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+      end if
+    tab(60) %/* bit % ! bit % */%
+    end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  mov       #0,__% ! nameVector%
+  mov       #% !handler::IDENT + [TASKS length] %, REG_RETARG
+  call      #tpl_fast_central_interrupt_handler%
+    between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+    end foreach    
   else
     # A set of handler is linked to the same port
 %

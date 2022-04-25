@@ -17,7 +17,10 @@ IMPLEMENTATION  msp430x {
   /* Add to ISR objects target interrupt sources */
   ISR [] {
     #include <interruptSources.oil>
-    BOOLEAN EXIT_FROM_LPM = FALSE;
+    BOOLEAN [
+      TRUE,
+      FALSE 
+    ] EXIT_FROM_LPM = FALSE;
   };
 
   /* Additional OS attributes */
@@ -28,13 +31,16 @@ IMPLEMENTATION  msp430x {
     ENUM [ ACTIVE, LPM0, LPM1, LPM2, LPM3 ] IDLE_POWER_MODE = ACTIVE;
     /* Initialize variables in .data section with DMA */
     BOOLEAN INIT_WITH_DMA = FALSE;
-
     /* enable checkpointing. Define the default period */
     BOOLEAN [
       TRUE {UINT32 CYCLETIME = 5000;},
       FALSE
     ] CHECKPOINTING = FALSE;
-
+    /* enable use of LEA and size of LEA RAM */
+    BOOLEAN [
+     TRUE {UINT32 LEA_RAM = 4096;},
+     FALSE {UINT32 LEA_RAM = 0;}
+    ] LEA = FALSE; 
     /* trace */
     BOOLEAN [
       TRUE {
@@ -44,7 +50,7 @@ IMPLEMENTATION  msp430x {
             UINT32 ADDRESS = 0;
           },
           serial
-		] FORMAT = serial;
+  ] FORMAT = serial;
       },
       FALSE
     ] TRACE = FALSE;
@@ -55,21 +61,21 @@ IMPLEMENTATION  msp430x {
 CPU msp430x {
 
   PLATFORM_FILES msp430x {
-    PATH   = "msp430x/small";
+    PATH   = "msp430x/large";
     CFILE  = "tpl_machine_msp430x.c";
     CFILE  = "tpl_startup.c";
     CFILE  = "tpl_clocks.c";
     ASFILE = "tpl_startup.S";
     ASFILE = "tpl_sc_handler.S";
-    CFILE  = "tpl_trace.c";
-	//checkpointing
-    ASFILE = "framtr.S";
-    CFILE  = "tpl_checkpointing.c";
+//    CFILE  = "tpl_trace.c";
+    /* Checkpointing */
+//    ASFILE = "framtr.S";
+    CFILE = "tpl_checkpoint.c"; 
+    CFILE = "tpl_checkpointing.c";
   };
 
   GENERATED_FILES msp430x {
     ASFILE = "tpl_irq_handlers.S";
-    CFILE  = "tpl_interrupt_vectors.c";
   };
 
 };

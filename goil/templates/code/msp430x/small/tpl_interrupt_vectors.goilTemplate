@@ -17,8 +17,14 @@ if exists OS::BUILD_S::LIBRARY then
       }
     end if
   end if
+  if exists libMap["dsplib"] then
+     let ISR += @{
+        SOURCE : "LEA_VECTOR",
+        CATEGORY : 1,
+        PRIORITY : 1
+     }
+  end if
 end if
-
 #------------------------------------------------------------------------------*
 # Target specific initializations
 # build the maps for IRQ

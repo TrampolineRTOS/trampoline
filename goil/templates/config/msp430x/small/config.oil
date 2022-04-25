@@ -1,0 +1,82 @@
+#includeifexists <buildOptions.oil>
+
+IMPLEMENTATION  msp430x {
+
+  /* Interrupt sources */
+  INTERRUPT [] {
+    UINT32 ADDRESS;
+    IDENTIFIER HANDLER;
+    STRING WITH_AUTO LINKED;
+  };
+
+  /* Add to COUNTER objects target interrupt sources */
+  COUNTER [] {
+    #include <interruptSources.oil>
+  };
+
+  /* Add to ISR objects target interrupt sources */
+  ISR [] {
+    #include <interruptSources.oil>
+    BOOLEAN [
+      TRUE,
+      FALSE 
+    ] EXIT_FROM_LPM = FALSE;
+  };
+
+  /* Additional OS attributes */
+  OS {
+    /* CPU frequency */
+    UINT32 [1,2,4,6,8,12,16,21,24] CPU_FREQ_MHZ = 1;
+    /* Power mode when in idle task */
+    ENUM [ ACTIVE, LPM0, LPM1, LPM2, LPM3 ] IDLE_POWER_MODE = ACTIVE;
+    /* Initialize variables in .data section with DMA */
+    BOOLEAN INIT_WITH_DMA = FALSE;
+    /* enable checkpointing. Define the default period */
+    BOOLEAN [
+      TRUE {UINT32 CYCLETIME = 5000;},
+      FALSE
+    ] CHECKPOINTING = FALSE;
+    /* enable use of LEA and size of LEA RAM */
+    BOOLEAN [
+     TRUE {UINT32 LEA_RAM = 4096;},
+     FALSE {UINT32 LEA_RAM = 0;}
+    ] LEA = FALSE; 
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          fram {
+            UINT32 SIZE = 16384;
+            UINT32 ADDRESS = 0;
+          },
+          serial
+  ] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
+  };
+
+};
+
+CPU msp430x {
+
+  PLATFORM_FILES msp430x {
+    PATH   = "msp430x/small";
+    CFILE  = "tpl_machine_msp430x.c";
+    CFILE  = "tpl_startup.c";
+    CFILE  = "tpl_clocks.c";
+    ASFILE = "tpl_startup.S";
+    ASFILE = "tpl_sc_handler.S";
+    CFILE  = "tpl_trace.c";
+    /* Checkpointing */
+//    ASFILE = "framtr.S";
+    CFILE = "tpl_checkpoint.c";
+    CFILE  = "tpl_checkpointing.c";
+  };
+
+  GENERATED_FILES msp430x {
+    ASFILE = "tpl_irq_handlers.S";
+    CFILE  = "tpl_interrupt_vectors.c";
+  };
+
+};

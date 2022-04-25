@@ -10,6 +10,7 @@
 	#include "tpl_as_definitions.h"
 #endif
 #include "tpl_os_interrupt.h"
+#include "tpl_kern_stack.h"
 
 #include "msp430.h"
 
@@ -60,22 +61,36 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 #if TASK_COUNT > 0
 	#if   ISR_COUNT > 0
-		exception_frame[CALL_IDX] = (IS_ROUTINE == the_proc->type) ? 
-			(uint16)(CallTerminateISR2) :
-			(uint16)(CallTerminateTask) ;
+		uint32 addr_CallTerminateISR2 = (uint32)(CallTerminateISR2);
+		uint32 addr_CallTerminateTask = (uint32)(CallTerminateTask);	
+
+		exception_frame[CALL_IDX_LOW] = (IS_ROUTINE == the_proc->type) ? 
+			(uint16)(addr_CallTerminateISR2 & 0xffff) :
+			(uint16)(addr_CallTerminateTask & 0xffff) ;
+		exception_frame[CALL_IDX_HIGH] = (IS_ROUTINE == the_proc->type) ? 
+			(uint16)((addr_CallTerminateISR2 >> 16) & 0x000f):
+			(uint16)((addr_CallTerminateTask >> 16) & 0x000f);
 	#else 
-		exception_frame[CALL_IDX] = (uint16)(CallTerminateTask);
+		uint32 addr_CallTerminateTask = (uint32)(CallTerminateTask);	
+
+		exception_frame[CALL_IDX_LOW] = (uint16)(addr_CallTerminateTask & 0xffff);
+		exception_frame[CALL_IDX_HIGH] = (uint16)((addr_CallTerminateTask >> 16) & 0x000f);
+
 	#endif
 #else
 	#if ISR_COUNT > 0
-		exception_frame[CALL_IDX] = (uint16)(CallTerminateISR2);
+		uint32 addr_CallTerminateISR2 = (uint32)(CallTerminateISR2);
+
+		exception_frame[CALL_IDX_LOW] = (uint16)(CallTerminateISR2 & 0xffff);
+		exception_frame[CALL_IDX_HIGH] = (uint16)((CallTerminateISR2 >> 16) & 0x000f);
+
 	#else
 		exception_frame[CALL_IDX] = NULL;
 	#endif
 #endif
 	//status register. Set the GIE bit (Global interrupt)
-	exception_frame[SR_IDX] = 0x8;
-	exception_frame[PC_IDX] = (uint16)(the_proc->entry);
+	exception_frame[SR_IDX] = (((uint32)(the_proc->entry) & (0xF0000))  >> 4 )| 0x8;
+	exception_frame[PC_IDX] = (uint16)(the_proc->entry) & 0xffff;
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES && WITH_PAINT_STACK == NO
 	(*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
@@ -98,6 +113,17 @@ FUNC(void, OS_CODE) tpl_init_machine_specific (void)
 
 FUNC(void, OS_CODE) tpl_set_systick_timer()
 {
+    PJSEL0 = BIT4 | BIT5;                   // Initialize LFXT pins
+    // Configure LFXT 32kHz crystal
+    CSCTL0_H = CSKEY_H;                     // Unlock CS registers
+    CSCTL4 &= ~LFXTOFF;                     // Enable LFXT
+    do
+    {
+        CSCTL5 &= ~LFXTOFFG;                  // Clear LFXT fault flag
+        SFRIFG1 &= ~OFIFG;
+    } while (SFRIFG1 & OFIFG);              // Test oscillator fault flag
+    CSCTL0_H = 0;                           // Lock CS registers
+    
 	/* Set up timer TA3 with ACLK. ACLK is set to LFXTCLK at start : 32.768 kHz */
 	TA3CCR0 = 0;          /* lock the timer */
 	TA3CTL = TASSEL__ACLK /* ACLK */ | ID__1 /* divide by 1 */ | MC__UP /* Up count */ ;
@@ -108,34 +134,65 @@ FUNC(void, OS_CODE) tpl_set_systick_timer()
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-volatile uint8 tpl_reentrancy_counter = 0;
+/*
+ * The kernel stack
+ * On MSP430, the kernel stack is separated from other data, as the
+ * kernel stack (in use during startup) should not be restored
+ * with a checkpoint: it would crash the system.
+ */
+#define OS_START_SEC_KERN_STACK
+#include "tpl_memmap.h"
+CONSTP2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA)
+  tpl_kern_stack[TPL_KERNEL_STACK_SIZE];
+#define OS_STOP_SEC_KERN_STACK
+#include "tpl_memmap.h"
 
-void tpl_disable_interrupts() {
+/*
+ * The reentrancy flag is used to distinguish between a service call`
+ * from the application and from a hook.
+ * If 0, it ia a call from the application
+ * if 1, it is a call from a hook
+ */
+#define OS_START_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+volatile uint8 tpl_reentrancy_flag = 0;
+#define OS_STOP_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+/* TODO Will not work, the GIE bit has to be changed in the saved SR */
+FUNC (void, OS_CODE) tpl_disable_interrupts() {
 	__disable_interrupt(); /* msp430 intrinsics.h */
 }
-void tpl_enable_interrupts() {
+FUNC (void, OS_CODE) tpl_enable_interrupts() {
 	__enable_interrupt();  /* msp430 intrinsics.h */
 }
-void tpl_disable_os_interrupts() {
+FUNC (void, OS_CODE) tpl_disable_os_interrupts() {
 	tpl_disable_interrupts();
 }
-void tpl_enable_os_interrupts() {
+FUNC (void, OS_CODE) tpl_enable_os_interrupts() {
 	tpl_enable_interrupts();
 }
 
 //void tpl_sc_handler() {}
 
-void idle_function(void)
+FUNC (void, OS_CODE) idle_function(void)
 {
-	//TODO: update to low power modes.
-	while(1);
+    while(1){
+#if IDLE_POWER_MODE != ACTIVE_POWER_MODE
+        IDLE_LPM;
+#endif
+    }
 }
 
-void tpl_init_machine() {
+FUNC (void, OS_CODE) tpl_init_machine() {
 	tpl_init_machine_generic();
 	tpl_init_machine_specific();
 }
 
-void tpl_shutdown() {
-	while(1);
+FUNC (void, OS_CODE) tpl_shutdown() {
+	LPM4;
 }
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"

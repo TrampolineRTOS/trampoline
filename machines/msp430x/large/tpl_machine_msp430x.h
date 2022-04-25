@@ -7,18 +7,19 @@
 #include "tpl_os_custom_types.h"
 
 #define TPL_KERN_OFFSET_S_RUNNING     0
-#define TPL_KERN_OFFSET_S_ELECTED     2
-#define TPL_KERN_OFFSET_RUNNING       4
-#define TPL_KERN_OFFSET_ELECTED       6
-#define TPL_KERN_OFFSET_RUNNING_ID    8
-#define TPL_KERN_OFFSET_ELECTED_ID    12
-#define TPL_KERN_OFFSET_NEED_SWITCH   16
-#define TPL_KERN_OFFSET_NEED_SCHEDULE 17
+#define TPL_KERN_OFFSET_S_ELECTED     4
+#define TPL_KERN_OFFSET_RUNNING       8
+#define TPL_KERN_OFFSET_ELECTED       12
+#define TPL_KERN_OFFSET_RUNNING_ID    16
+#define TPL_KERN_OFFSET_ELECTED_ID    20
+#define TPL_KERN_OFFSET_NEED_SWITCH   24
+#define TPL_KERN_OFFSET_NEED_SCHEDULE 25
 
 //we save 14 registers: from top
 // Each register uses 32 bits (20 bits in hardware), but SR and SP are merged.
 // -----------------------------------------
-// | 26  @ of CallTerminate(ISR/Task)      |
+// | 27  @ of CallTerminate(ISR/Task)      |
+// | 26  @ of CallTerminate(ISR/Task)	    |
 // | 25  PC (high)                         | 
 // | 24  PC (low) & SR                     | 
 // | 23  REG_RETARG (ABI dependent) - high | 
@@ -45,24 +46,40 @@
 // |  2  R5  - low                         | 
 // |  1  R4  - high                        | 
 // |  0  R4  - low                         | 
-#define MSP430X_CORE_EXCEPTION_FRAME_SIZE ((uint16)54)
+#define MSP430X_CORE_EXCEPTION_FRAME_SIZE ((uint16)56)
 
 #define SR_IDX    24
 #define PC_IDX    25
-#define CALL_IDX  26 //call to terminateTask/ISR2.
+#define CALL_IDX_LOW  26 		//call to terminateTask/ISR2.
+#define CALL_IDX_HIGH  27 		//call to terminateTask/ISR2.
 
-#define GPR_ON_EXCEPTION_FRAME  (13<<1) //we reserve 32bits/GPR
+#define GPR_ON_EXCEPTION_FRAME  (12<<1) //we reserve 32bits/GPR
 
-extern volatile uint8 tpl_reentrancy_counter;
+/*
+ * The reentrancy flag is used to distinguish between a service call`
+ * from the application and from a hook.
+ * If 0, it ia a call from the application
+ * if 1, it is a call from a hook
+ */
+extern volatile uint8 tpl_reentrancy_flag;
 
 typedef struct MSP430X_CONTEXT
 {
-	uint16 stackPointer;  /* General purpose register r4 */
+	uint32 stackPointer;  /* General purpose register r4 */
 } msp430x_core_context;
 
+/*
+ * Datatypes to store something on the stack and to store the size of
+ * the stack (in bytes).
+ */
 typedef uint16 tpl_stack_word;
 typedef uint16 tpl_stack_size;
 
+/*
+ * structure used in the static descriptor of a task/ISR2
+ * 1 - pointer to the stack
+ * 2 - size of the stack (in bytes)
+ */
 typedef struct TPL_STACK {
     tpl_stack_word  *stack_zone;
     tpl_stack_size  stack_size;

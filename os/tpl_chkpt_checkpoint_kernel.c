@@ -33,6 +33,9 @@
 #include "tpl_os_hooks.h"
 #include "tpl_chkpt_checkpoint_kernel.h"
 
+#include "msp430.h"
+#include "tpl_chkpt_adc.h"
+
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore_kernel.h"
 # if SPINLOCK_COUNT > 0
@@ -50,6 +53,25 @@ VAR (sint16,OS_VAR) tpl_checkpoint_buffer = -1;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+void disable_irq_for_hibernate(){
+	/* Disable TIMER3_A0 interrupt */
+	TA3CCTL0 &= ~CCIE;
+}
+
+void restore_irq_for_hibernate(){
+	/* Restore TIMER3_A0 interrupt */
+	TA3CCTL0 |= CCIE;
+}
+
+uint16 conversion_adc(){
+	ADC12CTL0 |= ADC12ON;
+	ADC12CTL0 |= ADC12ENC | ADC12SC;
+	while(ADC12CTL1 & ADC12BUSY);
+	ADC12CTL0 &= ~(ADC12ENC);
+	ADC12CTL0 &= ~(ADC12ON);
+	REFCTL0 &= ~(REFON);
+	return ADC12MEM0;
+}
 
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
@@ -96,12 +118,73 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   UNLOCK_KERNEL()
 
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
-  tpl_save_checkpoint(l_buffer);
+  // tpl_save_checkpoint(l_buffer);
+  tpl_save_checkpoint();
   tpl_checkpoint_buffer = l_buffer;
+  
+  /* Choose one: Shutdown or periodic check of battery */
+  
+  /* Shutdown */
 
-  tpl_shutdown(); //on msp430 => LPM4
-
+  // tpl_shutdown(); //on msp430 => LPM4
+	
+  // /* Periodic check */
+  // // Unlock RTC key protected registers
+  // RTCCTL0_H = RTCKEY_H;
+  // // Interrupt from alarm                     						
+  // RTCCTL0_L = RTCAIE;
+  // // Calendar + Hold, Hexa code
+  // RTCCTL1 = RTCHOLD | RTCMODE;
+  // // Random year, day, month, day of week, hour, set minute and sec to 0
+  // RTCYEAR = 0x0000;
+  // RTCMON = 0x0;
+  // RTCDAY = 0x00;
+  // RTCDOW = 0x00;
+  // RTCHOUR = 0x0;
+  // RTCMIN = 0x00;
+  // RTCSEC = 0x00;
+  // // reset all register alarm because they are in undefined state when reset
+	// RTCAHOUR &= ~(0x80);
+	// RTCADOW &= ~(0x80);
+	// RTCADAY &= ~(0x80);
+  // // set alarm in next '1' minutes + enable interrupt
+  // #define PERIOD_WAKE_UP 0x01
+  // RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
+  // // start rtc
+  // RTCCTL1 &= ~(RTCHOLD);
+  
+  // #define RESUME_FROM_HIBERNATE_THRESHOLD (3000)
+  // uint16_t flag = 1;
+  // uint16_t vcc = 0;
+  
+  // while(flag){
+	//   vcc = conversion_adc();
+	//   if(vcc>RESUME_FROM_HIBERNATE_THRESHOLD){
+  //     // stop rtc
+	// 	  RTCCTL1 |= RTCHOLD;
+	// 	  flag = 0;
+	// 	  break;
+	//   }
+	//   else{
+	// 	  disable_irq_for_hibernate();	
+	// 	  __bis_SR_register(LPM3_bits);
+	// 	  __bic_SR_register(GIE);
+	// 	  restore_irq_for_hibernate();
+	//   }
+  // }	  
   PROCESS_ERROR(result)
+}
+
+#if __GXX_ABI_VERSION == 1011 || __GXX_ABI_VERSION == 1013
+/* ISR1 related to RTC_VECTOR */
+__interrupt void tpl_direct_irq_handler_RTC_VECTOR(void)
+#elif __GXX_ABI_VERSION == 1002
+void __attribute__((interrupt(RTC_VECTOR))) tpl_direct_irq_handler_RTC_VECTOR()
+#else
+    #error "Unsupported ABI"
+#endif
+{
+  // P1OUT |= BIT0;
 }
 
 FUNC(void, OS_CODE) tpl_restart_os_service(void)
@@ -157,7 +240,8 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
      * if such a task exists.
      */
 
-  tpl_load_checkpoint(tpl_checkpoint_buffer);
+  // tpl_load_checkpoint(tpl_checkpoint_buffer);
+  tpl_load_checkpoint();
 
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)

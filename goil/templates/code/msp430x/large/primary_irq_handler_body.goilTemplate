@@ -1,0 +1,550 @@
+%
+
+let handlerSource := ""
+let handlerIsACounter := false
+if [obj type] == @struct then
+  let handlerSource := obj::SOURCE
+  let handlerIsACounter := obj::KIND == "COUNTER"
+else
+  let handlerSource := obj[0]::SOURCE
+  let handlerIsACounter := obj[0]::KIND == "COUNTER"
+end if
+
+let nameVector := ""
+let bitMAX := 0
+# TODO : find a way to distinguish IO and other
+let isNotExternalInterrupt := 0
+
+if handlerSource == "ADC12_VECTOR" then
+   let nameVector := "ADC12IV"
+   let bitMAX := 23
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "RTC_VECTOR" then
+   let nameVector := "RTCIV"
+   let bitMAX := 7
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B3_VECTOR" then
+   let nameVector := "UCB3IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B2_VECTOR" then
+   let nameVector := "UCB2IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_B1_VECTOR" then
+   let nameVector := "UCB1IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_A3_VECTOR" then
+   let nameVector := "UCA3IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "EUSCI_A2_VECTOR" then
+   let nameVector := "UCA2IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER4_A1_VECTOR" then
+   let nameVector := "TA4IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER4_A0_VECTOR" then
+   let nameVector := "TA4IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER3_A1_VECTOR" then
+   let nameVector := "TA3IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER3_A0_VECTOR" then
+   let nameVector := "TA3IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER2_A1_VECTOR" then
+   let nameVector := "TA2IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER2_A0_VECTOR" then
+   let nameVector := "TA2IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER1_A1_VECTOR" then
+   let nameVector := "TA1IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER1_A0_VECTOR" then
+   let nameVector := "TA1IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_A1_VECTOR" then
+   let nameVector := "TA0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_A0_VECTOR" then
+   let nameVector := "TA0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_B1_VECTOR" then
+   let nameVector := "TB0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "TIMER0_B0_VECTOR" then
+   let nameVector := "TB0IV"
+   let bitMAX := 6
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_A1_VECTOR" then
+   let nameVector := "UCA1IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_A0_VECTOR" then
+   let nameVector := "UCA0IV"
+   let bitMAX := 3
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "USCI_B0_VECTOR" then
+   let nameVector := "UCB0IV"
+   let bitMAX := 14
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "DMA_VECTOR" then
+   let nameVector := "DMAIV"
+   let bitMAX := 7
+   let isNotExternalInterrupt := 1
+elsif handlerSource == "COMP_E_VECTOR" then
+   let nameVector := "CEIV"
+   let bitMAX := 4
+   let isNotExternalInterrupt := 1
+end if
+
+%
+.section .irq_func, "ax"
+.global tpl_primary_irq_handler_% !handlerSource %
+.type   tpl_primary_irq_handler_% !handlerSource %, \%function
+
+/*-----------------------------------------------------------------------------
+ */
+tpl_primary_irq_handler_% !handlerSource %:
+
+/*-----------------------------------------------------------------------------
+ * -1- Before doing anything we have to save the volatile registers, which
+ * are r11 (r11 is not volatile in the MSPGCC ABI but is volatile in GCC
+ * compiler for MSP ABI. Anyway, in order to limit variabilility, r11 is 
+ * saved for both ABIs) to r15, because they will not be saved when we will
+ * call the underlying C function.
+ */
+  pushm.a   #5, r15  /* Push r11, r12, r13, r14 and r15 */
+/*  
+ * PROCESS STACK:
+ *    +--------------------+
+ *  0 |   0  | r11.19:16   | + 0
+ *    +--------------------+
+ *  1 |      r11.15:0      | + 2
+ *    +--------------------+
+ *  2 |   0  | r12.19:16   | + 4
+ *    +--------------------+
+ *  3 |      r12.15:0      | + 6
+ *    +--------------------+
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0      | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+
+ *
+ *-----------------------------------------------------------------------------
+ * -2- Switch to the kernel stack.
+ */
+  mova         r1, r11                          /* Copy the PSP in r11        */
+  mova         #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* On kernel stack */
+  pushx.a      r11                              /* Save PSP to kernel stack   */
+/* 
+ * PROCESS STACK:                 KERNEL STACK:
+ *    +--------------------+            +-------------------+
+ *  0 |   0  | r11.19:16   | + 0      0 |  0 |  PSP.19:16   | + 0
+ *    +--------------------+            +-------------------+
+ *  1 |      r11.15:0      | + 2      1 |     PSP.15:0      | + 2
+ *    +--------------------+            +-------------------+
+ *  2 |   0  | r12.19:16   | + 4
+ *    +--------------------+
+ *  3 |      r12.15:0      | + 6
+ *    +--------------------+
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0      | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+
+ *-----------------------------------------------------------------------------
+ * -3- Init the NEED_SWITCH/SAVE in tpl_kern.
+ */
+  mova       #tpl_kern, r11
+  movx.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  movx.b     #NO_NEED_SWITCH_NOR_SCHEDULE, TPL_KERN_OFFSET_NEED_SCHEDULE(r11)%
+  
+#
+# Check the kind of function to call, ISR2 or Counter ?
+#
+if handlerIsACounter then
+  if [obj type] == @struct then
+%
+/*-----------------------------------------------------------------------------
+ * -4- Call the underlying C function.
+ */
+  calla      #tpl_tick_% !handlerSource
+  %
+/* 
+ * PROCESS STACK:                 KERNEL STACK:
+ *    +--------------------+            +-------------------+
+ *  0 |   0  | r11.19:16   | + 0      0 |  0 |   PC.19:16   | + 0
+ *    +--------------------+            +-------------------+
+ *  1 |      r11.15:0      | + 2      1 |      PC.15:0      | + 2
+ *    +--------------------+            +-------------------+
+ *  2 |   0  | r12.19:16   | + 4      2 |  0 |  PSP.19:16   | + 4 
+ *    +--------------------+            +-------------------+
+ *  3 |      r12.15:0      | + 6      3 |     PSP.15:0      | + 6
+ *    +--------------------+            +-------------------+
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0      | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+ 
+ */ %
+    if [PORT_IRQ contains: obj::SOURCE] then
+      # PORT IRQ, ack the interrupt
+%
+/*-----------------------------------------------------------------------------
+ * -4b- Ackowledge the interrupt
+ */
+  mova       #0,__% ! [obj::SOURCE charAtIndex: 4] %IV%
+    end if
+  else
+    # A set of handler is linked to the same port
+%
+/*-----------------------------------------------------------------------------
+ * -4- Get the highest priority interrupt of the port from P%
+  ! [handlerSource charAtIndex: 4] %IV 
+ * and jump to the handler
+ */
+  addx.a       &__P% ! [handlerSource charAtIndex: 4] %IV, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    let bitMap := [obj mapBy: "BIT"]
+    loop bit from 0 to 7 do
+      if exists bitMap[[bit string]] then%
+  jmp       tpl_p% ! [obj[0]::SOURCE charAtIndex: 4] %_% ! bit %_handler%
+      else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+      end if
+    tab(60) %/* bit % ! bit % */%
+    end loop
+    foreach handler in bitMap do%
+tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
+  calla      #tpl_tick_% ! handlerSource %_bit_% ! handler::BIT
+    between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+    end foreach    
+  end if
+else # handler is an ISR2
+  if [obj type] == @struct then
+%
+/*-----------------------------------------------------------------------------
+ * -4- Call tpl_fast_central_interrupt_handler with
+ * the id of % !obj::NAME % (% !obj::IDENT %) as argument. 
+ */
+  movx       #% !obj::IDENT + [TASKS length] %, REG_RETARG
+  calla      #tpl_fast_central_interrupt_handler%
+    if [PORT_IRQ contains: obj::SOURCE] then
+      # PORT IRQ, ack the interrupt
+%
+/*-----------------------------------------------------------------------------
+ * -4b- Ackowledge the interrupt
+ */
+  movx       #0,__% ! nameVector % % 
+    end if
+    
+  elsif isNotExternalInterrupt == 1 then
+%
+/*-----------------------------------------------------------------------------
+ * -4- Get the highest priority interrupt of the port from P%
+  ! nameVector %IV 
+ * and jump to the handler
+ */
+  addx       &__% ! nameVector %, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    let bitMap := [obj mapBy: "BIT"]
+    loop bit from 0 to bitMAX do
+      if exists bitMap[[bit string]] then%
+  jmp       tpl_% ! nameVector %_% ! bit %_handler%
+      else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+      end if
+    tab(60) %/* bit % ! bit % */%
+    end loop
+    foreach handler in bitMap do%
+tpl_% ! nameVector %_% ! handler::BIT %_handler:
+  movx       #0,__% ! nameVector%
+  movx       #% !handler::IDENT + [TASKS length] %, REG_RETARG
+  calla      #tpl_fast_central_interrupt_handler%
+    between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+    end foreach    
+  else
+    # A set of handler is linked to the same port
+%
+/*-----------------------------------------------------------------------------
+ * -4- Get the highest priority interrupt of the port from P%
+  ! [handlerSource charAtIndex: 4] %IV 
+ * and jump to the handler
+ */
+  addx       &__P% ! [handlerSource charAtIndex: 4] %IV, pc
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+    let bitMap := [obj mapBy: "BIT"]
+    loop bit from 0 to 7 do
+      if exists bitMap[[bit string]] then%
+  jmp       tpl_p% ! [obj[0]::SOURCE charAtIndex: 4] %_% ! bit %_handler%
+      else%
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource
+      end if
+    tab(60) %/* bit % ! bit % */%
+    end loop
+    foreach handler in bitMap do%
+tpl_p% ! [handler::SOURCE charAtIndex: 4] %_% ! handler::BIT %_handler:
+  movx       #% !handler::IDENT + [TASKS length] %, REG_RETARG
+  calla      #tpl_fast_central_interrupt_handler%
+    between %
+  jmp       tpl_direct_irq_handler_exit_% !handlerSource 
+    end foreach    
+  end if
+end if
+%
+/*-----------------------------------------------------------------------------
+ * -5- Switch back to the process stack
+ */
+tpl_direct_irq_handler_exit_% !handlerSource %:
+  mova       r1, r13 /* get a copy of the KSP to restore it later        */
+  addx.a       #4, r13 /* and forget the pushed PC (not useful anymore).  */
+  popx.a     r1   /* get the saved process stack pointer back         */
+/*  
+ * PROCESS STACK:                
+ *    +--------------------+
+ *  0 |   0  | r11.19:16   | + 0      
+ *    +--------------------+           
+ *  1 |      r11.15:0      | + 2      
+ *    +--------------------+            
+ *  2 |   0  | r12.19:16   | + 4       
+ *    +--------------------+            
+ *  3 |      r12.15:0      | + 6      
+ *    +--------------------+            
+ *  4 |   0  | r13.19:16   | + 8
+ *    +--------------------+
+ *  5 |      r13.15:0      | + 10
+ *    +--------------------+
+ *  6 |   0  | r14.19:16   | + 12
+ *    +--------------------+
+ *  7 |      r14.15:0      | + 14
+ *    +--------------------+
+ *  8 |   0  | r15.19:16   | + 16
+ *    +--------------------+
+ *  9 |      r15.15:0      | + 18
+ *    +--------------------+
+ * 10 | PC.19:16 | SR.11:0 | + 20
+ *    +--------------------+
+ * 11 |      PC.15:0       | + 22
+ *    +--------------------+
+ * 12 | CallTerminateXXX   | + 24
+ *    +--------------------+ 
+ */
+/*-----------------------------------------------------------------------------
+ * -6- Check the context switch condition in tpl_kern.
+ */
+  mova       #tpl_kern, r11
+  tstx.b     TPL_KERN_OFFSET_NEED_SWITCH(r11)
+  jz        tpl_% !handlerSource %_no_context_switch
+/*-----------------------------------------------------------------------------
+ * -7- Save the rest of the context.
+ */ 
+  pushm.a   #7, r10  /* Push r4 to r10 */
+/*
+ * PROCESS STACK:
+ *    +--------------------+   
+ *  0 |   0  |  r4.19:16   | + 0  
+ *    +--------------------+   
+ *  1 |       r4.15:0      | + 2            
+ *    +--------------------+
+ *  2 |   0  |  r5.19:16   | + 4  
+ *    +--------------------+   
+ *  3 |       r5.15:0      | + 6            
+ *    +--------------------+
+ *  4 |   0  |  r6.19:16   | + 8  
+ *    +--------------------+   
+ *  5 |       r6.15:0      | + 10            
+ *    +--------------------+
+ *  6 |   0  |  r7.19:16   | + 12  
+ *    +--------------------+   
+ *  7 |       r7.15:0      | + 14           
+ *    +--------------------+
+ *  8 |   0  |  r8.19:16   | + 16 
+ *    +--------------------+   
+ *  9 |       r8.15:0      | + 18           
+ *    +--------------------+  
+ * 10 |   0  |  r9.19:16   | + 20  
+ *    +--------------------+   
+ * 11 |       r9.15:0      | + 22            
+ *    +--------------------+
+ * 12 |   0  | r10.19:16   | + 24  
+ *    +--------------------+   
+ * 13 |      r10.15:0      | + 26            
+ *    +--------------------+
+ * 14 |   0  | r11.19:16   | + 28      
+ *    +--------------------+           
+ * 15 |      r11.15:0      | + 30      
+ *    +--------------------+            
+ * 16 |   0  | r12.19:16   | + 32       
+ *    +--------------------+            
+ * 17 |      r12.15:0      | + 34      
+ *    +--------------------+            
+ * 18 |   0  | r13.19:16   | + 36
+ *    +--------------------+
+ * 19 |      r13.15:0      | + 38
+ *    +--------------------+
+ * 20 |   0  | r14.19:16   | + 40
+ *    +--------------------+
+ * 21 |      r14.15:0      | + 42
+ *    +--------------------+
+ * 22 |   0  | r15.19:16   | + 44
+ *    +--------------------+
+ * 23 |      r15.15:0      | + 46
+ *    +--------------------+
+ * 24 | PC.19:16 | SR.11:0 | + 48
+ *    +--------------------+
+ * 25 |      PC.15:0       | + 50
+ *    +--------------------+
+ * 26 | CallTerminateXXX   | + 52
+ *    +--------------------+ 
+ */
+/*-----------------------------------------------------------------------------
+ * -8- Now the stack pointer is saved in the dedicated location.
+ */  
+  mova       &tpl_kern, r11 /* Get the s_running slot of tpl_kern in r11 */
+  mova       @r11, r11      /* Get the pointer to the context (SP alone) */
+  movx.a     r1, @r11       /* Save the stack pointer                    */
+/*-----------------------------------------------------------------------------
+ * -9- Call tpl_run_elected with argument 1 (aka save) after switching back
+ * to the kernel stack.
+ */
+  mova       r13, r1        /* Switch back to the kernel stack           */
+  movx.a     #1, REG_RETARG
+  calla      #tpl_run_elected
+/*
+ * PROCESS STACK:                    KERNEL STACK:
+ *    +--------------------+              +-------------------+
+ *  0 |   0  |  r4.19:16   | + 0        0 |  0  |  PC.19:16   | + 0
+ *    +--------------------+              +-------------------+
+ *  1 |       r4.15:0      | + 2        1 |      PC.15:0      | + 2
+ *    +--------------------+              +-------------------+
+ *  2 |   0  |  r5.19:16   | + 4  
+ *    +--------------------+   
+ *  3 |       r5.15:0      | + 6            
+ *    +--------------------+
+ *  4 |   0  |  r6.19:16   | + 8  
+ *    +--------------------+   
+ *  5 |       r6.15:0      | + 10            
+ *    +--------------------+
+ *  6 |   0  |  r7.19:16   | + 12  
+ *    +--------------------+   
+ *  7 |       r7.15:0      | + 14           
+ *    +--------------------+
+ *  8 |   0  |  r8.19:16   | + 16 
+ *    +--------------------+   
+ *  9 |       r8.15:0      | + 18           
+ *    +--------------------+  
+ * 10 |   0  |  r9.19:16   | + 20  
+ *    +--------------------+   
+ * 11 |       r9.15:0      | + 22            
+ *    +--------------------+
+ * 12 |   0  | r10.19:16   | + 24  
+ *    +--------------------+   
+ * 13 |      r10.15:0      | + 26            
+ *    +--------------------+
+ * 14 |   0  | r11.19:16   | + 28      
+ *    +--------------------+           
+ * 15 |      r11.15:0      | + 30      
+ *    +--------------------+            
+ * 16 |   0  | r12.19:16   | + 32       
+ *    +--------------------+            
+ * 17 |      r12.15:0      | + 34      
+ *    +--------------------+            
+ * 18 |   0  | r13.19:16   | + 36
+ *    +--------------------+
+ * 19 |      r13.15:0      | + 38
+ *    +--------------------+
+ * 20 |   0  | r14.19:16   | + 40
+ *    +--------------------+
+ * 21 |      r14.15:0      | + 42
+ *    +--------------------+
+ * 22 |   0  | r15.19:16   | + 44
+ *    +--------------------+
+ * 23 |      r15.15:0      | + 46
+ *    +--------------------+
+ * 24 | PC.19:16 | SR.11:0 | + 48
+ *    +--------------------+
+ * 25 |      PC.15:0       | + 50
+ *    +--------------------+
+ * 26 | CallTerminateXXX   | + 52
+ *    +--------------------+ 
+ */
+/*-----------------------------------------------------------------------------
+ * -10- tpl_run_elected has copied the elected process slot of tpl_kern to the
+ * running slot. We load the stack pointer of the new running process.
+ */
+  mova       &tpl_kern, r11 /* Get the s_running slot of tpl_kern in r11 */
+  mova       @r11, r11      /* Get the pointer to the context (SP alone) */
+  mova       @r11, r1       /* Get the stack pointer                     */
+/*-----------------------------------------------------------------------------
+ * -11- Now, the context of the new running process is loaded. All registers
+ * are popped.
+ */
+  popm.a    #12,r15        /* Pop r4 to r15  */
+  reti
+/*-----------------------------------------------------------------------------
+ * -12- We get here from stage 6. Restore the volatile registers and return
+ * from the interrupt handler.
+ */
+tpl_% !handlerSource %_no_context_switch:
+  popm.a    #5, r15
+  reti
+/*-----------------------------------------------------------------------------
+*/

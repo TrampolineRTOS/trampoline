@@ -1,0 +1,19 @@
+/*=============================================================================
+ * libraries related defines
+ */%
+
+  if exists OS::BUILD_S::LIBRARY then
+    let libMap := [OS::BUILD_S::LIBRARY mapBy: "VALUE"]
+    if exists libMap["serial"] then
+%
+/*-----------------------------------------------------------------------------
+ *  Parameters of the serial interface library 
+ *  if the (RX or TX) buffer is set to 0, the associated
+ *  interrupt is not implemented.
+ */
+#define SERIAL_TX_BUFFER_SIZE % !exists libMap["serial"]::VALUE_S::TXBUFFER default (16) %
+#define SERIAL_RX_BUFFER_SIZE % !exists libMap["serial"]::VALUE_S::RXBUFFER default (32) %
+%
+    end if
+  end if
+%

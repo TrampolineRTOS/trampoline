@@ -393,6 +393,101 @@ foreach proc in PROCESSES do
     end foreach
   end foreach
 %
+/*
+ * FRAM UP Variables sections
+ */
+%
+  foreach SECTION_KIND in @( "_FRAM_UP_") do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !proc::KIND % % !proc::NAME % fram_up data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".% !proc::KIND %_% !proc::NAME %_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_FRAM_UP_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end foreach
+  end foreach
+%
+/*
+ * Checkpoint Variables sections
+ */
+ #ifdef OS_START_SEC_VAR_CHKPT
+  #undef OS_START_SEC_VAR_CHKPT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #error "Starting a .osCHKPT while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION_NAME
+    #define CURRENT_LINKER_CODE_SECTION_NAME __attribute__ ((section (".osCHKPT")))
+    #define CURRENT_LINKER_CODE_SECTION
+  #endif
+#endif
+
+#ifdef OS_STOP_SEC_VAR_CHKPT
+  #undef OS_STOP_SEC_VAR_CHKPT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION
+    #undef CURRENT_LINKER_CODE_SECTION_NAME
+    #define CURRENT_LINKER_CODE_SECTION_NAME
+  #else
+    #error "No section .osCHKPT started"
+  #endif
+#endif
+%
+
+%
+/*
+ * LEA Variables sections
+ */
+%
+  foreach SECTION_KIND in @( "_LEA_") do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
+%
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !proc::KIND % % !proc::NAME % lea data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".% !proc::KIND %_% !proc::NAME %_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_LEA_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end foreach
+  end foreach
+%
 
 /*
  * Non Volatile Variables sections

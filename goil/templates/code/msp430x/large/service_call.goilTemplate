@@ -8,9 +8,18 @@
     /*-------------------------------------------------------------------------
      * Load the service id in REG_SID (R12 or R15, depending on the ABI)
      */
-    mov   #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %, REG_SID
+    mova   #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %, REG_SID
     /*-------------------------------------------------------------------------
      * Does the system call
      */
+     %
+    if api_func::NAME == "CallTerminateTask" | api_func::NAME == "CallTerminateISR2" then
+    
+    %/*
+      * Calla to avoid stack underflow
+      */
     calla #tpl_sc_handler
-    ret
+    %
+    else%bra #tpl_sc_handler
+    %
+    end if

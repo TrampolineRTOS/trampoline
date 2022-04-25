@@ -35,6 +35,21 @@ MEMORY
    ! hex_end %, %
    ! size % bytes - %
    ! size / 2 % vectors */
-  FRAM (rx)  : ORIGIN = 0x04000, LENGTH = 0xBF80 /* ends at 0xff80. size is 47,875k */
-  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = 0x2000 /* size is 8k */
+  FRAM (rx)  : ORIGIN = 0x04000, LENGTH = 0x9F80 /* ends at 0xDF80. size is 39,875k */
+  FRAM_CHKPT (rw) : ORIGIN = 0x0DF80, LENGTH = 0x2000 /* ends at 0xFF80. size is 8k */
+%
+if OS::LEA then
+  if OS::LEA_S::LEA_RAM > 4096 then
+    let OS::LEA_S::LEA_RAM := 4096
+  end if
+  let lea_origin := 0x3BFF - OS::LEA_S::LEA_RAM
+  let size_ram := 0x1000 + 0x1000 - OS::LEA_S::LEA_RAM
+%
+  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = %!size_ram% /* size is 4k */
+  LEA_RAM (xrw)  : ORIGIN = %!lea_origin%, LENGTH = %!OS::LEA_S::LEA_RAM% /* size max = 4096 */
+%
+else%
+  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = 0x2000 /* size is 8k */%
+end if  
+%
 }
