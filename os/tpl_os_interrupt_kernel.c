@@ -51,12 +51,9 @@
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
-/*
- * the following variableѕ should not be initialized at definition,
- * or Memmap section is not the right one
- */
 #if NUMBER_OF_CORES > 1
 volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES] = {0};
+
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES] = {0};
 VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All[NUMBER_OF_CORES] = {0};
 VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES] = {0};

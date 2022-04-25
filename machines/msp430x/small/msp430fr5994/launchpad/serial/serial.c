@@ -109,10 +109,10 @@ void tpl_serial_print_string(const char *str)
 		tpl_serial_putchar(*str++);
 }
 
-void tpl_serial_print_int(int16_t val, uint8_t fieldWidth)
+void tpl_serial_print_int(int32_t val, uint8_t fieldWidth)
 {
 	uint8_t negative = 0; 
-	char buffer[6]; /* min val: -32768 => 6 chars */
+	char buffer[11]; /* min val: -2147483648 => 11 chars */
 	int8_t index = 0;
 	
 	if (val < 0)

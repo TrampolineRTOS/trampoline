@@ -46,7 +46,7 @@ FUNC(void, OS_APPL_CODE) io_init()
 FUNC(int, OS_APPL_CODE) main(void)
 {
   io_init();
-  tpl_serial_print_string("main\n");
+  tpl_serial_print_string("\r\nmain\r\n");
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -59,34 +59,12 @@ FUNC(int, OS_APPL_CODE) restart_main(void)
 {
   io_init();
   P1OUT |= 1;   /* light on red led */
-  tpl_serial_print_string("restart_main\n");
+  tpl_serial_print_string("\r\nrestart_main\r\n");
   RestartOS();
   return 0;
 }
 
 #define APP_COMMON_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#define APP_Task_task_serial_TX_START_SEC_CODE
-#include "tpl_memmap.h"
-/*----------------------------------------------------------------------------*/
-/* TASK serial_TX                                                             */
-/*----------------------------------------------------------------------------*/
-TASK(task_serial_TX)
-{
-  //	tpl_serial_print_string("data in SRAM :");
-  //	tpl_serial_print_int(dataSRAM,0);
-  //	tpl_serial_print_string("\r\n");
-
-  //	tpl_serial_print_string("data in FRAM :");
-  //	tpl_serial_print_int(dataFRAM,0);
-  //	tpl_serial_print_string("\r\n");
-
-  //	dataSRAM++;
-  //	dataFRAM++;
-	TerminateTask();
-}
-#define APP_Task_task_serial_TX_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define APP_Task_task_check_button_START_SEC_CODE
@@ -97,8 +75,7 @@ TASK(task_serial_TX)
 TASK(task_check_button)
 {
   if(((P5IN >> 5) & 1) == 0) { //button S2 pushed ?
-    tpl_serial_print_string("\r\n");
-    tpl_serial_print_string("Hibernate");
+    tpl_serial_print_string("\r\nHibernate\r\n");
     Hibernate();
   }
   TerminateTask();
@@ -113,29 +90,29 @@ TASK(task_check_button)
 #include "tpl_memmap.h"
 TASK(task_fibo)
 {
-  static uint16 l_value_ind_0 = 0;
-  static uint16 l_value_ind_1 = 1;
-  uint16 l_temp;
+  static uint32 Un0 = 0;
+  static uint32 Un1 = 1;
+  uint32 temp;
 
   /* Print last value of fibo */
   tpl_serial_print_string("fibo :");
-  tpl_serial_print_int(l_value_ind_0,0);
+  tpl_serial_print_int(Un0,0);
   tpl_serial_print_string("\r\n");
 
   /* Compute next value of fibo */
-  if (l_value_ind_0 > 28000) {
+  if (Un0 > INT32_MAX/2) {
     /* No overflow, restart fibo */
-    l_value_ind_0 = 0;
-    l_value_ind_1 = 1;
+    Un0 = 0;
+    Un1 = 1;
   } else {
     /* compute fibo */
-    l_temp = l_value_ind_0 + l_value_ind_1;
-    l_value_ind_0 = l_value_ind_1;
-    l_value_ind_1 = l_temp;
+    temp = Un0 + Un1;
+    Un0 = Un1;
+    Un1 = temp;
   }
 
 	TerminateTask();
 }
-#define APP_Task_task_serial_TX_STOP_SEC_CODE
+#define APP_Task_task_fibo_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
