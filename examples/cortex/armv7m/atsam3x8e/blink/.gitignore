@@ -1,6 +1,0 @@
-blink
-build
-*_exe.elf
-*.bin
-*.map
-*.py

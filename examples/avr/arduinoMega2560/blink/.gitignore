@@ -1,7 +1,10 @@
-Makefile
+trampuinoBlink
 blink
+
 build
 *_exe
 *.bin
 *.map
-*.py
+*.hex
+build.py
+make.py

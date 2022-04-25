@@ -1,7 +1,11 @@
-Makefile
+trampuinoSerial
 trace
+
 build
 *_exe
 *.bin
 *.map
-*.py
+*.hex
+build.py
+make.py
+readTrace.py

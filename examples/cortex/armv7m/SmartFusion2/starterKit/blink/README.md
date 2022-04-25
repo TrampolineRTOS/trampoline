@@ -8,7 +8,7 @@ The system is based scheduled with a 1ms SysTick "SystemCounter".
 Configure the application with
 
 ``
-goil --target=cortex/armv7m/SmartFusion2/starterKit --templates=../../../../../../goil/templates/ blink.oil
+goil --target=cortex/armv7m/SmartFusion2 --templates=../../../../../../goil/templates/ blink.oil
 ``
 
 Then make with:
