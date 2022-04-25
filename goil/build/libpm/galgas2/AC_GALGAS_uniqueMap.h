@@ -62,45 +62,45 @@ typedef enum {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  const mapAutomatonIssueEnum mIssue ;
-  const char * mIssueMessage ;
-} cMapAutomatonFinalIssue ;
+class cMapAutomatonFinalIssue {
+  public: const mapAutomatonIssueEnum mIssue ;
+  public: const char * mIssueMessage ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  const uint32_t mTargetStateIndex ;
-  const mapAutomatonIssueEnum mIssue ;
-  const char * mIssueMessage ;
-} cMapAutomatonTransition ;
+class cMapAutomatonTransition {
+  public: const uint32_t mTargetStateIndex ;
+  public: const mapAutomatonIssueEnum mIssue ;
+  public: const char * mIssueMessage ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  const uint32_t mFirstStateIndex ;
-  const uint32_t mLastStateIndex ;
-  const uint32_t mResultingStateIndex ;
-  const mapAutomatonIssueEnum mIssue ;
-  const char * mIssueMessage ;
-}cBranchOverrideTransformationDescriptor ;
+class cBranchOverrideTransformationDescriptor {
+  public: const uint32_t mFirstStateIndex ;
+  public: const uint32_t mLastStateIndex ;
+  public: const uint32_t mResultingStateIndex ;
+  public: const mapAutomatonIssueEnum mIssue ;
+  public: const char * mIssueMessage ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  const uint32_t mFirstCandidateStateIndex ;
-  const uint32_t mSecondCandidateStateIndex ;
-  const uint32_t mResultingStateIndex ;
-  const mapAutomatonIssueEnum mIssue ;
-  const char * mIssueMessage ;
-}cBranchOverrideCompatibilityDescriptor ;
+class cBranchOverrideCompatibilityDescriptor {
+  public: const uint32_t mFirstCandidateStateIndex ;
+  public: const uint32_t mSecondCandidateStateIndex ;
+  public: const uint32_t mResultingStateIndex ;
+  public: const mapAutomatonIssueEnum mIssue ;
+  public: const char * mIssueMessage ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  uint32_t mInitialStateIndex ;
-  uint32_t mResultingStateIndex ;
-}cOverrideStateDescriptor ;
+class cOverrideStateDescriptor {
+  public: uint32_t mInitialStateIndex ;
+  public: uint32_t mResultingStateIndex ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 //

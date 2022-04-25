@@ -1,0 +1,8 @@
+trace
+build
+*.elf
+*.bin
+*.map
+*.py
+.vscode
+CMakeLists.txt

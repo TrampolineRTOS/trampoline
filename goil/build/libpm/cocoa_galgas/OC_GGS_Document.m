@@ -1098,8 +1098,8 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, inData %@", __PRETTY_FUNCTION__, inData) ;
   #endif
-  NSString * message = [[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] ;
-  NSArray * messageArray = [message componentsSeparatedByString:[NSString stringWithFormat:@"%c", 0x1B]] ;
+  NSString * message = [[NSString alloc] initWithData:inData encoding: NSUTF8StringEncoding] ;
+  NSArray * messageArray = [message componentsSeparatedByString:[NSString stringWithFormat: @"%c", 0x1B]] ;
 //--- Default attributes dictionary
   NSDictionary * defaultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
     mBuildTextFont, NSFontAttributeName,
@@ -1171,8 +1171,27 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
       [outputAttributedString appendAttributedString:as] ;
     }
   }
-  [mOutputTextView.textStorage appendAttributedString:outputAttributedString] ;
-  [mOutputTextView scrollRangeToVisible:NSMakeRange (mOutputTextView.textStorage.length, 0)] ;
+  NSArray * stringArray = [outputAttributedString.string componentsSeparatedByString:@"\r"] ;
+  if ([stringArray count] == 1) {
+    [mOutputTextView.textStorage appendAttributedString: outputAttributedString] ;
+  }else{
+    [mOutputTextView.textStorage beginEditing] ;
+    NSUInteger totalLength = 0 ;
+    for (NSUInteger idx = 0 ; idx < [stringArray count] ; idx ++) {
+      const NSUInteger length = [stringArray[idx] length] ;
+      NSAttributedString * at = [outputAttributedString attributedSubstringFromRange: NSMakeRange (totalLength, length)] ;
+      [mOutputTextView.textStorage appendAttributedString: at] ;
+      totalLength += length + 1 ; // Add '\r'
+    //--- Remove last line
+      if (idx < ([stringArray count] - 1)) {
+        NSRange lastLineRange = [mOutputTextView.textStorage.string lineRangeForRange: NSMakeRange (mOutputTextView.textStorage.string.length, 0)] ;
+        [mOutputTextView.textStorage deleteCharactersInRange: lastLineRange] ;
+//        NSLog (@"[%lu, %lu]", lastLineRange.location, lastLineRange.length) ;
+      }
+    }
+    [mOutputTextView.textStorage endEditing] ;
+  }
+  [mOutputTextView scrollRangeToVisible: NSMakeRange (mOutputTextView.textStorage.length, 0)] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1244,16 +1263,16 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 //--- If found, extract data
   if (ok) {
     idx ++ ;
-    NSData * data = [mBufferedOutputData subdataWithRange:NSMakeRange (0, idx)] ;
-    NSData * remainingData = [mBufferedOutputData subdataWithRange:NSMakeRange (idx, mBufferedOutputData.length - idx)] ;
-    [mBufferedOutputData setData:remainingData] ;
-    [self enterOutputData:data] ;
+    NSData * data = [mBufferedOutputData subdataWithRange: NSMakeRange (0, idx)] ;
+    NSData * remainingData = [mBufferedOutputData subdataWithRange: NSMakeRange (idx, mBufferedOutputData.length - idx)] ;
+    [mBufferedOutputData setData: remainingData] ;
+    [self enterOutputData: data] ;
   }
 //--- Remaining data is a valid UFT8 string ?
-  NSString * s = [[NSString alloc] initWithData:mBufferedOutputData encoding:NSUTF8StringEncoding] ;
+  NSString * s = [[NSString alloc] initWithData: mBufferedOutputData encoding: NSUTF8StringEncoding] ;
   if (s != nil) { // Valid UFT8 string
-    [self enterOutputData:mBufferedOutputData] ;
-    [mBufferedOutputData setData:[NSData data]] ;
+    [self enterOutputData: mBufferedOutputData] ;
+    [mBufferedOutputData setData: [NSData data]] ;
   }
 }
 

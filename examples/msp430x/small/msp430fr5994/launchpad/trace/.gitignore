@@ -1,0 +1,8 @@
+trace
+build
+readTrace.py
+*_exe
+*.bin
+*.map
+build.py
+make.py

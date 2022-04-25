@@ -1542,15 +1542,20 @@ if OS::MEMMAP then
   end if
 end if
 
+#display ioc_unqueued_list
+#display ioc_queued_list
+
 !PROJECT%/tpl_static_info.json
 %
 write to PROJECT+"/tpl_static_info.json":
   let obj := @[
-    "task"     : TASKS,
-    "isr"      : ISRS,
-    "event"    : EVENTS,
-    "resource" : RESOURCES,
-    "alarm"    : ALARMS
+    "task"                  : TASKS,
+    "isr"                   : ISRS,
+    "event"                 : EVENTS,
+    "resource"              : RESOURCES,
+    "alarm"                 : ALARMS,
+    "message"               : MESSAGE,
+    "ioc"                   : ioc_reordered
   ]
   let nbTab := 0
   template export_json in log
@@ -1562,6 +1567,7 @@ if OS::TRACE then
   write to executable "readTrace.py":
     template readTrace_py in log
   end write
+  %TraceCPU.py%
 end if
 #temporary
 

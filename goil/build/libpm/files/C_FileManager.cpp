@@ -436,11 +436,11 @@ static bool sniffUTFEncodingAndParse (const C_Data & inDataString,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  const char * mEncodingName ;
-  const PMTextFileEncoding mTextFileEncoding ;
-  const PMStringEncoding mStringEncoding ;
-} encodingStruct ;
+class encodingStruct {
+  public: const char * mEncodingName ;
+  public: const PMTextFileEncoding mTextFileEncoding ;
+  public: const PMStringEncoding mStringEncoding ;
+}  ;
 
 //----------------------------------------------------------------------------------------------------------------------
 

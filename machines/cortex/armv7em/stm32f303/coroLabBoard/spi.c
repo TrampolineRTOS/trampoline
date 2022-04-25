@@ -1,10 +1,10 @@
 #include "spi.h"
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 
 
 //use SPI1:
 // CS MCP  : PA11 (I/O) - Arduino D10
-// CS TFT  : PA2  (I/O) - Arduino A7
+// CS TFT  : PA4  (I/O) - Arduino A3
 // MOSI: PB5 (AF5)  - Arduino D11
 // MISO: PB4 (AF5)  - Arduino D12
 // SCK : PB3 (AF5)  - Arduino D13
@@ -25,7 +25,7 @@ void setupSPI()
 					 GPIO_OSPEEDER_OSPEEDR4 |
 					 GPIO_OSPEEDER_OSPEEDR5 ;
 	GPIOA->MODER |= GPIO_MODER_MODER11_0 |	//PA11 output (CS)
-	                GPIO_MODER_MODER2_0;		//PA2  output (CS)
+	                GPIO_MODER_MODER4_0;    //PA4  output (CS)
 	GPIOB->AFR[0] |= 5 << 12 | //alternate func AF5 
 	                 5 << 16 | //for 3 pins
 	                 5 << 20;

@@ -18,6 +18,7 @@
 #arch may be either LINUX or DARWIN (MacOsX) at this time.
 ARCH = $(shell uname -s)
 SRCS= com.c exec.c log.c main.c timer.c control.c
+CFLAGS += -fcommon
 
 ########################################################
 # ARCH dependant stuff

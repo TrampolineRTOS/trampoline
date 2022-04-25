@@ -1,0 +1,6 @@
+serial
+build
+*_exe
+*.bin
+*.map
+*.py

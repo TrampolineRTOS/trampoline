@@ -15,7 +15,7 @@ class TraceReader:
     '''
     def __init__(self):
         # trace event ids
-        self.eventType = ['proc','res','set_event','reset_event','timeobj','timeobj_expire','overflow']
+        self.eventType = ['overflow','proc','resource','event','timeobj','message','ioc']
 
     def getEvent(self):
         ''' Generator that sends raw events one by one to the main thread'''
@@ -32,15 +32,19 @@ class TraceReader:
     def readBinaryEvent(self):
         '''read a binary event. Common method for subclasses (private)'''
         frame = self.readData(5)
+        gotPb = False
         while True:
             #checksum verif
             if len(frame) == 5  and (sum(frame[:4]) & 0xff == frame[4]):
                 #ok => get back 4 bytes
-                return frame[:4]
+                return (gotPb,frame[:4])
             else:
                 #nok, read one more byte, and check again
                 d = self.readData(1)
                 if(len(frame) == 5):
+                    f= ':'.join('{:02x}'.format(i) for i in frame) #debug
+                    print('ERROR: Serial read problem. Frame is '+f)
+                    gotPb = True
                     frame = frame[1:] + d
                 else:
                     frame = frame + d
@@ -56,21 +60,48 @@ class TraceReader:
         ts = curTS + (ts  & 0xFFFF0000)
         evt['ts']      = ts
         evt['type']    = self.eventType[evtBin[0] >> 5]
+        evt['bin'] = ':'.join('{:02x}'.format(i) for i in evtBin) #debug
         if evt['type'] == 'proc':
             evt['target_state'] = evtBin[0] & 0x7
             evt['proc_id']  = evtBin[3]
-        elif evt['type'] == 'set_event':
+        elif evt['type'] == 'resource':
+            evt['target_state'] = evtBin[0] & 0x1
+            evt['resource_id']  = evtBin[3]
+        elif evt['type'] == 'event':
+            kind = (evtBin[3]>>7)&1 #0 set, 1 reset
             evt['event'] = evtBin[0] & 0x1F
-            evt['target_task_id']  = evtBin[3]
-        elif evt['type'] == 'reset_event':
-            evt['event'] = evtBin[0] & 0x1F
+            if (kind == 0 ) :   # change state
+                evt['kind'] = 'set'
+                evt['target_task_id']  = evtBin[3] & 0x7F
+            else:
+                evt['kind'] = 'reset'
+                if evtBin[3] & 0x7F != 0:
+                    print('ERROR : invalid reset event, got a target task')
         elif evt['type'] == 'timeobj':
-            evt['target_state'] = evtBin[0] & 0x7
             evt['timeobj_id']  = evtBin[3]
-        elif evt['type'] == 'timeobj_expire':
-            evt['timeobj_id']  = evtBin[3]
+            kind = (evtBin[0]>>4)&1 #0 change state, 1 expire
+            if (kind == 0 ) :   # change state
+                evt['kind'] = 'update_state'
+                evt['target_state'] = evtBin[0] & 0x7
+            elif (kind == 1 ) : # SEND_ZERO_MESSAGE
+                evt['kind'] = 'expire'
+                if (evtBin[0] & 0x07) != 0:
+                    print('ERROR invalid time object event, got a time object state, but time object expires.')
+        elif evt['type'] == 'message':
+            evt['msg_id'] = evtBin[0] & 0x1F
+            kind = evtBin[3]
+            if (kind == 0 ) :   # SEND_NONZERO_MESSAGE
+                evt['kind'] = 'send'
+            elif (kind == 1 ) : # SEND_ZERO_MESSAGE
+                evt['kind'] = 'send_zero'
+            elif (kind == 2 ) : # MESSAGE_RECEIVE
+                evt['kind'] = 'receive'
+            else :
+                print('ERROR, invalid message type: '+str(evtBin[3]))
+        elif evt['type'] == 'overflow':
+            pass
         else:
-            print('error, not implemented yet: '+evt['type'])
+            print('ERROR, not implemented yet: '+evt['type'])
         return (evt,ts)
 
 class TraceReaderFile(TraceReader):
@@ -136,6 +167,10 @@ class TraceReaderSerial(TraceReader):
             print("here: https://pythonhosted.org/pyserial/index.html")
         try:
             ser = serial.Serial(device, speed, timeout=1)
+            #we flush the input buffer.
+            # https://stackoverflow.com/questions/7266558/pyserial-buffer-wont-flush
+            time.sleep(0.2)
+            ser.reset_input_buffer()
         except serial.serialutil.SerialException:
             print('Serial line {0} not found'.format(device))
             sys.exit(1)
@@ -143,11 +178,20 @@ class TraceReaderSerial(TraceReader):
 
     def serialRead(self):
         ''' reception thread. Reads events on the serial line and put it it the queue'''
+        firstReception = True
         while not self.evStopSerial.is_set():
             #read serial
-            evtBin = self.readBinaryEvent()
+            (gotPb, evtBin) = self.readBinaryEvent()
             (evt,self.timeStamp) = self.decodeBinaryEvent(evtBin,self.timeStamp) 
+            #we tolerate a bad serial reception at begining (synchro)
+            if gotPb and not firstReception:
+                evtPb = {}
+                evtPb['ts'] = evt['ts']
+                evt['bin'] = ':'.join('{:02x}'.format(i) for i in evtBin) #debug
+                evtPb['type'] = 'trace'
+                self.serialEventQueue.put(evtPb)
             self.serialEventQueue.put(evt)
+            firstReception = False
         if self.verbose:
             print('{0} events in the serial queue at the end'.format(self.serialEventQueue.qsize()))
         self.ser.close()
@@ -165,5 +209,62 @@ class TraceReaderSerial(TraceReader):
         self.evStopSerial.set()
 
     def readData(self,nb):
-        return self.ser.read(nb)
+        data = self.ser.read(nb)
+        return data
 
+class TraceReaderDump(TraceReader):
+    ''' Get trace events from a file dump (binary file)
+        not well tested, for debug.
+    '''
+    def __init__(self,filename,verbose):
+        '''
+        :param str device: serial device name ('/dev/ttyACM1' for instance on Linux)
+        :param int speed : serial speed in bauds
+        '''
+        import threading, queue
+        super().__init__()
+        self.verbose = verbose
+        self.data = []
+        #open serial
+        self.infile=open(filename,'rb')
+        self.timeStamp = 0  #to take into account overflows (events are in chronological order)
+        #thread related to serial reception
+        self.evStopSerial = threading.Event() #event to stop the serial reception
+        self.serialEventQueue = queue.Queue() #queue between serial thread and main app.
+        self.senderThread = threading.Thread(target=self.dumpRead)
+        self.senderThread.start()
+
+    def dumpRead(self):
+        ''' reception thread. Reads events on the serial line and put it it the queue'''
+        firstReception = True
+        while not self.evStopSerial.is_set():
+            #read serial
+            (gotPb, evtBin) = self.readBinaryEvent()
+            (evt,self.timeStamp) = self.decodeBinaryEvent(evtBin,self.timeStamp) 
+            #we tolerate a bad serial reception at begining (synchro)
+            if gotPb and not firstReception:
+                evtPb = {}
+                evtPb['ts'] = evt['ts']
+                evt['bin'] = ':'.join('{:02x}'.format(i) for i in evtBin) #debug
+                evtPb['type'] = 'trace'
+                self.serialEventQueue.put(evtPb)
+            self.serialEventQueue.put(evt)
+            firstReception = False
+        if self.verbose:
+            print('{0} events in the serial queue at the end'.format(self.serialEventQueue.qsize()))
+        self.infile.close()
+
+    def getEvent(self):
+        ''' Generator that sends raw events one by one from serial. 
+            This is executed on the main thread
+        '''
+        while True:
+            event = self.serialEventQueue.get()
+            yield event
+
+    def stop(self):
+        ''' We need to stop the serial connexion => stop the thread'''
+        self.evStopSerial.set()
+
+    def readData(self,nb):
+        return self.infile.read(nb)

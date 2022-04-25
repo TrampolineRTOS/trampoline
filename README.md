@@ -97,11 +97,16 @@ More examples are coming.
 
 Updated to version 3.1.12 on 2020, November 2.
 
-* Mac OS X: [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
+
 * Linux 32 bits: [goil-linux-32.zip](http://trampolinebin.rts-software.org/goil-linux-32.zip)
 * Linux 64 bits: [goil-linux-64.zip](http://trampolinebin.rts-software.org/goil-linux-64.zip)
 * Windows: [goil-windows.zip](http://trampolinebin.rts-software.org/goil-windows.zip)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
+* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](http://trampolinebin.rts-software.org/goil-mac-os-x-silicon.zip)
+* Mac OS X Cocoa Application with editor (Intel)  : [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
+* Mac OS X Cocoa Application with editor (Silicon): [CocoaGoil-silicon.app.zip](http://trampolinebin.rts-software.org/CocoaGoil-silicon.app.zip)
+
+Note: goil binaries for Mac OS X are not signed. You can either recompile goil rom sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
 ## Useful links
 

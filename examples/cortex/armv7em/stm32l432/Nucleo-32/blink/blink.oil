@@ -22,7 +22,6 @@ CPU blink {
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
-      LIBRARY = IO;
       APP_NAME = "blink_exe";
       CFLAGS  = "-O0";
       LDFLAGS = "-Map=blink.map";

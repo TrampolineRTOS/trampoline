@@ -219,9 +219,9 @@ IMPLEMENTATION trampoline_common {
         STRING COPIER = "objcopy";
         ENUM [
           MAKE,
-          PYTHON { BOOLEAN GUESSLIBPATH; },
-          ATMELSTUDIO
-        ] SYSTEM = MAKE;
+          PYTHON { BOOLEAN GUESSLIBPATH;},
+          CMAKE  { BOOLEAN VSCODE=FALSE;}
+        ] SYSTEM = PYTHON;
       },
       FALSE
     ] BUILD = FALSE;
@@ -232,6 +232,9 @@ IMPLEMENTATION trampoline_common {
         BOOLEAN RESOURCE    = TRUE;
         BOOLEAN ALARM       = TRUE;
         BOOLEAN EVENT       = TRUE;
+        BOOLEAN MESSAGE     = TRUE;
+        BOOLEAN IOC         = FALSE;     /* Done on posix only */
+
       },
       FALSE
     ] TRACE = FALSE;

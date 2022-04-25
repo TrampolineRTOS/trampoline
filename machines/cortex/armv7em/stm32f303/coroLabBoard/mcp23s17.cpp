@@ -1,6 +1,6 @@
 #include "mcp23s17.h"
 #include "spi.h"
-#include "stm32f30x.h"
+#include "stm32f3xx.h"
 #ifndef NULL
 #define NULL 0
 #endif

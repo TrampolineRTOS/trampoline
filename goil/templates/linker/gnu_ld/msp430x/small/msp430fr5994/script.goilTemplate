@@ -23,9 +23,15 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 %
-template symbols
-template periph
+write to PROJECT+"/script_symbols1.ld":
+	template symbols in linker
+end write
+write to PROJECT+"/script_symbols2.ld":
+	template periph in linker
+end write
 %
+INCLUDE "script_symbols1.ld" /* Energia names */
+INCLUDE "script_symbols2.ld"  /* TI Code Composer names */
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -542,8 +548,8 @@ SECTIONS {
   .osVarKernStack :
   {
     . = ALIGN(2);
-    __os_kern_stack_start = .; /* OS kernel stack symbol start */
-    *(.osVarKernStack)         /* OS Kernel stack */
+    __os_kern_stack_start = .;  /* OS kernel stack symbol start */
+    *(.osVarKernStack)          /* OS Kernel stack */
     __os_kern_stack_end   = .;  /* OS kernel stack symbol start */
   } >RAM
 }

@@ -13,7 +13,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 	PM5CTL0 &= ~LOCKLPM5;
 	//set GPIO P1.0 (LED2) as an output
 	P1DIR = 0x01;
-	tpl_serial_begin();
+	tpl_serial_begin(SERIAL_TX_MODE_BLOCK);
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }

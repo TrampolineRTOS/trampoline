@@ -1544,6 +1544,14 @@ class GALGAS_restrictionType : public AC_GALGAS_root {
 
 
 //--------------------------------- Optional Methods
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionEnum () const ;
+
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionOther () const ;
+
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionSimple () const ;
+
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionUnused () const ;
+
 
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
@@ -1623,6 +1631,14 @@ class GALGAS_restrictionBaseType : public AC_GALGAS_root {
 
 
 //--------------------------------- Optional Methods
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionDouble () const ;
+
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionString () const ;
+
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionUint () const ;
+
+  public : VIRTUAL_IN_DEBUG bool optional_restrictionUndef () const ;
+
 
 //--------------------------------- Introspection
   public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;

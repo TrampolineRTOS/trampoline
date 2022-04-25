@@ -53,10 +53,9 @@
 #include "tpl_memmap.h"
 #if NUMBER_OF_CORES > 1
 volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES] = {0};
-
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES] = {0};
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES] = {0} ;
 VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All[NUMBER_OF_CORES] = {0};
-VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES] = {0};
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES] = {0} ;
 VAR(uint32, OS_VAR) tpl_cpt_os_task_lock[NUMBER_OF_CORES] = {0};
 #else
 volatile VAR(uint32, OS_VAR) tpl_locking_depth = 0;

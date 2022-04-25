@@ -44,8 +44,13 @@ FILE *trace_file = NULL;
 
 
 FUNC(tpl_tick, OS_CODE) tpl_trace_get_timestamp()
-{
+{ 
+#if (WITH_AUTOSAR == YES)
+  extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA) tpl_counter_table;
+  CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = tpl_counter_table;
+#else 
   CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = &SystemCounter_counter_desc;
+#endif 
   tpl_tick timestamp = counter->current_date;
   return timestamp;
 }
@@ -237,6 +242,131 @@ FUNC(void, OS_CODE) tpl_trace_event_reset(
 #  error "unsupported trace mode: TRACE_FORMAT"
 #endif
 }
+
+//----------------------------------------------------
+/**
+* trace the ioc:
+* - when an ioc message is sent
+*
+*/
+#if (WITH_IOC == YES)
+FUNC(void, OS_CODE) tpl_trace_ioc_send(
+    VAR(tpl_ioc_id, AUTOMATIC) ioc_id)
+{
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"type\":\"ioc\",\n"
+	"\t\t\"kind\":\"send\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"ioc_id\":\"%d\"\n"
+	"\t}"
+	,ts,ioc_id);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_JSON */
+
+}
+/**
+* trace the ioc:
+* - when a ioc message is received 
+*
+*/
+FUNC(void, OS_CODE) tpl_trace_ioc_receive(
+    VAR(tpl_ioc_id, AUTOMATIC) ioc_id)
+{
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+	"\t\t\"type\":\"ioc\",\n"
+	"\t\t\"kind\":\"receive\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"ioc_id\":\"%d\"\n"
+	"\t}"
+	,ts,ioc_id);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_JSON */
+}
+#endif /*WITH_IOC == YES*/
+
+
+//-----------------------------------------------------
+/**
+* trace the message:
+* - when a message is sent
+*
+*/
+#if WITH_COM == YES
+FUNC(void, OS_CODE) tpl_trace_msg_send(
+    CONST(tpl_message_id, AUTOMATIC)   mess_id,
+    CONST(tpl_bool,AUTOMATIC)          is_zero_message)
+{
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  if(is_zero_message==SEND_ZERO_MESSAGE)
+  {
+    fprintf(trace_file,
+    "\n\t{\n"
+    "\t\t\"type\":\"message\",\n"
+    "\t\t\"kind\":\"send_zero_msg\",\n"
+    "\t\t\"ts\":\"%ld\",\n"
+    "\t\t\"msg_id\":\"%d\"\n"
+    "\t}"
+    ,ts,mess_id);
+  }
+  else 
+  {
+    fprintf(trace_file,
+    "\n\t{\n"
+    "\t\t\"type\":\"message\",\n"
+    "\t\t\"kind\":\"send_msg\",\n"
+    "\t\t\"ts\":\"%ld\",\n"
+    "\t\t\"msg_id\":\"%d\"\n"
+    "\t}"
+    ,ts,mess_id);
+  }
+
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_JSON */
+
+}
+/**
+* trace the message:
+* - when a message is received 
+*
+*/
+FUNC(void, OS_CODE) tpl_trace_msg_receive(
+    VAR(tpl_message_id, AUTOMATIC) mess_id)
+{
+  const uint8 first = tpl_trace_start();
+  const tpl_tick ts=tpl_trace_get_timestamp();
+# if TRACE_FORMAT == TRACE_FORMAT_JSON
+  if(!first) fprintf(trace_file,",");
+  fprintf(trace_file,
+	"\n\t{\n"
+    "\t\t\"type\":\"message\",\n"
+	"\t\t\"kind\":\"receive_msg\",\n"
+	"\t\t\"ts\":\"%ld\",\n"
+	"\t\t\"msg_id\":\"%d\"\n"
+	"\t}"
+	,ts,mess_id);
+# else
+#  error "unsupported trace mode: TRACE_FORMAT"
+#endif /* TRACE_FORMAT == TRACE_FORMAT_JSON */
+}
+#endif /* WITH_TRACE == YES */
+
+//----------------------------------------------------
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

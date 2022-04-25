@@ -27,7 +27,10 @@ IMPLEMENTATION stm32f303 {
     BOOLEAN [
       TRUE {
         ENUM [
-          serial
+          serial {
+            UINT32 RXBUFFER = 32;
+            UINT32 TXBUFFER = 16;
+          }
         ] LIBRARY[];
       },
       FALSE
@@ -64,10 +67,11 @@ CPU stm32f303 {
   };
   
   INTERRUPT NMI          {SETPRIO = TRUE { NUMBER = -14; };};
+  INTERRUPT HardFault    {SETPRIO = TRUE { NUMBER = -13; };};
   INTERRUPT MemManage    {SETPRIO = TRUE { NUMBER = -12; };}; 
   INTERRUPT BusFault     {SETPRIO = TRUE { NUMBER = -11; };};
-  INTERRUPT UsageFault	 {SETPRIO = TRUE { NUMBER = -10; };};
-  INTERRUPT SVCall		 {SETPRIO = TRUE { NUMBER = -5 ; };};
+  INTERRUPT UsageFault   {SETPRIO = TRUE { NUMBER = -10; };};
+  INTERRUPT SVCall       {SETPRIO = TRUE { NUMBER = -5 ; };};
   INTERRUPT DebugMonitor {SETPRIO = TRUE { NUMBER = -4 ; };};
   INTERRUPT PendSV       {SETPRIO = TRUE { NUMBER = -2 ; };};
   INTERRUPT SysTick      {SETPRIO = TRUE { NUMBER = -1 ; };};
@@ -454,8 +458,8 @@ CPU stm32f303 {
   };
 
   PLATFORM_FILES stm32f303IO {
-    PATH = "cortex/armv7em/stm32f303/lib";
-    CFILE = "pinAccess.c";
+    PATH    = "cortex/armv7em/stm32f303/lib";
+    CFILE   = "pinAccess.c";
   };
 
   LIBRARY serial {
@@ -479,7 +483,7 @@ CPU stm32f303 {
       COMMAND = "st-flash";
       INPUT = TARGET { EXT = ".bin"; };
       PREOPTION = "write";
-      POSTOPTION = "0x8000000";
+      POSTOPTION = "0x8000000 reset";
     };
   };
 };

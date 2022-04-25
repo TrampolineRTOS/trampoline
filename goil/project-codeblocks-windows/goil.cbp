@@ -22,7 +22,7 @@
      <Add option="-Wundef" />
      <Add option="-Wmissing-include-dirs" />
      <Add option="-Weffc++" />
-     <Add option="-std=c++98" />
+     <Add option="-std=c++14" />
      <Add option="-Wshadow" />
      <Add option="-Wall" />
      <Add option="-W" />
@@ -47,7 +47,7 @@
      <Add option="-Winline" />
      <Add option="-Wmissing-include-dirs" />
      <Add option="-Weffc++" />
-     <Add option="-std=c++98" />
+     <Add option="-std=c++14" />
      <Add option="-Wshadow" />
      <Add option="-Wall" />
      <Add option="-W" />

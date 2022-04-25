@@ -17,53 +17,55 @@ system without traces.
 
 \section{Traced events}
 
+
 Events that can be traced during an execution are given below.
 Each event is described by its name and a set of attributes.
 These attributes are made available by the kernel to the platform specific
 backend (see section~\ref{sec:trace:targetbackend} below).
 
 \begin{description}
-  \item[PROC\_CHANGE\_STATE]: state of a process (task or ISR) is changed.
+  \item[TRACE\_PROC]: state of a process (task or ISR) is changed.
     \begin{itemize}
       \item \texttt{proc\_id}: identifier of the process.
       \item \texttt{target\_state}: new state of the proc. %TODO: list states
     \end{itemize}
 
-  \item[RES\_CHANGE\_STATE]: state of a resource is changed.
+  \item[TRACE\_RES]: state of a resource is changed.
     \begin{itemize}
       \item \texttt{res\_id}: identifier of the resource.
       \item \texttt{target\_state}: new state of the resource. %TODO: list states
     \end{itemize}
 
-  \item[EVENT\_SET]: a process sets one or more event to another process.
+  \item[TRACE\_EVENT]: a process set/reset one or more event to another process.
     \begin{itemize}
-      \item \texttt{proc\_id}: owner of the events.
+	  \item \texttt{proc\_id}: owner of the events (when event is set)
       \item \texttt{ev\_id}: list of events that have been set.
     \end{itemize}
 
-  \item[EVENT\_RESET]: a process resets a subset of its events
-    \begin{itemize}
-      \item \texttt{ev\_id}: list of events that have been reset.
-    \end{itemize}
-
-  \item[TIMEOBJ\_CHANGE\_STATE]: state of a timeobj (alarm, schedule table
+  \item[TRACE\_ALARM]: state of a timeobj (alarm, schedule table
     expiry point) is changed.
     \begin{itemize}
       \item \texttt{timeobj\_id}: identifier of the timeobj.
-      \item \texttt{target\_state}: new state of the timeobj.
+	  \item \texttt{kind}: change state or expire.
     \end{itemize}
 
-  \item[TIMEOBJ\_EXPIRE]: a timeobj expires.
+  \item[TRACE\_MESSAGE]: a message is sent or received.
     \begin{itemize}
-      \item \texttt{alarm\_id}: identifier of the timeobj.
+      \item \texttt{msg\_id}: identifier of the message
+	  \item \texttt{kind}: kind of message (receive, send, send 0 message)
     \end{itemize}
+  \item[TRACE\_IOC]: **not well tested**
+  \begin{itemize}
+  	\item \texttt{mess\_id}: identifier of the message.
+  \end{itemize}
+  
 
 \end{description}
 
 Notice that each event contains the minimal information that is needed
 to rebuild the whole state of the system.
 Hence, the running task is never used as an attribute because it can be deduced
-by analysing the sequence of \emph{PROC\_CHANGE\_STATE} events.
+by analysing the sequence of \emph{TRACE\_PROC} events.
 
 \section{OIL declaration}
 \subsection{Generic part}
@@ -79,27 +81,21 @@ TRACE = TRUE {
     RESOURCE = TRUE;
     ALARM = TRUE;
     EVENT = TRUE;
+    MESSAGE = TRUE;
 };
 \end{lstlisting}
 
 \begin{description}
 	\item[FORMAT] specifies the output format of the trace. This is a target dependant attribute. For instance, the posix target allows the \texttt{json} output, while the msp430 allows the \texttt{serial} and \texttt{fram} targets (with sub-attributes). See section \ref{sec:traceTargetFormat}.
 
-  \item[PROC] controls the tracing of event \texttt{PROC\_CHANGE\_STATE};
-
-  \item[RESOURCE] controls the tracing of event \texttt{RES\_CHANGE\_STATE};
-
-  \item[ALARM] controls the tracing of events \texttt{TIMEOBJ\_CHANGE\_STATE}
-    and \texttt{TIMEOBJ\_EXPIRE};
-
-  \item[EVENT]  controls the tracing of events \texttt{EVENT\_SET}
-    and \texttt{EVENT\_RESET};
 \end{description}
+The other sub-attributes define types of events to trace: \texttt{PROC}, \texttt{RESOURCE}, \texttt{ALARM}, \texttt{EVENT}, \texttt{MESSAGE}, \texttt{IOC}
 
 \subsection{Target specific part}
 \label{sec:traceTargetFormat}
 \subsubsection{Posix target}
 The posix target is the simplest one, as there is no problem to get back the trace. The trace can be saved in \texttt{json} mode only. The generated file is always called \file{trace.json}.
+
 
 \subsubsection{MSP430 target}
 For the MSP430 format, different methods can be implemented to retrieve the trace:
@@ -110,24 +106,45 @@ For the MSP430 format, different methods can be implemented to retrieve the trac
 	\item[\texttt{SIZE}] the size of the dump in bytes;
 	\item[\texttt{ADDRESS}] the base address.
 \end{description} It should not be used if the throughput is too high!
-(not implemented yet).
+(\emph{not implemented yet}).
 
-	\item[\texttt{SD}] the embedded SD card (not implemented yet).
+	\item[\texttt{SD}] the embedded SD card (\emph{not implemented yet}).
 \end{description}
 
 In all cases, a trace event should take as low room as possible, and is stored in binary format (see section \ref{sec:traceBinFormat}).
 
+\subsubsection{STM32 target}
+On STM32 (Nucleo STM32F303 and STM32L432), the Serial target is implemented. There is a full example in \texttt{examples/cortex/armv7em/stm32f303/Nucleo-32/trace}
 
+\begin{lstlisting}[language=OIL]
+    TRACE = TRUE {
+        FORMAT   = serial;
+        PROC     = TRUE;
+        RESOURCE = TRUE;
+        ALARM    = TRUE;
+        EVENT    = TRUE;
+    };
+    
+    BUILD = TRUE {
+	  //..
+      LIBRARY = serial {TXBUFFER = 256;};
+	  //..
+
+\end{lstlisting}
+
+\subsubsection{Arduino Uno target}
+On Arduino UNO, the Serial target is implemented (using the arduino Serial driver).
+There is a full example in \texttt{examples/avr/arduinoUno/trace}
 
 \section{Using the tracing subsystem}
 
-The trace are generated by trampoline on the target. A difficulty resides in the ability to retrieve the information on the host system. 
+The trace are generated by trampoline on the target. We then need to retrieve the information on the host system. 
 
 The trace system is split in 3 steps, as defined in Figure \ref{fig:trace}:
 \begin{description}
 	\item[TraceReader] reads \textsl{raw events} from the target. A \textsl{raw event} deals only with numerical ids from Trampoline. The reader can read events from the serial or from a file at this date. It can store them to a file for later evaluation.
-	\item[TraceEvaluate] associates a name with each ids, thanks to the \file{tpl_static_info.json} file generated by goil. It can make some extra evaluation on the application: there is never an event received to a suspended task, there is never critical section overlap due to bad resource usage, …
-	\item[TraceExport] prints the trace (text based or graphical).
+	\item[TraceEvaluate] associates a name with each ids, thanks to the \file{tpl_static_info.json} file generated by goil. It can make some extra evaluation on the application: there is never an event received by a suspended task, there is no critical section overlap due to bad resource usage, a task that gets a resource has the right to do so, …
+	\item[TraceAnalysis] analysis of the trace: cpu load, event listing, …
 \end{description}
 
 \begin{figure}[htbp]
@@ -135,13 +152,13 @@ The trace system is split in 3 steps, as defined in Figure \ref{fig:trace}:
 	\begin{adjustbox}{width=.7\linewidth,keepaspectratio}
 		\input{./trace.tikz}
 	\end{adjustbox}
-	\caption{Getting trace list from the target. The \file{readTrace.py} script calls the 3 steps of the trace : \pyfunction{TraceReader}, \pyfunction{TraceEvaluate} and \pyfunction{TraceExport}, for each event.}
+\caption{Getting trace list from the target. The \file{readTrace.py} script calls the 3 steps of the trace : \pyfunction{TraceReader}, \pyfunction{TraceEvaluate} and \pyfunction{TraceAnalysis}, for each event.}
 	\label{fig:trace}
 \end{figure}
 
-For the serial line reader, the events are queued in a dedicated thread, so that there is no event loss, even if evaluation/export are too slow.
+For the serial line reader, the events are queued in a dedicated thread, so that there is no event loss, even if evaluation/analysis are too slow.
 
-\note{On the posix target, trampoline generates directly the \texttt{trace.json} file.}
+\note{On the posix target, trampoline generates directly the \file{trace.json} file.}
 
 Tools are provided in the \file{extra/trace-tools/} directory of Trampoline, and called directly by the generated script \file{readTrace.py}. Run to have information how to use the script:
 
@@ -149,10 +166,9 @@ Tools are provided in the \file{extra/trace-tools/} directory of Trampoline, and
 ./readTrace.py --help
 \end{lstlisting}
 
-For now, the script can read from a json file (posix or saved trace) or a serial line. It can save a received trace to a file for later use. The export is text based only.
+For now, the script can read from a json file (posix or saved trace) or a serial line. It can save a received trace to a file for later use (raw events). The analysis for now just gives the list of events or calculate the cpu load.
 
 \note{When receiving an endless trace (serial line for instance), you can terminate the reception with \texttt{Ctrl+C}}.
-
 
 \section{Implementation}
 The implementation is split in 2 parts:
@@ -185,7 +201,16 @@ A new file is now generated by goil \file{tpl_static_info.oil} that lists the ob
 
 The binary format is defined in Figure \ref{fig:traceBin}. It is composed of:
 \begin{description}
-	\item[Type] There are 6 events types: PROC\_CHANGE\_STATE, RES\_CHANGE\_STATE, EVENT\_SET, EVENT\_RESET, TIMEOBJ\_CHANGE\_STATE and TIMEOBJ\_EXPIRE. One extra type \emph{OVERFLOW} is defined if the communication medium cannot assure a sufficent bandwidth. 3 bits are required.
+	\item[Type]\footnote{defined in \lstinline{os/tpl_trace.h}} There are 7 events types: 
+		\begin{itemize}
+			\item PROC\_TYPE: a task/isr2 changes its state (running, suspended, ready,…);
+			\item RES\_TYPE: related to resources (\lstinline{getResource}/\lstinline{ReleaseResource})
+			\item EVENT\_TYPE: related to events (\lstinline{SetEvent}/\lstinline{ReleaseEvent})
+			\item TIMEOBJ\_TYPE: related to alarms and schedule tables (\lstinline{SetRelAlarm}, \lstinline{CancelAlarm}, …)
+			\item MESSAGE\_TYPE: related to communication (\lstinline{GetMessage}/\lstinline{ReceiveMessage})
+			\item IOC\_TYPE: related to IOC (AutoSar extension) 
+		\end{itemize}
+		One extra type \emph{OVERFLOW\_TYPE} is defined if the communication medium cannot provide a sufficient bandwidth. 3 bits are required.
 	\item[TimeStamp] The time stamp. The overflow should be taken into account by the receiver (events are in chronological order). Most significant byte first.
 	\item[xxx] This is the event dependent data (5+8 bits).
 	\item[Chksum] The checksum (8 bits) is the sum of the 4 previous bytes. Its goal is both to detect errors and frame limits.
@@ -206,72 +231,39 @@ For each type, we define the specific bits:
 	\rowcolors{1}{white}{light-gray}
 	\begin{longtable}[c]{c|c|l}
 		\bf Type & \bf format (5+8 bits) & \bf fields \\ \hline
-		PROC\_CHANGE\_STATE    & \texttt{00SSS PPPPPPPP}& \texttt{S} (3 bits): proc state \\
-		                       &                        & \texttt{P} (8 bits): proc id    \\ \hline
-		RES\_CHANGE\_STATE     & \texttt{00SSS RRRRRRRR}& \texttt{S} (3 bits): res state  \\
-		                       &                        & \texttt{R} (8 bits): res id     \\ \hline
-		EVENT\_SET             & \texttt{EEEEE TTTTTTTT}& \texttt{E} (5 bits): event id   \\
-		                       &                        & \texttt{T} (8 bits): task id     \\ \hline
-		EVENT\_RESET           & \texttt{EEEEE 00000000}& \texttt{E} (5 bits): event id   \\ \hline
-		TIMEOBJ\_EXPIRE        & \texttt{00000 TTTTTTTT}& \texttt{R} (8 bits): time obj id    \\ \hline
-		TIMEOBJ\_CHANGE\_STATE & \texttt{00SSS TTTTTTTT}& \texttt{S} (3 bits): time obj. state \\
-		                       &                        & \texttt{T} (8 bits): time obj id    \\ \hline
+		PROC\_TYPE    & \texttt{00SSS PPPPPPPP} & \texttt{S} (3 bits): proc state      \\
+		              &                         & \texttt{P} (8 bits): proc id         \\ \hline
+		RES\_TYPE     & \texttt{0000S RRRRRRRR} & \texttt{S} (1 bit ): res state (free/taken)       \\
+		              &                         & \texttt{R} (8 bits): res id          \\ \hline
+		EVENT\_TYPE   & \texttt{EEEEE KTTTTTTT} & \texttt{E} (5 bits): event id        \\
+		              &                         & \texttt{K} (1 bit) : kind            \\ 
+		              &                         & \texttt{T} (8 bits): task id         \\ \hline
+		TIMEOBJ\_TYPE & \texttt{K0SSS TTTTTTTT} & \texttt{K} (1 bit) : kind            \\
+		              &                         & \texttt{S} (3 bits): time obj. state \\
+		              &                         & \texttt{T} (7 bits): time obj id     \\ \hline
+		MESSAGE\_TYPE & \texttt{MMMMM 000000KK} & \texttt{M} (5 bits): message id      \\
+	                  &                         & \texttt{K} (2 bits): kind            \\ \hline
+		%IOC\_TYPE     & \texttt{MMMMM 000000TT} & \texttt{M} (5 bits): message id \\
 	\end{longtable}
 	\caption{Specific bits for each event type}
 	\label{tab:traceBin}
 \end{table}
 
+
 Due to frame size limits, the number of events is limited to 31, the number of procs (task/isr) to 255, as well as time objects (alarms, schedule tables) and resources.
 
-\subsection{JSON format}
-\label{sec:traceJSONFormat}
-
-The JSON format embedds a list of events (\texttt{trace.json} in Fig.\ref{fig:trace}). This trace is generated and handled by the \texttt{TraceReader} script (in \texttt{extra/trace-tools/TraceReader.py}). 
-
-This file is generated from the binary format (see section \ref{sec:traceBinFormat}), it contains raw information (using ids instead of names):
-
+Some types have a sub-type (kind):
 \begin{description}
-	\item[\texttt{ts}] a timestamp (integer value). The overflow that may appear in binary format is not possible in the JSON format;
-	\item[\texttt{type}] The event type. Depending on the event, the sub-attributes (always integers) are given:
-		\begin{description}
-			\item[\texttt{proc}:] attributes \texttt{target_state} and \texttt{proc_id}
-			\item[\texttt{set_event}:] attributes \texttt{event} and \texttt{target_task_id}.
-			\item[\texttt{reset_event}:] attribute \texttt{event}
-			\item[\texttt{timeobj}:] attributes \texttt{target_state} and \texttt{timeobj_id}
-			\item[\texttt{timeobj_expire}:] attributes \texttt{timeobj_id}
+	\item[EVENT\_TYPE] kind may be \texttt{0} when an event is set or \texttt{1} when the event is reset (there is no \texttt{task id} as it is the running task. 
+	%\item[TIMEOBJ\_TYPE] kind may be \texttt{0} when an event is set or \texttt{1} when the event is reset (there is no \texttt{task id} as it is the running task. 
+	%\item[MESSAGE\_TYPE] kind may be \texttt{0} when an event is set or \texttt{1} when the event is reset (there is no \texttt{task id} as it is the running task. 
 \end{description}
-\end{description}
-All the attributes are the one manipulated internally by the kernel, and are used to get corresponding application names using the file \texttt{tpl_static_info.json} generated by goil.
 
-Here is a (short) example of a JSON trace file:
-\begin{verbatim}
-[
-  {
-    "ts": 28600,
-    "type": "timeobj_expire",
-    "timeobj_id": 0
-  },
-  {
-    "ts": 28600,
-    "type": "proc",
-    "target_state": 5,
-    "proc_id": 0
-  },
-  {
-    "ts": 28600,
-    "type": "proc",
-    "target_state": 1,
-    "proc_id": 1
-  },
-  ...
-]
-\end{verbatim}
-
-The generation of a JSON file from binary events is implemented in function \texttt{decodeBinaryEvent} in script \texttt{extra/trace-tools/TraceReader.py}.
+The message event type bits is used to indicate the specific type of event associated with the message, such as send and receive.
 
 \subsection{How to port \texttt{trace} to another target}
 
-The \texttt{tpl\_trace.c} is target specific. It should be defined in the \lstinline{machine} hierarchy. A good starting point is the msp430's version, with a SERIAL implementation. In the \texttt{avr/arduino} version, a C++ example is provided.
+The \texttt{tpl\_trace.c} is target specific. It should be defined in the \lstinline{machine} hierarchy. A good starting point is the stm32's version\footnote{file \file{machines/cortex/armv7em/stm32f303/tpl_trace.c}}, with a SERIAL implementation. In the \texttt{avr/arduino} version, a C++ example is provided.
 
 Then, the goil templates should be updated. This is done in 2 steps:
 

@@ -13,12 +13,13 @@ CPU test {
   OS config {
     STATUS = STANDARD;
     BUILD = TRUE {
-        TRAMPOLINE_BASE_PATH = "/home/sfaucou/repos/projects/trampoline";
+        TRAMPOLINE_BASE_PATH = "../../..";
         SYSTEM = PYTHON;
         APP_SRC = "isr.c";
         APP_NAME = "isr_exe";
     };
-  };
+  };  
+
 
   APPMODE std {
   };

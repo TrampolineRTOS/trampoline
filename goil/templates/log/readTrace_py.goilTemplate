@@ -6,38 +6,51 @@ import argparse
 import time
 import textwrap
 
+#TODO: make it dynamic
+def getAnalysisTool(name,si):
+    if name == 'load':
+        return TraceAnalysisCpuLoad(si)
+    elif name == 'list':
+        return TraceAnalysisList(si)
+    else:
+        return None
+
 if __name__ == '__main__':
-    defaultTraceFile = 'trace.json'
+    defaultOutput = 'trace.json'
     #arguments (no default arg for -i and -o to get None if not defined)
     parser = argparse.ArgumentParser(description='Use the trace tookit to get information on Trampoline based application behavior. 2 input modes for now: json file or serial line.',
     formatter_class=argparse.RawDescriptionHelpFormatter, epilog=textwrap.dedent(
     '''\
         --------------------------------
-        Example: 
-          {0} -i trace.json                     # read a json trace file, output to stdout
-          {0} -s /dev/ttyACM0,9600              # read from serial line,  output to stdout
-          {0} -s /dev/ttyACM1,9600 -o test.json # read from serial line, and store raw events in test.json
+        Examples: 
+          # read from serial line,  output log to stdout. Stop acquisition with Ctrl+C
+            {0} -i /dev/ttyACM0,9600
+          # read from serial line, and store raw events in trace.json
+            {0} -i /dev/ttyACM1,9600 -o trace.json         
+          # read a json trace file, output cpu load analysis on stdout
+            {0} -i trace.json -a load
+          # read from serial line, store raw events (no analysis), and perform analysis to stdout
+            {0} -i /dev/ttyACM1,9600 -a load -o trace.json 
 
         If no input argument given, same as '-i trace.json', output on stdout.
     '''.format(sys.argv[0])))
-    #options -i (or -o,-s), with nargs
-    #  * nothing => None
-    #  * -i      => default (trace.json, ...)
-    #  * -i file => file
-    parser.add_argument("-i", "--input", type=str, nargs='?', const=defaultTraceFile, metavar='inputFile', help='use JSON input file.')
-    parser.add_argument("-s", "--serial", type=str, nargs='?', const='/dev/ttyACM1,9600',metavar='serial', help='Use the serial line to get events. Parameter is the device name and speed. For instance "/dev/ttyACM0,9600"')
-    parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultTraceFile, metavar='outputFile', help='Store the event list into a JSON format for later use.')
+    parser.add_argument("-i", "--input", type=str, nargs='?', default='trace.json', metavar='input', help='input can either be a saved file (json format), or the serial line to get events. In that last case, the device name and the speed should be given, e.g. "/dev/ttyACM0,9600" (default \%(default)s)')
+    parser.add_argument("-o", "--output", type=str, nargs='?', const=defaultOutput, metavar='outputFile', help='Store the raw event list into a JSON format for later use.')
+    parser.add_argument("-a", "--analysis", type=str, nargs='?', const='all', choices=['load','list'],default=None,metavar='data', help="Analysis tool to apply on the trace: allowed 'load','list' (default \%(default)s)")
     parser.add_argument("-v", "--verbose", default=False, action="store_true", help="verbose mode")
     args = parser.parse_args()
 
     #first, get access to files.
     traceToolFolder = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/extra/trace-tools"
     sys.path.append(traceToolFolder)
+    sys.path.append(traceToolFolder+'/analysis')
     try:
         import StaticInfo
         import TraceReader
         import TraceEvaluate
-        import TraceExport
+        import TraceAnalysis
+        from TraceAnalysisCpuLoad import *
+        from TraceAnalysisList import *
     except ImportError:
         print("I can't find trace tools scripts")
         print("=> searched in '"+traceToolFolder+"'")
@@ -46,12 +59,10 @@ if __name__ == '__main__':
         sys.exit(1)
 
     #reader    => getting raw events
-    if args.serial: #serial line?
-        serialParams=args.serial.split(',')
-        reader   = TraceReader.TraceReaderSerial(serialParams,args.verbose)
-    else:           #then file.
-        if not args.input:
-            args.input = defaultTraceFile
+    inputParams=args.input.split(',') #is there a coma in the input? yes => serial, no => file.
+    if len(inputParams) == 2: # serial
+        reader   = TraceReader.TraceReaderSerial(inputParams,args.verbose)
+    else:                     # then file.
         reader   = TraceReader.TraceReaderFile(args.input)
 
     #output
@@ -59,27 +70,29 @@ if __name__ == '__main__':
     if args.output:
         outputToFile = True
         rawEventList = []
-    else:
-        #export    => front end (txt, gui)
-        export   = TraceExport.TraceExportTxt()
-        #read static information
-        si = StaticInfo.StaticInfo('%!PROJECT%/tpl_static_info.json')
-        #evaluator => from raw events and Static info. Get events
-        evaluate = TraceEvaluate.TraceEvaluate(si)
-        evaluate.setExport(export)
+    #read static information
+    si = StaticInfo.StaticInfo('%!PROJECT%/tpl_static_info.json')
+    #evaluator => from raw events and Static info. Get events
+    evaluate = TraceEvaluate.TraceEvaluate(si)
+    analysisTool = getAnalysisTool(args.analysis,si)
 
     #end of config. main loop
     try:
         for rawEvent in reader.getEvent():
             if outputToFile:
                 rawEventList.append(rawEvent)
-            else:
-                evaluate.evaluate(rawEvent)
+            if analysisTool: #analysis (maybe with output)
+                event = evaluate.evaluate(rawEvent)
+                analysisTool.handleEvent(event)
+
     except KeyboardInterrupt:
-        reader.stop()
-        if outputToFile:
-            if args.verbose:
-                print('save to '+args.output)
-            with open(args.output, "w") as outfile:
-                json.dump(rawEventList, outfile, indent=2)
+        pass #done be Ctrl+C at the end of the serial acquisition
+    reader.stop()
+    if outputToFile:
+        if args.verbose:
+            print('save to '+args.output)
+        with open(args.output, "w") as outfile:
+            json.dump(rawEventList, outfile, indent=2)
+    if analysisTool:
+        analysisTool.stop()
 

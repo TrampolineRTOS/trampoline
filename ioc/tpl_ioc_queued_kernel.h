@@ -25,6 +25,7 @@
 #include "tpl_as_app_kernel.h"
 #include "tpl_os_kernel.h"
 #include "tpl_as_definitions.h"
+#include "tpl_trace.h"
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

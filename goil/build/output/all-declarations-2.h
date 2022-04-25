@@ -10,6 +10,98 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Phase 1: @sint_33__32_AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_33__32_AttributeSet : public GALGAS_attributeRange {
+//--- Constructor
+  public : GALGAS_sint_33__32_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_sint_33__32_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_sint_33__32_AttributeSet * ptr (void) const { return (const cPtr_sint_33__32_AttributeSet *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_sint_33__32_AttributeSet (const cPtr_sint_33__32_AttributeSet * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_sint_33__32_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                 C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_sint_33__32_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                         const class GALGAS_sint_33__32_List & inOperand1
+                                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_sint_33__32_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_sint_33__32_List inArgument0
+                                                      COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_sint_33__32_List getter_valueList (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_sint_33__32_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint32AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_sint_33__32_AttributeSet : public cPtr_attributeRange {
+//--- Attributes
+  public : GALGAS_sint_33__32_List mProperty_valueList ;
+
+//--- Constructor
+  public : cPtr_sint_33__32_AttributeSet (const GALGAS_location & in_location,
+                                          const GALGAS_sint_33__32_List & in_valueList
+                                          COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_sint_33__32_List getter_valueList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_sint_33__32_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Phase 1: @sint_36__34_AttributeSet class
 //
 //----------------------------------------------------------------------------------------------------------------------

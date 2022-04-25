@@ -7,7 +7,7 @@ import sys, time, os
 import makefile, default_build_options
 
 #----------------------------------------------------------------------------------------------------------------------*
-#   displayDurationFromStartTime                                                                 
+#   displayDurationFromStartTime
 #----------------------------------------------------------------------------------------------------------------------*
 
 def displayDurationFromStartTime (startTime) :
@@ -56,6 +56,8 @@ class GenericGalgasMakefile :
     startTime = time.time ()
   #--- Source file list
     SOURCES = self.mDictionary ["SOURCES"]
+  #--- Linker options
+    self.mLinkerOptions += self.mDictionary ["USER_LINK_OPTIONS"]
   #--- LIBPM
     LIBPM_DIRECTORY_PATH = self.mDictionary ["LIBPM_DIRECTORY_PATH"]
   #--------------------------------------------------------------------------- System

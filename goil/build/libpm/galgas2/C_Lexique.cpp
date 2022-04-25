@@ -1,11 +1,11 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  'C_Lexique' : an abstract lexique class ;                                                    
-//  Galgas generated scanner classes inherit from this class.                                    
+//  'C_Lexique' : an abstract lexique class ;
+//  Galgas generated scanner classes inherit from this class.
 //
-//  This file is part of libpm library                                                           
+//  This file is part of libpm library
 //
-//  Copyright (C) 1996, ..., 2018 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -212,19 +212,13 @@ void C_Lexique::enterTokenFromPointer (cToken * inToken) {
         s.appendUnicodeCharacter (c COMMA_HERE) ;
       }
     }
-    co << "  " << getCurrentTokenString (inToken) ;
-//    if (inToken->mIsOptional) {
-//      co << "  OPTIONAL" ;
-//    }
-    co << ", from location " << cStringWithSigned (inToken->mStartLocation.index ())
+    co << "  " << getCurrentTokenString (inToken)
+       << ", from location " << cStringWithSigned (inToken->mStartLocation.index ())
        << " (line " << cStringWithSigned (inToken->mStartLocation.lineNumber ())
        << ", column " << cStringWithSigned (inToken->mStartLocation.columnNumber ()) << ")"
        << " to location " << cStringWithSigned (inToken->mEndLocation.index ())
        << " (line " << cStringWithSigned (inToken->mEndLocation.lineNumber ())
        << ", column " << cStringWithSigned (inToken->mEndLocation.columnNumber ()) << ")" ;
-//    if (!inToken->mIsOptional) {
-//       co << " \"" << s << "\"" ;
-//    }
     if (inToken->mTemplateStringBeforeToken.length () > 0) {
       co << ", template '" << inToken->mTemplateStringBeforeToken << "'" ;
     }
@@ -261,9 +255,6 @@ void C_Lexique::resetForSecondPass (void) {
   mPreviousChar = TO_UNICODE ('\0') ;
   mCurrentTokenPtr = mFirstToken ;
   if (mCurrentTokenPtr != NULL) {
-//    while ((mCurrentTokenPtr != NULL) && mCurrentTokenPtr->mIsOptional) {
-//      mCurrentTokenPtr = mCurrentTokenPtr->mNextToken ;
-//    }
     mStartLocationForHere = mCurrentTokenPtr->mStartLocation ;
     mEndLocationForHere = mCurrentTokenPtr->mEndLocation ;
     mStartLocationForNext = mCurrentTokenPtr->mStartLocation ;
@@ -811,7 +802,8 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
   performLexicalAnalysis () ;
   if (! executionModeIsLexicalAnalysisOnly ()) {
   //--- Variables for generating syntax tree in a form suitable for graphviz
-    const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue ;
+    const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue
+       && (sourceFilePath ().stringByDeletingPathExtension () != "") ;
     C_String syntaxTreeDescriptionString ;
     TC_Array <uint32_t> productionUniqueNameStack ;
     uint32_t uniqueProductionNameIndex = 0 ;
@@ -824,10 +816,6 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
   //---
     int32_t indentationForParseOnly = 0 ;
     cToken * tokenPtr = mFirstToken ;
-//    while ((tokenPtr != NULL) && tokenPtr->mIsOptional) {
-//      tokenPtr = tokenPtr->mNextToken ;
-//    }
-
     if (executionModeIsSyntaxAnalysisOnly ()) {
       co << "*** PERFORM TOP-DOWN PARSING ONLY (--mode=syntax-only option) ***\n" ;
     }
@@ -852,9 +840,6 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
           currentToken = 0 ; // 0 means end of source file
         }else{
           tokenPtr = tokenPtr->mNextToken ;
-//          while ((tokenPtr != NULL) && tokenPtr->mIsOptional) {
-//            tokenPtr = tokenPtr->mNextToken ;
-//          }
           currentToken = (tokenPtr != NULL) ? tokenPtr->mTokenCode : ((int16_t) 0) ;
           if (tokenPtr != NULL) {
             mCurrentLocation = tokenPtr->mEndLocation ;
@@ -1056,10 +1041,10 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
   //--- Output graphviz file
     if (produceSyntaxTree) {
       syntaxTreeDescriptionString << "}\n" ;
-      const C_String filePath = sourceFilePath ().stringByDeletingPathExtension () + ".dot" ;
-      // printf ("filePath: '%s'\n", filePath.cString (HERE)) ;
+      const C_String dotFilePath = sourceFilePath ().stringByDeletingPathExtension () + ".dot" ;
+      // printf ("sourceFilePath: '%s', dotFilePath: '%s'\n", sourceFilePath ().cString (HERE), dotFilePath.cString (HERE)) ;
       GALGAS_bool fileWritten ;
-      GALGAS_string (syntaxTreeDescriptionString).method_writeToFileWhenDifferentContents (GALGAS_string (filePath), fileWritten, this COMMA_HERE) ;
+      GALGAS_string (syntaxTreeDescriptionString).method_writeToFileWhenDifferentContents (GALGAS_string (dotFilePath), fileWritten, this COMMA_HERE) ;
     }
   //--- Set current read location to 0
     listForSecondPassParsing.copyIntoArray (mArrayForSecondPassParsing) ;
@@ -1164,7 +1149,8 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
             "  Initial State: S0\n" ;
     }
   //--- Variables for generating syntax tree in a form suitable for graphviz
-    const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue ;
+    const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue
+       && (sourceFilePath ().stringByDeletingPathExtension () != "") ;
     C_String syntaxTreeDescriptionString ;
     TC_Array <C_String> shiftedElementStack ;
     shiftedElementStack.appendObject ("TOP") ;
@@ -1185,13 +1171,11 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
     
     cToken * tokenPtr = mFirstToken ;
 
-    int16_t currentToken = (int16_t) -1 ;
-//    bool currentTokenIsOptional = false ;
+    int16_t currentToken = int16_t (-1) ;
     if (tokenPtr == NULL) {
       mCurrentLocation.resetLocation () ;
     }else{
       currentToken = tokenPtr->mTokenCode ;
-//      currentTokenIsOptional = tokenPtr->mIsOptional ;
       mCurrentLocation = tokenPtr->mEndLocation ;
     }
     bool loop = true ;
@@ -1203,11 +1187,9 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
         }else{
           tokenPtr = tokenPtr->mNextToken ;
           currentToken = 0 ;
-//          currentTokenIsOptional = false ;
           if (tokenPtr != NULL) {
             mCurrentLocation = tokenPtr->mEndLocation ;
             currentToken = tokenPtr->mTokenCode ;
-//            currentTokenIsOptional = tokenPtr->mIsOptional ;
           }
         }
       }
@@ -1228,7 +1210,7 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
       //--- Token has been used
         currentToken = -1 ;
       //--- Shift action ------------------------------------
-        actionCode = (int16_t) (actionCode - 2) ;
+        actionCode = int16_t (actionCode - 2) ;
         stack.appendObject (-1) ; // Enter any value
         stack.appendObject (actionCode) ; // Enter next current state
         poppedErrors.setCountToZero () ;
@@ -1253,7 +1235,7 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
         // co <<  "EXTENSION executionList: " << executionList.count () << "\n" ;
       }else if (actionCode < 0) {
       //--- Reduce action ------------------------------------
-        actionCode = (int16_t) (- actionCode - 1) ;
+        actionCode = int16_t (- actionCode - 1) ;
         MF_Assert (actionCode >= 0, "actionCode (%lld) < 0", actionCode, 0) ;
         const int16_t nonTerminal = inProductionsTable [2 * actionCode] ;
         const int32_t reduceSize = inProductionsTable [2 * actionCode + 1] ;
@@ -1320,8 +1302,6 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
         if (executionModeIsSyntaxAnalysisOnly ()) {
           co << "  [S" << cStringWithSigned (currentState) << ", " << getCurrentTokenString (tokenPtr) << "] : Accept\n" ;
         }
-//      }else if (currentTokenIsOptional) {
-//        currentToken = -1 ; //--- Token has been used
       }else{
       //--- Parsing error -----------------------------------
         result = false ;
@@ -1367,10 +1347,10 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
   //--- Output graphviz file
     if (produceSyntaxTree) {
       syntaxTreeDescriptionString << "}\n" ;
-      const C_String filePath = sourceFilePath ().stringByDeletingPathExtension () + ".dot" ;
-      // printf ("filePath: '%s'\n", filePath.cString (HERE)) ;
+      const C_String dotFilePath = sourceFilePath ().stringByDeletingPathExtension () + ".dot" ;
+      // printf ("sourceFilePath: '%s', dotFilePath: '%s'\n", sourceFilePath ().cString (HERE), dotFilePath.cString (HERE)) ;
       GALGAS_bool fileWritten ;
-      GALGAS_string (syntaxTreeDescriptionString).method_writeToFileWhenDifferentContents (GALGAS_string (filePath), fileWritten, this COMMA_HERE) ;
+      GALGAS_string (syntaxTreeDescriptionString).method_writeToFileWhenDifferentContents (GALGAS_string (dotFilePath), fileWritten, this COMMA_HERE) ;
     }
     if (executionModeIsSyntaxAnalysisOnly ()) {
       co << "*** END OF PARSING (success: " << (result ? "yes" : "no") << ") ***\n" ;
@@ -1443,9 +1423,6 @@ void C_Lexique::acceptTerminal (const int16_t IN_EXPECTED_TERMINAL COMMA_LOCATIO
     int16_t currentTokenCode = 0 ;
   #endif
   if (mCurrentTokenPtr != NULL) {
-//    while ((mCurrentTokenPtr != NULL) && mCurrentTokenPtr->mIsOptional && (mCurrentTokenPtr->mTokenCode != inExpectedTerminal)) {
-//      mCurrentTokenPtr = mCurrentTokenPtr->mNextToken ;
-//    }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       currentTokenCode = mCurrentTokenPtr->mTokenCode ;
     #endif

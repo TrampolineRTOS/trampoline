@@ -45,6 +45,17 @@ IMPLEMENTATION common
   {
     UINT32 PRIORITY = 1;
   };
+
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          commonConfig, embUnit, archConfig
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
 };
 
 CPU common

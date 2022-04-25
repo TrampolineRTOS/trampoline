@@ -35,10 +35,10 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-typedef struct {
-  public : uint64_t mOperands ;
-  public : uint32_t mResult ;
-} tStructANDOperationCacheEntry ;
+class tStructANDOperationCacheEntry {
+  public: uint64_t mOperands ;
+  public: uint32_t mResult ;
+} ;
 
 //----------------------------------------------------------------------------------------------------------------------
 

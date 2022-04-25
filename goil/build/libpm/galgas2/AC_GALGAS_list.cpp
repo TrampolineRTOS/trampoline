@@ -157,34 +157,34 @@ void AC_GALGAS_list::appendObject (const capCollectionElement & inElementToAdd) 
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::insertObjectAtIndex (const capCollectionElement & inElementToAdd,
-                                              const uint32_t inInsertionIndex,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) {
+                                          const uint32_t inInsertionIndex,
+                                          C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) {
   mSharedArray.insertObjectAtIndex (inElementToAdd, inInsertionIndex, inCompiler COMMA_THERE) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::readFirst (capCollectionElement & outAttributes,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) const {
+                                C_Compiler * inCompiler
+                                COMMA_LOCATION_ARGS) const {
   mSharedArray.readFirstObject (outAttributes, inCompiler COMMA_THERE) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::readLast (capCollectionElement & outAttributes,
-                                   C_Compiler * inCompiler
-                                   COMMA_LOCATION_ARGS) const {
+                               C_Compiler * inCompiler
+                               COMMA_LOCATION_ARGS) const {
   mSharedArray.readLastObject (outAttributes, inCompiler COMMA_THERE) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::subListWithRange (AC_GALGAS_list & outList,
-                                           const GALGAS_range & inRange,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) const {
+                                       const GALGAS_range & inRange,
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) const {
   if (isValid () && inRange.isValid ()) {
     bool ok = false ;
     mSharedArray.subListWithRange (outList.mSharedArray,
@@ -201,9 +201,9 @@ void AC_GALGAS_list::subListWithRange (AC_GALGAS_list & outList,
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::subListFromIndex (AC_GALGAS_list & outList,
-                                           const GALGAS_uint & inIndex,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) const {
+                                       const GALGAS_uint & inIndex,
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) const {
   if (isValid () && inIndex.isValid ()) {
     bool ok = false ;
     mSharedArray.subListFromIndex (outList.mSharedArray, inIndex.uintValue (), ok, inCompiler COMMA_THERE) ;
@@ -216,9 +216,9 @@ void AC_GALGAS_list::subListFromIndex (AC_GALGAS_list & outList,
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::subListToIndex (AC_GALGAS_list & outList,
-                                         const GALGAS_uint & inIndex,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) const {
+                                     const GALGAS_uint & inIndex,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) const {
   if (isValid () && inIndex.isValid ()) {
     bool ok = false ;
     mSharedArray.subListToIndex (outList.mSharedArray, inIndex.uintValue (), ok, inCompiler COMMA_THERE) ;
@@ -239,8 +239,8 @@ void AC_GALGAS_list::appendList (const AC_GALGAS_list & inList) {
 //----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElement AC_GALGAS_list::readObjectAtIndex (const GALGAS_uint & inIndex,
-                                                            C_Compiler * inCompiler
-                                                            COMMA_LOCATION_ARGS) const {
+                                                        C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) const {
   capCollectionElement result ;
   if (isValid () && inIndex.isValid ()) {
     const uint32_t index = inIndex.uintValue () ;
@@ -258,18 +258,22 @@ capCollectionElement AC_GALGAS_list::readObjectAtIndex (const GALGAS_uint & inIn
 //----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * AC_GALGAS_list::uniquelyReferencedPointerAtIndex (const GALGAS_uint & inIndex,
-                                                                           C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) {
+                                                                       C_Compiler * inCompiler
+                                                                       COMMA_LOCATION_ARGS) {
   cCollectionElement * result = NULL ;
-  if (isValid () && inIndex.isValid ()) {
-    const uint32_t index = inIndex.uintValue () ;
-    if (index < mSharedArray.count ()) {
-      result = mSharedArray.uniquelyReferencedPointerAtIndex (index COMMA_THERE) ;
-      macroUniqueSharedObject (result) ;
+  if (isValid ()) {
+    if (inIndex.isValid ()) {
+      const uint32_t index = inIndex.uintValue () ;
+      if (index < mSharedArray.count ()) {
+        result = mSharedArray.uniquelyReferencedPointerAtIndex (index COMMA_THERE) ;
+        macroUniqueSharedObject (result) ;
+      }else{
+        C_String s = "objectAtIndex: index (" ;
+        s << cStringWithUnsigned (index) << ") >= length (" << cStringWithUnsigned (count ()) << ")" ;
+        inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+      }
     }else{
-      C_String s = "objectAtIndex: index (" ;
-      s << cStringWithUnsigned (index) << ") >= length (" << cStringWithUnsigned (count ()) << ")" ;
-      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+      drop () ;
     }
   }
   return result ;

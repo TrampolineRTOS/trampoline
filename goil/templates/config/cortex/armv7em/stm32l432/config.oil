@@ -1,15 +1,4 @@
 IMPLEMENTATION stm32l432 {
-  OS {
-    BOOLEAN [
-      TRUE {
-        ENUM [
-          IO
-        ] LIBRARY[];
-      },
-      FALSE
-    ] BUILD = FALSE;
-  };
-
   DEVICE_KIND [] {
     STRUCT {
       UINT32 OFFSET;
@@ -32,6 +21,30 @@ IMPLEMENTATION stm32l432 {
     DEVICE_KIND_TYPE KIND;
     UINT32 ADDRESS;
     INTERRUPT_TYPE VECTOR;
+  };
+
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial {
+            UINT32 RXBUFFER = 32;
+            UINT32 TXBUFFER = 16;
+          }
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+
+    /* trace */
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          serial
+        ] FORMAT = serial;
+      },
+      FALSE
+    ] TRACE = FALSE;
   };
 };
 
@@ -577,14 +590,24 @@ CPU stm32l432 {
     CFILE = "tpl_memory_protection.c";
   };
 
-  LIBRARY IO {
-    PATH = "cortex/armv7em/stm32l432/lib";
-	CHEADER = "pinAccess.h";
-	CFILE   = "pinAccess.c";
+  PLATFORM_FILES stm32l432_trace {
+    PATH = "cortex/armv7em/stm32f303";
+	CFILE = "tpl_trace.c";
   };
 
   PLATFORM_FILES stm32fl432_cmsis {
     PATH = "cortex/armv7em/stm32l432/CMSIS-ST/Device/ST/STM32L4xx/Include";
+  };
+
+  PLATFORM_FILES stm32l432IO {
+    PATH    = "cortex/armv7em/stm32l432/lib";
+    CFILE   = "pinAccess.c";
+  };
+
+  LIBRARY serial {
+    PATH = "cortex/armv7em/stm32l432/lib";
+	CHEADER = "serial.h";
+	CFILE   = "serial.c";
   };
 
   POSTBUILD all {

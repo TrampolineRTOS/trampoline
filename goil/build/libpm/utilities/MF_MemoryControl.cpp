@@ -182,16 +182,16 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  typedef struct cPointerDescriptor {
-    const void * mPointer ;
-    struct cPointerDescriptor * mInfPtr ;
-    struct cPointerDescriptor * mSupPtr ;
-    const char * mSourceFileName ;
-    int mSourceLine ;
-    int32_t mUniquePointerID ;
-    int32_t mBalance ;
-    enumAllocationKind mAllocationKind ;
-  } cPointerDescriptor ;
+  class cPointerDescriptor {
+    public: const void * mPointer ;
+    public: cPointerDescriptor * mInfPtr ;
+    public: cPointerDescriptor * mSupPtr ;
+    public: const char * mSourceFileName ;
+    public: int mSourceLine ;
+    public: int32_t mUniquePointerID ;
+    public: int32_t mBalance ;
+    public: enumAllocationKind mAllocationKind ;
+  } ;
 #endif
 
 //----------------------------------------------------------------------------------------------------------------------

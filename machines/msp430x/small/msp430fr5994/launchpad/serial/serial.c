@@ -2,6 +2,7 @@
 #include <stdlib.h> /* NULL */
 #include "tpl_clocks.h"
 #include "tpl_app_define.h" /* buffer sizes */ 
+#include "serial.h"
 
 #define OS_START_SEC_CONST_16BIT
 #include "tpl_memmap.h"
@@ -24,7 +25,9 @@ const uint16_t tpl_mctlwTab[] = {
 #define OS_START_SEC_VAR_16BIT
 #include "tpl_memmap.h"
 
-/* TX buffer */
+/* TX buffer 
+ * write index = (read + size) % capacity
+ * */
 #if SERIAL_TX_BUFFER_SIZE > 0
 #if SERIAL_TX_BUFFER_SIZE > 255
   typedef uint16_t tpl_serial_tx_ring_buffer_index_t;
@@ -34,14 +37,13 @@ const uint16_t tpl_mctlwTab[] = {
 struct tpl_serial_tx_ring_buffer
 {
 	uint8_t  buffer[SERIAL_TX_BUFFER_SIZE];
-	volatile tpl_serial_tx_ring_buffer_index_t head;
-	volatile tpl_serial_tx_ring_buffer_index_t tail;
+	volatile tpl_serial_tx_ring_buffer_index_t read;
+	volatile tpl_serial_tx_ring_buffer_index_t size;
 };
 
 struct tpl_serial_tx_ring_buffer tx_buffer = { { 0 }, 0, 0 };
 
-/* workaround to get out LPM3 only when the tx buffer has been full */
-volatile uint8_t tx_buffer_full = 0;
+uint8_t tpl_serial_tx_mode = 0;
 
 #endif /* SERIAL_TX_BUFFER_SIZE */
 
@@ -55,8 +57,8 @@ volatile uint8_t tx_buffer_full = 0;
 struct tpl_serial_rx_ring_buffer
 {
 	uint8_t  buffer[SERIAL_RX_BUFFER_SIZE];
-	volatile tpl_serial_rx_ring_buffer_index_t head;
-	volatile tpl_serial_rx_ring_buffer_index_t tail;
+	volatile tpl_serial_rx_ring_buffer_index_t read;
+	volatile tpl_serial_rx_ring_buffer_index_t size;
 };
 
 struct tpl_serial_rx_ring_buffer rx_buffer = { { 0 }, 0, 0 };
@@ -82,17 +84,26 @@ void tpl_serial_update_freq()
 	UCA0CTLW0 &= ~UCSWRST;
 }
 
-void tpl_serial_putchar(char c)
+int tpl_serial_putchar(char c)
 {
 #if SERIAL_TX_BUFFER_SIZE > 0
-	const uint16_t next = (tx_buffer.head + 1) % SERIAL_TX_BUFFER_SIZE;
-	while(next == tx_buffer.tail) { 
-		tx_buffer_full = 1;
-		LPM3; /* wait until it is not full */
+	/* overflow depends on the tx mode */
+	if(tpl_serial_tx_mode == SERIAL_TX_MODE_BLOCK)
+	{
+		while(tx_buffer.size == SERIAL_TX_BUFFER_SIZE) { 
+			LPM3; /* wait until it is not full */
+		}
+	} else {/* SERIAL_TX_MODE_SKIP mode assumed */
+		if(tx_buffer.size == SERIAL_TX_BUFFER_SIZE) { 
+			/* overflow */
+			return 1;
+		}
 	}
 	/* add in ring buffer */
-	tx_buffer.buffer[tx_buffer.head] = c;
-	tx_buffer.head = next;
+	UCA0IE &= ~UCTXIE; /* disable TX interrupt */
+	const uint16_t wi = (tx_buffer.read + tx_buffer.size) % SERIAL_TX_BUFFER_SIZE;
+	tx_buffer.buffer[wi] = c;
+	tx_buffer.size += 1;
 	/* make sure interrupt is enabled */
 	UCA0IE |= UCTXIE;
 #else
@@ -101,16 +112,21 @@ void tpl_serial_putchar(char c)
 	UCA0IFG &= ~UCTXIFG; /* RAZ */
 	UCA0TXBUF = c;
 #endif
+	return 0;
 }
 
-void tpl_serial_print_string(const char *str)
+int tpl_serial_print_string(const char *str)
 {
-	while(*str)	
-		tpl_serial_putchar(*str++);
+	int overflow = 0;
+	while(*str && !overflow) {	
+		overflow |= tpl_serial_putchar(*str++);
+	}
+	return overflow;
 }
 
-void tpl_serial_print_int(int32_t val, uint8_t fieldWidth)
+int tpl_serial_print_int(int16_t val, uint8_t fieldWidth)
 {
+	int overflow = 0;
 	uint8_t negative = 0; 
 	char buffer[11]; /* min val: -2147483648 => 11 chars */
 	int8_t index = 0;
@@ -132,17 +148,19 @@ void tpl_serial_print_int(int32_t val, uint8_t fieldWidth)
 	}
 	if (negative) buffer[index++] = '-';
 	int8_t i;
-	for (i = index; i < (int8_t)fieldWidth; i++) tpl_serial_putchar(' ');
+	for (i = index; i < (int8_t)fieldWidth; i++) overflow |= tpl_serial_putchar(' ');
 	for (i = index - 1; i >= 0; i--) 
 	{
-		tpl_serial_putchar(buffer[i]);
+		overflow |= tpl_serial_putchar(buffer[i]);
 	}
+	return overflow;
 }
 
 tpl_freq_update_item tpl_serial_callback = {&tpl_serial_update_freq,NULL};
 
-void tpl_serial_begin()
+void tpl_serial_begin(uint8_t txMode)
 {
+	tpl_serial_tx_mode = txMode;
 	/* make sure we are informed of a clock update. */
 	tpl_add_freq_update_callback(&tpl_serial_callback);
 	/* First: set SMCLK to DCO */
@@ -168,7 +186,7 @@ void tpl_serial_begin()
 uint16_t tpl_serial_available()
 {
 #if SERIAL_RX_BUFFER_SIZE > 0
-	return (SERIAL_RX_BUFFER_SIZE + rx_buffer.head - rx_buffer.tail) % SERIAL_RX_BUFFER_SIZE;
+	return rx_buffer.size;
 #else
 	return UCA0IFG & UCRXIFG; /* as UCRXIFG is bit 0 */
 #endif
@@ -178,12 +196,15 @@ char tpl_serial_read(void)
 {
 	char result;
 #if SERIAL_RX_BUFFER_SIZE > 0
-	if (rx_buffer.head == rx_buffer.tail) {
-		result = 0xff;
+	UCA0IE &= ~UCRXIE; /* disable RX interrupt (rx_buffer manip)*/
+	if (rx_buffer.size > 0) {
+		result = rx_buffer.buffer[rx_buffer.read];
+		rx_buffer.read = (rx_buffer.read + 1) % SERIAL_RX_BUFFER_SIZE;
+		rx_buffer.size --;
 	} else {
-		result = rx_buffer.buffer[rx_buffer.tail];
-		rx_buffer.tail = (rx_buffer.tail + 1) % SERIAL_RX_BUFFER_SIZE;
+		result = 0xff;
 	}
+	UCA0IE |= UCRXIE; /* re-enable RX interrupt */
 #else
 	if(UCA0IFG & UCRXIFG) /* RX interrupt set*/
 		result =  UCA0RXBUF;
@@ -204,53 +225,65 @@ void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_V
 {
 #if (SERIAL_TX_BUFFER_SIZE > 0) && (SERIAL_TX_BUFFER_SIZE > 0)
 	uint8_t c;
+	uint16_t wi; //only for rx.
 	switch(UCA0IV) 
 	{
 #if SERIAL_TX_BUFFER_SIZE > 0
 		case USCI_UART_UCTXIFG:
-	//if(UCA0IFG & UCTXIFG) /* TX interrupt */
-	//{
-	//	const uint8_t c = tx_buffer.buffer[tx_buffer.tail];
-		c = tx_buffer.buffer[tx_buffer.tail];
-		tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_TX_BUFFER_SIZE;
-		if(tx_buffer.tail == tx_buffer.head) /* empty */
-		{
-			UCA0IE &= ~UCTXIE; /* disable TX interrupt */
-		} else { 
-			
-			/* RAZ. If empty, does not remove the flag 
-			 * so that next time a char is written, the interrupt
-			 * is re-enabled, and the interrupt will occur 
-			 * immediately
-			 */
-			UCA0IFG &= ~UCTXIFG;
-		}
-		UCA0TXBUF = c; /* send char */
-		if(tx_buffer_full) {
-			tx_buffer_full = 0;
-			/* WARNING, if we were in LPM from user space, we get out!!! */
-			LPM3_EXIT; /* if buffer is full, we have entered in LPM */
-		}
-	//}
-	break;
+			c = tx_buffer.buffer[tx_buffer.read];
+			uint8_t wasFull = 0;
+			if(tpl_serial_tx_mode == SERIAL_TX_MODE_BLOCK) {
+				wasFull = tx_buffer.size == SERIAL_TX_BUFFER_SIZE;
+			}
+			tx_buffer.size -= 1;
+			tx_buffer.read = (tx_buffer.read+1) % SERIAL_TX_BUFFER_SIZE;
+			if(tx_buffer.size == 0) /* empty */
+			{
+				UCA0IE &= ~UCTXIE; /* disable TX interrupt */
+			} else { 
+				
+				/* RAZ. If empty, does not remove the flag 
+				 * so that next time a char is written, the interrupt
+				 * is re-enabled, and the interrupt will occur 
+				 * immediately
+				 */
+				UCA0IFG &= ~UCTXIFG;
+			}
+			UCA0TXBUF = c; /* send char */
+			if(wasFull) { /* only for the TX blocking mode */
+				/* WARNING, if we were in LPM from user space, we get out!!! */
+				LPM3_EXIT; /* if buffer is full, we have entered in LPM */
+			}
+			break;
 #endif
 
 #if SERIAL_RX_BUFFER_SIZE > 0
 		case USCI_UART_UCRXIFG:
-	//if(UCA0IFG & UCRXIFG) /* RX interrupt */
-	//{
-		rx_buffer.buffer[rx_buffer.head] = UCA0RXBUF;
-		rx_buffer.head = (rx_buffer.head + 1) % SERIAL_RX_BUFFER_SIZE;
-		if(rx_buffer.head == rx_buffer.tail) /* overflow */
-		{
-			/* overwrite the oldest value */
-			rx_buffer.tail = (rx_buffer.tail + 1) % SERIAL_RX_BUFFER_SIZE;
-		}
-		UCA0IFG &= ~UCRXIFG;
-	//}
-	break;
+			wi = (rx_buffer.read + rx_buffer.size) % SERIAL_RX_BUFFER_SIZE;
+			rx_buffer.buffer[wi] = UCA0RXBUF;
+			if(rx_buffer.size == SERIAL_RX_BUFFER_SIZE) /* overflow */
+			{
+				/* overwrite the oldest value (i.e. read idx increased) */
+				rx_buffer.read = (rx_buffer.read + 1) % SERIAL_RX_BUFFER_SIZE;
+			} else {
+				rx_buffer.size += 1;
+			}
+			UCA0IFG &= ~UCRXIFG;
+			break;
 #endif
 	}
+#endif //one buffer.
+}
+
+void tpl_serial_tx_fifo_flush()
+{
+#if SERIAL_TX_BUFFER_SIZE > 0
+	//the current transmitting byte is sent, but
+	//won't generate any interrupt.
+	UCA0IE &= ~UCTXIE; /* disable TX interrupt */
+	//reinit TX fifo.
+	tx_buffer.read = 0;
+	tx_buffer.size = 0;
 #endif //one buffer.
 }
 #define OS_STOP_SEC_CODE

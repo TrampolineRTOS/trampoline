@@ -1,0 +1,168 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 300 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 200 ;
+    } ;
+};
+
+CPU message {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+    TRACE = TRUE {
+        FORMAT = serial;
+        PROC = TRUE;
+        RESOURCE = FALSE;
+        ALARM = TRUE;
+        EVENT = TRUE;
+        MESSAGE = TRUE;
+    };
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_CPPSRC = "trace.cpp";
+      APP_NAME = "trace.elf";
+      CFLAGS = "-O0 -fstack-usage -Wno-strict-aliasing";
+      LIBRARY = coroBoard;
+      LIBRARY = serial;
+      LDFLAGS = "-Map=trace.map";
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = CMAKE{VSCODE=TRUE;};
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE AppStd {};
+  
+  ALARM one_second {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = sender; };
+    AUTOSTART = TRUE { 
+      APPMODE = AppStd; 
+    ALARMTIME = 1000;
+     CYCLETIME = 1000; };
+  };
+
+  TASK sender {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = outMessage;
+  };
+
+  TASK receiver {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = inMessage;
+  };
+  TASK emergency
+  {
+    PRIORITY = 4;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = inMessage_emergency;
+  };
+
+  TASK NormalOperation
+  {
+    PRIORITY = 3;
+    AUTOSTART = TRUE {
+      APPMODE = AppStd;
+    };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    MESSAGE = inMessage_NormalOperation;
+    EVENT = Eve_Normal;
+  };
+  
+
+  EVENT Eve_Normal {
+    MASK = AUTO;
+  };
+
+  MESSAGE outMessage{
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "uint32";
+    };
+  };
+
+  MESSAGE inMessage{
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
+      SENDINGMESSAGE = outMessage;
+      FILTER = ONEEVERYN {
+        PERIOD = 3;
+        OFFSET = 1;
+      };
+      QUEUESIZE = 4 ; 
+    };
+    NOTIFICATION = ACTIVATETASK{
+      TASK = receiver;
+    } ;
+  };
+
+  MESSAGE inMessage_emergency{
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
+      SENDINGMESSAGE = outMessage;
+      FILTER = NEWISWITHIN {
+        MIN = 20 ;
+        MAX = 60;
+      };
+      QUEUESIZE = 4 ; 
+    };
+    NOTIFICATION = ACTIVATETASK{
+      TASK = emergency;
+    } ;
+  };
+
+  MESSAGE inMessage_NormalOperation{
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
+      SENDINGMESSAGE = outMessage;
+      FILTER = NEWISOUTSIDE{
+        MIN =20;
+        MAX = 60;
+      };
+      QUEUESIZE = 4 ; 
+    };
+    NOTIFICATION = SETEVENT {
+      TASK = NormalOperation;
+      EVENT = Eve_Normal; 
+    };
+  };
+
+
+
+  ISR usart {
+    CATEGORY = 1;
+    PRIORITY = 10;
+    SOURCE = USART2_IRQ;
+  };
+
+
+
+};
+
+
+

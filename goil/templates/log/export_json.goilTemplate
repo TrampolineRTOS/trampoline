@@ -21,6 +21,7 @@ if [current type] == @map then
     if    [var type] == @string then %"% !var %"%
     elsif [var type] == @int    then !var 
     elsif [var type] == @bool   then %"% ![var trueOrFalse] %"%
+    elsif [var type] == @enum   then %"% !var %"%
     else
       let obj := var 
       template export_json in log
