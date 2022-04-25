@@ -13,104 +13,104 @@ end if
 let nameVector := ""
 let bitMAX := 0
 # TODO : find a way to distinguish IO and other
-let useAntoine := 0
+let isNotExternalInterrupt := 0
 
 if handlerSource == "ADC12_VECTOR" then
    let nameVector := "ADC12IV"
    let bitMAX := 23
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "RTC_VECTOR" then
    let nameVector := "RTCIV"
    let bitMAX := 7
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "EUSCI_B3_VECTOR" then
    let nameVector := "UCB3IV"
    let bitMAX := 14
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "EUSCI_B2_VECTOR" then
    let nameVector := "UCB2IV"
    let bitMAX := 14
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "EUSCI_B1_VECTOR" then
    let nameVector := "UCB1IV"
    let bitMAX := 14
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "EUSCI_A3_VECTOR" then
    let nameVector := "UCA3IV"
    let bitMAX := 3
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "EUSCI_A2_VECTOR" then
    let nameVector := "UCA2IV"
    let bitMAX := 3
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER4_A1_VECTOR" then
    let nameVector := "TA4IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER4_A0_VECTOR" then
    let nameVector := "TA4IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER3_A1_VECTOR" then
    let nameVector := "TA3IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER3_A0_VECTOR" then
    let nameVector := "TA3IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER2_A1_VECTOR" then
    let nameVector := "TA2IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER2_A0_VECTOR" then
    let nameVector := "TA2IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER1_A1_VECTOR" then
    let nameVector := "TA1IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER1_A0_VECTOR" then
    let nameVector := "TA1IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER0_A1_VECTOR" then
    let nameVector := "TA0IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER0_A0_VECTOR" then
    let nameVector := "TA0IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER0_B1_VECTOR" then
    let nameVector := "TB0IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "TIMER0_B0_VECTOR" then
    let nameVector := "TB0IV"
    let bitMAX := 6
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "USCI_A1_VECTOR" then
    let nameVector := "UCA1IV"
    let bitMAX := 3
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "USCI_A0_VECTOR" then
    let nameVector := "UCA0IV"
    let bitMAX := 3
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "USCI_B0_VECTOR" then
    let nameVector := "UCB0IV"
    let bitMAX := 14
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "DMA_VECTOR" then
    let nameVector := "DMAIV"
    let bitMAX := 7
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 elsif handlerSource == "COMP_E_VECTOR" then
    let nameVector := "CEIV"
    let bitMAX := 4
-   let useAntoine := 1
+   let isNotExternalInterrupt := 1
 end if
 
 %
@@ -295,7 +295,7 @@ else # handler is an ISR2
   movx       #0,__% ! nameVector % % 
     end if
     
-  elsif useAntoine == 1 then
+  elsif isNotExternalInterrupt == 1 then
 %
 /*-----------------------------------------------------------------------------
  * -4- Get the highest priority interrupt of the port from P%
