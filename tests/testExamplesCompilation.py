@@ -13,16 +13,18 @@
 # - show results
 #
 # The copy is a directory (in trampoline root dir) with name:
-dirCompile = 'tmpExamplesCompilation'
+dirCompileName = 'tmpExamplesCompilation'
 
 from os import walk
 import os
 from os.path import join,isdir,isfile,dirname,abspath
 from shutil import copytree
 import re
+import shutil
 from subprocess import run,DEVNULL
 from enum import Enum, auto
 import sys
+import argparse
 
 def BLACK () :
   return '\033[90m'
@@ -189,7 +191,7 @@ def compileOilProject(oilDir,oilFile):
     return result,stop
 
 def printResult(result,oilDir,oilFile):
-    print('test '+oilDir.split(dirCompile+'/')[1]+' -> '+oilFile+' :'+str(result))
+    print('test '+oilDir.split(dirCompileName+'/')[1]+' -> '+oilFile+' :'+str(result))
 
 def eval(oilDir,oilFile):
     ''' Eval one example: 1- goil, 2- compilation
@@ -206,19 +208,32 @@ if __name__ == '__main__':
 	#get script path directory (as built is done relatively to that dir):
     pathname = dirname(sys.argv[0])
     scriptWorkingDir = abspath(pathname)
-    dirExamples  = join(scriptWorkingDir,'../examples')
-    dirCompile   = join(scriptWorkingDir,join('../',dirCompile))
-
     fullResult = {}
     for state in TestState:
         fullResult[state] = 0
 
-    # 1 - make a copy of examples dir
-    if not isdir(dirCompile):
+    #arguments
+    parser = argparse.ArgumentParser(description='Basic compilation tests. Tries to compile each example of trampoline (oil+make). Works on a copy of the examples directory',epilog="example: '"+sys.argv[0]+" -e cortex' will test all cortex-M examples")
+    parser.add_argument("-e", "--examples",
+            help="gives the subtree for tests, relatively to examples/ :'cortex', 'msp430x/small/msp430fr5994', … All the examples in the subtree will be tested.", default='.',nargs='+',type=str)
+    args = parser.parse_args()
+
+    dirExamplesBase  = join(scriptWorkingDir,'../examples')
+    dirCompileBase   = join(scriptWorkingDir,join('../',dirCompileName))
+
+    # 1 - remove previous directory, and make a copy of examples dir
+    if isdir(dirCompileBase):
+        shutil.rmtree(dirCompileBase)
+    for dir in args.examples:
+        dirExamples = join(dirExamplesBase,dir)
+        dirCompile = join(dirCompileBase,dir)
+        if not isdir(dirExamples):
+            print('ERROR: directory '+dirExamples+' does not exists')
+            sys.exit(1)
         copytree(dirExamples,dirCompile,symlinks=True)
-    # 2 - get examples files in this tree and eval them
+    # # 2 - get examples files in this tree and eval them
     try:
-        oilExamples = getOilFiles(dirCompile)
+        oilExamples = getOilFiles(dirCompileBase)
         debug(str(len(oilExamples)) + ' examples to compile.')
         stop = False
         for oilFile,oilDir in oilExamples:
