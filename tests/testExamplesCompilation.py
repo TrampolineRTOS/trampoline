@@ -7,7 +7,7 @@
 # It first make a copy of the 'examples' dir. Then, it:
 # - searches for .oil files in the examples/ subdirectories
 # - tries to find the README.md associated (same dir)
-# - finds in this README.md the 'goil' command
+# - finds in this README.md the 'goil' command (defined in one full line)
 # - run the goil command
 # - compile the project (python or CMake based)
 # - show results
@@ -23,7 +23,6 @@ import re
 from subprocess import run,DEVNULL
 from enum import Enum, auto
 import sys
-from tkinter import W
 
 def BLACK () :
   return '\033[90m'
@@ -95,7 +94,8 @@ def getOILCmd(oilDir):
     return cmd
 
 def runGoil(oilDir):
-    ''' find the goil cmd and run it. Return a TestState:
+    ''' find the goil cmd (in README.md) and run it. 
+     Return a TestState:
      - SKIP_NO_GOIL if there is no goil command (in README.md)
      - FAIL if goil execution returned an error
      - OK   if goil ran properly
@@ -122,40 +122,76 @@ def runGoil(oilDir):
 
     return result,stop
 
-def compileOilProject(oilDir):
+def compileOILProjectCMAKE(oilDir,oilFile):
     result = TestState.FAIL
     stop = False
-    # Python based or CMake based?
-    if isfile(join(oilDir,'CMakeLists.txt')):
-        #compile CMake based project.
-        buildDir = join(oilDir,'build')
-        #1 - build dir (may be already generated)
-        try:
-            os.mkdir(buildDir)
-        except FileExistsError:
-            pass
-        #2 - run cmake TODO
-        #cmd = 'cmake '
-    elif isfile(join(oilDir,'make.py')):
-        #compile PYTHON based project.
-        cmd = join(oilDir,'make.py')
+    #compile CMake based project.
+    buildDir = join(oilDir,'build')
+    #1 - build dir (may be already generated)
+    try:
+        os.mkdir(buildDir)
+    except FileExistsError:
+        #There is a build dir, remove the cache (if any)
+        CMakeCache = join(buildDir,'CMakeCache.txt')
+        if isfile(CMakeCache):
+            os.remove(CMakeCache)
+    #2 - run cmake
+    oilGeneratedDir = join(oilDir,oilFile[:-4])
+    oilCMakeCompiler = join(oilGeneratedDir,'compiler.cmake')
+    cmd = 'cmake -D CMAKE_TOOLCHAIN_FILE='+oilCMakeCompiler+' '+oilDir
+    process = None
+    try:
+        process = run(cmd.split(),cwd=buildDir,stdout=DEVNULL)
+    except OSError:
+        print('the command "'+cmd+ '" failed.')
+    except KeyboardInterrupt:
+        stop = True
+    #3 - run make
+    if process and process.returncode == 0:
+        cmd = 'make'
         process = None
         try:
-            process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL)
+            process = run(cmd.split(),cwd=buildDir,stdout=DEVNULL)
         except OSError:
             print('the command "'+cmd+ '" failed.')
         except KeyboardInterrupt:
             stop = True
         if process and process.returncode == 0:
             result = TestState.OK
+    return result,stop
+
+def compileOILProjectPYTHON(oilDir):
+    result = TestState.FAIL
+    stop = False
+    #compile PYTHON based project.
+    cmd = join(oilDir,'make.py')
+    process = None
+    try:
+        process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL)
+    except OSError:
+        print('the command "'+cmd+ '" failed.')
+    except KeyboardInterrupt:
+        stop = True
+    if process and process.returncode == 0:
+        result = TestState.OK
+    return result,stop
+
+def compileOilProject(oilDir,oilFile):
+    result = TestState.FAIL
+    stop = False
+    # Python based or CMake based?
+    if isfile(join(oilDir,'CMakeLists.txt')):
+        result,stop = compileOILProjectCMAKE(oilDir,oilFile)
+    elif isfile(join(oilDir,'make.py')):
+        result,stop = compileOILProjectPYTHON(oilDir)
     else:
-        result = TestState.FAIL
+        print("Internal error, neither CMake nor Python based project")
     return result,stop
 
 def printResult(result,oilDir,oilFile):
     print('test '+oilDir.split(dirCompile+'/')[1]+' -> '+oilFile+' :'+str(result))
 
-def eval(oilDir):
+def eval(oilDir,oilFile):
     ''' Eval one example: 1- goil, 2- compilation
     '''
     #debug('dir '+ oilDir+' -> '+oilFile)
@@ -163,7 +199,7 @@ def eval(oilDir):
     result,stop = runGoil(oilDir)
     if result == TestState.OK and not stop:
         # 2 compile project
-        result,stop = compileOilProject(oilDir)
+        result,stop = compileOilProject(oilDir,oilFile)
     return result,stop
 
 if __name__ == '__main__':
@@ -187,7 +223,7 @@ if __name__ == '__main__':
         stop = False
         for oilFile,oilDir in oilExamples:
             if not stop:
-                result,stop = eval(oilDir)
+                result,stop = eval(oilDir,oilFile)
                 fullResult[result] += 1
                 printResult(result,oilDir,oilFile)
     except KeyboardInterrupt:
