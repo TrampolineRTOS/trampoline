@@ -53,7 +53,7 @@ FUNC(int, OS_APPL_CODE) main(void)
         (uint16_t)&__nvdata_end-(uint16_t)&__nvdata_start
       );
 	}
-	tpl_serial_begin();
+	tpl_serial_begin(SERIAL_TX_MODE_SKIP);
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }

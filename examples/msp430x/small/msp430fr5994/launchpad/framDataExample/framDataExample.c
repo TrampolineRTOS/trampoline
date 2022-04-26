@@ -57,7 +57,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 	//set GPIO P1.0 and P1.1 (LED1 and 2) as an output
 	P1DIR |= 0x03;
 	framStart();
-	tpl_serial_begin();
+	tpl_serial_begin(SERIAL_TX_MODE_SKIP);
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }

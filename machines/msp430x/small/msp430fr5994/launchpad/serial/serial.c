@@ -160,7 +160,9 @@ tpl_freq_update_item tpl_serial_callback = {&tpl_serial_update_freq,NULL};
 
 void tpl_serial_begin(uint8_t txMode)
 {
+#if SERIAL_TX_BUFFER_SIZE > 0
 	tpl_serial_tx_mode = txMode;
+#endif
 	/* make sure we are informed of a clock update. */
 	tpl_add_freq_update_callback(&tpl_serial_callback);
 	/* First: set SMCLK to DCO */
