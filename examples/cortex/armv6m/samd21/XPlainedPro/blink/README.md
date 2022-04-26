@@ -17,26 +17,8 @@ This task is activated by the alarm `blink\_blink`. The alarm:
 
 ## Build prerequiste
 
-You should have either: 
-
  * A cross-compiler suite: `arm-none-eabi-gcc`
  * [openocd](http://openocd.org/) to flash the board with **` CMSIS-DAP` support**.
-
-or:
-
-* Atmel Studio 7 (Windows only)
-
-## Build for Atmel Studio (Windows)
-The option `CPU->OS->BUILD->SYSTEM` should be set to `ATMELSTUDIO`. With this mode, the flags (`CFLAGS`, `COMMANFLAGS`, …), the compiler (+linler/assembler) are **not taken into account**.
-
-Configure the application with the script:
-```
-runGoil.bat
-```
-
-A directory is generated with atmelStudio_blink and a projet is available.
-
-Note that you should re-run the goil compiler each time the `.oil` is updated.
 
 ## Build for GNU/Linux, Mac and Windows (cli)
 The option `CPU->OS->BUILD->SYSTEM` should be set to `PYTHON`.
