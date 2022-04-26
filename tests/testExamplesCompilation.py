@@ -16,12 +16,14 @@
 dirCompile = 'tmpExamplesCompilation'
 
 from os import walk
+import os
 from os.path import join,isdir,isfile,dirname,abspath
 from shutil import copytree
 import re
 from subprocess import run,DEVNULL
 from enum import Enum, auto
 import sys
+from tkinter import W
 
 def BLACK () :
   return '\033[90m'
@@ -99,6 +101,7 @@ def runGoil(oilDir):
      - OK   if goil ran properly
     '''
     result = TestState.FAIL
+    stop = False
     cmd = getOILCmd(oilDir)
     if cmd:
         # 2 - call goil
@@ -107,6 +110,8 @@ def runGoil(oilDir):
             process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL,stderr=DEVNULL)
         except OSError:
             print('the command "'+cmd+ '" failed.')
+        except KeyboardInterrupt:
+            stop = True
         if process and process.returncode == 0:
             #goil ok
             result = TestState.OK
@@ -115,14 +120,22 @@ def runGoil(oilDir):
     else:
         result = TestState.SKIP_NO_GOIL
 
-    return result
+    return result,stop
 
 def compileOilProject(oilDir):
     result = TestState.FAIL
+    stop = False
     # Python based or CMake based?
     if isfile(join(oilDir,'CMakeLists.txt')):
         #compile CMake based project.
-        pass
+        buildDir = join(oilDir,'build')
+        #1 - build dir (may be already generated)
+        try:
+            os.mkdir(buildDir)
+        except FileExistsError:
+            pass
+        #2 - run cmake TODO
+        #cmd = 'cmake '
     elif isfile(join(oilDir,'make.py')):
         #compile PYTHON based project.
         cmd = join(oilDir,'make.py')
@@ -131,11 +144,13 @@ def compileOilProject(oilDir):
             process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL)
         except OSError:
             print('the command "'+cmd+ '" failed.')
+        except KeyboardInterrupt:
+            stop = True
         if process and process.returncode == 0:
             result = TestState.OK
     else:
         result = TestState.FAIL
-    return result
+    return result,stop
 
 def printResult(result,oilDir,oilFile):
     print('test '+oilDir.split(dirCompile+'/')[1]+' -> '+oilFile+' :'+str(result))
@@ -145,11 +160,11 @@ def eval(oilDir):
     '''
     #debug('dir '+ oilDir+' -> '+oilFile)
     # 1 run goil
-    result = runGoil(oilDir)
-    if result == TestState.OK:
+    result,stop = runGoil(oilDir)
+    if result == TestState.OK and not stop:
         # 2 compile project
-        result = compileOilProject(oilDir)
-    return result
+        result,stop = compileOilProject(oilDir)
+    return result,stop
 
 if __name__ == '__main__':
 	#get script path directory (as built is done relatively to that dir):
@@ -166,12 +181,17 @@ if __name__ == '__main__':
     if not isdir(dirCompile):
         copytree(dirExamples,dirCompile,symlinks=True)
     # 2 - get examples files in this tree and eval them
-    oilExamples = getOilFiles(dirCompile)
-    debug(str(len(oilExamples)) + ' examples to compile.')
-    for oilFile,oilDir in oilExamples:
-        result = eval(oilDir)
-        fullResult[result] += 1
-        printResult(result,oilDir,oilFile)
+    try:
+        oilExamples = getOilFiles(dirCompile)
+        debug(str(len(oilExamples)) + ' examples to compile.')
+        stop = False
+        for oilFile,oilDir in oilExamples:
+            if not stop:
+                result,stop = eval(oilDir)
+                fullResult[result] += 1
+                printResult(result,oilDir,oilFile)
+    except KeyboardInterrupt:
+        pass
     # 3 - full results
     print('Summary:')
     for state in TestState:
