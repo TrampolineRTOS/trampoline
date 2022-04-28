@@ -4,7 +4,18 @@
 
 This chapter shows how to compile and run your first application. We are going to use the \textsc{Posix} port of Trampoline, Trampoline/\textsc{Posix}, that runs over a Linux or Mac OS X operating system. So it is assumed you are using a Linux or Mac OS X computer since Trampoline/Posix does not run over Windows\footnote{An API working like Unix signals is missing on Windows.}. It is also assumed that you have a basic knowledge of using the command line and the Unix shell.
 
-OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the objects of the application, tasks, events, resources, \ldots, cannot be created or deleted during the execution of the application. All objects are statically defined and instead of forcing the user to instantiate the OS objects related to the application in C language, a work that can be error prone, a specific language is used, OIL or XML\footnote{for \textsc{Autosar}}. A compiler, \goil, is used to translate the description in the equivalent C structures. \goil\ performs verifications too.
+OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the objects of the application, tasks, events, resources, \ldots, cannot be created or deleted during the execution of the application. All objects are statically defined and instead of forcing the user to instantiate the OS objects related to the application in C language, a work that can be error prone, a specific language is used, OIL or XML\footnote{for \textsc{Autosar}}. A compiler, \goil, is used to translate the description in the equivalent C structures. \goil\ performs verifications too (Figure \ref{fig:files}).
+
+\begin{figure}[htbp]
+  \centering
+\begin{adjustbox}{width=.7\linewidth,keepaspectratio}
+  \input{./buildWorkflow.tikz}
+\end{adjustbox}
+\caption{Trampoline Application: from source to binary}
+\label{fig:files}
+\end{figure}
+
+In addition to the generation of static data structures, \goil\ is able to generate other files, including those for the definition of memory mampping (link script), tools for debugging (see \ref{chap:trace}), or tools to build the application.
 
 \section{Setting up the environment}
 
@@ -12,11 +23,11 @@ Before compiling and running the first application, a few tools are required. Th
 
 \subsection{Compiling goil}
 
-\goil\ is located in the \file{goil} subdirectory. To compile \goil, go in the directory corresponding to your operating system, \file{goil/makefile-macosx} for Mac OS X or \file{goil/makefile-unix} for Linux. Then type \com{./build.py release}. If everything went well, a \goil\ executable is generated. You can test it by typing \com{./goil --version}. At the time of writing, the command should output:
+\goil\ is located in the \file{goil} subdirectory. Binaries are available on GitHub\footnote{\url{https://github.com/TrampolineRTOS/trampoline}}. To compile \goil\ from sources, go in the directory corresponding to your operating system, \file{goil/makefile-macosx} for Mac OS X or \file{goil/makefile-unix} for Linux. Then type \com{./build.py release}. If everything went well, a \goil\ executable is generated. You can test it by typing \com{./goil --version}. At the time of writing, the command should output:
 
 \begin{verbatim}
-alflolol:makefile-macosx jlb$ ./goil --version
-goil : 3.1.11, build with GALGAS 3.3.11
+% goil --version
+goil : 3.1.12, build with GALGAS 3.4.2
 No warning, no error.
 \end{verbatim}
 
@@ -24,13 +35,17 @@ You can install \tool{goil} in \file{/usr/local/bin} by typing \com{sudo ./build
 
 In addition you may want to set up the \envvar{GOIL_TEMPLATES} environment variable in your \file{.profile} or \file{.bashrc} so that you don't always have to set the \longprogramopt{templates=} option when calling \tool{goil}. This variable stores the path to the templates directory used by \tool{goil} and shall be \file{goil/templates}.
 
-\subsection{Compiling viper}
+\subsection{Compiling ViPer (POSIX target only)}
 
-Under Posix, Trampoline requires a runtime support that mimics the minimum behavior of a hardware, mainly timers. \tool{viper} is a separate application used by Trampoline for this purpose. Go in the \file{viper} directory. Type \com{make} to compile \tool{viper}. You must also set the environment variable \envvar{VIPER_PATH} to contain the path \file{viper}.
+Under Posix, Trampoline requires a runtime support that mimics the minimum behavior of a hardware, mainly timers. \tool{viper} is a separate application used by Trampoline for this purpose. Go in the \file{viper} directory. Type \com{make} to compile \tool{viper}. You must also set the environment variable \envvar{VIPER_PATH} to contain the path \file{viper}. For instance: \com{export VIPER_PATH=/opt/trampoline/viper}
 
-\section{Playing with the \cdata{one_task} application}
+\section{First Application: \cdata{one_task}}
 
-Go into the \file{examples/posix/one_task} directory. In this directory, two files are available: \file{one_task.oil} and \file{one_task.c}. Start by opening \file{one_task.oil}. The content of this file is reproduced below. 
+Go into the \file{examples/posix/one_task} directory.
+
+\subsection{Application source}
+
+In this directory, two files are available: \file{one_task.oil} and \file{one_task.c}. Start by opening \file{one_task.oil}. The content of this file is reproduced below. 
 
 \begin{lstlisting}[language=OIL,numbers=left,escapechar=?]
 OIL_VERSION = "2.5"; 	?\label{onetask::oilversion}?
@@ -50,7 +65,7 @@ CPU only_one_task {  	?\label{onetask::cpu}?
   
   APPMODE stdAppmode {}; ?\label{onetask::cpu::appmode}?
   
-  TASK my_only_task {
+  TASK my_only_task { ?\label{onetask::cpu::task}?
     PRIORITY = 1;
     AUTOSTART = TRUE { APPMODE = stdAppmode; };
     ACTIVATION = 1;
@@ -65,7 +80,7 @@ OIL files consist of two sections, an \oilobj{IMPLEMENTATION} section that is no
 
 The first is the \oilobj{OS} object at the line~\ref{onetask::cpu::os}. This object is used to configure the operating system and, in the case of Trampoline, to specify how to compile it. The first attribute, \oilattr{STATUS}, indicates the fineness of verification of error conditions by the operating system services. Two values are possible: \oilval{STANDARD} and \oilval{EXTENDED}. Here, \oilval{EXTENDED} is used.
 
-The \oilattr{BUILD} attribute at line~\ref{onetask::cpu::os::build} is used to generate a build script. It contains several sub-attributes:
+The \oilattr{BUILD} attribute at line~\ref{onetask::cpu::os::build} is used to generate a build script. This attribute is specific to Trampoline, it contains several sub-attributes to build the application (cross-compiler, flags, source files, …):
 \begin{itemize}
 \item \oilattr{APP_SRC} gives the C source code file of your application. If the application is split into several C files, use has many \oilattr{APP_SRC} as needed.
 \item \oilattr{TRAMPOLINE_BASE_PATH} gives the path to the Trampoline root directory.
@@ -75,4 +90,109 @@ The \oilattr{BUILD} attribute at line~\ref{onetask::cpu::os::build} is used to g
 \item \oilattr{SYSTEM} specifies which build system is used. Here Python build scripts.
 \end{itemize}
 
-The second is the object \oilobj{APPMODE} at line~\ref{onetask::cpu::appmode}
+The second is the object \oilobj{APPMODE} at line~\ref{onetask::cpu::appmode}. It is a way to define several versions of an application from the same code base. In some versions, some objects (task, alarms, …) will be active and not others. The standard requires to define at least one application mode.
+
+The third object \oilobj{TASK} at line~\ref{onetask::cpu::task} defines a task and its properties, as defined in the OIL standard (see \ref{chap:tasks}). Here, it defines: 
+\begin{itemize}
+  \item \oilattr{PRIORITY}: Trampoline is a fixed priority RTOS, the higher the value, the higher the priority.
+  \item \oilattr{AUTOSTART}: The task will be in the \texttt{READY} state at startup (Competing for access to the CPU)
+  \item \oilattr{ACTIVATION}: defines the number of instances of the task that can be defined in the ready list. If a task is activated when it has reached its maximum number of activations, the activation is not taken into account.
+  \item \oilattr{SCHEDULE}: can be \texttt{FULL} (preemptable task) or \texttt{NON} (non-preemtable task)
+\end{itemize}
+These properties are defined in the OSEK/VDX language. A copy of the norm is available on GitHub.
+The task defined here performs only one job, at startup.
+
+The implementation is defined in C:
+
+\begin{lstlisting}[language=C,numbers=left,escapechar=?]
+  #include <stdio.h>
+  #include "tpl_os.h" ?\label{onetask::include}?
+  
+  int main(void)
+  {
+      StartOS(OSDEFAULTAPPMODE); ?\label{onetask::startos}?
+      return 0;
+  }
+  
+  TASK(my_only_task) ?\label{onetask::task}?
+  {   
+    printf("Hello World\r\n");
+    TerminateTask(); ?\label{onetask::terminatetask}?
+  }  
+  \end{lstlisting}
+
+The application first includes \texttt{tpl_os.h} line \ref{onetask::include}, that contains a definition of the objects that has been declared in the oil file. This include is mandatory.
+
+The \cfunction{main} function simply starts the RTOS (line \ref{onetask::startos}). This is a non-return system call. It will start the RTOS and call the scheduler.
+
+The macro \cmacro{TASK} is used to defined the task implementation (line {\ref{onetask::task}}). This code is a task job. The identifier is the task name, defined in the oil file). The task body should call the system call \cfunction{TerminateTask()} at the end. This system call terminates the task and performs a re-scheduling.
+
+\note{System calls in Trampoline always start with an uppercase.}
+
+\subsection{Build and run}
+
+Goil is able to generate tools to build the application. The first time, we need to call goil directly (bootstrap):
+\begin{verbatim}
+% goil --target=posix/linux  --templates=../../../goil/templates/ one_task.oil  
+Created 'one_task/tpl_os.c'.
+Created 'one_task/tpl_os.h'.
+Created 'build.py'.
+Created 'make.py'.
+Created 'one_task/tpl_app_custom_types.h'.
+Created 'one_task/tpl_app_config.c'.
+Created 'one_task/tpl_app_config.h'.
+Created 'one_task/tpl_app_define.h'.
+Created 'one_task/tpl_static_info.json'.
+Created 'one_task/stm_structure.c'.
+executing plugin gdb_commands.goilTemplate
+Created '/home/mik/prog/trampoline/examples/posix/one_task/build/one_task.oil.dep'.
+No warning, no error.
+\end{verbatim}
+Goil arguments are the \toolarg{--target} (here either \toolarg{posix/linux} for GNU/Linux or  \toolarg{posix/darwin} for OSX) and \toolarg{--templates} that defines the path to the \goil\ template directory:
+
+\begin{verbatim}
+% ls
+build  build.py  make.py  one_task  one_task.c  one_task.oil  README.md
+\end{verbatim}
+
+A directory {\verb one_task} has been created, with the name of the main oil file, but without any extension. All data structures generated by goil are located in this folder.
+
+The build system that has been defined in the OIL file was \oilattr{PYTHON}. As a result, 2 python files are created \file{build.py} and \file{make.py}. We now have just to call the \file{make.py} script to generate the binary.
+
+The script will take into account all the dependancies. For example, modifying an object in the oil file will result in calling goil (and generating again the \file{build.py} file again), before doing the rest of the build step. As a result, \goil\ should be called only once (bootstrap), and then \com{./make.py} will do all the stuff:
+
+\begin{verbatim}
+% ./make.py                                                                   
+Nothing to make.
+Making "build/os" directory
+[  5%] Compiling ../../../os/tpl_os_kernel.c
+[ 10%] Compiling ../../../os/tpl_os_timeobj_kernel.c
+[ 15%] Compiling ../../../os/tpl_os_action.c
+[ 20%] Compiling ../../../os/tpl_os_error.c
+[ 25%] Compiling ../../../os/tpl_os_os_kernel.c
+[ 30%] Compiling ../../../os/tpl_os_os.c
+[ 35%] Compiling ../../../os/tpl_os_interrupt_kernel.c
+[ 40%] Compiling ../../../os/tpl_os_task_kernel.c
+[ 45%] Compiling ../../../os/tpl_os_resource_kernel.c
+[ 50%] Compiling one_task.c
+Making "build/one_task" directory
+[ 55%] Compiling one_task/tpl_app_config.c
+[ 60%] Compiling one_task/tpl_os.c
+Making "build/machines/posix" directory
+[ 65%] Compiling ../../../machines/posix/tpl_machine_posix.c
+[ 70%] Compiling ../../../machines/posix/tpl_viper_interface.c
+[ 75%] Compiling ../../../machines/posix/tpl_posix_autosar.c
+[ 80%] Compiling ../../../machines/posix/tpl_posix_irq.c
+[ 85%] Compiling ../../../machines/posix/tpl_posix_context.c
+[ 90%] Compiling ../../../machines/posix/tpl_posixvp_irq_gen.c
+[ 95%] Compiling ../../../machines/posix/tpl_trace.c
+[100%] Linking one_task_exe
+\end{verbatim}
+
+The binary file is created (with name defined in oil file): \com{./one_task_exe}:
+\begin{verbatim}
+% ./one_task_exe 
+Hello World
+Exiting virtual platform.
+\end{verbatim}
+\note{The execution does not return. When the job of the task is done, the scheduler choose the \textit{idle} task, as an embedded target never return. To exit the virtual environment of the POSIX target, use the "\texttt{q}" keystroke.}
