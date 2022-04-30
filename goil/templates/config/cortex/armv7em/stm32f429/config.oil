@@ -48,7 +48,7 @@ CPU stm32f429 {
         
   CORTEX stm32f429 {
     PRIO_BITS = 4;
-    CLOCK = 168000000;
+    CLOCK = 180000000;
   };
         
   /*

@@ -1,10 +1,8 @@
 /* Specify the memory areas for stm32f429 */
 MEMORY
 {
-  /* (90 External + 15 system + 2) * 4 = 0x1AC*/
   VECTOR (rx)     : ORIGIN = 0x08000000, LENGTH = 0x1AC
-  /* Entire flash size  = 2048K but Trampoline specifes part for it for vector table */
-  FLASH (rx)      : ORIGIN = 0x080001AC, LENGTH = 0x1FE54  
+  FLASH (rx)      : ORIGIN = 0x080001AC, LENGTH = 0x1FFE54  
   RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 192K    /* has 64K more than stm32f407*/
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0x0     /* Matches stm32f407 */
 }

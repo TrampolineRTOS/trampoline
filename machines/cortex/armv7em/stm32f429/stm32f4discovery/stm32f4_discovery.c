@@ -64,12 +64,12 @@
 /** @defgroup STM32F4_DISCOVERY_LOW_LEVEL_Private_Variables
   * @{
   */ 
-GPIO_TypeDef* GPIO_PORT[LEDn] = {LED4_GPIO_PORT, LED3_GPIO_PORT, LED5_GPIO_PORT,
-                                 LED6_GPIO_PORT};
-const uint16_t GPIO_PIN[LEDn] = {LED4_PIN, LED3_PIN, LED5_PIN,
-                                 LED6_PIN};
-const uint32_t GPIO_CLK[LEDn] = {LED4_GPIO_CLK, LED3_GPIO_CLK, LED5_GPIO_CLK,
-                                 LED6_GPIO_CLK};
+GPIO_TypeDef* GPIO_PORT[LEDn] = {LED3_GPIO_PORT, LED4_GPIO_PORT
+                                };
+const uint16_t GPIO_PIN[LEDn] = {LED3_PIN, LED4_PIN
+                                };
+const uint32_t GPIO_CLK[LEDn] = {LED3_GPIO_CLK, LED4_GPIO_CLK
+                                };
 
 GPIO_TypeDef* BUTTON_PORT[BUTTONn] = {USER_BUTTON_GPIO_PORT }; 
 
@@ -125,7 +125,7 @@ void STM_EVAL_LEDInit(Led_TypeDef Led)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Low_Speed;
   GPIO_Init(GPIO_PORT[Led], &GPIO_InitStructure);
 }
 

@@ -21,8 +21,6 @@ FUNC(void, OS_CODE) initBoard(void)
 {
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
-  STM_EVAL_LEDInit(LED5);
-  STM_EVAL_LEDInit(LED6);
   STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
 }
 
@@ -34,7 +32,7 @@ FUNC(void, OS_CODE) initBoard(void)
  */
 FUNC(void, OS_CODE) ledOn(Led_TypeDef led)
 {
-  if (led >= 0 && led <= 3) {
+  if (led >= 0 && led <= 1) {
     STM_EVAL_LEDOn(led);
   }
 }
@@ -47,7 +45,7 @@ FUNC(void, OS_CODE) ledOn(Led_TypeDef led)
  */
 FUNC(void, OS_CODE) ledOff(Led_TypeDef led)
 {
-  if (led >= 0 && led <= 3) {
+  if (led >= 0 && led <= 1) {
     STM_EVAL_LEDOff(led);
   }
 }
@@ -60,7 +58,7 @@ FUNC(void, OS_CODE) ledOff(Led_TypeDef led)
  */
 FUNC(void, OS_CODE) ledToggle(Led_TypeDef led)
 {
-  if (led >= 0 && led <= 3) {
+  if (led >= 0 && led <= 1) {
     STM_EVAL_LEDToggle(led);
   }
 }

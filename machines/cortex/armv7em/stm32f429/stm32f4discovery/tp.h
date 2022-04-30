@@ -22,10 +22,8 @@ typedef enum {
   BUTTON_NOIT
 } ButtonMode;
 
-#define ORANGE LED3
-#define GREEN  LED4
-#define RED    LED5
-#define BLUE   LED6
+#define GREEN LED3
+#define RED   LED4
 
 #ifdef __cplusplus
 extern "C"{
