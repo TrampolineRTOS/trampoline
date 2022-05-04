@@ -16,12 +16,6 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * @section infos File informations
- *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #include <stdbool.h>
@@ -37,6 +31,8 @@
 #include "tpl_os_alarm.h"
 #include "tpl_os_resource_kernel.h"
 #include "tpl_os_resource.h"
+#include "tpl_os_semaphore_kernel.h"
+#include "tpl_os_semaphore.h"
 #include "tpl_os_event_kernel.h"
 #include "tpl_os_event.h"
 #include "tpl_os_action.h"
@@ -145,6 +141,20 @@ foreach resource in REGULARRESOURCES
 #define % !resource::NAME %_id % !INDEX %
 CONST(ResourceType, AUTOMATIC) % !resource::NAME % = % !resource::NAME %_id;
 %
+end foreach
+
+foreach sem in SEMAPHORE
+  before
+%
+/*=============================================================================
+ * Declaration of semaphore IDs
+ */
+%
+  do
+%
+/* Semaphore % !sem::NAME % */
+#define % !sem::NAME %_id % !INDEX %
+CONST(SemType,AUTOMATIC) %!sem::NAME % = % !sem::NAME %_id;%
 end foreach
 %
 /*=============================================================================
@@ -417,6 +427,51 @@ tpl_resource_table[RESOURCE_COUNT] = {%
 %
   end if
 end loop
+
+foreach sem in SEMAPHORE
+  before
+%
+/*=============================================================================
+ * Definition and initialization of semaphores related structures
+ */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+do
+%
+tpl_semaphore %! sem::NAME%_sem = {
+  %! sem::TOKEN%,
+  0,
+  0,
+  { 0 }
+};
+%
+after
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end foreach
+  
+foreach sem in SEMAPHORE
+before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+ 
+CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA)
+tpl_sem_table[% ! [SEMAPHORE length] %] = {%
+do %
+  &% ! sem::NAME%_sem%
+between %,%
+after
+%
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end foreach
 
 if OS::NUMBER_OF_CORES > 1 then%
 #define OS_START_SEC_CONST_UNSPECIFIED

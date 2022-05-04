@@ -30,10 +30,9 @@ if [MESSAGES length] > 0 then
   let APIUSED += APIMAP["message"]
 end if
 
-if exists SEMAPHORE then
-  if [SEMAPHORE length] > 0 then
-    let APIUSED += APIMAP["semaphore"]
-  end if
+# Semaphore extension (not OSEK/VDX nor AUTOSAR compliant)
+if [SEMAPHORE length] > 0 then
+  let APIUSED += APIMAP["semaphore"]
 end if
 
 # AUTOSAR

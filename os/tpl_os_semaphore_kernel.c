@@ -15,12 +15,6 @@
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
  *
- * @section infos File informations
- *
- * $Date:$
- * $Rev:$
- * $Author:$
- * $URL:$
  */
 
 #include "tpl_os_semaphore_kernel.h"
@@ -54,9 +48,6 @@ FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
   }
   task_id = sem->waiting_tasks[read_index];
   sem->size--;
-
-  /* release the task */
-  tpl_release(task_id);
 
   return task_id;
 }

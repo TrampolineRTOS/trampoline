@@ -432,6 +432,29 @@ CPU api {
   };
 
   /*
+   * Semaphore extension
+   */
+  APICONFIG semaphore {
+	  ID_PREFIX = OS;
+	  DIRECTORY = "os";
+	  FILE = "tpl_os_semaphore_kernel";
+	  HEADER = "tpl_os_semaphore";
+	  SYSCALL SemWait {
+	    KERNEL = tpl_sem_wait_service;
+	    LOCK_KERNEL = TRUE;
+		  CALLABLE_BY_ISR1 = FALSE;
+	    RETURN_TYPE = StatusType;
+	    ARGUMENT sem_id { KIND = CONST; TYPE = SemType; };
+	  };
+	  SYSCALL SemPost {
+	    KERNEL = tpl_sem_post_service;
+		  LOCK_KERNEL = TRUE;
+		  CALLABLE_BY_ISR1 = FALSE;
+	    RETURN_TYPE = StatusType;
+	    ARGUMENT sem_id { KIND = CONST; TYPE = SemType; };
+	  };
+	};
+  /*
    * AUTOSAR Software counters
    */
   APICONFIG counter {

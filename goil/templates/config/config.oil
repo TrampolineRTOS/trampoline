@@ -299,6 +299,10 @@ IMPLEMENTATION trampoline_common {
     ] RESOURCEPROPERTY;
   };
 
+  SEMAPHORE [] {
+    UINT32 TOKEN;
+  };
+
   MESSAGE [] {
     ENUM [
       SEND_STATIC_INTERNAL {

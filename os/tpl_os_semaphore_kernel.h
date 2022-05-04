@@ -17,10 +17,6 @@
  *
  * @section infos File informations
  *
- * $Date:$
- * $Rev:$
- * $Author:$
- * $URL:$
  */
 
 #ifndef TPL_OS_SEMAPHORE_KERNEL_H

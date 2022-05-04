@@ -162,6 +162,11 @@ end if
 !rez_count % 
 
 /*-----------------------------------------------------------------------------
+ * Number of semaphores
+ */
+#define SEMAPHORE_COUNT        % ![SEMAPHORE length] %
+
+/*-----------------------------------------------------------------------------
  * Number of events
  */
 #define EVENT_COUNT            % ![EVENTS length] %

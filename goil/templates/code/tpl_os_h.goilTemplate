@@ -130,6 +130,11 @@ DeclareResource(% !resource::NAME %);%
   end if
 end foreach
 
+foreach sem in SEMAPHORE do
+%
+DeclareSemaphore(% !sem::NAME %);%
+end foreach
+
 foreach alarm in ALARM do
 %
 DeclareAlarm(% !alarm::NAME %);%
