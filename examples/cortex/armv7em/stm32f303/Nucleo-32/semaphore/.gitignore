@@ -1,0 +1,9 @@
+semaphore
+build
+CMakeLists.txt
+.vscode/*
+*_exe
+*.bin
+*.map
+build.py
+make.py
