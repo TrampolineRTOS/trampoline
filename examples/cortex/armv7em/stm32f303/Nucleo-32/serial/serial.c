@@ -11,7 +11,7 @@
 FUNC(int, OS_APPL_CODE) main(void)
 {
   pinMode(GPIOB,3,OUTPUT); //led 1 is PB3
-  tpl_serial_begin();
+  tpl_serial_begin(SERIAL_TX_MODE_SKIP);
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -28,7 +28,6 @@ TASK(serial_TX)
 }
 
 //tmp TODO: add ISR into library.
-void itUsart();
 ISR(usart)
 {
 	itUsart();

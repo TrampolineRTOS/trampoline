@@ -59,7 +59,6 @@ TASK(taskReceiver2)
 }
 
 //tmp TODO: add ISR into library.
-void itUsart();
 ISR(usart)
 {
 	itUsart();

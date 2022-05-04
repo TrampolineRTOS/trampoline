@@ -47,7 +47,7 @@ FUNC(void, OS_CODE) tpl_trace_start()
   static char serialOk = 0;
   if(serialOk == 0)
   {
-    tpl_serial_begin();
+    tpl_serial_begin(SERIAL_TX_MODE_SKIP);
 	  serialOk = 1;
   }
 # else

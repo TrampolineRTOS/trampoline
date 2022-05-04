@@ -26,7 +26,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 
     initCoroBoard();
     ioExt.digitalWrite(mcp23s17::PORTA, 1, 1);
-	tpl_serial_begin();
+	tpl_serial_begin(SERIAL_TX_MODE_SKIP);
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }

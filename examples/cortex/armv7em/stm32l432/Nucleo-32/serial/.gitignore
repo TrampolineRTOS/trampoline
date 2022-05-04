@@ -1,6 +1,8 @@
 serial
 build
+CMakeLists.txt
 *_exe
 *.bin
 *.map
-*.py
+build.py
+make.py
