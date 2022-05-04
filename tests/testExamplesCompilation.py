@@ -153,7 +153,7 @@ def compileOILProjectCMAKE(oilDir,oilFile):
         cmd = 'make'
         process = None
         try:
-            process = run(cmd.split(),cwd=buildDir,stdout=DEVNULL)
+            process = run(cmd.split(),cwd=buildDir,stdout=DEVNULL,stderr=DEVNULL)
         except OSError:
             print('the command "'+cmd+ '" failed.')
         except KeyboardInterrupt:
