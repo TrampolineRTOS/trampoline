@@ -24,6 +24,7 @@ CPU pico {
 	NEEDS = pico_config;
 	NEEDS = pico_rp2040_config;
 	NEEDS = pico_platform;
+	NEEDS = pico_generated;
     PATH = "src/common/pico_base/include";
 	CHEADER = "pico.h";
   };
@@ -32,6 +33,12 @@ CPU pico {
   LIBRARY pico_config { //PICO_CONFIG_HEADER_FILES
 	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
     PATH = "src/boards/include";
+  };
+
+  //automatically included in SDK through 'config_autogen.h'
+  LIBRARY pico_generated {  //pico/version.h
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+    PATH = "build/generated/pico_base";
   };
 
   //automatically included in SDK through 'config_autogen.h'
