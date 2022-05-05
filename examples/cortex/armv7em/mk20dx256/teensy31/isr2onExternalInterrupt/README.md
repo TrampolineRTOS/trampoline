@@ -15,7 +15,9 @@ The system is based scheduled with a 1ms SysTick "SystemCounter".
 
 Configure the application with:
 
-`goil --target=cortex/armv7em/mk20dx256/teensy31 --templates=../../../../../../goil/templates isr2onPIT.oil`
+```
+goil --target=cortex/armv7em/mk20dx256/teensy31 --templates=../../../../../../goil/templates isr2onPIT.oil
+```
 
 Then compile the application:
 

@@ -1,0 +1,11 @@
+trace_test
+trace_test_exe
+
+trace.json
+build
+*.elf
+*.bin
+*.map
+make.py
+build.py
+readTrace.py

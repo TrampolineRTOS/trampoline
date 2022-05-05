@@ -680,6 +680,9 @@ if make.errorCount() == 0:%
   end foreach
 end foreach%
 
+
+make.printErrorCountAndExitOnError()
+
 #----------------------------------------------------------------------
 #-- End of build.py
 #----------------------------------------------------------------------

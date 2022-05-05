@@ -1,0 +1,33 @@
+# Trampoline examples for Posix Targets
+
+Have a look to ../README.md to have information about the Posix target (using ViPER).
+
+Basic example with a periodic task that prints a msg on stdout. 
+
+On linux:
+```
+goil --target=posix/linux  --templates=../../../goil/templates/ periodic.oil
+```
+
+on darwin:
+```
+goil --target=posix/linux  --templates=../../../goil/templates/ periodic.oil
+```
+
+Then, the makefile is generated, and it will call goil again when the .oil file is updated
+
+```
+./make.py
+```
+
+Then, run the trampoline binary. This program will start another process to run ViPER silently.
+
+```
+./periodic_exe
+```
+
+If the trace tools are enabled in OIL file, the execution will create a trace file named "trace.json" and a python script to check the log generated.
+
+```
+./readtrace.py
+```

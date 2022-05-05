@@ -1,10 +1,7 @@
-trampuinoIT
-extInterrupt
-
+lonely
 build
 *_exe
 *.bin
 *.map
-*.hex
 build.py
 make.py
