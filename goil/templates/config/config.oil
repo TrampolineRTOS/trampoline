@@ -58,6 +58,11 @@ IMPLEMENTATION trampoline_common {
    * Machines specific files to add to the build system
    */
   PLATFORM_FILES [] {
+	BOOLEAN [
+      TRUE { 
+        STRING VARIABLE = "";
+      }, FALSE
+	] USE_PREFIX = FALSE;
     STRING PATH;
     STRING CFILE[];
     STRING CPPFILE[];

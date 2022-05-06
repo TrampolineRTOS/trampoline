@@ -709,7 +709,10 @@ class Make:
                   if not os.path.exists (absTargetDirectory):
                     displayLock.acquire ()
                     print (BOLD_BLUE () + "Making \"" + os.path.dirname (aTarget) + "\" directory" + ENDC())
-                    os.makedirs (os.path.dirname (aTarget))
+                    try:
+                      os.makedirs (os.path.dirname (aTarget))
+                    except FileExistsError:
+                      pass
                     displayLock.release ()
                 #--- Progress string
                 launchedJobCount += 1.0
@@ -895,7 +898,10 @@ class Make:
             print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "os.remove '" + dir + "'")
           else:
             print (BOLD_BLUE () + "Removing \"" + dir + "\"" + ENDC())
-            shutil.rmtree(dir)
+            try:
+              shutil.rmtree(dir)
+            except FileNotFoundError:
+              pass #already removed.
       for file in filesToRemoveList:
         if os.path.exists (os.path.abspath (file)):
           if self.mSimulateClean:

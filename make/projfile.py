@@ -10,6 +10,7 @@
 #
 #if sys.version_info >= (2, 6) :
 #  import multiprocessing
+from os.path import join
 
 #----------------------------------------------------------------------------*
 #   class SourceFile                                                         *
@@ -26,12 +27,12 @@ class ProjectFile:
     self.mPrefix = prefix
 
   def src (self):
-    return self.mPrefix + self.mSrcFile
+    return join(self.mPrefix,self.mSrcFile)
 
   def obj (self, targetDir):
-    return targetDir + "/" + self.mSrcFile + ".o"
+    return join(targetDir,self.mSrcFile + ".o")
 
   def dep (self, targetDir):
-    return targetDir + "/" + self.mSrcFile + ".o.dep"
+    return join(targetDir,self.mSrcFile + ".o.dep")
 
 #----------------------------------------------------------------------------*

@@ -130,79 +130,92 @@ includeDirs = []
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::CFLAGS default ( @() ) do
     %
-cflags += "% !flags::VALUE %".split()%
+cflags += '% !flags::VALUE %'.split()%
   end foreach
 end foreach
 foreach flags in exists OS::BUILD_S::CFLAGS default ( @() ) do
   %
-cflags += "% !flags::VALUE %".split()%
+cflags += '% !flags::VALUE %'.split()%
 end foreach
 #PRE CFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::PRECFLAGS default ( @() ) do
     %
-precflags += "% !flags::VALUE %".split()%
+precflags += '% !flags::VALUE %'.split()%
   end foreach
 end foreach
 foreach flags in exists OS::BUILD_S::PRECFLAGS default ( @() ) do
   %
-precflags += "% !flags::VALUE %".split()%
+precflags += '% !flags::VALUE %'.split()%
 end foreach
 #CPPFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::CPPFLAGS default ( @() ) do
   %
-cppflags += "% !flags::VALUE %".split()%
+cppflags += '% !flags::VALUE %'.split()%
   end foreach
 end foreach
 foreach flags in exists OS::BUILD_S::CPPFLAGS default ( @() ) do
   %
-cppflags += "% !flags::VALUE %".split()%
+cppflags += '% !flags::VALUE %'.split()%
 end foreach
 #PRECPPFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::PRECPPFLAGS default ( @() ) do
   %
-precppflags += "% !flags::VALUE %".split()%
+precppflags += '% !flags::VALUE %'.split()%
   end foreach
 end foreach
 foreach flags in exists OS::BUILD_S::PRECPPFLAGS default ( @() ) do
   %
-precppflags += "% !flags::VALUE %".split()%
+precppflags += '% !flags::VALUE %'.split()%
 end foreach
 #COMMON FLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::COMMONFLAGS default ( @() ) do
   %
-cflags += "% !flags::VALUE %".split()
-cppflags += "% !flags::VALUE %".split()%
+cflags += '% !flags::VALUE %'.split()
+cppflags += '% !flags::VALUE %'.split()%
   end foreach
 end foreach
 foreach flags in exists OS::BUILD_S::COMMONFLAGS default ( @() ) do
   %
-cflags += "% !flags::VALUE %".split()
-cppflags += "% !flags::VALUE %".split()%
+cflags += '% !flags::VALUE %'.split()
+cppflags += '% !flags::VALUE %'.split()%
 end foreach
 #PRE COMMON FLAGS
 #COMMON FLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::PRECOMMONFLAGS default ( @() ) do
   %
-precflags += "% !flags::VALUE %".split()
-precppflags += "% !flags::VALUE %".split()%
+precflags += '% !flags::VALUE %'.split()
+precppflags += '% !flags::VALUE %'.split()%
   end foreach
 end foreach
 foreach flags in exists OS::BUILD_S::PRECOMMONFLAGS default ( @() ) do
   %
-precflags += "% !flags::VALUE %".split()
-precppflags += "% !flags::VALUE %".split()%
+precflags += '% !flags::VALUE %'.split()
+precppflags += '% !flags::VALUE %'.split()%
 end foreach
 #include dirs
 
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
-foreach platform in exists PLATFORM_FILES default ( @() ) do%
+
+foreach platform in exists PLATFORM_FILES default ( @() ) do
+  if platform::USE_PREFIX then
+    #yes
+    let base_path := [platform::USE_PREFIX_S::VARIABLE envVar]
+    if [base_path length] == 0 then
+      #not defined through a variable
+      error platform: "External library needs an enviroment variable: "+platform::USE_PREFIX_S::VARIABLE
+    end if%
+includeDirs += ["-I","% !base_path+ "/" + platform::PATH %"]%
+  else
+%
 includeDirs += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]%
+  end if
 end foreach
+
 foreach library in exists USEDLIB default ( @() ) do
   #do we use an external library?
   if library::USE_PREFIX then
@@ -470,16 +483,46 @@ foreach library in exists USEDLIB default ( @() ) do
   if not exists library::CPPFILE then let library::CPPFILE := @() end if
   if not exists library::ASFILE then let library::ASFILE := @() end if
   foreach file in library::CFILE do
+    if library::USE_PREFIX then
+      #yes
+      let base_path := [library::USE_PREFIX_S::VARIABLE envVar]
+      if [base_path length] == 0 then
+        #not defined through a variable
+        error library : "External library needs an enviroment variable: "+library::USE_PREFIX_S::VARIABLE
+      end if%
+cSourceList.append(projfile.ProjectFile("% !library::PATH+"/"+file::VALUE %", "%!base_path%"))%
+    else
 %
 cSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
+    end if
   end foreach
   foreach file in library::CPPFILE do
+    if library::USE_PREFIX then
+      #yes
+      let base_path := [library::USE_PREFIX_S::VARIABLE envVar]
+      if [base_path length] == 0 then
+        #not defined through a variable
+        error library : "External library needs an enviroment variable: "+library::USE_PREFIX_S::VARIABLE
+      end if%
+cppSourceList.append(projfile.ProjectFile("% !library::PATH+"/"+file::VALUE %", "%!base_path%"))%
+    else
 %
 cppSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
+    end if
   end foreach
   foreach file in library::ASFILE do
+    if library::USE_PREFIX then
+      #yes
+      let base_path := [library::USE_PREFIX_S::VARIABLE envVar]
+      if [base_path length] == 0 then
+        #not defined through a variable
+        error library : "External library needs an enviroment variable: "+library::USE_PREFIX_S::VARIABLE
+      end if%
+sSourceList.append(projfile.ProjectFile("% !library::PATH+"/"+file::VALUE %", "%!base_path%"))%
+    else
 %
 sSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
+    end if
   end foreach
 end foreach
 %
