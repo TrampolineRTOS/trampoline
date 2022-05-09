@@ -267,13 +267,43 @@ set(TRAMPOLINE_MACHINE_SRCS
   if not exists platform::CPPFILE then let platform::CPPFILE := @() end if
   if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+    if platform::USE_PREFIX then
+      #yes
+      let base_path := [platform::USE_PREFIX_S::VARIABLE envVar]
+      if [base_path length] == 0 then
+        #not defined through a variable
+        error platform: "External library needs an enviroment variable: "+platform::USE_PREFIX_S::VARIABLE
+      end if
+      %	%!base_path+"/"+platform::PATH+"/"+file::VALUE%\n%
+    else
+      %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+    end if
   end foreach
   foreach file in platform::CPPFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+    if platform::USE_PREFIX then
+      #yes
+      let base_path := [platform::USE_PREFIX_S::VARIABLE envVar]
+      if [base_path length] == 0 then
+        #not defined through a variable
+        error platform: "External library needs an enviroment variable: "+platform::USE_PREFIX_S::VARIABLE
+      end if
+      %	%!base_path+"/"+platform::PATH+"/"+file::VALUE%\n%
+    else
+      %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+    end if
   end foreach
   foreach file in platform::ASFILE do
-    %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+    if platform::USE_PREFIX then
+      #yes
+      let base_path := [platform::USE_PREFIX_S::VARIABLE envVar]
+      if [base_path length] == 0 then
+        #not defined through a variable
+        error platform: "External library needs an enviroment variable: "+platform::USE_PREFIX_S::VARIABLE
+      end if
+      %	%!base_path+"/"+platform::PATH+"/"+file::VALUE%\n%
+    else
+      %	${TRAMPOLINE_MACHINE_PATH}/%!platform::PATH+"/"+file::VALUE%\n%
+    end if
   end foreach
 end foreach
 

@@ -4,6 +4,20 @@
  * extracted from the core_cm0plus.h cmsis file.
  *
  */
+#ifndef __CMSIS_WRAPPER_H__
+#define __CMSIS_WRAPPER_H__
+
+/* IRQn definition for cmsis*/
+typedef enum IRQn
+{
+  /******  Cortex-M0+ Processor Exceptions Numbers ******************************/
+  NonMaskableInt_IRQn      = -14,/**<  2 Non Maskable Interrupt                 */
+  HardFault_IRQn           = -13,/**<  3 Cortex-M0+ Hard Fault Interrupt        */
+  SVCall_IRQn              = -5, /**< 11 Cortex-M0+ SV Call Interrupt           */
+  PendSV_IRQn              = -2, /**< 14 Cortex-M0+ Pend SV Interrupt           */
+  SysTick_IRQn             = -1, /**< 15 Cortex-M0+ System Tick Interrupt       */
+  /******  RP2040-specific Interrupt Numbers ***********************/
+} IRQn_Type;
 
 
 //stuff that should be defined in cmsis files..
@@ -66,6 +80,7 @@ typedef struct
   __IO uint32_t SHCSR;                   /*!< Offset: 0x024 (R/W)  System Handler Control and State Register             */
 } SCB_Type;
 
+#include "hardware/structs/scb.h"
 #define SCB       ((SCB_Type       *)scb_hw) /* get it from rp2040 */
 
 /** \brief  Structure type to access the Nested Vectored Interrupt Controller (NVIC).
@@ -116,3 +131,5 @@ __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
 {
   NVIC->ISER[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
 }
+
+#endif //__CMSIS_WRAPPER_H__

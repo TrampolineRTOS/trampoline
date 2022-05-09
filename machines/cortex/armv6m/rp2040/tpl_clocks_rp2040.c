@@ -7,14 +7,18 @@
  *  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "rp2040.h"
+#include "pico.h"
+#include "hardware/structs/xosc.h"
+#include "hardware/structs/pll.h"
+#include "hardware/structs/clocks.h"
+#include "hardware/structs/resets.h"
 
 static const uint32_t MHZ = 1000 * 1000 ;
 /* useful for systick config */
-const uint32_t SystemCoreClock = 125*MHZ;
+const uint32_t SystemCoreClockTMP = 125*MHZ;
 
 /* from pico-sdk/src/rp2_common/hardware_xosc/xosc.c */
-void xosc_init(void) {
+void tpl_xosc_init(void) {
     // Assumes 1-15 MHz input
     //assert(XOSC_MHZ <= 15);
     xosc_hw->ctrl = XOSC_CTRL_FREQ_RANGE_VALUE_1_15MHZ;
@@ -33,7 +37,7 @@ void xosc_init(void) {
 
 /* largely inspired by
  * from pico-sdk/src/rp2_common/hardware_pll/pll.c */
-void pll_init(pll_hw_t * pll, 
+void tpl_pll_init(pll_hw_t * pll, 
 		      const uint32_t refdiv,
 			  const uint32_t vco_freq,
 			  const uint32_t post_div1,
@@ -86,7 +90,7 @@ void pll_init(pll_hw_t * pll,
     pll->pwr &= ~PLL_PWR_POSTDIVPD_BITS;
 }
 
-int clock_configure(enum clock_index clk_index, 
+int tpl_clock_configure(enum clock_index clk_index, 
 		            uint32_t src,
 					uint32_t auxsrc, 
 					uint32_t src_freq, 
@@ -168,7 +172,7 @@ int clock_configure(enum clock_index clk_index,
 /*
  * largely inspired by
  * from pico-sdk/src/rp2_common/hardware_clocks/clocks.c */
-void clocks_init(void) {
+void tpl_clocks_init(void) {
     // Start tick in watchdog
     //watchdog_start_tick(XOSC_MHZ);
 
@@ -176,7 +180,7 @@ void clocks_init(void) {
     clocks_hw->resus.ctrl = 0;
 
     // Enable the xosc
-    xosc_init();
+    tpl_xosc_init();
 
     // Before we touch PLLs, switch sys and ref cleanly away from their aux sources.
 	clocks_hw->clk[clk_sys].ctrl &= ~ CLOCKS_CLK_SYS_CTRL_SRC_BITS ;
@@ -198,12 +202,12 @@ void clocks_init(void) {
     //--- Wait until reset is done
     while ((resettedPheripheral & ~resets_hw->reset_done) != 0) {}
 
-    pll_init(pll_sys_hw, 1, 1500 * MHZ, 6, 2);
-    pll_init(pll_usb_hw, 1, 480 * MHZ, 5, 2);
+    tpl_pll_init(pll_sys_hw, 1, 1500 * MHZ, 6, 2);
+    tpl_pll_init(pll_usb_hw, 1, 480 * MHZ, 5, 2);
 
     // Configure clocks
     // CLK_REF = XOSC (12MHz) / 1 = 12MHz
-    clock_configure(clk_ref,
+    tpl_clock_configure(clk_ref,
                     CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC,
                     0, // No aux mux
                     12 * MHZ,
@@ -211,7 +215,7 @@ void clocks_init(void) {
 
     /// \tag::configure_clk_sys[]
     // CLK SYS = PLL SYS (125MHz) / 1 = 125MHz
-    clock_configure(clk_sys,
+    tpl_clock_configure(clk_sys,
                     CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLKSRC_CLK_SYS_AUX,
                     CLOCKS_CLK_SYS_CTRL_AUXSRC_VALUE_CLKSRC_PLL_SYS,
                     125 * MHZ,
@@ -219,21 +223,21 @@ void clocks_init(void) {
     /// \end::configure_clk_sys[]
 
     // CLK USB = PLL USB (48MHz) / 1 = 48MHz
-    clock_configure(clk_usb,
+    tpl_clock_configure(clk_usb,
                     0, // No GLMUX
                     CLOCKS_CLK_USB_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB,
                     48 * MHZ,
                     48 * MHZ);
 
     // CLK ADC = PLL USB (48MHZ) / 1 = 48MHz
-    clock_configure(clk_adc,
+    tpl_clock_configure(clk_adc,
                     0, // No GLMUX
                     CLOCKS_CLK_ADC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB,
                     48 * MHZ,
                     48 * MHZ);
 
     // CLK RTC = PLL USB (48MHz) / 1024 = 46875Hz
-    clock_configure(clk_rtc,
+    tpl_clock_configure(clk_rtc,
                     0, // No GLMUX
                     CLOCKS_CLK_RTC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB,
                     48 * MHZ,
@@ -241,7 +245,7 @@ void clocks_init(void) {
 
     // CLK PERI = clk_sys. Used as reference clock for Peripherals. No dividers so just select and enable
     // Normally choose clk_sys or clk_usb
-    clock_configure(clk_peri,
+    tpl_clock_configure(clk_peri,
                     0,
                     CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS,
                     125 * MHZ,

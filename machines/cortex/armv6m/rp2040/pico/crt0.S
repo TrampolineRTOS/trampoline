@@ -8,7 +8,7 @@
 #include "hardware/platform_defs.h"
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sio.h"
-#include "binary_info/defs.h"
+//#include "binary_info/defs.h"
 
 #ifdef NDEBUG
 #ifndef COLLAPSE_IRQS

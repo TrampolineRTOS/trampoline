@@ -27,6 +27,8 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#include "hardware/structs/systick.h"
+
 extern uint32_t SystemCoreClock;
 
 __STATIC_INLINE FUNC(uint32, OS_CODE) tpl_configure_systick(

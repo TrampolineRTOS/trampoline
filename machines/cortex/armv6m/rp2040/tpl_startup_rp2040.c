@@ -1,5 +1,7 @@
 #include <sys/types.h>
-#include "rp2040.h"
+#include "pico.h"
+#include "hardware/structs/resets.h"
+#include "hardware/clocks.h" //MHZ
 
 void __attribute__((weak)) tpl_continue_reset_handler(void);
 
@@ -65,6 +67,16 @@ extern void (*__fini_array_start[])(void) __attribute__((weak));
 extern void (*__fini_array_end[])(void) __attribute__((weak));
 void system_init();
 
+/* TODO: should be replaced by the SDK version.*/
+void tpl_clocks_init(void);
+#include "hardware/structs/iobank0.h"
+#include "hardware/structs/sio.h"
+#define LED_BUILTIN 25
+
+//CMSIS compatibility
+//you may use clock_get_hz() form rp2_common/hardware_clocks/clocks.c
+uint32_t SystemCoreClock = 125 * MHZ;
+
 /*
  * on rp2040, the boot needs many stages:
  * - first boot stage: 256 bytes from boot2_w25q080_2_padded_checksum.s
@@ -78,6 +90,12 @@ void system_init();
 void __attribute__ ((section(".osCode"))) 
 tpl_continue_reset_handler(void)
 {
+  //tmp
+  sio_hw->gpio_oe_set = 1ul << LED_BUILTIN; // enable output
+  sio_hw->gpio_clr = 1ul << LED_BUILTIN;    // clear
+  iobank0_hw->io[LED_BUILTIN].ctrl = 5; //5 is alternate function for SIO
+  sio_hw->gpio_togl = 1ul << LED_BUILTIN;
+
   size_t count;
   size_t i;
   // Reset all peripherals to put system into a known state,
@@ -125,7 +143,7 @@ tpl_continue_reset_handler(void)
 
   // After calling preinit we have enough runtime to do the exciting maths
   // in clocks_init
-  clocks_init();
+  tpl_clocks_init();
 
   // Peripheral clocks should now all be running
   resets_hw->reset |= otherPeripherals ;

@@ -1,13 +1,50 @@
 CPU rp2040 {
 
   CORTEX rp2040 {
-    PRIO_BITS = 2; //TODO: check
+    PRIO_BITS = 2;
     CLOCK = 125000000;
   };
    
-//  BUILDOPTIONS buildOptionsForSamD21 {
-//     COMMONFLAGS = "-D__SAMD21J18A__"; //processor def.
-//  };
+  BUILDOPTIONS buildOptionsPICO {
+    COMMONFLAGS = "-DLIB_PICO_BIT_OPS=1";
+    COMMONFLAGS = "-DLIB_PICO_BIT_OPS_PICO=1";
+    COMMONFLAGS = "-DLIB_PICO_DIVIDER=1";
+    COMMONFLAGS = "-DLIB_PICO_DIVIDER_HARDWARE=1";
+    COMMONFLAGS = "-DLIB_PICO_DOUBLE=1";
+    COMMONFLAGS = "-DLIB_PICO_DOUBLE_PICO=1";
+    COMMONFLAGS = "-DLIB_PICO_FLOAT=1";
+    COMMONFLAGS = "-DLIB_PICO_FLOAT_PICO=1";
+    COMMONFLAGS = "-DLIB_PICO_INT64_OPS=1";
+    COMMONFLAGS = "-DLIB_PICO_INT64_OPS_PICO=1";
+    COMMONFLAGS = "-DLIB_PICO_MALLOC=1";
+    COMMONFLAGS = "-DLIB_PICO_MEM_OPS=1";
+    COMMONFLAGS = "-DLIB_PICO_MEM_OPS_PICO=1";
+    COMMONFLAGS = "-DLIB_PICO_PLATFORM=1";
+    COMMONFLAGS = "-DLIB_PICO_PRINTF=1";
+    COMMONFLAGS = "-DLIB_PICO_PRINTF_PICO=1";
+    COMMONFLAGS = "-DLIB_PICO_RUNTIME=1";
+    COMMONFLAGS = "-DLIB_PICO_STANDARD_LINK=1";
+    COMMONFLAGS = "-DLIB_PICO_STDIO=1";
+    COMMONFLAGS = "-DLIB_PICO_STDIO_UART=1";
+    COMMONFLAGS = "-DLIB_PICO_STDLIB=1";
+    COMMONFLAGS = "-DLIB_PICO_SYNC=1";
+    COMMONFLAGS = "-DLIB_PICO_SYNC_CORE=1";
+    COMMONFLAGS = "-DLIB_PICO_SYNC_CRITICAL_SECTION=1";
+    COMMONFLAGS = "-DLIB_PICO_SYNC_MUTEX=1";
+    COMMONFLAGS = "-DLIB_PICO_SYNC_SEM=1";
+    COMMONFLAGS = "-DLIB_PICO_TIME=1";
+    COMMONFLAGS = "-DLIB_PICO_UTIL=1";
+    COMMONFLAGS = "-DPICO_BOARD=\"pico\"";
+    COMMONFLAGS = "-DPICO_BUILD=1";
+    COMMONFLAGS = "-DPICO_CMAKE_BUILD_TYPE=\"Release\"";
+    COMMONFLAGS = "-DPICO_COPY_TO_RAM=0";
+    COMMONFLAGS = "-DPICO_CXX_ENABLE_EXCEPTIONS=0";
+    //COMMONFLAGS = "-DPICO_NO_FLASH=0";
+    COMMONFLAGS = "-DPICO_NO_HARDWARE=0";
+    COMMONFLAGS = "-DPICO_ON_DEVICE=1";
+    COMMONFLAGS = "-DPICO_TARGET_NAME=\"blink\"";
+    COMMONFLAGS = "-DPICO_USE_BLOCKED_RAM=0";
+  };
   
   INTERRUPT_COUNT nb_it {
     IT_TABLE_SIZE = 48;
@@ -242,25 +279,14 @@ CPU rp2040 {
     PATH = "cortex/armv6m/rp2040";
     CFILE = "tpl_machine_systick.c";
     CFILE = "tpl_startup_rp2040.c";
+    CFILE = "syscalls.c";
     CFILE = "tpl_clocks_rp2040.c";
   };
 
-  PLATFORM_FILES main_header {
-    PATH = "cortex/armv6m/rp2040/rp2040/hardware/include";
-  };
-  PLATFORM_FILES regs_header {
-    PATH = "cortex/armv6m/rp2040/rp2040/hardware_regs/include";
-  };
-  PLATFORM_FILES struct_header {
-    PATH = "cortex/armv6m/rp2040/rp2040/hardware_structs/include";
-  };
+  //PLATFORM_FILES cmsis_wrapper {
+  //  PATH = "cortex/armv6m/rp2040/rp2040/cmsis_wrapper";
+  //};
 
-//  PLATFORM_FILES utils {
-//    PATH = "cortex/armv6m/samd21/utils";
-//    CFILE = "pinAccess.c";
-//    CFILE = "pinMux.c";
-//    CFILE = "eic.c";
-//};
   POSTCOMMAND uf2 {
     COMMAND uf2 {
       MESSAGE = "Generate uf2 file";

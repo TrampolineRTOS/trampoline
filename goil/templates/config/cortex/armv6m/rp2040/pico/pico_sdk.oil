@@ -1,0 +1,614 @@
+LIBRARY pico_version{
+	//HEADERFILE = "pico/version.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	PATH = "build/generated/pico_base";
+};
+
+LIBRARY hardware_divider{
+	//HEADERFILE = "hardware/divider.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_divider/include";
+};
+
+LIBRARY hardware_dma{
+	//HEADERFILE = "hardware/dma.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_claim;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_dma/include";
+	CFILE = "../dma.c";
+};
+
+LIBRARY hardware_spi{
+	//HEADERFILE = "hardware/spi.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	NEEDS = pico_time;
+	PATH = "src/rp2_common/hardware_spi/include";
+	CFILE = "../spi.c";
+};
+
+LIBRARY pico_mem_ops{
+	//HEADERFILE = "pico/mem_ops.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/pico_mem_ops/include";
+	CFILE = "../mem_ops.c";
+};
+
+LIBRARY hardware_pio{
+	//HEADERFILE = "hardware/pio_instructions.h";
+	//HEADERFILE = "hardware/pio.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_claim;
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_pio/include";
+	CFILE = "../pio.c";
+};
+
+LIBRARY hardware_clocks{
+	//HEADERFILE = "hardware/clocks.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_pll;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_watchdog;
+	NEEDS = hardware_xosc;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_clocks/include";
+	CFILE = "../clocks.c";
+};
+
+LIBRARY pico_stdio_uart{
+	//HEADERFILE = "pico/stdio_uart.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_uart;
+	NEEDS = pico_binary_info;
+	NEEDS = pico_stdio;
+	PATH = "src/rp2_common/pico_stdio_uart/include";
+	CFILE = "../stdio_uart.c";
+};
+
+LIBRARY pico_int64_ops{
+	//HEADERFILE = "pico/int64_ops.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/pico_int64_ops/include";
+};
+
+LIBRARY pico_unique_id{
+	//HEADERFILE = "pico/unique_id.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_flash;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/pico_unique_id/include";
+	CFILE = "../unique_id.c";
+};
+
+LIBRARY pico_stdio{
+	//HEADERFILE = "pico/stdio.h";
+	//HEADERFILE = "pico/stdio/driver.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	NEEDS = pico_platform;
+	NEEDS = pico_printf;
+	NEEDS = pico_stdio_uart;
+	NEEDS = pico_sync;
+	NEEDS = pico_time;
+	PATH = "src/rp2_common/pico_stdio/include";
+	CFILE = "../stdio.c";
+};
+
+LIBRARY boot_stage2{
+	//HEADERFILE = "boot_stage2/config.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/boot_stage2/include";
+};
+
+LIBRARY pico_runtime{
+	//HEADERFILE = "pico/runtime.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_printf;
+	NEEDS = pico_sync;
+	NEEDS = pico_time;
+	PATH = "src/rp2_common/pico_runtime/include";
+	CFILE = "../runtime.c";
+};
+
+LIBRARY hardware_base{
+	//HEADERFILE = "hardware/address_mapped.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_regs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_base/include";
+};
+
+LIBRARY hardware_vreg{
+	//HEADERFILE = "hardware/vreg.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_vreg/include";
+	CFILE = "../vreg.c";
+};
+
+LIBRARY hardware_xosc{
+	//HEADERFILE = "hardware/xosc.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_xosc/include";
+	CFILE = "../xosc.c";
+};
+
+LIBRARY hardware_pwm{
+	//HEADERFILE = "hardware/pwm.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_pwm/include";
+};
+
+LIBRARY hardware_flash{
+	//HEADERFILE = "hardware/flash.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	NEEDS = pico_bootrom;
+	PATH = "src/rp2_common/hardware_flash/include";
+	CFILE = "../flash.c";
+};
+
+LIBRARY pico_double{
+	//HEADERFILE = "pico/double.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_platform;
+	PATH = "src/rp2_common/pico_double/include";
+	CFILE = "../double_math.c";
+	CFILE = "../double_init_rom.c";
+};
+
+LIBRARY pico_printf{
+	//HEADERFILE = "pico/printf.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	NEEDS = pico_platform;
+	PATH = "src/rp2_common/pico_printf/include";
+	CFILE = "../printf.c";
+};
+
+LIBRARY hardware_sync{
+	//HEADERFILE = "hardware/sync.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_claim;
+	NEEDS = hardware_regs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_sync/include";
+	CFILE = "../sync.c";
+};
+
+LIBRARY hardware_exception{
+	//HEADERFILE = "hardware/exception.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	NEEDS = pico_sync;
+	PATH = "src/rp2_common/hardware_exception/include";
+	CFILE = "../exception.c";
+};
+
+LIBRARY pico_float{
+	//HEADERFILE = "pico/float.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	NEEDS = pico_bootrom;
+	NEEDS = pico_platform;
+	PATH = "src/rp2_common/pico_float/include";
+	CFILE = "../float_math.c";
+	CFILE = "../float_init_rom.c";
+};
+
+LIBRARY hardware_rtc{
+	//HEADERFILE = "hardware/rtc.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_rtc/include";
+	CFILE = "../rtc.c";
+};
+
+LIBRARY hardware_pll{
+	//HEADERFILE = "hardware/pll.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_pll/include";
+	CFILE = "../pll.c";
+};
+
+LIBRARY hardware_timer{
+	//HEADERFILE = "hardware/timer.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_claim;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_timer/include";
+	CFILE = "../timer.c";
+};
+
+LIBRARY cmsis{
+	//HEADERFILE = "cmsis/rename_exceptions.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	PATH = "src/rp2_common/cmsis/include";
+};
+
+LIBRARY pico_bootrom{
+	//HEADERFILE = "pico/bootrom.h";
+	//HEADERFILE = "pico/bootrom/sf_table.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/pico_bootrom/include";
+	CFILE = "../bootrom.c";
+};
+
+LIBRARY hardware_i2c{
+	//HEADERFILE = "hardware/i2c.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	NEEDS = pico_time;
+	PATH = "src/rp2_common/hardware_i2c/include";
+	CFILE = "../i2c.c";
+};
+
+LIBRARY hardware_interp{
+	//HEADERFILE = "hardware/interp.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_claim;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_interp/include";
+	CFILE = "../interp.c";
+};
+
+LIBRARY hardware_irq{
+	//HEADERFILE = "hardware/irq.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	NEEDS = pico_sync;
+	PATH = "src/rp2_common/hardware_irq/include";
+	CFILE = "../irq.c";
+};
+
+LIBRARY hardware_claim{
+	//HEADERFILE = "hardware/claim.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_sync;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_claim/include";
+	CFILE = "../claim.c";
+};
+
+LIBRARY hardware_resets{
+	//HEADERFILE = "hardware/resets.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_resets/include";
+};
+
+LIBRARY pico_platform{
+	//HEADERFILE = "pico/platform.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/pico_platform/include";
+	CFILE = "../platform.c";
+};
+
+LIBRARY hardware_gpio{
+	//HEADERFILE = "hardware/gpio.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_irq;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base;
+	NEEDS = pico_binary_info;
+	PATH = "src/rp2_common/hardware_gpio/include";
+	CFILE = "../gpio.c";
+};
+
+LIBRARY hardware_watchdog{
+	//HEADERFILE = "hardware/watchdog.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_watchdog/include";
+	CFILE = "../watchdog.c";
+};
+
+LIBRARY pico_malloc{
+	//HEADERFILE = "pico/malloc.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	NEEDS = pico_sync;
+	PATH = "src/rp2_common/pico_malloc/include";
+	CFILE = "../pico_malloc.c";
+};
+
+LIBRARY pico_multicore{
+	//HEADERFILE = "pico/multicore.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_claim;
+	NEEDS = hardware_irq;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_sync;
+	NEEDS = pico_base;
+	NEEDS = pico_runtime;
+	NEEDS = pico_sync;
+	PATH = "src/rp2_common/pico_multicore/include";
+	CFILE = "../multicore.c";
+};
+
+LIBRARY hardware_uart{
+	//HEADERFILE = "hardware/uart.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_clocks;
+	NEEDS = hardware_regs;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = hardware_timer;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_uart/include";
+	CFILE = "../uart.c";
+};
+
+LIBRARY hardware_adc{
+	//HEADERFILE = "hardware/adc.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_resets;
+	NEEDS = hardware_structs;
+	NEEDS = pico_base;
+	PATH = "src/rp2_common/hardware_adc/include";
+	CFILE = "../adc.c";
+};
+
+LIBRARY pico_binary_info{
+	//HEADERFILE = "pico/binary_info.h";
+	//HEADERFILE = "pico/binary_info/defs.h";
+	//HEADERFILE = "pico/binary_info/code.h";
+	//HEADERFILE = "pico/binary_info/structure.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	PATH = "src/common/pico_binary_info/include";
+};
+
+LIBRARY pico_stdlib{
+	//HEADERFILE = "pico/stdlib.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_gpio;
+	NEEDS = hardware_uart;
+	NEEDS = pico_base;
+	NEEDS = pico_stdio;
+	NEEDS = pico_stdio_uart;
+	NEEDS = pico_time;
+	PATH = "src/common/pico_stdlib/include";
+};
+
+LIBRARY pico_usb_reset_interface{
+	//HEADERFILE = "pico/usb_reset_interface.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	PATH = "src/common/pico_usb_reset_interface/include";
+};
+
+LIBRARY pico_base{
+	//HEADERFILE = "pico.h";
+	//HEADERFILE = "pico/error.h";
+	//HEADERFILE = "pico/config.h";
+	//HEADERFILE = "pico/types.h";
+	//HEADERFILE = "pico/assert.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_platform;
+	NEEDS = pico_version;
+	PATH = "src/common/pico_base/include";
+};
+
+LIBRARY pico_sync{
+	//HEADERFILE = "pico/mutex.h";
+	//HEADERFILE = "pico/sync.h";
+	//HEADERFILE = "pico/lock_core.h";
+	//HEADERFILE = "pico/critical_section.h";
+	//HEADERFILE = "pico/sem.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_sync;
+	NEEDS = pico_base;
+	NEEDS = pico_time;
+	PATH = "src/common/pico_sync/include";
+	CFILE = "../lock_core.c";
+	CFILE = "../mutex.c";
+	CFILE = "../sem.c";
+	CFILE = "../critical_section.c";
+};
+
+LIBRARY pico_util{
+	//HEADERFILE = "pico/util/pheap.h";
+	//HEADERFILE = "pico/util/datetime.h";
+	//HEADERFILE = "pico/util/queue.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_sync;
+	NEEDS = pico_base;
+	NEEDS = pico_sync;
+	PATH = "src/common/pico_util/include";
+	CFILE = "../datetime.c";
+	CFILE = "../queue.c";
+	CFILE = "../pheap.c";
+};
+
+LIBRARY pico_divider{
+	//HEADERFILE = "pico/divider.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_divider;
+	NEEDS = pico_base;
+	PATH = "src/common/pico_divider/include";
+};
+
+LIBRARY pico_bit_ops{
+	//HEADERFILE = "pico/bit_ops.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_base;
+	PATH = "src/common/pico_bit_ops/include";
+};
+
+LIBRARY boot_uf2{
+	//HEADERFILE = "boot/uf2.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	PATH = "src/common/boot_uf2/include";
+};
+
+LIBRARY boot_picoboot{
+	//HEADERFILE = "boot/picoboot.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = pico_platform;
+	PATH = "src/common/boot_picoboot/include";
+};
+
+LIBRARY pico_time{
+	//HEADERFILE = "pico/time.h";
+	//HEADERFILE = "pico/timeout_helper.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_timer;
+	NEEDS = pico_base;
+	NEEDS = pico_sync;
+	NEEDS = pico_util;
+	PATH = "src/common/pico_time/include";
+	CFILE = "../time.c";
+	CFILE = "../timeout_helper.c";
+};
+
+LIBRARY hardware_structs{
+	//HEADERFILE = "hardware/structs/systick.h";
+	//HEADERFILE = "hardware/structs/usb.h";
+	//HEADERFILE = "hardware/structs/vreg_and_chip_reset.h";
+	//HEADERFILE = "hardware/structs/ssi.h";
+	//HEADERFILE = "hardware/structs/adc.h";
+	//HEADERFILE = "hardware/structs/rosc.h";
+	//HEADERFILE = "hardware/structs/spi.h";
+	//HEADERFILE = "hardware/structs/bus_ctrl.h";
+	//HEADERFILE = "hardware/structs/timer.h";
+	//HEADERFILE = "hardware/structs/iobank0.h";
+	//HEADERFILE = "hardware/structs/watchdog.h";
+	//HEADERFILE = "hardware/structs/syscfg.h";
+	//HEADERFILE = "hardware/structs/resets.h";
+	//HEADERFILE = "hardware/structs/clocks.h";
+	//HEADERFILE = "hardware/structs/uart.h";
+	//HEADERFILE = "hardware/structs/padsbank0.h";
+	//HEADERFILE = "hardware/structs/xip_ctrl.h";
+	//HEADERFILE = "hardware/structs/ioqspi.h";
+	//HEADERFILE = "hardware/structs/i2c.h";
+	//HEADERFILE = "hardware/structs/pio.h";
+	//HEADERFILE = "hardware/structs/mpu.h";
+	//HEADERFILE = "hardware/structs/interp.h";
+	//HEADERFILE = "hardware/structs/psm.h";
+	//HEADERFILE = "hardware/structs/scb.h";
+	//HEADERFILE = "hardware/structs/pll.h";
+	//HEADERFILE = "hardware/structs/pads_qspi.h";
+	//HEADERFILE = "hardware/structs/rtc.h";
+	//HEADERFILE = "hardware/structs/pwm.h";
+	//HEADERFILE = "hardware/structs/dma.h";
+	//HEADERFILE = "hardware/structs/sio.h";
+	//HEADERFILE = "hardware/structs/xosc.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	NEEDS = hardware_base;
+	NEEDS = hardware_regs;
+	PATH = "src/rp2040/hardware_structs/include";
+};
+
+LIBRARY hardware_regs{
+	//HEADERFILE = "hardware/platform_defs.h";
+	//HEADERFILE = "hardware/regs/intctrl.h";
+	//HEADERFILE = "hardware/regs/usb.h";
+	//HEADERFILE = "hardware/regs/xip.h";
+	//HEADERFILE = "hardware/regs/vreg_and_chip_reset.h";
+	//HEADERFILE = "hardware/regs/ssi.h";
+	//HEADERFILE = "hardware/regs/adc.h";
+	//HEADERFILE = "hardware/regs/rosc.h";
+	//HEADERFILE = "hardware/regs/pads_bank0.h";
+	//HEADERFILE = "hardware/regs/spi.h";
+	//HEADERFILE = "hardware/regs/tbman.h";
+	//HEADERFILE = "hardware/regs/timer.h";
+	//HEADERFILE = "hardware/regs/watchdog.h";
+	//HEADERFILE = "hardware/regs/m0plus.h";
+	//HEADERFILE = "hardware/regs/syscfg.h";
+	//HEADERFILE = "hardware/regs/sysinfo.h";
+	//HEADERFILE = "hardware/regs/resets.h";
+	//HEADERFILE = "hardware/regs/clocks.h";
+	//HEADERFILE = "hardware/regs/uart.h";
+	//HEADERFILE = "hardware/regs/io_bank0.h";
+	//HEADERFILE = "hardware/regs/io_qspi.h";
+	//HEADERFILE = "hardware/regs/i2c.h";
+	//HEADERFILE = "hardware/regs/dreq.h";
+	//HEADERFILE = "hardware/regs/pio.h";
+	//HEADERFILE = "hardware/regs/busctrl.h";
+	//HEADERFILE = "hardware/regs/psm.h";
+	//HEADERFILE = "hardware/regs/pll.h";
+	//HEADERFILE = "hardware/regs/usb_device_dpram.h";
+	//HEADERFILE = "hardware/regs/pads_qspi.h";
+	//HEADERFILE = "hardware/regs/rtc.h";
+	//HEADERFILE = "hardware/regs/pwm.h";
+	//HEADERFILE = "hardware/regs/dma.h";
+	//HEADERFILE = "hardware/regs/sio.h";
+	//HEADERFILE = "hardware/regs/xosc.h";
+	//HEADERFILE = "hardware/regs/addressmap.h";
+	USE_PREFIX = TRUE { VARIABLE = "PICO_SDK_PATH";};
+	PATH = "src/rp2040/hardware_regs/include";
+};
+

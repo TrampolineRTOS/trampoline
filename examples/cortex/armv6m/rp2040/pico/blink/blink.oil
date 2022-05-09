@@ -28,7 +28,8 @@ CPU blink {
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
       LIBRARY = pico_base;
-      SYSTEM = PYTHON;
+      LIBRARY = pico_stdlib;
+      SYSTEM = CMAKE {VSCODE=TRUE;};
     };
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {
