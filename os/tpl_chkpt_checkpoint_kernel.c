@@ -24,6 +24,8 @@
  *
  */
 
+#if WITH_CHECKPOINTING == YES
+
 #include "tpl_os_os_kernel.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"
@@ -43,6 +45,7 @@
 # endif
 #endif
 
+
 extern FUNC(void, OS_CODE) tpl_restart_os(void);
 
 #define OS_START_SEC_VAR_NON_VOLATILE_16BIT
@@ -53,6 +56,7 @@ VAR (sint16,OS_VAR) tpl_checkpoint_buffer = -1;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
 void disable_irq_for_hibernate(){
 	/* Disable TIMER3_A0 interrupt */
 	TA3CCTL0 &= ~CCIE;
@@ -63,13 +67,36 @@ void restore_irq_for_hibernate(){
 	TA3CCTL0 |= CCIE;
 }
 
+void init_adc() {
+
+  static uint8_t use1V2Ref = 0;
+
+  ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
+  ADC12CTL0 = ADC12ON | ADC12SHT0_2;          
+  ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz) / 8
+  ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
+  ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling timer
+  ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
+  while (REFCTL0 & REFGENBUSY);               // If ref generator busy, WAIT
+  if (use1V2Ref) {
+    REFCTL0 = REFON | REFVSEL_0;                // 1.2V reference
+    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+  }
+  else {
+    REFCTL0 = REFON | REFVSEL_1;                // 2V reference
+    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+  }
+
+  if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref generator ready
+  ADC12CTL0 |= ADC12ENC;
+	return;
+}
+
 uint16 conversion_adc(){
-	ADC12CTL0 |= ADC12ON;
-	ADC12CTL0 |= ADC12ENC | ADC12SC;
-	while(ADC12CTL1 & ADC12BUSY);
-	ADC12CTL0 &= ~(ADC12ENC);
-	ADC12CTL0 &= ~(ADC12ON);
-	REFCTL0 &= ~(REFON);
+	ADC12CTL0 |= ADC12SC;
+	while(!(ADC12IFGR0 & BIT0));
+	// ADC12CTL0 &= ~(ADC12ENC);
+	// REFCTL0 &= ~(REFON);
 	return ADC12MEM0;
 }
 
@@ -128,55 +155,66 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 
   // tpl_shutdown(); //on msp430 => LPM4
 	
-  // /* Periodic check */
-  // // Unlock RTC key protected registers
-  // RTCCTL0_H = RTCKEY_H;
-  // // Interrupt from alarm                     						
-  // RTCCTL0_L = RTCAIE;
-  // // Calendar + Hold, Hexa code
-  // RTCCTL1 = RTCHOLD | RTCMODE;
-  // // Random year, day, month, day of week, hour, set minute and sec to 0
-  // RTCYEAR = 0x0000;
-  // RTCMON = 0x0;
-  // RTCDAY = 0x00;
-  // RTCDOW = 0x00;
-  // RTCHOUR = 0x0;
-  // RTCMIN = 0x00;
-  // RTCSEC = 0x00;
-  // // reset all register alarm because they are in undefined state when reset
-	// RTCAHOUR &= ~(0x80);
-	// RTCADOW &= ~(0x80);
-	// RTCADAY &= ~(0x80);
-  // // set alarm in next '1' minutes + enable interrupt
-  // #define PERIOD_WAKE_UP 0x01
-  // RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
-  // // start rtc
-  // RTCCTL1 &= ~(RTCHOLD);
-  
-  // #define RESUME_FROM_HIBERNATE_THRESHOLD (3000)
-  // uint16_t flag = 1;
-  // uint16_t vcc = 0;
-  
-  // while(flag){
-	//   vcc = conversion_adc();
-	//   if(vcc>RESUME_FROM_HIBERNATE_THRESHOLD){
-  //     // stop rtc
-	// 	  RTCCTL1 |= RTCHOLD;
-	// 	  flag = 0;
-	// 	  break;
-	//   }
-	//   else{
-	// 	  disable_irq_for_hibernate();	
-	// 	  __bis_SR_register(LPM3_bits);
-	// 	  __bic_SR_register(GIE);
-	// 	  restore_irq_for_hibernate();
-	//   }
-  // }	  
+  /* Periodic check */
+
+  uint16_t flag = 1;
+  uint16_t vcc = 0;
+  init_adc();
+  while(flag){
+
+    // Unlock RTC key protected registers
+    RTCCTL0_H = RTCKEY_H;
+    // Clear RTCAIE RTCAIFG and AE bits to prevent potential erroneous alarm condition
+    RTCCTL0_L &= ~RTCAIE;
+    RTCCTL0_L &= ~RTCAIFG;
+    // Calendar + Hold, Hexa code
+    RTCCTL1 = RTCHOLD | RTCMODE;
+    // Random year, day, month, day of week, hour, set minute and sec to 0
+    RTCYEAR = 0x0000;
+    RTCMON = 0x0;
+    RTCDAY = 0x00;
+    RTCDOW = 0x00;
+    RTCHOUR = 0x0;
+    RTCMIN = 0x00;
+    RTCSEC = 0x00;
+    // reset all register alarm because they are in undefined state when reset
+    RTCAHOUR &= ~(0x80);
+    RTCADOW &= ~(0x80);
+    RTCADAY &= ~(0x80);
+    // set alarm in next '1' minutes + enable interrupt
+    #define PERIOD_WAKE_UP 0x01
+    RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
+    // Interrupt from alarm                     						
+    RTCCTL0_L = RTCAIE;
+    // start rtc
+    RTCCTL1 &= ~(RTCHOLD);
+
+	  vcc = conversion_adc();
+    // tpl_serial_print_string("vcc :");
+    // tpl_serial_print_int(vcc);
+    P1OUT |= BIT1;
+    P1OUT |= BIT0;
+	  if(vcc > RESUME_FROM_HIBERNATE_THRESHOLD){
+      // stop rtc
+		  RTCCTL1 |= RTCHOLD;
+		  flag = 0;
+      P1OUT &= ~BIT1;
+		  break;
+	  }
+	  else{
+		  disable_irq_for_hibernate();	
+		  __bis_SR_register(LPM3_bits + GIE);
+		  __bic_SR_register(GIE);
+		  restore_irq_for_hibernate();
+	  }
+  }	  
+
   PROCESS_ERROR(result)
 }
 
 #if __GXX_ABI_VERSION == 1011 || __GXX_ABI_VERSION == 1013
 /* ISR1 related to RTC_VECTOR */
+__attribute__((section (".irq_func")))
 __interrupt void tpl_direct_irq_handler_RTC_VECTOR(void)
 #elif __GXX_ABI_VERSION == 1002
 void __attribute__((interrupt(RTC_VECTOR))) tpl_direct_irq_handler_RTC_VECTOR()
@@ -184,7 +222,11 @@ void __attribute__((interrupt(RTC_VECTOR))) tpl_direct_irq_handler_RTC_VECTOR()
     #error "Unsupported ABI"
 #endif
 {
-  // P1OUT |= BIT0;
+  // Clear interrupt flag
+  RTCCTL0_L &= ~RTCAIFG;
+  P1OUT &= ~BIT0;
+  // Exit LPM
+  LPM3_EXIT;
 }
 
 FUNC(void, OS_CODE) tpl_restart_os_service(void)
@@ -272,3 +314,4 @@ FUNC(void, OS_CODE) RestartOS(void)
 
 /* End of file tpl_os_checkpoint_kernel.c */
 
+#endif //WITH_CHECKPOINTING

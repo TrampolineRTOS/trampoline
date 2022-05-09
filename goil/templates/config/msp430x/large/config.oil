@@ -33,7 +33,9 @@ IMPLEMENTATION  msp430x {
     BOOLEAN INIT_WITH_DMA = FALSE;
     /* enable checkpointing. Define the default period */
     BOOLEAN [
-      TRUE {UINT32 CYCLETIME = 5000;},
+      TRUE {UINT32 CYCLETIME = 5000;
+            UINT32 HIBERNATE_THRESHOLD = 2000;
+            UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;},
       FALSE
     ] CHECKPOINTING = FALSE;
     /* enable use of LEA and size of LEA RAM */

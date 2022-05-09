@@ -30,7 +30,14 @@
  * If YES, use checkpointing with the msp430
  */
 #define WITH_CHECKPOINTING    % ! yesNo(OS::CHECKPOINTING) %
-
+%
+if OS::CHECKPOINTING then
+%
+#define HIBERNATE_THRESHOLD   % !OS::CHECKPOINTING_S::HIBERNATE_THRESHOLD%
+#define RESUME_FROM_HIBERNATE_THRESHOLD    % !OS::CHECKPOINTING_S::RESUME_FROM_HIBERNATE_THRESHOLD%
+%
+end if
+%
 /*
  * If YES, use lea with the msp430
  */

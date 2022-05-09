@@ -17,7 +17,9 @@ CPU blink {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-    CHECKPOINTING = TRUE {CYCLETIME = 5000;};
+    CHECKPOINTING = TRUE {CYCLETIME = 5000;
+                          HIBERNATE_THRESHOLD = 2500;
+                          RESUME_FROM_HIBERNATE_THRESHOLD = 2800;};
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "checkpoint.c";
@@ -118,5 +120,10 @@ CPU blink {
     PRIORITY = 1;
     SOURCE = ADC12_VECTOR; /* */
   };
-
+//  ISR rtc_check {
+//   CATEGORY = 1;
+//   PRIORITY = 6;
+//   SOURCE = RTC_VECTOR {BIT = 3;};
+//   EXIT_FROM_LPM = TRUE;
+//  };
 };

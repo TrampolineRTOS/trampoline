@@ -20,6 +20,16 @@
      }
   end if
 end if
+
+if OS::CHECKPOINTING == true then
+  let ISR += @{
+    SOURCE : "RTC_VECTOR",
+    SOURCE_S : @{BIT : 3},
+    CATEGORY : 1,
+    PRIORITY : 1,
+    EXIT_FROM_LPM : true
+  }
+end if
 #------------------------------------------------------------------------------*
 # Target specific initializations
 # build the maps for IRQ

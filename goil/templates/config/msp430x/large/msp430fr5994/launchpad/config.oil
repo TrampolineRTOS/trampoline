@@ -45,8 +45,8 @@ CPU launchpad {
     CHEADER = "adc12_b.h";
     CFILE = "ref_a.c";
     CFILE = "adc12_b.c";
- CFILE = "tpl_chkpt_adc.c";
- CFILE = "tpl_chkpt_io.c";
+    CFILE = "tpl_chkpt_adc.c";
+    CFILE = "tpl_chkpt_io.c";
     //TODO: use dependency
     // NEEDS = adc;
     // NEEDS = ref_a;

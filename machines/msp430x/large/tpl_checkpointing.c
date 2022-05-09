@@ -13,8 +13,6 @@
 #define APP_Task_task_tpl_chkpt_energy_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#define HIBERNATE_THRESHOLD_RAW (2700)
-
 TASK(task_tpl_chkpt_energy)
 {
   uint16 vccRaw;
@@ -24,7 +22,7 @@ TASK(task_tpl_chkpt_energy)
   //tpl_serial_print_string("\r\n");
   //tpl_serial_print_string("vccRaw = ");
   //tpl_serial_print_int(vccRaw,0);
-  if (vccRaw < HIBERNATE_THRESHOLD_RAW) {
+  if (vccRaw < HIBERNATE_THRESHOLD) {
     //P1OUT |= 1; /* red led on */
     Hibernate();
   } else {

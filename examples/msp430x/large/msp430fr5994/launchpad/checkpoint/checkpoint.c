@@ -58,7 +58,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 FUNC(int, OS_APPL_CODE) restart_main(void)
 {
   io_init();
-  P1OUT |= 1;   /* light on red led */
+  // P1OUT |= 1;   /* light on red led */
   tpl_serial_print_string("restart_main\n");
   RestartOS();
   return 0;
@@ -139,3 +139,11 @@ TASK(task_fibo)
 #define APP_Task_task_serial_TX_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+// #define APP_ISR_rtc_check_START_SEC_CODE
+// #include "tpl_memmap.h"
+
+// ISR(rtc_check) {
+//   P1OUT ^= BIT0;
+// }
+// #define APP_ISR_rtc_check_STOP_SEC_CODE
+// #include "tpl_memmap.h"
