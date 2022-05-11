@@ -85,7 +85,7 @@ FUNC(void, OS_CODE) tpl_trace_overflow()
   //we do not generate any overflow here of course
   //to prevent recursive calls.
   //
-  tpl_serial_tx_fifo_flush();
+  tpl_serial_tx_fifo_discard();
   /* TTT 00000 (Type) */
   uint8_t byte = OVERFLOW << 5;
   uint8_t chksum = byte;
