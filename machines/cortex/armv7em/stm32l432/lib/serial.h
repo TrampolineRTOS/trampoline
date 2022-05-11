@@ -32,9 +32,9 @@ int tpl_serial_print_string(const char* str);
  */
 int tpl_serial_print_int(int32_t val, int base, int fieldWidth);
 
-/* flush TX fifo (no more data sent)
+/* discard TX fifo (no more data sent)
  */
-void tpl_serial_tx_fifo_flush();
+void tpl_serial_tx_fifo_discard();
 
 /* waiting loop to re-synchronise output on Serial.
  * mainly for debug purpose

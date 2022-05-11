@@ -1,0 +1,24 @@
+OIL_VERSION = "2.5";
+
+CPU only_one_task {  	
+  OS config {			
+    STATUS = EXTENDED;
+    BUILD = TRUE { 
+      APP_SRC = "one_task.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      LDFLAGS="-lrt -lpthread";
+      APP_NAME = "one_task_exe";
+      LINKER = "gcc";
+      SYSTEM = PYTHON;
+    };
+  };
+  
+  APPMODE stdAppmode {}; 
+  
+  TASK my_only_task { 
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = stdAppmode; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+};

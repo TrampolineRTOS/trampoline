@@ -30,7 +30,8 @@
 \usepackage[colorlinks=true,linkcolor=seagreen,citecolor=darkpink]{hyperref}
 \usepackage{path}
 \usepackage{tikz}
-\usetikzlibrary{arrows,positioning,automata,shadows,shapes,snakes,patterns,decorations,calc} 
+\usetikzlibrary{arrows,positioning,automata,shadows,shapes,snakes,patterns,decorations,calc}
+\usetikzlibrary{arrows,arrows.meta,positioning,automata,shadows,shapes,shapes.callouts,snakes,patterns,decorations,calc,shadows.blur}
 \usepackage{adjustbox}
 \usepackage[most]{tcolorbox}
 
@@ -223,6 +224,7 @@
 % Commands for other formatting
 %
 \newcommand{\tool}[1]{{\small\ttfamily #1}}
+\newcommand{\toolarg}[1]{{\small\ttfamily #1}}
 \newcommand{\com}[1]{\inlinebox[blue]{\small\ttfamily #1}}
 \newcommand{\comoutput}[1]{{\small\ttfamily #1}}
 \newcommand{\file}[1]{{\small\ttfamily `#1'}}
@@ -473,6 +475,7 @@ Florent Pavin\\
 \include{memmapping}
 \include{traces}
 \include{debugging}
+\include{building}
 
 \part{Trampoline RTOS internals}
 

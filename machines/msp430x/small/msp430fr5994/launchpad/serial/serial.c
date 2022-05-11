@@ -277,7 +277,7 @@ void __attribute__((interrupt(USCI_A0_VECTOR))) tpl_direct_irq_handler_USCI_A0_V
 #endif //one buffer.
 }
 
-void tpl_serial_tx_fifo_flush()
+void tpl_serial_tx_fifo_discard()
 {
 #if SERIAL_TX_BUFFER_SIZE > 0
 	//the current transmitting byte is sent, but

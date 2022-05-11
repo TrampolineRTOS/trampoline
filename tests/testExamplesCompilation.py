@@ -7,21 +7,24 @@
 # It first make a copy of the 'examples' dir. Then, it:
 # - searches for .oil files in the examples/ subdirectories
 # - tries to find the README.md associated (same dir)
-# - finds in this README.md the 'goil' command
+# - finds in this README.md the 'goil' command (defined in one full line)
 # - run the goil command
 # - compile the project (python or CMake based)
 # - show results
 #
 # The copy is a directory (in trampoline root dir) with name:
-dirCompile = 'tmpExamplesCompilation'
+dirCompileName = 'tmpExamplesCompilation'
 
 from os import walk
+import os
 from os.path import join,isdir,isfile,dirname,abspath
 from shutil import copytree
 import re
+import shutil
 from subprocess import run,DEVNULL
 from enum import Enum, auto
 import sys
+import argparse
 
 def BLACK () :
   return '\033[90m'
@@ -93,12 +96,14 @@ def getOILCmd(oilDir):
     return cmd
 
 def runGoil(oilDir):
-    ''' find the goil cmd and run it. Return a TestState:
+    ''' find the goil cmd (in README.md) and run it. 
+     Return a TestState:
      - SKIP_NO_GOIL if there is no goil command (in README.md)
      - FAIL if goil execution returned an error
      - OK   if goil ran properly
     '''
     result = TestState.FAIL
+    stop = False
     cmd = getOILCmd(oilDir)
     if cmd:
         # 2 - call goil
@@ -107,6 +112,8 @@ def runGoil(oilDir):
             process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL,stderr=DEVNULL)
         except OSError:
             print('the command "'+cmd+ '" failed.')
+        except KeyboardInterrupt:
+            stop = True
         if process and process.returncode == 0:
             #goil ok
             result = TestState.OK
@@ -115,63 +122,127 @@ def runGoil(oilDir):
     else:
         result = TestState.SKIP_NO_GOIL
 
-    return result
+    return result,stop
 
-def compileOilProject(oilDir):
+def compileOILProjectCMAKE(oilDir,oilFile):
     result = TestState.FAIL
-    # Python based or CMake based?
-    if isfile(join(oilDir,'CMakeLists.txt')):
-        #compile CMake based project.
-        pass
-    elif isfile(join(oilDir,'make.py')):
-        #compile PYTHON based project.
-        cmd = join(oilDir,'make.py')
+    stop = False
+    #compile CMake based project.
+    buildDir = join(oilDir,'build')
+    #1 - build dir (may be already generated)
+    try:
+        os.mkdir(buildDir)
+    except FileExistsError:
+        #There is a build dir, remove the cache (if any)
+        CMakeCache = join(buildDir,'CMakeCache.txt')
+        if isfile(CMakeCache):
+            os.remove(CMakeCache)
+    #2 - run cmake
+    oilGeneratedDir = join(oilDir,oilFile[:-4])
+    oilCMakeCompiler = join(oilGeneratedDir,'compiler.cmake')
+    cmd = 'cmake -D CMAKE_TOOLCHAIN_FILE='+oilCMakeCompiler+' '+oilDir
+    process = None
+    try:
+        process = run(cmd.split(),cwd=buildDir,stdout=DEVNULL)
+    except OSError:
+        print('the command "'+cmd+ '" failed.')
+    except KeyboardInterrupt:
+        stop = True
+    #3 - run make
+    if process and process.returncode == 0:
+        cmd = 'make'
         process = None
         try:
-            process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL)
+            process = run(cmd.split(),cwd=buildDir,stdout=DEVNULL)
         except OSError:
             print('the command "'+cmd+ '" failed.')
+        except KeyboardInterrupt:
+            stop = True
         if process and process.returncode == 0:
             result = TestState.OK
+    return result,stop
+
+def compileOILProjectPYTHON(oilDir):
+    result = TestState.FAIL
+    stop = False
+    #compile PYTHON based project.
+    cmd = join(oilDir,'make.py')
+    process = None
+    try:
+        process = run(cmd.split(),cwd=oilDir,stdout=DEVNULL)
+    except OSError:
+        print('the command "'+cmd+ '" failed.')
+    except KeyboardInterrupt:
+        stop = True
+    if process and process.returncode == 0:
+        result = TestState.OK
+    return result,stop
+
+def compileOilProject(oilDir,oilFile):
+    result = TestState.FAIL
+    stop = False
+    # Python based or CMake based?
+    if isfile(join(oilDir,'CMakeLists.txt')):
+        result,stop = compileOILProjectCMAKE(oilDir,oilFile)
+    elif isfile(join(oilDir,'make.py')):
+        result,stop = compileOILProjectPYTHON(oilDir)
     else:
-        result = TestState.FAIL
-    return result
+        print("Internal error, neither CMake nor Python based project")
+    return result,stop
 
 def printResult(result,oilDir,oilFile):
-    print('test '+oilDir.split(dirCompile+'/')[1]+' -> '+oilFile+' :'+str(result))
+    print('test '+oilDir.split(dirCompileName+'/')[1]+' -> '+oilFile+' :'+str(result))
 
-def eval(oilDir):
+def eval(oilDir,oilFile):
     ''' Eval one example: 1- goil, 2- compilation
     '''
     #debug('dir '+ oilDir+' -> '+oilFile)
     # 1 run goil
-    result = runGoil(oilDir)
-    if result == TestState.OK:
+    result,stop = runGoil(oilDir)
+    if result == TestState.OK and not stop:
         # 2 compile project
-        result = compileOilProject(oilDir)
-    return result
+        result,stop = compileOilProject(oilDir,oilFile)
+    return result,stop
 
 if __name__ == '__main__':
 	#get script path directory (as built is done relatively to that dir):
     pathname = dirname(sys.argv[0])
     scriptWorkingDir = abspath(pathname)
-    dirExamples  = join(scriptWorkingDir,'../examples')
-    dirCompile   = join(scriptWorkingDir,join('../',dirCompile))
-
     fullResult = {}
     for state in TestState:
         fullResult[state] = 0
 
-    # 1 - make a copy of examples dir
-    if not isdir(dirCompile):
+    #arguments
+    parser = argparse.ArgumentParser(description='Basic compilation tests. Tries to compile each example of trampoline (oil+make). Works on a copy of the examples directory',epilog="example: '"+sys.argv[0]+" -e cortex' will test all cortex-M examples")
+    parser.add_argument("-e", "--examples",
+            help="gives the subtree for tests, relatively to examples/ :'cortex', 'msp430x/small/msp430fr5994', … All the examples in the subtree will be tested.", default='.',nargs='+',type=str)
+    args = parser.parse_args()
+
+    dirExamplesBase  = join(scriptWorkingDir,'../examples')
+    dirCompileBase   = join(scriptWorkingDir,join('../',dirCompileName))
+
+    # 1 - remove previous directory, and make a copy of examples dir
+    if isdir(dirCompileBase):
+        shutil.rmtree(dirCompileBase)
+    for dir in args.examples:
+        dirExamples = join(dirExamplesBase,dir)
+        dirCompile = join(dirCompileBase,dir)
+        if not isdir(dirExamples):
+            print('ERROR: directory '+dirExamples+' does not exists')
+            sys.exit(1)
         copytree(dirExamples,dirCompile,symlinks=True)
-    # 2 - get examples files in this tree and eval them
-    oilExamples = getOilFiles(dirCompile)
-    debug(str(len(oilExamples)) + ' examples to compile.')
-    for oilFile,oilDir in oilExamples:
-        result = eval(oilDir)
-        fullResult[result] += 1
-        printResult(result,oilDir,oilFile)
+    # # 2 - get examples files in this tree and eval them
+    try:
+        oilExamples = getOilFiles(dirCompileBase)
+        debug(str(len(oilExamples)) + ' examples to compile.')
+        stop = False
+        for oilFile,oilDir in oilExamples:
+            if not stop:
+                result,stop = eval(oilDir,oilFile)
+                fullResult[result] += 1
+                printResult(result,oilDir,oilFile)
+    except KeyboardInterrupt:
+        pass
     # 3 - full results
     print('Summary:')
     for state in TestState:
