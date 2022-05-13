@@ -32,12 +32,22 @@ IMPLEMENTATION  msp430x {
     /* Initialize variables in .data section with DMA */
     BOOLEAN INIT_WITH_DMA = FALSE;
     /* enable checkpointing. Define the default period */
-    BOOLEAN [
-      TRUE {UINT32 CYCLETIME = 5000;
-            UINT32 HIBERNATE_THRESHOLD = 2000;
-            UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;},
+    BOOLEAN [ 
+      TRUE { 
+         ENUM [
+           PERIODIC {
+               UINT32 CYCLETIME = 5000;
+               UINT32 HIBERNATE_THRESHOLD = 2000;
+               UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;},
+           JIT {
+               UINT32 HIBERNATE_THRESHOLD = 2000;
+               UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;}, 
+           STATIC
+         ] MODE = PERIODIC;
+      },
       FALSE
     ] CHECKPOINTING = FALSE;
+    
     /* enable use of LEA and size of LEA RAM */
     BOOLEAN [
      TRUE {UINT32 LEA_RAM = 4096;},
