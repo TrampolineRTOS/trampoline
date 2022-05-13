@@ -34,6 +34,9 @@
 
 extern void tpl_save_checkpoint(void);
 extern void tpl_load_checkpoint(void);
+extern void tpl_save_checkpoint_dma(void);
+extern void tpl_load_checkpoint_dma(void);
+
 #define OS_START_SEC_CONST_16BIT
 #include "tpl_memmap.h"
 static CONST (sint16,OS_CONST) NO_CHECKPOINT = -1;

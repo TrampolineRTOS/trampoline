@@ -146,7 +146,7 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
   // tpl_save_checkpoint(l_buffer);
-  tpl_save_checkpoint();
+  tpl_save_checkpoint_dma();
   tpl_checkpoint_buffer = l_buffer;
   
   /* Choose one: Shutdown or periodic check of battery */
@@ -192,13 +192,11 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 	  vcc = conversion_adc();
     // tpl_serial_print_string("vcc :");
     // tpl_serial_print_int(vcc);
-    P1OUT |= BIT1;
-    P1OUT |= BIT0;
+
 	  if(vcc > RESUME_FROM_HIBERNATE_THRESHOLD){
       // stop rtc
 		  RTCCTL1 |= RTCHOLD;
 		  flag = 0;
-      P1OUT &= ~BIT1;
 		  break;
 	  }
 	  else{
@@ -224,7 +222,6 @@ void __attribute__((interrupt(RTC_VECTOR))) tpl_direct_irq_handler_RTC_VECTOR()
 {
   // Clear interrupt flag
   RTCCTL0_L &= ~RTCAIFG;
-  P1OUT &= ~BIT0;
   // Exit LPM
   LPM3_EXIT;
 }
@@ -283,7 +280,7 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
      */
 
   // tpl_load_checkpoint(tpl_checkpoint_buffer);
-  tpl_load_checkpoint();
+  tpl_load_checkpoint_dma();
 
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)
