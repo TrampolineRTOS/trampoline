@@ -39,9 +39,6 @@ IMPLEMENTATION  msp430x {
                UINT32 CYCLETIME = 5000;
                UINT32 HIBERNATE_THRESHOLD = 2000;
                UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;},
-           JIT {
-               UINT32 HIBERNATE_THRESHOLD = 2000;
-               UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;}, 
            STATIC
          ] MODE = PERIODIC;
       },
