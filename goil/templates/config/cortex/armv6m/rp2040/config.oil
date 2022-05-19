@@ -280,12 +280,7 @@ CPU rp2040 {
     CFILE = "tpl_machine_systick.c";
     CFILE = "tpl_startup_rp2040.c";
     CFILE = "syscalls.c";
-    CFILE = "tpl_clocks_rp2040.c";
   };
-
-  //PLATFORM_FILES cmsis_wrapper {
-  //  PATH = "cortex/armv6m/rp2040/rp2040/cmsis_wrapper";
-  //};
 
   POSTCOMMAND uf2 {
     COMMAND uf2 {

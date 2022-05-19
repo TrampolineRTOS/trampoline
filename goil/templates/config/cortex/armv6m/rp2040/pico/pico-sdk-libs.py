@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #  needs refactoring :(
 #
-# This script scan libs inside pico SDK and generate lib definitions 
+# This script scans libs inside pico SDK and generates lib definitions 
 # for Trampoline (including deps)
 # Path to the SDK is hard-coded (end of file)
 #usage: ./pico-sdk-libs.py > pico_sdk.oil

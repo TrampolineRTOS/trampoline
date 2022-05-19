@@ -80,6 +80,7 @@ typedef struct
   __IO uint32_t SHCSR;                   /*!< Offset: 0x024 (R/W)  System Handler Control and State Register             */
 } SCB_Type;
 
+// RP2040 implentation depends on PICO SDK
 #include "hardware/structs/scb.h"
 #define SCB       ((SCB_Type       *)scb_hw) /* get it from rp2040 */
 
