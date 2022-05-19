@@ -36,14 +36,14 @@ MEMORY
    ! size % bytes - %
    ! size / 2 % vectors */
   FRAM (rx)  : ORIGIN = 0x04000, LENGTH = 0xBF80 /* ends at 0xff80. size is 47,875k */
-  FRAM_UP (rxw)  : ORIGIN = 0x010000, LENGTH = 0x32000 /* ends at 0x041fff. size is 204,800k */
+  FRAM_UP (rw)  : ORIGIN = 0x010000, LENGTH = 0x32000 /* ends at 0x041fff. size is 204,800k */
   FRAM_CHKPT (rw)  : ORIGIN = 0x042000, LENGTH = 0x2000 /* ends at 0x043fff. size is 8k */
 %
 if OS::LEA then
   if OS::LEA_S::LEA_RAM > 4096 then
     let OS::LEA_S::LEA_RAM := 4096
   end if
-  let lea_origin := 0x3BFF - OS::LEA_S::LEA_RAM
+  let lea_origin := 0x3C00 - OS::LEA_S::LEA_RAM
   let size_ram := 0x1000 + 0x1000 - OS::LEA_S::LEA_RAM
 %  RAM (xrw)   : ORIGIN = 0x01C00, LENGTH = %!size_ram% /* size is 4k */
   LEA_RAM (xrw)  : ORIGIN = %![lea_origin hexString]%, LENGTH = %![OS::LEA_S::LEA_RAM hexString]% /* size max = 4096 */

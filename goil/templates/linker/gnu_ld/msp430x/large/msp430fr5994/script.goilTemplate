@@ -577,8 +577,8 @@ SECTIONS {
   {
     . = ALIGN(2);
     __os_kern_stack_start = .; /* OS kernel stack symbol start */
-    *(.osVarKernStack)         /* OS Kernel stack */
-    __os_kern_stack_end   = .;  /* OS kernel stack symbol start */
+    KEEP(*(.osVarKernStack))   /* OS Kernel stack */
+    __os_kern_stack_end   = .; /* OS kernel stack symbol start */
   } >RAM
 }
 

@@ -35,7 +35,7 @@ extern unsigned TPL_MPU_B1_BOUNDARY;
  * This MPU boundary is hard coded for the small model,
  * as we can't use pointers over 64kb
  */
-static const uint32_t TPL_MPU_B2_BOUNDARY = 0x3E800;
+static const uint32_t TPL_MPU_B2_BOUNDARY = 0x10000;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -144,7 +144,7 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   /* for MPUSEGx registers, we only give the 16 Most significant bits
    * but, the 6 lowest bits are not used. The minimal segment size is 1024 bytes
    * */
-  MPUSEGB2 = (uint16_t)(TPL_MPU_B2_BOUNDARY >> 4);  /* high border (0x10000)  */
+  MPUSEGB2 = (uint16_t) (TPL_MPU_B2_BOUNDARY>>4);  /* high border (0x10000)  */
   MPUSEGB1 = (uint16_t)(&TPL_MPU_B1_BOUNDARY) >> 4; /* low border before code */
   MPUSAM   = 0x0353;  /* Seg3: -WR(3), seg2: X-R(5), seg1: -WR(3)    */
   MPUCTL0  =

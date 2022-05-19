@@ -164,7 +164,7 @@ tpl_primary_irq_handler_% !handlerSource %:
  * -2- Switch to the kernel stack.
  */
   mova         r1, r11                          /* Copy the PSP in r11        */
-  mova         #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* On kernel stack */
+  mova         #__os_kern_stack_end, r1         /* On kernel stack */
   pushx.a      r11                              /* Save PSP to kernel stack   */
 /* 
  * PROCESS STACK:                 KERNEL STACK:

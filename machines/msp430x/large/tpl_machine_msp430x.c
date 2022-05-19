@@ -81,8 +81,8 @@ FUNC(void, OS_CODE) tpl_init_context(
 	#if ISR_COUNT > 0
 		uint32 addr_CallTerminateISR2 = (uint32)(CallTerminateISR2);
 
-		exception_frame[CALL_IDX_LOW] = (uint16)(CallTerminateISR2 & 0xffff);
-		exception_frame[CALL_IDX_HIGH] = (uint16)((CallTerminateISR2 >> 16) & 0x000f);
+		exception_frame[CALL_IDX_LOW] = (uint16)(addr_CallTerminateISR2 & 0xffff);
+		exception_frame[CALL_IDX_HIGH] = (uint16)((addr_CallTerminateISR2 >> 16) & 0x000f);
 
 	#else
 		exception_frame[CALL_IDX] = NULL;
