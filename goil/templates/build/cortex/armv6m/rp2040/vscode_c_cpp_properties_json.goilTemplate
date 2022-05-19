@@ -1,0 +1,9 @@
+{
+    "configurations": [
+        {
+            "name": "RPi RP2040",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

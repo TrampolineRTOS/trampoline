@@ -1,0 +1,54 @@
+%let basePath := OS::BUILD_S::TRAMPOLINE_BASE_PATH
+if [basePath charAtIndex: 0] != '/' then
+	let basePath := "${workspaceFolder}/"+basePath
+end if%
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    {
+        //configuration using another RPi pico as a debug probe "picoprobe"
+        //connect at least:
+        // picoprobe GP2 => pico SWCLK
+        // picoprobe GP3 => pico SWDIO
+        // picoprobe GND => pico GND
+
+        //more info: https://www.digikey.be/en/maker/projects/raspberry-pi-pico-and-rp2040-cc-part-2-debugging-with-vs-code/470abc7efb07432b82c95f6f67f184c0
+        "cwd": "${workspaceFolder}",
+        "executable": "./build/% !OS::BUILD_S::APP_NAME %",
+        "name": "Debug Pico (OpenOCD and PicoProbe)",
+        "request": "launch", //"launch" => reload firmware, "attach" => just start debug session
+        "type": "cortex-debug",
+        "showDevDebugOutput": "none",
+        "servertype": "openocd",
+        "configFiles": ["interface/picoprobe.cfg","target/rp2040.cfg"],
+        "runToEntryPoint": "main",
+        //workaround for stopping at main on restart
+        "postRestartCommands": ["break main", "continue"],
+        "device": "rp2040",
+        "svdFile": "% !basePath %/machines/cortex/armv6m/rp2040.svd"
+    },
+    {
+        //configuration using a RaspberryPi as the debug probe.
+        //you may install openocd on the RPi
+        //doc here: https://www.electronicshub.org/programming-raspberry-pi-pico-with-swd/
+        //you may need to adapt the target ip!!
+        //start openocd on the RPi (before starting debug session"
+        //"openocd -f interface/raspberrypi-swd.cfg -f target/rp2040.cfg"
+        "cwd": "${workspaceFolder}",
+        "executable": "./build/% !OS::BUILD_S::APP_NAME %",
+        "name": "Debug Pico (OpenOCD on RPi)",
+        "request": "attach", //"launch" => reload firmware, "attach" => just start debug session
+        "type": "cortex-debug",
+        "showDevDebugOutput": "none",
+        "servertype": "external",
+        "gdbTarget": "192.168.0.1:3333",
+        "postStartSessionCommands": ["monitor reset init"],
+        "runToEntryPoint": "main",
+        "device": "rp2040",
+        "svdFile": "% !basePath %/machines/cortex/armv6m/rp2040.svd"
+    }
+    ]
+}
