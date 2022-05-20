@@ -1,6 +1,7 @@
 blink
 build
 CMakeLists.txt
+.vscode
 *_exe
 *.bin
 *.map

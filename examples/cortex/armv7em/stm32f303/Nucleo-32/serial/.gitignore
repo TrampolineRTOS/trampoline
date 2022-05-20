@@ -1,6 +1,9 @@
 serial
 build
+.vscode
+CMakeLists.txt
 *_exe
 *.bin
 *.map
-*.py
+make.py
+build.py
