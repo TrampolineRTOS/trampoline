@@ -57,16 +57,6 @@ VAR (sint16,OS_VAR) tpl_checkpoint_buffer = -1;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-void disable_irq_for_hibernate(){
-	/* Disable TIMER3_A0 interrupt */
-	TA3CCTL0 &= ~CCIE;
-}
-
-void restore_irq_for_hibernate(){
-	/* Restore TIMER3_A0 interrupt */
-	TA3CCTL0 |= CCIE;
-}
-
 void init_adc() {
 
   static uint8_t use1V2Ref = 0;
@@ -92,13 +82,66 @@ void init_adc() {
 	return;
 }
 
-uint16 conversion_adc(){
+uint16 tpl_ADC_read(){
 	ADC12CTL0 |= ADC12SC;
 	while(!(ADC12IFGR0 & BIT0));
 	// ADC12CTL0 &= ~(ADC12ENC);
 	// REFCTL0 &= ~(REFON);
 	return ADC12MEM0;
 }
+
+void tpl_RTC_init()
+{
+
+    // Unlock RTC key protected registers
+    RTCCTL0_H = RTCKEY_H;
+    // Clear RTCAIE RTCAIFG and AE bits to prevent potential erroneous alarm condition
+    RTCCTL0_L &= ~RTCAIE;
+    RTCCTL0_L &= ~RTCAIFG;
+    // Calendar + Hold, Hexa code
+    RTCCTL1 = RTCHOLD | RTCMODE;
+    // Random year, day, month, day of week, hour, set minute and sec to 0
+    RTCYEAR = 0x0000;
+    RTCMON = 0x0;
+    RTCDAY = 0x00;
+    RTCDOW = 0x00;
+    RTCHOUR = 0x0;
+    RTCMIN = 0x00;
+    RTCSEC = 0x00;
+    // reset all register alarm because they are in undefined state when reset
+    RTCAHOUR &= ~(0x80);
+    RTCADOW &= ~(0x80);
+    RTCADAY &= ~(0x80);
+    // set alarm in next '1' minutes + enable interrupt
+    #define PERIOD_WAKE_UP 0x01
+    RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
+    // Interrupt from alarm                     						
+    RTCCTL0_L = RTCAIE;
+    // start rtc
+    RTCCTL1 &= ~(RTCHOLD);
+}
+
+void tpl_RTC_stop()
+{
+		  // stop rtc
+		  RTCCTL1 |= RTCHOLD;
+}
+
+void tpl_lpm_hibernate()
+{
+  /* Disable TIMER3_A0 interrupt 
+     in LPM3, ACLK is still active
+   */
+	TA3CCTL0 &= ~CCIE;
+  /* enters in LPM - enable interrupt for RTC*/
+  __bis_SR_register(LPM3_bits + GIE);
+  /* remove interrupts (we are in kernel mode) */
+	__bic_SR_register(GIE);
+ 	/* Restore TIMER3_A0 interrupt */
+  TA3CCTL0 |= CCIE;
+}
+
+uint16_t readPowerVoltage_simple(void);
 
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
@@ -127,7 +170,6 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   {
     /* the activate count is decreased */
     TPL_KERN(core_id).running->activate_count--;
-
     /* terminate the running task */
     tpl_terminate();
     /* task switching should occur */
@@ -149,66 +191,17 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   tpl_save_checkpoint();
   tpl_checkpoint_buffer = l_buffer;
   
-  /* Choose one: Shutdown or periodic check of battery */
-  
-  /* Shutdown */
-
-  // tpl_shutdown(); //on msp430 => LPM4
-	
-  /* Periodic check */
-
-  uint16_t flag = 1;
-  uint16_t vcc = 0;
+  uint16_t waiting_loop = 1;
   init_adc();
-  while(flag){
-
-    // Unlock RTC key protected registers
-    RTCCTL0_H = RTCKEY_H;
-    // Clear RTCAIE RTCAIFG and AE bits to prevent potential erroneous alarm condition
-    RTCCTL0_L &= ~RTCAIE;
-    RTCCTL0_L &= ~RTCAIFG;
-    // Calendar + Hold, Hexa code
-    RTCCTL1 = RTCHOLD | RTCMODE;
-    // Random year, day, month, day of week, hour, set minute and sec to 0
-    RTCYEAR = 0x0000;
-    RTCMON = 0x0;
-    RTCDAY = 0x00;
-    RTCDOW = 0x00;
-    RTCHOUR = 0x0;
-    RTCMIN = 0x00;
-    RTCSEC = 0x00;
-    // reset all register alarm because they are in undefined state when reset
-    RTCAHOUR &= ~(0x80);
-    RTCADOW &= ~(0x80);
-    RTCADAY &= ~(0x80);
-    // set alarm in next '1' minutes + enable interrupt
-    #define PERIOD_WAKE_UP 0x01
-    RTCAMIN = (PERIOD_WAKE_UP | (1<<7));
-    // Interrupt from alarm                     						
-    RTCCTL0_L = RTCAIE;
-    // start rtc
-    RTCCTL1 &= ~(RTCHOLD);
-
-	  vcc = conversion_adc();
-    // tpl_serial_print_string("vcc :");
-    // tpl_serial_print_int(vcc);
-    P1OUT |= BIT1;
-    P1OUT |= BIT0;
-	  if(vcc > RESUME_FROM_HIBERNATE_THRESHOLD){
-      // stop rtc
-		  RTCCTL1 |= RTCHOLD;
-		  flag = 0;
-      P1OUT &= ~BIT1;
-		  break;
+  while(waiting_loop){
+    tpl_RTC_init(); //startRTC => interrupt next 1 min
+    if(tpl_ADC_read() > RESUME_FROM_HIBERNATE_THRESHOLD){
+      tpl_RTC_stop();
+		  waiting_loop = 0;
+	  } else {
+      tpl_lpm_hibernate();
 	  }
-	  else{
-		  disable_irq_for_hibernate();	
-		  __bis_SR_register(LPM3_bits + GIE);
-		  __bic_SR_register(GIE);
-		  restore_irq_for_hibernate();
-	  }
-  }	  
-
+  }
   PROCESS_ERROR(result)
 }
 
@@ -224,7 +217,6 @@ void __attribute__((interrupt(RTC_VECTOR))) tpl_direct_irq_handler_RTC_VECTOR()
 {
   // Clear interrupt flag
   RTCCTL0_L &= ~RTCAIFG;
-  P1OUT &= ~BIT0;
   // Exit LPM
   LPM3_EXIT;
 }
