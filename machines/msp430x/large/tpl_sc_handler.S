@@ -147,7 +147,7 @@ tpl_sc_handler_id_ok:
  * and the PSP is saved on the kernel stack.
  */
   mova      r1, r11                         /* save the PSP into r11          */
-  mova      #tpl_kern_stack + TPL_KERNEL_STACK_SIZE, r1 /* on kernel stack    */
+  mova      #__os_kern_stack_end, r1 /* on kernel stack    */
   pushx.a     r11                             /* push the PSP on it             */
 /*
  * PROCESS STACK:                 KERNEL STACK:

@@ -86,7 +86,9 @@ let SPINLOCK := exists SPINLOCK default (@())
 #  - should be here because one can only deal
 #  with a copy of data structures in included files 21/2/2)
 #  - it adds manually periodic checkpointing task
+
 if exists OS::CHECKPOINTING default (false) then
+  if OS::CHECKPOINTING_S::MODE == "PERIODIC" then
   let task_tpl_chkpt_energy := @{
     ACTIVATION :1,
     AUTOSTART:true,
@@ -101,15 +103,15 @@ if exists OS::CHECKPOINTING default (false) then
     ACTION_S : @{TASK : "task_tpl_chkpt_energy"},
     AUTOSTART : true,
     AUTOSTART_S : @{
-      ALARMTIME :OS::CHECKPOINTING_S::CYCLETIME,
-      CYCLETIME :OS::CHECKPOINTING_S::CYCLETIME,
+      ALARMTIME :OS::CHECKPOINTING_S::MODE_S::CYCLETIME,
+      CYCLETIME :OS::CHECKPOINTING_S::MODE_S::CYCLETIME,
       APPMODE :@(@{VALUE :"Std"})},
     COUNTER : "SystemCounter",
     NAME : "alarm_tpl_chkpt_energy"
   }
   let ALARM := ALARM + alarm_tpl_chkpt_energy
 end if
-
+end if
 
 # end of checkpointing specific part.
 #--------------------------------------------------------------------

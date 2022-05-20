@@ -35,7 +35,7 @@ extern unsigned TPL_MPU_B1_BOUNDARY;
  * This MPU boundary is hard coded for the small model,
  * as we can't use pointers over 64kb
  */
-static const uint32_t TPL_MPU_B2_BOUNDARY = 0x3E800;
+static const uint32_t TPL_MPU_B2_BOUNDARY = 0x10000;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

@@ -188,7 +188,7 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
   // tpl_save_checkpoint(l_buffer);
-  tpl_save_checkpoint();
+  tpl_save_checkpoint_dma();
   tpl_checkpoint_buffer = l_buffer;
   
   uint16_t waiting_loop = 1;
@@ -275,7 +275,7 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
      */
 
   // tpl_load_checkpoint(tpl_checkpoint_buffer);
-  tpl_load_checkpoint();
+  tpl_load_checkpoint_dma();
 
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)
