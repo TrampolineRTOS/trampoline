@@ -216,6 +216,14 @@ char tpl_serial_read(void)
 
 void tpl_serial_tx_fifo_flush()
 {
+	#if SERIAL_TX_BUFFER_SIZE > 0
+		/* wait until it is empty */
+		while(tx_buffer.size != 0) ; //TODO LPM3
+	#endif
+}
+
+void tpl_serial_tx_fifo_discard()
+{
 #if SERIAL_TX_BUFFER_SIZE > 0
 	//the current transmitting byte is sent, but
 	//won't generate any interrupt.

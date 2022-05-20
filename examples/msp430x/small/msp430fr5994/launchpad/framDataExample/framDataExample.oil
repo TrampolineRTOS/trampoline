@@ -17,7 +17,7 @@ CPU framDataExample {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-	CPU_FREQ_MHZ = 8;
+    CPU_FREQ_MHZ = 8;
     IDLE_POWER_MODE = LPM3;
     
     BUILD = TRUE {
@@ -54,7 +54,7 @@ CPU framDataExample {
     };
   };
   
-  APPMODE Std {}; // Warning: std will make a problem iwth the namespace std!
+  APPMODE Std {}; // Warning: std will make a problem with the namespace std!
   
   TASK serial_TX {
     PRIORITY = 2;

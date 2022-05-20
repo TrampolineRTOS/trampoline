@@ -10,6 +10,9 @@ cmake_minimum_required(VERSION 3.5)
 # simple test program (that may fail for an embedded target)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
+#cross compiler
+include("% !PROJECT %/compiler.cmake")
+
 #project name
 project(% !OS::BUILD_S::APP_NAME %)
 enable_language(C CXX ASM)
@@ -27,9 +30,6 @@ set(APP_GENERATED_PATH ${CMAKE_SOURCE_DIR}/% !PROJECT %)
 set(OILFILE ${CMAKE_SOURCE_DIR}/% !OILFILENAME %)
 set(OILCOMPILER goil)
 set(OILFLAGS -t=% !TARGET % --templates=${TRAMPOLINE_GOIL_TEMPLATES})
-
-#cross compiler
-include("% !PROJECT %/compiler.cmake")
 
 set(CFLAGS #CFLAGS
 %foreach optionSet in exists BUILDOPTIONS default ( @() ) before
