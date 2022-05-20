@@ -4,7 +4,8 @@ IMPLEMENTATION pico {
     BOOLEAN [
       TRUE {
         ENUM [
-          pico_base,pico_stdlib,pico_stdio
+          pico_base,pico_stdlib,pico_stdio_uart
+          //pico_stdio_usb //TODO: needs tinyusb integration.
         ] LIBRARY[];
       },
       FALSE

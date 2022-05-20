@@ -46,235 +46,6 @@ CPU rp2040 {
     COMMONFLAGS = "-DPICO_USE_BLOCKED_RAM=0";
   };
   
-  INTERRUPT_COUNT nb_it {
-    IT_TABLE_SIZE = 48;
-  };
-  
-  /*
-    * systick is an option on Cortex-M0+,
-    * it is defined at the processor specific level.
-    */
-  INTERRUPT SysTick {
-    VECT = 15;
-    VECTOR_TYPE = HANDLER {
-      NAME = "SysTick_Handler";
-    };
-    ACK = FALSE;
-    SETPRIO = TRUE { NUMBER = -1; };
-  };
-  
-//  INTERRUPT SVCall {
-//    SETPRIO = TRUE { NUMBER = -5; };
-//  };
-//
-//  INTERRUPT PendSV {
-//    SETPRIO = TRUE { NUMBER = -2; };
-//  };
-//  
-//  INTERRUPT PM_IRQ {
-//    VECT = 16;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "PM_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 0; };
-//  };
-//  INTERRUPT SYSCTRL_IRQ {
-//    VECT = 17;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SYSCTRL_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 1; };
-//  };
-//  INTERRUPT WDT_IRQ {
-//    VECT = 18;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "WDT_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 2; };
-//  };
-//  INTERRUPT RTC_IRQ {
-//    VECT = 19;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "RTC_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 3; };
-//  };
-//  INTERRUPT EIC_IRQ {
-//    VECT = 20;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "EIC_Handler";
-//    };
-//    ACK = FALSE;
-//    SETPRIO = TRUE { NUMBER = 4; };
-//  };
-//  INTERRUPT NVMCTRL_IRQ {
-//    VECT = 21;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "NVMCTRL_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 5; };
-//  };
-//  INTERRUPT DMAC_IRQ {
-//    VECT = 22;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "DMAC_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 6; };
-//  };
-//  INTERRUPT USB_IRQ {
-//    VECT = 23;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "USB_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 7; };
-//  };
-//  INTERRUPT EVSYS_IRQ {
-//    VECT = 24;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "EVSYS_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 8; };
-//  };
-//  INTERRUPT SERCOM0_IRQ {
-//    VECT = 25;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SERCOM0_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 9; };
-//  };
-//  INTERRUPT SERCOM1_IRQ {
-//    VECT = 26;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SERCOM1_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 10; };
-//  };
-//  INTERRUPT SERCOM2_IRQ {
-//    VECT = 27;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SERCOM2_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 11; };
-//  };
-//  INTERRUPT SERCOM3_IRQ {
-//    VECT = 28;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SERCOM3_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 12; };
-//  };
-//  INTERRUPT SERCOM4_IRQ {
-//    VECT = 29;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SERCOM4_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 13; };
-//  };
-//  INTERRUPT SERCOM5_IRQ {
-//    VECT = 30;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "SERCOM5_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 14; };
-//  };
-//  INTERRUPT TCC0_IRQ {
-//    VECT = 31;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TCC0_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 15; };
-//  };
-//  INTERRUPT TCC1_IRQ {
-//    VECT = 32;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TCC1_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 16; };
-//  };
-//  INTERRUPT TCC2_IRQ {
-//    VECT = 33;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TCC2_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 17; };
-//  };
-//  INTERRUPT TC3_IRQ {
-//    VECT = 34;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TC3_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 18; };
-//  };
-//  INTERRUPT TC4_IRQ {
-//    VECT = 35;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TC4_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 19; };
-//  };
-//  INTERRUPT TC5_IRQ {
-//    VECT = 36;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TC5_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 20; };
-//  };
-//  INTERRUPT TC6_IRQ {
-//    VECT = 37;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TC6_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 21; };
-//  };
-//  INTERRUPT TC7_IRQ {
-//    VECT = 38;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "TC7_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 22; };
-//  };
-//  INTERRUPT ADC_IRQ {
-//    VECT = 39;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "ADC_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 23; };
-//  };
-//  INTERRUPT AC_IRQ {
-//    VECT = 40;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "AC_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 24; };
-//  };
-//  INTERRUPT DAC_IRQ {
-//    VECT = 41;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "DAC_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 25; };
-//  };
-//  INTERRUPT PTC_IRQ {
-//    VECT = 42;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "PTC_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 26; };
-//  };
-//  INTERRUPT I2S_IRQ {
-//    VECT = 43;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "I2S_Handler";
-//    };
-//    SETPRIO = TRUE { NUMBER = 27; };
-//  };
-//  INTERRUPT AC1_IRQ {
-//    VECT = 44;
-//    VECTOR_TYPE = HANDLER {
-//      NAME = "AC1_Handler";
-//    };
-//  };
-  
   PLATFORM_FILES rp2040 {
     PATH = "cortex/armv6m/rp2040";
     CFILE = "tpl_machine_systick.c";
@@ -290,4 +61,228 @@ CPU rp2040 {
       POSTOPTION = " flash.uf2";
     };
   };
+
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 41; /* Size of the interrupt vector table */
+  };
+  
+  /*
+    * systick is an option on Cortex-M0+,
+    * it is defined at the processor specific level.
+    */
+  INTERRUPT SysTick {
+    VECT = 15;
+    SETPRIO = TRUE { NUMBER = -1; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SysTick_Handler";
+    };
+  } : "SysTick";
+
+  INTERRUPT TIMER_IRQ_0 {
+    VECT = 16;
+    SETPRIO = TRUE { NUMBER = 0; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER_IRQ_0_Handler";
+    };
+  } : "TIMER_IRQ_0";
+
+  INTERRUPT TIMER_IRQ_1 {
+    VECT = 17;
+    SETPRIO = TRUE { NUMBER = 1; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER_IRQ_1_Handler";
+    };
+  } : "TIMER_IRQ_1";
+
+  INTERRUPT TIMER_IRQ_2 {
+    VECT = 18;
+    SETPRIO = TRUE { NUMBER = 2; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER_IRQ_2_Handler";
+    };
+  } : "TIMER_IRQ_2";
+
+  INTERRUPT TIMER_IRQ_3 {
+    VECT = 19;
+    SETPRIO = TRUE { NUMBER = 3; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIMER_IRQ_3_Handler";
+    };
+  } : "TIMER_IRQ_3";
+
+  INTERRUPT PWM_IRQ_WRAP {
+    VECT = 20;
+    SETPRIO = TRUE { NUMBER = 4; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PWM_IRQ_WRAP_Handler";
+    };
+  } : "PWM_IRQ_WRAP";
+
+  INTERRUPT USBCTRL_IRQ {
+    VECT = 21;
+    SETPRIO = TRUE { NUMBER = 5; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USBCTRL_IRQ_Handler";
+    };
+  } : "USBCTRL_IRQ";
+
+  INTERRUPT XIP_IRQ {
+    VECT = 22;
+    SETPRIO = TRUE { NUMBER = 6; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "XIP_IRQ_Handler";
+    };
+  } : "XIP_IRQ";
+
+  INTERRUPT PIO0_IRQ_0 {
+    VECT = 23;
+    SETPRIO = TRUE { NUMBER = 7; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PIO0_IRQ_0_Handler";
+    };
+  } : "PIO0_IRQ_0";
+
+  INTERRUPT PIO0_IRQ_1 {
+    VECT = 24;
+    SETPRIO = TRUE { NUMBER = 8; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PIO0_IRQ_1_Handler";
+    };
+  } : "PIO0_IRQ_1";
+
+  INTERRUPT PIO1_IRQ_0 {
+    VECT = 25;
+    SETPRIO = TRUE { NUMBER = 9; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PIO1_IRQ_0_Handler";
+    };
+  } : "PIO1_IRQ_0";
+
+  INTERRUPT PIO1_IRQ_1 {
+    VECT = 26;
+    SETPRIO = TRUE { NUMBER = 10; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PIO1_IRQ_1_Handler";
+    };
+  } : "PIO1_IRQ_1";
+
+  INTERRUPT DMA_IRQ_0 {
+    VECT = 27;
+    SETPRIO = TRUE { NUMBER = 11; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA_IRQ_0_Handler";
+    };
+  } : "DMA_IRQ_0";
+
+  INTERRUPT DMA_IRQ_1 {
+    VECT = 28;
+    SETPRIO = TRUE { NUMBER = 12; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA_IRQ_1_Handler";
+    };
+  } : "DMA_IRQ_1";
+
+  INTERRUPT IO_IRQ_BANK0 {
+    VECT = 29;
+    SETPRIO = TRUE { NUMBER = 13; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "IO_IRQ_BANK0_Handler";
+    };
+  } : "IO_IRQ_BANK0";
+
+  INTERRUPT IO_IRQ_QSPI {
+    VECT = 30;
+    SETPRIO = TRUE { NUMBER = 14; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "IO_IRQ_QSPI_Handler";
+    };
+  } : "IO_IRQ_QSPI";
+
+  INTERRUPT SIO_IRQ_PROC0 {
+    VECT = 31;
+    SETPRIO = TRUE { NUMBER = 15; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SIO_IRQ_PROC0_Handler";
+    };
+  } : "SIO_IRQ_PROC0";
+
+  INTERRUPT SIO_IRQ_PROC1 {
+    VECT = 32;
+    SETPRIO = TRUE { NUMBER = 16; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SIO_IRQ_PROC1_Handler";
+    };
+  } : "SIO_IRQ_PROC1";
+
+  INTERRUPT CLOCKS_IRQ {
+    VECT = 33;
+    SETPRIO = TRUE { NUMBER = 17; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CLOCKS_IRQ_Handler";
+    };
+  } : "CLOCKS_IRQ";
+
+  INTERRUPT SPI0_IRQ {
+    VECT = 34;
+    SETPRIO = TRUE { NUMBER = 18; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI0_IRQ_Handler";
+    };
+  } : "SPI0_IRQ";
+
+  INTERRUPT SPI1_IRQ {
+    VECT = 35;
+    SETPRIO = TRUE { NUMBER = 19; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI1_IRQ_Handler";
+    };
+  } : "SPI1_IRQ";
+
+  INTERRUPT UART0_IRQ {
+    VECT = 36;
+    SETPRIO = TRUE { NUMBER = 20; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART0_IRQ_Handler";
+    };
+  } : "UART0_IRQ";
+
+  INTERRUPT UART1_IRQ {
+    VECT = 37;
+    SETPRIO = TRUE { NUMBER = 21; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART1_IRQ_Handler";
+    };
+  } : "UART1_IRQ";
+
+  INTERRUPT ADC_IRQ_FIFO {
+    VECT = 38;
+    SETPRIO = TRUE { NUMBER = 22; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "ADC_IRQ_FIFO_Handler";
+    };
+  } : "ADC_IRQ_FIFO";
+
+  INTERRUPT I2C0_IRQ {
+    VECT = 39;
+    SETPRIO = TRUE { NUMBER = 23; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C0_IRQ_Handler";
+    };
+  } : "I2C0_IRQ";
+
+  INTERRUPT I2C1_IRQ {
+    VECT = 40;
+    SETPRIO = TRUE { NUMBER = 24; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C1_IRQ_Handler";
+    };
+  } : "I2C1_IRQ";
+
+  INTERRUPT RTC_IRQ {
+    VECT = 41;
+    SETPRIO = TRUE { NUMBER = 25; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "RTC_IRQ_Handler";
+    };
+  } : "RTC_IRQ";
 };

@@ -28,7 +28,7 @@ end if%
         //workaround for stopping at main on restart
         "postRestartCommands": ["break main", "continue"],
         "device": "rp2040",
-        "svdFile": "% !basePath %/machines/cortex/armv6m/rp2040.svd"
+        "svdFile": "% !basePath %/machines/cortex/armv6m/rp2040/rp2040.svd"
     },
     {
         //configuration using a RaspberryPi as the debug probe.
@@ -48,7 +48,7 @@ end if%
         "postStartSessionCommands": ["monitor reset init"],
         "runToEntryPoint": "main",
         "device": "rp2040",
-        "svdFile": "% !basePath %/machines/cortex/armv6m/rp2040.svd"
+        "svdFile": "% !basePath %/machines/cortex/armv6m/rp2040/rp2040.svd"
     }
     ]
 }
