@@ -99,6 +99,8 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
     p++;
   }
   /* Init .data section */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
   extern unsigned __data_load_start;
   extern unsigned __data_start;
   extern unsigned __data_end;
@@ -107,6 +109,7 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
     &__data_start,
     (uint16_t)&__data_end-(uint16_t)&__data_start
   );
+#pragma GCC diagnostic pop //"-Wpointer-to-int-cast"
 
   /* start clock: default to 1MHz
    * (at least .bss section should be initialized)
@@ -144,8 +147,11 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   /* for MPUSEGx registers, we only give the 16 Most significant bits
    * but, the 6 lowest bits are not used. The minimal segment size is 1024 bytes
    * */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
   MPUSEGB2 = (uint16_t)(TPL_MPU_B2_BOUNDARY >> 4);  /* high border (0x10000)  */
   MPUSEGB1 = (uint16_t)(&TPL_MPU_B1_BOUNDARY) >> 4; /* low border before code */
+#pragma GCC diagnostic pop
   MPUSAM   = 0x0353;  /* Seg3: -WR(3), seg2: X-R(5), seg1: -WR(3)    */
   MPUCTL0  =
      0xA500 |         /* password to unlock MPU                      */

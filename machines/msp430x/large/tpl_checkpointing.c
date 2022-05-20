@@ -19,11 +19,7 @@ TASK(task_tpl_chkpt_energy)
 
   vccRaw = readPowerVoltage_simple();
 
-  //tpl_serial_print_string("\r\n");
-  //tpl_serial_print_string("vccRaw = ");
-  //tpl_serial_print_int(vccRaw,0);
   if (vccRaw < HIBERNATE_THRESHOLD) {
-    //P1OUT |= 1; /* red led on */
     Hibernate();
   } else {
     TerminateTask ();

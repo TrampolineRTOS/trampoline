@@ -8,6 +8,9 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
+
 uint8_t ADC12_B_init(uint16_t baseAddress,
                   ADC12_B_initParam *param)
 {
@@ -209,6 +212,8 @@ uint8_t ADC12_B_isBusy(uint16_t baseAddress)
 {
   return 0;
 }
+
+#pragma GCC diagnostic pop
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

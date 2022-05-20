@@ -6,6 +6,9 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
+
 void Ref_A_setReferenceVoltage(uint16_t baseAddress,
                                uint8_t referenceVoltageSelect)
 {
@@ -110,6 +113,7 @@ void Ref_A_setBufferedBandgapVoltageOneTimeTrigger(uint16_t baseAddress)
 {
   HWREG8(baseAddress + OFS_REFCTL0_L) |= REFBGOT;
 }
+#pragma GCC diagnostic pop
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
