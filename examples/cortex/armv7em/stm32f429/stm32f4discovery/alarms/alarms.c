@@ -14,7 +14,6 @@ DeclareAlarm(blink_alarm);
 
 TASK(read_button)
 {
-  ledToggle(BLUE);
   if (SetRelAlarm(blink_alarm, 100, 100) != E_OK) {
     CancelAlarm(blink_alarm);
   } else {
@@ -32,12 +31,6 @@ TASK(blink)
   uint32 volatile time;
 
   ledToggle(GREEN);
-
-  time = millis();
-  if (time > 10000) {
-    ledOn(ORANGE);
-  }
-
   TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
@@ -51,8 +44,6 @@ ISR(isr_button)
 {
   ledToggle(RED);
   ActivateTask(read_button);
-  /* If button is an ISR2 then call CallTerminateISR2 at the end of the handler otherwise do nothing more. */
-  CallTerminateISR2();
 }
 #define APP_ISR_isr_button_STOP_SEC_CODE
 #include "tpl_memmap.h"

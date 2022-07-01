@@ -15,7 +15,6 @@ DeclareAlarm(blink_alarm);
 TASK(read_button)
 {
   static int a = 0;
-  ledToggle(BLUE);
   if (a == 0) {
     SetRelAlarm(blink_alarm, 100, 100);
     a = 1;

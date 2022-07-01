@@ -16,7 +16,6 @@ TASK(read_button)
 {
   static int a = 0;
   if (readButton() == BUTTON_PRESSED) {
-    ledToggle(BLUE);
     if (a == 0) {
       SetRelAlarm(blink_alarm, 100, 100);
       a = 1;
@@ -53,18 +52,6 @@ ISR(isr_button)
   EnableAllInterrupts();
 }
 #define APP_ISR_isr_button_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#define APP_ISR_isr_button2_START_SEC_CODE
-#include "tpl_memmap.h"
-
-ISR(isr_button2)
-{
-  DisableAllInterrupts();
-  ledToggle(BLUE);
-  EnableAllInterrupts();
-}
-#define APP_ISR_isr_button2_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE

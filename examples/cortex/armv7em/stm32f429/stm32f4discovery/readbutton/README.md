@@ -7,7 +7,7 @@ The task "blink" is activated by the alarm "blink_alarm".
 The task "blink" toggles the GREEN led whenever it is executed.
 
 The task "read_button" is activated by the alarm "read_button_alarm".
-This task "read_button" makes polling onto the state of the push button on the board and toggles the alarm "blink_alarm" and the BLUE led.
+This task "read_button" makes polling onto the state of the push button on the board and toggles the alarm "blink_alarm" and the RED led.
 
 Have a look into "alarm.oil" file.
 
@@ -18,5 +18,5 @@ At the beginning of the execution, the alarm "read_button_alarm" is started, and
 Configure the application with:
 
 ```
-goil --target=cortex/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ readbutton.oil
+goil --target=cortex/armv7em/stm32f429/stm32f4discovery --templates=../../../../../../goil/templates/ readbutton.oil
 ```

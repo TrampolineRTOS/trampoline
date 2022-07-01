@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-0-1.xsd">
+
+<!-- Version -->
+
+<ADMIN-DATA>
+  <DOC-REVISIONS>
+    <DOC-REVISION>
+      <REVISION-LABEL>4.0.3</REVISION-LABEL>
+      <ISSUED-BY>AUTOSAR</ISSUED-BY>
+      <DATE>AUTOSAR</DATE>
+    </DOC-REVISION>
+  </DOC-REVISIONS>
+</ADMIN-DATA>
+
+<!--
+###############################################################################
+# IMPLEMENTATION
+###############################################################################
+-->
+
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Os</SHORT-NAME>
+      <ELEMENTS>
+        <ECUC-MODULE-DEF>
+          <SHORT-NAME>OsImplementation</SHORT-NAME>
+               <DESC>
+                  <L-2 L="EN">Fixes the default Stacksize</L-2>
+               </DESC>
+          <CONTAINERS>
+            <ECUC-PARAM-CONF-CONTAINER-DEF>
+               <SHORT-NAME>TASK</SHORT-NAME>
+               <DESC>
+                  <L-2 L="EN">Fixes TASKS' default STACKSIZE </L-2>
+               </DESC>
+               <PARAMETERS>
+                  <ECUC-INTEGER-PARAM-DEF>
+                     <SHORT-NAME>stacksize</SHORT-NAME>
+                     <DEFAULT-VALUE>300</DEFAULT-VALUE>
+                  </ECUC-INTEGER-PARAM-DEF>
+               </PARAMETERS>
+            </ECUC-PARAM-CONF-CONTAINER-DEF>
+            <ECUC-PARAM-CONF-CONTAINER-DEF>
+               <SHORT-NAME>ISR</SHORT-NAME>
+               <DESC>
+                  <L-2 L="EN">Fixes ISRS' default STACKSIZE </L-2>
+               </DESC>
+               <PARAMETERS>
+                  <ECUC-INTEGER-PARAM-DEF>
+                     <SHORT-NAME>stacksize</SHORT-NAME>
+                     <DEFAULT-VALUE>200</DEFAULT-VALUE>
+                  </ECUC-INTEGER-PARAM-DEF>
+               </PARAMETERS>
+            </ECUC-PARAM-CONF-CONTAINER-DEF>
+          </CONTAINERS>
+        </ECUC-MODULE-DEF>
+      </ELEMENTS>
+    </AR-PACKAGE>
+
+<!--
+###############################################################################
+# MODULES DEFINITIONS
+###############################################################################
+-->
+
+    <AR-PACKAGE>
+      <SHORT-NAME>CPU</SHORT-NAME>
+      <ELEMENTS>
+        <ECUC-VALUE-COLLECTION>
+          <SHORT-NAME>blink</SHORT-NAME>
+          <ECUC-VALUES>
+            <ECUC-MODULE-CONFIGURATION-VALUES-REF-CONDITIONAL>
+              <ECUC-MODULE-CONFIGURATION-VALUES-REF DEST="ECUC-MODULE-CONFIGURATION-VALUES">/ARRoot/config</ECUC-MODULE-CONFIGURATION-VALUES-REF>
+            </ECUC-MODULE-CONFIGURATION-VALUES-REF-CONDITIONAL>
+          </ECUC-VALUES>
+        </ECUC-VALUE-COLLECTION>
+        <ECUC-MODULE-CONFIGURATION-VALUES>
+          <SHORT-NAME>config</SHORT-NAME>
+          <DEFINITION-REF DEST="ECUC-MODULE-DEF">/ARRoot/Os</DEFINITION-REF>
+          <CONTAINERS>
+
+
+<!--
+#==============================================================================
+# OS
+#==============================================================================
+-->
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>OsOS</SHORT-NAME>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsOS</DEFINITION-REF>
+
+              <SUB-CONTAINERS>
+                <ECUC-CONTAINER-VALUE>
+                  <SHORT-NAME>true</SHORT-NAME>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild</DEFINITION-REF>
+                  <PARAMETER-VALUES>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsTrampoline_Base_Path</DEFINITION-REF>
+                      <VALUE>../../../../../..</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsApp_Src</DEFINITION-REF>
+                      <VALUE>blink.c</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsApp_Name</DEFINITION-REF>
+                      <VALUE>blink_exe</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsCompiler</DEFINITION-REF>
+                      <VALUE>arm-none-eabi-gcc</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsAssembler</DEFINITION-REF>
+                      <VALUE>arm-none-eabi-as</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsLinker</DEFINITION-REF>
+                      <VALUE>arm-none-eabi-ld</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsCopier</DEFINITION-REF>
+                      <VALUE>arm-none-eabi-objcopy</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsBuild/OsSystem</DEFINITION-REF>
+                      <VALUE>PYTHON</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                  </PARAMETER-VALUES>
+                </ECUC-CONTAINER-VALUE>
+                <ECUC-CONTAINER-VALUE>
+                  <SHORT-NAME>true</SHORT-NAME>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsMemmap</DEFINITION-REF>
+                  <PARAMETER-VALUES>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsMemmap/OsCompiler</DEFINITION-REF>
+                      <VALUE>gcc</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsMemmap/OsAssembler</DEFINITION-REF>
+                      <VALUE>gnu_as</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsMemmap/OsMemory_Protection</DEFINITION-REF>
+                      <VALUE>false</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                  </PARAMETER-VALUES>
+                  <SUB-CONTAINERS>
+                    <ECUC-CONTAINER-VALUE>
+                      <SHORT-NAME>gnu_ld</SHORT-NAME>
+                      <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsMemmap/OsLinker</DEFINITION-REF>
+                      <PARAMETER-VALUES>
+                        <ECUC-TEXTUAL-PARAM-VALUE>
+                          <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/ARRoot/Os/OsOS/OsMemmap/OsLinker/OsScript</DEFINITION-REF>
+                          <VALUE>script.ld</VALUE>
+                        </ECUC-TEXTUAL-PARAM-VALUE>
+                      </PARAMETER-VALUES>
+                    </ECUC-CONTAINER-VALUE>
+                  </SUB-CONTAINERS>
+                </ECUC-CONTAINER-VALUE>
+              </SUB-CONTAINERS>
+              <PARAMETER-VALUES>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsPostTaskHook</DEFINITION-REF>
+                  <VALUE>true</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsPreTaskHook</DEFINITION-REF>
+                  <VALUE>true</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsStatus</DEFINITION-REF>
+                  <VALUE>EXTENDED</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsPaint_Stack</DEFINITION-REF>
+                  <VALUE>true</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsPaint_Registers</DEFINITION-REF>
+                  <VALUE>true</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsSystem_Call</DEFINITION-REF>
+                  <VALUE>true</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+            </ECUC-CONTAINER-VALUE>
+<!--
+#==============================================================================
+# APPMODE
+#==============================================================================
+-->
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>OsAppMode</SHORT-NAME>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsAppMode</DEFINITION-REF>
+            </ECUC-CONTAINER-VALUE>
+<!--
+#==============================================================================
+# ALARM blink_blink
+#==============================================================================
+-->
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>blink_blink</SHORT-NAME>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsAlarm</DEFINITION-REF>
+              <REFERENCE-VALUES>
+                <ECUC-REFERENCE-VALUE>
+                  <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/ARRoot/Os/OsAlarm/OsAlarmCounterRef</DEFINITION-REF>
+                  <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/ARRoot/config/SystemCounter</VALUE-REF>
+                </ECUC-REFERENCE-VALUE>
+              </REFERENCE-VALUES>
+              <SUB-CONTAINERS>
+                <ECUC-CONTAINER-VALUE>
+                  <SHORT-NAME>ACTIVATETASK</SHORT-NAME>
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAction</DEFINITION-REF>
+                  <REFERENCE-VALUES>
+                    <ECUC-REFERENCE-VALUE>
+                      <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/ARRoot/Os/OsAlarm/OsAlarmAction/OsAlarmTaskRef</DEFINITION-REF>
+                      <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/ARRoot/config/blink</VALUE-REF>
+                    </ECUC-REFERENCE-VALUE>
+                  </REFERENCE-VALUES>
+                </ECUC-CONTAINER-VALUE>
+                <ECUC-CONTAINER-VALUE>
+                  <SHORT-NAME>true</SHORT-NAME>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart</DEFINITION-REF>
+                  <REFERENCE-VALUES>
+                    <ECUC-REFERENCE-VALUE>
+                      <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmAppModeRef</DEFINITION-REF>
+                      <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/ARRoot/config/OsAppMode</VALUE-REF>
+                    </ECUC-REFERENCE-VALUE>
+                  </REFERENCE-VALUES>
+                  <PARAMETER-VALUES>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmAlarmtime</DEFINITION-REF>
+                      <VALUE>250</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmCycletime</DEFINITION-REF>
+                      <VALUE>250</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                  </PARAMETER-VALUES>
+                </ECUC-CONTAINER-VALUE>
+              </SUB-CONTAINERS>
+            </ECUC-CONTAINER-VALUE>
+
+<!--
+#==============================================================================
+# TASK blink
+#==============================================================================
+-->
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>blink</SHORT-NAME>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsTask</DEFINITION-REF>
+              <PARAMETER-VALUES>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskPriority</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskActivation</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskAutostart</DEFINITION-REF>
+                  <VALUE>false</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskSchedule</DEFINITION-REF>
+                  <VALUE>FULL</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+            </ECUC-CONTAINER-VALUE>
+          </CONTAINERS>
+        </ECUC-MODULE-CONFIGURATION-VALUES>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
+

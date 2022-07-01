@@ -261,6 +261,8 @@
 /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
 #define PLL_Q      7
 
+#define DISABLE_PLL 1
+
 #if defined (STM32F40_41xxx)
 #define PLL_N      336
 /* SYSCLK = PLL_VCO / PLL_P */
@@ -302,7 +304,10 @@
 #endif /* STM32F40_41xxx */
 
 #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
-  uint32_t SystemCoreClock = 180000000;
+  #if !DISABLE_PLL
+      uint32_t SystemCoreClock = 180000000;
+  #endif
+  uint32_t SystemCoreClock = 16000000; 
 #endif /* STM32F427_437x || STM32F429_439xx */
 
 #if defined (STM32F401xx)
@@ -371,7 +376,9 @@ void SystemInit(void)
          
   /* Configure the System clock source, PLL Multiplier and Divider factors, 
      AHB/APBx prescalers and Flash settings ----------------------------------*/
-  SetSysClock();
+  #if !DISABLE_PLL
+      SetSysClock();
+  #endif
 
   /* Configure the Vector Table location add offset address ------------------*/
 #ifdef VECT_TAB_SRAM

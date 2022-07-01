@@ -10,19 +10,19 @@ The task `periodic`executes every 1 ms and:
 
 * does a loop that lasts 131µs (2000 iterations) 
 * disable all interrupts
-* switch on the BLUE led
+* switch on the GREEN led
 * does a loop that lasts 476µs (8000 iterations)
-* switch off the BLUE led
+* switch off the GREEN led
 * enable all interrupts
 * does a loop that lasts 131µs (2000 iterations) 
 * Terminate
 
 The ISR isr_TIM2 toggle the RED led.
 
-The expected behavior is to not observe RED led toggles when the BLUE led is on.
+The expected behavior is to not observe RED led toggles when the GREEN led is on.
 
 Configure the application with:
 
 ```
-goil --target=cortex/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ testDisableEnable.oil
+goil --target=cortex/armv7em/stm32f429/stm32f4discovery --templates=../../../../../../goil/templates/ testDisableEnable.oil
 ```

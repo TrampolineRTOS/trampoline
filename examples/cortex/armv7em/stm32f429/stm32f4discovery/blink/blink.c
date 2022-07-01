@@ -12,7 +12,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(blink)
 {
-  ledToggle(BLUE);
+  ledToggle(GREEN);
   TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
@@ -32,7 +32,7 @@ FUNC(void, OS_CODE) PreTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == blink) {
-    ledOn(ORANGE);
+    ledOn(RED);
   }
 }
 
@@ -41,7 +41,7 @@ FUNC(void, OS_CODE) PostTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == blink) {
-    ledOff(ORANGE);
+    ledOff(RED);
   }
 }
 #define OS_STOP_SEC_CODE

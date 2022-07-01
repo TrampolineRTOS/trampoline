@@ -66,9 +66,9 @@ TASK(periodic)
   volatile int i;
   for (i = 0; i < 2000; i++);
   DisableAllInterrupts();
-  ledOn(BLUE);
+  ledOn(GREEN);
   for (i = 0; i < 8000; i++);
-  ledOff(BLUE);
+  ledOff(GREEN);
   EnableAllInterrupts();
   for (i = 0; i < 2000; i++);
   TerminateTask();

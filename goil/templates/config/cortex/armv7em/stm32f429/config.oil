@@ -45,7 +45,7 @@ CPU stm32f429 {
     CHEADER = "stm32f4xx_tim.h";
     CFILE = "stm32f4xx_tim.c";
   };
-        
+
   CORTEX stm32f429 {
     PRIO_BITS = 4;
     CLOCK = 180000000;
@@ -988,7 +988,6 @@ CPU stm32f429 {
     };
   } : "FPU global interrupt";
   
-  /****** Added Handlers ******/
   INTERRUPT UART7_IRQ {
     VECT = 98;
     SETPRIO = TRUE { NUMBER = 82; };
@@ -1032,8 +1031,6 @@ CPU stm32f429 {
       NAME = "SPI6_Handler";
     };
   } : "SPI6 global Interrupt";
-
-  /**** Not Sure ****/
 
   INTERRUPT SAI1_IRQ {
     VECT = 103;

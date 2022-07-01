@@ -92,16 +92,4 @@ CPU readbutton_isr {
     };
     //SOURCE = EXTI0_IRQ { PIN = PA0 { TRIGGER = RISING; PULL = NONE; }; };
   };
-
-  ISR isr_button2 {
-    CATEGORY = 1;
-    PRIORITY = 1;
-    SOURCE = EXTI15_10_IRQ {
-      PINON12 = PA12 {
-        TRIGGER = FALLING;
-        PULL = UP;
-      };
-    };
-    //SOURCE = EXTI0_IRQ { PIN = PA0 { TRIGGER = RISING; PULL = NONE; }; };
-  };
 };

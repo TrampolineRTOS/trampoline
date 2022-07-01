@@ -16,6 +16,14 @@ Have a look into `timer.oil` file.
 
 The system is based scheduled with a 1ms SysTick `SystemCounter`.
 
-Configure the application with
-goil --target=cortex/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ timer.oil
+Configure the application with OIL configuration:
 
+```
+goil --target=cortex/armv7em/stm32f429/stm32f4discovery --templates=../../../../../../goil/templates/ timer.oil
+```
+
+Configure the application with ARXML configuration:
+
+```
+goil --target=cortex/armv7em/stm32f429/stm32f4discovery --templates=../../../../../../goil/templates/ timer.arxml
+```
