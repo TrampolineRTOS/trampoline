@@ -1,0 +1,9 @@
+{
+    "configurations": [
+        {
+            "name": "STM32 ARM",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

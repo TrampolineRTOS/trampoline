@@ -52,5 +52,5 @@ uint16_t tpl_serial_available();
  */
 char tpl_serial_read();
 
-void tpl_serial_tx_fifo_flush();
+void tpl_serial_tx_fifo_discard();
 #endif

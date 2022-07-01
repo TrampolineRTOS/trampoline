@@ -129,7 +129,7 @@ int tpl_serial_print_int(int32_t val, int base, int fieldWidth)
 	return overflow;
 }
 
-void tpl_serial_tx_fifo_flush()
+void tpl_serial_tx_fifo_discard()
 {
 	//the current transmittint byte is sent, but
 	//won't generate any interrupt.

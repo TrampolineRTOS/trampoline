@@ -31,7 +31,7 @@ CPU only_one_periodic_task {
       APP_SRC = "trace_test.c";
       LDFLAGS = "-lrt -pthread"; 
       TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "test_exe";
+      APP_NAME = "trace_test_exe";
       LINKER = "gcc";
       SYSTEM = PYTHON;
     };

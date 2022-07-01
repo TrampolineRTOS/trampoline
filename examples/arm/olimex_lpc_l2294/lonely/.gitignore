@@ -1,0 +1,7 @@
+lonely
+build
+*_exe
+*.bin
+*.map
+build.py
+make.py

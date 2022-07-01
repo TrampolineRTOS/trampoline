@@ -1,0 +1,11 @@
+one_task
+one_task_exe
+
+trace.json
+build
+*.elf
+*.bin
+*.map
+make.py
+build.py
+readTrace.py

@@ -1,0 +1,226 @@
+%!TEX root = ./main.tex
+
+\chapter{Building a Trampoline application}
+
+An application using trampoline RTOS is made of a set of source files (C/C++) and a set of oil files (.oil). An oil file allows to define the properties of the different objects handled by the RTOS (tasks, resources, alarms, ...).
+
+\note{Trampoline is a static RTOS, all objects are defined at compile time}
+
+The build phase requires a first step to read these OIL files and transform them into data structures (.c/.h files) for the compilation step. This first operation is done with the tool \goil, provided with Trampoline (Figure \ref{fig:filesbis}).
+
+\begin{figure}[htbp]
+    \centering
+	\begin{adjustbox}{width=.7\linewidth,keepaspectratio}
+		\input{./buildWorkflow.tikz}
+	\end{adjustbox}
+\caption{Trampoline Application: from source to binary}
+	\label{fig:filesbis}
+\end{figure}
+
+In addition to the generation of static data structures, \goil\ is able to generate other files, such as those for the definition of memory mapping (link script), tools for debugging (see \ref{chap:trace}), or tools for the compilation of the application. This chapter deals with the generation of the application.
+
+\section{Main OIL file}
+
+To build the application, some additional information is needed, defined in the sub-attribute \oilattr{CPU->OS->BUILD}. Example for ARM Cortex-M target:
+
+\lstset{language=OIL}
+\begin{lstlisting}
+CPU blink {
+  OS config { 
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "/opt/trampoline";
+      APP_SRC = "blink.c";
+      APP_NAME = "blink_exe";
+      CFLAGS  = "-O0";
+      LDFLAGS = "-Map=blink.map";
+      COMPILER = "arm-none-eabi-gcc";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+    };
+  ..
+\end{lstlisting}
+
+\note{For each target, at least one example is provided in the tree structure \file{examples/}. This is a good starting point.}
+
+This attribute is specific to Trampoline, it contains several sub-attributes to build the application (cross-compiler, flags, source files, …):
+\begin{itemize}
+	\item \oilattr{TRAMPOLINE_BASE_PATH}: The path to the root of Trampoline. Required
+	\item \oilattr{APP_SRC}, \oilattr{APP_CPPSRC} give respectively the C and C++ source files of the application.
+	\item \oilattr{CFLAGS}, \oilattr{CPPFLAGS}, \oilattr{ASFLAGS}, \oilattr{LDFLAGS} define the flags to give to the compiler for respectively C, C++, assembly, linker phase. \oilattr{COMMONFLAGS} gives flags for both c,C++and asm source files.
+	\item \oilattr{APP_NAME} define the name of the output binary file (to flash)
+	\item \oilattr{COMPILER}, \oilattr{CPPCOMPILER}, \oilattr{ASSEMBLER}, \oilattr{LINKER} and \oilattr{COPIER} are the tools (cross compiler collection) related to the C compiler, C++ compiler, assembler, linker and copier (as the GNU tool objcopy)
+	\item \oilattr{SYSTEM} defines the build tool in use. It can be either \oilattr{PYTHON} (default) to generate a set of python scripts, or \oilattr{CMAKE} to use the CMake build tool. See section \ref{sec:buildsystem}.
+\end{itemize}
+
+As this description is in OIL language, if a sub-attribute is defined twice, then it will be accumulated. For instance:
+\lstset{language=OIL}
+\begin{lstlisting}
+  APP_SRC = "blink.c";
+  APP_SRC = "file2.c";
+\end{lstlisting}
+is equivalent to:
+\begin{lstlisting}
+  APP_SRC = "blink.c file2.c";
+\end{lstlisting}
+
+\section{Build system}
+\label{sec:buildsystem}
+2 build system are available for Trampoline, defined in the sub-attribute \oilattr{CPU->OS->BUILD->SYSTEM}:
+\begin{itemize}
+	\item \oilattr{PYTHON} is a set of python script
+	\item \oilattr{CMAKE} is a set of CMake files 
+\end{itemize}
+
+\subsection{Python build}
+The python system generates 2 files \file{build.py} and \file{make.py}. The script will take into account all the dependancies. For example, modifying an object in the oil file will result in calling goil (and generating again the \file{build.py} file again), before doing the rest of the build step. As a result, \goil\ should be called only once (bootstrap), and then \com{./make.py} will do all the stuff.
+A basic run is (from \file{examples/cortex/armv7em/stm32f303/Nucleo-32/blink})
+\begin{verbatim}
+% goil --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
+Created 'blink/tpl_dispatch_table.c'.
+Created 'blink/tpl_invoque.S'.
+Created 'blink/tpl_os.h'.
+Created 'blink/tpl_service_ids.h'.
+Created 'build.py'.
+Created 'make.py'.
+Created 'blink/tpl_app_custom_types.h'.
+Created 'blink/tpl_app_config.c'.
+Created 'blink/tpl_app_config.h'.
+Created 'blink/tpl_app_define.h'.
+Created 'blink/MemMap.h'.
+Created 'blink/Compiler.h'.
+Created 'blink/Compiler_Cfg.h'.
+Created 'blink/script.ld'.
+Created 'blink/AsMemMap.h'.
+Created 'blink/tpl_static_info.json'.
+Created 'blink/tpl_vectors.c'.
+Created 'blink/tpl_primary_irq.S'.
+Created 'blink/cmsis_wrapper.h'.
+Created 'blink/tpl_external_interrupts.c'.
+Created 'blink/tpl_app_interrupts.c'.
+Created 'blink/tpl_cortex_definitions.h'.
+Created 'blink/stm_structure.c'.
+executing plugin gdb_commands.goilTemplate
+Created '/home/mik/prog/trampoline/examples/cortex/armv7em/stm32f303/Nucleo-32/blink/build/blink.oil.dep'.
+No warning, no error.
+\end{verbatim}
+Then, we call the python script \com{./make.py}:
+\begin{verbatim}
+-> % ./make.py 
+Nothing to make.
+Making "build/os" directory
+[  3%] Compiling ../../../../../../os/tpl_os_kernel.c
+[  6%] Compiling ../../../../../../os/tpl_os_timeobj_kernel.c
+…
+[ 96%] Compiling ../../../../../../machines/cortex/armv7em/stm32f303/tpl_trace.c
+[100%] Linking blink_exe
+		   Generating binary blink_exe.bin from blink_exe	
+\end{verbatim}
+
+In most cases, an additional target has been defined to flash the application (see section \ref{sec:additionnalTarget}). For Cortex-M targets, this is \com{./make.py burn}.
+
+\subsection{CMake build system}
+
+The CMake build system generates 2 text based files:
+\begin{itemize}
+	\item \file{CMakeLists.txt} is the main project file
+	\item \file{blink/compiler.cmake} (if project is defined in \file{blink.oil}) defines cross-compiler definitions.
+\end{itemize}
+
+The bootstrap using \goil\ is the same as in PYTHON:
+\begin{verbatim}
+% goil --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
+Created 'blink/tpl_dispatch_table.c'.
+Created 'blink/tpl_invoque.S'.
+Created 'blink/tpl_os.h'.
+Created 'blink/tpl_service_ids.h'.
+Created 'CMakeLists.txt'.
+Created 'blink/compiler.cmake'.
+Created 'blink/tpl_app_custom_types.h'.
+Created 'blink/tpl_app_config.c'.
+Created 'blink/tpl_app_config.h'.
+Created 'blink/tpl_app_define.h'.
+Created 'blink/MemMap.h'.
+Created 'blink/Compiler.h'.
+Created 'blink/Compiler_Cfg.h'.
+Created 'blink/script.ld'.
+Created 'blink/AsMemMap.h'.
+Created 'blink/tpl_static_info.json'.
+Created 'blink/tpl_vectors.c'.
+Created 'blink/tpl_primary_irq.S'.
+Created 'blink/cmsis_wrapper.h'.
+Created 'blink/tpl_external_interrupts.c'.
+Created 'blink/tpl_app_interrupts.c'.
+Created 'blink/tpl_cortex_definitions.h'.
+Created 'blink/stm_structure.c'.
+executing plugin gdb_commands.goilTemplate
+Created '/home/mik/prog/trampoline/examples/cortex/armv7em/stm32f303/Nucleo-32/blink/build/blink.oil.dep'.
+No warning, no error.
+\end{verbatim}
+
+Then, the command to generate the binary are the standard way, except a special attention to define the correct cross-compiler when calling \tool{cmake}, using the generated cross-compiler access: \com{cmake -D CMAKE_TOOLCHAIN_FILE=../blink/compiler.cmake ..}
+
+\note{These commands are defined in comments in the head of \file{CMakeLists.txt}.}
+
+\begin{verbatim}
+% cd build    
+% cmake -D CMAKE_TOOLCHAIN_FILE=../blink/compiler.cmake ..
+-- The C compiler identification is GNU 9.3.1
+-- The CXX compiler identification is GNU 9.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /opt/gcc-arm/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- The ASM compiler identification is GNU
+-- Found assembler: /opt/gcc-arm/bin/arm-none-eabi-gcc
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mik/prog/trampoline/examples/cortex/armv7em/stm32f303/Nucleo-32/blink/build
+-> % make
+Scanning dependencies of target blink_exe
+[  3%] Building C object CMakeFiles/blink_exe.dir/blink.c.obj
+[  6%] Building C object CMakeFiles/blink_exe.dir/home/mik/
+...
+[ 96%] Linking C executable blink_exe
+[100%] Built target blink_exe
+\end{verbatim}
+
+In most cases, an additional target has been defined to flash the application (see section \ref{sec:additionnalTarget}). For Cortex-M targets, this is \com{make burn}.
+
+\warning{If the oil file is updated, the build system will call \goil. \goil\ may update \file{CMakeLists.txt}, but this modification will not be taken into account during this pass. In that case, the command \com{make} should be run twice to get a correct behavior.}
+
+The interest of using CMake is that several IDEs are based on this system for the project management (Qt Creator{\footnote{https://www.qt.io/product/development-tools}}, VS Code{footnote{https://code.visualstudio.com/}}, ...). Therefore, we can take advantage of the features of these editors (code completion, navigation between files, ...)
+
+A special case is for VS Code editor. With an additional sub-atribute, a \file{.vscode/} directory is generated (if it does not exist yet), so that the debugger is well configured. In that way, you can directly compile and debug from the editor.
+It runs for some Cortex-M based target at this date (STM32).
+\lstset{language=OIL}
+\begin{lstlisting}
+ SYSTEM = CMAKE { VSCODE=TRUE; };
+\end{lstlisting}
+
+\section{Goil related features}
+
+Many parts of the build system are generated for \goil\ templates. This section introduces these features.
+
+\subsection{Compilation flags}
+
+Some flags may be defined globally for a specific target. It can be retrieved in the \goil\ templates, in the \file{config/} subfolders. The file is named \file{buildOptions.oil}. For instance, on ARM Cortex-M4 (armv7em ISA), the path is \file{goil/templates/config/cortex/armv7em/buildOptions.oil}.
+begin
+Some other flags can be added directly in the main \file{config.oil} file in the templates.
+
+\subsection{Additionnal files}
+TODO
+
+\subsection{Libraries}
+TODO
+
+\subsection{Additionnal build target}
+\label{sec:additionnalTarget}
+TODO

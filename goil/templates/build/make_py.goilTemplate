@@ -181,7 +181,12 @@ scriptDir = os.path.dirname (os.path.abspath (sys.argv [0]))
 os.chdir (scriptDir)
 
 #--- Launch build.py
-childProcess = subprocess.Popen (["python", "build.py", askedGoal, str(maxParallelJobs)])
+# is there the 'python' executable?
+import distutils.spawn
+if distutils.spawn.find_executable("python"):
+	childProcess = subprocess.Popen (["python", "build.py", askedGoal, str(maxParallelJobs)])
+else: #no python executable, maybe python3
+	childProcess = subprocess.Popen (["python3", "build.py", askedGoal, str(maxParallelJobs)])
 
 #--- Wait for subprocess termination
 if childProcess.poll () == None :

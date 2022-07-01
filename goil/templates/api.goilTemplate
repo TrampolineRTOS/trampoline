@@ -111,10 +111,32 @@ if OS::BUILD then
     write to executable "make.py":
       template if exists make_py in build
     end write
-  elsif OS::BUILD_S::SYSTEM == "ATMELSTUDIO" then
-    write to "atmelStudio_"+PROJECT+"/"+PROJECT+".cproj":
-      template if exists atmelStudioProject in build
+  elsif OS::BUILD_S::SYSTEM == "CMAKE" then
+    write to "CMakeLists.txt":
+      template if exists cmakelists_txt in build
     end write
+    write to PROJECT+"/compiler.cmake":
+      template if exists compiler_cmake in build
+    end write
+    if exists OS::BUILD_S::SYSTEM_S then
+      if OS::BUILD_S::SYSTEM_S::VSCODE then
+        if not [".vscode/c_cpp_properties.json" fileExists] then
+          write to ".vscode/c_cpp_properties.json":
+            template if exists vscode_c_cpp_properties_json in build
+          end write
+        end if
+        if not [".vscode/launch.json" fileExists] then
+          write to ".vscode/launch.json":
+            template if exists vscode_launch_json in build
+          end write
+        end if
+        if not [".vscode/settings.json" fileExists] then
+          write to ".vscode/settings.json":
+            template if exists vscode_settings_json in build
+          end write
+        end if
+      end if 
+    end if 
   end if
 end if
 

@@ -1,5 +1,6 @@
 blink
 build
+CMakeLists.txt
 *_exe
 *.bin
 *.map
