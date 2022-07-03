@@ -320,12 +320,13 @@
   * @}
   */
 
+#if !DISABLE_PLL
 /** @addtogroup STM32F4xx_System_Private_FunctionPrototypes
   * @{
   */
 
 static void SetSysClock(void);
-
+#endif
 #if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
 static void SystemInit_ExtMemCtl(void); 
 #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
@@ -472,6 +473,7 @@ void SystemCoreClockUpdate(void)
   SystemCoreClock >>= tmp;
 }
 
+#if !DISABLE_PLL
 /**
   * @brief  Configures the System clock source, PLL Multiplier and Divider factors, 
   *         AHB/APBx prescalers and Flash settings
@@ -554,12 +556,12 @@ static void SetSysClock(void)
     {
     }      
     /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
-    FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_5WS;
+    FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_6WS;
 #endif /* STM32F427_437x || STM32F429_439xx  */
 
 #if defined (STM32F40_41xxx)     
     /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
-    FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_5WS;
+    FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_6WS;
 #endif /* STM32F40_41xxx  */
 
 #if defined (STM32F401xx)
@@ -582,6 +584,7 @@ static void SetSysClock(void)
   }
 
 }
+#endif
 
 /**
   * @brief  Setup the external memory controller. Called in startup_stm32f4xx.s 
