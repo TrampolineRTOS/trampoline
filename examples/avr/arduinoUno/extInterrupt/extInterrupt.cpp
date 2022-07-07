@@ -31,6 +31,10 @@ ISR(ISRButtonSlow)
 ISR(ISRButtonFast)
 {
 	period *= 0.9; //10% faster
+	if(period <= 1) {
+	  period = 1;
+	}
+	
 	Serial.print("faster:");
 	Serial.println(period);
 	CancelAlarm(periodicAl);
