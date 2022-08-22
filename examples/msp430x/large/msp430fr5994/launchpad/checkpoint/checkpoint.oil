@@ -17,9 +17,12 @@ CPU blink {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
-    CHECKPOINTING = TRUE {CYCLETIME = 5000;
-                          HIBERNATE_THRESHOLD = 2500;
-                          RESUME_FROM_HIBERNATE_THRESHOLD = 2800;};
+    CHECKPOINTING = TRUE { MODE = PERIODIC 
+                              {CYCLETIME = 5000;
+                              HIBERNATE_THRESHOLD = 2500;
+                              RESUME_FROM_HIBERNATE_THRESHOLD = 2800;
+                              };
+                          };
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "checkpoint.c";
