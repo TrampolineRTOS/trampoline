@@ -377,6 +377,21 @@ CPU api {
   };
 
   /*
+   * Sequence trace intermittent
+   */
+  APICONFIG sequence {
+    ID_PREFIX = OS;
+    FILE = "tpl_sequence_kernel";
+    DIRECTORY = "os";
+    SYSCALL ActivateSequence {
+      KERNEL = tpl_activate_sequence_os_service;
+      LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
+      ARGUMENT task_id {KIND = CONST; TYPE = TaskType;} : "";
+    } : "The user calls this system service to activate a sequence of task.";
+  };
+
+  /*
    * OSEK com
    */
   APICONFIG message {

@@ -44,5 +44,10 @@ end if
  * If YES, use lea with the msp430
  */
 #define WITH_LEA             % ! yesNo(OS::LEA) %
+
+/*
+ * If YES, use sequence with the msp430
+ */
+ #define WITH_SEQUENCING    % ! yesNo(OS::SEQUENCING) %
 %
 template if exists tpl_library_defines

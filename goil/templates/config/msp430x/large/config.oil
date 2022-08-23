@@ -31,6 +31,7 @@ IMPLEMENTATION  msp430x {
     ENUM [ ACTIVE, LPM0, LPM1, LPM2, LPM3 ] IDLE_POWER_MODE = ACTIVE;
     /* Initialize variables in .data section with DMA */
     BOOLEAN INIT_WITH_DMA = FALSE;
+
     /* enable checkpointing. Define the default period */
     BOOLEAN [ 
       TRUE { 
@@ -50,6 +51,15 @@ IMPLEMENTATION  msp430x {
      TRUE {UINT32 LEA_RAM = 4096;},
      FALSE {UINT32 LEA_RAM = 0;}
     ] LEA = FALSE; 
+
+    /* enable intermittent sequence */
+    BOOLEAN [
+      TRUE {
+        STRING SEQUENCE [];
+      },
+      FALSE
+    ] SEQUENCING = FALSE;
+
     /* trace */
     BOOLEAN [
       TRUE {
