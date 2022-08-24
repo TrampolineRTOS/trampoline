@@ -23,6 +23,13 @@ IMPLEMENTATION  msp430x {
     ] EXIT_FROM_LPM = FALSE;
   };
 
+  SEQUENCE [] {
+    STRING STATE;
+    STRING NEXT_STATE;
+    UINT32 ENERGY;
+    TASK_TYPE TRACE[];
+  };
+
   /* Additional OS attributes */
   OS {
     /* CPU frequency */
@@ -39,7 +46,8 @@ IMPLEMENTATION  msp430x {
            PERIODIC {
                UINT32 CYCLETIME = 5000;
                UINT32 HIBERNATE_THRESHOLD = 2000;
-               UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;},
+               UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;
+            },
            STATIC
          ] MODE = PERIODIC;
       },
@@ -53,12 +61,7 @@ IMPLEMENTATION  msp430x {
     ] LEA = FALSE; 
 
     /* enable intermittent sequence */
-    BOOLEAN [
-      TRUE {
-        STRING SEQUENCE [];
-      },
-      FALSE
-    ] SEQUENCING = FALSE;
+    BOOLEAN SEQUENCING = FALSE;
 
     /* trace */
     BOOLEAN [
