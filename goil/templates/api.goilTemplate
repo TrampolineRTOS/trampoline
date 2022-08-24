@@ -34,6 +34,10 @@ if OS::CHECKPOINTING then
   let APIUSED += APIMAP["checkpoint"]
 end if
 
+if OS::SEQUENCING then
+  let APIUSED += APIMAP["sequence"]
+end if
+
 if exists SEMAPHORE then
   if [SEMAPHORE length] > 0 then
     let APIUSED += APIMAP["semaphore"]
