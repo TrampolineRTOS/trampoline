@@ -383,12 +383,14 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_sequence_kernel";
     DIRECTORY = "os";
-    SYSCALL ActivateSequence {
-      KERNEL = tpl_activate_sequence_os_service;
-      LOCK_KERNEL = TRUE;
+    SYSCALL StartOSSequence {
+      // ACTUAL = tpl_start_os;
+      KERNEL = tpl_start_os_sequence_service;
+      LOCK_KERNEL = FALSE;
       CALLABLE_BY_ISR1 = FALSE;
-      ARGUMENT task_id {KIND = CONST; TYPE = TaskType;} : "";
-    } : "The user calls this system service to activate a sequence of task.";
+      ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
+        : "The application mode";
+    } : "The user can call this system service to start the operating system in a specific mode.";
   };
 
   /*
