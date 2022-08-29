@@ -23,12 +23,22 @@ IMPLEMENTATION  msp430x {
     ] EXIT_FROM_LPM = FALSE;
   };
 
-  SEQUENCE [] {
-    STRING STATE;
-    STRING NEXT_STATE;
-    UINT32 ENERGY;
-    TASK_TYPE TRACE[];
+  STATE [] {
   };
+
+  TRANSITION [] {
+    STATE_TYPE FROM_STATE;
+    STATE_TYPE TO_STATE;
+    UINT32 ENERGY;
+    TASK_TYPE TASK[]; 
+  };
+
+  // SEQUENCE [] {
+  //   STRING STATE;
+  //   STRING NEXT_STATE;
+  //   UINT32 ENERGY;
+  //   TASK_TYPE TRACE[];
+  // };
 
   /* Additional OS attributes */
   OS {

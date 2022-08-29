@@ -33,3 +33,8 @@ write to PROJECT+"/tpl_irq_handlers.S":
  let EXTENSIONIRQHANDLERS := "S"
  template tpl_irq_handlers in code
 end write
+
+write to PROJECT+"/tpl_intermittent.c":
+ let EXTENSIONINTERMITTENT := "c"
+ template tpl_intermittent in code
+end write

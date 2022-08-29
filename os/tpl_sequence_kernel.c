@@ -34,6 +34,40 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+void init_adc() {
+
+  static uint8_t use1V2Ref = 0;
+
+  ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
+  ADC12CTL0 = ADC12ON | ADC12SHT0_2;          
+  ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz) / 8
+  ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
+  ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling timer
+  ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
+  while (REFCTL0 & REFGENBUSY);               // If ref generator busy, WAIT
+  if (use1V2Ref) {
+    REFCTL0 = REFON | REFVSEL_0;                // 1.2V reference
+    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+  }
+  else {
+    REFCTL0 = REFON | REFVSEL_1;                // 2V reference
+    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+  }
+
+  if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref generator ready
+  ADC12CTL0 |= ADC12ENC;
+	return;
+}
+
+uint16 tpl_ADC_read(){
+	ADC12CTL0 |= ADC12SC;
+	while(!(ADC12IFGR0 & BIT0));
+	// ADC12CTL0 &= ~(ADC12ENC);
+	// REFCTL0 &= ~(REFON);
+	return ADC12MEM0;
+}
+
 // FUNC(void, OS_CODE) tpl_start_from_trace(CORE_ID_OR_VOID(core_id))
 // {
 //   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
@@ -91,15 +125,15 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
   }
 #endif
 
-#if SEQUENCE_COUNT > 0
-  /* On fait une mesure avec l'ADC pour avoir le niveau d'énergie*/
+/* On fait une mesure avec l'ADC pour avoir le niveau d'énergie*/
+init_adc();
+uint16 energy = tpl_ADC_read();                                                           // polling
+/* On choisit la prochaine sequence en fonction de l'état courant et du niveau d'énergie */
 
-  /* On choisit la prochaine sequence en fonction de l'état courant et du niveau d'énergie */
+/* On active toutes les tâches de la séquence choisie */
 
-  /* On active toutes les tâches de la séquence choisie */
+/* On active toutes les alarmes de la séquence choisie */
 
-  /* On active toutes les alarmes de la séquence choisie */
-#endif 
 // #if TASK_COUNT > 0
 //   /*  Look for autostart tasks    */
 //   for (i = 0; i < TASK_COUNT; i++)
