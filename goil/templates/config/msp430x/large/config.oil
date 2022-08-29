@@ -24,6 +24,7 @@ IMPLEMENTATION  msp430x {
   };
 
   STATE [] {
+    UINT32 VALUE;
   };
 
   TRANSITION [] {

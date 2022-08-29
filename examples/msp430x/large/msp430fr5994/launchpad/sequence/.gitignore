@@ -1,4 +1,4 @@
-blink
+sequence
 build
 *_exe
 *.bin

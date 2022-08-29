@@ -34,7 +34,7 @@ CPU sequence {
       LINKER    = "msp430-elf-ld";
       COPIER    = "msp430-elf-objcopy";
       CFLAGS    = "-I/opt/msp430-gcc-support-files/include";
-      SYSTEM = CMAKE;
+      SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {
@@ -61,8 +61,8 @@ CPU sequence {
     SCHEDULE = FULL;
   };
 
-  STATE E0{};
-  STATE E1{};
+  STATE E0{VALUE = 0;};
+  STATE E1{VALUE = 1;};
 
   TRANSITION E0_E1{
     ENERGY = 100;
