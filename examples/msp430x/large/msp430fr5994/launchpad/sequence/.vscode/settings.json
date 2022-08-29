@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "tpl_memmap.h": "c",
+        "msp430.h": "c",
+        "msp430fr5994.h": "c",
+        "tpl_os.h": "c"
+    }
+}

@@ -119,6 +119,7 @@ sourceList = []
 
 #--- Add generated files
 sourceList.append("% !PROJECT %/tpl_app_config.c")
+sourceList.append("% !PROJECT %/tpl_intermittent.c")
 %
 if OS::SYSTEM_CALL then
 %

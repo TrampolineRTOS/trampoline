@@ -404,6 +404,7 @@ end foreach
 
 #--- Add generated files
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_app_config.c"))
+cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_intermittent.c"))
 %
 if OS::SYSTEM_CALL then
 %
