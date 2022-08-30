@@ -23,9 +23,15 @@
  * $Author$
  * $URL$
  */
+%
+if OS::SEQUENCING then 
+%
+#include <stdbool.h>
+#include <stdint.h>
 
 #include "tpl_os_internal_types.h"
 #include "tpl_sequence_kernel.h"
+#include "tpl_os_definitions.h"
 
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -83,3 +89,18 @@ end foreach
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
+
+/**
+ * @internal
+ *
+ * tpl_kern_seq gather informations on the current sequence and
+ * the previous one
+ */
+VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq =
+{
+  NULL,                      /* no running sequence   */
+  NULL,                      /* no elected sequence   */
+  TRUE,                      /* schedule needed at start */
+};
+%
+end if
