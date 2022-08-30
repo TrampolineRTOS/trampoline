@@ -41,7 +41,7 @@ foreach pb in exists POSTBUILD default( @() ) do
   end foreach
 end foreach
 
-%#! /usr/bin/env python
+%#! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #----------------------------------------------------------------------
 #--- Python Make file for application % !CPUNAME %
@@ -67,13 +67,13 @@ sys.path.append("% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/make")
 
 #--- Import the makefile system in python
 try:
-	import makefile, projfile
+ import makefile, projfile
 except ImportError:
-	#it defines inline the red color, as other are defined in the makefile.py
-	print("\033[91mThe OS->BUILD->TRAMPOLINE_BASE_PATH key is not set correctly in the oil file % !OILFILENAME %.")
-	print("Set the correct Trampoline installation path in the oil file and run goil again:\033[0m")
-	print("goil -t=%!TARGET% --templates=%!TEMPLATEPATH% %!OILFILENAME%")
-	sys.exit(1)
+ #it defines inline the red color, as other are defined in the makefile.py
+ print("\033[91mThe OS->BUILD->TRAMPOLINE_BASE_PATH key is not set correctly in the oil file % !OILFILENAME %.")
+ print("Set the correct Trampoline installation path in the oil file and run goil again:\033[0m")
+ print("goil -t=%!TARGET% --templates=%!TEMPLATEPATH% %!OILFILENAME%")
+ sys.exit(1)
 
 #--- To work with relative paths
 scriptDir = os.path.dirname (os.path.abspath (sys.argv[0]))
@@ -185,9 +185,9 @@ os.chdir (scriptDir)
 # is there the 'python' executable?
 import distutils.spawn
 if distutils.spawn.find_executable("python"):
-	childProcess = subprocess.Popen (["python", "build.py", askedGoal, str(maxParallelJobs)])
+ childProcess = subprocess.Popen (["python", "build.py", askedGoal, str(maxParallelJobs)])
 else: #no python executable, maybe python3
-	childProcess = subprocess.Popen (["python3", "build.py", askedGoal, str(maxParallelJobs)])
+ childProcess = subprocess.Popen (["python3", "build.py", askedGoal, str(maxParallelJobs)])
 
 #--- Wait for subprocess termination
 if childProcess.poll () == None :

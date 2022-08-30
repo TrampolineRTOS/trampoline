@@ -42,7 +42,7 @@ if exists POSTBUILD then
   let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
 end if
 
-%#! /usr/bin/env python
+%#! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #----------------------------------------------------------------------
 #--- Python Build file for application % !CPUNAME %
