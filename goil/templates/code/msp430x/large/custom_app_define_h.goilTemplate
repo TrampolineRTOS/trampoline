@@ -49,7 +49,10 @@ end if
  * If YES, use sequence with the msp430
  */
  #define WITH_SEQUENCING    % ! yesNo(OS::SEQUENCING) %
+%
+let TRANSITION := exists TRANSITION default (@())
 
+%
 /*
  * Number of sequences
  */
