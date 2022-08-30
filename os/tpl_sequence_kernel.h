@@ -43,7 +43,7 @@ typedef struct TPL_SEQUENCE tpl_sequence;
 #include "tpl_memmap.h"
 
 extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
-    tpl_sequence_table[2];
+    tpl_sequence_table[TRANSITION_COUNT];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

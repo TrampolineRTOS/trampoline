@@ -49,5 +49,10 @@ end if
  * If YES, use sequence with the msp430
  */
  #define WITH_SEQUENCING    % ! yesNo(OS::SEQUENCING) %
+
+/*
+ * Number of sequences
+ */
+#define TRANSITION_COUNT    % ![TRANSITION length]%
 %
 template if exists tpl_library_defines
