@@ -24,20 +24,63 @@
  * $URL$
  */
 
-#include <stdint.h>
+#include "tpl_os_internal_types.h"
+#include "tpl_sequence_kernel.h"
 
-typedef struct {
-    uint32_t energy;
-    uint8_t trace[];
-} Sequence;
+#define TRANSITION_COUNT  % ![TRANSITION length]%
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 %
+
+#------------------------------------------------------------------------------*
+let listTask := @[]
+foreach proc in PROCESSES do
+  if proc::KIND == "Task" then
+   let key := proc::NAME
+   let listTask[key] := INDEX
+  end if
+end foreach
+
+let listState := @[]
+foreach state in STATE do
+  let key := state::NAME
+  let listState[key] := state::VALUE
+end foreach
+
+#------------------------------------------------------------------------------*
+
 foreach transition in TRANSITION do
     %
-    Sequence test;
-    test.energy = % !transition::ENERGY%;
-    test.trace = {%foreach task in transition::TASK do !task::VALUE%,%
-    end foreach
-    %};
-    %
-    end foreach
+VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
+  .energy = % ! transition::ENERGY%
+%
+ foreach task in transition::TASK do 
+%, .trace[% !INDEX%] = % !listTask[task::VALUE]%
+% 
+ end foreach
+%, .next_state = % !listState[transition::TO_STATE]%
+, .current_state = % !listState[transition::FROM_STATE]%};
+%
+end foreach
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
+tpl_sequence_table[TRANSITION_COUNT] = {
+%
+foreach transition in TRANSITION do
+  %  &sequence_% !transition::NAME%,
+%
+end foreach
+%
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
