@@ -27,7 +27,6 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_sequence_kernel.h"
 
-#define TRANSITION_COUNT  % ![TRANSITION length]%
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
