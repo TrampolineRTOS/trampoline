@@ -3,7 +3,7 @@
  *
  * @section descr File description
  *
- * Trampoline checkpointing os services header.
+ * Trampoline sequence os services header.
  *
  * @section copyright Copyright
  *
@@ -34,10 +34,18 @@ struct TPL_SEQUENCE{
     CONST(uint32, TYPEDEF) energy;
     CONST(uint8, TYPEDEF) next_state;
     CONST(uint8, TYPEDEF) current_state; 
+    CONST(uint8, TYPEDEF) nb_task;
     CONST(uint8, TYPEDEF) trace[];
 };
 
 typedef struct TPL_SEQUENCE tpl_sequence;
+
+typedef struct {
+    P2VAR(tpl_sequence, TYPEDEF, OS_VAR) running;
+    P2VAR(tpl_sequence, TYPEDEF, OS_VAR) elected;
+    VAR(tpl_bool, TYPEDEF)               need_schedule;
+    VAR(sint32, TYPEDEF)                 state;
+} tpl_kern_seq_state;
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -46,6 +54,16 @@ extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
     tpl_sequence_table[TRANSITION_COUNT];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+extern VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq;
+
+extern P2VAR(tpl_sequence, TYPEDEF, OS_VAR) tpl_ready_sequence_list[2];
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE

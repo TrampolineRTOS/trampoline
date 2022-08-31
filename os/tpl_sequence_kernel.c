@@ -24,13 +24,26 @@
  *
  */
 
-// #include "tpl_os_kernel.h"
-// #include "tpl_os_os_kernel.h"
+#include "tpl_sequence_kernel.h"
+#include "tpl_os_os_kernel.h"
+#include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
 #include "tpl_os_definitions.h"
+#include "tpl_machine_interface.h"
+#include "tpl_trace.h"
+#include "tpl_os_hooks.h"
 
+#include "msp430.h"
+
+#include <stdint.h>
 
 #if WITH_SEQUENCING == YES
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+STATIC VAR(tpl_application_mode, OS_VAR) application_mode_sequence = NOAPPMODE;
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -68,6 +81,11 @@ uint16 tpl_ADC_read(){
 	return ADC12MEM0;
 }
 
+void end_adc(){
+  ADC12CTL0 &= ~ADC12ENC;
+  ADC12CTL0 &= ~ADC12ON;
+  return;
+}
 // FUNC(void, OS_CODE) tpl_start_from_trace(CORE_ID_OR_VOID(core_id))
 // {
 //   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
@@ -93,7 +111,7 @@ uint16 tpl_ADC_read(){
 
 FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
-  GET_CURRENT_CORE_ID(core_id)
+  GET_CURRENT_CORE_ID(core_id);
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   VAR(uint16, AUTOMATIC) i;
   CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
@@ -108,6 +126,7 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
 #endif
 
   /*  Start the idle task */
+  // Ici, s_running 0, s_elected IDLE, running 0, elected IDLE, running id -1, elected id -1, 0/0 schedule/switch
 #if NUMBER_OF_CORES == 1
   result = tpl_activate_task(IDLE_TASK_ID);
 #else
@@ -116,22 +135,38 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
 
   /*  Init the Ioc's unqueued buffer */
 #if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
-#if NUMBER_OF_CORES > 1
-  /* Only one core must do this initialization */
-  if (core_id == OS_CORE_ID_MASTER)
-#endif
   {
     tpl_ioc_init_unqueued();
   }
 #endif
 
-/* On fait une mesure avec l'ADC pour avoir le niveau d'énergie*/
+/* Prepare ready sequence list */
+VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
+for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
+  if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
+    /* Add sequence to ready sequence list */
+    tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
+    index_ready_sequence_list++;
+  }
+}
+
+/* Get energy level from ADC */
 init_adc();
-uint16 energy = tpl_ADC_read();                                                           // polling
-/* On choisit la prochaine sequence en fonction de l'état courant et du niveau d'énergie */
-
-/* On active toutes les tâches de la séquence choisie */
-
+/* Polling */
+uint16 energy = tpl_ADC_read(); 
+end_adc();
+/* Compare energy level with energy from sequence in ready sequence list */
+VAR(uint16, AUTOMATIC) max_energy = 0;
+for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
+  if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
+    max_energy = tpl_ready_sequence_list[i]->energy;
+    tpl_kern_seq.elected = tpl_ready_sequence_list[i];
+  }
+}
+/* Activate tasks from the sequence */
+for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
+  result = tpl_activate_task(tpl_kern_seq.elected->trace[i]);
+}
 /* On active toutes les alarmes de la séquence choisie */
 
 // #if TASK_COUNT > 0
@@ -190,22 +225,13 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_StartOS)
-  STORE_MODE(mode);
+  STORE_MODE(mode)
 
   CHECK_OS_NOT_STARTED(core_id, result)
 
   IF_NO_EXTENDED_ERROR(result)
   {
-#if NUMBER_OF_CORES > 1
-    /*
-     * Sync barrier at start of tpl_start_os_service.
-     */
-    tpl_sync_barrier(&tpl_start_count_0, &tpl_startos_sync_lock);
-
-    application_mode[core_id] = mode;
-#else
-    application_mode = mode;
-#endif
+    application_mode_sequence = mode;
 
     tpl_init_sequence_os(mode);
 
@@ -222,21 +248,12 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
      */
     CALL_OSAPPLICATION_STARTUP_HOOKS()
 
-#if NUMBER_OF_CORES > 1
-    /*
-     * Sync barrier just before starting the scheduling.
-     */
-    tpl_sync_barrier(&tpl_start_count_1, &tpl_startos_sync_lock);
-#endif
-
     /*
      * Call tpl_start_scheduling to elect the highest priority task
      * if such a task exists.
      */
 
-    TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
-
-    tpl_start(CORE_ID_OR_NOTHING(core_id));
+    tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
 
     SWITCH_CONTEXT_NOSAVE(core_id)
   }
