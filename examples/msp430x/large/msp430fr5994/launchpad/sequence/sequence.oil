@@ -17,6 +17,7 @@ CPU sequence {
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
+    SEQUENCING = TRUE;
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "sequence.c";
@@ -47,13 +48,20 @@ CPU sequence {
 
   APPMODE std {};
 
-  TASK blink {
+  TASK blink_red {
     PRIORITY = 3;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
+  TASK blink_green {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
   TASK fibo {
     PRIORITY = 3;
     AUTOSTART = FALSE;
@@ -63,13 +71,21 @@ CPU sequence {
 
   STATE E0{VALUE = 0;};
   STATE E1{VALUE = 1;};
+  STATE E2{VALUE = 2;};
 
   TRANSITION E0_E1{
     ENERGY = 100;
     TASK = fibo;
-    TASK = blink;
-    TASK = fibo;
+    TASK = blink_red;
     FROM_STATE = E0;
     TO_STATE = E1;
+  };
+  
+  TRANSITION E0_E2{
+    ENERGY = 50;
+    TASK = blink_green;
+    TASK = fibo;
+    FROM_STATE = E0;
+    TO_STATE = E2;
   };
 };

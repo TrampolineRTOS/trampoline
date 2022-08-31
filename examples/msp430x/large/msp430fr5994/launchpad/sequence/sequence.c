@@ -11,23 +11,35 @@ FUNC(int, OS_APPL_CODE) main(void)
 	// to activate previously configured port settings
 	PM5CTL0 &= ~LOCKLPM5;
   	//set GPIO P1.0 (LED1) as an output
-	P1DIR |= BIT0;
-	StartOS(OSDEFAULTAPPMODE);
+	P1DIR |= BIT0 + BIT1;
+	StartOSSequence(OSDEFAULTAPPMODE);
 	return 0;
 }
 #define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#define APP_Task_blink_START_SEC_CODE
+#define APP_Task_blink_red_START_SEC_CODE
 #include "tpl_memmap.h"
 
-TASK(blink)
+TASK(blink_red)
 {
 	P1OUT ^= BIT0; //toggle GPIO P1.0 (LED1)
 	TerminateTask();
 }
 
-#define APP_Task_blink_STOP_SEC_CODE
+#define APP_Task_blink_red_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_blink_green_START_SEC_CODE
+#include "tpl_memmap.h"
+
+TASK(blink_green)
+{
+	P1OUT ^= BIT1; //toggle GPIO P1.0 (LED1)
+	TerminateTask();
+}
+
+#define APP_Task_blink_green_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define APP_Task_fibo_START_SEC_CODE
