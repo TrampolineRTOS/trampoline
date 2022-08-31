@@ -391,6 +391,11 @@ CPU api {
       ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
         : "The application mode";
     } : "The user can call this system service to start the operating system in a specific mode.";
+    SYSCALL TerminateTaskSequence {
+      KERNEL = tpl_terminate_task_sequence_service;
+      LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
+    } : "Terminate the calling task from a sequence";
   };
 
   /*
