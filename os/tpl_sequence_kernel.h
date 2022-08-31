@@ -35,6 +35,7 @@ struct TPL_SEQUENCE{
     CONST(uint8, TYPEDEF) next_state;
     CONST(uint8, TYPEDEF) current_state; 
     CONST(uint8, TYPEDEF) nb_task;
+    VAR(uint32, TYPEDEF) task_terminate;
     CONST(uint8, TYPEDEF) trace[];
 };
 
@@ -70,6 +71,8 @@ extern P2VAR(tpl_sequence, TYPEDEF, OS_VAR) tpl_ready_sequence_list[2];
 #include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_start_os_sequence_service(CONST(tpl_application_mode, AUTOMATIC) mode);
+
+FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

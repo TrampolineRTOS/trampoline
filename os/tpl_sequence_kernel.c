@@ -167,6 +167,9 @@ for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
   result = tpl_activate_task(tpl_kern_seq.elected->trace[i]);
 }
+/* Update tpl_kern_seq.state with next state from sequence elected */
+tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
+
 /* On active toutes les alarmes de la séquence choisie */
 
 // #if TASK_COUNT > 0
@@ -224,7 +227,7 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
   LOCK_KERNEL()
 
   /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_StartOS)
+  STORE_SERVICE(OSServiceId_StartOSSequence)
   STORE_MODE(mode)
 
   CHECK_OS_NOT_STARTED(core_id, result)
@@ -262,6 +265,82 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
 
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
+}
+
+FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
+
+  GET_CURRENT_CORE_ID(core_id)
+
+  /* init the error to no error */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+
+  /* lock the kernel */
+  LOCK_KERNEL()
+  /* store information for error hook routine */
+  STORE_SERVICE(OSServiceId_TerminateTaskSequence)
+  /* check interrupts are not disabled by user */
+  CHECK_INTERRUPT_LOCK(result)
+  /* check we are at the task level */
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
+  /* check the task does not own a ressource */
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /* check the task does not occupy spinlock(s) */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
+
+#if TASK_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result){
+    /* the activate count is decreased */
+    TPL_KERN(core_id).running->activate_count--;
+    /* terminate the running task */
+    tpl_terminate();
+    /* task switching should occur */
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
+    /* start the highest priority process */
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
+    SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
+  }
+#endif
+  /* increment value of terminate_task in tpl_kern_seq */
+  tpl_kern_seq.elected->task_terminate++;
+  /* test if all task from sequence are terminated */
+  if(tpl_kern_seq.elected->task_terminate == tpl_kern_seq.elected->nb_task){
+    /* if yes, need to elect next sequence */
+    /* Prepare ready sequence list */
+    VAR(uint16, AUTOMATIC) i;
+    VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
+    for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
+      if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
+        /* Add sequence to ready sequence list */
+        tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
+        index_ready_sequence_list++;
+      }
+    }   
+    /* Get energy level from ADC */
+    init_adc();
+    /* Polling */
+    uint16 energy = tpl_ADC_read(); 
+    end_adc(); 
+    /* Compare energy level with energy from sequence in ready sequence list */
+    VAR(uint16, AUTOMATIC) max_energy = 0;
+    for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
+      if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
+        max_energy = tpl_ready_sequence_list[i]->energy;
+        tpl_kern_seq.elected = tpl_ready_sequence_list[i];
+      }
+    }
+    /* Activate tasks from the sequence */
+    for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
+      result = tpl_activate_task(tpl_kern_seq.elected->trace[i]);
+    }
+    /* Update tpl_kern_seq.state with next state from sequence elected */
+    tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
+    /* reset task_terminate */
+    tpl_kern_seq.elected->task_terminate = 0;
+  }
+  PROCESS_ERROR(result)
+  /* unlock kernel */
+  UNLOCK_KERNEL()
+  return;
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

@@ -60,6 +60,8 @@ foreach transition in TRANSITION do
 VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
   .energy = % ! transition::ENERGY%
 %
+%, .task_terminate = 0
+%
  foreach task in transition::TASK do 
 %, .trace[% !INDEX%] = % !listTask[task::VALUE]%
 % 
