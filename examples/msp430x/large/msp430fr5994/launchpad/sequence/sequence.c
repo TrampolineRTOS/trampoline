@@ -24,7 +24,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 TASK(blink_red)
 {
 	P1OUT ^= BIT0; //toggle GPIO P1.0 (LED1)
-	TerminateTask();
+	TerminateTaskSequence();
 }
 
 #define APP_Task_blink_red_STOP_SEC_CODE
@@ -36,7 +36,7 @@ TASK(blink_red)
 TASK(blink_green)
 {
 	P1OUT ^= BIT1; //toggle GPIO P1.0 (LED1)
-	TerminateTask();
+	TerminateTaskSequence();
 }
 
 #define APP_Task_blink_green_STOP_SEC_CODE
@@ -73,7 +73,7 @@ TASK(fibo) {
         l_value_ind_0 = l_value_ind_1;
         l_value_ind_1 = l_temp;
     }
-  TerminateTask();
+  TerminateTaskSequence();
 }
 
 #define APP_Task_fibo_STOP_SEC_CODE
