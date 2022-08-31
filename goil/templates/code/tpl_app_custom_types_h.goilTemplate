@@ -53,9 +53,9 @@ typedef uint% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask
 /**
  * tpl_priority represents a task's or a resource's priority.
  *
- * @warning This type must be signed.
+ * The data type is computed according to the number of ISR2 and jobs that can * be present in the list of ready tasks.
  */
-typedef sint% !8*KEY_SIZE % tpl_priority;
+typedef uint% !8*KEY_SIZE % tpl_priority;
 
 /**
  * tpl_activate_counter is used to count
