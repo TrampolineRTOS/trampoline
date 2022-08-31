@@ -295,9 +295,6 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     tpl_terminate();
     /* task switching should occur */
     TPL_KERN(core_id).need_switch = NEED_SWITCH;
-    /* start the highest priority process */
-    tpl_start(CORE_ID_OR_NOTHING(core_id));
-    SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
   }
 #endif
   /* increment value of terminate_task in tpl_kern_seq */
@@ -335,8 +332,13 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     /* Update tpl_kern_seq.state with next state from sequence elected */
     tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
     /* reset task_terminate */
-    tpl_kern_seq.elected->task_terminate = 0;
+    tpl_kern_seq.elected->task_terminate = 0; 
+
   }
+  /* start the highest priority process */
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
+  SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
+  
   PROCESS_ERROR(result)
   /* unlock kernel */
   UNLOCK_KERNEL()
