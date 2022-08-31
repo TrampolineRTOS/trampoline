@@ -64,7 +64,8 @@ VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
 %, .trace[% !INDEX%] = % !listTask[task::VALUE]%
 % 
  end foreach
-%, .next_state = % !listState[transition::TO_STATE]%
+%, .nb_task = % !INDEX+1%
+, .next_state = % !listState[transition::TO_STATE]%
 , .current_state = % !listState[transition::FROM_STATE]%};
 %
 end foreach
@@ -101,6 +102,15 @@ VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq =
   NULL,                      /* no running sequence   */
   NULL,                      /* no elected sequence   */
   TRUE,                      /* schedule needed at start */
+  0,                         /* current state is STATE with value 0 */
 };
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+P2VAR(tpl_sequence, TYPEDEF, OS_VAR) tpl_ready_sequence_list[2];
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 end if
