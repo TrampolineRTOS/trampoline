@@ -164,8 +164,9 @@ for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0
   }
 }
 /* Activate tasks from the sequence */
+uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-  result = tpl_activate_task(tpl_kern_seq.elected->seqTaskTab+i);
+  result = tpl_activate_task(*ptr++);
 }
 /* Update tpl_kern_seq.state with next state from sequence elected */
 tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
@@ -326,8 +327,9 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
       }
     }
     /* Activate tasks from the sequence */
+    uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
     for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-      result = tpl_activate_task(tpl_kern_seq.elected->seqTaskTab+i);
+      result = tpl_activate_task(*ptr++);
     }
     /* Update tpl_kern_seq.state with next state from sequence elected */
     tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
