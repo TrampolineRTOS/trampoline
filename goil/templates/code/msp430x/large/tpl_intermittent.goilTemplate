@@ -90,7 +90,12 @@ VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
 , .next_state = % !listState[transition::TO_STATE]%
 , .current_state = % !listState[transition::FROM_STATE]%
 , .nb_task = % !task_count%
-, .mask_seq_terminate = 0xFC
+%
+let mask := 255
+foreach task in transition::TASK do
+ let mask := mask - (1<<listTask[task::VALUE])
+end foreach
+%, .mask_seq_terminate = % ![mask hexString]%
 , .vec_seq_terminate = 0xFF
 , .seqTaskTab = % !transition::NAME%_task
 };
