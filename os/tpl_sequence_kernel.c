@@ -165,7 +165,7 @@ for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0
 }
 /* Activate tasks from the sequence */
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-  result = tpl_activate_task(tpl_kern_seq.elected->trace[i]);
+  result = tpl_activate_task(tpl_kern_seq.elected->seqTaskTab+i);
 }
 /* Update tpl_kern_seq.state with next state from sequence elected */
 tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
@@ -298,9 +298,9 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   }
 #endif
   /* increment value of terminate_task in tpl_kern_seq */
-  tpl_kern_seq.elected->task_terminate++;
+  tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
   /* test if all task from sequence are terminated */
-  if(tpl_kern_seq.elected->task_terminate == tpl_kern_seq.elected->nb_task){
+  if(tpl_kern_seq.elected->vec_seq_terminate == tpl_kern_seq.elected->mask_seq_terminate){
     /* if yes, need to elect next sequence */
     /* Prepare ready sequence list */
     VAR(uint16, AUTOMATIC) i;
@@ -327,18 +327,18 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     }
     /* Activate tasks from the sequence */
     for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-      result = tpl_activate_task(tpl_kern_seq.elected->trace[i]);
+      result = tpl_activate_task(tpl_kern_seq.elected->seqTaskTab+i);
     }
     /* Update tpl_kern_seq.state with next state from sequence elected */
     tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
     /* reset task_terminate */
-    tpl_kern_seq.elected->task_terminate = 0; 
+    tpl_kern_seq.elected->vec_seq_terminate = 0xFF; 
 
   }
   /* start the highest priority process */
   tpl_start(CORE_ID_OR_NOTHING(core_id));
   SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
-  
+
   PROCESS_ERROR(result)
   /* unlock kernel */
   UNLOCK_KERNEL()

@@ -30,13 +30,22 @@
 #include "tpl_compiler.h"
 #include "tpl_os_internal_types.h"
 
-struct TPL_SEQUENCE{
+struct TPL_SEQUENCE_ITEM {
+    /* 0: TASK, 1: ALARM*/
+    CONST(uint8, TYPEDEF) item_type;
+    CONST(uint8, TYPEDEF) item_id;
+};
+
+typedef struct TPL_SEQUENCE_ITEM tpl_sequence_item;
+
+struct TPL_SEQUENCE {
     CONST(uint32, TYPEDEF) energy;
     CONST(uint8, TYPEDEF) next_state;
     CONST(uint8, TYPEDEF) current_state; 
     CONST(uint8, TYPEDEF) nb_task;
-    VAR(uint32, TYPEDEF) task_terminate;
-    CONST(uint8, TYPEDEF) trace[];
+    CONST(uint8, TYPEDEF) mask_seq_terminate;
+    VAR(uint8, TYPEDEF) vec_seq_terminate;
+    CONST(uint8, TYPEDEF) *seqTaskTab;
 };
 
 typedef struct TPL_SEQUENCE tpl_sequence;

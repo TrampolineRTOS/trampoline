@@ -53,23 +53,50 @@ foreach state in STATE do
   let listState[key] := state::VALUE
 end foreach
 
+let listAlarm := @[]
+foreach al in ALARM do
+  let key := al::NAME
+  let listAlarm[key] := INDEX
+end foreach
 #------------------------------------------------------------------------------*
 
 foreach transition in TRANSITION do
+  if exists transition::TASK then
+    let task_count := [transition::TASK length]
+    foreach task in transition::TASK 
+    before 
+%const uint8 % !transition::NAME%_task[% !task_count%] = {
+%
+    do
+!listTask[task::VALUE]
+    between
+    %, 
+%
+    after 
+    %
+};%
+    end foreach
+#  if exists transition::TASK then
+#    let task_count := [transition::TASK length]
+#    display task_count
+#  end if
+#  if exists transition::ALARM then
+#    let al_count := [transition::ALARM length]
+#    display al_count
+#  end if
     %
 VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
   .energy = % ! transition::ENERGY%
-%
-%, .task_terminate = 0
-%
- foreach task in transition::TASK do 
-%, .trace[% !INDEX%] = % !listTask[task::VALUE]%
-% 
- end foreach
-%, .nb_task = % !INDEX+1%
 , .next_state = % !listState[transition::TO_STATE]%
-, .current_state = % !listState[transition::FROM_STATE]%};
+, .current_state = % !listState[transition::FROM_STATE]%
+, .nb_task = % !task_count%
+, .mask_seq_terminate = 0xFC
+, .vec_seq_terminate = 0xFF
+, .seqTaskTab = % !transition::NAME%_task
+};
+
 %
+  end if
 end foreach
 %
 #define OS_STOP_SEC_VAR_UNSPECIFIED
