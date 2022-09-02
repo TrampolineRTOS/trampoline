@@ -115,24 +115,26 @@ VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
   .energy = % !transition::ENERGY%
 , .next_state = % !listState[transition::TO_STATE]%
 , .current_state = % !listState[transition::FROM_STATE]%
-, .nb_task = % ![transition::TASK length]%     
 %
-if [transition::TASK length] == 0 then
-%, .seqTaskTab = NULL
+if exists transition::TASK then
+%, .nb_task = % ![transition::TASK length]%     
+, .seqTaskTab = % !transition::NAME%_task
 %
 else
-%, .seqTaskTab = % !transition::NAME%_task
+%, .nb_task = 0     
+, .seqTaskTab = NULL
 %
 end if
+if exists transition::ALARM then
 %, .nb_alarm = % ![transition::ALARM length]%
-%
-if [transition::ALARM length] == 0 then
-%, .seqAlarmTab = NULL
+, .seqAlarmTab = % !transition::NAME%_alarm
 %
 else
-%, .seqAlarmTab = % !transition::NAME%_alarm
+%, .nb_alarm = 0
+, .seqAlarmTab = NULL
 %
 end if
+
 let mask := 255
 foreach task in transition::TASK do
 let mask := mask -(1<<listTask[task::VALUE])
