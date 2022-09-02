@@ -171,6 +171,9 @@ for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
 }
 
 /* Activate alarms from the sequence */
+
+#if ALARM_COUNT > 0
+
 tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
 
 for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
@@ -192,6 +195,7 @@ for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
   TPL_ENABLE_SHAREDSOURCE(alarm);
   *ptr_al++;
 }
+#endif
 /* Update tpl_kern_seq.state with next state from sequence elected */
 tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
 
