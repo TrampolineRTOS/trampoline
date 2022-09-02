@@ -307,7 +307,13 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   }
 #endif
   /* update mask for task in tpl_kern_seq */
-  tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
+  VAR(uint16, AUTOMATIC) i;
+  uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
+  for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
+    if(TPL_KERN(core_id).s_running->id == ptr++){
+      tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
+    }
+  }
   /* update mask for alarm in tpl_kern_seq */
   // if(tpl_kern_seq.elected->seqAlarmTab != NULL){
 
