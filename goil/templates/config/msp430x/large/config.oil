@@ -22,7 +22,17 @@ IMPLEMENTATION  msp430x {
       FALSE 
     ] EXIT_FROM_LPM = FALSE;
   };
-
+  
+  TASK [] {
+    
+  };
+  
+  ALARM [] {
+    UINT32 ALARMTIME;
+    UINT32 CYCLETIME;
+    UINT32 NB_ACTIVATION;
+  };
+  
   STATE [] {
     UINT32 VALUE;
   };
@@ -31,7 +41,8 @@ IMPLEMENTATION  msp430x {
     STATE_TYPE FROM_STATE;
     STATE_TYPE TO_STATE;
     UINT32 ENERGY;
-    TASK_TYPE TASK[]; 
+    TASK_TYPE TASK[];
+    ALARM_TYPE ALARM[]; 
   };
 
   // SEQUENCE [] {
