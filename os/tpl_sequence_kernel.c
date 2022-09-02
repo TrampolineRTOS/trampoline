@@ -174,10 +174,22 @@ for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
 tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
 
 for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
-  tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
-  // auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[ptr_al->al_id];
-  // auto_time_obj->state = ALARM_ACTIVE;
-  // tpl_insert_time_obj(auto_time_obj);
+  /* yep we can't do Syscall :( */
+  // tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  alarm = tpl_alarm_table[ptr_al->al_id];
+  TPL_UPDATE_COUNTERS(alarm);
+  if (alarm->state == (tpl_time_obj)ALARM_SLEEP){
+    /* the alarm is not in use, proceed */
+    alarm->date = ptr_al->al_alarmTime;
+    alarm->cycle = ptr_al->al_cycleTime;
+    alarm->state = ALARM_ACTIVE;
+    tpl_insert_time_obj(alarm);
+  }
+  else{
+    /* the alarm is in use, ? */
+  }
+  TPL_ENABLE_SHAREDSOURCE(alarm);
   *ptr_al++;
 }
 /* Update tpl_kern_seq.state with next state from sequence elected */
@@ -324,6 +336,9 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
     /* reset task_terminate */
     tpl_kern_seq.elected->vec_seq_terminate = 0xFF; 
+
+  }
+  else{
 
   }
   /* start the highest priority process */
