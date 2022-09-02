@@ -85,7 +85,7 @@ const uint8 % !transition::NAME%_task[% !task_count%] = {
    before
 %
 
-const tpl_sequence_alarm % !transition::NAME%_alarm[% !alarm_count%] = {
+VAR(tpl_sequence_alarm, OS_VAR) % !transition::NAME%_alarm[% !alarm_count%] = {
 %
   do
   foreach al in ALARM do
