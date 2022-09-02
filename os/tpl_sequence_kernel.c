@@ -179,7 +179,7 @@ for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
   alarm = tpl_alarm_table[ptr_al->al_id];
   TPL_UPDATE_COUNTERS(alarm);
-  if (alarm->state == (tpl_time_obj)ALARM_SLEEP){
+  if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP){
     /* the alarm is not in use, proceed */
     alarm->date = ptr_al->al_alarmTime;
     alarm->cycle = ptr_al->al_cycleTime;
