@@ -306,8 +306,25 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     TPL_KERN(core_id).need_switch = NEED_SWITCH;
   }
 #endif
-  /* increment value of terminate_task in tpl_kern_seq */
+  /* update mask for task in tpl_kern_seq */
   tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
+  /* update mask for alarm in tpl_kern_seq */
+  // if(tpl_kern_seq.elected->seqAlarmTab != NULL){
+
+  //   tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+
+  //   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  //   alarm = tpl_alarm_table[ptr_al->al_id];
+
+  //   /* check current taks id is ok with alarm task id */
+  //   if(TPL_KERN(core_id).s_running->id == alarm->stat_part->action->task_id){
+  //     ptr_al->al_nbActivation--;
+  //   }
+  //   if(ptr_al->alnbActivation == 0){
+  //     tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<(ptr_al->al_id + TASK_COUNT));
+  //   }
+  // }
+
   /* test if all task from sequence are terminated */
   if(tpl_kern_seq.elected->vec_seq_terminate == tpl_kern_seq.elected->mask_seq_terminate){
     /* if yes, need to elect next sequence */
@@ -339,15 +356,40 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
       result = tpl_activate_task(*ptr++);
     }
+
+    /* Activate alarms from the sequence */
+
+    #if ALARM_COUNT > 0
+
+    tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+
+    for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
+      /* yep we can't do Syscall :( */
+      // tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
+      P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+      alarm = tpl_alarm_table[ptr_al->al_id];
+      TPL_UPDATE_COUNTERS(alarm);
+      if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP){
+        /* the alarm is not in use, proceed */
+        alarm->date = ptr_al->al_alarmTime;
+        alarm->cycle = ptr_al->al_cycleTime;
+        alarm->state = ALARM_ACTIVE;
+        tpl_insert_time_obj(alarm);
+      }
+      else{
+        /* the alarm is in use, ? */
+      }
+      TPL_ENABLE_SHAREDSOURCE(alarm);
+      *ptr_al++;
+    }
+    #endif
     /* Update tpl_kern_seq.state with next state from sequence elected */
     tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
     /* reset task_terminate */
     tpl_kern_seq.elected->vec_seq_terminate = 0xFF; 
 
   }
-  else{
 
-  }
   /* start the highest priority process */
   tpl_start(CORE_ID_OR_NOTHING(core_id));
   SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))

@@ -75,6 +75,11 @@ struct TPL_TIME_OBJ_STATIC {
     id;   /**<  the id of the alarm or schedule table. This id
                         is used for tracing the kernel                        */
 #endif
+#if (WITH_SEQUENCING == YES)
+  CONST(uint8, TYPEDEF)
+    id_al;   /**<  the id of the alarm. This id
+                        is used for sequence                       */
+#endif
 #if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
     app_id;       /**< id of the OS application which owns the time object    */

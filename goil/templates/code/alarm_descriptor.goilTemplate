@@ -28,6 +28,9 @@ CONST(tpl_alarm_static, OS_CONST) % !alarm::NAME %_static = {
 #if (WITH_ID == YES)
     /* id of the alarm for tracing  */  , % !alarm::NAME %_id
 #endif
+#if (WITH_SEQUENCING == YES)
+    /* id of the alarm for sequence */  , % !alarm::NAME%_id
+#endif
 #if WITH_OSAPPLICATION == YES
     /* OS application id            */  , %
 if AUTOSAR then

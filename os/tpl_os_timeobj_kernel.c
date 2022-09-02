@@ -35,6 +35,10 @@
 #include "tpl_as_definitions.h"
 #endif
 
+#if WITH_SEQUENCING == YES
+#include "tpl_sequence_kernel.h"
+#endif
+
 #define OS_START_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
 #include "tpl_memmap.h"
 /**
@@ -371,11 +375,26 @@ FUNC(void, OS_CODE) tpl_counter_tick(
           /*launch time objects' actions*/
           do
           {
+            #if WITH_SEQUENCING == YES
+            tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+            VAR(uint16, AUTOMATIC) i;
+            for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
+              if(t_obj->stat_part->id_al == ptr_al->al_id){
+                ptr_al->al_nbActivation--;
+              }
+            } 
+            #endif
             /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
             TRACE_TIMEOBJ_EXPIRE(t_obj->stat_part->id)
             expire(t_obj);
+            #if WITH_SEQUENCING == YES
+            if(ptr_al->al_nbActivation == 0){
+              tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<(ptr_al->al_id + TASK_COUNT));
+              t_obj->cycle = 0;
+            }
+            #endif
             /*  rearm the alarm if needed               */
 
             if (t_obj->cycle != 0)
