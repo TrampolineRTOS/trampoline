@@ -224,7 +224,10 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
   CONST(tpl_application_mode, AUTOMATIC) mode)
 {
   GET_CURRENT_CORE_ID(core_id)
-
+  tpl_init_machine();
+#if WITH_MODULES_INIT ==YES
+  tpl_init_modules();
+#endif 
 #if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES) | (WITH_ORTI == YES)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
