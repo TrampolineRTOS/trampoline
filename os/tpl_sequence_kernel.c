@@ -31,6 +31,7 @@
 #include "tpl_os_definitions.h"
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
+#include "tpl_os_alarm_kernel.h"
 #include "tpl_os_hooks.h"
 
 #include "msp430.h"
@@ -168,28 +169,20 @@ uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
   result = tpl_activate_task(*ptr++);
 }
+
+/* Activate alarms from the sequence */
+tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+
+for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
+  tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
+  // auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[ptr_al->al_id];
+  // auto_time_obj->state = ALARM_ACTIVE;
+  // tpl_insert_time_obj(auto_time_obj);
+  *ptr_al++;
+}
 /* Update tpl_kern_seq.state with next state from sequence elected */
 tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
 
-/* On active toutes les alarmes de la séquence choisie */
-
-// #if TASK_COUNT > 0
-//   /*  Look for autostart tasks    */
-//   for (i = 0; i < TASK_COUNT; i++)
-//   {
-//     /*  each AUTOSTART task is activated if it belong to the  */
-//     if (tpl_task_app_mode[i] & app_mode_mask)
-//     {
-// #if NUMBER_OF_CORES > 1
-//       /* In multicore, we must check if the task belongs to the core */
-//       if (tpl_stat_proc_table[i]->core_id == core_id)
-// #endif
-//       {
-//         result = tpl_activate_task(i);
-//       }
-//     }
-//   }
-// #endif
 // #if ALARM_COUNT > 0
 
 //   /*  Look for autostart alarms    */
@@ -200,10 +193,6 @@ tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
 //     {
 //       auto_time_obj =
 //           (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
-// #if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
-//       /* In multicore, we must check if the alarm belongs to the core */
-//       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
-// #endif
 //       {
 //         auto_time_obj->state = ALARM_ACTIVE;
 //         tpl_insert_time_obj(auto_time_obj);

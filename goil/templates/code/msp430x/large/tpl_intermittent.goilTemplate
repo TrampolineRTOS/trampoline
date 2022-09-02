@@ -65,10 +65,11 @@ foreach transition in TRANSITION do
     let task_count := [transition::TASK length]
     foreach task in transition::TASK 
     before 
-%const uint8 % !transition::NAME%_task[% !task_count%] = {
+%
+const uint8 % !transition::NAME%_task[% !task_count%] = {
 %
     do
-!listTask[task::VALUE]
+!listTask[task::VALUE]  % /* id of task */%
     between
     %, 
 %
@@ -76,33 +77,94 @@ foreach transition in TRANSITION do
     %
 };%
     end foreach
-#  if exists transition::TASK then
-#    let task_count := [transition::TASK length]
-#    display task_count
-#  end if
-#  if exists transition::ALARM then
-#    let al_count := [transition::ALARM length]
-#    display al_count
-#  end if
-    %
-VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
-  .energy = % ! transition::ENERGY%
-, .next_state = % !listState[transition::TO_STATE]%
-, .current_state = % !listState[transition::FROM_STATE]%
-, .nb_task = % !task_count%
+  end if
+  
+  if exists transition::ALARM then
+   let alarm_count := [transition::ALARM length]
+   foreach alarm in transition::ALARM
+   before
 %
-let mask := 255
-foreach task in transition::TASK do
- let mask := mask - (1<<listTask[task::VALUE])
-end foreach
-%, .mask_seq_terminate = % ![mask hexString]%
-, .vec_seq_terminate = 0xFF
-, .seqTaskTab = % !transition::NAME%_task
-};
 
+const tpl_sequence_alarm % !transition::NAME%_alarm[% !alarm_count%] = {
 %
+  do
+  foreach al in ALARM do
+   if alarm::VALUE == al::NAME then
+%{%!listAlarm[alarm::VALUE]   %    /* id alarm */
+,%!al::ALARMTIME          %    /* alarm time */
+,%!al::CYCLETIME          %    /* cycle time */
+,%!al::NB_ACTIVATION      %    /* number of acitvation of alarm */
+}%
+   end if 
+  end foreach
+  between
+  %,
+%
+  after
+  %
+};
+%
+   end foreach
   end if
 end foreach
+
+foreach transition in TRANSITION 
+  do
+  %
+VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
+  .energy = % !transition::ENERGY%
+, .next_state = % !listState[transition::TO_STATE]%
+, .current_state = % !listState[transition::FROM_STATE]%
+, .nb_task = % ![transition::TASK length]%     
+%
+if [transition::TASK length] == 0 then
+%, .seqTaskTab = NULL
+%
+else
+%, .seqTaskTab = % !transition::NAME%_task
+%
+end if
+%, .nb_alarm = % ![transition::ALARM length]%
+%
+if [transition::ALARM length] == 0 then
+%, .seqAlarmTab = NULL
+%
+else
+%, .seqAlarmTab = % !transition::NAME%_alarm
+%
+end if
+let mask := 255
+foreach task in transition::TASK do
+let mask := mask -(1<<listTask[task::VALUE])
+end foreach
+foreach alarm in transition::ALARM do
+let mask := mask -(1<<(listAlarm[alarm::VALUE] + [listTask length]))
+end foreach
+%, .mask_seq_terminate = %![mask hexString]%
+, .vec_seq_terminate = 0xFF
+};
+%
+end foreach
+#foreach transition in TRANSITION do
+#    %
+#VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
+#  .energy = % ! transition::ENERGY%
+#, .next_state = % !listState[transition::TO_STATE]%
+#, .current_state = % !listState[transition::FROM_STATE]%
+#, .nb_task = % !task_count%
+#%
+#let mask := 255
+#foreach task in transition::TASK do
+# let mask := mask - (1<<listTask[task::VALUE])
+#end foreach
+#%, .mask_seq_terminate = % ![mask hexString]%
+#, .vec_seq_terminate = 0xFF
+#, .seqTaskTab = % !transition::NAME%_task
+#};
+#
+#%
+#  end if
+#end foreach
 %
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
