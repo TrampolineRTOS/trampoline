@@ -375,11 +375,20 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
       /* yep we can't do Syscall :( */
       // tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
       P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+      P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+      VAR(tpl_tick, AUTOMATIC) date;
+
       alarm = tpl_alarm_table[ptr_al->al_id];
       TPL_UPDATE_COUNTERS(alarm);
       if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP){
         /* the alarm is not in use, proceed */
-        alarm->date = ptr_al->al_alarmTime;
+        cnt = alarm->stat_part->counter;
+        date = cnt->current_date + ptr_al->al_alarmTime;
+        if (date > cnt->max_allowed_value){
+          date -= (cnt->max_allowed_value + 1);
+        }
+
+        alarm->date = date;
         alarm->cycle = ptr_al->al_cycleTime;
         alarm->state = ALARM_ACTIVE;
         tpl_insert_time_obj(alarm);
