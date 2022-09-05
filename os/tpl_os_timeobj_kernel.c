@@ -391,7 +391,7 @@ FUNC(void, OS_CODE) tpl_counter_tick(
             expire(t_obj);
             #if WITH_SEQUENCING == YES
             if(ptr_al->al_nbActivation == 0){
-              tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<(ptr_al->al_id + TASK_COUNT));
+              tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<(ptr_al->al_id + TASK_COUNT));
               t_obj->cycle = 0;
             }
             #endif

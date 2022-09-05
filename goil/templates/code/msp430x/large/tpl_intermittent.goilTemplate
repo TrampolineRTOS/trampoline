@@ -135,19 +135,19 @@ else
 %
 end if
 
-let mask := 255
+let mask := 0
 if exists transition::TASK then
 foreach task in transition::TASK do
-let mask := mask -(1<<listTask[task::VALUE])
+let mask := mask +(1<<listTask[task::VALUE])
 end foreach
 end if
 if exists transition::ALARM then
 foreach alarm in transition::ALARM do
-let mask := mask -(1<<(listAlarm[alarm::VALUE] + [listTask length]))
+let mask := mask +(1<<(listAlarm[alarm::VALUE] + [listTask length]))
 end foreach
 end if
 %, .mask_seq_terminate = %![mask hexString]%
-, .vec_seq_terminate = 0xFF
+, .vec_seq_terminate = %![mask hexString]%
 };
 %
 end foreach

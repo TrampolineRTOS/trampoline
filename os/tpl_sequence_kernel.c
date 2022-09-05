@@ -307,13 +307,13 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   }
 #endif
   /* update mask for task in tpl_kern_seq */
-  VAR(uint16, AUTOMATIC) i;
-  uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
-  for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-    if(TPL_KERN(core_id).s_running->id == ptr++){
-      tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
-    }
-  }
+  // VAR(uint16, AUTOMATIC) i;
+  // uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
+  // for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
+  //   if(TPL_KERN(core_id).s_running->id == ptr++){
+  tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
+  //   }
+  // }
   /* update mask for alarm in tpl_kern_seq */
   // if(tpl_kern_seq.elected->seqAlarmTab != NULL){
 
@@ -332,7 +332,7 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   // }
 
   /* test if all task from sequence are terminated */
-  if(tpl_kern_seq.elected->vec_seq_terminate == tpl_kern_seq.elected->mask_seq_terminate){
+  if(tpl_kern_seq.elected->mask_seq_terminate == 0x00){
     /* if yes, need to elect next sequence */
     /* Prepare ready sequence list */
     VAR(uint16, AUTOMATIC) i;
@@ -392,7 +392,7 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     /* Update tpl_kern_seq.state with next state from sequence elected */
     tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
     /* reset task_terminate */
-    tpl_kern_seq.elected->vec_seq_terminate = 0xFF; 
+    tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate; 
 
   }
 
