@@ -23,10 +23,6 @@ IMPLEMENTATION  msp430x {
     ] EXIT_FROM_LPM = FALSE;
   };
   
-  TASK [] {
-    
-  };
-  
   ALARM [] {
     UINT32 ALARMTIME;
     UINT32 CYCLETIME;
@@ -44,13 +40,6 @@ IMPLEMENTATION  msp430x {
     TASK_TYPE TASK[];
     ALARM_TYPE ALARM[]; 
   };
-
-  // SEQUENCE [] {
-  //   STRING STATE;
-  //   STRING NEXT_STATE;
-  //   UINT32 ENERGY;
-  //   TASK_TYPE TRACE[];
-  // };
 
   /* Additional OS attributes */
   OS {

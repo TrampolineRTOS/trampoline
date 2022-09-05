@@ -50,8 +50,9 @@ end if
  */
  #define WITH_SEQUENCING    % ! yesNo(OS::SEQUENCING) %
 %
+let SEQUENCE := exists SEQUENCE default (@())
+let STATE := exists STATE default (@())
 let TRANSITION := exists TRANSITION default (@())
-
 %
 /*
  * Number of sequences
