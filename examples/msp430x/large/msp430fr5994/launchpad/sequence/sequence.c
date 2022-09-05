@@ -12,6 +12,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 	PM5CTL0 &= ~LOCKLPM5;
   	//set GPIO P1.0 (LED1) as an output
 	P1DIR |= BIT0 + BIT1;
+    tpl_serial_begin(SERIAL_TX_MODE_BLOCK);
 	StartOSSequence(OSDEFAULTAPPMODE);
 	return 0;
 }
@@ -56,10 +57,10 @@ TASK(fibo) {
     static uint16 l_value_ind_1 = 1;
     uint16 l_temp;
 
-    // /* Print last value of fibo */
-    // tpl_serial_print_string("fibo :");
-    // tpl_serial_print_int(l_value_ind_0,0);
-    // tpl_serial_print_string("\r\n");
+    /* Print last value of fibo */
+    tpl_serial_print_string("fibo :");
+    tpl_serial_print_int(l_value_ind_0,0);
+    tpl_serial_print_string("\r\n");
 
     /* Compute next value of fibo */
     if (l_value_ind_0 > 28000) {
