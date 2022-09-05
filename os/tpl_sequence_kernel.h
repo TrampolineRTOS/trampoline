@@ -35,6 +35,7 @@ struct TPL_SEQUENCE_ALARM {
     VAR(uint32, TYPEDEF) al_alarmTime;
     VAR(uint32, TYPEDEF) al_cycleTime;
     VAR(uint32, TYPEDEF) al_nbActivation;
+    CONST(uint32, TYPEDEF) al_nbActivationReset;
 };
 
 typedef struct TPL_SEQUENCE_ALARM tpl_sequence_alarm;
