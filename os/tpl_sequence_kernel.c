@@ -333,6 +333,8 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
 
   /* test if all task from sequence are terminated */
   if(tpl_kern_seq.elected->mask_seq_terminate == 0x00){
+    /* reset task_terminate */
+    tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate;
     /* if yes, need to elect next sequence */
     /* Prepare ready sequence list */
     VAR(uint16, AUTOMATIC) i;
@@ -390,9 +392,7 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     }
     #endif
     /* Update tpl_kern_seq.state with next state from sequence elected */
-    tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
-    /* reset task_terminate */
-    tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate; 
+    tpl_kern_seq.state = tpl_kern_seq.elected->next_state; 
 
   }
 
