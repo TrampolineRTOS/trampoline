@@ -59,21 +59,21 @@ typedef struct {
     VAR(sint32, TYPEDEF)                 state;
 } tpl_kern_seq_state;
 
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
+// #define OS_START_SEC_CONST_UNSPECIFIED
+// #include "tpl_memmap.h"
 
-extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
-    tpl_sequence_table[TRANSITION_COUNT];
+// extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
+//     tpl_sequence_table[TRANSITION_COUNT];
 
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
+// #define OS_STOP_SEC_CONST_UNSPECIFIED
+// #include "tpl_memmap.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
 extern VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq;
 
-extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT];
+extern CONSTP2VAR(tpl_sequence*, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

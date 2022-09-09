@@ -155,25 +155,25 @@ end if
 %
 end foreach
 
-%
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
-tpl_sequence_table[TRANSITION_COUNT] = {
-%
-foreach transition in TRANSITION do
-  %  &sequence_% !transition::NAME%,
-%
-end foreach
-%
-};
-
-%
+#%
+##define OS_STOP_SEC_VAR_UNSPECIFIED
+##include "tpl_memmap.h"
+#
+#
+##define OS_START_SEC_CONST_UNSPECIFIED
+##include "tpl_memmap.h"
+#
+#CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
+#tpl_sequence_table[TRANSITION_COUNT] = {
+#%
+#foreach transition in TRANSITION do
+#  %  &sequence_% !transition::NAME%,
+#%
+#end foreach
+#%
+#};
+#
+#%
 let initial_state
 let count_initial := 0
 
@@ -243,7 +243,7 @@ end foreach
 foreach state in STATE
 before
 %
-CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT] = {
+CONSTP2VAR(tpl_sequence*, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT] = {
 %
 do
 %&sequence_from_state_%!state::NAME
