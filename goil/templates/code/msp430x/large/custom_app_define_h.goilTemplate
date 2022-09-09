@@ -32,11 +32,16 @@
 #define WITH_CHECKPOINTING    % ! yesNo(OS::CHECKPOINTING) %
 %
 if exists OS::CHECKPOINTING_S then
+#define 
 if OS::CHECKPOINTING_S::MODE == "PERIODIC" then
 %
+#define WITH_CHECKPOINTING_PERIODIC    YES
 #define HIBERNATE_THRESHOLD   % !OS::CHECKPOINTING_S::MODE_S::HIBERNATE_THRESHOLD%
 #define RESUME_FROM_HIBERNATE_THRESHOLD    % !OS::CHECKPOINTING_S::MODE_S::RESUME_FROM_HIBERNATE_THRESHOLD%
 %
+else
+%
+#define WITH_CHECKPOINTING_STATIC     YES%
 end if
 end if
 %
@@ -58,5 +63,10 @@ let TRANSITION := exists TRANSITION default (@())
  * Number of sequences
  */
 #define TRANSITION_COUNT    % ![TRANSITION length]%
+#define STATE_COUNT    % ![STATE length]%
 %
+if exists OS::SEQUENCING then%
+#define ENERGY_LEVEL_COUNT    % !OS::SEQUENCING_S::ENERGY_LEVEL%
+%
+end if
 template if exists tpl_library_defines

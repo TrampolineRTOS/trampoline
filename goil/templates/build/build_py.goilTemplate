@@ -404,7 +404,6 @@ end foreach
 
 #--- Add generated files
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_app_config.c"))
-cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_intermittent.c"))
 %
 if OS::SYSTEM_CALL then
 %
@@ -421,6 +420,10 @@ end if
 if [IOC length] > 0 then
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_ioc_api_config.c"))%
+end if
+if OS::SEQUENCING then
+%
+cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_sequence.c"))%
 end if
 foreach platform in exists GENERATED_FILES default ( @() ) do
   if not exists platform::CFILE then let platform::CFILE := @() end if

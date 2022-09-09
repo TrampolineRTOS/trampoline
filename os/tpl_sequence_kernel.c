@@ -127,7 +127,6 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
 #endif
 
   /*  Start the idle task */
-  // Ici, s_running 0, s_elected IDLE, running 0, elected IDLE, running id -1, elected id -1, 0/0 schedule/switch
 #if NUMBER_OF_CORES == 1
   result = tpl_activate_task(IDLE_TASK_ID);
 #else
@@ -142,28 +141,36 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
 #endif
 
 /* Prepare ready sequence list */
-VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
-for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
-  if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
-    /* Add sequence to ready sequence list */
-    tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
-    index_ready_sequence_list++;
-  }
-}
+// VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
+// for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
+//   if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
+//     /* Add sequence to ready sequence list */
+//     tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
+//     index_ready_sequence_list++;
+//   }
+// }
 
 /* Get energy level from ADC */
 init_adc();
 /* Polling */
 uint16 energy = tpl_ADC_read(); 
 end_adc();
-/* Compare energy level with energy from sequence in ready sequence list */
-VAR(uint16, AUTOMATIC) max_energy = 0;
-for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
-  if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
-    max_energy = tpl_ready_sequence_list[i]->energy;
-    tpl_kern_seq.elected = tpl_ready_sequence_list[i];
+/* Compare energy level with energy from sequences with FROM_STATE = tpl_kern_seq->state */
+// VAR(uint16, AUTOMATIC) max_energy = 0;
+tpl_sequence *ptr_seq = tpl_sequence_state[tpl_kern_seq.state];
+for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
+  if (energy >= ptr_seq->energy){
+    tpl_kern_seq.elected = ptr_seq;
+    break;
   }
+  ptr_seq++;
 }
+// for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
+//   if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
+//     max_energy = tpl_ready_sequence_list[i]->energy;
+//     tpl_kern_seq.elected = tpl_ready_sequence_list[i];
+//   }
+// }
 /* Activate tasks from the sequence */
 uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
@@ -171,7 +178,6 @@ for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
 }
 
 /* Activate alarms from the sequence */
-
 #if ALARM_COUNT > 0
 
 tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
@@ -197,26 +203,7 @@ for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
 }
 #endif
 /* Update tpl_kern_seq.state with next state from sequence elected */
-tpl_kern_seq.state = tpl_kern_seq.elected->next_state;
-
-// #if ALARM_COUNT > 0
-
-//   /*  Look for autostart alarms    */
-
-//   for (i = 0; i < ALARM_COUNT; i++)
-//   {
-//     if (tpl_alarm_app_mode[i] & app_mode_mask)
-//     {
-//       auto_time_obj =
-//           (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
-//       {
-//         auto_time_obj->state = ALARM_ACTIVE;
-//         tpl_insert_time_obj(auto_time_obj);
-//       }
-//     }
-//   }
-
-// #endif
+tpl_kern_seq.state = tpl_kern_seq.elected->to_state;
 
 }
 
@@ -307,29 +294,8 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   }
 #endif
   /* update mask for task in tpl_kern_seq */
-  // VAR(uint16, AUTOMATIC) i;
-  // uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
-  // for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-  //   if(TPL_KERN(core_id).s_running->id == ptr++){
+
   tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
-  //   }
-  // }
-  /* update mask for alarm in tpl_kern_seq */
-  // if(tpl_kern_seq.elected->seqAlarmTab != NULL){
-
-  //   tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
-
-  //   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
-  //   alarm = tpl_alarm_table[ptr_al->al_id];
-
-  //   /* check current taks id is ok with alarm task id */
-  //   if(TPL_KERN(core_id).s_running->id == alarm->stat_part->action->task_id){
-  //     ptr_al->al_nbActivation--;
-  //   }
-  //   if(ptr_al->alnbActivation == 0){
-  //     tpl_kern_seq.elected->vec_seq_terminate &= ~(1<<(ptr_al->al_id + TASK_COUNT));
-  //   }
-  // }
 
   /* test if all task from sequence are terminated */
   if(tpl_kern_seq.elected->mask_seq_terminate == 0x00){
@@ -337,28 +303,38 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate;
     /* if yes, need to elect next sequence */
     /* Prepare ready sequence list */
-    VAR(uint16, AUTOMATIC) i;
-    VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
-    for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
-      if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
-        /* Add sequence to ready sequence list */
-        tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
-        index_ready_sequence_list++;
-      }
-    }   
+    // VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
+    // for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
+    //   if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
+    //     /* Add sequence to ready sequence list */
+    //     tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
+    //     index_ready_sequence_list++;
+    //   }
+    // }   
     /* Get energy level from ADC */
     init_adc();
     /* Polling */
     uint16 energy = tpl_ADC_read(); 
-    end_adc(); 
-    /* Compare energy level with energy from sequence in ready sequence list */
-    VAR(uint16, AUTOMATIC) max_energy = 0;
-    for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
-      if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
-        max_energy = tpl_ready_sequence_list[i]->energy;
-        tpl_kern_seq.elected = tpl_ready_sequence_list[i];
+    end_adc();
+
+    VAR(uint16, AUTOMATIC) i;
+
+    tpl_sequence *ptr_seq = tpl_sequence_state[tpl_kern_seq.state];
+    for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
+      if (energy >= ptr_seq->energy){
+        tpl_kern_seq.elected = ptr_seq;
+        break;
       }
-    }
+      ptr_seq++;
+    } 
+    /* Compare energy level with energy from sequence in ready sequence list */
+    // VAR(uint16, AUTOMATIC) max_energy = 0;
+    // for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
+    //   if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
+    //     max_energy = tpl_ready_sequence_list[i]->energy;
+    //     tpl_kern_seq.elected = tpl_ready_sequence_list[i];
+    //   }
+    // }
     /* Activate tasks from the sequence */
     uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
     for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
@@ -401,7 +377,7 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     }
     #endif
     /* Update tpl_kern_seq.state with next state from sequence elected */
-    tpl_kern_seq.state = tpl_kern_seq.elected->next_state; 
+    tpl_kern_seq.state = tpl_kern_seq.elected->to_state; 
 
   }
 

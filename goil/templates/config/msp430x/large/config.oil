@@ -30,7 +30,10 @@ IMPLEMENTATION  msp430x {
   };
   
   STATE [] {
-    UINT32 VALUE;
+    BOOLEAN [
+      TRUE,
+      FALSE
+      ] INITIAL_STATE = FALSE;
   };
 
   TRANSITION [] {
@@ -72,7 +75,12 @@ IMPLEMENTATION  msp430x {
     ] LEA = FALSE; 
 
     /* enable intermittent sequence */
-    BOOLEAN SEQUENCING = FALSE;
+    BOOLEAN [
+      TRUE {
+       UINT32 ENERGY_LEVEL = 1;
+      },
+      FALSE
+      ]SEQUENCING = FALSE;
 
     /* trace */
     BOOLEAN [

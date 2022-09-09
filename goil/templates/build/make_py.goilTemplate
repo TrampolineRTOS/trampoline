@@ -119,7 +119,6 @@ sourceList = []
 
 #--- Add generated files
 sourceList.append("% !PROJECT %/tpl_app_config.c")
-sourceList.append("% !PROJECT %/tpl_intermittent.c")
 %
 if OS::SYSTEM_CALL then
 %
@@ -149,6 +148,10 @@ sourceList.append("% !PROJECT+"/"+file::VALUE %")%
 sourceList.append("% !PROJECT+"/"+file::VALUE %")%
   end foreach
 end foreach
+if OS::SEQUENCING then
+%
+sourceList.append("% !PROJECT %/tpl_sequence.c")%
+end if
 %
 
 rule = makefile.Rule (sourceList, "Compiling OIL file " + oilFile)

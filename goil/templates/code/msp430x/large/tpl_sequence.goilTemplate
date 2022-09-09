@@ -50,7 +50,7 @@ end foreach
 let listState := @[]
 foreach state in STATE do
   let key := state::NAME
-  let listState[key] := state::VALUE
+  let listState[key] := INDEX
 end foreach
 
 let listAlarm := @[]
@@ -58,6 +58,8 @@ foreach al in ALARM do
   let key := al::NAME
   let listAlarm[key] := INDEX
 end foreach
+
+
 #------------------------------------------------------------------------------*
 
 foreach transition in TRANSITION do
@@ -114,8 +116,8 @@ foreach transition in TRANSITION
   %
 VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
   .energy = % !transition::ENERGY%
-, .next_state = % !listState[transition::TO_STATE]%
-, .current_state = % !listState[transition::FROM_STATE]%
+, .to_state = % !listState[transition::TO_STATE]%
+, .from_state = % !listState[transition::FROM_STATE]%
 %
 if exists transition::TASK then
 %, .nb_task = % ![transition::TASK length]%     
@@ -152,26 +154,7 @@ end if
 };
 %
 end foreach
-#foreach transition in TRANSITION do
-#    %
-#VAR(tpl_sequence, OS_VAR) sequence_% !transition::NAME% = {
-#  .energy = % ! transition::ENERGY%
-#, .next_state = % !listState[transition::TO_STATE]%
-#, .current_state = % !listState[transition::FROM_STATE]%
-#, .nb_task = % !task_count%
-#%
-#let mask := 255
-#foreach task in transition::TASK do
-# let mask := mask - (1<<listTask[task::VALUE])
-#end foreach
-#%, .mask_seq_terminate = % ![mask hexString]%
-#, .vec_seq_terminate = 0xFF
-#, .seqTaskTab = % !transition::NAME%_task
-#};
-#
-#%
-#  end if
-#end foreach
+
 %
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -190,6 +173,22 @@ end foreach
 %
 };
 
+%
+let initial_state
+let count_initial := 0
+
+foreach state in STATE do
+  if state::INITIAL_STATE then
+    let initial_state := state::NAME
+    let count_initial := count_initial+1
+    if count_initial > 1 then
+     error state::INITIAL_STATE : "More than one initial state"
+    end if
+  end if
+  
+end foreach
+
+%
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -198,22 +197,66 @@ end foreach
  * @internal
  *
  * tpl_kern_seq gather informations on the current sequence and
- * the previous one
+ * the state
  */
 VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq =
 {
-  NULL,                      /* no running sequence   */
   NULL,                      /* no elected sequence   */
-  TRUE,                      /* schedule needed at start */
-  0,                         /* current state is STATE with value 0 */
+  % !listState[initial_state]%,                         /* current state is STATE with INITIAL_STATE = TRUE */
 };
 
-#define OS_START_SEC_VAR_UNSPECIFIED
+
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
+%
 
-P2VAR(tpl_sequence, TYPEDEF, OS_VAR) tpl_ready_sequence_list[2];
+foreach state in STATE do
+      %
+CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA) sequence_from_state_%!state::NAME% [%!OS::SEQUENCING_S::ENERGY_LEVEL%] = {
+%
+      let transitionListEnergy := @()
+      foreach transition in TRANSITION do
+        if state::NAME == transition::FROM_STATE then
+         let transitionListEnergy += transition
+         end if
+      end foreach
+      sort transitionListEnergy by ENERGY >
+      foreach item in transitionListEnergy do
+      %&sequence_% !item::NAME
+      between
+      %,
+%
+      after
+      if [transitionListEnergy length] < OS::SEQUENCING_S::ENERGY_LEVEL then
+       let null_count := OS::SEQUENCING_S::ENERGY_LEVEL - [transitionListEnergy length]
+       for cnt in null_count
+       do
+         %
+, NULL%
+       end for
+      end if
+      %};
+%
+      end foreach
+end foreach
 
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+foreach state in STATE
+before
+%
+CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT] = {
+%
+do
+%&sequence_from_state_%!state::NAME
+between
+%,
+%
+after
+%
+};
+%
+end foreach
+%
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
 end if

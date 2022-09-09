@@ -42,8 +42,8 @@ typedef struct TPL_SEQUENCE_ALARM tpl_sequence_alarm;
 
 struct TPL_SEQUENCE {
     CONST(uint32, TYPEDEF) energy;
-    CONST(uint8, TYPEDEF) next_state;
-    CONST(uint8, TYPEDEF) current_state; 
+    CONST(uint8, TYPEDEF) to_state;
+    CONST(uint8, TYPEDEF) from_state; 
     CONST(uint8, TYPEDEF) nb_task;
     VAR(uint8, TYPEDEF) mask_seq_terminate;
     CONST(uint8, TYPEDEF) vec_seq_terminate;
@@ -55,9 +55,7 @@ struct TPL_SEQUENCE {
 typedef struct TPL_SEQUENCE tpl_sequence;
 
 typedef struct {
-    P2VAR(tpl_sequence, TYPEDEF, OS_VAR) running;
     P2VAR(tpl_sequence, TYPEDEF, OS_VAR) elected;
-    VAR(tpl_bool, TYPEDEF)               need_schedule;
     VAR(sint32, TYPEDEF)                 state;
 } tpl_kern_seq_state;
 
@@ -75,7 +73,7 @@ extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA)
 
 extern VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq;
 
-extern P2VAR(tpl_sequence, TYPEDEF, OS_VAR) tpl_ready_sequence_list[2];
+extern CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
