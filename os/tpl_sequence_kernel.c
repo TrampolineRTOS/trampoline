@@ -77,8 +77,6 @@ void init_adc() {
 uint16 tpl_ADC_read(){
 	ADC12CTL0 |= ADC12SC;
 	while(!(ADC12IFGR0 & BIT0));
-	// ADC12CTL0 &= ~(ADC12ENC);
-	// REFCTL0 &= ~(REFON);
 	return ADC12MEM0;
 }
 
@@ -87,28 +85,6 @@ void end_adc(){
   ADC12CTL0 &= ~ADC12ON;
   return;
 }
-// FUNC(void, OS_CODE) tpl_start_from_trace(CORE_ID_OR_VOID(core_id))
-// {
-//   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-
-//   CONST(tpl_heap_entry, AUTOMATIC)
-//   proc = tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
-
-//   TPL_KERN_REF(kern).elected_id = (uint32)proc.id;
-//   TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
-//   TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];
-
-//   if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
-//   {
-//     /*
-//      * the object has not be preempted. So its
-//      * descriptor must be initialized
-//      */
-//     tpl_init_proc(proc.id);
-//     tpl_dyn_proc_table[proc.id]->priority = proc.key;
-//   }
-//   TPL_KERN_REF(kern).need_schedule = FALSE;
-// }
 
 FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
@@ -140,37 +116,21 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
   }
 #endif
 
-/* Prepare ready sequence list */
-// VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
-// for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
-//   if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
-//     /* Add sequence to ready sequence list */
-//     tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
-//     index_ready_sequence_list++;
-//   }
-// }
-
 /* Get energy level from ADC */
 init_adc();
 /* Polling */
 uint16 energy = tpl_ADC_read(); 
 end_adc();
 /* Compare energy level with energy from sequences with FROM_STATE = tpl_kern_seq->state */
-// VAR(uint16, AUTOMATIC) max_energy = 0;
-tpl_sequence *ptr_seq = tpl_sequence_state[tpl_kern_seq.state];
+tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
 for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
+  tpl_sequence *ptr_seq = ptr_state[i];
   if (energy >= ptr_seq->energy){
     tpl_kern_seq.elected = ptr_seq;
     break;
   }
-  ptr_seq++;
 }
-// for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
-//   if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
-//     max_energy = tpl_ready_sequence_list[i]->energy;
-//     tpl_kern_seq.elected = tpl_ready_sequence_list[i];
-//   }
-// }
+
 /* Activate tasks from the sequence */
 uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
@@ -301,16 +261,7 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   if(tpl_kern_seq.elected->mask_seq_terminate == 0x00){
     /* reset task_terminate */
     tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate;
-    /* if yes, need to elect next sequence */
-    /* Prepare ready sequence list */
-    // VAR(uint16, AUTOMATIC) index_ready_sequence_list = 0;
-    // for (i = 0; i < sizeof(tpl_sequence_table)/sizeof(tpl_sequence_table[0]); i++){
-    //   if (tpl_sequence_table[i]->current_state == tpl_kern_seq.state){
-    //     /* Add sequence to ready sequence list */
-    //     tpl_ready_sequence_list[index_ready_sequence_list] = tpl_sequence_table[i];
-    //     index_ready_sequence_list++;
-    //   }
-    // }   
+ 
     /* Get energy level from ADC */
     init_adc();
     /* Polling */
@@ -318,23 +269,15 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     end_adc();
 
     VAR(uint16, AUTOMATIC) i;
-
-    tpl_sequence *ptr_seq = tpl_sequence_state[tpl_kern_seq.state];
+    tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
     for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
+      tpl_sequence *ptr_seq = ptr_state[i];
       if (energy >= ptr_seq->energy){
         tpl_kern_seq.elected = ptr_seq;
         break;
       }
-      ptr_seq++;
     } 
-    /* Compare energy level with energy from sequence in ready sequence list */
-    // VAR(uint16, AUTOMATIC) max_energy = 0;
-    // for (i = 0; i < sizeof(tpl_ready_sequence_list)/sizeof(tpl_ready_sequence_list[0]); i++){
-    //   if ((tpl_ready_sequence_list[i]->energy < energy) && (tpl_ready_sequence_list[i]->energy > max_energy)){
-    //     max_energy = tpl_ready_sequence_list[i]->energy;
-    //     tpl_kern_seq.elected = tpl_ready_sequence_list[i];
-    //   }
-    // }
+
     /* Activate tasks from the sequence */
     uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
     for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
