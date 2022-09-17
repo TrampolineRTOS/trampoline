@@ -656,12 +656,9 @@ rule <xsd_restriction>
   ?@lstring parentClass
   ?!@arxmlMetaSimpletype restriction
 {
-  lstringhere(?@lstring baseType !"")
-#  @lstringlist valuesifenum = {}
-
   $base$
   $=$
-  $xmlTagValue$ ?baseType
+  $xmlTagValue$ ?let @lstring baseType
 
   if "xsd:string"  == baseType.string
   || "xsd:NMTOKEN" == baseType.string

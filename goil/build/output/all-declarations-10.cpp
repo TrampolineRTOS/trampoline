@@ -7608,7 +7608,7 @@ void routine_lstringhere (GALGAS_lstring & outArgument_string,
                           C_Compiler * inCompiler
                           COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_string.drop () ; // Release 'out' argument
-  outArgument_string = GALGAS_lstring::constructor_new (inArgument_value, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1151))  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1151)) ;
+  outArgument_string = GALGAS_lstring::constructor_new (inArgument_value, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1148))  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1148)) ;
 }
 
 
@@ -7622,27 +7622,27 @@ void routine_fillLegacy (GALGAS_arxmlMetaClassMap & ioArgument_classMap,
                          GALGAS_arxmlMetaClassGraph & ioArgument_classGraph,
                          C_Compiler * inCompiler
                          COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_stringlist var_sortedInfoList_32102 = ioArgument_classGraph.getter_keyList (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1158)) ;
-  cEnumerator_stringlist enumerator_32152 (var_sortedInfoList_32102, kENUMERATION_UP) ;
-  while (enumerator_32152.hasCurrentObject ()) {
-    GALGAS_lstring var_lClassName_32215 ;
+  GALGAS_stringlist var_sortedInfoList_32042 = ioArgument_classGraph.getter_keyList (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1155)) ;
+  cEnumerator_stringlist enumerator_32092 (var_sortedInfoList_32042, kENUMERATION_UP) ;
+  while (enumerator_32092.hasCurrentObject ()) {
+    GALGAS_lstring var_lClassName_32155 ;
     {
-    routine_lstringhere (var_lClassName_32215, enumerator_32152.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1161)) ;
+    routine_lstringhere (var_lClassName_32155, enumerator_32092.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1158)) ;
     }
-    GALGAS_arxmlMetaClass var_lClass_32255 ;
-    ioArgument_classMap.method_searchKey (var_lClassName_32215, var_lClass_32255, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1163)) ;
-    GALGAS_lstringlist var_fromList_32348 = GALGAS_lstringlist::constructor_emptyList (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1166)) ;
+    GALGAS_arxmlMetaClass var_lClass_32195 ;
+    ioArgument_classMap.method_searchKey (var_lClassName_32155, var_lClass_32195, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1160)) ;
+    GALGAS_lstringlist var_fromList_32288 = GALGAS_lstringlist::constructor_emptyList (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1163)) ;
     {
-    var_fromList_32348.setter_insertAtIndex (var_lClass_32255.readProperty_name (), GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1167)) ;
+    var_fromList_32288.setter_insertAtIndex (var_lClass_32195.readProperty_name (), GALGAS_uint (uint32_t (0U)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1164)) ;
     }
-    GALGAS_stringset var_empty_32427 = GALGAS_stringset::constructor_emptySet (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1168)) ;
-    GALGAS_lstringlist var_successorList_32474 = ioArgument_classGraph.getter_accessibleNodesFrom (var_fromList_32348, var_empty_32427, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1169)) ;
+    GALGAS_stringset var_empty_32367 = GALGAS_stringset::constructor_emptySet (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1165)) ;
+    GALGAS_lstringlist var_successorList_32414 = ioArgument_classGraph.getter_accessibleNodesFrom (var_fromList_32288, var_empty_32367, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1166)) ;
     {
-    var_lClass_32255.insulate (HERE) ;
-    cPtr_arxmlMetaClass * ptr_32620 = (cPtr_arxmlMetaClass *) var_lClass_32255.ptr () ;
-    callExtensionSetter_legacyAddParameters ((cPtr_arxmlMetaClass *) ptr_32620, ioArgument_classMap, var_successorList_32474, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1172)) ;
+    var_lClass_32195.insulate (HERE) ;
+    cPtr_arxmlMetaClass * ptr_32560 = (cPtr_arxmlMetaClass *) var_lClass_32195.ptr () ;
+    callExtensionSetter_legacyAddParameters ((cPtr_arxmlMetaClass *) ptr_32560, ioArgument_classMap, var_successorList_32414, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 1169)) ;
     }
-    enumerator_32152.gotoNextObject () ;
+    enumerator_32092.gotoNextObject () ;
   }
 }
 

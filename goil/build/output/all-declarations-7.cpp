@@ -5174,7 +5174,7 @@ static const int16_t gProductions_arxmlmetaparser_grammar [] = {
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (58) // <select_arxmlmetaparser_5F_syntax_35>
 , END_PRODUCTION
-// At index 50 : <xsd_schema>, in file 'arxmlmetaparser_syntax.ggs', line 753
+// At index 50 : <xsd_schema>, in file 'arxmlmetaparser_syntax.ggs', line 750
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema) // $schema$
 , NONTERMINAL (22) // <xsd_ignore_attributes>
@@ -5184,29 +5184,29 @@ static const int16_t gProductions_arxmlmetaparser_grammar [] = {
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schema) // $schema$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 59 : <xsd_sequence>, in file 'arxmlmetaparser_syntax.ggs', line 810
+// At index 59 : <xsd_sequence>, in file 'arxmlmetaparser_syntax.ggs', line 807
 , NONTERMINAL (63) // <select_arxmlmetaparser_5F_syntax_40>
 , END_PRODUCTION
-// At index 61 : <xsd_simpleContent>, in file 'arxmlmetaparser_syntax.ggs', line 841
+// At index 61 : <xsd_simpleContent>, in file 'arxmlmetaparser_syntax.ggs', line 838
 , NONTERMINAL (66) // <select_arxmlmetaparser_5F_syntax_43>
 , END_PRODUCTION
-// At index 63 : <xsd_simpleType>, in file 'arxmlmetaparser_syntax.ggs', line 876
+// At index 63 : <xsd_simpleType>, in file 'arxmlmetaparser_syntax.ggs', line 873
 , NONTERMINAL (69) // <select_arxmlmetaparser_5F_syntax_46>
 , NONTERMINAL (70) // <select_arxmlmetaparser_5F_syntax_47>
 , END_PRODUCTION
-// At index 66 : <xsd_maxLength>, in file 'arxmlmetaparser_syntax.ggs', line 942
+// At index 66 : <xsd_maxLength>, in file 'arxmlmetaparser_syntax.ggs', line 939
 , NONTERMINAL (22) // <xsd_ignore_attributes>
 , NONTERMINAL (73) // <select_arxmlmetaparser_5F_syntax_50>
 , END_PRODUCTION
-// At index 69 : <xsd_pattern>, in file 'arxmlmetaparser_syntax.ggs', line 967
+// At index 69 : <xsd_pattern>, in file 'arxmlmetaparser_syntax.ggs', line 964
 , NONTERMINAL (22) // <xsd_ignore_attributes>
 , NONTERMINAL (75) // <select_arxmlmetaparser_5F_syntax_52>
 , END_PRODUCTION
-// At index 72 : <xsd_whiteSpace>, in file 'arxmlmetaparser_syntax.ggs', line 991
+// At index 72 : <xsd_whiteSpace>, in file 'arxmlmetaparser_syntax.ggs', line 988
 , NONTERMINAL (22) // <xsd_ignore_attributes>
 , NONTERMINAL (77) // <select_arxmlmetaparser_5F_syntax_54>
 , END_PRODUCTION
-// At index 75 : <xsd_ignore_attributes>, in file 'arxmlmetaparser_syntax.ggs', line 1011
+// At index 75 : <xsd_ignore_attributes>, in file 'arxmlmetaparser_syntax.ggs', line 1008
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
@@ -5628,509 +5628,509 @@ static const int16_t gProductions_arxmlmetaparser_grammar [] = {
 , NONTERMINAL (2) // <xsd_annotation>
 , NONTERMINAL (57) // <select_arxmlmetaparser_5F_syntax_34>
 , END_PRODUCTION
-// At index 399 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 681
+// At index 399 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 678
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (59) // <select_arxmlmetaparser_5F_syntax_36>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction) // $restriction$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 405 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 681
+// At index 405 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 678
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 407 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 682
+// At index 407 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 679
 , END_PRODUCTION
-// At index 408 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 682
+// At index 408 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 679
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , NONTERMINAL (60) // <select_arxmlmetaparser_5F_syntax_37>
 , NONTERMINAL (59) // <select_arxmlmetaparser_5F_syntax_36>
 , END_PRODUCTION
-// At index 412 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 412 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , END_PRODUCTION
-// At index 415 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 415 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) // $attribute$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) // $TODO$
 , NONTERMINAL (4) // <xsd_attribute>
 , END_PRODUCTION
-// At index 419 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 419 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) // $attributeGroup$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) // $TODO$
 , NONTERMINAL (5) // <xsd_attributeGroup>
 , END_PRODUCTION
-// At index 423 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 423 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) // $choice$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) // $TODO$
 , NONTERMINAL (6) // <xsd_choice>
 , END_PRODUCTION
-// At index 427 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 427 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) // $sequence$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) // $TODO$
 , NONTERMINAL (16) // <xsd_sequence>
 , END_PRODUCTION
-// At index 431 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 431 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) // $group$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_TODO) // $TODO$
 , NONTERMINAL (12) // <xsd_group>
 , END_PRODUCTION
-// At index 435 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 435 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) // $simpleType$
 , NONTERMINAL (18) // <xsd_simpleType>
 , END_PRODUCTION
-// At index 438 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 438 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace) // $whiteSpace$
 , NONTERMINAL (21) // <xsd_whiteSpace>
 , END_PRODUCTION
-// At index 441 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 441 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength) // $maxLength$
 , NONTERMINAL (19) // <xsd_maxLength>
 , END_PRODUCTION
-// At index 444 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 444 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern) // $pattern$
 , NONTERMINAL (20) // <xsd_pattern>
 , END_PRODUCTION
-// At index 447 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
+// At index 447 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enumeration) // $enumeration$
 , NONTERMINAL (10) // <xsd_enumeration>
 , END_PRODUCTION
-// At index 450 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 779
+// At index 450 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 776
 , END_PRODUCTION
-// At index 451 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 779
+// At index 451 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 776
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , NONTERMINAL (62) // <select_arxmlmetaparser_5F_syntax_39>
 , NONTERMINAL (61) // <select_arxmlmetaparser_5F_syntax_38>
 , END_PRODUCTION
-// At index 455 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 455 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , END_PRODUCTION
-// At index 458 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 458 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attribute) // $attribute$
 , NONTERMINAL (4) // <xsd_attribute>
 , END_PRODUCTION
-// At index 461 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 461 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeGroup) // $attributeGroup$
 , NONTERMINAL (5) // <xsd_attributeGroup>
 , END_PRODUCTION
-// At index 464 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 464 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_complexType) // $complexType$
 , NONTERMINAL (7) // <xsd_complexType>
 , END_PRODUCTION
-// At index 467 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 467 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) // $element$
 , NONTERMINAL (9) // <xsd_element>
 , END_PRODUCTION
-// At index 470 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 470 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) // $group$
 , NONTERMINAL (12) // <xsd_group>
 , END_PRODUCTION
-// At index 473 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 473 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_import) // $import$
 , NONTERMINAL (13) // <xsd_import>
 , END_PRODUCTION
-// At index 476 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
+// At index 476 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) // $simpleType$
 , NONTERMINAL (18) // <xsd_simpleType>
 , END_PRODUCTION
-// At index 479 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 815
+// At index 479 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 812
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (64) // <select_arxmlmetaparser_5F_syntax_41>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) // $sequence$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 485 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 815
+// At index 485 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 812
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 487 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 816
+// At index 487 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 813
 , END_PRODUCTION
-// At index 488 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 816
+// At index 488 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 813
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , NONTERMINAL (65) // <select_arxmlmetaparser_5F_syntax_42>
 , NONTERMINAL (64) // <select_arxmlmetaparser_5F_syntax_41>
 , END_PRODUCTION
-// At index 492 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
+// At index 492 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , END_PRODUCTION
-// At index 495 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
+// At index 495 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_choice) // $choice$
 , NONTERMINAL (6) // <xsd_choice>
 , END_PRODUCTION
-// At index 498 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
+// At index 498 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequence) // $sequence$
 , NONTERMINAL (16) // <xsd_sequence>
 , END_PRODUCTION
-// At index 501 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
+// At index 501 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_element) // $element$
 , NONTERMINAL (9) // <xsd_element>
 , END_PRODUCTION
-// At index 504 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
+// At index 504 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_group) // $group$
 , NONTERMINAL (12) // <xsd_group>
 , END_PRODUCTION
-// At index 507 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 854
+// At index 507 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 851
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (67) // <select_arxmlmetaparser_5F_syntax_44>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleContent) // $simpleContent$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 513 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 854
+// At index 513 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 851
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 515 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 855
+// At index 515 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 852
 , END_PRODUCTION
-// At index 516 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 855
+// At index 516 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 852
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , NONTERMINAL (68) // <select_arxmlmetaparser_5F_syntax_45>
 , NONTERMINAL (67) // <select_arxmlmetaparser_5F_syntax_44>
 , END_PRODUCTION
-// At index 520 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 857
+// At index 520 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 854
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , END_PRODUCTION
-// At index 523 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 857
+// At index 523 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 854
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_extension) // $extension$
 , NONTERMINAL (11) // <xsd_extension>
 , END_PRODUCTION
-// At index 526 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 885
+// At index 526 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 882
 , END_PRODUCTION
-// At index 527 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 885
+// At index 527 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 882
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) // $name$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (69) // <select_arxmlmetaparser_5F_syntax_46>
 , END_PRODUCTION
-// At index 532 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 918
+// At index 532 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 915
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (71) // <select_arxmlmetaparser_5F_syntax_48>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_simpleType) // $simpleType$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 538 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 918
+// At index 538 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 915
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 540 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 919
+// At index 540 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 916
 , END_PRODUCTION
-// At index 541 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 919
+// At index 541 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 916
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , NONTERMINAL (72) // <select_arxmlmetaparser_5F_syntax_49>
 , NONTERMINAL (71) // <select_arxmlmetaparser_5F_syntax_48>
 , END_PRODUCTION
-// At index 545 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 921
+// At index 545 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 918
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , END_PRODUCTION
-// At index 548 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 921
+// At index 548 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 918
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_restriction) // $restriction$
 , NONTERMINAL (14) // <xsd_restriction>
 , END_PRODUCTION
-// At index 551 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 948
+// At index 551 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 945
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (74) // <select_arxmlmetaparser_5F_syntax_51>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxLength) // $maxLength$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 557 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 948
+// At index 557 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 945
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 559 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 949
+// At index 559 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 946
 , END_PRODUCTION
-// At index 560 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 949
+// At index 560 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 946
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , NONTERMINAL (74) // <select_arxmlmetaparser_5F_syntax_51>
 , END_PRODUCTION
-// At index 565 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 973
+// At index 565 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 970
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (76) // <select_arxmlmetaparser_5F_syntax_53>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_pattern) // $pattern$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 571 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 973
+// At index 571 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 970
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 573 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 974
+// At index 573 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 971
 , END_PRODUCTION
-// At index 574 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 974
+// At index 574 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 971
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , NONTERMINAL (76) // <select_arxmlmetaparser_5F_syntax_53>
 , END_PRODUCTION
-// At index 579 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 997
+// At index 579 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 994
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (78) // <select_arxmlmetaparser_5F_syntax_55>
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C__2F_xsd_3A_) // $</xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_whiteSpace) // $whiteSpace$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 585 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 997
+// At index 585 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 994
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__2F__3E_) // $/>$
 , END_PRODUCTION
-// At index 587 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 998
+// At index 587 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 995
 , END_PRODUCTION
-// At index 588 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 998
+// At index 588 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 995
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3C_xsd_3A_) // $<xsd:$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_annotation) // $annotation$
 , NONTERMINAL (2) // <xsd_annotation>
 , NONTERMINAL (78) // <select_arxmlmetaparser_5F_syntax_55>
 , END_PRODUCTION
-// At index 593 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 593 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , END_PRODUCTION
-// At index 594 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 594 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_abstract) // $abstract$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 599 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 599 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeFormDefault) // $attributeFormDefault$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 604 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 604 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_attributeRef) // $attributeRef$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 609 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 609 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_base) // $base$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 614 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 614 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_category) // $category$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 619 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 619 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_CATEGORY) // $CATEGORY$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 624 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 624 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_color) // $color$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 629 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 629 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_customType) // $customType$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 634 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 634 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_elementFormDefault) // $elementFormDefault$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 639 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 639 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_encoding) // $encoding$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 644 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 644 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_enforceMinMultiplicity) // $enforceMinMultiplicity$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 649 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 649 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_globalElement) // $globalElement$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 654 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 654 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_id) // $id$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 659 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 659 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_latestBindingTime) // $latestBindingTime$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 664 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 664 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_maxOccurs) // $maxOccurs$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 669 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 669 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_minOccurs) // $minOccurs$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 674 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 674 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_mixed) // $mixed$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 679 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 679 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_name) // $name$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 684 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 684 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namePlural) // $namePlural$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 689 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 689 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_namespace) // $namespace$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 694 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 694 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_noteType) // $noteType$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 699 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 699 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_nsPrefix) // $nsPrefix$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 704 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 704 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_qualifiedName) // $qualifiedName$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 709 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 709 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_recommendedPackage) // $recommendedPackage$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 714 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 714 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_ref) // $ref$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 719 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 719 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleElement) // $roleElement$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 724 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 724 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_roleWrapperElement) // $roleWrapperElement$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 729 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 729 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_schemaLocation) // $schemaLocation$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 734 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 734 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_sequenceOffset) // $sequenceOffset$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 739 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 739 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_source) // $source$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 744 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 744 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Splitkey) // $Splitkey$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 749 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 749 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_Status) // $Status$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 754 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 754 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_StatusRevisionBegin) // $StatusRevisionBegin$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 759 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 759 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_targetNamespace) // $targetNamespace$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 764 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 764 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_type) // $type$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 769 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 769 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeElement) // $typeElement$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 774 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 774 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_typeWrapperElement) // $typeWrapperElement$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 779 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 779 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) // $use$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 784 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 784 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_value) // $value$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 789 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 789 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_version) // $version$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 794 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 794 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_AR) // $xmlns:AR$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
 , NONTERMINAL (79) // <select_arxmlmetaparser_5F_syntax_56>
 , END_PRODUCTION
-// At index 799 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+// At index 799 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlns_3A_xsd) // $xmlns:xsd$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) // $xmlTagValue$
@@ -6395,14 +6395,14 @@ static const int16_t gProductionIndexes_arxmlmetaparser_grammar [223] = {
 39, // index 12 : <xsd_group>, in file 'arxmlmetaparser_syntax.ggs', line 558
 42, // index 13 : <xsd_import>, in file 'arxmlmetaparser_syntax.ggs', line 630
 45, // index 14 : <xsd_restriction>, in file 'arxmlmetaparser_syntax.ggs', line 653
-50, // index 15 : <xsd_schema>, in file 'arxmlmetaparser_syntax.ggs', line 753
-59, // index 16 : <xsd_sequence>, in file 'arxmlmetaparser_syntax.ggs', line 810
-61, // index 17 : <xsd_simpleContent>, in file 'arxmlmetaparser_syntax.ggs', line 841
-63, // index 18 : <xsd_simpleType>, in file 'arxmlmetaparser_syntax.ggs', line 876
-66, // index 19 : <xsd_maxLength>, in file 'arxmlmetaparser_syntax.ggs', line 942
-69, // index 20 : <xsd_pattern>, in file 'arxmlmetaparser_syntax.ggs', line 967
-72, // index 21 : <xsd_whiteSpace>, in file 'arxmlmetaparser_syntax.ggs', line 991
-75, // index 22 : <xsd_ignore_attributes>, in file 'arxmlmetaparser_syntax.ggs', line 1011
+50, // index 15 : <xsd_schema>, in file 'arxmlmetaparser_syntax.ggs', line 750
+59, // index 16 : <xsd_sequence>, in file 'arxmlmetaparser_syntax.ggs', line 807
+61, // index 17 : <xsd_simpleContent>, in file 'arxmlmetaparser_syntax.ggs', line 838
+63, // index 18 : <xsd_simpleType>, in file 'arxmlmetaparser_syntax.ggs', line 873
+66, // index 19 : <xsd_maxLength>, in file 'arxmlmetaparser_syntax.ggs', line 939
+69, // index 20 : <xsd_pattern>, in file 'arxmlmetaparser_syntax.ggs', line 964
+72, // index 21 : <xsd_whiteSpace>, in file 'arxmlmetaparser_syntax.ggs', line 988
+75, // index 22 : <xsd_ignore_attributes>, in file 'arxmlmetaparser_syntax.ggs', line 1008
 77, // index 23 : <select_arxmlmetaparser_5F_syntax_0>, in file 'arxmlmetaparser_syntax.ggs', line 81
 83, // index 24 : <select_arxmlmetaparser_5F_syntax_0>, in file 'arxmlmetaparser_syntax.ggs', line 81
 85, // index 25 : <select_arxmlmetaparser_5F_syntax_1>, in file 'arxmlmetaparser_syntax.ggs', line 82
@@ -6499,109 +6499,109 @@ static const int16_t gProductionIndexes_arxmlmetaparser_grammar [223] = {
 391, // index 116 : <select_arxmlmetaparser_5F_syntax_33>, in file 'arxmlmetaparser_syntax.ggs', line 636
 393, // index 117 : <select_arxmlmetaparser_5F_syntax_34>, in file 'arxmlmetaparser_syntax.ggs', line 637
 394, // index 118 : <select_arxmlmetaparser_5F_syntax_34>, in file 'arxmlmetaparser_syntax.ggs', line 637
-399, // index 119 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 681
-405, // index 120 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 681
-407, // index 121 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 682
-408, // index 122 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 682
-412, // index 123 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-415, // index 124 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-419, // index 125 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-423, // index 126 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-427, // index 127 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-431, // index 128 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-435, // index 129 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-438, // index 130 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-441, // index 131 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-444, // index 132 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-447, // index 133 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 684
-450, // index 134 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 779
-451, // index 135 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 779
-455, // index 136 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-458, // index 137 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-461, // index 138 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-464, // index 139 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-467, // index 140 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-470, // index 141 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-473, // index 142 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-476, // index 143 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 781
-479, // index 144 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 815
-485, // index 145 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 815
-487, // index 146 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 816
-488, // index 147 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 816
-492, // index 148 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
-495, // index 149 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
-498, // index 150 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
-501, // index 151 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
-504, // index 152 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 818
-507, // index 153 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 854
-513, // index 154 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 854
-515, // index 155 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 855
-516, // index 156 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 855
-520, // index 157 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 857
-523, // index 158 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 857
-526, // index 159 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 885
-527, // index 160 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 885
-532, // index 161 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 918
-538, // index 162 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 918
-540, // index 163 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 919
-541, // index 164 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 919
-545, // index 165 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 921
-548, // index 166 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 921
-551, // index 167 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 948
-557, // index 168 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 948
-559, // index 169 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 949
-560, // index 170 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 949
-565, // index 171 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 973
-571, // index 172 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 973
-573, // index 173 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 974
-574, // index 174 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 974
-579, // index 175 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 997
-585, // index 176 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 997
-587, // index 177 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 998
-588, // index 178 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 998
-593, // index 179 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-594, // index 180 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-599, // index 181 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-604, // index 182 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-609, // index 183 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-614, // index 184 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-619, // index 185 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-624, // index 186 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-629, // index 187 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-634, // index 188 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-639, // index 189 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-644, // index 190 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-649, // index 191 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-654, // index 192 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-659, // index 193 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-664, // index 194 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-669, // index 195 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-674, // index 196 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-679, // index 197 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-684, // index 198 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-689, // index 199 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-694, // index 200 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-699, // index 201 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-704, // index 202 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-709, // index 203 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-714, // index 204 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-719, // index 205 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-724, // index 206 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-729, // index 207 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-734, // index 208 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-739, // index 209 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-744, // index 210 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-749, // index 211 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-754, // index 212 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-759, // index 213 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-764, // index 214 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-769, // index 215 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-774, // index 216 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-779, // index 217 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-784, // index 218 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-789, // index 219 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-794, // index 220 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
-799, // index 221 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1013
+399, // index 119 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 678
+405, // index 120 : <select_arxmlmetaparser_5F_syntax_35>, in file 'arxmlmetaparser_syntax.ggs', line 678
+407, // index 121 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 679
+408, // index 122 : <select_arxmlmetaparser_5F_syntax_36>, in file 'arxmlmetaparser_syntax.ggs', line 679
+412, // index 123 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+415, // index 124 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+419, // index 125 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+423, // index 126 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+427, // index 127 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+431, // index 128 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+435, // index 129 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+438, // index 130 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+441, // index 131 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+444, // index 132 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+447, // index 133 : <select_arxmlmetaparser_5F_syntax_37>, in file 'arxmlmetaparser_syntax.ggs', line 681
+450, // index 134 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 776
+451, // index 135 : <select_arxmlmetaparser_5F_syntax_38>, in file 'arxmlmetaparser_syntax.ggs', line 776
+455, // index 136 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+458, // index 137 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+461, // index 138 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+464, // index 139 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+467, // index 140 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+470, // index 141 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+473, // index 142 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+476, // index 143 : <select_arxmlmetaparser_5F_syntax_39>, in file 'arxmlmetaparser_syntax.ggs', line 778
+479, // index 144 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 812
+485, // index 145 : <select_arxmlmetaparser_5F_syntax_40>, in file 'arxmlmetaparser_syntax.ggs', line 812
+487, // index 146 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 813
+488, // index 147 : <select_arxmlmetaparser_5F_syntax_41>, in file 'arxmlmetaparser_syntax.ggs', line 813
+492, // index 148 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
+495, // index 149 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
+498, // index 150 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
+501, // index 151 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
+504, // index 152 : <select_arxmlmetaparser_5F_syntax_42>, in file 'arxmlmetaparser_syntax.ggs', line 815
+507, // index 153 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 851
+513, // index 154 : <select_arxmlmetaparser_5F_syntax_43>, in file 'arxmlmetaparser_syntax.ggs', line 851
+515, // index 155 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 852
+516, // index 156 : <select_arxmlmetaparser_5F_syntax_44>, in file 'arxmlmetaparser_syntax.ggs', line 852
+520, // index 157 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 854
+523, // index 158 : <select_arxmlmetaparser_5F_syntax_45>, in file 'arxmlmetaparser_syntax.ggs', line 854
+526, // index 159 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 882
+527, // index 160 : <select_arxmlmetaparser_5F_syntax_46>, in file 'arxmlmetaparser_syntax.ggs', line 882
+532, // index 161 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 915
+538, // index 162 : <select_arxmlmetaparser_5F_syntax_47>, in file 'arxmlmetaparser_syntax.ggs', line 915
+540, // index 163 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 916
+541, // index 164 : <select_arxmlmetaparser_5F_syntax_48>, in file 'arxmlmetaparser_syntax.ggs', line 916
+545, // index 165 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 918
+548, // index 166 : <select_arxmlmetaparser_5F_syntax_49>, in file 'arxmlmetaparser_syntax.ggs', line 918
+551, // index 167 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 945
+557, // index 168 : <select_arxmlmetaparser_5F_syntax_50>, in file 'arxmlmetaparser_syntax.ggs', line 945
+559, // index 169 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 946
+560, // index 170 : <select_arxmlmetaparser_5F_syntax_51>, in file 'arxmlmetaparser_syntax.ggs', line 946
+565, // index 171 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 970
+571, // index 172 : <select_arxmlmetaparser_5F_syntax_52>, in file 'arxmlmetaparser_syntax.ggs', line 970
+573, // index 173 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 971
+574, // index 174 : <select_arxmlmetaparser_5F_syntax_53>, in file 'arxmlmetaparser_syntax.ggs', line 971
+579, // index 175 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 994
+585, // index 176 : <select_arxmlmetaparser_5F_syntax_54>, in file 'arxmlmetaparser_syntax.ggs', line 994
+587, // index 177 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 995
+588, // index 178 : <select_arxmlmetaparser_5F_syntax_55>, in file 'arxmlmetaparser_syntax.ggs', line 995
+593, // index 179 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+594, // index 180 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+599, // index 181 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+604, // index 182 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+609, // index 183 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+614, // index 184 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+619, // index 185 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+624, // index 186 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+629, // index 187 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+634, // index 188 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+639, // index 189 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+644, // index 190 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+649, // index 191 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+654, // index 192 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+659, // index 193 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+664, // index 194 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+669, // index 195 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+674, // index 196 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+679, // index 197 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+684, // index 198 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+689, // index 199 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+694, // index 200 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+699, // index 201 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+704, // index 202 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+709, // index 203 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+714, // index 204 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+719, // index 205 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+724, // index 206 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+729, // index 207 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+734, // index 208 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+739, // index 209 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+744, // index 210 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+749, // index 211 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+754, // index 212 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+759, // index 213 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+764, // index 214 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+769, // index 215 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+774, // index 216 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+779, // index 217 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+784, // index 218 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+789, // index 219 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+794, // index 220 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
+799, // index 221 : <select_arxmlmetaparser_5F_syntax_56>, in file 'arxmlmetaparser_syntax.ggs', line 1010
 804 // index 222 : <>, in file '.ggs', line 0
 } ;
 

@@ -191,7 +191,7 @@ rule <gtl_instruction>
   !@gtlInstruction instruction
 {
   @gtlInstructionList beforeList = .emptyList
-  @gtlInstructionList doList = .emptyList
+  let @gtlInstructionList doList
   @gtlInstructionList betweenList = .emptyList
   @gtlInstructionList afterList = .emptyList
   let @lstring indexName
@@ -254,7 +254,7 @@ rule <gtl_instruction>
 rule <gtl_instruction>
   !@gtlInstruction instruction
 {
-  @gtlInstructionList doList = .emptyList
+  let @gtlInstructionList doList
   @gtlInstructionList betweenList = .emptyList
   @gtlExpressionList  iterable = .emptyList 
 
