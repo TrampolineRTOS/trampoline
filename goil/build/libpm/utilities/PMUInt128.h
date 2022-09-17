@@ -28,53 +28,53 @@
 
 class PMUInt128 {
 //--- Constructors
-  public : PMUInt128 (void) ;
-  public : PMUInt128 (const uint64_t inValue) ;
+  public: PMUInt128 (void) ;
+  public: PMUInt128 (const uint64_t inValue) ;
 
 //--- Destructor
-  public : virtual ~ PMUInt128 (void) ;
+  public: virtual ~ PMUInt128 (void) ;
 
 //--- Is Zero
-  public : bool isZero (void) const ;
+  public: bool isZero (void) const ;
 
 //--- Comparison
-  public : bool operator == (const PMUInt128 & inValue) const ;
-  public : bool operator != (const PMUInt128 & inValue) const ;
-  public : bool operator > (const uint32_t inOperand) const ;
+  public: bool operator == (const PMUInt128 & inValue) const ;
+  public: bool operator != (const PMUInt128 & inValue) const ;
+  public: bool operator > (const uint32_t inOperand) const ;
 
 //--- Incrementation, decrementation
-  public : PMUInt128 & operator ++ (void) ;
-  public : PMUInt128 & operator -- (void) ;
+  public: PMUInt128 & operator ++ (void) ;
+  public: PMUInt128 & operator -- (void) ;
   
 //--- Addition
-  public : void operator += (const PMUInt128 & inValue) ;
-  public : PMUInt128 operator + (const PMUInt128 & inValue) const ;
+  public: void operator += (const PMUInt128 & inValue) ;
+  public: PMUInt128 operator + (const PMUInt128 & inValue) const ;
 
 //--- Multiplication
-  public : void operator *= (const uint32_t inMultiplicand) ;
+  public: void operator *= (const uint32_t inMultiplicand) ;
 
 //--- Division
-  public : void divideBy (const uint32_t inDivisor,
+  public: void divideBy (const uint32_t inDivisor,
                           uint32_t & outRemainder) ;
-  public : void operator /= (const uint32_t inMultiplicand) ;
+  public: void operator /= (const uint32_t inMultiplicand) ;
 
 //--- Bit access
-  public : bool valueAtBitIndex (const uint32_t inIndex) const ;
-  public : void setValueAtBitIndex (const bool inValue, const uint32_t inIndex) ;
+  public: bool valueAtBitIndex (const uint32_t inIndex) const ;
+  public: void setValueAtBitIndex (const bool inValue, const uint32_t inIndex) ;
 
 //--- Value access
-  public : inline uint64_t low  (void) const { return mLow ; }
-  public : inline uint64_t high (void) const { return mHigh ; }
+  public: inline uint64_t low  (void) const { return mLow ; }
+  public: inline uint64_t high (void) const { return mHigh ; }
 
 //--- Example
-  public : static void example (void) ;
+  public: static void example (void) ;
   
 //--- Value as string
-  public : C_String decimalString (void) const ;
+  public: C_String decimalString (void) const ;
 
 //--- Attributes
-  private : uint64_t mLow ;
-  private : uint64_t mHigh ;
+  private: uint64_t mLow ;
+  private: uint64_t mHigh ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

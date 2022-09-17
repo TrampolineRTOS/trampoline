@@ -32,36 +32,36 @@
 
 class C_HTMLString : public C_String {
 //--- Constructors
-  public : C_HTMLString (void) ;
+  public: C_HTMLString (void) ;
   
 //--- Handling copy
-//  public : C_HTMLString (const C_HTMLString & inSource) ;
-//  public : C_HTMLString & operator = (const C_HTMLString & inString) ;
+//  public: C_HTMLString (const C_HTMLString & inSource) ;
+//  public: C_HTMLString & operator = (const C_HTMLString & inString) ;
 
 //--- Output data, without HTML formatting
-  public : void outputRawData (const char * in_Cstring) ;
+  public: void outputRawData (const char * in_Cstring) ;
 
 //--- General stream methods
-  protected : virtual void performActualCharArrayOutput (const char * inCharArray,
+  protected: virtual void performActualCharArrayOutput (const char * inCharArray,
                                                          const int32_t inArrayCount) ;
 
-  protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
+  protected: virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
                                                             const int32_t inArrayCount) ;
 
 //--- Method for writing a HTML table
-  public : void appendCppTitleComment (const C_String & inCommentString,
+  public: void appendCppTitleComment (const C_String & inCommentString,
                                        const C_String & inTableStyleClass) ;
 
 //--- Write start code
-  public : void writeStartCode (const C_String & inWindowTitle,
+  public: void writeStartCode (const C_String & inWindowTitle,
                                 const C_String & inCSSFileName,
                                 const C_String & inCSSContents) ;
 
 //--- Write end code
-  public : void writeEndCode (void) ;
+  public: void writeEndCode (void) ;
 
 //--- Private attributes
-  private : typedef C_String inherited ;
+  private: typedef C_String inherited ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

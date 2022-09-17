@@ -28,11 +28,11 @@
 
 class AC_FileHandleForWriting : public AC_FileHandle {
 //--- Constructor
-  protected : AC_FileHandleForWriting (const C_String & inFilePath,
+  protected: AC_FileHandleForWriting (const C_String & inFilePath,
                                        const char * inMode) ;
 
 //--- Virtual destructor
-  public : virtual ~ AC_FileHandleForWriting (void) ;
+  public: virtual ~ AC_FileHandleForWriting (void) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -98,7 +98,7 @@ setter @debugCommandInput getCommand
           cursorPos--
           [!?command removeCharacterAtIndex ?* !cursorPos]
           message "\u001B[1D\u001B[K"
-          @uint remainingChars = [command length] - cursorPos
+          let @uint remainingChars = [command length] - cursorPos
           if remainingChars > 0 then
             message [command rightSubString !remainingChars]
             message "\u001B[" + remainingChars + "D"
@@ -117,7 +117,7 @@ setter @debugCommandInput getCommand
           [!?command insertCharacterAtIndex !inputChar !cursorPos]
           message [inputChar string]
           cursorPos++
-          @uint remainingChars = [command length] - cursorPos
+          let @uint remainingChars = [command length] - cursorPos
           if remainingChars > 0 then
             message [command rightSubString !remainingChars]
             message "\u001B[" + remainingChars + "D"

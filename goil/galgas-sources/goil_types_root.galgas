@@ -63,10 +63,10 @@ func emptyApplicationDefinition -> @applicationDefinition result {
 func osObject
   ?let @objectsMap objects
   ->@objectAttributes os {
-  @objectKind objectsForKind
+  let @objectKind objectsForKind
   [objects get !lstringWith(!"OS") ?objectsForKind]
-  @lstringlist names = [[objectsForKind objects] keyList]
-  @lstring name
+  let @lstringlist names = [[objectsForKind objects] keyList]
+  let @lstring name
   [names first ?name]
   [[objectsForKind objects] get !name ?os]
 }
@@ -77,7 +77,7 @@ func objectForKindAndName
   ?let @string name
   ->@objectAttributes object {
   if [objects hasKey !kind] then
-    @objectKind kindObj
+    let @objectKind kindObj
     [objects get !lstringWith(!kind) ?kindObj]
     if [[kindObj objects] hasKey !name] then
       [[kindObj objects] get !lstringWith(!name) ?object]
@@ -94,8 +94,8 @@ proc setObjectForKindAndName
   ?let @string kind
   ?let @string name
   ?let @objectAttributes object {
-  @lstring lkind = lstringWith(!kind)
-  @lstring lname = lstringWith(!name)
+  let @lstring lkind = lstringWith(!kind)
+  let @lstring lname = lstringWith(!name)
   @objectKind kindObj = @objectKind. new { !@objectKindMap. emptyMap}
   if [objects hasKey !kind] then
     [!?objects del !lkind ?kindObj]
@@ -124,8 +124,8 @@ func listInOS
   ?let @objectsMap objects
   ?let @string attributeName
   ->@identifierList items {
-  @object_t itemsContainer
-  @objectAttributes os = osObject(!objects)
+  let @object_t itemsContainer
+  let @objectAttributes os = osObject(!objects)
   [[os objectParams] get !lstringWith(!attributeName) ?itemsContainer]
   items = multipleAttributeOrError(!itemsContainer !attributeName)
 }

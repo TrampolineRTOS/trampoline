@@ -35,21 +35,21 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 class cIndexEntryNode {
-  public : cIndexEntryNode * mInfPtr ;
-  public : cIndexEntryNode * mSupPtr ;
-  public : int32_t mBalance ;
-  public : const C_String mKey ;
-  public : TC_UniqueArray <C_String> mDescriptorArray ;
+  public: cIndexEntryNode * mInfPtr ;
+  public: cIndexEntryNode * mSupPtr ;
+  public: int32_t mBalance ;
+  public: const C_String mKey ;
+  public: TC_UniqueArray <C_String> mDescriptorArray ;
 
 //--- Constructor
-  public : cIndexEntryNode (const C_String & inKey) ;
+  public: cIndexEntryNode (const C_String & inKey) ;
 
 //--- Destructor
-  public : virtual ~ cIndexEntryNode (void) ;
+  public: virtual ~ cIndexEntryNode (void) ;
 
 //--- No copy
-  private : cIndexEntryNode (const cIndexEntryNode &) ;
-  private : cIndexEntryNode & operator = (const cIndexEntryNode &) ;
+  private: cIndexEntryNode (const cIndexEntryNode &) ;
+  private: cIndexEntryNode & operator = (const cIndexEntryNode &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

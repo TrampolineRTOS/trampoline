@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2008, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2008, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -54,82 +54,82 @@ class cMapNode ;
 
 class AC_GALGAS_map : public AC_GALGAS_root {
 //--------------------------------- Constructor
-  protected : AC_GALGAS_map (const bool inActivateReplacementSuggestions) ;
+  protected: AC_GALGAS_map (const bool inActivateReplacementSuggestions) ;
 
 //--------------------------------- Virtual destructor
-  public : virtual ~ AC_GALGAS_map (void) ;
+  public: virtual ~ AC_GALGAS_map (void) ;
 
 //--------------------------------- Handle copy
-  public : AC_GALGAS_map (const AC_GALGAS_map & inSource) ;
-  public : AC_GALGAS_map & operator = (const AC_GALGAS_map & inSource) ;
+  public: AC_GALGAS_map (const AC_GALGAS_map & inSource) ;
+  public: AC_GALGAS_map & operator = (const AC_GALGAS_map & inSource) ;
 
 //--- count
-  public : VIRTUAL_IN_DEBUG uint32_t count (void) const ;
+  public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
-  public : VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedMap != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedMap != NULL ; }
 
 //--- drop
-  public : VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG void drop (void) ;
 
 //--- Create a new map
-  protected : VIRTUAL_IN_DEBUG void makeNewEmptyMap (LOCATION_ARGS) ;
+  protected: VIRTUAL_IN_DEBUG void makeNewEmptyMap (LOCATION_ARGS) ;
 
-  protected : VIRTUAL_IN_DEBUG void makeNewEmptyMapWithMapToOverride (const AC_GALGAS_map & inMapToOverride
+  protected: VIRTUAL_IN_DEBUG void makeNewEmptyMapWithMapToOverride (const AC_GALGAS_map & inMapToOverride
                                                                       COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Insert or Replace
-  protected : VIRTUAL_IN_DEBUG void performInsertOrReplace (const capCollectionElement & inAttributes) ;
+  protected: VIRTUAL_IN_DEBUG void performInsertOrReplace (const capCollectionElement & inAttributes) ;
 
 //--------------------------------- Insert
-  private : VIRTUAL_IN_DEBUG void insulate (LOCATION_ARGS) ;
+  private: VIRTUAL_IN_DEBUG void insulate (LOCATION_ARGS) ;
   
-  private : VIRTUAL_IN_DEBUG void insulateCurrentAndOverridenMaps (LOCATION_ARGS) ;
+  private: VIRTUAL_IN_DEBUG void insulateCurrentAndOverridenMaps (LOCATION_ARGS) ;
   
-  protected : VIRTUAL_IN_DEBUG void performInsert (const capCollectionElement & inAttributes,
+  protected: VIRTUAL_IN_DEBUG void performInsert (const capCollectionElement & inAttributes,
                                                    C_Compiler * inCompiler,
                                                    const char * inInsertErrorMessage,
                                                    const char * inShadowErrorMessage
                                                    COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Search for 'with' read only instruction
-  public : VIRTUAL_IN_DEBUG const cCollectionElement * readAccessForWithInstruction (const GALGAS_string & inKey) const ;
+  public: VIRTUAL_IN_DEBUG const cCollectionElement * readAccessForWithInstruction (const GALGAS_string & inKey) const ;
 
-  public : VIRTUAL_IN_DEBUG cCollectionElement * readWriteAccessForWithInstructionWithErrorMessage (C_Compiler * inCompiler,
+  public: VIRTUAL_IN_DEBUG cCollectionElement * readWriteAccessForWithInstructionWithErrorMessage (C_Compiler * inCompiler,
                                                                                                     const GALGAS_lstring & inKey,
                                                                                                     const char * inSearchErrorMessage
                                                                                                     COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Search
-  protected : VIRTUAL_IN_DEBUG cMapNode * searchEntryInMap (const C_String & inKey) const ;
+  protected: VIRTUAL_IN_DEBUG cMapNode * searchEntryInMap (const C_String & inKey) const ;
 
-  protected : VIRTUAL_IN_DEBUG const cCollectionElement * performSearch (const GALGAS_lstring & inKey,
+  protected: VIRTUAL_IN_DEBUG const cCollectionElement * performSearch (const GALGAS_lstring & inKey,
                                                                          C_Compiler * inCompiler,
                                                                          const char * inSearchErrorMessage
                                                                          COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG const cMapElement * searchForReadingAttribute (const GALGAS_string & inKey,
+  protected: VIRTUAL_IN_DEBUG const cMapElement * searchForReadingAttribute (const GALGAS_string & inKey,
                                                                               C_Compiler * inCompiler
                                                                               COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG const cMapElement * searchForKey (const GALGAS_string & inKey) const ;
+  protected: VIRTUAL_IN_DEBUG const cMapElement * searchForKey (const GALGAS_string & inKey) const ;
 
-  protected : VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_string & inKey,
+  protected: VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_string & inKey,
                                                                           const bool inErrorOnUnknownKey,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-  protected : VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_lstring & inKey,
+  protected: VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_lstring & inKey,
                                                                           C_Compiler * inCompiler,
                                                                           const char * inSearchErrorMessage
                                                                           COMMA_LOCATION_ARGS) ;
 
-  protected : VIRTUAL_IN_DEBUG void getOverridenMap (AC_GALGAS_map & outMap,
+  protected: VIRTUAL_IN_DEBUG void getOverridenMap (AC_GALGAS_map & outMap,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Remove
-  protected : VIRTUAL_IN_DEBUG void performRemove (GALGAS_lstring & inKey,
+  protected: VIRTUAL_IN_DEBUG void performRemove (GALGAS_lstring & inKey,
                                                    capCollectionElement & outResult,
                                                    C_Compiler * inCompiler,
                                                    const char * inRemoveErrorMessage
@@ -137,39 +137,39 @@ class AC_GALGAS_map : public AC_GALGAS_root {
 
 
 //--------------------------------- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_levels (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_levels (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKey (const GALGAS_string & inKey
+  public: VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKey (const GALGAS_string & inKey
                                                        COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKeyAtLevel (const GALGAS_string & inKey,
-                                                              const GALGAS_uint & inLevel
-                                                              COMMA_LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKeyAtLevel (const GALGAS_string & inKey,
+                                                             const GALGAS_uint & inLevel
+                                                             COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_location getter_locationForKey (const GALGAS_string & inKey,
-                                                                   C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_location getter_locationForKey (const GALGAS_string & inKey,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringset getter_keySet (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_stringset getter_keySet (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_keyList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_keyList (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
 //--------------------------------- Introspection
-  public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
+  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
 
 //--------------------------------- Implementation of reader 'description'
-  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
                                               const int32_t inIndentation) const ;
 
 //--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const AC_GALGAS_map & inOperand) const ;
+  public: typeComparisonResult objectCompare (const AC_GALGAS_map & inOperand) const ;
 
 //--------------------------------- Internal methods for enumeration
-  protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const ;
+  protected: VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const ;
 
-//--------------------------------- Attributes
+//--------------------------------- Properties
   private: cSharedMapRoot * mSharedMap ;
   private: bool mActivateReplacementSuggestions ;
 } ;

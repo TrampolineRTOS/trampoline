@@ -102,13 +102,13 @@ func version -> @string result
 #-----------------------------------------------------------------------------*
 func majorVersion -> @bigint result
 {
-  @string version = @application.projectVersionString
-  @stringlist versionComponents = [version componentsSeparatedByString !"."]
+  let @string version = @application.projectVersionString
+  let @stringlist versionComponents = [version componentsSeparatedByString !"."]
   if [versionComponents length] > 0 then
     result =
       [[[versionComponents mValueAtIndex !0] decimalUnsignedNumber] bigint]
   else
-    result = 0_G
+    result = 0
   end
 }
 
@@ -117,13 +117,13 @@ func majorVersion -> @bigint result
 #-----------------------------------------------------------------------------*
 func minorVersion -> @bigint result
 {
-  @string version = @application.projectVersionString
-  @stringlist versionComponents = [version componentsSeparatedByString !"."]
+  let @string version = @application.projectVersionString
+  let @stringlist versionComponents = [version componentsSeparatedByString !"."]
   if [versionComponents length] > 1 then
     result =
       [[[versionComponents mValueAtIndex !1] decimalUnsignedNumber] bigint]
   else
-    result = 0_G
+    result = 0
   end
 }
 
@@ -132,13 +132,13 @@ func minorVersion -> @bigint result
 #-----------------------------------------------------------------------------*
 func revision -> @bigint result
 {
-  @string version = @application.projectVersionString
-  @stringlist versionComponents = [version componentsSeparatedByString !"."]
+  let @string version = @application.projectVersionString
+  let @stringlist versionComponents = [version componentsSeparatedByString !"."]
   if [versionComponents length] > 2 then
     result =
       [[[versionComponents mValueAtIndex !2] decimalUnsignedNumber] bigint]
   else
-    result = 0_G
+    result = 0
   end
 }
 
@@ -171,7 +171,7 @@ func currentDateTime -> @string result
 #-----------------------------------------------------------------------------*
 func max8bitsUnsignedInt -> @bigint result
 {
-  result = [255 bigint]
+  result = 255
 }
 
 #-----------------------------------------------------------------------------*
@@ -179,7 +179,7 @@ func max8bitsUnsignedInt -> @bigint result
 #-----------------------------------------------------------------------------*
 func max8bitsSignedInt -> @bigint result
 {
-  result = [127 bigint]
+  result = 127
 }
 
 #-----------------------------------------------------------------------------*
@@ -187,7 +187,7 @@ func max8bitsSignedInt -> @bigint result
 #-----------------------------------------------------------------------------*
 func min8bitsSignedInt -> @bigint result
 {
-  result = [-128s bigint]
+  result = -128
 }
 
 #-----------------------------------------------------------------------------*
@@ -195,7 +195,7 @@ func min8bitsSignedInt -> @bigint result
 #-----------------------------------------------------------------------------*
 func max16bitsUnsignedInt -> @bigint result
 {
-  result = [65535 bigint]
+  result = 65535
 }
 
 #-----------------------------------------------------------------------------*
@@ -203,15 +203,15 @@ func max16bitsUnsignedInt -> @bigint result
 #-----------------------------------------------------------------------------*
 func max16bitsSignedInt -> @bigint result
 {
-  result = [32767 bigint]
+  result = 32767
 }
 
 #-----------------------------------------------------------------------------*
-# Returns the min 32 bits signed integer
+# Returns the min 16 bits signed integer
 #-----------------------------------------------------------------------------*
 func min16bitsSignedInt -> @bigint result
 {
-  result = [-32768s bigint]
+  result = -32768
 }
 
 #-----------------------------------------------------------------------------*

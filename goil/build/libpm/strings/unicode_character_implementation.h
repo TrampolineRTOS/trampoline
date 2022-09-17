@@ -200,19 +200,16 @@ utf32 unicodeToUpper (const utf32 inUnicodeCharacter) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool isUnicodeLetter (const utf32 inUnicodeCharacter) {
-  bool result = false ;
-  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
-  if (pageIndex <= gLastNamePage) {
-    const uint32_t * page = gNamePages [pageIndex] ;
-    if (page != NULL) {
-      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
-      if (entry != 0) {
-        const uint32_t category = entry >> 27 ;
-        result = (category >= kUnicodeCategory_Lu) && (category <= kUnicodeCategory_Lo) ;
-      }
-    }
-  } 
-  return result ;
+  return ((0x61 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x7A)) ||
+         ((0x41 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x5A)) ||
+         (0xB5 == UNICODE_VALUE (inUnicodeCharacter)) ||
+         ((0xC0 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0xD6)) ||
+         ((0xD8 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0xF6)) ||
+         ((0xF8 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x2B4)) ||
+         ((0x38E <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x3A1)) ||
+         ((0x3A3 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x3F5)) ||
+         ((0x3F7 <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x481)) ||
+         ((0x48A <= UNICODE_VALUE (inUnicodeCharacter)) && (UNICODE_VALUE (inUnicodeCharacter) <= 0x523)) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

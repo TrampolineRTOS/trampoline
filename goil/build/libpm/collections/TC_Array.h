@@ -45,23 +45,23 @@ template <typename TYPE> void swap (TC_Array <TYPE> & ioOperand1,
 
 template <typename TYPE> class cSharedArray : public C_SharedObject, public TC_UniqueArray<TYPE> {
 //--- Default Constructor
-  public : cSharedArray (void) :
+  public: cSharedArray (void) :
   C_SharedObject (HERE),
   TC_UniqueArray<TYPE> () {
   }
   
 //--- Destructor
-  public : virtual ~ cSharedArray (void) {
+  public: virtual ~ cSharedArray (void) {
   }
   
 //--- Allocation Constructor (empty array)
-  public : cSharedArray (const int inCapacity COMMA_LOCATION_ARGS) :
+  public: cSharedArray (const int inCapacity COMMA_LOCATION_ARGS) :
   C_SharedObject (THERE),
   TC_UniqueArray<TYPE> (inCapacity COMMA_THERE) {
   }
   
 //--- Allocation Constructor (array initialized with inValue)
-  public : cSharedArray (const int inCount,
+  public: cSharedArray (const int inCount,
                          const TYPE & inValue COMMA_LOCATION_ARGS) :
   C_SharedObject (THERE),
   TC_UniqueArray<TYPE> (inCount, inValue COMMA_THERE) {
@@ -77,115 +77,115 @@ template <typename TYPE> class cSharedArray : public C_SharedObject, public TC_U
 
 template <typename TYPE> class TC_Array {
 //--- Default Constructor
-  public : TC_Array (void) ;
+  public: TC_Array (void) ;
   
 //--- Destructor
-  public : virtual ~ TC_Array (void) ;
+  public: virtual ~ TC_Array (void) ;
   
 //--- Allocation Constructor (empty array)
-  public : TC_Array (const int inCapacity COMMA_LOCATION_ARGS) ;
+  public: TC_Array (const int inCapacity COMMA_LOCATION_ARGS) ;
   
 //--- Allocation Constructor (array initialized with inValue)
-  public : TC_Array (const int inCount,
+  public: TC_Array (const int inCount,
                      const TYPE & inValue COMMA_LOCATION_ARGS) ;
   
 //--- Handle Copy
-  public : TC_Array (const TC_Array <TYPE> &) ;
-  public : TC_Array <TYPE> & operator = (const TC_Array <TYPE> &) ;
-  private : void insulate (void) ;
+  public: TC_Array (const TC_Array <TYPE> &) ;
+  public: TC_Array <TYPE> & operator = (const TC_Array <TYPE> &) ;
+  private: void insulate (void) ;
 
 //--- swap
   friend void swap <TYPE> (TC_Array <TYPE> & ioOperand1,
                            TC_Array <TYPE> & ioOperand2) ;
 
 //--- Methods for setting capacity
-  public : void setCapacity (const int32_t inNewCapacity) ;
+  public: void setCapacity (const int32_t inNewCapacity) ;
 
 //--- Get Count
-  public : inline int32_t count (void) const ;
+  public: inline int32_t count (void) const ;
 
 //--- Array Pointer
-  public : const TYPE * unsafeArrayPointer (void) const ;
+  public: const TYPE * unsafeArrayPointer (void) const ;
 
 //--- Add objects at the end of the array
-  public : void appendObject (const TYPE & inValue) ; // inValue is copied
+  public: void appendObject (const TYPE & inValue) ; // inValue is copied
 
 //--- Set Count To zero
-  public : void setCountToZero (void) ;
+  public: void setCountToZero (void) ;
 
 //--- Remove all objects and deallocate
-  public : void free (void) ;
+  public: void free (void) ;
 
 //--- Call operators
-  public : TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) ;
-//  public : const TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
-  public : const TYPE operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
+  public: TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) ;
+//  public: const TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
+  public: const TYPE operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
 
 //--- Element access (with index checking)
-  public : const TYPE lastObject (LOCATION_ARGS) const ;
-//  public : TYPE & lastObject (LOCATION_ARGS) ;
+  public: const TYPE lastObject (LOCATION_ARGS) const ;
+//  public: TYPE & lastObject (LOCATION_ARGS) ;
 
-  public : void setObjectAtIndex (const TYPE & inObject,
+  public: void setObjectAtIndex (const TYPE & inObject,
                                   const int32_t inIndex
                                   COMMA_LOCATION_ARGS) ;
 
 //--- Insert object at index (0 <= index <= count)
-  public : void insertObjectAtIndex (const TYPE & inValue,
+  public: void insertObjectAtIndex (const TYPE & inValue,
                                      const int32_t inIndex
                                      COMMA_LOCATION_ARGS) ; // inValue is copied
 
 //------------------------------------ Sorted array operations
 //--- Remove an object, suppose the array is ordered
-  public : void removeObjectFromOrderedArray (const TYPE & inKey) ;
+  public: void removeObjectFromOrderedArray (const TYPE & inKey) ;
 
 // Test is based on 'compare' method, and inValue is copied, object is added if not already in array
-  public : void appendUniqueObjectInOrderedArray (const TYPE & inKey) ;
+  public: void appendUniqueObjectInOrderedArray (const TYPE & inKey) ;
 
 //--- Return -1 if not found
-  public : int32_t indexOfObjectInOrderedArray (const TYPE & inKey) const ;
+  public: int32_t indexOfObjectInOrderedArray (const TYPE & inKey) const ;
 
 //--- Intersection
-  public : void intersectionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
+  public: void intersectionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
                                               TC_Array<TYPE> & outResult) const ;
 
 //--- Union
-  public : void unionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
+  public: void unionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
                                        TC_Array<TYPE> & outResult) const ;
 
 //--- substract
-  public : void substractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
+  public: void substractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
                                            TC_Array<TYPE> & outResult) const ;
 
 //------------------------------------
 
 //--- Remove last object(s)
-  public : void removeLastObject (LOCATION_ARGS) ;
-  public : void removeLastObjects (const int32_t inCount COMMA_LOCATION_ARGS) ;
+  public: void removeLastObject (LOCATION_ARGS) ;
+  public: void removeLastObjects (const int32_t inCount COMMA_LOCATION_ARGS) ;
 
 //--- Comparisons (based on == operator on objects)
-  public : bool operator == (const TC_Array <TYPE> & inOperand) const ;
+  public: bool operator == (const TC_Array <TYPE> & inOperand) const ;
 
-  public : inline bool operator != (const TC_Array <TYPE> & inOperand) const {
+  public: inline bool operator != (const TC_Array <TYPE> & inOperand) const {
     return ! ((*this) == inOperand) ;
   }
 
 //--- Allocation with provided data
-  public : void setDataFromPointer (TYPE * & ioDataPtr,
+  public: void setDataFromPointer (TYPE * & ioDataPtr,
                                     const int32_t inDataLength) ;
 
 //--- Append data
-  public : void appendDataFromPointer (const TYPE * inDataPtr,
+  public: void appendDataFromPointer (const TYPE * inDataPtr,
                                        const int32_t inDataLength) ;
   
 //--- Remove objects at index (0 <= index < count)
-  public : void removeObjectAtIndex (const int32_t inIndex
+  public: void removeObjectAtIndex (const int32_t inIndex
                                      COMMA_LOCATION_ARGS) ;
-  public : void removeObjectsAtIndex (const int32_t inCount,
+  public: void removeObjectsAtIndex (const int32_t inCount,
                                       const int32_t inStartingIndex
                                       COMMA_LOCATION_ARGS) ;
 
 //--- Shared Array
-  private : cSharedArray <TYPE> * mSharedArray ;
+  private: cSharedArray <TYPE> * mSharedArray ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

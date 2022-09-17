@@ -1802,7 +1802,7 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
       }
     }else{
-      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'." COMMA_THERE) ;
     }
   }
 }
@@ -1845,7 +1845,7 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
           }
         }
       }else{
-        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'." COMMA_THERE) ;
       }
     }
   }
@@ -1872,7 +1872,7 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
       }
     }else{
-      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'." COMMA_THERE) ;
     }
   }
 }
@@ -1915,7 +1915,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
           }
         }
       }else{
-        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.mString + "'." COMMA_THERE) ;
       }
     }
   }
@@ -2196,7 +2196,7 @@ static bool writeFile (const C_String & inMessage,
       ggs_printFileOperationSuccess (inMessage + " '" + inFullPathName + "'.\n") ;
     }
   }else{
-    ggs_printWarning (inCompiler, C_SourceTextInString(), C_IssueWithFixIt (), C_String ("Need to write '") + inFullPathName + "'.\n" COMMA_HERE) ;
+    ggs_printWarning (inCompiler, C_SourceTextInString(), C_IssueWithFixIt (), C_String ("Need to write '") + inFullPathName + "'." COMMA_HERE) ;
   }
   return ok ;
 }

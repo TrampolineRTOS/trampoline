@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  acPtr_class : Base class for GALGAS class                                                    
+//  AC_GALGAS_reference_class : base class for reference class objects
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2008, ..., 2017 Pierre Molinaro.
+//  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -18,14 +18,14 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "galgas2/AC_GALGAS_class.h"
-#include "galgas2/acPtr_class.h"
+#include "galgas2/AC_GALGAS_reference_class.h"
+#include "galgas2/acStrongPtr_class.h"
 #include "galgas2/C_galgas_type_descriptor.h"
 #include "strings/C_String.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
-const C_galgas_type_descriptor * AC_GALGAS_class::dynamicTypeDescriptor (void) const {
+const C_galgas_type_descriptor * AC_GALGAS_reference_class::dynamicTypeDescriptor (void) const {
   const C_galgas_type_descriptor * result = NULL ;
   if (NULL != mObjectPtr) {
     result = mObjectPtr->classDescriptor () ;
@@ -35,53 +35,50 @@ const C_galgas_type_descriptor * AC_GALGAS_class::dynamicTypeDescriptor (void) c
 
 //----------------------------------------------------------------------------------------------------------------------
 
-AC_GALGAS_class::AC_GALGAS_class (const bool inIsShared) :
+AC_GALGAS_reference_class::AC_GALGAS_reference_class (void) :
 AC_GALGAS_root (),
-mObjectPtr (NULL),
-mIsShared (inIsShared) {
+mObjectPtr (NULL) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-AC_GALGAS_class::AC_GALGAS_class (const acPtr_class * inPointer, const bool inIsShared) :
+AC_GALGAS_reference_class::AC_GALGAS_reference_class (const acStrongPtr_class * inPointer) :
 AC_GALGAS_root (),
-mObjectPtr (NULL),
-mIsShared (inIsShared) {
-  macroAssignSharedObject (mObjectPtr, (acPtr_class *) inPointer) ;
+mObjectPtr (NULL) {
+  macroAssignSharedObject (mObjectPtr, (acStrongPtr_class *) inPointer) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-AC_GALGAS_class::~AC_GALGAS_class (void) {
+AC_GALGAS_reference_class::~AC_GALGAS_reference_class (void) {
   macroDetachSharedObject (mObjectPtr) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void AC_GALGAS_class::drop (void) {
+void AC_GALGAS_reference_class::drop (void) {
   macroDetachSharedObject (mObjectPtr) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-AC_GALGAS_class::AC_GALGAS_class (const AC_GALGAS_class & inSource) :
+AC_GALGAS_reference_class::AC_GALGAS_reference_class (const AC_GALGAS_reference_class & inSource) :
 AC_GALGAS_root (),
-mObjectPtr (NULL),
-mIsShared (inSource.mIsShared) {
+mObjectPtr (NULL) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-AC_GALGAS_class & AC_GALGAS_class::operator = (const AC_GALGAS_class & inSource) {
+AC_GALGAS_reference_class & AC_GALGAS_reference_class::operator = (const AC_GALGAS_reference_class & inSource) {
   macroAssignSharedObject (mObjectPtr, inSource.mObjectPtr) ;
   return * this ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void AC_GALGAS_class::description (C_String & ioString,
-                                   const int32_t inIndentation) const {
+void AC_GALGAS_reference_class::description (C_String & ioString,
+                                             const int32_t inIndentation) const {
   ioString << "<@"
            << staticTypeDescriptor ()->mGalgasTypeName
            << ":" ;
@@ -91,16 +88,6 @@ void AC_GALGAS_class::description (C_String & ioString,
     ioString << "not built" ;
   }
   ioString << ">" ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void AC_GALGAS_class::insulate (LOCATION_ARGS) {
-  if (!mIsShared && isValid () && !mObjectPtr->isUniquelyReferenced ()) {
-    acPtr_class * p = mObjectPtr->duplicate (THERE) ;
-    macroAssignSharedObject (mObjectPtr, p) ;
-    macroDetachSharedObject (p) ;
-  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------

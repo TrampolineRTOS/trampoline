@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2009, ..., 2018 Pierre Molinaro.
+//  Copyright (C) 2009, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -29,50 +29,50 @@
 
 class C_StringCommandLineOption : public C_CommandLineOption {
 //--- Constructor
-  public : C_StringCommandLineOption (const char * inDomainName,
+  public: C_StringCommandLineOption (const char * inDomainName,
                                       const char * inIdentifier,
                                       const char inChar,
                                       const char * inString,
                                       const char * inComment,
                                       const char * inDefaultValue) ;
 //--- No Copy
-  private : C_StringCommandLineOption (const C_StringCommandLineOption &) ;
-  private : C_StringCommandLineOption & operator = (const C_StringCommandLineOption &) ;
+  private: C_StringCommandLineOption (const C_StringCommandLineOption &) ;
+  private: C_StringCommandLineOption & operator = (const C_StringCommandLineOption &) ;
 
 //--- Attributes
-  private : C_StringCommandLineOption * mNext ;
-  public : C_String mValue ;
-  public : inline C_String getter_value (void) const { return mValue ; }
-  public : const char * mDefaultValue ;
+  private: C_StringCommandLineOption * mNext ;
+  public: C_String mValue ;
+  public: inline C_String readProperty_value (void) const { return mValue ; }
+  public: const char * mDefaultValue ;
 
 //--- Static methods
-  public : static void setStringOptionForCommandChar (const char * inCommandCommandLineOptionString,
+  public: static void setStringOptionForCommandChar (const char * inCommandCommandLineOptionString,
                                                       bool & outFound,
                                                       bool & outCommandLineOptionStringIsValid) ;
-  public : static void setStringOptionForCommandString (const char * inCommandCommandLineOptionString,
+  public: static void setStringOptionForCommandString (const char * inCommandCommandLineOptionString,
                                                         bool & outFound,
                                                         bool & outCommandLineOptionStringIsValid)  ;
-  public : static void printUsageOfStringOptions (void) ;
-  public : static void printStringOptions (void) ;
+  public: static void printUsageOfStringOptions (void) ;
+  public: static void printStringOptions (void) ;
 
-  public : static void releaseStrings (void) ; // Called at the end of main routine
+  public: static void releaseStrings (void) ; // Called at the end of main routine
 
 //--- Option introspection
-  public : static void getStringOptionNameList (TC_UniqueArray <C_String> & outArray) ;
+  public: static void getStringOptionNameList (TC_UniqueArray <C_String> & outArray) ;
 
-  public : static utf32 getStringOptionInvocationLetter (const C_String & inDomainName,
+  public: static utf32 getStringOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static C_String getStringOptionInvocationString (const C_String & inDomainName,
+  public: static C_String getStringOptionInvocationString (const C_String & inDomainName,
                                                           const C_String & inIdentifier) ;
 
-  public : static C_String getStringOptionCommentString (const C_String & inDomainName,
+  public: static C_String getStringOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static C_String getStringOptionValue (const C_String & inDomainName,
+  public: static C_String getStringOptionValue (const C_String & inDomainName,
                                                  const C_String & inIdentifier) ;
 
-  public : static void setStringOptionValue (const C_String & inDomainName,
+  public: static void setStringOptionValue (const C_String & inDomainName,
                                              const C_String & inIdentifier,
                                              const C_String & inValue) ;
 } ;

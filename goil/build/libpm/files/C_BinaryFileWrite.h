@@ -37,23 +37,23 @@ class C_BinaryFileWrite : public AC_FileHandleForWriting {
 //    outSuccessfullyOpened is returned true is inFileName is empty or if file is successfully opened
 //    outSuccessfullyOpened is returned false is inFileName is not empty and file cannot be successfully opened
 //    The destructor will close the file (is successfully opened)
-  public : C_BinaryFileWrite (const C_String & inFilePath) ;
+  public: C_BinaryFileWrite (const C_String & inFilePath) ;
 
 //--- Destructor closes the file
-  public : virtual ~ C_BinaryFileWrite (void) ;
+  public: virtual ~ C_BinaryFileWrite (void) ;
 
 //--- No copy
-  private : C_BinaryFileWrite (C_BinaryFileWrite &) ;
-  private : C_BinaryFileWrite & operator = (C_BinaryFileWrite &) ;
+  private: C_BinaryFileWrite (C_BinaryFileWrite &) ;
+  private: C_BinaryFileWrite & operator = (C_BinaryFileWrite &) ;
   
 //--- 
-  public : void appendData (const C_Data & inData) ;
+  public: void appendData (const C_Data & inData) ;
 
 //--- Flush print
-  public : virtual void flush (void) ;
+  public: virtual void flush (void) ;
 
 //--- Close file (does nothing is file is not open)
-  public : virtual bool close (void) ;
+  public: virtual bool close (void) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

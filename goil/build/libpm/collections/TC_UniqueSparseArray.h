@@ -53,48 +53,48 @@ template <typename TYPE> void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
 
 template <typename TYPE> class TC_UniqueSparseArray {
 //--- Default Constructor
-  public : TC_UniqueSparseArray (const TYPE & inDefaultValue) ;
+  public: TC_UniqueSparseArray (const TYPE & inDefaultValue) ;
   
 //--- Virtual Destructor
-  public : virtual ~TC_UniqueSparseArray (void) ;
+  public: virtual ~TC_UniqueSparseArray (void) ;
 
 //--- No copy
-  private : TC_UniqueSparseArray (const TC_UniqueSparseArray <TYPE> &) ;
-  private : TC_UniqueSparseArray <TYPE> & operator = (const TC_UniqueSparseArray <TYPE> &) ;
+  private: TC_UniqueSparseArray (const TC_UniqueSparseArray <TYPE> &) ;
+  private: TC_UniqueSparseArray <TYPE> & operator = (const TC_UniqueSparseArray <TYPE> &) ;
 
 //--- Remove all objects and deallocate
-  public : void free (void) ;
+  public: void free (void) ;
 
 //--- Set entry
-  public : void setObjectAtIndex (const TYPE & inValue,
+  public: void setObjectAtIndex (const TYPE & inValue,
                                   const uint32_t inIndex) ;
 
 //--- Get entry
-  public : TYPE objectAtIndex (const uint32_t inIndex) const ;
+  public: TYPE objectAtIndex (const uint32_t inIndex) const ;
   
 //--- Is default Value at index ?
-  public : bool isDefaultObjectAtIndex (const uint32_t inIndex) const ;
+  public: bool isDefaultObjectAtIndex (const uint32_t inIndex) const ;
 
 //--- Find first entry with index
 //    Search from ioIndex the first explicit found entry
 //    On return :
 //      - returns false if no entry found (ioIndex unknown)
 //      - return true if found, and ioIndex points to this entry
-  public : bool findFirstEntryWithIndex (uint32_t & ioIndex) const ;
+  public: bool findFirstEntryWithIndex (uint32_t & ioIndex) const ;
 
 //--- Embedded classes
-  protected : class TC_arrayL { public: TYPE mObjectArray [256] ; public: uint32_t mExplicitValueFlags [32] ; } ;
-  protected : class TC_arrayH { public: TC_arrayL * mArrayL [256] ; } ;
-  protected : class TC_arrayU { public: TC_arrayH * mArrayH [256] ; } ;
+  protected: class TC_arrayL { public: TYPE mObjectArray [256] ; public: uint32_t mExplicitValueFlags [32] ; } ;
+  protected: class TC_arrayH { public: TC_arrayL * mArrayL [256] ; } ;
+  protected: class TC_arrayU { public: TC_arrayH * mArrayH [256] ; } ;
 
 //--- Protected attributes
-  protected : TC_arrayU * mArray [256] ;
-  protected : TYPE mDefaultValue ;
+  protected: TC_arrayU * mArray [256] ;
+  protected: TYPE mDefaultValue ;
 
 //--- Internal methods
-  protected : void freeArrayH (TC_arrayH * & ioArrayH) ;
-  protected : void freeArrayU (TC_arrayU * & ioArrayU) ;
-  protected : bool findFirstEntryWithIndexAfterNotFound (uint32_t & ioIndex) const ;
+  protected: void freeArrayH (TC_arrayH * & ioArrayH) ;
+  protected: void freeArrayU (TC_arrayU * & ioArrayU) ;
+  protected: bool findFirstEntryWithIndexAfterNotFound (uint32_t & ioIndex) const ;
 
 //--- swap
   friend void swap <TYPE> (TC_UniqueSparseArray <TYPE> & ioOperand1,

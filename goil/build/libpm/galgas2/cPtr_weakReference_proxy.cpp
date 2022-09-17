@@ -1,8 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 //
-//  This file is part of libpm library                                                           
+//  cPtr_weakReference_proxy : Base class for reference class class
 //
-//  Copyright (C) 2013, ..., 2014 Pierre Molinaro.
+//  This file is part of libpm library
+//
+//  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -16,31 +18,39 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-#import "PMTableViewRefusesFirstResponder.h"
+#include "galgas2/cPtr_weakReference_proxy.h"
+#include "galgas2/acStrongPtr_class.h"
+#include "strings/C_String.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
-@implementation PMTableViewRefusesFirstResponder
-
-//----------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) becomeFirstResponder {
-  return NO ;
+cPtr_weakReference_proxy::cPtr_weakReference_proxy (LOCATION_ARGS) :
+acPtr_class (THERE),
+mStrongObjectPtr (NULL) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-- (NSMenu *) menuForEvent: (NSEvent *) inEvent {
-  const NSPoint location = [self convertPoint:inEvent.locationInWindow fromView:nil] ;
-  const NSInteger clickedRow = [self rowAtPoint:location] ;
-  NSMenu * result = nil ;
-  if (clickedRow >= 0) {
-    [self selectRowIndexes:[NSIndexSet indexSetWithIndex:(NSUInteger) clickedRow] byExtendingSelection:NO];
-    result = mContextualMenu ;
+cPtr_weakReference_proxy::~ cPtr_weakReference_proxy (void) {
+  if (mStrongObjectPtr != NULL) {
+    mStrongObjectPtr->mProxyPtr = NULL ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor * cPtr_weakReference_proxy::classDescriptor (void) const {
+  const C_galgas_type_descriptor * result = NULL ;
+  if (mStrongObjectPtr != NULL) {
+    result = mStrongObjectPtr->classDescriptor () ;
   }
   return result ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-@end
+acPtr_class * cPtr_weakReference_proxy::duplicate (UNUSED_LOCATION_ARGS) const {
+  return NULL ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------

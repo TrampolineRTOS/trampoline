@@ -28,14 +28,14 @@
 
 class cSortedListElement : public cCollectionElement {
 //--- Default constructor
-  public : cSortedListElement (LOCATION_ARGS) ;
+  public: cSortedListElement (LOCATION_ARGS) ;
 
 //--- No copy
-  private : cSortedListElement (const cSortedListElement &) ;
-  private : cSortedListElement & operator = (const cSortedListElement &) ;
+  private: cSortedListElement (const cSortedListElement &) ;
+  private: cSortedListElement & operator = (const cSortedListElement &) ;
 
 //--- Virtual method that comparing element for sorting
-  public : virtual typeComparisonResult compareForSorting (const cSortedListElement * inOperand) const = 0 ;
+  public: virtual typeComparisonResult compareForSorting (const cSortedListElement * inOperand) const = 0 ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

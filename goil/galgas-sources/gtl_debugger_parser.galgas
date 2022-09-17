@@ -75,7 +75,7 @@ rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
   $load$
-  @lstring fileName
+  let @lstring fileName
   select
     $identifier$ ?fileName
   or
@@ -144,10 +144,10 @@ rule <gtl_debugger_command>
     end
   or
     $string$ ?let @lstring fileNameAndLineNum
-    @stringlist components = [[fileNameAndLineNum string] componentsSeparatedByString !":"]
+    let @stringlist components = [[fileNameAndLineNum string] componentsSeparatedByString !":"]
     if [components length] == 2 then
-      @string fileName = [components mValueAtIndex !0]
-      @string lineNum = [components mValueAtIndex !1]
+      let @string fileName = [components mValueAtIndex !0]
+      let @string lineNum = [components mValueAtIndex !1]
       instruction = @gtlBreakpointInstruction.new {
         !.here
         !""
@@ -210,7 +210,7 @@ rule <gtl_debugger_command>
   
   $do$
   select
-    <gtl_step_do_command> ?@gtlInstruction instructionToStepDo
+    <gtl_step_do_command> ?let @gtlInstruction instructionToStepDo
     instruction = @gtlDoInstInstruction.new {
       !.here
       !""
@@ -255,10 +255,10 @@ rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
   $let$
-  <gtl_variable> ?@gtlVarPath variable
+  <gtl_variable> ?let @gtlVarPath variable
   select
     $:=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetInstruction.new { 
       !.here
       !""
@@ -267,7 +267,7 @@ rule <gtl_debugger_command>
     } 
   or
     $+=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetAddInstruction.new {
       !.here
       !""
@@ -276,7 +276,7 @@ rule <gtl_debugger_command>
     } 
   or
     $-=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetSubstractInstruction.new {
       !.here
       !""
@@ -285,7 +285,7 @@ rule <gtl_debugger_command>
     } 
   or
     $*=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetMultiplyInstruction.new {
       !.here
       !""
@@ -294,7 +294,7 @@ rule <gtl_debugger_command>
     } 
   or
     $/=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetDivideInstruction.new {
       !.here
       !""
@@ -303,7 +303,7 @@ rule <gtl_debugger_command>
     } 
   or
     $mod=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetModuloInstruction.new {
       !.here
       !""
@@ -312,7 +312,7 @@ rule <gtl_debugger_command>
     } 
   or
     $<<=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetShiftLeftInstruction.new {
       !.here
       !""
@@ -321,7 +321,7 @@ rule <gtl_debugger_command>
     } 
   or
     $>>=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetShiftRightInstruction.new {
       !.here
       !""
@@ -330,7 +330,7 @@ rule <gtl_debugger_command>
     } 
   or
     $&=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetAndInstruction.new {
       !.here
       !""
@@ -339,7 +339,7 @@ rule <gtl_debugger_command>
     } 
   or
     $|=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetOrInstruction.new {
       !.here
       !""
@@ -348,7 +348,7 @@ rule <gtl_debugger_command>
     } 
   or
     $^=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetXorInstruction.new {
       !.here
       !""
@@ -369,7 +369,7 @@ rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
   $unlet$
-  <gtl_variable> ?@gtlVarPath variable
+  <gtl_variable> ?let @gtlVarPath variable
   instruction = @gtlUnletInstruction.new {
     !.here
     !""
@@ -401,7 +401,7 @@ rule <gtl_step_do_command>
   !@gtlInstruction instruction
 {
   $display$
-  <gtl_variable> ?@gtlVarPath variable  
+  <gtl_variable> ?let @gtlVarPath variable  
   instruction = @gtlDisplayStatementInstruction.new {
     !.here
     !""
@@ -414,7 +414,7 @@ rule <gtl_step_do_command>
   !@gtlInstruction instruction
 {
   $print$ 
-  <gtl_expression> ?@gtlExpression expression
+  <gtl_expression> ?let @gtlExpression expression
   instruction = @gtlPrintStatementInstruction.new {
     !.here
     !""
@@ -451,11 +451,11 @@ rule <gtl_step_do_command>
   @gtlThenElsifStatementList thenElsifList = .emptyList
   @gtlInstructionList elseList = .emptyList
   
-  $if$ @location where = .here
+  $if$ let @location where = .here
   repeat
-    <gtl_expression> ?@gtlExpression condition
+    <gtl_expression> ?let @gtlExpression condition
     $then$
-    <gtl_step_do_command_list> ?@gtlInstructionList instructionList
+    <gtl_step_do_command_list> ?let @gtlInstructionList instructionList
     
     thenElsifList += !condition !instructionList
   while
@@ -485,7 +485,7 @@ rule <gtl_step_do_command_list>
 
   repeat
   while
-    <gtl_step_do_command> ?@gtlInstruction instruction
+    <gtl_step_do_command> ?let @gtlInstruction instruction
     instructionList += !instruction
   end
 }

@@ -274,7 +274,7 @@ void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFileP
           }
         }
       }else{
-        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.stringValue () + "'.\n" COMMA_HERE) ;
+        ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.stringValue () + "'." COMMA_HERE) ;
       }
     }
   }
@@ -290,7 +290,7 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
     }else if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'." COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
@@ -327,7 +327,7 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
     }else if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (inCompiler, C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'." COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
@@ -361,28 +361,28 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
 
 class cCollectionElement_data : public cCollectionElement {
 //--- Private member
-  protected : GALGAS_uint mProperty_data ;
-  public : inline GALGAS_uint attribute_data (void) const { return mProperty_data ; }
+  protected: GALGAS_uint mProperty_data ;
+  public: inline GALGAS_uint attribute_data (void) const { return mProperty_data ; }
 
 //--- Default constructor
-  public : cCollectionElement_data (const GALGAS_uint & inData
+  public: cCollectionElement_data (const GALGAS_uint & inData
                                     COMMA_LOCATION_ARGS) ;
 
 //--- No copy
-  private : cCollectionElement_data (const cCollectionElement_data &) ;
-  private : cCollectionElement_data & operator = (const cCollectionElement_data &) ;
+  private: cCollectionElement_data (const cCollectionElement_data &) ;
+  private: cCollectionElement_data & operator = (const cCollectionElement_data &) ;
 
 //--- Virtual method that checks that all attributes are valid
-  public : virtual bool isValid (void) const ;
+  public: virtual bool isValid (void) const ;
 
 //--- Virtual method for comparing elements
-  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
+  public: virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
 
 //--- Virtual method that returns a copy of current object
-  public : virtual cCollectionElement * copy (void) ;
+  public: virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+ public: virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -28,23 +28,23 @@
 
 class AC_FileHandle {
 //--- 
-  protected : FILE * mFilePtr ;
-  protected : C_String mFilePath ;
+  protected: FILE * mFilePtr ;
+  protected: C_String mFilePath ;
 
 //--- Protected constructor
-  protected : AC_FileHandle (const C_String & inFilePath,
+  protected: AC_FileHandle (const C_String & inFilePath,
                              const char * inMode) ;
 
 //--- No copy
-  private : AC_FileHandle (const AC_FileHandle &) ;
-  private : AC_FileHandle & operator = (const AC_FileHandle &) ;
+  private: AC_FileHandle (const AC_FileHandle &) ;
+  private: AC_FileHandle & operator = (const AC_FileHandle &) ;
 
 //--- Virtual destructor
-  public : virtual ~ AC_FileHandle (void) ;
+  public: virtual ~ AC_FileHandle (void) ;
 
 //---
-  public : inline bool isOpened (void) const { return NULL != mFilePtr ; }
-  public : inline C_String filePath (void) const { return mFilePath ; }
+  public: inline bool isOpened (void) const { return NULL != mFilePtr ; }
+  public: inline C_String filePath (void) const { return mFilePath ; }
 } ;
 
 

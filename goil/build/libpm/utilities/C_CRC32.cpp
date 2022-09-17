@@ -30,7 +30,7 @@ static uint32_t tableCRC [256] ;
 //----------------------------------------------------------------------------------------------------------------------
 
 class cInitTableCRC {
-  public : cInitTableCRC (void) ;
+  public: cInitTableCRC (void) ;
 } ;
 
 

@@ -42,16 +42,16 @@ rule <start> {
   @string fileIncludeList = ""
     
   # First the OIL_VERSION must be present
-  @lstring version
-  @lstring desc = lstringWith(!"")
+  let @lstring version
+  let @lstring desc
   <OIL_version> ?version ?desc
   [!?application setVersion !version] 
   [!?application setVersionDescription !desc] 
 
-  @string config_file_name = [option goil_options.config value]
+  let @string config_file_name = [option goil_options.config value]
 
   # includes the config files
-  @stringlist configFiles = allTemplateFilePaths(!"config" !config_file_name+".oil")
+  let @stringlist configFiles = allTemplateFilePaths(!"config" !config_file_name+".oil")
   # files are stored from the deepest to the shallowest and we should go from the
   # shallowest to the deepest.
   for > (@string file) in  configFiles do
@@ -59,7 +59,7 @@ rule <start> {
   end
 
   # then look for config files suffixed by the OIL version
-  @stringlist configVersionFiles = allTemplateFilePaths(!"config" !config_file_name+version+".oil")
+  let @stringlist configVersionFiles = allTemplateFilePaths(!"config" !config_file_name+version+".oil")
   for > (@string file) in  configVersionFiles do
 #    message file . "\n";
     grammar goil_file_level_include in lstringWith(!file) !?imp !?application !?fileIncludeList !false
@@ -94,14 +94,14 @@ rule <start> {
     verifyAll ( !imp !application)
   end
   if @uint. errorCount == 0 then
-    @gtlData templateData = [application templateData !imp]
+    let @gtlData templateData = [application templateData !imp]
 #    addStringValue !?templateData !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
 
     generate_all ( !templateData)
   end
   
   fileIncludeList = [@string.stringWithSourceFilePath lastPathComponent] + ":" + fileIncludeList + "\n"
-  @string oilDepFileName = [@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
+  let @string oilDepFileName = [@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
     + "/build/" + [@string.stringWithSourceFilePath lastPathComponent] + ".dep"  
   #message "Writing dependancies to " + oilDepFileName + "\n";
   [fileIncludeList writeToFile !oilDepFileName]
@@ -173,7 +173,7 @@ rule <application_definition>
   ?!@string fileIncludeList
   ?let @bool rootFile
 {
-  $CPU$ $idf$ ?var @lstring cpuName ${$
+  $CPU$ $idf$ ?let @lstring cpuName ${$
   @objectsMap objects = [application objects]
   <object_definition_list> !imp !?objects !?fileIncludeList !rootFile
   $}$ <description> ?* $;$
@@ -190,7 +190,7 @@ rule <object_definition_list>
   repeat
   while
     $idf$ ?let @lstring objectKind
-    @implementationObject impObjOfKind = [imp impObject ![objectKind string]]   
+    let @implementationObject impObjOfKind = [imp impObject ![objectKind string]]   
     @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
     if [objects hasKey ![objectKind string]] then
       [!?objects del !objectKind ?objectsForKind]
@@ -210,7 +210,7 @@ rule <object_definition_list>
     ${$
     <oil_declaration_list> ![impObjOfKind attributes] !?object
     $}$
-    <description> ?var @lstring oil_desc
+    <description> ?let @lstring oil_desc
     $;$
     @identifierMap attributes = [object objectParams]
     if not [attributes hasKey !"NAME"] then
@@ -256,7 +256,7 @@ rule <oil_declaration_list>
 rule <oil_declaration>
   ?let @implementationObjectMap types
   ?!@objectAttributes identifiers {
-  @lstring idf
+  let @lstring idf
   @object_t val
   $idf$ ?idf
   #
@@ -274,7 +274,7 @@ rule <oil_declaration>
     $=$
     select
       # Type is identifier, enum, struct or object reference
-      @lstring value
+      let @lstring value
       $idf$ ?value
       var subTypes = @implementationObjectMap.emptyMap {}
       @objectAttributes subAttributes = emptyObject()    
@@ -298,7 +298,7 @@ rule <oil_declaration>
         <oil_declaration_list> !subTypes !?subAttributes
         $}$
       or end
-      <description> ?var @lstring oil_desc
+      <description> ?let @lstring oil_desc
       if [type type] == @dataType.enumeration then
         val = @enumAttribute.new { !oil_desc ![value location] ![value string] !subAttributes}
       elsif [type type] == @dataType.objectType then
@@ -308,13 +308,13 @@ rule <oil_declaration>
       end
     or
       # Type is int of float
-      @bool sign
+      let @bool sign
       <sign> ?sign
       select 
         # Type is int
-        @luint64 value
+        let @luint64 value
         $uint_number$ ?value
-        <description> ?var @lstring oil_desc
+        <description> ?let @lstring oil_desc
         val = checkAndGetIntegerNumber(!oil_desc ![type type] !value !sign)
         cast type
         case == @impRangedType rangedType:
@@ -324,9 +324,9 @@ rule <oil_declaration>
         else end
       or
         # Type is float
-        @ldouble value
+        let @ldouble value
         $float_number$ ?value
-        <description> ?var @lstring oil_desc
+        <description> ?let @lstring oil_desc
         val = checkAndGetFloatNumber(!oil_desc ![type type] !value !sign)
         cast type
         case == @impRangedType rangedType:
@@ -337,7 +337,7 @@ rule <oil_declaration>
       end
     or
       # Type is bool
-      @lbool value
+      let @lbool value
       <boolean> ?value
       var subTypes =@implementationObjectMap.emptyMap{}
       @objectAttributes subAttributes = emptyObject()    
@@ -361,18 +361,18 @@ rule <oil_declaration>
         <oil_declaration_list> !subTypes !?subAttributes
         $}$
       or end
-      <description> ?var @lstring oil_desc
+      <description> ?let @lstring oil_desc
       val = @boolAttribute. new { !oil_desc ![idf location] ![value bool] !subAttributes}
     or
       # Type is string
-      @lstring literalString
+      let @lstring literalString
       $string$ ?literalString
-      <description> ?var @lstring oil_desc
+      <description> ?let @lstring oil_desc
       val = @stringAttribute. new { !oil_desc ![literalString location] ![literalString string]}
     or
       # AUTO
       $AUTO$
-      <description> ?var @lstring oil_desc
+      <description> ?let @lstring oil_desc
       # Check the attribute is allowed to have AUTO value
       if [type autoAllowed] then
           val = @auto. new { !oil_desc !@location.here}
@@ -394,7 +394,7 @@ rule <oil_declaration>
       end
     end
   or
-    $idf$ ?var @lstring name
+    $idf$ ?let @lstring name
     var subTypes =@implementationObjectMap.emptyMap{}
     @objectAttributes subAttributes = emptyObject()    
     # STRUCT
@@ -409,7 +409,7 @@ rule <oil_declaration>
     ${$
       <oil_declaration_list> !subTypes !?subAttributes
     $}$
-    <description> ?var @lstring oil_desc
+    <description> ?let @lstring oil_desc
     val = @structAttribute. new { !oil_desc !@location.here !name !subAttributes}
   end
   $;$
@@ -418,7 +418,7 @@ rule <oil_declaration>
   @identifierMap idfs= [identifiers objectParams]
   if [type multiple] then
     if [idfs hasKey ![idf string]] then
-      @object_t attributeList
+      let @object_t attributeList
       # the multiple identifier has been already encountered
       # get the list
       [!?idfs del !idf ?attributeList]
@@ -431,7 +431,7 @@ rule <oil_declaration>
     else
       @identifierList aList = .emptyList
       # Get the type's default value
-      @object_t defaultValue = [type getDefaultValue]
+      let @object_t defaultValue = [type getDefaultValue]
 
       # If it's a list, get it
       cast defaultValue
@@ -449,7 +449,7 @@ rule <oil_declaration>
     if [idfs hasKey ![idf string]] then
       # The key already exists, we must merge the existing identifier with the
       # new one
-      @object_t existingObject
+      let @object_t existingObject
       [!?idfs del !idf ?existingObject]
       [!?val mergeSubAttributes !existingObject]
     end

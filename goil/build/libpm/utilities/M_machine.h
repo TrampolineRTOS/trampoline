@@ -79,22 +79,22 @@ static inline uint32_t uimax32 (const uint32_t inA, const uint32_t inB) {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   class utf32 {
-    private : uint32_t mCode ;
-    public : inline uint32_t value (void) const { return mCode ; }
-    public : inline utf32 (void) :
+    private: uint32_t mCode ;
+    public: inline uint32_t value (void) const { return mCode ; }
+    public: inline utf32 (void) :
     mCode (0) {
     }
-    public : inline utf32 (const uint32_t & inCode) :
+    public: inline utf32 (const uint32_t & inCode) :
     mCode (inCode) {
     }
-    public : inline utf32 (const utf32 & inOperand) :
+    public: inline utf32 (const utf32 & inOperand) :
     mCode (inOperand.mCode) {
     }
-    public : inline utf32 & operator = (const utf32 & inOperand) {
+    public: inline utf32 & operator = (const utf32 & inOperand) {
       mCode = inOperand.mCode ;
       return *this ;
     }
-    public : inline bool operator == (const utf32 inOperand) const {
+    public: inline bool operator == (const utf32 inOperand) const {
       return mCode == inOperand.mCode ;
     }
   } ;

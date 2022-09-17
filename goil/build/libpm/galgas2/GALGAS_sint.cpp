@@ -80,7 +80,7 @@ GALGAS_uint GALGAS_sint::getter_uint (C_Compiler * inCompiler
     if (mSIntValue < 0) {
       inCompiler->onTheFlyRunTimeError ("cannot convert a negative @sint into unsigned value" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((uint32_t) mSIntValue) ;
+      result = GALGAS_uint (uint32_t (mSIntValue)) ;
     }
   }
   return result ;

@@ -32,34 +32,34 @@
 
 class C_galgas_type_descriptor {
 //--- Attributes
-  private : C_galgas_type_descriptor * mNextType ;
-  private : C_galgas_type_descriptor * mPreviousType ;
-  private : int32_t mBalance ;
-  public : const char * const mGalgasTypeName ; // Without the leading '@'
-  public : const int32_t mSlotID ;
-  public : const C_galgas_type_descriptor * mSuperclassDescriptor ;
+  private: C_galgas_type_descriptor * mNextType ;
+  private: C_galgas_type_descriptor * mPreviousType ;
+  private: int32_t mBalance ;
+  public: const char * const mGalgasTypeName ; // Without the leading '@'
+  public: const int32_t mSlotID ;
+  public: const C_galgas_type_descriptor * mSuperclassDescriptor ;
 
 //--- Constructor
-  public : C_galgas_type_descriptor (const char * inGalgasTypeName,
+  public: C_galgas_type_descriptor (const char * inGalgasTypeName,
                                      const C_galgas_type_descriptor * inSuperClassDescriptor) ;
 
 //--- Get Type list
-  public : static void typeListRoot (TC_UniqueArray <C_galgas_type_descriptor *> & outTypeList) ;
+  public: static void typeListRoot (TC_UniqueArray <C_galgas_type_descriptor *> & outTypeList) ;
   
 //--- No copy
-  private : C_galgas_type_descriptor (const C_galgas_type_descriptor &) ;
-  private : C_galgas_type_descriptor & operator = (const C_galgas_type_descriptor &) ;
+  private: C_galgas_type_descriptor (const C_galgas_type_descriptor &) ;
+  private: C_galgas_type_descriptor & operator = (const C_galgas_type_descriptor &) ;
 
 //--- Internal methods
-  private : static void recursiveInsert (C_galgas_type_descriptor * & ioRoot,
+  private: static void recursiveInsert (C_galgas_type_descriptor * & ioRoot,
                                          C_galgas_type_descriptor * inDescriptor,
                                          bool & ioExtension) ;
 
-  private : static void rotateLeft (C_galgas_type_descriptor * & ioRootPtr) ;
+  private: static void rotateLeft (C_galgas_type_descriptor * & ioRootPtr) ;
 
-  private : static void rotateRight (C_galgas_type_descriptor * & ioRootPtr) ;
+  private: static void rotateRight (C_galgas_type_descriptor * & ioRootPtr) ;
 
-  public : static void recursiveGetSortedTypeList (C_galgas_type_descriptor * inRoot,
+  public: static void recursiveGetSortedTypeList (C_galgas_type_descriptor * inRoot,
                                                    TC_UniqueArray <C_galgas_type_descriptor *> & ioTypeList) ;
 } ;
 

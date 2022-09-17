@@ -7,20 +7,20 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                    E X T E R N    R O U T I N E S                                             
+//                    E X T E R N    R O U T I N E S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                    E X T E R N    F U N C T I O N S                                           
+//                    E X T E R N    F U N C T I O N S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         T E R M I N A L    S Y M B O L    E N U M E R A T I O N                               
+//         T E R M I N A L    S Y M B O L    E N U M E R A T I O N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -38,29 +38,25 @@ enum {options_scanner_1_,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//        U N I C O D E    T E S T    F U N C T I O N S                                          
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//                     S C A N N E R    C L A S S                                                
+//                     S C A N N E R    C L A S S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 @interface OC_Lexique_options_scanner : OC_Lexique {
 //--- Attributes
-  @private double mLexicalAttribute_floatNumber ;
-  @private UInt64 mLexicalAttribute_integerNumber ;
-  @private NSMutableString * mLexicalAttribute_key ;
-  @private NSMutableString * mLexicalAttribute_number ;
-  @private NSMutableString * mLexicalAttribute_string ;
+  @protected double mLexicalAttribute_floatNumber ;
+  @protected UInt64 mLexicalAttribute_integerNumber ;
+  @protected NSMutableString * mLexicalAttribute_key ;
+  @protected NSMutableString * mLexicalAttribute_number ;
+  @protected NSMutableString * mLexicalAttribute_string ;
 
 }
 
 - (NSUInteger) terminalVocabularyCount ;
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal ;
+
+- (BOOL) internalParseLexicalTokenForLexicalColoring ;
 
 - (void) parseLexicalTokenForLexicalColoring ;
 

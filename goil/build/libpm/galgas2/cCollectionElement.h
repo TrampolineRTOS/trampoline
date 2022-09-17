@@ -33,23 +33,23 @@ class C_String ;
 
 class cCollectionElement : public C_SharedObject {
 //--- Default constructor
-  public : cCollectionElement (LOCATION_ARGS) ;
+  public: cCollectionElement (LOCATION_ARGS) ;
 
 //--- No copy
-  private : cCollectionElement (const cCollectionElement &) ;
-  private : cCollectionElement & operator = (const cCollectionElement &) ;
+  private: cCollectionElement (const cCollectionElement &) ;
+  private: cCollectionElement & operator = (const cCollectionElement &) ;
 
 //--- Virtual method that checks that all attributes are valid
-  public : virtual bool isValid (void) const = 0 ;
+  public: virtual bool isValid (void) const = 0 ;
 
 //--- Virtual method for comparing elements
-  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const = 0 ;
+  public: virtual typeComparisonResult compare (const cCollectionElement * inOperand) const = 0 ;
 
 //--- Virtual method that returns a copy of current object
-  public : virtual cCollectionElement * copy (void) = 0 ;
+  public: virtual cCollectionElement * copy (void) = 0 ;
 
 //--- Description
-  public : virtual void description (C_String & ioString, const int32_t inIndentation) const = 0 ;
+  public: virtual void description (C_String & ioString, const int32_t inIndentation) const = 0 ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

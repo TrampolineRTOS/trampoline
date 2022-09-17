@@ -2,7 +2,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 2013, ..., 2014 Pierre Molinaro.
+//  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -20,9 +20,16 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-@interface PMTableViewRefusesFirstResponder : NSTableView {
-  @private IBOutlet NSMenu * mContextualMenu ;
+@interface OC_GGS_ColorTransformer : NSValueTransformer {
 }
+
++ (Class) transformedValueClass ;
+
++ (BOOL) allowsReverseTransformation ;
+
+- (NSColor *) transformedValue: (NSData *) inValue ;
+
+- (NSData *) reverseTransformedValue: (NSColor *) inValue ;
 
 @end
 

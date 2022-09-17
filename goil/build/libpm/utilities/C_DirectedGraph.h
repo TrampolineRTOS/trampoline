@@ -41,75 +41,75 @@ typedef struct {
 
 class C_DirectedGraph {
 //--- Default constructor
-  public : C_DirectedGraph (void) ;
+  public: C_DirectedGraph (void) ;
 
 //--- Example
-  public : static void example (void) ;
+  public: static void example (void) ;
   
 //--- Methods
-  public : void addNode (const uint32_t inNodeIndex) ;
+  public: void addNode (const uint32_t inNodeIndex) ;
 
-  public : void addNodes (const C_UIntSet inNodes) ;
+  public: void addNodes (const C_UIntSet inNodes) ;
 
-  public : void removeNode (const uint32_t inNodeIndex) ;
+  public: void removeNode (const uint32_t inNodeIndex) ;
 
-  public : void addEdge (const uint32_t inSourceNodeIndex,
+  public: void addEdge (const uint32_t inSourceNodeIndex,
                          const uint32_t inTargetNodeIndex) ;
 
-  public : void print (void) const ;
+  public: void print (void) const ;
 
 //--- Accessors
-  public : uint32_t unusedNodeIndex (void) const ;
+  public: uint32_t unusedNodeIndex (void) const ;
 
-  public : C_String graphvizString (const TC_UniqueArray <C_String> & inNodeNameArray) const ;
+  public: C_String graphvizString (const TC_UniqueArray <C_String> & inNodeNameArray) const ;
   
-  public : void getNodeBoolArray (TC_UniqueArray <bool> & outNodes) const ;
+  public: void getNodeBoolArray (TC_UniqueArray <bool> & outNodes) const ;
   
-  public : void getNodeValueArray (TC_UniqueArray <uint32_t> & outNodes) const ;
+  public: void getNodeValueArray (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : bool isNodeDefined (const uint32_t inNodeIndex) const ;
+  public: bool isNodeDefined (const uint32_t inNodeIndex) const ;
   
-  public : uint32_t nodeCount (void) const ;
+  public: uint32_t nodeCount (void) const ;
   
-  public : uint32_t edgeCount (void) const ;
+  public: uint32_t edgeCount (void) const ;
   
-  public : void getNodesWithNoPredecessor (TC_UniqueArray <uint32_t> & outNodes) const ;
+  public: void getNodesWithNoPredecessor (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : void getNodesWithNoSuccessor (TC_UniqueArray <uint32_t> & outNodes) const ;
+  public: void getNodesWithNoSuccessor (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : void getNodesInvolvedInCircularities (TC_UniqueArray <uint32_t> & outNodes) const ;
+  public: void getNodesInvolvedInCircularities (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : void getDominators (TC_UniqueArray <C_UIntSet> & outDominators
+  public: void getDominators (TC_UniqueArray <C_UIntSet> & outDominators
                                COMMA_LOCATION_ARGS) const ;
   
-  public : void removeEdgesToDominator (LOCATION_ARGS) ;
+  public: void removeEdgesToDominator (LOCATION_ARGS) ;
   
-  public : void removeEdgesToNode (const uint32_t inNodeIndex COMMA_LOCATION_ARGS) ;
+  public: void removeEdgesToNode (const uint32_t inNodeIndex COMMA_LOCATION_ARGS) ;
   
-  public : void getEdges (TC_UniqueArray <cEdge> & outEdges) const ;
+  public: void getEdges (TC_UniqueArray <cEdge> & outEdges) const ;
   
-  public : void topologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
+  public: void topologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
                                  TC_UniqueArray <uint32_t> & outUnsortedNodes) const ;
   
-  public : void depthFirstTopologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
+  public: void depthFirstTopologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
                                            TC_UniqueArray <uint32_t> & outUnsortedNodes) const ;
   
-  public : C_DirectedGraph reversedGraph (void) const ;
+  public: C_DirectedGraph reversedGraph (void) const ;
   
-  public : C_DirectedGraph subGraphFromNodes (const C_UIntSet & inStartNodes,
+  public: C_DirectedGraph subGraphFromNodes (const C_UIntSet & inStartNodes,
                                               #ifdef USE_NODE_NAMES_WITH_SUBGRAPH_COMPUTATION
                                                 const TC_UniqueArray <C_String> & inNodeNames,
                                               #endif
                                               const C_UIntSet & inNodesToExclude) const ;
   
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    protected : void checkGraph (LOCATION_ARGS) const ;
+    protected: void checkGraph (LOCATION_ARGS) const ;
   #endif
 
 //--- Attributes
-  private : C_UIntSet mNodes ;
-  private : TC_Array <C_UIntSet> mEdges ;
-  private : TC_Array <C_UIntSet> mReverseEdges ;
+  private: C_UIntSet mNodes ;
+  private: TC_Array <C_UIntSet> mEdges ;
+  private: TC_Array <C_UIntSet> mReverseEdges ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

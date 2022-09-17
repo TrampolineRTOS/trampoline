@@ -797,3 +797,48 @@ GALGAS_bigint GALGAS_bigint::right_shift_operation (const GALGAS_bigint inShiftO
 
 //----------------------------------------------------------------------------------------------------------------------
 
+void GALGAS_bigint::plusAssign_operation (const GALGAS_bigint inOperand,
+                                          C_Compiler * /* inCompiler */
+                                          COMMA_UNUSED_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    mValue += inOperand.mValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_bigint::minusAssign_operation (const GALGAS_bigint inOperand,
+                                           C_Compiler * /* inCompiler */
+                                           COMMA_UNUSED_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    mValue -= inOperand.mValue ;
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_bigint::mulAssign_operation (const GALGAS_bigint inOperand,
+                                         C_Compiler * /* inCompiler */
+                                         COMMA_UNUSED_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    mValue *= inOperand.mValue ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_bigint::divAssign_operation (const GALGAS_bigint inOperand,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    if (inOperand.mValue.isZero ()) {
+      inCompiler->onTheFlyRunTimeError ("@bigint /= divide by zero" COMMA_THERE) ;
+      mIsValid = false ;
+    }else{
+      mValue /= inOperand.mValue ;
+    }
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------

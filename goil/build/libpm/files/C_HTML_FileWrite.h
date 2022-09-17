@@ -35,37 +35,37 @@ class C_HTML_FileWrite : public C_TextFileWrite {
 //--- Constructor : if inFileName is the empty string, no file is opened.
 //    Otherwise, it tries to open the file for writing;
 //    The destructor will close the file (is successfully opened)
-  public : C_HTML_FileWrite (const C_String & inFileName,
+  public: C_HTML_FileWrite (const C_String & inFileName,
                              const C_String & inWindowTitle,
                              const C_String & inCSSFileName,
                              const C_String & inCSSContents) ;
 
 //--- Destructor
-  public : virtual ~C_HTML_FileWrite (void) ;
+  public: virtual ~C_HTML_FileWrite (void) ;
 
 //--- No copy
-  private : C_HTML_FileWrite & operator = (C_HTML_FileWrite &) ;
-  private : C_HTML_FileWrite (C_HTML_FileWrite &) ;
+  private: C_HTML_FileWrite & operator = (C_HTML_FileWrite &) ;
+  private: C_HTML_FileWrite (C_HTML_FileWrite &) ;
 
 //--- Output data, without HTML formatting
-  public : void outputRawData (const char * in_Cstring) ;
+  public: void outputRawData (const char * in_Cstring) ;
 
 //--- General stream methods
-  protected : virtual void performActualCharArrayOutput (const char * inCharArray,
+  protected: virtual void performActualCharArrayOutput (const char * inCharArray,
                                                          const int32_t inArrayCount) ;
 
-  protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
+  protected: virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
                                                             const int32_t inArrayCount) ;
 
 //--- Method for writing a HTML table
-  public : void appendCppTitleComment (const C_String & inCommentString,
+  public: void appendCppTitleComment (const C_String & inCommentString,
                                        const C_String & inTableStyleClass) ;
 
 //--- Close file (does nothing is file is not open)
-  public : virtual bool close (void) ;
+  public: virtual bool close (void) ;
 
 //--- Private attributes
-  private : typedef C_TextFileWrite inherited ;
+  private: typedef C_TextFileWrite inherited ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

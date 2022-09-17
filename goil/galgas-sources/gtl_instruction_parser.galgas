@@ -40,11 +40,11 @@ rule <gtl_variable_or_here>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $let$ @location where = .here
-  <gtl_variable> ?@gtlVarPath variable
+  $let$ let @location where = .here
+  <gtl_variable> ?let @gtlVarPath variable
   select
     $:=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetInstruction.new { 
       !where
       !signature(!where)
@@ -53,7 +53,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $+=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetAddInstruction.new {
       !where
       !signature(!where)
@@ -62,7 +62,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $-=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetSubstractInstruction.new {
       !where
       !signature(!where)
@@ -71,7 +71,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $*=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetMultiplyInstruction.new {
       !where
       !signature(!where)
@@ -80,7 +80,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $/=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetDivideInstruction.new {
       !where
       !signature(!where)
@@ -89,7 +89,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $mod=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetModuloInstruction.new {
       !where
       !signature(!where)
@@ -98,7 +98,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $<<=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetShiftLeftInstruction.new {
       !where
       !signature(!where)
@@ -107,7 +107,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $>>=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetShiftRightInstruction.new {
       !where
       !signature(!where)
@@ -116,7 +116,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $&=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetAndInstruction.new {
       !where
       !signature(!where)
@@ -125,7 +125,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $|=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetOrInstruction.new {
       !where
       !signature(!where)
@@ -134,7 +134,7 @@ rule <gtl_simple_instruction>
     } 
   or
     $^=$
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlLetXorInstruction.new {
       !where
       !signature(!where)
@@ -154,8 +154,8 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $unlet$ @location where = .here
-  <gtl_variable> ?@gtlVarPath variable
+  $unlet$ let @location where = .here
+  <gtl_variable> ?let @gtlVarPath variable
   instruction = @gtlUnletInstruction.new {
     !where
     !signature(!where)
@@ -167,10 +167,10 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $error$ @location where = .here
-  <gtl_variable_or_here> ?@gtlVarPath variable ?@bool hereInstead
+  $error$ let @location where = .here
+  <gtl_variable_or_here> ?let @gtlVarPath variable ?let @bool hereInstead
   $:$
-  <gtl_expression> ?@gtlExpression expression
+  <gtl_expression> ?let @gtlExpression expression
 
   instruction = @gtlErrorStatementInstruction.new {
     !where
@@ -185,10 +185,10 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $warning$ @location where = .here
-  <gtl_variable_or_here> ?@gtlVarPath variable ?@bool hereInstead
+  $warning$ let @location where = .here
+  <gtl_variable_or_here> ?let @gtlVarPath variable ?let @bool hereInstead
   $:$
-  <gtl_expression> ?@gtlExpression expression
+  <gtl_expression> ?let @gtlExpression expression
 
   instruction = @gtlWarningStatementInstruction.new {
     !where
@@ -203,8 +203,8 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $print$ @location where = .here
-  <gtl_expression> ?@gtlExpression expression
+  $print$ let @location where = .here
+  <gtl_expression> ?let @gtlExpression expression
 
   instruction = @gtlPrintStatementInstruction.new {
     !where
@@ -218,9 +218,9 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $println$ @location where = .here
+  $println$ let @location where = .here
   select
-    <gtl_expression> ?@gtlExpression expression
+    <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlPrintStatementInstruction.new {
       !where
       !signature(!where)
@@ -241,9 +241,9 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $display$ @location where = .here
+  $display$ let @location where = .here
   
-  <gtl_variable> ?@gtlVarPath variable
+  <gtl_variable> ?let @gtlVarPath variable
 
   instruction = @gtlDisplayStatementInstruction.new {
     !where
@@ -256,14 +256,14 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $sort$ @location where = .here
-  <gtl_variable> ?@gtlVarPath variable
+  $sort$ let @location where = .here
+  <gtl_variable> ?let @gtlVarPath variable
   select
     @sortingKeyList sortList = .emptyList
     $by$
     repeat
       $identifier$ ?let @lstring key
-      <gtl_sorting_order> ?@lsint order
+      <gtl_sorting_order> ?let @lsint order
       sortList += !key !order
     while $,$ end
     
@@ -274,7 +274,7 @@ rule <gtl_simple_instruction>
       !sortList
     }    
   or
-    <gtl_sorting_order> ?@lsint order
+    <gtl_sorting_order> ?let @lsint order
     
     instruction = @gtlSortStatementInstruction.new {
       !where
@@ -289,8 +289,8 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $tab$ @location where = .here
-  <gtl_expression> ?@gtlExpression expression
+  $tab$ let @location where = .here
+  <gtl_expression> ?let @gtlExpression expression
   
   instruction = @gtlTabStatementInstruction.new {
     !where
@@ -303,7 +303,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $variables$ @location where = .here
+  $variables$ let @location where = .here
   instruction = @gtlVariablesInstruction.new {
     !where
     !signature(!where)
@@ -315,7 +315,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $libraries$ @location where = .here
+  $libraries$ let @location where = .here
   instruction = @gtlLibrariesInstruction.new {
     !where 
     !signature(!where)
@@ -327,15 +327,15 @@ rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
   $[!$
-  <gtl_variable> ?@gtlVarPath target
+  <gtl_variable> ?let @gtlVarPath target
   $identifier$ ?let @lstring setterName
-  @location where = .here
+  let @location where = .here
   @gtlExpressionList argumentList = .emptyList
   select
   or
     $:$
     repeat
-      <gtl_expression> ?@gtlExpression argument
+      <gtl_expression> ?let @gtlExpression argument
       argumentList += !argument
     while
       $,$
@@ -357,10 +357,10 @@ rule <gtl_sorting_order>
 {
   select
     $>$ 
-    order = @lsint. new { !-1s !@location.here}
+    order = @lsint. new { !-1 !@location.here}
   or
     $<$
-    order = @lsint. new { !1s !@location.here}
+    order = @lsint. new { !1 !@location.here}
   end
 }
 
@@ -380,7 +380,7 @@ rule <gtl_import>
     # search in path
     for (searchPath) in [context importPath] do
       if not found then
-        @string name = [searchPath stringByAppendingPath !fullName]
+        let @string name = [searchPath stringByAppendingPath !fullName]
         if [name fileExists] then
           fullName = name
           found = true

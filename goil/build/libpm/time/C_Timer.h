@@ -51,26 +51,26 @@ class C_String ;
 
 class C_Timer {
   #if COMPILE_FOR_WINDOWS == 0
-    private : timeval mStart ;
-    private : timeval mEnd ;
+    private: timeval mStart ;
+    private: timeval mEnd ;
   #else
-    private : clock_t mStart ;
-    private : clock_t mEnd ;
+    private: clock_t mStart ;
+    private: clock_t mEnd ;
   #endif
   
-  private : bool mRunning ;
+  private: bool mRunning ;
   
-  public : C_Timer (void) ;
+  public: C_Timer (void) ;
 
-  public : void stopTimer (void) ;
+  public: void stopTimer (void) ;
 
-  public : void startTimer (void) ;
+  public: void startTimer (void) ;
 
-  public : uint32_t msFromStart (void) const ;
+  public: uint32_t msFromStart (void) const ;
 
-  public : C_String timeString (void) const ;
+  public: C_String timeString (void) const ;
   
-  public : inline bool isRunning (void) const { return mRunning ; }
+  public: inline bool isRunning (void) const { return mRunning ; }
 
   friend AC_OutputStream & operator << (AC_OutputStream & inStream,
                                         const C_Timer & inTimer) ;

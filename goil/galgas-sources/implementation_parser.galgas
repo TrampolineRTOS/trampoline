@@ -35,7 +35,8 @@ rule <sign> !@bool signed
 
 rule <implementation_definition>
   ?!@implementation implementation {
-  $IMPLEMENTATION$ $idf$ ?var @lstring implementationName ${$
+#  $IMPLEMENTATION$ $idf$ ?let @lstring implementationName ${$
+  $IMPLEMENTATION$ $idf$ ?* ${$
   <implementation_object_list> !?implementation
   $}$ $;$
 }
@@ -97,7 +98,7 @@ rule <implementation_objects>
   @implementationMap imp = [implementation imp]
   
   $idf$ ?let @lstring objectName # get the object name
-  @lbool multiple
+  let @lbool multiple
   select
    # object may have multiple instances
     $[$ $]$ multiple = @lbool.new { !true !@location.here} 
@@ -111,7 +112,7 @@ rule <implementation_objects>
   <implementation_list> !?objectAttributes
   $}$
   
-  @implementationObject newObject = .new { !multiple !objectAttributes }
+  let @implementationObject newObject = .new { !multiple !objectAttributes }
   
   # Check if this object already exists
   # If yes, the new declaration is merged with the old one
@@ -133,19 +134,19 @@ rule <implementation_list>
 {
   repeat
   while
-    @lstring attributeName
+    let @lstring attributeName
     @impType type
     <implementation_type> ?attributeName ?type
     if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
+      let @impType previousType
       [objectAttributes get !attributeName ?previousType]
 
 #      message "*** New definition "+[attributeName string]+"\n";
       if [previousType multiple] then
         # Case where we have to append two default multiple attributes
         # Done only if at least one of the values is a multipleAttribute
-        @object_t previousDefaultValue = [previousType getDefaultValue]
-        @object_t defaultValue = [type getDefaultValue]
+        let @object_t previousDefaultValue = [previousType getDefaultValue]
+        let @object_t defaultValue = [type getDefaultValue]
         @bool oneIsMultiple = false
         if previousDefaultValue is == @multipleAttribute then
           oneIsMultiple = true
@@ -181,7 +182,7 @@ rule <implementation_list>
           else end
 
           # Create the new default value
-          @object_t newDefault = @multipleAttribute.new{!desc !location !aList}
+          let @object_t newDefault = @multipleAttribute.new{!desc !location !aList}
 
           # Replace the previous type
           [!?type setDefValue !newDefault]
@@ -230,7 +231,7 @@ rule <implementation_type>
   or
     $STRUCT$ <struct_options> ?attributeName ?type
   or
-    @lstring typeName $idf$ ?typeName <objref_option> ?attributeName ?type !typeName
+    let @lstring typeName $idf$ ?typeName <objref_option> ?attributeName ?type !typeName
   end
 }
 
@@ -244,9 +245,9 @@ rule <struct_options>
     $}$
   or end
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @lstring description
+  let @lstring description
   <description> ?description
   options = @impStructType.new { !{!@location.here} !@dataType. structType !name !multiple !{!description} !structAttributes}
 }
@@ -261,9 +262,9 @@ rule <objref_option>
     ref = @lstring. new { ![ref leftSubString ![ref length] - 5] ![ref location]}
   end
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @lstring description
+  let @lstring description
   <description> ?description
   options = @refType. new { !{!@location.here} !@dataType. objectType !name !multiple !{!description} !ref}
 }
@@ -272,19 +273,19 @@ rule <objref_option>
 rule <string_options>
   !@lstring name
   !@impType options {
-  @bool withAuto
+  let @bool withAuto
   <with_auto> ?withAuto
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @object_t defaultValue
-  @lstring oil_desc
+  let @object_t defaultValue
+  let @lstring oil_desc
   select
     $=$
     select
-      $string$ ?var @lstring stringValue
+      $string$ ?let @lstring stringValue
       <description> ?oil_desc
-      @object_t val = @stringAttribute. new { !oil_desc ![stringValue location] ![stringValue string]}
+      let @object_t val = @stringAttribute. new { !oil_desc ![stringValue location] ![stringValue string]}
       if multiple then
         defaultValue = @multipleAttribute.new { !oil_desc ![stringValue location] !@identifierList.listWithValue{!val}}
       else
@@ -309,7 +310,7 @@ rule <string_options>
 rule <boolean_options>
   !@lstring name
   !@impType options {
-  @bool withAuto
+  let @bool withAuto
   <with_auto> ?withAuto
   var trueSubAttributes =@implementationObjectMap.emptyMap{}
   var falseSubAttributes =@implementationObjectMap.emptyMap{}
@@ -335,12 +336,12 @@ rule <boolean_options>
     $]$
   or end
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @object_t defaultValue
-  @lstring oil_desc
+  let @object_t defaultValue
+  let @lstring oil_desc
   select
-    @lbool boolValue
+    let @lbool boolValue
     $=$ <boolean> ?boolValue
     <description> ?oil_desc
     defaultValue = @boolAttribute. new { !oil_desc ![boolValue location] ![boolValue bool] !@objectAttributes. new { !@identifierMap. emptyMap}}
@@ -353,7 +354,7 @@ rule <boolean_options>
 
 rule <enum_item>
   ?!@enumValues items {
-  @lstring enumItem
+  let @lstring enumItem
   var subAttributes =@implementationObjectMap.emptyMap{}
   <identifier_or_enum_value> ?enumItem
   select
@@ -367,7 +368,7 @@ rule <enum_item>
 rule <enum_options>
   !@lstring name
   !@impType options {
-  @bool withAuto
+  let @bool withAuto
   <with_auto> ?withAuto
   var items =@enumValues.emptyMap{}
   $[$
@@ -378,17 +379,17 @@ rule <enum_options>
   end
   $]$
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @lstring oil_desc
-  @object_t defaultValue
+  let @lstring oil_desc
+  let @object_t defaultValue
   select
     $=$
     select
-      @lstring stringValue
+      let @lstring stringValue
       $idf$ ?stringValue
       <description> ?oil_desc
-      @object_t val = @enumAttribute. new { !oil_desc ![stringValue location] ![stringValue string] !@objectAttributes. new { !@identifierMap. emptyMap}}
+      let @object_t val = @enumAttribute. new { !oil_desc ![stringValue location] ![stringValue string] !@objectAttributes. new { !@identifierMap. emptyMap}}
       if multiple then
         defaultValue = @multipleAttribute.new { !oil_desc ![stringValue location] !@identifierList.listWithValue{!val}}
       else
@@ -415,19 +416,19 @@ rule <number_options>
   !@lstring name
   !@impType options
   ?let @dataType type {
-  @bool withAuto
+  let @bool withAuto
   <with_auto> ?withAuto
-  @attributeRange range
+  let @attributeRange range
   <range> ?range !type
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @lstring oil_desc
-  @object_t defaultValue
+  let @lstring oil_desc
+  let @object_t defaultValue
   select
     $=$
     select
-      <int_or_float> ?@object_t val !type
+      <int_or_float> ?let @object_t val !type
       oil_desc = [val oil_desc]
       if multiple then
         defaultValue = @multipleAttribute.new { !oil_desc ![val location] !@identifierList.listWithValue{!val}}
@@ -454,20 +455,20 @@ rule <type_options>
   !@lstring name
   !@impType options
   ?let @dataType type {
-  @bool withAuto
+  let @bool withAuto
   <with_auto> ?withAuto
   <identifier_or_attribute> ?name
-  @bool multiple
+  let @bool multiple
   <multiple> ?multiple
-  @object_t defaultValue
-  @lstring oil_desc
+  let @object_t defaultValue
+  let @lstring oil_desc
   select
     $=$
     select
-      @lstring ident
+      let @lstring ident
       <identifier_or_attribute> ?ident
       <description> ?oil_desc
-      @object_t val = @stringAttribute. new { !oil_desc !@location.here ![ident string]}
+      let @object_t val = @stringAttribute. new { !oil_desc !@location.here ![ident string]}
       if multiple then
         defaultValue = @multipleAttribute.new { !oil_desc ![val location] !@identifierList.listWithValue{!val}}
       else
@@ -501,17 +502,17 @@ rule <with_auto>
 rule <int_or_float>
   !@object_t num
   ?let @dataType type {
-  @bool signed
+  let @bool signed
   <sign> ?signed
   select
-    @luint64 number
+    let @luint64 number
     $uint_number$ ?number 
-    <description> ?var @lstring oil_desc
+    <description> ?let @lstring oil_desc
     num = checkAndGetIntegerNumber(!oil_desc !type !number !signed)
   or
-    @ldouble number
+    let @ldouble number
     $float_number$ ?number
-    <description> ?var @lstring oil_desc
+    <description> ?let @lstring oil_desc
     num = checkAndGetFloatNumber(!oil_desc !type !number !signed)
   end
 }
@@ -522,7 +523,7 @@ rule <set_followup>
   repeat
   while
     $,$
-    @object_t num
+    let @object_t num
     <int_or_float> ?num !type
     numbers += !@location.here !num
   end
@@ -533,16 +534,16 @@ rule <range_content>
   ?let @dataType type {
   @object_t start = @void. new { !emptyLString() !@location.here}
   @object_t stop = @void. new { !emptyLString() !@location.here}
-  @bool signed
+  let @bool signed
   <sign> ?signed
   select
-    @luint64 number
+    let @luint64 number
     $set_start_uint_number$ ?number
     start = checkAndGetIntegerNumber(!emptyLString() !type !number !signed)
     <int_or_float> ?stop !type
     range = buildRange(!type !start !stop)
   or
-    @luint64 number
+    let @luint64 number
     $uint_number$ ?number
     start = checkAndGetIntegerNumber(!emptyLString() !type !number !signed)
     select
@@ -554,7 +555,7 @@ rule <range_content>
       range = attributeRangeWithNumberList(!numbers !type)
     end
   or
-    @ldouble number
+    let @ldouble number
     $float_number$ ?number
     start = checkAndGetFloatNumber(!emptyLString() !type !number !signed)
     select
@@ -610,8 +611,8 @@ func checkEnums
   ?let @impEnumType previousEnum
   ?let @impEnumType newEnum
   ->@bool inside {
-  @stringset newValues = [[newEnum valuesMap] keySet]
-  @stringset previousValues = [[previousEnum valuesMap] keySet]
+  let @stringset newValues = [[newEnum valuesMap] keySet]
+  let @stringset previousValues = [[previousEnum valuesMap] keySet]
   inside = (newValues & previousValues) == newValues
   if not inside then
     for () in [newEnum locations] do

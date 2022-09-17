@@ -38,57 +38,57 @@
 
 template <typename TYPE> class TC_FIFO {
 //--- Constructor and destructor
-  public : TC_FIFO (void) ;
-  public : virtual ~TC_FIFO (void) ;
+  public: TC_FIFO (void) ;
+  public: virtual ~TC_FIFO (void) ;
   
 //--- No copy
-  private : TC_FIFO <TYPE> (TC_FIFO <TYPE> &) ;
-  private : void operator = (TC_FIFO <TYPE> &) ;
+  private: TC_FIFO <TYPE> (TC_FIFO <TYPE> &) ;
+  private: void operator = (TC_FIFO <TYPE> &) ;
 
 //--- Length
-  public : inline int32_t length (void) const { return mListLength ; }
+  public: inline int32_t length (void) const { return mListLength ; }
 
 //--- Empty ?
-  public : inline bool isEmpty (void) const { return mListLength == 0 ; }
+  public: inline bool isEmpty (void) const { return mListLength == 0 ; }
 
 //--- Insert a new element at head 
-  public : void insertByCopy (const TYPE & inInfo) ;
-  public : void insertByExchange (TYPE & ioInfo) ;
+  public: void insertByCopy (const TYPE & inInfo) ;
+  public: void insertByExchange (TYPE & ioInfo) ;
 
 //--- Delete last element
-  public : void deleteLastItem (void) ;
+  public: void deleteLastItem (void) ;
 
 //--- Get and suppress last element
-  public : void getByCopyAndSuppressLastItem (TYPE & outInfo) ;
-  public : void getByExchangeAndSuppressLastItem (TYPE & outInfo) ;
+  public: void getByCopyAndSuppressLastItem (TYPE & outInfo) ;
+  public: void getByExchangeAndSuppressLastItem (TYPE & outInfo) ;
 
 //--- Direct access
-  public : TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) ;
-  public : TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
+  public: TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) ;
+  public: TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
 
 //------- Element class ---------------------
-  private : class TC_FIFO_element {
+  private: class TC_FIFO_element {
   //--- Constructors
-    public : TC_FIFO_element (const TYPE & inSource) ;
-    public : TC_FIFO_element (void) ;
+    public: TC_FIFO_element (const TYPE & inSource) ;
+    public: TC_FIFO_element (void) ;
 
   //--- Data members
-    private : TYPE mInfo ;
-    private : TC_FIFO_element * mNextItem ;
+    private: TYPE mInfo ;
+    private: TC_FIFO_element * mNextItem ;
 
   //--- No copy
-    private : TC_FIFO_element (TC_FIFO_element &) ;
-    private : void operator = (TC_FIFO_element &) ;
+    private: TC_FIFO_element (TC_FIFO_element &) ;
+    private: void operator = (TC_FIFO_element &) ;
   
   //--- Friend
     friend class TC_FIFO <TYPE> ;
   } ;
 
 //--- Data members
-  private : TC_FIFO_element * mFirstItem ;
-  private : TC_FIFO_element * mLastItem ;
-  private : int32_t mListLength ;
-  private : mutable TC_FIFO_element * * mItemsArray ;
+  private: TC_FIFO_element * mFirstItem ;
+  private: TC_FIFO_element * mLastItem ;
+  private: int32_t mListLength ;
+  private: mutable TC_FIFO_element * * mItemsArray ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

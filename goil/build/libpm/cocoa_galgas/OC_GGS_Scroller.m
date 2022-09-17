@@ -68,7 +68,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) drawRect:(NSRect) inRect {
-  [super drawRect:inRect] ;
+  [super drawRect: inRect] ;
 //---
   const NSRect viewBounds = self.bounds ;
 //  NSLog (@"viewBounds %g, %g, %g, %g", viewBounds.origin.x, viewBounds.origin.y, viewBounds.size.width, viewBounds.size.height) ;
@@ -122,14 +122,14 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) setDoubleValue: (double) inValue {
-  [super setDoubleValue:inValue] ;
+  [super setDoubleValue: inValue] ;
   [self setNeedsDisplay] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) setKnobProportion: (CGFloat) inValue {
-  [super setKnobProportion:inValue] ;
+  [super setKnobProportion: inValue] ;
   [self setNeedsDisplay] ;
 }
 

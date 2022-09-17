@@ -61,7 +61,6 @@ typedef struct {
   @protected utf32 mCurrentChar ; 
   @protected NSUInteger mTokenStartLocation ;
   @protected NSUInteger mCurrentLocation ;
-  @protected BOOL mLoop ;
   @protected NSInteger mMatchedTemplateDelimiterIndex ; //--- Scanner mode for template scanner
   @private NSDictionary * mCustomSyntaxColoringDictionary ;
 }

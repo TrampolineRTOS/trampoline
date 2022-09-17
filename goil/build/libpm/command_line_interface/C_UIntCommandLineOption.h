@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2009, ..., 2018 Pierre Molinaro.
+//  Copyright (C) 2009, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -30,48 +30,48 @@
 
 class C_UIntCommandLineOption : public C_CommandLineOption {
 //--- Constructor
-  public : C_UIntCommandLineOption (const char * inDomainName,
+  public: C_UIntCommandLineOption (const char * inDomainName,
                                     const char * inIdentifier,
                                     const char inChar,
                                     const char * inString,
                                     const char * inComment,
                                     const uint32_t inDefaultValue) ;
 //--- No Copy
-  private : C_UIntCommandLineOption (const C_UIntCommandLineOption &) ;
-  private : C_UIntCommandLineOption & operator = (const C_UIntCommandLineOption &) ;
+  private: C_UIntCommandLineOption (const C_UIntCommandLineOption &) ;
+  private: C_UIntCommandLineOption & operator = (const C_UIntCommandLineOption &) ;
 
 //--- Attributes
-  private : C_UIntCommandLineOption * mNext ;
-  public : uint32_t mValue ;
-  public : inline uint32_t getter_value (void) const { return mValue ; }
-  public : const uint32_t mDefaultValue ;
+  private: C_UIntCommandLineOption * mNext ;
+  public: uint32_t mValue ;
+  public: inline uint32_t readProperty_value (void) const { return mValue ; }
+  public: const uint32_t mDefaultValue ;
 
 //--- Static methods
-  public : static void setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
+  public: static void setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
                                                     bool & outFound,
                                                     bool & outCommandLineOptionStringIsValid) ;
-  public : static void setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
+  public: static void setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
                                                       bool & outFound,
                                                       bool & outCommandLineOptionStringIsValid)  ;
-  public : static void printUsageOfUIntOptions (void) ;
-  public : static void printUIntOptions (void) ;
+  public: static void printUsageOfUIntOptions (void) ;
+  public: static void printUIntOptions (void) ;
 
 //--- Option introspection
-  public : static void getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) ;
+  public: static void getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) ;
 
-  public : static utf32 getUIntOptionInvocationLetter (const C_String & inDomainName,
+  public: static utf32 getUIntOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static C_String getUIntOptionInvocationString (const C_String & inDomainName,
+  public: static C_String getUIntOptionInvocationString (const C_String & inDomainName,
                                                           const C_String & inIdentifier) ;
 
-  public : static C_String getUIntOptionCommentString (const C_String & inDomainName,
+  public: static C_String getUIntOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static uint32_t getUIntOptionValue (const C_String & inDomainName,
+  public: static uint32_t getUIntOptionValue (const C_String & inDomainName,
                                                const C_String & inIdentifier) ;
 
-  public : static void setUIntOptionValue (const C_String & inDomainName,
+  public: static void setUIntOptionValue (const C_String & inDomainName,
                                            const C_String & inIdentifier,
                                            const uint32_t inValue) ;
 } ;

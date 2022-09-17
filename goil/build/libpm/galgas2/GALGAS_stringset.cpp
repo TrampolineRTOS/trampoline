@@ -29,28 +29,28 @@
 
 class cCollectionElement_stringset : public cCollectionElement {
 //--- Private member
-  protected : GALGAS_string mProperty_key ;
-  public : inline GALGAS_string attribute_key (void) const { return mProperty_key ; }
+  protected: GALGAS_string mProperty_key ;
+  public: inline GALGAS_string attribute_key (void) const { return mProperty_key ; }
 
 //--- Default constructor
-  public : cCollectionElement_stringset (const GALGAS_string & inString
+  public: cCollectionElement_stringset (const GALGAS_string & inString
                                          COMMA_LOCATION_ARGS) ;
 
 //--- No copy
-  private : cCollectionElement_stringset (const cCollectionElement_stringset &) ;
-  private : cCollectionElement_stringset & operator = (const cCollectionElement_stringset &) ;
+  private: cCollectionElement_stringset (const cCollectionElement_stringset &) ;
+  private: cCollectionElement_stringset & operator = (const cCollectionElement_stringset &) ;
 
 //--- Virtual method that checks that all attributes are valid
-  public : virtual bool isValid (void) const ;
+  public: virtual bool isValid (void) const ;
 
 //--- Virtual method for comparing elements
-  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
+  public: virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
 
 //--- Virtual method that returns a copy of current object
-  public : virtual cCollectionElement * copy (void) ;
+  public: virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+ public: virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -97,21 +97,21 @@ void cCollectionElement_stringset::description (C_String & ioString, const int32
 //----------------------------------------------------------------------------------------------------------------------
 
 class cStringsetNode {
-  public : cStringsetNode * mInfPtr ;
-  public : cStringsetNode * mSupPtr ;
-  public : int32_t mBalance ;
-  public : C_String mKey ;
+  public: cStringsetNode * mInfPtr ;
+  public: cStringsetNode * mSupPtr ;
+  public: int32_t mBalance ;
+  public: C_String mKey ;
 
 //---  
-  public : cStringsetNode (const C_String & inString) ;
-  public : cStringsetNode (const cStringsetNode * inNode) ;
+  public: cStringsetNode (const C_String & inString) ;
+  public: cStringsetNode (const cStringsetNode * inNode) ;
 
 //--- No copy
-  private : cStringsetNode (const cStringsetNode &) ;
-  private : cStringsetNode & operator = (const cStringsetNode &) ;
+  private: cStringsetNode (const cStringsetNode &) ;
+  private: cStringsetNode & operator = (const cStringsetNode &) ;
 
 //--- Destructor
-  public : virtual ~ cStringsetNode (void) ;
+  public: virtual ~ cStringsetNode (void) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -381,55 +381,55 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
 
 class cSharedStringsetRoot : public C_SharedObject {
 //--- Private data members
-  private : cStringsetNode * mRoot ;
-  private : uint32_t mEntryCount ;
+  private: cStringsetNode * mRoot ;
+  private: uint32_t mEntryCount ;
 
 //--- Accessors
-  public : inline const cStringsetNode * root (void) const { return mRoot ; }
-  public : inline uint32_t count (void) const { return mEntryCount ; }
+  public: inline const cStringsetNode * root (void) const { return mRoot ; }
+  public: inline uint32_t count (void) const { return mEntryCount ; }
 
 //--- Default constructor
-  public : cSharedStringsetRoot (LOCATION_ARGS) ;
+  public: cSharedStringsetRoot (LOCATION_ARGS) ;
   
 //--- Virtual destructor
-  public : virtual ~ cSharedStringsetRoot (void) ;
+  public: virtual ~ cSharedStringsetRoot (void) ;
 
 //--- No copy
-  private : cSharedStringsetRoot (const cSharedStringsetRoot &) ;
-  private : cSharedStringsetRoot & operator = (const cSharedStringsetRoot &) ;
+  private: cSharedStringsetRoot (const cSharedStringsetRoot &) ;
+  private: cSharedStringsetRoot & operator = (const cSharedStringsetRoot &) ;
 
 //--- In debug mode : check methods
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    public : void countStringSetNodes (const cStringsetNode * inNode,
+    public: void countStringSetNodes (const cStringsetNode * inNode,
                                        uint32_t & ioCount) const ;
-    public : void checkStringset (LOCATION_ARGS) const ;
+    public: void checkStringset (LOCATION_ARGS) const ;
   #endif
 
 //--- Get root key
-  public : C_String rootKey (void) const ;
+  public: C_String rootKey (void) const ;
 
 //--- Add entry
-  public : void addKey (const C_String & inKey) ;
+  public: void addKey (const C_String & inKey) ;
 
 //--- Remove key
-  public : void removeKey (const C_String & inKey) ;
+  public: void removeKey (const C_String & inKey) ;
 
 //--- Has key
-  public : bool hasKey (const C_String & inKey) const ;
+  public: bool hasKey (const C_String & inKey) const ;
 
 //--- Build key list
-  public : void buildOrderedKeyList (TC_UniqueArray <C_String> & ioList) const ;
+  public: void buildOrderedKeyList (TC_UniqueArray <C_String> & ioList) const ;
 
 //--- enter contents into stringlist
-  public : void addToStringList (GALGAS_stringlist & ioResult) const ;
+  public: void addToStringList (GALGAS_stringlist & ioResult) const ;
 
 //--- Copy from
-  public : void copyFrom (const cSharedStringsetRoot * inSharedRootToCopy) ;
+  public: void copyFrom (const cSharedStringsetRoot * inSharedRootToCopy) ;
 
 //--- Description
-  protected : void displayEntries (const cStringsetNode * inNode,
+  protected: void displayEntries (const cStringsetNode * inNode,
                                    C_String & ioString) const ;
-  public : void description (C_String & ioString) const ;
+  public: void description (C_String & ioString) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1061,7 +1061,7 @@ GALGAS_stringset GALGAS_stringset::constructor_setWithLStringList (const GALGAS_
     result = constructor_emptySet (THERE) ;
     cEnumerator_lstringlist enumerator (inStringList, kENUMERATION_UP) ;
     while (enumerator.hasCurrentObject ()) {
-      result.addAssign_operation (enumerator.current_mValue (THERE).getter_string(THERE) COMMA_THERE) ;
+      result.addAssign_operation (enumerator.current_mValue (THERE).mProperty_string COMMA_THERE) ;
       enumerator.gotoNextObject () ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS

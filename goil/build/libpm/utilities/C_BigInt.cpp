@@ -813,9 +813,12 @@ uint32_t C_BigInt::uint32 (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 uint64_t C_BigInt::uint64 (void) const {
-  uint64_t result = UINT64_MAX ;
-  if (fitsInUInt64 ()) {
-    mpz_export (& result, NULL, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
+  uint64_t result = 0 ;
+  if (! isZero ()) {
+    result = UINT64_MAX ;
+    if (fitsInUInt64 ()) {
+      mpz_export (& result, NULL, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
+    }
   }
   return result ;
 }
@@ -827,15 +830,21 @@ int32_t C_BigInt::int32 (void) const {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+//mpz_export (void *r, size_t *countp, int order, size_t size, int endian,
+//	    size_t nails, const mpz_t u)
+
 
 int64_t C_BigInt::int64 (void) const {
-  uint64_t r = UINT64_MAX ;
-  if (fitsInSInt64 ()) {
-    mpz_export (& r, NULL, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
-  }
-  int64_t result = (int64_t) r ;
-  if (mpz_sgn (mGMPint) < 0) {
-    result = - result ;
+  int64_t result = 0 ;
+  if (! isZero ()) {
+    uint64_t r = UINT64_MAX ;
+    if (fitsInSInt64 ()) {
+      mpz_export (& r, NULL, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
+    }
+    result = int64_t (r) ;
+    if (mpz_sgn (mGMPint) < 0) {
+      result = - result ;
+    }
   }
   return result ;
 }

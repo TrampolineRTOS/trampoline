@@ -608,18 +608,18 @@ void C_BDD::traverseBDDvalues (C_bdd_value_traversing & inTraversing,
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_build_values64_array : public C_bdd_value_traversing {
-  private : TC_UniqueArray <uint64_t> * mPtr ;
+  private: TC_UniqueArray <uint64_t> * mPtr ;
 
-  public : inline C_build_values64_array (TC_UniqueArray <uint64_t> * inPtr) :
+  public: inline C_build_values64_array (TC_UniqueArray <uint64_t> * inPtr) :
   mPtr (inPtr) {
   }
 
 //--- No copy
-  private : C_build_values64_array (const C_build_values64_array &) ;
-  private : C_build_values64_array & operator = (const C_build_values64_array &) ;
+  private: C_build_values64_array (const C_build_values64_array &) ;
+  private: C_build_values64_array & operator = (const C_build_values64_array &) ;
 
 //--- Virtual method called for every value
-  public : virtual void action (const bool tableauDesValeurs [],
+  public: virtual void action (const bool tableauDesValeurs [],
                                 const uint32_t inVariableCount) ;
 } ;
 
@@ -656,18 +656,18 @@ void C_BDD::buildValue64Array (TC_UniqueArray <uint64_t> & outValuesArray,
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_build_values_array : public C_bdd_value_traversing {
-  private : TC_UniqueArray <TC_Array <bool> > * mPtr ;
+  private: TC_UniqueArray <TC_Array <bool> > * mPtr ;
 
-  public : inline C_build_values_array (TC_UniqueArray <TC_Array <bool> > * inPtr) :
+  public: inline C_build_values_array (TC_UniqueArray <TC_Array <bool> > * inPtr) :
   mPtr (inPtr) {
   }
 
 //--- No copy
-  private : C_build_values_array (const C_build_values_array &) ;
-  private : C_build_values_array & operator = (const C_build_values_array &) ;
+  private: C_build_values_array (const C_build_values_array &) ;
+  private: C_build_values_array & operator = (const C_build_values_array &) ;
 
 //--- Virtual method called for every value
-  public : virtual void action (const bool tableauDesValeurs [],
+  public: virtual void action (const bool tableauDesValeurs [],
                                 const uint32_t inVariableCount) ;
 } ;
 
@@ -703,18 +703,18 @@ void C_BDD::buildValueArray (TC_UniqueArray <TC_Array <bool> > & outValuesArray,
 //----------------------------------------------------------------------------------------------------------------------
 
 class cLittleEndianStringValueBuilder : public C_bdd_value_traversing {
-  private : TC_UniqueArray <C_String> * mPtr ;
+  private: TC_UniqueArray <C_String> * mPtr ;
 
-  public : cLittleEndianStringValueBuilder (TC_UniqueArray <C_String> * inPtr) :
+  public: cLittleEndianStringValueBuilder (TC_UniqueArray <C_String> * inPtr) :
   mPtr (inPtr) {
   }
 
 //--- No copy
-  private : cLittleEndianStringValueBuilder (const cLittleEndianStringValueBuilder &) ;
-  private : cLittleEndianStringValueBuilder & operator = (const cLittleEndianStringValueBuilder &) ;
+  private: cLittleEndianStringValueBuilder (const cLittleEndianStringValueBuilder &) ;
+  private: cLittleEndianStringValueBuilder & operator = (const cLittleEndianStringValueBuilder &) ;
 
 //--- Virtual method called for every value
-  public : virtual void action (const bool tableauDesValeurs [],
+  public: virtual void action (const bool tableauDesValeurs [],
                                 const uint32_t inVariableCount) ;
 } ;
 
@@ -746,18 +746,18 @@ buildLittleEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
 //----------------------------------------------------------------------------------------------------------------------
 
 class cBuildBigEndianStringValueArray : public C_bdd_value_traversing {
-  private : TC_UniqueArray <C_String> * mPtr ;
+  private: TC_UniqueArray <C_String> * mPtr ;
 
-  public : cBuildBigEndianStringValueArray (TC_UniqueArray <C_String> * inPtr) :
+  public: cBuildBigEndianStringValueArray (TC_UniqueArray <C_String> * inPtr) :
   mPtr (inPtr) {
   }
 
 //--- No copy
-  private : cBuildBigEndianStringValueArray (const cBuildBigEndianStringValueArray &) ;
-  private : cBuildBigEndianStringValueArray & operator = (const cBuildBigEndianStringValueArray &) ;
+  private: cBuildBigEndianStringValueArray (const cBuildBigEndianStringValueArray &) ;
+  private: cBuildBigEndianStringValueArray & operator = (const cBuildBigEndianStringValueArray &) ;
 
 //--- Virtual method called for every value
-  public : virtual void action (const bool tableauDesValeurs [],
+  public: virtual void action (const bool tableauDesValeurs [],
                                 const uint32_t inVariableCount) ;
 } ;
 
@@ -789,19 +789,19 @@ buildBigEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
 //----------------------------------------------------------------------------------------------------------------------
 
 class cBuildQueryString : public C_bdd_value_traversing {
-  private : C_String * mStringPtr ;
+  private: C_String * mStringPtr ;
 
-  public : cBuildQueryString (C_String * inStringPtr) :
+  public: cBuildQueryString (C_String * inStringPtr) :
   mStringPtr (inStringPtr) {
   }
 
 //--- No copy
-  private : cBuildQueryString (const cBuildQueryString &) ;
-  private : cBuildQueryString & operator = (const cBuildQueryString &) ;
+  private: cBuildQueryString (const cBuildQueryString &) ;
+  private: cBuildQueryString & operator = (const cBuildQueryString &) ;
 
 
 //--- Virtual method called for every value
-  public : virtual void action (const bool tableauDesValeurs [],
+  public: virtual void action (const bool tableauDesValeurs [],
                                 const uint32_t inVariableCount) ;
 } ;
 
@@ -1377,13 +1377,13 @@ uint32_t C_BDD::getBDDnodesCount (void) const {
 
 class cBuildArrayForSet : public C_bdd_value_traversing {
 //--- Attributs
-  protected : TC_UniqueArray <bool> & mArray ;
+  protected: TC_UniqueArray <bool> & mArray ;
 
 //--- Constructeur
-  public : cBuildArrayForSet (TC_UniqueArray <bool> & outArray) ;
+  public: cBuildArrayForSet (TC_UniqueArray <bool> & outArray) ;
 
 //--- Methode virtuelle appelee pour chaque valeur
-  public : virtual void action (const bool inValuesArray [],
+  public: virtual void action (const bool inValuesArray [],
                                 const uint32_t inBDDbitsSize) ;
 } ;
   
@@ -1597,16 +1597,16 @@ transitiveClosure (const uint32_t inBitSize,
 
 class cBuildArrayForRelation2 : public C_bdd_value_traversing {
 //--- Attributes
-  protected : TC_UniqueArray <TC_UniqueArray <uint64_t> > & mArray ;
-  protected : uint32_t mBitsSize1 ;
+  protected: TC_UniqueArray <TC_UniqueArray <uint64_t> > & mArray ;
+  protected: uint32_t mBitsSize1 ;
 
 //--- Constructor
-  public :
+  public:
   cBuildArrayForRelation2 (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray,
                            const uint32_t inBitsSize1) ;
 
 //--- Virtual method called for every value
-  public : virtual void action (const bool inValuesArray [],
+  public: virtual void action (const bool inValuesArray [],
                                 const uint32_t inBDDbitsSize) ;
 } ;
   

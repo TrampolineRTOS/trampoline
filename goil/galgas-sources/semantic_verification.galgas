@@ -33,7 +33,7 @@ method @implementation verifyApplication
   ?let @applicationDefinition appDef {
   for () imp_ in  imp do
     if [[appDef objects] hasKey ![imp_lkey string]] then
-      @objectKind obj
+      let @objectKind obj
       [[appDef objects] get !imp_lkey ?obj]
       [imp_obj verifyApplication !obj]
     end
@@ -86,7 +86,7 @@ override method @impStructType verifyType
   case == @structAttribute sa :
     for () in  structAttributes do
       if [[[sa subAttributes] objectParams] hasKey ![lkey string]] then
-        @object_t subAttr
+        let @object_t subAttr
         [[[sa subAttributes] objectParams] get !lkey ?subAttr]
         [type verifyMultipleType !subAttr]
       end
@@ -114,7 +114,7 @@ override method @impBoolType verifyType
     if [b value] then
       for () in  trueSubAttributes do
         if [[[b subAttributes] objectParams] hasKey ![lkey string]] then
-          @object_t subAttrs
+          let @object_t subAttrs
           [[[b subAttributes] objectParams] get !lkey ?subAttrs]
           [type verifyMultipleType !subAttrs]
         end
@@ -122,7 +122,7 @@ override method @impBoolType verifyType
     else
       for () in  falseSubAttributes do
         if [[[b subAttributes] objectParams] hasKey ![lkey string]] then
-          @object_t subAttrs
+          let @object_t subAttrs
           [[[b subAttributes] objectParams] get !lkey ?subAttrs]
           [type verifyMultipleType !subAttrs]
         end
@@ -139,11 +139,11 @@ override method @impEnumType verifyType
   cast attr
   case == @enumAttribute e :
     if [valuesMap hasKey ![e value]] then
-      @implementationObjectMap validVal
+      let @implementationObjectMap validVal
       [valuesMap get !lstringWith(![e value]) ?validVal]
       for () in  validVal do
         if [[[e subAttributes] objectParams] hasKey ![lkey string]] then
-          @object_t subAttrs
+          let @object_t subAttrs
           [[[e subAttributes] objectParams] get !lkey ?subAttrs]
           [type verifyMultipleType !subAttrs]
         end
@@ -239,14 +239,14 @@ proc verifyAllAttributes
   ?let @implementation imp
   ?let @objectsMap objects {
   for () in  objects do
-    @implementationObject impObj = [imp impObject ![lkey string]]
+    let @implementationObject impObj = [imp impObject ![lkey string]]
 #    message "*** implementation object = ".lkey."\n";
     for () obj_ in  [objectsOfKind objects] do
       for () imp_ in  [impObj attributes] do
         if [[obj_attributes objectParams] hasKey ![imp_lkey string]] then
           # the parameter is defined in the object
           # get it to see if it is set to AUTO
-          @object_t value
+          let @object_t value
           [[obj_attributes objectParams] get !imp_lkey ?value]
           cast value
           case == @auto :
@@ -577,7 +577,7 @@ method @objectsMap verifyCrossReferences
   ?let @implementation imp
 {
   for () in self do
-    [[imp imp] get !lkey ?@implementationObject obj];
+    [[imp imp] get !lkey ?let @implementationObject obj];
     [objectsOfKind verifyCrossReferences !self !obj]
   end
 }
@@ -597,7 +597,7 @@ method @objectAttributes verifyCrossReferences
 {
   for () in objectParams do
     if [attributes hasKey ![lkey string]] then
-      [attributes get !lkey ?@impType type];
+      [attributes get !lkey ?let @impType type];
       [value verifyCrossReferences !allObjects !type]
     end
   end
@@ -622,7 +622,7 @@ override method @boolAttribute verifyCrossReferences
   ?let @objectsMap  allObjects
   ?let @impType  type
 {
-  @impBoolType boolType = type as @impBoolType
+  let @impBoolType boolType = type as @impBoolType
   if value then
     [subAttributes verifyCrossReferences !allObjects ![boolType trueSubAttributes]]
   else
@@ -634,9 +634,9 @@ override method @enumAttribute verifyCrossReferences
   ?let @objectsMap  allObjects
   ?let @impType  type
 {
-  @impEnumType enumType = type as @impEnumType
+  let @impEnumType enumType = type as @impEnumType
   let @lstring key = @lstring.new {!value !.here}
-  [[enumType valuesMap] get !key ?@implementationObjectMap expectedAttributes]
+  [[enumType valuesMap] get !key ?let @implementationObjectMap expectedAttributes]
   [subAttributes verifyCrossReferences !allObjects !expectedAttributes]
 }
 
@@ -644,7 +644,7 @@ override method @structAttribute verifyCrossReferences
   ?let @objectsMap  allObjects
   ?let @impType  type
 {
-  @impStructType structType = type as @impStructType
+  let @impStructType structType = type as @impStructType
   [subAttributes verifyCrossReferences !allObjects ![structType structAttributes]]
 }
 
@@ -654,7 +654,7 @@ override method @objectRefAttribute verifyCrossReferences
 {
   let @refType refType = type as @refType
   # look for the object map of kind [refType ref]
-  [allObjects get ![refType ref] ?@objectKind kindMap]
+  [allObjects get ![refType ref] ?let @objectKind kindMap]
   if not [[kindMap objects] hasKey ![value string]] then
     error value: "Referenced "+[refType ref]+": "+value+" does not exist"
   end

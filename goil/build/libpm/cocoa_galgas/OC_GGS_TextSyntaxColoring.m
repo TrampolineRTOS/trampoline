@@ -16,6 +16,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
+#import "OC_GGS_ColorTransformer.h"
 #import "OC_GGS_TextSyntaxColoring.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
 #import "OC_Lexique.h"
@@ -140,39 +141,40 @@
   //--------------------------------------------------- Add foreground color observers
     NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults] ;
+    OC_GGS_ColorTransformer * colorTransformer = [OC_GGS_ColorTransformer new] ;
     if ([mTokenizer isTemplateLexique]) {
       NSString * keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_template_foreground_color, [mTokenizer styleIdentifierForStyleIndex:0]] ;
       [udc
-        addObserver:self
-        forKeyPath:keyPath
-        options:NSKeyValueObservingOptionNew
+        addObserver: self
+        forKeyPath: keyPath
+        options: NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_TEMPLATE_FOREGROUND_COLOR)
       ] ;
       NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_template_foreground_color, [mTokenizer styleIdentifierForStyleIndex:0]] ;
-      NSData * data = [defaults dataForKey:name] ;
+      NSData * data = [defaults dataForKey: name] ;
       if (data != nil) {
-        NSColor * color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
-        [mTemplateTextAttributeDictionary setObject:color forKey:NSForegroundColorAttributeName] ;
+        NSColor * color = [colorTransformer transformedValue: data] ;
+        [mTemplateTextAttributeDictionary setObject: color forKey: NSForegroundColorAttributeName] ;
       }else{
-        [mTemplateTextAttributeDictionary setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName] ;
+        [mTemplateTextAttributeDictionary setObject: [NSColor blackColor] forKey: NSForegroundColorAttributeName] ;
       }
     }
     for (NSInteger i=0 ; i< (NSInteger) mTokenizer.styleCount ; i++) {
       NSString * keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_named_color, [mTokenizer styleIdentifierForStyleIndex:i]] ;
       [udc
-        addObserver:self
-        forKeyPath:keyPath
-        options:NSKeyValueObservingOptionNew
-        context:(void *) (TAG_FOR_FOREGROUND_COLOR | i)
+        addObserver: self
+        forKeyPath: keyPath
+        options: NSKeyValueObservingOptionNew
+        context: (void *) (TAG_FOR_FOREGROUND_COLOR | i)
       ] ;
     }
   //--------------------------------------------------- Add background color observers
     if ([mTokenizer isTemplateLexique]) {
       NSString * keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_template_background_color, [mTokenizer styleIdentifierForStyleIndex:0]] ;
       [udc
-        addObserver:self
-        forKeyPath:keyPath
-        options:NSKeyValueObservingOptionNew
+        addObserver: self
+        forKeyPath: keyPath
+        options: NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_TEMPLATE_BACKGROUND_COLOR)
       ] ;
       keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_enable_template_background, [mTokenizer styleIdentifierForStyleIndex:0]] ;
@@ -187,7 +189,7 @@
         name = [NSString stringWithFormat:@"%@_%@", GGS_template_background_color, [mTokenizer styleIdentifierForStyleIndex:0]] ;
         NSData * data = [defaults dataForKey:name] ;
         if (data != nil) {
-          NSColor * color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
+          NSColor * color = [colorTransformer transformedValue: data] ;
           [mTemplateTextAttributeDictionary setObject:color forKey:NSBackgroundColorAttributeName] ;
         }else{
           [mTemplateTextAttributeDictionary setObject:[NSColor blackColor] forKey:NSBackgroundColorAttributeName] ;
@@ -245,10 +247,13 @@
       NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [mTokenizer styleIdentifierForStyleIndex:i]] ;
       NSData * data = [defaults dataForKey:name] ;
       if (data != nil) {
-        NSColor * color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
+        NSColor * color = [colorTransformer transformedValue: data] ;
+        if (color == nil) {
+          color = [NSColor blackColor] ;
+        }
         [attributeDictionary setObject:color forKey:NSForegroundColorAttributeName] ;
       }else{
-        [attributeDictionary setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName] ;
+        [attributeDictionary setObject: [NSColor blackColor] forKey:NSForegroundColorAttributeName] ;
       }
     //--- Add background color   
       name = [NSString stringWithFormat:@"%@_%@", GGS_named_enable_background, [mTokenizer styleIdentifierForStyleIndex:i]] ;
@@ -257,9 +262,12 @@
         data = [defaults dataForKey:name] ;
         if (data != nil) {
           NSColor * color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
-          [attributeDictionary setObject:color forKey:NSBackgroundColorAttributeName] ;
+          if (color == nil) {
+            color = [NSColor whiteColor] ;
+          }
+          [attributeDictionary setObject:color forKey: NSBackgroundColorAttributeName] ;
         }else{
-          [attributeDictionary setObject:[NSColor blackColor] forKey:NSBackgroundColorAttributeName] ;
+          [attributeDictionary setObject:[NSColor blackColor] forKey: NSBackgroundColorAttributeName] ;
         }
       }
     //--- Add font attribute   
@@ -267,26 +275,26 @@
       data = [defaults dataForKey:name] ;
       if (data != nil) {
         NSFont * font = (NSFont *) [NSUnarchiver unarchiveObjectWithData:data] ;
-        [attributeDictionary setObject:font forKey:NSFontAttributeName] ;
+        [attributeDictionary setObject: font forKey: NSFontAttributeName] ;
       }
     //--- Add dictionary
-      [mFontAttributesDictionaryArray addObject:attributeDictionary] ;
+      [mFontAttributesDictionaryArray addObject: attributeDictionary] ;
     }
   //--- Max line height
     [self computeMaxLineHeight:NULL] ;
   //---
     [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector(textStorageDidProcessEditingNotification:)
+      addObserver: self
+      selector: @selector(textStorageDidProcessEditingNotification:)
       name: NSTextStorageDidProcessEditingNotification
-      object:mSourceTextStorage
+      object: mSourceTextStorage
     ] ;
   //--- Enter source string
     [mSourceTextStorage beginEditing] ;
-    [mSourceTextStorage replaceCharactersInRange:NSMakeRange (0, mSourceTextStorage.length) withString:inSource] ;
+    [mSourceTextStorage replaceCharactersInRange: NSMakeRange (0, mSourceTextStorage.length) withString: inSource] ;
     [mSourceTextStorage endEditing] ;
   //---
-    [self setIssueArray:inIssueArray] ;
+    [self setIssueArray: inIssueArray] ;
   }
   return self ;
 }
@@ -298,25 +306,25 @@
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:NSUndoManagerCheckpointNotification
-    object:mUndoManager
+    removeObserver: self
+    name: NSUndoManagerCheckpointNotification
+    object: mUndoManager
   ] ;
   [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:NSUndoManagerDidUndoChangeNotification
-    object:mUndoManager
+    removeObserver: self
+    name: NSUndoManagerDidUndoChangeNotification
+    object: mUndoManager
   ] ;
   [[NSNotificationCenter defaultCenter]
-    removeObserver:self
+    removeObserver: self
     name:NSUndoManagerDidRedoChangeNotification
-    object:mUndoManager
+    object: mUndoManager
   ] ;
 //---
   [[NSNotificationCenter defaultCenter]
-    removeObserver:self
+    removeObserver: self
     name: NSTextStorageDidProcessEditingNotification
-    object:mSourceTextStorage
+    object: mSourceTextStorage
   ] ;
 //---
 //  NSLog (@"%s:observationInfo %@", __PRETTY_FUNCTION__, (id) self.observationInfo) ;
@@ -383,12 +391,12 @@
     nil
   ] ;
   [mUndoManager
-    registerUndoWithTarget:self
-    selector:@selector (replaceUsingDictionary:)
-    object:d
+    registerUndoWithTarget: self
+    selector: @selector (replaceUsingDictionary:)
+    object: d
   ] ;
   [mSourceTextStorage beginEditing] ;
-  [mSourceTextStorage replaceCharactersInRange:inRange withString:inReplaceString] ;
+  [mSourceTextStorage replaceCharactersInRange: inRange withString: inReplaceString] ;
   [mSourceTextStorage endEditing] ;
 }
 
@@ -459,13 +467,13 @@
       name: NSTextStorageDidProcessEditingNotification
       object:mSourceTextStorage
     ]; */
- //   [mSourceTextStorage beginEditing] ;
+    [mSourceTextStorage beginEditing] ;
   //--- Change default style ?
     if (inChangedColorIndex == 0) {
       const NSRange allTextRange = {0, [mSourceTextStorage length]} ;
       [mSourceTextStorage
         setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0]
-        range:allTextRange
+        range: allTextRange
       ] ;
       for (NSUInteger i=0 ; i<[mTokenArray count] ; i++) {
         OC_Token * token = [mTokenArray objectAtIndex:i] ;
@@ -514,9 +522,9 @@
         }
       }
     }
-/*    [mSourceTextStorage endEditing] ;
+    [mSourceTextStorage endEditing] ;
   //--- Resinstall observer
-    [[NSNotificationCenter defaultCenter]
+ /*   [[NSNotificationCenter defaultCenter]
       addObserver:self
       selector:@selector(textStorageDidProcessEditingNotification:)
       name: NSTextStorageDidProcessEditingNotification
@@ -636,8 +644,8 @@
         NSLog (@"PERFORM REMOVE ATTRIBUTE range [%lu, %lu] text length %lu", eraseRange.location, eraseRange.length, textLength) ;
       #endif
       [mSourceTextStorage
-        setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0]
-        range:eraseRange
+        setAttributes: [mFontAttributesDictionaryArray objectAtIndex:0]
+        range: eraseRange
       ] ;
       #ifdef DEBUG_MESSAGES
         NSLog (@"mSourceTextStorage setAttributes DONE") ;
@@ -893,15 +901,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSArray * undoStack = mUndoManager.undoStack ;
-  NSArray * redoStack = mUndoManager.redoStack ;
-  //NSLog (@"undoManagerCheckPointNotification: undoStack %lu, redoStack %lu", undoStack.count, redoStack.count) ;
 //---
-  isDirty =
-    (mSavePointUndoStackCount != undoStack.count)
-  ||
-    (mSavePointRedoStackCount != redoStack.count)
-  ;
+  isDirty = mTimerForAutosaving != nil ;
   for (OC_GGS_TextDisplayDescriptor * textDisplayDescriptor in mTextDisplayDescriptorSet) {
     textDisplayDescriptor.isDirty = isDirty ;
   }
@@ -913,11 +914,6 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSArray * undoStack = mUndoManager.undoStack ;
-  mSavePointUndoStackCount = undoStack.count ;
-  NSArray * redoStack = mUndoManager.redoStack ;
-  mSavePointRedoStackCount = redoStack.count ;
-  // NSLog (@"documentHasBeenSaved: undoStack %lu, redoStack %lu", mSavePointUndoStackCount, mSavePointRedoStackCount) ;
   [self undoManagerCheckPointNotification:nil] ;
 }
 
@@ -939,7 +935,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     BOOL lineHeightDidChange = NO ;
     NSColor * color = nil ;
     NSMutableDictionary * d = nil ;
-    NSData * data = [inObject valueForKeyPath:inKeyPath] ;
+    NSData * data = [inObject valueForKeyPath: inKeyPath] ;
     const NSUInteger tag = ((NSUInteger) inContext) & TAG_MASK ;
     const NSUInteger idx = ((NSUInteger) inContext) & ~ TAG_MASK ;
     switch (tag) {
@@ -947,20 +943,20 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       if (data == nil) {
         color = [NSColor whiteColor] ;
       }else{
-        color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
+        color = (NSColor *) [NSKeyedUnarchiver unarchiveObjectWithData: data] ;
       }
-      d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
-      [d setObject:color forKey:NSForegroundColorAttributeName] ;
-      [self applyTextAttributeForIndex:(NSInteger) idx] ;
+      d = [mFontAttributesDictionaryArray objectAtIndex: idx] ;
+      [d setObject: color forKey: NSForegroundColorAttributeName] ;
+      [self applyTextAttributeForIndex: (NSInteger) idx] ;
       break;
     case TAG_FOR_TEMPLATE_FOREGROUND_COLOR:
       if (data == nil) {
         color = [NSColor whiteColor] ;
       }else{
-        color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
+        color = (NSColor *) [NSKeyedUnarchiver unarchiveObjectWithData: data] ;
       }
       [mTemplateTextAttributeDictionary setObject:color forKey:NSForegroundColorAttributeName] ;
-      [self applyTextAttributeForIndex:-2] ;
+      [self applyTextAttributeForIndex: -2] ;
       break;
     case TAG_FOR_ENABLING_BACKGROUND:
       if (data != nil)  {
@@ -985,7 +981,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       if (data == nil) {
         color = [NSColor whiteColor] ;
       }else{
-        color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
+        color = (NSColor *) [NSKeyedUnarchiver unarchiveObjectWithData:data] ;
       }
       d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
       [d setObject:color forKey:NSBackgroundColorAttributeName] ;
@@ -1001,7 +997,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
             [mTokenizer styleIdentifierForStyleIndex:(NSInteger) idx]
           ] ;
           NSData * colorData = [[NSUserDefaults standardUserDefaults] objectForKey:keyPath] ;
-          color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:colorData] ;
+          color = (NSColor *) [NSKeyedUnarchiver unarchiveObjectWithData:colorData] ;
           [mTemplateTextAttributeDictionary setValue:color forKey:NSBackgroundColorAttributeName] ;
         }else{
           [mTemplateTextAttributeDictionary removeObjectForKey:NSBackgroundColorAttributeName] ;
@@ -1039,27 +1035,6 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
 //----------------------------------------------------------------------------------------------------------------------
 
 #pragma mark Source Indexing
-
-//----------------------------------------------------------------------------------------------------------------------
-
-- (NSSet *) handledExtensions {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  NSMutableSet * result = [NSMutableSet new] ;
-//--- Get Info.plist file
-  NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary] ;
-  // NSLog (@"infoDictionary '%@'", infoDictionary) ;
-  NSArray * allDocumentTypes = [infoDictionary objectForKey:@"CFBundleDocumentTypes"] ;
-  // NSLog (@"allDocumentTypes '%@'", allDocumentTypes) ;
-  for (NSDictionary * docTypeDict in allDocumentTypes) {
-    // NSLog (@"docTypeDict '%@'", docTypeDict) ;
-    NSArray * documentTypeExtensions = [docTypeDict objectForKey:@"CFBundleTypeExtensions"] ;
-    // NSLog (@"documentTypeExtensions '%@'", documentTypeExtensions) ;
-    [result addObjectsFromArray:documentTypeExtensions] ;
-  }
-  return result ;
-}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -1126,8 +1101,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       // NSLog (@"indexingDirectory '%@'", indexingDirectory) ;
     }
   //--- Handled extensions
-    NSSet * handledExtensions = [self handledExtensions] ;
-    // NSLog (@"handledExtensions '%@'", handledExtensions) ;
+    NSSet * handledExtensions = gCocoaApplicationDelegate.allExtensionsOfCurrentApplication ;
+    // NSLog (@"***** handledExtensions '%@'", handledExtensions) ;
   //--- All files in source directory
     NSFileManager * fm = [[NSFileManager alloc] init] ;
     NSArray * files = [fm contentsOfDirectoryAtPath:sourceDirectory error:NULL] ;
@@ -1189,7 +1164,6 @@ static NSInteger numericSort (NSString * inOperand1,
 // Every plist list is a dictionary: the key is the indexed to token; the 
 // associated value is an NSArray of NSString that has the following format:
 //   "kind:line:locationIndex:length:sourceFileFullPath"
-
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) appendIndexingToMenu: (NSMenu *) inMenu

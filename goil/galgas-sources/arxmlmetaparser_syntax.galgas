@@ -50,7 +50,7 @@ rule <arxmlmetaparser_start_symbol>
     [classString writeToFile !"arxml_ecuc_classes.galgas"]
 
     # Graph file
-    @string graphString = [classGraph graphviz]
+    let @string graphString = [classGraph graphviz]
     [graphString writeToFile !"arxml_ecuc_graph.dot"]
   end
 
@@ -132,12 +132,12 @@ rule <xsd_attribute>
     $=$
     $xmlTagValue$ ?attributeRef
   while $type$
-    @lstring fullType
+    let @lstring fullType
     $=$
     $xmlTagValue$ ?fullType
     # The Type is either "Prefix:Type" or "Type"
     if [fullType.string containsCharacter !':'] then
-      @stringlist parsed = [fullType.string componentsSeparatedByString !":"]
+      let @stringlist parsed = [fullType.string componentsSeparatedByString !":"]
       @string parsedString
       [parsed first ?parsedString]
       attributePrefix.string = parsedString
@@ -159,12 +159,12 @@ rule <xsd_attribute>
   end
 
   if attributeName.string != "" then
-    @arxmlMetaAttribute newAttribute = @arxmlMetaAttribute.new{
-                                                       !attributeName
-                                                       !attributeType
-                                                       !attributePrefix
-                                                       !attributeUse
-                                                      }
+    let @arxmlMetaAttribute newAttribute = @arxmlMetaAttribute.new{
+                                                                 !attributeName
+                                                                 !attributeType
+                                                                 !attributePrefix
+                                                                 !attributeUse
+                                                               }
     [!?classMap addClassAttribute !parentClass !newAttribute]
   end
 
@@ -195,23 +195,23 @@ rule <xsd_attributeGroup>
 {
   # Parse the attributes
   @lstring className
-  @lstring nextParentClass
+  let @lstring nextParentClass
   select $name$
     # The class does not exists => create it
     $=$
     $xmlTagValue$ ?className            # Get the classname from the file
     className.string = [className.string stringByReplacingStringByString !"<" !""]
     className.string = [className.string stringByReplacingStringByString !">" !""]
-    lstringhere(?@lstring desc !"")     # The description is filled later
+    lstringhere(?let @lstring desc !"")     # The description is filled later
 
     if not [classMap hasKey !className] then
-      @arxmlMetaClass newClass = @arxmlMetaClass.new{
-                                                     !className
-                                                     !true
-                                                     !{} !{}
-                                                     !{} !{}
-                                                     !desc
-                                                    }
+      let @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                       !className
+                                                       !true
+                                                       !{} !{}
+                                                       !{} !{}
+                                                       !desc
+                                                     }
       [!?classMap insertKey !className !newClass]
       [!?classGraph addNode !className !className]
     end
@@ -223,7 +223,7 @@ rule <xsd_attributeGroup>
     className = fullClassName
     # The Type is either "Prefix:Type" or "Type"
     if [fullClassName.string containsCharacter !':'] then
-      @stringlist parsed = [fullClassName.string componentsSeparatedByString !":"]
+      let @stringlist parsed = [fullClassName.string componentsSeparatedByString !":"]
       [parsed last ?let @string parsedString]
       className.string = parsedString
     end
@@ -324,14 +324,14 @@ rule <xsd_complexType>
   end
 
   if not [classMap hasKey !complexName] then
-    lstringhere(?@lstring desc !"")
-    @arxmlMetaClass newClass = @arxmlMetaClass.new{
-                                                   !complexName
-                                                   !false
-                                                   !{} !{}
-                                                   !{} !{}
-                                                   !desc
-                                                  }
+    lstringhere(?let @lstring desc !"")
+    let @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                     !complexName
+                                                     !false
+                                                     !{} !{}
+                                                     !{} !{}
+                                                     !desc
+                                                   }
     [!?classMap insertKey !complexName !newClass]
     [!?classGraph addNode !complexName !complexName]
   end
@@ -390,7 +390,7 @@ rule <xsd_element>
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
-  @arxmlMetaElement newElement
+  let @arxmlMetaElement newElement
   lstringhere(?@lstring elementType !"")
   lstringhere(?@lstring elementName !"")
   lstringhere(?@lstring elementMin  !"")
@@ -405,12 +405,12 @@ rule <xsd_element>
     $=$
     $xmlTagValue$ ?elementMin
   while $type$
-    @lstring fullType
+    let @lstring fullType
     $=$
     $xmlTagValue$ ?fullType
     # The Type is either "Prefix:Type" or "Type"
     if [fullType.string containsCharacter !':'] then
-      @stringlist parsed = [fullType.string componentsSeparatedByString !":"]
+      let @stringlist parsed = [fullType.string componentsSeparatedByString !":"]
       @string parsedString
       [parsed first ?parsedString]
       elementPrefix.string = parsedString
@@ -450,8 +450,8 @@ rule <xsd_element>
   end
 
   if not [classMap hasKey !elementName] then
-    lstringhere(?@lstring desc !"")
-    @arxmlMetaClass newClass = @arxmlMetaClass.new{
+    lstringhere(?let @lstring desc !"")
+    let @arxmlMetaClass newClass = @arxmlMetaClass.new{
                                                    !elementName
                                                    !false
                                                    !{} !{}
@@ -562,17 +562,17 @@ rule <xsd_group>
 {
   # Parse the attributes
   @lstring className
-  @lstring nextParentClass
+  let @lstring nextParentClass
   select $name$
     # The class does not exists => create it
     $=$
     $xmlTagValue$ ?className            # Get the classname from the file
     className.string = [className.string stringByReplacingStringByString !"<" !""]
     className.string = [className.string stringByReplacingStringByString !">" !""]
-    lstringhere(?@lstring desc !"")     # The description is filled later
+    lstringhere(?let @lstring desc !"")     # The description is filled later
 
     if not [classMap hasKey !className] then
-      @arxmlMetaClass newClass = @arxmlMetaClass.new{
+      let @arxmlMetaClass newClass = @arxmlMetaClass.new{
                                                      !className
                                                      !false
                                                      !{} !{}
@@ -590,7 +590,7 @@ rule <xsd_group>
     className = fullClassName
     # The Type is either "Prefix:Type" or "Type"
     if [fullClassName.string containsCharacter !':'] then
-      @stringlist parsed = [fullClassName.string componentsSeparatedByString !":"]
+      let @stringlist parsed = [fullClassName.string componentsSeparatedByString !":"]
       [parsed last ?let @string parsedString]
       className.string = parsedString
     end
@@ -657,7 +657,7 @@ rule <xsd_restriction>
   ?!@arxmlMetaSimpletype restriction
 {
   lstringhere(?@lstring baseType !"")
-  @lstringlist valuesifenum = {}
+#  @lstringlist valuesifenum = {}
 
   $base$
   $=$
@@ -763,16 +763,16 @@ rule <xsd_schema>
   # a global variable for its main node "AUTOSAR". Basically we're going to put
   # only the AUTOSAR node in this root class and give the root class definition
   # as an output at the end of the parsing.
-  lstringhere(?@lstring rootClassName !"root")
-  lstringhere(?@lstring desc !"Root class containing the main AUTOSAR node")
+  lstringhere(?let @lstring rootClassName !"root")
+  lstringhere(?let @lstring desc !"Root class containing the main AUTOSAR node")
 
-  @arxmlMetaClass rootClass = @arxmlMetaClass.new{
-                                                  !rootClassName
-                                                  !false
-                                                  !{} !{}
-                                                  !{} !{}
-                                                  !desc
-                                                 }
+  let @arxmlMetaClass rootClass = @arxmlMetaClass.new{
+                                                      !rootClassName
+                                                      !false
+                                                      !{} !{}
+                                                      !{} !{}
+                                                      !desc
+                                                     }
   [!?classMap insertKey !rootClassName !rootClass]
   [!?classGraph addNode !rootClassName !rootClassName]
 
@@ -903,8 +903,8 @@ rule <xsd_simpleType>
                                                      }
 
   if not [classMap hasKey !typeName] then
-    lstringhere(?@lstring desc !"")
-    @arxmlMetaClass newClass = @arxmlMetaClass.new{
+    lstringhere(?let @lstring desc !"")
+    let @arxmlMetaClass newClass = @arxmlMetaClass.new{
                                                    !typeName
                                                    !false
                                                    !{} !{}
@@ -1012,173 +1012,131 @@ rule <xsd_ignore_attributes>
 {
   repeat
   while $abstract$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $attributeFormDefault$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $attributeRef$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $base$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $category$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $CATEGORY$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $color$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $customType$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $elementFormDefault$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $encoding$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $enforceMinMultiplicity$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $globalElement$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $id$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $latestBindingTime$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $maxOccurs$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $minOccurs$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $mixed$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $name$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $namePlural$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $namespace$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $noteType$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $nsPrefix$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $qualifiedName$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $recommendedPackage$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $ref$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $roleElement$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $roleWrapperElement$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $schemaLocation$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $sequenceOffset$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $source$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $Splitkey$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $Status$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $StatusRevisionBegin$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $targetNamespace$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $type$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $typeElement$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $typeWrapperElement$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $use$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $value$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $version$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $xmlns:AR$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   while $xmlns:xsd$
-    @lstring attributeValue
     $=$
-    $xmlTagValue$ ?attributeValue
+    $xmlTagValue$ ?*
   end
 }
 
@@ -1197,18 +1155,18 @@ proc fillLegacy
   ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
 {
-  @stringlist sortedInfoList = [classGraph keyList]
+  let @stringlist sortedInfoList = [classGraph keyList]
 
   for (@string sClassName) in sortedInfoList do
-    lstringhere(?@lstring lClassName !sClassName)
+    lstringhere(?let @lstring lClassName !sClassName)
     @arxmlMetaClass lClass
     [classMap searchKey !lClassName ?lClass]
 
     # Get successors
     @lstringlist fromList = {}
     [!?fromList insertAtIndex ![lClass name] !0]
-    @stringset empty = .emptySet
-    @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
+    let @stringset empty = .emptySet
+    let @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
 
     # Add this class's elements and attributes to each of the successors class
     [!?lClass legacyAddParameters !?classMap !successorList]

@@ -72,7 +72,7 @@ project (3:1:12) -> "goil" {
   %codeblocks-windows
   
   #specific for Mac Cocoa Version:
-  %LatestMacOS
+  %MacOS
   %applicationBundleBase : "fr.ls2n.str"
   
 #---------------------------------------------------------------------------*

@@ -23,7 +23,6 @@
 #import "F_CocoaWrapperForGalgas.h"
 #import "PMDebug.h"
 #import "PMIssueDescriptor.h"
-#import "OC_GGS_FileEventStream.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -242,7 +241,6 @@ static NSMutableDictionary * gDocumentDataDictionary ;
       fileURL = inDocumentURL ;
       mFileEncoding = NSUTF8StringEncoding ;
       [self readDocumentFromFile] ;
-      // addFileEventStreamForDocument (self) ;  // §§
     }
     return self ;
   }
@@ -279,7 +277,6 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   + (void) cocoaDocumentWillClose: (OC_GGS_DocumentData *) inDocumentData {
     [OC_GGS_DocumentData saveAllDocuments] ;
     [inDocumentData detachFromCocoaDocument] ;
-    // removeFileEventStreamForDocument (inDocumentData) ; // §§
     for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues.copy) {
       // NSLog (@"%lu for %@", documentData.textSyntaxColoring.displayDescriptorCount, documentData.fileURL) ;
       if (documentData.textSyntaxColoring.displayDescriptorCount == 0) {
@@ -383,13 +380,11 @@ static NSMutableDictionary * gDocumentDataDictionary ;
 
   - (void) save {
     if (mTextSyntaxColoring.isDirty) {
- //     removeFileEventStreamForDocument (self) ;  // §§
       if (nil == self.document) {
         [self performSaveToURL: nil] ;
       }else{
         [self.document saveDocument: nil] ;
       }
- //     addFileEventStreamForDocument (self) ;  // §§
     }
   }
 
@@ -400,30 +395,6 @@ static NSMutableDictionary * gDocumentDataDictionary ;
       [documentData save] ;
     }
   }
-
-  //····················································································································
-
-#pragma mark Reload from file system
-
-  //····················································································································
-
-  - (void) fileDidChangeInFileSystem {
-    NSString * filePath = self.fileURL.path ;
-    NSError * error = nil ;
-    NSString * newContents = [NSString
-      stringWithContentsOfFile: filePath
-      encoding: NSUTF8StringEncoding
-      error: & error
-    ] ;
-    if (error == nil) {
-    // https://stackoverflow.com/questions/25810749/how-can-i-suppress-the-autosave-the-file-has-been-changed-by-another-applicatio
-      [self.document revertDocumentToSaved: self.document] ;
-      [self replaceSourceStringWithString: newContents] ;
-    }else{
-      [NSApp presentError:error] ;
-    }
-  }
-
 
   //····················································································································
 

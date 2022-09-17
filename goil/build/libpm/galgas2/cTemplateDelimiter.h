@@ -35,15 +35,15 @@ class C_Lexique ;
 //----------------------------------------------------------------------------------------------------------------------
 
 class cTemplateDelimiter {
-  public : const utf32 * mStartString ;
-  public : const int32_t mStartStringLength ;
-  public : const utf32 * mEndString ;
-  public : const int32_t mEndStringLength ;
-  public : void (* mReplacementFunction) (C_Lexique & inLexique, const C_String & inElementString, C_String & ioTemplateString) ;
-  public : const bool mDiscardStartString ;
+  public: const utf32 * mStartString ;
+  public: const int32_t mStartStringLength ;
+  public: const utf32 * mEndString ;
+  public: const int32_t mEndStringLength ;
+  public: void (* mReplacementFunction) (C_Lexique & inLexique, const C_String & inElementString, C_String & ioTemplateString) ;
+  public: const bool mDiscardStartString ;
 
 //--- Constructor
-  public : cTemplateDelimiter (const utf32 * inStartString,
+  public: cTemplateDelimiter (const utf32 * inStartString,
                                const int32_t inStartStringLength,
                                const utf32 * inEndString,
                                const int32_t inEndStringLength,
@@ -51,10 +51,10 @@ class cTemplateDelimiter {
                                const bool inDiscardStartString) ;
 
 //--- Copy
-  public : cTemplateDelimiter (const cTemplateDelimiter & inOperand) ;
+  public: cTemplateDelimiter (const cTemplateDelimiter & inOperand) ;
 
 //--- No assignment
-  private : cTemplateDelimiter & operator = (const cTemplateDelimiter &) ;
+  private: cTemplateDelimiter & operator = (const cTemplateDelimiter &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

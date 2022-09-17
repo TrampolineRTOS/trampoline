@@ -61,7 +61,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
 //----------------------------------------------------------------------------------------------------------------------
 
 - (NSImage *) imageForClosingInUserInterface {
-  return [NSImage imageNamed:@"closeSourceFile"] ;
+  return [NSImage imageNamed:@"NSStopProgressFreestandingTemplate"] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -70,9 +70,9 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  const BOOL show = [[NSUserDefaults standardUserDefaults] boolForKey:@"PMShowInvisibleCharacters"] ;
-  [mTextView.layoutManager setShowsInvisibleCharacters:show] ;
-  [mTextView setNeedsDisplay:YES] ;
+  const BOOL show = [[NSUserDefaults standardUserDefaults] boolForKey: @"PMShowInvisibleCharacters"] ;
+  [mTextView.layoutManager setShowsInvisibleCharacters: show] ;
+  [mTextView setNeedsDisplay: YES] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -95,46 +95,48 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     mDocumentUsedForDisplaying = inDocumentUsedForDisplaying ;
     mTextView = [[OC_GGS_TextView alloc]
       initWithFrame:NSMakeRect (0.0, 0.0, 10.0, 10.0)
-      documentUsedForDisplaying:inDocumentUsedForDisplaying
-      displayDescriptor:self
+      documentUsedForDisplaying: inDocumentUsedForDisplaying
+      displayDescriptor: self
     ] ;
+//    NSLog (@"Default font %@", mTextView.font) ;
+//    NSLog (@"Default attributes %@", mTextView.textStorage.attributeRuns) ;
     mTextView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable ;
-    [mTextView setGrammarCheckingEnabled:NO] ;
-    [mTextView setContinuousSpellCheckingEnabled:NO] ;
     mTextView.allowsUndo = YES ;
-    [mTextView useAllLigatures:nil] ;
-    [mTextView setAlignment:NSNaturalTextAlignment] ;
-    [mTextView setAutomaticQuoteSubstitutionEnabled:NO] ;
-    mTextView.smartInsertDeleteEnabled = NO ;
-    [mTextView setAutomaticDashSubstitutionEnabled:NO] ;
-    [mTextView.layoutManager setAllowsNonContiguousLayout:NO] ;
-    [mTextView.layoutManager setUsesFontLeading:YES] ;
-    [mTextView.layoutManager setBackgroundLayoutEnabled:YES] ;
     mTextView.drawsBackground = NO ;
-    if ([mTextView respondsToSelector:@selector(setAutomaticTextReplacementEnabled:)]) {
-      [mTextView setValue:[NSNumber numberWithBool:NO] forKey:@"automaticTextReplacementEnabled"] ;
-    }
+    mTextView.grammarCheckingEnabled = NO ;
+    mTextView.continuousSpellCheckingEnabled = NO ;
+    [mTextView useAllLigatures: nil] ;
+    mTextView.automaticQuoteSubstitutionEnabled = NO ;
+    mTextView.smartInsertDeleteEnabled = NO ;
+    mTextView.automaticDashSubstitutionEnabled = NO ;
+    mTextView.layoutManager.allowsNonContiguousLayout = YES ;
+    mTextView.layoutManager.usesFontLeading = YES ;
+    mTextView.layoutManager.backgroundLayoutEnabled = NO ;
+    mTextView.richText = YES ;
+    mTextView.importsGraphics = YES ;
+    mTextView.allowsImageEditing = YES ;
+    mTextView.layoutManager.usesScreenFonts = NO ;
+    mTextView.layoutManager.showsControlCharacters = YES ;
+    mTextView.automaticTextReplacementEnabled = NO ;
+    mTextView.usesFindBar = YES ;
   //---
-    if ([mTextView respondsToSelector:@selector (setUsesFindBar:)]) {
-      [mTextView setValue:[NSNumber numberWithBool:YES] forKey:@"usesFindBar"] ;
-    }else{
-      mTextView.usesFindPanel = YES ;
-    }
+    [mTextView setDelegate: self] ;
   //---
-    [mTextView setDelegate:self] ;
-  //---
-    mScrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect (0.0, 0.0, 100.0, 76.0)] ;
+    mScrollView = [[NSScrollView alloc] initWithFrame: NSMakeRect (0.0, 0.0, 100.0, 76.0)] ;
+    [mScrollView setScrollsDynamically: YES] ;
     mScrollView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable ;
-    [mScrollView setHasVerticalScroller:YES] ;
     mScrollView.borderType = NSBezelBorder ;
+  //--- Vertical Ruler
     mRulerView = [OC_GGS_RulerViewForTextView new] ;
-    [mScrollView setVerticalRulerView:mRulerView] ;
-    [mScrollView.verticalRulerView setRuleThickness:50.0] ;
-    [mScrollView setRulersVisible:YES] ;
-//    [mScrollView setHasVerticalRuler:YES] ;
+    [mScrollView setVerticalRulerView: mRulerView] ;
+    [mScrollView.verticalRulerView setRuleThickness: 50.0] ;
+    [mScrollView setHasVerticalRuler:YES] ;
+    [mScrollView setRulersVisible: YES] ;
+  //--- Vertical scroller
     OC_GGS_Scroller * scroller = [OC_GGS_Scroller new] ;
-    [scroller setIsSourceTextViewScroller:YES] ;
-    [mScrollView setVerticalScroller:scroller] ;
+    [scroller setIsSourceTextViewScroller: YES] ;
+    [mScrollView setVerticalScroller: scroller] ;
+    [mScrollView setHasVerticalScroller: YES] ;
     mScrollView.documentView = mTextView ;
   //--- Pop up Button
     mEntryListPopUpButton = [[NSPopUpButton alloc] initWithFrame:NSMakeRect (5.0, 78.0, 90.0, 22.0)] ;
@@ -143,8 +145,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   //--- Define enclosing view
     mEnclosingView = [[NSView alloc] initWithFrame:NSMakeRect (0.0, 0.0, 100.0, 100.0)] ;
     mEnclosingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable ;
-    [mEnclosingView addSubview:mScrollView] ;
-    [mEnclosingView addSubview:mEntryListPopUpButton] ;
+    [mEnclosingView addSubview: mScrollView] ;
+    [mEnclosingView addSubview: mEntryListPopUpButton] ;
   //--- Add "Show Invisible Character" preference observer
     [[NSUserDefaultsController sharedUserDefaultsController]
       addObserver:self
@@ -153,14 +155,14 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       context:NULL
     ] ;
     [self refreshShowInvisibleCharacters] ;
-    [documentData.textSyntaxColoring addDisplayDescriptor:self] ;
+    [documentData.textSyntaxColoring addDisplayDescriptor: self] ;
    //--- Set selection
     [[NSRunLoop mainRunLoop]
       performSelector: @selector (setSelectionAndScrollToVisibleAfterInit)
-      target:self
-      argument:nil
-      order:0
-      modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]
+      target: self
+      argument: nil
+      order: 0
+      modes: [NSArray arrayWithObject: NSDefaultRunLoopMode]
     ] ;
   }
   #ifdef DEBUG_MESSAGES
@@ -250,7 +252,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  if ([inKeyPath isEqualToString:@"values.PMShowInvisibleCharacters"]) {
+  if ([inKeyPath isEqualToString: @"values.PMShowInvisibleCharacters"]) {
     [self refreshShowInvisibleCharacters] ;
   }else{
     [super
@@ -291,9 +293,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     range.location = lastStartOfLine ;
     range.length = 0 ;
   }
-  NSBeep () ;
-  [mTextView setSelectedRange:range] ;
-  [mTextView scrollRangeToVisible:range] ;
+  [mTextView setSelectedRange: range] ;
+  [mTextView scrollRangeToVisible: range] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

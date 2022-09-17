@@ -43,8 +43,8 @@ class C_Compiler ;
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class max_error_count_reached_exception : public ::std::exception {
-  public : virtual const char * what (void) const throw () ;
+class max_error_count_reached_exception : public::std::exception {
+  public: virtual const char * what (void) const throw () ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -53,8 +53,8 @@ class max_error_count_reached_exception : public ::std::exception {
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class max_warning_count_reached_exception : public ::std::exception {
-  public : virtual const char * what (void) const throw () ;
+class max_warning_count_reached_exception : public::std::exception {
+  public: virtual const char * what (void) const throw () ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -73,17 +73,17 @@ class C_lexicalErrorException {
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_unicode_lexique_table_entry {
-  public : const utf32 * mEntryString ;
-  public : const int16_t mEntryStringLength ;
-  public : const int16_t mTokenCode ;
+  public: const utf32 * mEntryString ;
+  public: const int16_t mEntryStringLength ;
+  public: const int16_t mTokenCode ;
 
 //--- Constructor
-  public : C_unicode_lexique_table_entry (const utf32 * inEntryString,
+  public: C_unicode_lexique_table_entry (const utf32 * inEntryString,
                                           const int16_t inEntryStringLength,
                                           const int16_t inTokenCode) ;
 //--- No copy
-  public : C_unicode_lexique_table_entry (const C_unicode_lexique_table_entry & inOperand) ;
-  private : C_unicode_lexique_table_entry & operator = (const C_unicode_lexique_table_entry &) ;
+  public: C_unicode_lexique_table_entry (const C_unicode_lexique_table_entry & inOperand) ;
+  private: C_unicode_lexique_table_entry & operator = (const C_unicode_lexique_table_entry &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -93,20 +93,19 @@ class C_unicode_lexique_table_entry {
 //----------------------------------------------------------------------------------------------------------------------
 
 class cToken {
-  public : cToken * mNextToken ;
-  public : C_LocationInSource mStartLocation ;
-  public : C_LocationInSource mEndLocation ;
-  public : C_String mTemplateStringBeforeToken ; // Template string before the token
-  public : C_String mSeparatorStringBeforeToken ;
-//  public : bool mIsOptional ;
-  public : int16_t mTokenCode ;
+  public: cToken * mNextToken ;
+  public: C_LocationInSource mStartLocation ;
+  public: C_LocationInSource mEndLocation ;
+  public: C_String mTemplateStringBeforeToken ; // Template string before the token
+  public: C_String mSeparatorStringBeforeToken ;
+  public: int16_t mTokenCode ;
 
-  public : cToken (void) ;
-  public : virtual ~cToken (void) ;
+  public: cToken (void) ;
+  public: virtual ~cToken (void) ;
 
 //--- No copy
-  private : cToken (const cToken &) ;
-  private : cToken & operator = (const cToken &) ;
+  private: cToken (const cToken &) ;
+  private: cToken & operator = (const cToken &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -117,20 +116,20 @@ class cToken {
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_parsingContext {
-  private : int32_t mParsingArrayIndex ;
-  private : C_LocationInSource mLocation ;
-  private : cToken * mCurrentTokenPtr ;
-  private : utf32 mCurrentChar ;
-  private : utf32 mPreviousChar ;
-  private : C_String mTemplateString ;
+  private: int32_t mParsingArrayIndex ;
+  private: C_LocationInSource mLocation ;
+  private: cToken * mCurrentTokenPtr ;
+  private: utf32 mCurrentChar ;
+  private: utf32 mPreviousChar ;
+  private: C_String mTemplateString ;
 
   friend class C_Lexique ;
   
-  public : C_parsingContext (void) ;
+  public: C_parsingContext (void) ;
 
 //--- No copy
-  public : C_parsingContext (const C_parsingContext & inSource) ;
-  public : C_parsingContext & operator = (const C_parsingContext & inSource) ;
+  public: C_parsingContext (const C_parsingContext & inSource) ;
+  public: C_parsingContext & operator = (const C_parsingContext & inSource) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -151,6 +150,7 @@ int32_t totalWarningCount (void) ;
  
 void signalParsingError (C_Compiler * inCompiler,
                          const C_SourceTextInString & inSourceText,
+                         const C_LocationInSource & inPreviousTokenEndLocation,
                          const C_IssueWithFixIt & inIssue,
                          const C_String & inFoundTokenMessage,
                          const TC_UniqueArray <C_String> & inAcceptedTokenNames

@@ -63,7 +63,7 @@ bool C_TCPSocketOut::connect (const uint16_t inServerPort,
     hints.ai_family = AF_INET ;
     hints.ai_socktype = SOCK_STREAM ;
     char portString [10] ;
-    sprintf (portString, "%hu", inServerPort) ;
+    snprintf (portString, 10, "%hu", inServerPort) ;
     getaddrinfo (inHostName.cString (HERE), portString, & hints, & res) ;
   //---
     mSocket = socket (res->ai_family, res->ai_socktype, res->ai_protocol) ;

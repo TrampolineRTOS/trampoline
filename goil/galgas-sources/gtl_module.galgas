@@ -87,7 +87,7 @@ method @gtlProcedure call
   ? let @gtlDataList actualArguments
 {
   [self checkArguments
-    !fromLocation !actualArguments ?@gtlData vars ?@bool ok]
+    !fromLocation !actualArguments ?@gtlData vars ?let @bool ok]
   if ok then
     [instructions execute !?context !?vars !?lib !?outputString]
   else
@@ -109,7 +109,7 @@ getter @gtlFunction call
   ->@gtlData        result
 {
   [self checkArguments
-    !fromLocation !actualArguments ?@gtlData funcVariableMap ?@bool ok]
+    !fromLocation !actualArguments ?@gtlData funcVariableMap ?let @bool ok]
   [!?funcVariableMap setStructField
     !returnVariable
     !@gtlUnconstructed.new{ ![returnVariable location] !emptylstring() }
@@ -138,7 +138,7 @@ getter @gtlGetter callGetter
   ->@gtlData         result
 {
   [self checkArguments
-    !fromLocation !actualArguments ?@gtlData getterVariableMap ?@bool ok]
+    !fromLocation !actualArguments ?@gtlData getterVariableMap ?let @bool ok]
   [!?getterVariableMap setStructField
     !returnVariable
     !@gtlUnconstructed.new{ ![returnVariable location] !emptylstring() }
@@ -176,7 +176,7 @@ method @gtlSetter callSetter
   ?let @gtlDataList  actualArguments
 {
   [self checkArguments
-    !fromLocation !actualArguments ?@gtlData setterVariableMap ?@bool ok]
+    !fromLocation !actualArguments ?@gtlData setterVariableMap ?let @bool ok]
   if ok then
     let @lstring selfName = .new { !"self" !fromLocation }
     [!?setterVariableMap setStructField

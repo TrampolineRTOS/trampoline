@@ -45,47 +45,47 @@ template <typename TYPE> void swap (TC_LinkedList <TYPE> & ioOperand1,
 
 template <typename TYPE> class TC_LinkedList {
 //--- Constructor and destructor
-  public : TC_LinkedList (void) ;
-  public : virtual ~TC_LinkedList (void) ;
+  public: TC_LinkedList (void) ;
+  public: virtual ~TC_LinkedList (void) ;
   
 //--- No copy
-  private : TC_LinkedList (TC_LinkedList <TYPE> &) ;
-  private : void operator = (TC_LinkedList <TYPE> &) ;
+  private: TC_LinkedList (TC_LinkedList <TYPE> &) ;
+  private: void operator = (TC_LinkedList <TYPE> &) ;
 
 //--- Suppress all elements
-  public : void makeListEmpty (void) ;
+  public: void makeListEmpty (void) ;
 
 //--- Insert a new element
-  public : void insertAtTop (const TYPE & inInfo) ;
-  public : void insertAtBottom (const TYPE & inInfo) ;
+  public: void insertAtTop (const TYPE & inInfo) ;
+  public: void insertAtBottom (const TYPE & inInfo) ;
 
 //--- Get and suppress last element
-  public : TYPE getByCopyAndSuppressTopItem (LOCATION_ARGS) ;
+  public: TYPE getByCopyAndSuppressTopItem (LOCATION_ARGS) ;
 
 //--- Merge two lists
-  public : void mergeListAtTop (TC_LinkedList <TYPE> & ioList) ;
-  public : void mergeListAtBottom (TC_LinkedList <TYPE> & ioList) ;
+  public: void mergeListAtTop (TC_LinkedList <TYPE> & ioList) ;
+  public: void mergeListAtBottom (TC_LinkedList <TYPE> & ioList) ;
 
 //--- List empty ?
-  public : bool isListEmpty (void) const { return mTopItem == NULL ; }
+  public: bool isListEmpty (void) const { return mTopItem == NULL ; }
 
 //--- Exchange
   friend void swap <TYPE> (TC_LinkedList <TYPE> & ioOperand1,
                            TC_LinkedList <TYPE> & ioOperand2) ;
 
 //------- Element class ---------------------
-  private : class cElement {
-    public : TYPE mInfo ;
-    public : cElement * mNextItem ;
+  private: class cElement {
+    public: TYPE mInfo ;
+    public: cElement * mNextItem ;
   } ;
 
 //--- Data members
-  private : cElement * mTopItem ;
-  private : cElement * mBottomItem ;
-  private : int32_t mCount ;
+  private: cElement * mTopItem ;
+  private: cElement * mBottomItem ;
+  private: int32_t mCount ;
 
 //--- Copy into an array
-  public : void copyIntoArray (TC_UniqueArray <TYPE> & outArray) ;
+  public: void copyIntoArray (TC_UniqueArray <TYPE> & outArray) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

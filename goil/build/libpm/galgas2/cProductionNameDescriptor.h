@@ -32,9 +32,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 class cProductionNameDescriptor {
-  public : const char * mName ;
-  public : const char * mFileName ;
-  public : const uint32_t mLineNumber ;
+  public: const char * mName ;
+  public: const char * mFileName ;
+  public: const uint32_t mLineNumber ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

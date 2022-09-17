@@ -209,7 +209,7 @@ override getter @gtlVarItemField getInContext
   ?let @gtlVarPath path
   -> @gtlData result
 {
-  [context structField !field ?@gtlData data ?@bool found]
+  [context structField !field ?let @gtlData data ?let @bool found]
   if [path length] == 0 then
     if found then
       result = data
@@ -242,7 +242,7 @@ override getter @gtlVarItemField existsInContext
     if [path length] == 0 then
       result = true
     else
-      [context structField !field ?@gtlData subContext ?*]
+      [context structField !field ?let @gtlData subContext ?*]
       result = [[path itemAtIndex !0] existsInContext
         !exeContext
         !subContext
@@ -295,7 +295,7 @@ override getter @gtlVarItemCollection stringPath
   -> @string result
 {
   result = [field string] + "["
-  @gtlData keyValue = [key eval !exeContext !vars !lib]
+  let @gtlData keyValue = [key eval !exeContext !vars !lib]
   cast keyValue
   case == @gtlString keyString:
     result += "\"" + keyString + "\""
@@ -371,13 +371,13 @@ override getter @gtlVarItemCollection getInContext
   ?let @gtlVarPath path
   -> @gtlData result
 {
-  [context structField !field ?@gtlData collection ?*]
+  [context structField !field ?let @gtlData collection ?*]
   cast [key eval !exeContext !vars !lib]
   case == @gtlString keyString:
     if [path length] == 0 then
       [collection mapItem !keyString ?result]
     else
-      [collection mapItem !keyString ?@gtlData subContext]
+      [collection mapItem !keyString ?let @gtlData subContext]
       result = [[path itemAtIndex !0] getInContext
         !exeContext
         !subContext
@@ -390,7 +390,7 @@ override getter @gtlVarItemCollection getInContext
     if [path length] == 0 then
       [collection itemAtIndex ?result !keyInt]
     else
-      [collection itemAtIndex ?@gtlData subContext !keyInt]
+      [collection itemAtIndex ?let @gtlData subContext !keyInt]
       result = [[path itemAtIndex !0] getInContext
         !exeContext
         !subContext
@@ -417,14 +417,14 @@ override getter @gtlVarItemCollection existsInContext
   ->@bool result
 {
   if [context hasStructField !field] then
-    [context structField !field ?@gtlData collection ?*]
+    [context structField !field ?let @gtlData collection ?*]
     cast [key eval !exeContext !vars !lib]
     case == @gtlString keyString:
       if [path length] == 0 then
         result = [collection hasMapItem !keyString]
       else
         if [collection hasMapItem !keyString] then
-          [collection mapItem !keyString ?@gtlData subContext]
+          [collection mapItem !keyString ?let @gtlData subContext]
           result = [[path itemAtIndex !0] existsInContext
             !exeContext
             !subContext
@@ -441,7 +441,7 @@ override getter @gtlVarItemCollection existsInContext
         result = [collection hasItemAtIndex !keyInt]
       else
         if [collection hasItemAtIndex !keyInt] then
-          [collection itemAtIndex ?@gtlData subContext !keyInt]
+          [collection itemAtIndex ?let @gtlData subContext !keyInt]
           result = [[path itemAtIndex !0] existsInContext
             !exeContext
             !subContext
@@ -541,7 +541,7 @@ override getter @gtlVarItemSubCollection stringPath
   -> @string result
 {
   result = "["
-  @gtlData keyValue = [key eval !exeContext !vars !lib]
+  let @gtlData keyValue = [key eval !exeContext !vars !lib]
   cast keyValue
   case == @gtlString keyString:
     result += "\"" + keyString + "\""
@@ -616,7 +616,7 @@ override getter @gtlVarItemSubCollection getInContext
     if [path length] == 0 then
       [context mapItem !keyString ?result]
     else
-      [context mapItem !keyString ?@gtlData subContext]
+      [context mapItem !keyString ?let @gtlData subContext]
       result = [[path itemAtIndex !0] getInContext
         !exeContext
         !subContext
@@ -629,7 +629,7 @@ override getter @gtlVarItemSubCollection getInContext
     if [path length] == 0 then
       [context itemAtIndex ?result !keyInt]
     else
-      [context itemAtIndex ?@gtlData subContext !keyInt]
+      [context itemAtIndex ?let @gtlData subContext !keyInt]
       result = [[path itemAtIndex !0] getInContext
         !exeContext
         !subContext
@@ -660,7 +660,7 @@ override getter @gtlVarItemSubCollection existsInContext
       result = [context hasMapItem !keyString]
     else
       if [context hasMapItem !keyString] then
-        [context mapItem !keyString ?@gtlData subContext]
+        [context mapItem !keyString ?let @gtlData subContext]
         result = [[path itemAtIndex !0] existsInContext
           !exeContext
           !subContext
@@ -677,7 +677,7 @@ override getter @gtlVarItemSubCollection existsInContext
       result = [context hasItemAtIndex !keyInt]
     else
       if [context hasItemAtIndex !keyInt] then
-        [context itemAtIndex ?@gtlData subContext !keyInt]
+        [context itemAtIndex ?let @gtlData subContext !keyInt]
         result = [[path itemAtIndex !0] existsInContext
           !exeContext
           !subContext
@@ -791,7 +791,7 @@ method @gtlVarPath set
   ?let @gtlData data
 {
   if [self length] > 0 then
-    @gtlVarItem item = [self itemAtIndex !0]
+    let @gtlVarItem item = [self itemAtIndex !0]
     cast item
     case >= @gtlVarItemField itemField:
       [itemField setInContext
@@ -820,7 +820,7 @@ getter @gtlVarPath get
   -> @gtlData      variableValue
 {
   if [self length] > 0 then
-    @gtlVarItem item = [self itemAtIndex !0]
+    let @gtlVarItem item = [self itemAtIndex !0]
     variableValue = [item getInContext !exeContext !context !context !lib ![self subListFromIndex !1]]
   else
     error .here : "INTERNAL ERROR. A @gtlVarPath should not be an empty list"
@@ -838,7 +838,7 @@ getter @gtlVarPath exists
   -> @bool result
 {
   if [self length] > 0 then
-    @gtlVarItem item = [self itemAtIndex !0]
+    let @gtlVarItem item = [self itemAtIndex !0]
     result = [item existsInContext !exeContext !context !context !lib ![self subListFromIndex !1]]
   else
     error .here : "INTERNAL ERROR. A @gtlVarPath should not be an empty list"
@@ -855,7 +855,7 @@ method @gtlVarPath delete
   ?let @library    lib
 {
   if [self length] > 0 then
-    @gtlVarItem item = [self itemAtIndex !0]
+    let @gtlVarItem item = [self itemAtIndex !0]
     [item deleteInContext
       !exeContext
       !?vars
@@ -1266,7 +1266,7 @@ override getter @gtlGetterCallExpression eval
   for () in arguments do
     dataArguments += ![expression eval !context !vars !lib]
   end
-  @gtlData targetData = [target eval !context !vars !lib]
+  let @gtlData targetData = [target eval !context !vars !lib]
   result = [targetData performGetter !getterName !dataArguments !context !lib]
 }
 
@@ -1289,8 +1289,8 @@ func validateReturnValue
   ?let @object  returnedValue
   ->@gtlData    result
 {
-  @type returnedType = [returnedValue objectDynamicType]
-  @location loc = [functionName location]
+  let @type returnedType = [returnedValue objectDynamicType]
+  let @location loc = [functionName location]
   if    returnedType == `@bigint then
     result = @gtlInt.new    { !loc !emptylstring() !returnedValue as @bigint }
   elsif returnedType == `@double then
@@ -1321,7 +1321,7 @@ override getter @gtlFunctionCallExpression eval
   ?let @library    lib
   -> @gtlData result
 {
-  @uint currentErrorCount = @uint.errorCount
+  let @uint currentErrorCount = @uint.errorCount
   
   if @function.isFunctionDefined { ![functionName string] } then
     # built in function
@@ -1329,12 +1329,12 @@ override getter @gtlFunctionCallExpression eval
     @gtlDataList dataArguments = .emptyList
 
     for () in functionArguments do
-      @gtlData arg = [expression eval !context !vars !lib]
+      let @gtlData arg = [expression eval !context !vars !lib]
       dataArguments += !arg
       [arg addMyValue !?arguments]
     end
     
-    @function function = .functionWithName { ![functionName string] }
+    let @function function = .functionWithName { ![functionName string] }
 
     let @typelist formalParameterList = [function formalParameterTypeList]
     if [formalParameterList length] != [arguments length] then
@@ -1360,7 +1360,7 @@ override getter @gtlFunctionCallExpression eval
       end
     end
   else
-    @gtlFunction function = [lib getFunction !functionName]
+    let @gtlFunction function = [lib getFunction !functionName]
     @gtlDataList arguments = .emptyList
     for () in functionArguments do
       arguments += ![expression eval !context !vars !lib]
@@ -1421,7 +1421,7 @@ override getter @gtlTypeOfExpression eval
   ?let @library    lib
   -> @gtlData result
 {
-  @gtlData variableValue = [variable get !context !vars !lib]
+  let @gtlData variableValue = [variable get !context !vars !lib]
   result = @gtlType.new { !where !emptylstring() ![variableValue dynamicType] }
 }
 
@@ -1438,7 +1438,7 @@ override getter @gtlMapOfStructExpression eval
   ?let @library    lib
   -> @gtlData result
 {
-  @gtlData expressionValue = [expression eval !context !vars !lib]
+  let @gtlData expressionValue = [expression eval !context !vars !lib]
   cast expressionValue
   case == @gtlStruct expressionValueStruct:
     result = @gtlMap.new {
@@ -1464,7 +1464,7 @@ override getter @gtlMapOfListExpression eval
   ?let @library    lib
   -> @gtlData result
 {
-  @gtlData expressionValue = [expression eval !context !vars !lib]
+  let @gtlData expressionValue = [expression eval !context !vars !lib]
   cast expressionValue
   case == @gtlList expressionValueList:
     @gtlVarMap resultMap = .emptyMap
@@ -1472,7 +1472,7 @@ override getter @gtlMapOfListExpression eval
       cast item
       case == @gtlStruct itemStruct:
         if [[itemStruct value] hasKey ![key string]] then
-          [[itemStruct value] get !key ?@gtlData keyValue]
+          [[itemStruct value] get !key ?let @gtlData keyValue]
           [!?resultMap put
             ![keyValue lstring]
             !item
@@ -1504,11 +1504,11 @@ override getter @gtlListOfExpression eval
   ?let @library    lib
   -> @gtlData result
 {
-  @gtlData expressionValue = [expression eval !context !vars !lib]
+  let @gtlData expressionValue = [expression eval !context !vars !lib]
   cast expressionValue
   case == @gtlMap expressionValueMap:
     @list resultList = .emptyList
-    for (key item) in [expressionValueMap value] do
+    for (unused key item) in [expressionValueMap value] do
       resultList += !item
     end
     result = @gtlList.new { !where !emptylstring() !resultList }
@@ -1592,7 +1592,7 @@ override getter @gtlLiteralSetExpression eval
 {
   @lstringset resultSet = .emptyMap
   for (item) in value do
-    @lstring itemValue = [[item eval !context !vars !lib] lstring]
+    let @lstring itemValue = [[item eval !context !vars !lib] lstring]
     if [resultSet hasKey !itemValue] then
       [!?resultSet del !itemValue]
     end

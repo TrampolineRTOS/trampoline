@@ -31,42 +31,42 @@ class C_SharedObject {
 //--- Attributes for debug
   #ifndef DO_NOT_GENERATE_CHECKINGS
   //--- Creation location
-    public : const char * const mCreationFile ;
-    public : const int mCreationLine ;
+    public: const char * const mCreationFile ;
+    public: const int mCreationLine ;
   //--- Link between existing instances
-    private : C_SharedObject * mPtrToPreviousObject ;
-    private : C_SharedObject * mPtrToNextObject ;
+    private: C_SharedObject * mPtrToPreviousObject ;
+    private: C_SharedObject * mPtrToNextObject ;
   #endif
 
 //--- Object index
-  public : const uint32_t mObjectIndex ;
+  public: const uint32_t mObjectIndex ;
 
 //--- Retain count
-  private : mutable int32_t mRetainCount ;
+  private: mutable int32_t mRetainCount ;
 
-  public : inline bool isUniquelyReferenced (void) { return mRetainCount == 1 ; }
+  public: inline bool isUniquelyReferenced (void) { return mRetainCount == 1 ; }
   
-  public : static void retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
+  public: static void retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
 
-  public : static void release (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
+  public: static void release (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
 
-  public : static void retainRelease (const C_SharedObject * inObjectToRetain,
+  public: static void retainRelease (const C_SharedObject * inObjectToRetain,
                                       const C_SharedObject * inObjectToRelease
                                       COMMA_LOCATION_ARGS) ;
   
 //--- Default Constructor
-  protected : C_SharedObject (LOCATION_ARGS) ;
+  protected: C_SharedObject (LOCATION_ARGS) ;
   
 //--- Virtual Destructor
-  protected : virtual ~ C_SharedObject (void) ;
+  protected: virtual ~ C_SharedObject (void) ;
   
 //--- No copy
-  private : C_SharedObject (const C_SharedObject &) ;
-  private : C_SharedObject & operator = (const C_SharedObject &) ;
+  private: C_SharedObject (const C_SharedObject &) ;
+  private: C_SharedObject & operator = (const C_SharedObject &) ;
 
 //------------------------------------------------------------- Handling Pointer checking
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    public : static void checkAllObjectsHaveBeenReleased (void) ;
+    public: static void checkAllObjectsHaveBeenReleased (void) ;
   #endif
 } ;
 
