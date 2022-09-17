@@ -16,7 +16,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 * ARM: ARM 32 bits instruction set
 * virt-v7
   * Cortex-A9 - Cortex-A7 virtualized instruction set. This port is used with the hypervisor XVisor
-* MSP430/CPUX which has been developed on MSP430FR5969 and MSP430FR6989 microcontrollers.
+* MSP430/CPUX which has been developed on MSP430FR5969 and MSP430FR5994 microcontrollers.
 
 And we welcome external contributors to extend this list.
 
