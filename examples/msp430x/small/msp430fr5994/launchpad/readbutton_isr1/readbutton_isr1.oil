@@ -23,10 +23,10 @@ CPU readbutton {
       APP_NAME = "readbutton_isr1_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=readbutton_isr1.map";
-      COMPILER = "msp430-gcc";
-      ASSEMBLER = "msp430-gcc";
-      LINKER = "msp430-ld";
-      COPIER = "msp430-objcopy";
+      COMPILER = "msp430-elf-gcc";
+      ASSEMBLER = "msp430-elf-gcc";
+      LINKER = "msp430-elf-ld";
+      COPIER = "msp430-elf-objcopy";
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;
