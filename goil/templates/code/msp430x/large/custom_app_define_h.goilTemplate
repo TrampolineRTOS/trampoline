@@ -65,7 +65,7 @@ let TRANSITION := exists TRANSITION default (@())
 #define TRANSITION_COUNT    % ![TRANSITION length]%
 #define STATE_COUNT    % ![STATE length]%
 %
-if exists OS::SEQUENCING then%
+if OS::SEQUENCING then%
 #define ENERGY_LEVEL_COUNT    % !OS::SEQUENCING_S::ENERGY_LEVEL%
 %
 end if
