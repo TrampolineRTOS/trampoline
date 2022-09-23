@@ -4,9 +4,9 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 1996, ..., 2020 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2021 Pierre Molinaro.
 //
-//  e-mail : pierre.molinaro@ec-nantes.fr
+//  e-mail : pierre@pcmolinaro.name
 //
 //  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
 //  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)
@@ -230,9 +230,31 @@ GALGAS_uint GALGAS_location::getter_line (C_Compiler * inCompiler
   GALGAS_uint result ;
   if (isValid ()) {
     if (!mSourceText.isValid ()) {
-      inCompiler->onTheFlyRunTimeError ("'line' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
+      inCompiler->onTheFlyRunTimeError ("'line' getter cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
       result = GALGAS_uint ((uint32_t) mEndLocationInSource.lineNumber ()) ;
+    }
+  }
+  return result ;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+GALGAS_location GALGAS_location::getter_union (const GALGAS_location & inOtherLocation,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) const {
+  GALGAS_location result ;
+  if (isValid () && inOtherLocation.isValid ()) {
+    if (mSourceText != inOtherLocation.mSourceText) {
+      inCompiler->onTheFlyRunTimeError ("'union' getter cannot be called on an @location object that is relative to an other source" COMMA_THERE) ;
+    }else{
+      result = *this ;
+      if (result.mStartLocationInSource.index () > inOtherLocation.mStartLocationInSource.index ()){
+        result.mStartLocationInSource = inOtherLocation.mStartLocationInSource ;
+      }
+      if (result.mEndLocationInSource.index () < inOtherLocation.mEndLocationInSource.index ()){
+        result.mEndLocationInSource = inOtherLocation.mEndLocationInSource ;
+      }
     }
   }
   return result ;

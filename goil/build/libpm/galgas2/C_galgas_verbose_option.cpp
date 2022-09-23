@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 2015, ..., 2015 Pierre Molinaro.
+//  Copyright (C) 2015, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -33,7 +33,7 @@ C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_verbose_5F_output (
 //----------------------------------------------------------------------------------------------------------------------
 
 bool verboseOutput (void) {
-  return gOption_galgas_5F_builtin_5F_options_verbose_5F_output.getter_value () ;
+  return gOption_galgas_5F_builtin_5F_options_verbose_5F_output.readProperty_value () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

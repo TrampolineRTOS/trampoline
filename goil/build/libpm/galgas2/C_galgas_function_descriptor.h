@@ -52,26 +52,26 @@ typedef GALGAS_object (*functionPrototypeForIntrospection) (C_Compiler * inCompi
 
 class C_galgas_function_descriptor {
 //--- Attributes
-  public : const C_galgas_function_descriptor * mNextFunction ;
-  public : const char * mFunctionName ;
-  public : const functionPrototypeForIntrospection mFunctionPointer ;
-  public : const C_galgas_type_descriptor * mResultType ;
-  public : const uint32_t mParameterCount ;
-  public : const C_galgas_type_descriptor * * mFormalParameterTypeList ;
+  public: const C_galgas_function_descriptor * mNextFunction ;
+  public: const char * mFunctionName ;
+  public: const functionPrototypeForIntrospection mFunctionPointer ;
+  public: const C_galgas_type_descriptor * mResultType ;
+  public: const uint32_t mParameterCount ;
+  public: const C_galgas_type_descriptor * * mFormalParameterTypeList ;
 
 //--- Constructor
-  public : C_galgas_function_descriptor (const char * inFunctionName,
+  public: C_galgas_function_descriptor (const char * inFunctionName,
                                          const functionPrototypeForIntrospection inFunctionPointer,
                                          const C_galgas_type_descriptor * inResultType,
                                          const uint32_t inParameterCount,
                                          const C_galgas_type_descriptor * * inParameterTypeList) ;
 
 //--- 
-  public : static C_galgas_function_descriptor * functionListRoot (void) ;
+  public: static C_galgas_function_descriptor * functionListRoot (void) ;
   
 //--- No copy
-  private : C_galgas_function_descriptor (const C_galgas_function_descriptor &) ;
-  private : C_galgas_function_descriptor & operator = (const C_galgas_function_descriptor &) ;
+  private: C_galgas_function_descriptor (const C_galgas_function_descriptor &) ;
+  private: C_galgas_function_descriptor & operator = (const C_galgas_function_descriptor &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

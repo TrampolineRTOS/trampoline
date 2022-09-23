@@ -7,16 +7,12 @@
 #import "PMDebug.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//            Unicode test functions                                                             
-//----------------------------------------------------------------------------------------------------------------------
- 
-//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_Lexique_gtl_debugger_scanner
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                           Template Replacements                                               
+//                           Template Replacements
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -24,7 +20,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                           Template Delimiters                                                 
+//                           Template Delimiters
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -35,14 +31,14 @@
   self = [super init] ;
   if (self) {
     noteObjectAllocation (self) ;
-    mLexicalAttribute_a_string = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_charValue = 0 ;
-    mLexicalAttribute_floatValue = 0.0 ;
-    mLexicalAttribute_functionContent = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_identifierString = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_intValue = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_uint32value = 0 ;
+   mLexicalAttribute_a_string = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_charValue = 0 ;
+   mLexicalAttribute_floatValue = 0.0 ;
+   mLexicalAttribute_functionContent = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_identifierString = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_intValue = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_uint32value = 0 ;
   }
   return self ;
 }
@@ -55,7 +51,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 I N D E X I N G    D I R E C T O R Y                                          
+//                 I N D E X I N G    D I R E C T O R Y
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -65,7 +61,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 I N D E X I N G    T I T L E S                                                
+//                 I N D E X I N G    T I T L E S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -76,7 +72,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//            Terminal Symbols as end of script in template mark                                 
+//            Terminal Symbols as end of script in template mark
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -137,196 +133,151 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//               P A R S E    L E X I C A L    T O K E N                                         
+//               I N T E R N A L    P A R S E    L E X I C A L    T O K E N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-- (void) parseLexicalTokenForLexicalColoring {
-  mLoop = YES ;
+- (BOOL) internalParseLexicalTokenForLexicalColoring {
+  BOOL loop = YES ;
   BOOL scanningOk = YES ;
-  mTokenCode = 0 ;
-  while ((mTokenCode == 0) && (mCurrentChar != '\0')) {
-    mTokenStartLocation = mCurrentLocation ;
-    [mLexicalAttribute_a_string setString:@""] ;
-    mLexicalAttribute_charValue = 0 ;
-    mLexicalAttribute_floatValue = 0.0 ;
-    [mLexicalAttribute_functionContent setString:@""] ;
-    [mLexicalAttribute_identifierString setString:@""] ;
-    [mLexicalAttribute_intValue setString:@""] ;
-    [mLexicalAttribute_tokenString setString:@""] ;
-    mLexicalAttribute_uint32value = 0 ;
-    mTokenStartLocation = mCurrentLocation ;
-    if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
-      do {
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-        if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList (mLexicalAttribute_identifierString) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = gtl_debugger_scanner_1_identifier ;
-      }
-    }else if (scanningOk && ([self testForInputChar:36])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      mTokenCode = gtl_debugger_scanner_1_literal_5F_enum ;
-    }else if (scanningOk && [self testForInputString:@"mod=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1_mod_3D_ ;
-    }else if (scanningOk && [self testForInputString:@">>=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3E__3E__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"<<=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3C__3C__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"|=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__7C__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"^=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__5E__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"[!" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__5B__21_ ;
-    }else if (scanningOk && [self testForInputString:@"@{" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__40__7B_ ;
-    }else if (scanningOk && [self testForInputString:@"@[" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__40__5B_ ;
-    }else if (scanningOk && [self testForInputString:@"@(" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__40__28_ ;
-    }else if (scanningOk && [self testForInputString:@"@!" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__40__21_ ;
-    }else if (scanningOk && [self testForInputString:@">>" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3E__3E_ ;
-    }else if (scanningOk && [self testForInputString:@">=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3E__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"==" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3D__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"<=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3C__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"<<" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3C__3C_ ;
-    }else if (scanningOk && [self testForInputString:@"<-" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3C__2D_ ;
-    }else if (scanningOk && [self testForInputString:@":=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3A__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"::" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3A__3A_ ;
-    }else if (scanningOk && [self testForInputString:@"/=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2F__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"->" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2D__3E_ ;
-    }else if (scanningOk && [self testForInputString:@"-=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2D__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"+=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2B__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"*=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2A__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"&=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__26__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"!=" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__21__3D_ ;
-    }else if (scanningOk && [self testForInputString:@"~" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__7E_ ;
-    }else if (scanningOk && [self testForInputString:@"}" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__7D_ ;
-    }else if (scanningOk && [self testForInputString:@"|" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__7C_ ;
-    }else if (scanningOk && [self testForInputString:@"{" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__7B_ ;
-    }else if (scanningOk && [self testForInputString:@"^" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__5E_ ;
-    }else if (scanningOk && [self testForInputString:@"]" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__5D_ ;
-    }else if (scanningOk && [self testForInputString:@"[" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__5B_ ;
-    }else if (scanningOk && [self testForInputString:@"@" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__40_ ;
-    }else if (scanningOk && [self testForInputString:@"\?" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3F_ ;
-    }else if (scanningOk && [self testForInputString:@">" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3E_ ;
-    }else if (scanningOk && [self testForInputString:@"<" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3C_ ;
-    }else if (scanningOk && [self testForInputString:@":" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__3A_ ;
-    }else if (scanningOk && [self testForInputString:@"/" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2F_ ;
-    }else if (scanningOk && [self testForInputString:@"," advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2C_ ;
-    }else if (scanningOk && [self testForInputString:@"+" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2B_ ;
-    }else if (scanningOk && [self testForInputString:@"*" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__2A_ ;
-    }else if (scanningOk && [self testForInputString:@")" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__29_ ;
-    }else if (scanningOk && [self testForInputString:@"(" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__28_ ;
-    }else if (scanningOk && [self testForInputString:@"&" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__26_ ;
-    }else if (scanningOk && [self testForInputString:@"!" advance:YES]) {
-      mTokenCode = gtl_debugger_scanner_1__21_ ;
-    }else if (scanningOk && ([self testForInputChar:45])) {
-      if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 45) ;
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-        do {
-          if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-          }else if (scanningOk && ([self testForInputChar:95])) {
-          }else{
-            mLoop = NO ;
-          }
-        }while (mLoop && scanningOk) ;
-        mLoop = YES ;
-        if (scanningOk && ([self testForInputChar:46])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
-          do {
-            if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-              scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-            }else if (scanningOk && ([self testForInputChar:95])) {
-            }else{
-              mLoop = NO ;
-            }
-          }while (mLoop && scanningOk) ;
-          mLoop = YES ;
-          scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
-          mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
-        }else{
-          scanner_cocoa_routine_convertDecimalStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
-          mTokenCode = gtl_debugger_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
-        }
+  [mLexicalAttribute_a_string setString:@""] ;
+  mLexicalAttribute_charValue = 0 ;
+  mLexicalAttribute_floatValue = 0.0 ;
+  [mLexicalAttribute_functionContent setString:@""] ;
+  [mLexicalAttribute_identifierString setString:@""] ;
+  [mLexicalAttribute_intValue setString:@""] ;
+  [mLexicalAttribute_tokenString setString:@""] ;
+  mLexicalAttribute_uint32value = 0 ;
+  mTokenStartLocation = mCurrentLocation ;
+  if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
+    do {
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+      if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
       }else{
-        mTokenCode = gtl_debugger_scanner_1__2D_ ;
+        loop = NO ;
       }
-    }else if (scanningOk && ([self testForInputString:@"0x" advance:YES] || [self testForInputString:@"0X" advance:YES])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      scanner_cocoa_routine_convertHexStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
-      mTokenCode = gtl_debugger_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
-    }else if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList (mLexicalAttribute_identifierString) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = gtl_debugger_scanner_1_identifier ;
+    }
+  }else if (scanningOk && ([self testForInputChar:36])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    mTokenCode = gtl_debugger_scanner_1_literal_5F_enum ;
+  }else if (scanningOk && [self testForInputString:@"mod=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1_mod_3D_ ;
+  }else if (scanningOk && [self testForInputString:@">>=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3E__3E__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"<<=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3C__3C__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"|=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__7C__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"^=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__5E__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"[!" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__5B__21_ ;
+  }else if (scanningOk && [self testForInputString:@"@{" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__40__7B_ ;
+  }else if (scanningOk && [self testForInputString:@"@[" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__40__5B_ ;
+  }else if (scanningOk && [self testForInputString:@"@(" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__40__28_ ;
+  }else if (scanningOk && [self testForInputString:@"@!" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__40__21_ ;
+  }else if (scanningOk && [self testForInputString:@">>" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3E__3E_ ;
+  }else if (scanningOk && [self testForInputString:@">=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3E__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"==" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3D__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"<=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3C__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"<<" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3C__3C_ ;
+  }else if (scanningOk && [self testForInputString:@"<-" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3C__2D_ ;
+  }else if (scanningOk && [self testForInputString:@":=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3A__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"::" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3A__3A_ ;
+  }else if (scanningOk && [self testForInputString:@"/=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2F__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"->" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2D__3E_ ;
+  }else if (scanningOk && [self testForInputString:@"-=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2D__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"+=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2B__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"*=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2A__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"&=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__26__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"!=" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__21__3D_ ;
+  }else if (scanningOk && [self testForInputString:@"~" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__7E_ ;
+  }else if (scanningOk && [self testForInputString:@"}" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__7D_ ;
+  }else if (scanningOk && [self testForInputString:@"|" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__7C_ ;
+  }else if (scanningOk && [self testForInputString:@"{" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__7B_ ;
+  }else if (scanningOk && [self testForInputString:@"^" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__5E_ ;
+  }else if (scanningOk && [self testForInputString:@"]" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__5D_ ;
+  }else if (scanningOk && [self testForInputString:@"[" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__5B_ ;
+  }else if (scanningOk && [self testForInputString:@"@" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__40_ ;
+  }else if (scanningOk && [self testForInputString:@"\?" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3F_ ;
+  }else if (scanningOk && [self testForInputString:@">" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3E_ ;
+  }else if (scanningOk && [self testForInputString:@"<" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3C_ ;
+  }else if (scanningOk && [self testForInputString:@":" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__3A_ ;
+  }else if (scanningOk && [self testForInputString:@"/" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2F_ ;
+  }else if (scanningOk && [self testForInputString:@"," advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2C_ ;
+  }else if (scanningOk && [self testForInputString:@"+" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2B_ ;
+  }else if (scanningOk && [self testForInputString:@"*" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__2A_ ;
+  }else if (scanningOk && [self testForInputString:@")" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__29_ ;
+  }else if (scanningOk && [self testForInputString:@"(" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__28_ ;
+  }else if (scanningOk && [self testForInputString:@"&" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__26_ ;
+  }else if (scanningOk && [self testForInputString:@"!" advance:YES]) {
+    mTokenCode = gtl_debugger_scanner_1__21_ ;
+  }else if (scanningOk && ([self testForInputChar:45])) {
+    if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 45) ;
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       do {
         if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
         }else if (scanningOk && ([self testForInputChar:95])) {
         }else{
-          mLoop = NO ;
+          loop = NO ;
         }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
+      }while (loop && scanningOk) ;
+      loop = YES ;
       if (scanningOk && ([self testForInputChar:46])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
         do {
@@ -334,59 +285,220 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
             scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
           }else if (scanningOk && ([self testForInputChar:95])) {
           }else{
-            mLoop = NO ;
+            loop = NO ;
           }
-        }while (mLoop && scanningOk) ;
-        mLoop = YES ;
+        }while (loop && scanningOk) ;
+        loop = YES ;
         scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
         mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
       }else{
         scanner_cocoa_routine_convertDecimalStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
         mTokenCode = gtl_debugger_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
       }
-    }else if (scanningOk && ([self testForInputChar:46])) {
-      if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 48) ;
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
+    }else{
+      mTokenCode = gtl_debugger_scanner_1__2D_ ;
+    }
+  }else if (scanningOk && ([self testForInputString:@"0x" advance:YES] || [self testForInputString:@"0X" advance:YES])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-        do {
-          if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-          }else if (scanningOk && ([self testForInputChar:95])) {
-          }else{
-            mLoop = NO ;
-          }
-        }while (mLoop && scanningOk) ;
-        mLoop = YES ;
-        scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
-        mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
       }else{
-        if (scanningOk && ([self testForInputString:@".." advance:YES])) {
-          mTokenCode = gtl_debugger_scanner_1__2E__2E__2E_ ;
-        }else if (scanningOk && ([self testForInputString:@"=" advance:YES])) {
-          mTokenCode = gtl_debugger_scanner_1__2E__3D_ ;
-        }else{
-          mTokenCode = gtl_debugger_scanner_1__2E_ ;
-        }
+        loop = NO ;
       }
-    }else if (scanningOk && ([self testForInputChar:39])) {
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    scanner_cocoa_routine_convertHexStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
+    mTokenCode = gtl_debugger_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
+  }else if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+    scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+    do {
+      if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+      }else if (scanningOk && ([self testForInputChar:95])) {
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (scanningOk && ([self testForInputChar:46])) {
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
+      do {
+        if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+        }else if (scanningOk && ([self testForInputChar:95])) {
+        }else{
+          loop = NO ;
+        }
+      }while (loop && scanningOk) ;
+      loop = YES ;
+      scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
+      mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
+    }else{
+      scanner_cocoa_routine_convertDecimalStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
+      mTokenCode = gtl_debugger_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
+    }
+  }else if (scanningOk && ([self testForInputChar:46])) {
+    if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 48) ;
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+      do {
+        if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+        }else if (scanningOk && ([self testForInputChar:95])) {
+        }else{
+          loop = NO ;
+        }
+      }while (loop && scanningOk) ;
+      loop = YES ;
+      scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
+      mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
+    }else{
+      if (scanningOk && ([self testForInputString:@".." advance:YES])) {
+        mTokenCode = gtl_debugger_scanner_1__2E__2E__2E_ ;
+      }else if (scanningOk && ([self testForInputString:@"=" advance:YES])) {
+        mTokenCode = gtl_debugger_scanner_1__2E__3D_ ;
+      }else{
+        mTokenCode = gtl_debugger_scanner_1__2E_ ;
+      }
+    }
+  }else if (scanningOk && ([self testForInputChar:39])) {
+    if (scanningOk && ([self testForInputChar:92])) {
+      if (scanningOk && ([self testForInputChar:102])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 12) ;
+      }else if (scanningOk && ([self testForInputChar:110])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 10) ;
+      }else if (scanningOk && ([self testForInputChar:114])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 13) ;
+      }else if (scanningOk && ([self testForInputChar:116])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 9) ;
+      }else if (scanningOk && ([self testForInputChar:118])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 11) ;
+      }else if (scanningOk && ([self testForInputChar:92])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 92) ;
+      }else if (scanningOk && ([self testForInputChar:48])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 0) ;
+      }else if (scanningOk && ([self testForInputChar:39])) {
+        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 39) ;
+      }else if (scanningOk && ([self testForInputChar:117])) {
+        if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+          scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+          if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+            scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+            if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+              scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+              if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+                scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+                scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (& scanningOk, & mLexicalAttribute_uint32value, & mLexicalAttribute_charValue) ;
+              }else{
+                scanningOk = NO ;
+              }
+            }else{
+              scanningOk = NO ;
+            }
+          }else{
+            scanningOk = NO ;
+          }
+        }else{
+          scanningOk = NO ;
+        }
+      }else if (scanningOk && ([self testForInputChar:85])) {
+        if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+          scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+          if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+            scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+            if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+              scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+              if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+                scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+                if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+                  scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+                  if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+                    scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+                    if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+                      scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+                      if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+                        scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
+                        scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (& scanningOk, & mLexicalAttribute_uint32value, & mLexicalAttribute_charValue) ;
+                      }else{
+                        scanningOk = NO ;
+                      }
+                    }else{
+                      scanningOk = NO ;
+                    }
+                  }else{
+                    scanningOk = NO ;
+                  }
+                }else{
+                  scanningOk = NO ;
+                }
+              }else{
+                scanningOk = NO ;
+              }
+            }else{
+              scanningOk = NO ;
+            }
+          }else{
+            scanningOk = NO ;
+          }
+        }else{
+          scanningOk = NO ;
+        }
+      }else if (scanningOk && ([self testForInputChar:38])) {
+        do {
+          if (scanningOk && ([self notTestForInputString:@";" error:& scanningOk])) {
+            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+          }else{
+            loop = NO ;
+          }
+        }while (loop && scanningOk) ;
+        loop = YES ;
+        scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_charValue) ;
+      }else{
+        scanningOk = NO ;
+      }
+    }else if (scanningOk && ([self testForInputFromChar:32 toChar:65533])) {
+      scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, mPreviousChar) ;
+    }else{
+      scanningOk = NO ;
+    }
+    if (scanningOk && ([self testForInputChar:39])) {
+      mTokenCode = gtl_debugger_scanner_1_literal_5F_char ;
+    }else{
+      scanningOk = NO ;
+    }
+  }else if (scanningOk && ([self testForInputChar:34])) {
+    do {
       if (scanningOk && ([self testForInputChar:92])) {
         if (scanningOk && ([self testForInputChar:102])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 12) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 12) ;
         }else if (scanningOk && ([self testForInputChar:110])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 10) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 10) ;
         }else if (scanningOk && ([self testForInputChar:114])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 13) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 13) ;
         }else if (scanningOk && ([self testForInputChar:116])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 9) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 9) ;
         }else if (scanningOk && ([self testForInputChar:118])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 11) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 11) ;
         }else if (scanningOk && ([self testForInputChar:92])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 92) ;
-        }else if (scanningOk && ([self testForInputChar:48])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 0) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 92) ;
+        }else if (scanningOk && ([self testForInputChar:34])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 34) ;
         }else if (scanningOk && ([self testForInputChar:39])) {
-          scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, 39) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 39) ;
+        }else if (scanningOk && ([self testForInputChar:63])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 63) ;
+        }else if (scanningOk && ([self testForInputChar:38])) {
+          do {
+            if (scanningOk && ([self notTestForInputString:@";" error:& scanningOk])) {
+              scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
+            }else{
+              loop = NO ;
+            }
+          }while (loop && scanningOk) ;
+          loop = YES ;
+          scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (& scanningOk, mLexicalAttribute_identifierString, & mLexicalAttribute_charValue) ;
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
         }else if (scanningOk && ([self testForInputChar:117])) {
           if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
             scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
@@ -397,6 +509,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
                 if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
                   scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
                   scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (& scanningOk, & mLexicalAttribute_uint32value, & mLexicalAttribute_charValue) ;
+                  scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
                 }else{
                   scanningOk = NO ;
                 }
@@ -427,6 +540,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
                         if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
                           scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
                           scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (& scanningOk, & mLexicalAttribute_uint32value, & mLexicalAttribute_charValue) ;
+                          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
                         }else{
                           scanningOk = NO ;
                         }
@@ -451,168 +565,61 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
           }else{
             scanningOk = NO ;
           }
-        }else if (scanningOk && ([self testForInputChar:38])) {
-          do {
-            if (scanningOk && ([self notTestForInputString:@";" error:& scanningOk])) {
-              scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
-            }else{
-              mLoop = NO ;
-            }
-          }while (mLoop && scanningOk) ;
-          mLoop = YES ;
-          scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_charValue) ;
         }else{
           scanningOk = NO ;
         }
-      }else if (scanningOk && ([self testForInputFromChar:32 toChar:65533])) {
-        scanner_cocoa_routine_enterCharacterIntoCharacter (& scanningOk, & mLexicalAttribute_charValue, mPreviousChar) ;
+      }else if (scanningOk && ([self testForInputChar:32] || [self testForInputChar:33] || [self testForInputFromChar:35 toChar:65533])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
       }else{
-        scanningOk = NO ;
+        loop = NO ;
       }
-      if (scanningOk && ([self testForInputChar:39])) {
-        mTokenCode = gtl_debugger_scanner_1_literal_5F_char ;
-      }else{
-        scanningOk = NO ;
-      }
-    }else if (scanningOk && ([self testForInputChar:34])) {
-      do {
-        if (scanningOk && ([self testForInputChar:92])) {
-          if (scanningOk && ([self testForInputChar:102])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 12) ;
-          }else if (scanningOk && ([self testForInputChar:110])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 10) ;
-          }else if (scanningOk && ([self testForInputChar:114])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 13) ;
-          }else if (scanningOk && ([self testForInputChar:116])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 9) ;
-          }else if (scanningOk && ([self testForInputChar:118])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 11) ;
-          }else if (scanningOk && ([self testForInputChar:92])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 92) ;
-          }else if (scanningOk && ([self testForInputChar:34])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 34) ;
-          }else if (scanningOk && ([self testForInputChar:39])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 39) ;
-          }else if (scanningOk && ([self testForInputChar:63])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 63) ;
-          }else if (scanningOk && ([self testForInputChar:38])) {
-            do {
-              if (scanningOk && ([self notTestForInputString:@";" error:& scanningOk])) {
-                scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
-              }else{
-                mLoop = NO ;
-              }
-            }while (mLoop && scanningOk) ;
-            mLoop = YES ;
-            scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (& scanningOk, mLexicalAttribute_identifierString, & mLexicalAttribute_charValue) ;
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
-          }else if (scanningOk && ([self testForInputChar:117])) {
-            if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-              scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-              if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                  scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                  if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                    scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                    scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (& scanningOk, & mLexicalAttribute_uint32value, & mLexicalAttribute_charValue) ;
-                    scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
-                  }else{
-                    scanningOk = NO ;
-                  }
-                }else{
-                  scanningOk = NO ;
-                }
-              }else{
-                scanningOk = NO ;
-              }
-            }else{
-              scanningOk = NO ;
-            }
-          }else if (scanningOk && ([self testForInputChar:85])) {
-            if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-              scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-              if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                  scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                  if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                    scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                    if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                      scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                      if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                        scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                        if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                          scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                          if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-                            scanner_cocoa_routine_enterHexDigitIntoUInt (& scanningOk, mPreviousChar, & mLexicalAttribute_uint32value) ;
-                            scanner_cocoa_routine_convertUnsignedNumberToUnicodeChar (& scanningOk, & mLexicalAttribute_uint32value, & mLexicalAttribute_charValue) ;
-                            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
-                          }else{
-                            scanningOk = NO ;
-                          }
-                        }else{
-                          scanningOk = NO ;
-                        }
-                      }else{
-                        scanningOk = NO ;
-                      }
-                    }else{
-                      scanningOk = NO ;
-                    }
-                  }else{
-                    scanningOk = NO ;
-                  }
-                }else{
-                  scanningOk = NO ;
-                }
-              }else{
-                scanningOk = NO ;
-              }
-            }else{
-              scanningOk = NO ;
-            }
-          }else{
-            scanningOk = NO ;
-          }
-        }else if (scanningOk && ([self testForInputChar:32] || [self testForInputChar:33] || [self testForInputFromChar:35 toChar:65533])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (scanningOk && ([self testForInputChar:34])) {
-        mTokenCode = gtl_debugger_scanner_1_string ;
-      }else{
-        scanningOk = NO ;
-      }
-    }else if (scanningOk && ([self testForInputChar:35])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:1 toChar:9] || [self testForInputChar:11] || [self testForInputChar:12] || [self testForInputFromChar:14 toChar:65533])) {
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      mTokenCode = gtl_debugger_scanner_1_comment ;
-    }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
-    }else if ([self testForInputChar:'\0']) { // End of source text ? 
-      mTokenCode = gtl_debugger_scanner_1_ ; // Empty string code
-    }else{ // Unknown input character
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (scanningOk && ([self testForInputChar:34])) {
+      mTokenCode = gtl_debugger_scanner_1_string ;
+    }else{
       scanningOk = NO ;
-      [self advance] ;
     }
-  //--- Error ?
-    if (! scanningOk) {
-      mTokenCode = -1 ;
-    }
+  }else if (scanningOk && ([self testForInputChar:35])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:1 toChar:9] || [self testForInputChar:11] || [self testForInputChar:12] || [self testForInputFromChar:14 toChar:65533])) {
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    mTokenCode = gtl_debugger_scanner_1_comment ;
+  }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
+  }else   if ([self testForInputChar:'\0']) { // End of source text ?
+    mTokenCode = gtl_debugger_scanner_1_ ; // Empty string code
+  }else{ // Unknown input character
+    scanningOk = NO ;
+    [self advance] ;
+  }
+  return scanningOk ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//               P A R S E    L E X I C A L    T O K E N
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+- (void) parseLexicalTokenForLexicalColoring {
+  BOOL scanningOk = YES ;
+  mTokenCode = 0 ;
+  while ((mTokenCode == 0) && (mCurrentChar != '\0')) {
+    scanningOk = [self internalParseLexicalTokenForLexicalColoring] ;
+  }
+//--- Error ?
+  if (! scanningOk) {
+    mTokenCode = -1 ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                   T E R M I N A L    C O U N T                                                
+//                   T E R M I N A L    C O U N T
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -622,7 +629,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                     S T Y L E   C O U N T                                                     
+//                     S T Y L E   C O U N T
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -632,7 +639,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                I S    T E M P L A T E    L E X I Q U E                                        
+//                I S    T E M P L A T E    L E X I Q U E
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -642,7 +649,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S T Y L E   I N D E X    F O R    T E R M I N A L                                           
+//   S T Y L E   I N D E X    F O R    T E R M I N A L
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -749,7 +756,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    A T O M I C    S E L E C T I O N   F O R    T E R M I N A L                                
+//    A T O M I C    S E L E C T I O N   F O R    T E R M I N A L
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -856,7 +863,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//             S T Y L E   N A M E    F O R    I N D E X                                         
+//             S T Y L E   N A M E    F O R    I N D E X
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -881,7 +888,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         S T Y L E   I D E N T I F I E R    F O R    I N D E X                                 
+//         S T Y L E   I D E N T I F I E R    F O R    I N D E X
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -906,7 +913,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         L E X I Q U E   I D E N T I F I E R                                                   
+//         L E X I Q U E   I D E N T I F I E R
 //
 //----------------------------------------------------------------------------------------------------------------------
 

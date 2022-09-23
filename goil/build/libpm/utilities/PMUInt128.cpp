@@ -191,8 +191,8 @@ C_String PMUInt128::decimalString (void) const {
     }
     result = cStringWithUnsigned (values.lastObject (HERE)) ;
     for (int32_t i=values.count () - 2 ; i>=0 ; i--) {
-      char s [8] ;
-      sprintf (s, " %03u", values (i COMMA_HERE)) ;
+      char s [16] ;
+      snprintf (s, 16, " %03u", values (i COMMA_HERE)) ;
       result << s ;
     }
   }

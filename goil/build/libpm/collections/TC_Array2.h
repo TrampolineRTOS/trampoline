@@ -43,54 +43,54 @@ template <typename TYPE> void swap (TC_Array2 <TYPE> & ioOperand1,
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_Array2 {
-  protected : TYPE * mArray ;
-  protected : int32_t mCurrentRowCount ;
-  protected : int32_t mCurrentColumnCount ;
-  protected : int32_t mCapacity ;
+  protected: TYPE * mArray ;
+  protected: int32_t mCurrentRowCount ;
+  protected: int32_t mCurrentColumnCount ;
+  protected: int32_t mCapacity ;
 
 //--- Constructors
-  public : TC_Array2 (void) ;
-  public : TC_Array2 (const int32_t inRowCount,
+  public: TC_Array2 (void) ;
+  public: TC_Array2 (const int32_t inRowCount,
                       const int32_t inColumnCount COMMA_LOCATION_ARGS) ;
 
 //--- Destructor
-  public : virtual ~TC_Array2 (void) ;
+  public: virtual ~TC_Array2 (void) ;
 
 //--- Handle copy
-  public : TC_Array2 (TC_Array2 <TYPE> & inSource) ;
-  public : TC_Array2 <TYPE> & operator = (TC_Array2 <TYPE> & inSource) ;
+  public: TC_Array2 (TC_Array2 <TYPE> & inSource) ;
+  public: TC_Array2 <TYPE> & operator = (TC_Array2 <TYPE> & inSource) ;
 
 //--- Get Row and Column count
-  public : inline int32_t rowCount (void) const { return mCurrentRowCount ; }
-  public : inline int32_t columnCount (void) const { return mCurrentColumnCount ; }
+  public: inline int32_t rowCount (void) const { return mCurrentRowCount ; }
+  public: inline int32_t columnCount (void) const { return mCurrentColumnCount ; }
 
 //--- Acces
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    public : TYPE & operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) ;
-    public : const TYPE operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const ;
-    protected : size_t long2size_t (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const {
+    public: TYPE & operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) ;
+    public: const TYPE operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const ;
+    protected: size_t long2size_t (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const {
       MF_AssertThere (inRowIndex >= 0, "indice ligne (%ld) < 0", inRowIndex, 0) ;
       MF_AssertThere (inRowIndex < mCurrentRowCount, "indice ligne (%ld) >= nombre de lignes (%ld)", inRowIndex, mCurrentRowCount) ;
       MF_AssertThere (inColumnIndex >= 0, "indice colonne (%ld) < 0", inColumnIndex, 0) ;
       MF_AssertThere (inColumnIndex < mCurrentColumnCount, "indice ligne (%ld) >= nombre de colonnes (%ld)", inColumnIndex, mCurrentColumnCount) ;
       return (size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex) ;
     }
-    public : void setObjectAtIndexes (const TYPE & inObject,
+    public: void setObjectAtIndexes (const TYPE & inObject,
                                       const int32_t inRowIndex,
                                       const int32_t inColumnIndex
                                       COMMA_LOCATION_ARGS) ;
   #endif
 
   #ifdef DO_NOT_GENERATE_CHECKINGS
-    public : inline TYPE & operator () (const int32_t inRowIndex,
+    public: inline TYPE & operator () (const int32_t inRowIndex,
                                         const int32_t inColumnIndex) {
       return mArray [(size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex)] ;
     }
-    public : inline const TYPE operator () (const int32_t inRowIndex,
+    public: inline const TYPE operator () (const int32_t inRowIndex,
                                             const int32_t inColumnIndex) const {
       return mArray [(size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex)] ;
     }
-    public : inline void setObjectAtIndexes (const TYPE & inObject,
+    public: inline void setObjectAtIndexes (const TYPE & inObject,
                                              const int32_t inRowIndex,
                                              const int32_t inColumnIndex
                                              COMMA_LOCATION_ARGS) {
@@ -99,14 +99,14 @@ template <typename TYPE> class TC_Array2 {
   #endif
 
 //--- Vider
-  public : virtual void removeAll (void) ;
+  public: virtual void removeAll (void) ;
 
 //--- Exchange
   friend void swap <TYPE> (TC_Array2 <TYPE> & ioOperand1,
                            TC_Array2 <TYPE> & ioOperand2) ;
 
 //--- Changer la taille da la matrice
-  public : void reallocArray (const int32_t inRowCount,
+  public: void reallocArray (const int32_t inRowCount,
                               const int32_t inColumnCount COMMA_LOCATION_ARGS) ;
 } ;
 

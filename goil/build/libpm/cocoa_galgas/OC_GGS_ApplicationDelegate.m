@@ -16,6 +16,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------
 
+#import "OC_GGS_ColorTransformer.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
 #import "OC_GGS_ApplicationDelegate.h"
 #import "OC_GGS_Document.h"
@@ -266,6 +267,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #endif
   const NSAutoresizingMaskOptions mask = (NSAutoresizingMaskOptions) (NSViewMaxXMargin | NSViewMinYMargin) ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
+  OC_GGS_ColorTransformer * colorTransformer = [OC_GGS_ColorTransformer new] ;
 //--- Add background color well
   ioRect->origin.x = 10.0 ;
   ioRect->size.width = 40.0 ;
@@ -276,7 +278,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     bind:@"value"
     toObject:udc
     withKeyPath:inBackgroundBindingPath
-    options:[NSDictionary dictionaryWithObject:NSUnarchiveFromDataTransformerName forKey:NSValueTransformerNameBindingOption]
+    options:[NSDictionary dictionaryWithObject:colorTransformer forKey:NSValueTransformerBindingOption]
   ] ;
   [ioView addSubview:colorWell] ;
   *ioEnclosingRect = NSUnionRect (*ioEnclosingRect, *ioRect) ;
@@ -330,7 +332,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     bind:@"value"
     toObject:udc
     withKeyPath:inForegroundBindingPath
-    options:[NSDictionary dictionaryWithObject:NSUnarchiveFromDataTransformerName forKey:NSValueTransformerNameBindingOption]
+    options:[NSDictionary dictionaryWithObject:colorTransformer forKey:NSValueTransformerBindingOption]
   ] ;
   [ioView addSubview:colorWell] ;
   *ioEnclosingRect = NSUnionRect (*ioEnclosingRect, *ioRect) ;
@@ -382,30 +384,51 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   r.size.height = 20.0 ;
   NSMutableArray * allFontPreferenceNames = [NSMutableArray new] ;
   if ([inTokenizer isTemplateLexique]) {
+    OC_GGS_ColorTransformer * colorTransformer = [OC_GGS_ColorTransformer new] ;
+//    NSUserDefaults * ud = [NSUserDefaults standardUserDefaults] ;
   //--- By default, background color is white
     NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_template_background_color, [inTokenizer styleIdentifierForStyleIndex:0]] ;
     if ([ud objectForKey:name] == nil) {
-      [[NSUserDefaults standardUserDefaults]
-        setObject:[NSArchiver archivedDataWithRootObject:[NSColor whiteColor]]
-        forKey:name
+      [ud
+        setObject: [colorTransformer reverseTransformedValue: [NSColor whiteColor]]
+        forKey: name
       ] ;
+    }else if ([colorTransformer transformedValue: [ud objectForKey:name]] == nil ) {
+      NSColor * color = [NSUnarchiver unarchiveObjectWithData: [ud objectForKey:name]] ;
+      NSData * archiveData = [colorTransformer reverseTransformedValue: color] ;
+      if (archiveData == nil) {
+        archiveData = [colorTransformer reverseTransformedValue: [NSColor whiteColor]] ;
+      }
+      [ud setValue: archiveData forKey: GGS_template_background_color] ;
     }
   //--- Find a default foreground color
     name = [NSString stringWithFormat:@"%@_%@", GGS_template_foreground_color, [inTokenizer styleIdentifierForStyleIndex:0]] ;
     if ([ud objectForKey:name] == nil) {
-      [[NSUserDefaults standardUserDefaults]
-        setObject:[NSArchiver archivedDataWithRootObject:defaultColorArray [defaultColorIndex]]
-        forKey:name
+      [ud
+        setObject: [colorTransformer reverseTransformedValue: defaultColorArray [defaultColorIndex]]
+        forKey: name
       ] ;
       // defaultColorIndex = (defaultColorIndex + 1) % kDefaultColorCount ;
       defaultColorIndex = 1 ;
+    }else if ([colorTransformer transformedValue: [ud objectForKey:name]] == nil ) {
+      NSColor * color = [NSUnarchiver unarchiveObjectWithData: [ud objectForKey:name]] ;
+      NSData * archiveData = [colorTransformer reverseTransformedValue: color] ;
+      if (archiveData == nil) {
+        archiveData = [colorTransformer reverseTransformedValue: [NSColor blackColor]] ;
+      }
+      [ud setValue: archiveData forKey: GGS_template_foreground_color] ;
+      defaultColorIndex = 1 ;
     }
+      [ud
+        setObject: [colorTransformer reverseTransformedValue: defaultColorArray [defaultColorIndex]]
+        forKey: name
+      ] ;
   //--- By default, font is courier 13
     name = [NSString stringWithFormat:@"%@_%@", GGS_template_font, [inTokenizer styleIdentifierForStyleIndex:0]] ;
     [allFontPreferenceNames addObject:name] ;
     if ([ud objectForKey:name] == nil) {
-      [[NSUserDefaults standardUserDefaults]
-        setObject:[NSArchiver archivedDataWithRootObject:[NSFont fontWithName:@"Courier" size:13.0]]
+      [ud
+        setObject: [NSArchiver archivedDataWithRootObject:[NSFont fontWithName:@"Courier" size:13.0]]
         forKey:name
       ] ;
     }
@@ -420,45 +443,62 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
       withSettingTitle:@"Template String"
     ] ;
   }
+  OC_GGS_ColorTransformer * colorTransformer = [OC_GGS_ColorTransformer new] ;
   for (NSInteger i=0; i<(NSInteger) inTokenizer.styleCount ; i++) {
   //--- By default, find an old style foreground color
-    NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [inTokenizer styleIdentifierForStyleIndex:i]] ;
-    // NSLog (@"name '%@'", name) ;
-    if ([ud objectForKey:name] == nil) {
-    //--- Not found
-      NSArray * splitName = [[inTokenizer styleIdentifierForStyleIndex:i] componentsSeparatedByString:@"-"] ;
-      if ([splitName count] == 2) {
-        NSString * oldName = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [splitName objectAtIndex:1]] ;
-        if ([ud objectForKey:oldName] != nil) {
-          [[NSUserDefaults standardUserDefaults]
-            setObject:[ud objectForKey:oldName]
-            forKey:name
-          ] ;
-        }
-      }
-    }
+//    NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [inTokenizer styleIdentifierForStyleIndex:i]] ;
+//    // NSLog (@"name '%@'", name) ;
+//    if ([ud objectForKey: name] == nil) {
+//    //--- Not found
+//      NSArray * splitName = [[inTokenizer styleIdentifierForStyleIndex:i] componentsSeparatedByString:@"-"] ;
+//      if ([splitName count] == 2) {
+//        NSString * oldName = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [splitName objectAtIndex:1]] ;
+//        if ([ud objectForKey:oldName] != nil) {
+//          [[NSUserDefaults standardUserDefaults]
+//            setObject:[ud objectForKey:oldName]
+//            forKey:name
+//          ] ;
+//        }
+//      }
+//    }
   //--- By default, background color is white
-    name = [NSString stringWithFormat:@"%@_%@", GGS_named_background_color, [inTokenizer styleIdentifierForStyleIndex:i]] ;
-    if ([ud objectForKey:name] == nil) {
-      [[NSUserDefaults standardUserDefaults]
-        setObject:[NSArchiver archivedDataWithRootObject:[NSColor whiteColor]]
+    NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_named_background_color, [inTokenizer styleIdentifierForStyleIndex:i]] ;
+    NSData * data = [ud objectForKey: name] ;
+    if (data == nil) {
+      [ud
+        setObject: [colorTransformer reverseTransformedValue: [NSColor whiteColor]]
         forKey:name
       ] ;
+    }else if ([colorTransformer transformedValue: data] == nil ) {
+      NSColor * color = [NSUnarchiver unarchiveObjectWithData: data] ;
+      NSData * archiveData = [colorTransformer reverseTransformedValue: color] ;
+      if (archiveData == nil) {
+        archiveData = [colorTransformer reverseTransformedValue: [NSColor whiteColor]] ;
+      }
+      [ud setValue: archiveData forKey: name] ;
     }
   //--- Find a default foreground color
     name = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [inTokenizer styleIdentifierForStyleIndex:i]] ;
-    if ([ud objectForKey:name] == nil) {
-      [[NSUserDefaults standardUserDefaults]
-        setObject:[NSArchiver archivedDataWithRootObject:defaultColorArray [defaultColorIndex]]
+    data = [ud objectForKey: name] ;
+    if (data == nil) {
+      [ud
+        setObject: [colorTransformer reverseTransformedValue: defaultColorArray [defaultColorIndex]]
         forKey:name
       ] ;
       defaultColorIndex = (defaultColorIndex + 1) % kDefaultColorCount ;
+    }else if ([colorTransformer transformedValue: data] == nil ) {
+      NSColor * color = [NSUnarchiver unarchiveObjectWithData: data] ;
+      NSData * archiveData = [colorTransformer reverseTransformedValue: color] ;
+      if (archiveData == nil) {
+        archiveData = [colorTransformer reverseTransformedValue: defaultColorArray [defaultColorIndex]] ;
+      }
+      [ud setValue: archiveData forKey: name] ;
     }
    //--- By default, font is courier 13
     name = [NSString stringWithFormat:@"%@_%@", GGS_named_font, [inTokenizer styleIdentifierForStyleIndex:i]] ;
-    [allFontPreferenceNames addObject:name] ;
-    if ([ud objectForKey:name] == nil) {
-      [[NSUserDefaults standardUserDefaults]
+    [allFontPreferenceNames addObject: name] ;
+    if ([ud objectForKey: name] == nil) {
+      [ud
         setObject:[NSArchiver archivedDataWithRootObject:[NSFont fontWithName:@"Courier" size:13.0]]
         forKey:name
       ] ;
@@ -905,6 +945,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
   NSUserDefaults * ud = [NSUserDefaults standardUserDefaults] ;
   NSNotificationCenter  * nc = [NSNotificationCenter defaultCenter] ;
+  OC_GGS_ColorTransformer * colorTransformer = [OC_GGS_ColorTransformer new] ;
 //--- Page guide
   if ([ud valueForKey:GGS_uses_page_guide] == nil) {
     [ud setBool:YES forKey:GGS_uses_page_guide] ;
@@ -931,16 +972,24 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     options:nil
   ] ;
 //--- Editor background color
-  if ([ud valueForKey:GGS_editor_background_color] == nil) {
-    NSData * data = [NSArchiver archivedDataWithRootObject:[NSColor whiteColor]] ;
-    [ud setValue:data forKey:GGS_editor_background_color] ;
+  NSData * data_GGS_editor_background_color = [ud valueForKey: GGS_editor_background_color] ;
+  if (data_GGS_editor_background_color == nil) {
+    NSData * archiveData = [colorTransformer reverseTransformedValue: [NSColor whiteColor]] ;
+    [ud setValue: archiveData forKey: GGS_editor_background_color] ;
+  }else if ([colorTransformer transformedValue: data_GGS_editor_background_color] == nil ) {
+    NSColor * color = [NSUnarchiver unarchiveObjectWithData: data_GGS_editor_background_color] ;
+    NSData * archiveData = [colorTransformer reverseTransformedValue: color] ;
+    if (archiveData == nil) {
+      archiveData = [colorTransformer reverseTransformedValue: [NSColor whiteColor]] ;
+    }
+    [ud setValue: archiveData forKey: GGS_editor_background_color] ;
   }
   [mEditorBackgroundColorWell
     bind:@"value"
     toObject:udc
     withKeyPath:@"values." GGS_editor_background_color
     options:[NSDictionary dictionaryWithObjectsAndKeys:
-      NSUnarchiveFromDataTransformerName, NSValueTransformerNameBindingOption,
+      colorTransformer, NSValueTransformerBindingOption,
       nil
     ]
   ] ;
@@ -1176,6 +1225,38 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
 - (BOOL) applicationShouldOpenUntitledFile: (NSApplication *) inSender {
   return NO ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//       ALL DOCUMENT EXTENSIONS
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+- (NSSet *) allExtensionsOfCurrentApplication {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+//  NSMutableArray * allTypes = [NSMutableArray new] ;
+  NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary] ;
+//  NSLog (@"infoDictionary %@", infoDictionary) ;
+//  NSArray * allDocumentTypes = [infoDictionary objectForKey: @"CFBundleDocumentTypes"] ;
+  NSArray * exportedTypeDeclarations = [infoDictionary objectForKey: @"UTExportedTypeDeclarations"] ;
+//  NSLog (@"exportedTypeDeclarations %@", exportedTypeDeclarations) ;
+  NSMutableSet * extensionSet = [NSMutableSet new] ;
+  for (NSDictionary * exportedType in exportedTypeDeclarations) {
+    NSDictionary * tagSpecifDictionary = [exportedType objectForKey: @"UTTypeTagSpecification"] ;
+    NSArray * fileExtensions = [tagSpecifDictionary objectForKey: @"public.filename-extension"] ;
+    if (fileExtensions.count > 0) {
+      [extensionSet addObjectsFromArray: fileExtensions] ;
+    }
+//    for (NSString * extension in fileExtensions) {
+//      NSLog (@"  extension %@", extension) ;
+//    }
+//    [allTypes addObjectsFromArray:a] ;
+  }
+  return extensionSet ;
+//  return allTypes ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

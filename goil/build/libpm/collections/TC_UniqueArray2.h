@@ -43,43 +43,43 @@ template <typename TYPE> void swap (TC_UniqueArray2 <TYPE> & ioOperand1,
 //----------------------------------------------------------------------------------------------------------------------
 
 template <typename TYPE> class TC_UniqueArray2 {
-  protected : TYPE * mArray ;
-  protected : int32_t mCurrentRowCount ;
-  protected : int32_t mCurrentColumnCount ;
+  protected: TYPE * mArray ;
+  protected: int32_t mCurrentRowCount ;
+  protected: int32_t mCurrentColumnCount ;
 
 //--- Constructor
-  public : TC_UniqueArray2 (const int32_t inRowCount,
+  public: TC_UniqueArray2 (const int32_t inRowCount,
                             const int32_t inColumnCount) ;
 
 //--- Destructor
-  public : virtual ~TC_UniqueArray2 (void) ;
+  public: virtual ~TC_UniqueArray2 (void) ;
 
 //--- No copy
-  private : TC_UniqueArray2 (TC_UniqueArray2 <TYPE> & inSource) ;
-  private : TC_UniqueArray2 <TYPE> & operator = (TC_UniqueArray2 <TYPE> & inSource) ;
+  private: TC_UniqueArray2 (TC_UniqueArray2 <TYPE> & inSource) ;
+  private: TC_UniqueArray2 <TYPE> & operator = (TC_UniqueArray2 <TYPE> & inSource) ;
 
 //--- Get Row and Column count
-  public : inline int32_t rowCount (void) const { return mCurrentRowCount ; }
-  public : inline int32_t columnCount (void) const { return mCurrentColumnCount ; }
+  public: inline int32_t rowCount (void) const { return mCurrentRowCount ; }
+  public: inline int32_t columnCount (void) const { return mCurrentColumnCount ; }
 
 //--- Access
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    public : TYPE & operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) ;
-    public : const TYPE & operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const ;
+    public: TYPE & operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) ;
+    public: const TYPE & operator () (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const ;
   #endif
 
   #ifdef DO_NOT_GENERATE_CHECKINGS
-    public : inline TYPE & operator () (const int32_t inRowIndex,
+    public: inline TYPE & operator () (const int32_t inRowIndex,
                                         const int32_t inColumnIndex) {
       return mArray [(size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex)] ;
     }
-    public : inline const TYPE & operator () (const int32_t inRowIndex,
+    public: inline const TYPE & operator () (const int32_t inRowIndex,
                                               const int32_t inColumnIndex) const {
       return mArray [(size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex)] ;
     }
   #endif
 
-  protected : size_t long2size_t (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const {
+  protected: size_t long2size_t (const int32_t inRowIndex, const int32_t inColumnIndex COMMA_LOCATION_ARGS) const {
     MF_AssertThere (inRowIndex >= 0, "indice ligne (%ld) < 0", inRowIndex, 0) ;
     MF_AssertThere (inRowIndex < mCurrentRowCount, "indice ligne (%ld) >= nombre de lignes (%ld)", inRowIndex, mCurrentRowCount) ;
     MF_AssertThere (inColumnIndex >= 0, "indice colonne (%ld) < 0", inColumnIndex, 0) ;
@@ -87,7 +87,7 @@ template <typename TYPE> class TC_UniqueArray2 {
     return (size_t) (inRowIndex * mCurrentColumnCount + inColumnIndex) ;
   }
 
-  public : void setObjectAtIndexes (const TYPE & inObject,
+  public: void setObjectAtIndexes (const TYPE & inObject,
                                     const int32_t inRowIndex,
                                     const int32_t inColumnIndex
                                     COMMA_LOCATION_ARGS) ;

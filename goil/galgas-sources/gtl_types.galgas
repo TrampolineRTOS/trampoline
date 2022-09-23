@@ -59,7 +59,7 @@ setter @gtlContext addModulePath
   ?let @string rootPath
   ?let @string modulePath
 {
-  @string normalizedModulePath =
+  let @string normalizedModulePath =
     [[modulePath absolutePathFromPath !rootPath] stringByStandardizingPath]
   importPath += !normalizedModulePath
 }
@@ -106,8 +106,8 @@ getter @gtlContext fullTemplateFileName
   ?@lstring    simpleName
   ->@lstring fullName
 {
-  @gtlContext copy = self
-  @lstring fullPref = [self fullPrefix !vars]
+  #@gtlContext copy = self
+  let @lstring fullPref = [self fullPrefix !vars]
   
   @bool found = false
   @string prefixedTemplatePath
@@ -126,7 +126,7 @@ getter @gtlContext fullTemplateFileName
   )
 
   loop ( [hierarchicalPath length] )
-    @string fullPath = pathWithExtension(
+    let @string fullPath = pathWithExtension(
       !context
       ![[prefixedTemplatePath stringByAppendingPath !hierarchicalPath] stringByAppendingPath
         !simpleName
@@ -158,7 +158,7 @@ getter @gtlContext fullTemplateFileName
   
 
     loop ( [hierarchicalPath length] )
-      @string fullPath = pathWithExtension(
+      let @string fullPath = pathWithExtension(
         !context
         ![[prefixedTemplatePath stringByAppendingPath !hierarchicalPath] stringByAppendingPath
           !simpleName
@@ -292,7 +292,7 @@ setter @gtlTemplateMap getTemplate
       grammar gtl_grammar in path
         !                    context
         !?                   lib
-        ?@gtlInstructionList program
+        ?let @gtlInstructionList program
       result = .new { !path !program }
       [!?self put !path !result]
     else

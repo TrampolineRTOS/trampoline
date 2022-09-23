@@ -240,6 +240,17 @@ void GALGAS_application::class_method_setUIntOptionValue (GALGAS_string inDomain
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+void GALGAS_application::class_method_exit (GALGAS_uint inValue
+                                            COMMA_UNUSED_LOCATION_ARGS) {
+  if (inValue.isValid ()) {
+    exit (int (inValue.uintValue ())) ;
+  }else{
+    exit (1) ;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 //   STRING OPTION                                                                               
 //----------------------------------------------------------------------------------------------------------------------
 

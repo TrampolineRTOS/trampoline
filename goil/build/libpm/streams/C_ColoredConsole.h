@@ -70,18 +70,18 @@ typedef enum {
 
 class C_ColoredConsole : public AC_OutputStream {
 //--- Set fore color
-  public : void setForeColor (const consoleForeColorEnum inForeColor) ;
+  public: void setForeColor (const consoleForeColorEnum inForeColor) ;
 
 //--- Set background color
-  public : void setBackgroundColor (const consoleBackgroundColorEnum inBackgroundColor) ;
+  public: void setBackgroundColor (const consoleBackgroundColorEnum inBackgroundColor) ;
 
 //--- Set text attribute
-  public : void setTextAttribute (const consoleTextAttributeEnum inTextAttribute) ;
+  public: void setTextAttribute (const consoleTextAttributeEnum inTextAttribute) ;
 
 //--- Fore color, Background color, text attributes are used or not (default: used)
-  public : static void setUseTextAttributes (const bool inUsesTextAttributes) ;
+  public: static void setUseTextAttributes (const bool inUsesTextAttributes) ;
   
-  public : static bool usesTextAttributes (void) ;
+  public: static bool usesTextAttributes (void) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

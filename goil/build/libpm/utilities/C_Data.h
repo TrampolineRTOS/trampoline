@@ -28,57 +28,57 @@
 
 class C_Data {
 //--- Data
-  private : TC_Array <uint8_t> mBinaryData ;
+  private: TC_Array <uint8_t> mBinaryData ;
 
 //--- Constructors
-  public : C_Data (void) ;
+  public: C_Data (void) ;
 
 //--- Destructor
-  public : virtual ~C_Data (void) ;
+  public: virtual ~C_Data (void) ;
   
 //--- Length
-  public : inline int32_t length (void) const { return mBinaryData.count () ; }
+  public: inline int32_t length (void) const { return mBinaryData.count () ; }
   
-  public : void setLengthToZero (void) ;
+  public: void setLengthToZero (void) ;
 
-  public : const uint8_t * unsafeDataPointer (void) const { return mBinaryData.unsafeArrayPointer () ; }
+  public: const uint8_t * unsafeDataPointer (void) const { return mBinaryData.unsafeArrayPointer () ; }
 
 //--- Capacity
-  public : void setCapacity (const int32_t inNewCapacity) ;
+  public: void setCapacity (const int32_t inNewCapacity) ;
 
 //--- Free
-  public : void free (void) ;
+  public: void free (void) ;
 
 //--- Append data
-  public : void appendData (const C_Data & inData) ;
-  public : void appendString (const class C_String & inString) ;
-  public : void appendUTF32Character (const utf32 inUnicodeChar) ;
+  public: void appendData (const C_Data & inData) ;
+  public: void appendString (const class C_String & inString) ;
+  public: void appendUTF32Character (const utf32 inUnicodeChar) ;
   
 //---
-  public : uint8_t operator () (const int32_t inIndex
+  public: uint8_t operator () (const int32_t inIndex
                                 COMMA_LOCATION_ARGS) const ;
 
 
 //--- Data from pointer
-  public : void setDataFromPointer (uint8_t * & ioDataPtr,
+  public: void setDataFromPointer (uint8_t * & ioDataPtr,
                                     const int32_t inDataLength) ;
 
-  public : void appendDataFromPointer (const uint8_t * inDataPtr,
+  public: void appendDataFromPointer (const uint8_t * inDataPtr,
                                        const int32_t inDataLength) ;
 
-  public : void appendByte (const uint8_t inByte) ;
+  public: void appendByte (const uint8_t inByte) ;
 
-  public : int32_t compareWithData (const C_Data & inData) const ;
-
-//---
-  public : void removeLengthFromStart (const uint32_t inLength COMMA_LOCATION_ARGS) ;
+  public: int32_t compareWithData (const C_Data & inData) const ;
 
 //---
-  public : void removeLastByte (LOCATION_ARGS) ;
+  public: void removeLengthFromStart (const uint32_t inLength COMMA_LOCATION_ARGS) ;
 
 //---
-  public : bool operator == (const C_Data & inData) const ;
-  public : bool operator != (const C_Data & inData) const ;
+  public: void removeLastByte (LOCATION_ARGS) ;
+
+//---
+  public: bool operator == (const C_Data & inData) const ;
+  public: bool operator != (const C_Data & inData) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

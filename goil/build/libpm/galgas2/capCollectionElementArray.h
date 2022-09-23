@@ -32,114 +32,114 @@ class C_Compiler ;
 
 class capCollectionElementArray {
 //--- Default constructor
-  public : capCollectionElementArray (void) ;
+  public: capCollectionElementArray (void) ;
 
 //--- Default constructor
-  public : capCollectionElementArray (const uint32_t inCapacity) ;
+  public: capCollectionElementArray (const uint32_t inCapacity) ;
 
 //--- Virtual destructor
-  public : virtual ~ capCollectionElementArray (void) ;
+  public: virtual ~ capCollectionElementArray (void) ;
 
 //--- Handle copy
-  public : capCollectionElementArray (const capCollectionElementArray & inSource) ;
-  public : capCollectionElementArray & operator = (const capCollectionElementArray & inSource) ;
+  public: capCollectionElementArray (const capCollectionElementArray & inSource) ;
+  public: capCollectionElementArray & operator = (const capCollectionElementArray & inSource) ;
 
 //--- Set capacity
-  public : void setCapacity (const uint32_t inNewCapacity) ;
+  public: void setCapacity (const uint32_t inNewCapacity) ;
 
 //--- Append Object
-  public : void appendObject (const capCollectionElement & inObject) ;
+  public: void appendObject (const capCollectionElement & inObject) ;
 
-  public : void insertObjectAtIndex (const capCollectionElement & inObject,
+  public: void insertObjectAtIndex (const capCollectionElement & inObject,
                                      const uint32_t inInsertionIndex,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-  public : void removeObjectAtIndex (capCollectionElement & outObject,
+  public: void removeObjectAtIndex (capCollectionElement & outObject,
                                      const uint32_t inInsertionIndex,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
-  public : void removeFirstObject (capCollectionElement & outObject,
+  public: void removeFirstObject (capCollectionElement & outObject,
                                    C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) ;
 
-  public : void readFirstObject (capCollectionElement & outObject,
+  public: void readFirstObject (capCollectionElement & outObject,
                                  C_Compiler * inCompiler
                                  COMMA_LOCATION_ARGS) const ;
 
-  public : void removeLastObject (capCollectionElement & outObject,
+  public: void removeLastObject (capCollectionElement & outObject,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
-  public : void readLastObject (capCollectionElement & outObject,
+  public: void readLastObject (capCollectionElement & outObject,
                                 C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) const ;
 
-  public : void replaceObjectAtIndex (const capCollectionElement & inObject,
+  public: void replaceObjectAtIndex (const capCollectionElement & inObject,
                                       const uint32_t inIndex
                                       COMMA_LOCATION_ARGS) ;
 
-  public : void appendObjects (const capCollectionElementArray inObjects) ; // Passing using copy constructor
+  public: void appendObjects (const capCollectionElementArray inObjects) ; // Passing using copy constructor
 
 //--- Get object
-  public : capCollectionElement objectAtIndex (const uint32_t inIndex COMMA_LOCATION_ARGS) const ;
+  public: capCollectionElement objectAtIndex (const uint32_t inIndex COMMA_LOCATION_ARGS) const ;
 
 //--- Get object pointer for writing (perform implicitly an "insulate" action)
-  public : cCollectionElement * uniquelyReferencedPointerAtIndex (const uint32_t inIndex
+  public: cCollectionElement * uniquelyReferencedPointerAtIndex (const uint32_t inIndex
                                                                   COMMA_LOCATION_ARGS) ;
 
 //--- Get object pointer for reading
-  public : const cCollectionElement * pointerAtIndexForReadAccess (const uint32_t inIndex
+  public: const cCollectionElement * pointerAtIndexForReadAccess (const uint32_t inIndex
                                                                    COMMA_LOCATION_ARGS) const ;
 
 //--- Get count
-  public : uint32_t count (void) const ;
+  public: uint32_t count (void) const ;
 
 //--- Get count
-  public : uint32_t capacity (void) const ;
+  public: uint32_t capacity (void) const ;
 
 //--- Remove an object
-  public : void removeObjectAtIndex (const uint32_t inIndex) ;
+  public: void removeObjectAtIndex (const uint32_t inIndex) ;
 
 //--- Prepend object (insert them from index 0)
-  public : void predendObject (const capCollectionElement & inObject) ;
+  public: void predendObject (const capCollectionElement & inObject) ;
 
 //--- Remove all objects (without changing capacity)
-  public : void removeAllObjects (void) ;
+  public: void removeAllObjects (void) ;
 
 //--- Sublists
-  public : void subListToIndex (capCollectionElementArray & outSubList,
+  public: void subListToIndex (capCollectionElementArray & outSubList,
                                 const uint32_t inIndex,
                                 bool & outOk,
                                 C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) const ;
 
-  public : void subListWithRange (capCollectionElementArray & ioSubList,
+  public: void subListWithRange (capCollectionElementArray & ioSubList,
                                   const uint32_t inStartIndex,
                                   const uint32_t inLength,
                                   bool & outOk,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) const ;
 
-  public : void subListFromIndex (capCollectionElementArray & ioSubList,
+  public: void subListFromIndex (capCollectionElementArray & ioSubList,
                                   const uint32_t inIndex,
                                   bool & outOk,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) const ;
 
 //--- Compare
-  public : typeComparisonResult compareCollectionElementArray (const capCollectionElementArray & inOperand) const ;
+  public: typeComparisonResult compareCollectionElementArray (const capCollectionElementArray & inOperand) const ;
 
 //--- Description
-  public : void description (C_String & ioString,
+  public: void description (C_String & ioString,
                              const int32_t inIndentation) const ;
 
 //--- Internal
-  private : void insulateOrCreate (void) ;
+  private: void insulateOrCreate (void) ;
 
 //--- Property
-  private : class capCollectionRoot * mSharedRoot ;
+  private: class capCollectionRoot * mSharedRoot ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -302,22 +302,22 @@ typeComparisonResult AC_GALGAS_list::objectCompare (const AC_GALGAS_list & inOpe
 //----------------------------------------------------------------------------------------------------------------------
 
 class cListMapNode {
-  public : cListMapNode * mInfPtr ;
-  public : cListMapNode * mSupPtr ;
-  public : int32_t mBalance ;
-  public : C_String mKey ;
-  public : capCollectionElementArray myList ;
+  public: cListMapNode * mInfPtr ;
+  public: cListMapNode * mSupPtr ;
+  public: int32_t mBalance ;
+  public: C_String mKey ;
+  public: capCollectionElementArray myList ;
 
 //--- Constructors
-  public : cListMapNode (const C_String & inKey) ;
-  public : cListMapNode (const cListMapNode * inNode) ;
+  public: cListMapNode (const C_String & inKey) ;
+  public: cListMapNode (const cListMapNode * inNode) ;
 
 //--- Destructor
-  public : virtual ~ cListMapNode (void) ;
+  public: virtual ~ cListMapNode (void) ;
 
 //--- No copy
-  private : cListMapNode (const cListMapNode &) ;
-  private : cListMapNode & operator = (const cListMapNode &) ;
+  private: cListMapNode (const cListMapNode &) ;
+  private: cListMapNode & operator = (const cListMapNode &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -345,50 +345,50 @@ cListMapNode::~ cListMapNode (void) {
 
 class cSharedListMapRoot : public C_SharedObject {
 //--- Attributes
-  private : cListMapNode * mRoot ;
-  public : const cListMapNode * root (void) const { return mRoot ; }
-  private : uint32_t mCount ;
+  private: cListMapNode * mRoot ;
+  public: const cListMapNode * root (void) const { return mRoot ; }
+  private: uint32_t mCount ;
 
 //--- Default constructor
-  public : cSharedListMapRoot (LOCATION_ARGS) ;
+  public: cSharedListMapRoot (LOCATION_ARGS) ;
 
 //--- Destructor
-  public : virtual ~ cSharedListMapRoot (void) ;
+  public: virtual ~ cSharedListMapRoot (void) ;
 
 //--- No copy
-  private : cSharedListMapRoot (const cSharedListMapRoot &) ;
-  private : cSharedListMapRoot & operator = (const cSharedListMapRoot &) ;
+  private: cSharedListMapRoot (const cSharedListMapRoot &) ;
+  private: cSharedListMapRoot & operator = (const cSharedListMapRoot &) ;
 
 //--- Copy from
-  public : VIRTUAL_IN_DEBUG void copyFrom (const cSharedListMapRoot * inSource) ;
+  public: VIRTUAL_IN_DEBUG void copyFrom (const cSharedListMapRoot * inSource) ;
 
 //--- Count
-  public : VIRTUAL_IN_DEBUG uint32_t count (void) const { return mCount ; }
+  public: VIRTUAL_IN_DEBUG uint32_t count (void) const { return mCount ; }
 
 //--- Description
-  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
                                               const int32_t inIndentation) const ;
 
-  public : static void internalDescription (cListMapNode * inNode,
+  public: static void internalDescription (cListMapNode * inNode,
                                             C_String & ioString,
                                             const int32_t inIndentation,
                                             uint32_t & ioIdx) ;
 //--- Find or add entry
-  public : VIRTUAL_IN_DEBUG void findOrAddEntry (cListMapNode * & ioRootPtr,
+  public: VIRTUAL_IN_DEBUG void findOrAddEntry (cListMapNode * & ioRootPtr,
                                                  const C_String & inKey,
                                                  cListMapNode * & outEntry,
                                                  bool & ioExtension) ;
 
-  public : VIRTUAL_IN_DEBUG void addObjectInListMap (const C_String & inKey,
+  public: VIRTUAL_IN_DEBUG void addObjectInListMap (const C_String & inKey,
                                                      capCollectionElement & inAttributeArray) ;
 
 //--------------------------------- Support for 'listForKey' reader
-  public : VIRTUAL_IN_DEBUG capCollectionElementArray listForKey (const C_String & inKey) const ;
+  public: VIRTUAL_IN_DEBUG capCollectionElementArray listForKey (const C_String & inKey) const ;
 
 //--------------------------------- Support for enumeration
-  public : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const ;
+  public: VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const ;
 //--------------------------------- Comparison
-  public : typeComparisonResult listmapCompare (const cSharedListMapRoot * inOperand) const ;
+  public: typeComparisonResult listmapCompare (const cSharedListMapRoot * inOperand) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

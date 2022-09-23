@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.
+//  Copyright (C) 2009, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -30,7 +30,7 @@
 
 class C_BoolCommandLineOption : public C_CommandLineOption {
 //--- Constructor
-  public : C_BoolCommandLineOption (const char * inDomainName,
+  public: C_BoolCommandLineOption (const char * inDomainName,
                                     const char * inIdentifier,
                                     const char inChar,
                                     const char * inString,
@@ -38,40 +38,40 @@ class C_BoolCommandLineOption : public C_CommandLineOption {
                                     const bool inVisibleInGalgas = true) ;
 
 //--- No Copy
-  private : C_BoolCommandLineOption (const C_BoolCommandLineOption &) ;
-  private : C_BoolCommandLineOption & operator = (const C_BoolCommandLineOption &) ;
+  private: C_BoolCommandLineOption (const C_BoolCommandLineOption &) ;
+  private: C_BoolCommandLineOption & operator = (const C_BoolCommandLineOption &) ;
 
 //--- Attributes
-  private : C_BoolCommandLineOption * mNext ;
-  public : bool mValue ;
-  public : inline bool getter_value (void) const { return mValue ; }
-  public : const bool mVisibleInGalgas ;
+  private: C_BoolCommandLineOption * mNext ;
+  public: bool mValue ;
+  public: inline bool readProperty_value (void) const { return mValue ; }
+  public: const bool mVisibleInGalgas ;
 
 //--- Static methods
-  public : static void setBoolOptionForCommandChar (const char inCommandChar,
+  public: static void setBoolOptionForCommandChar (const char inCommandChar,
                                                     bool & outFound) ;
-  public : static void setBoolOptionForCommandString (const char * inCommandString,
+  public: static void setBoolOptionForCommandString (const char * inCommandString,
                                                       bool & outFound,
                                                       bool & outCocoaOutput) ;
-  public : static void printUsageOfBoolOptions (void) ;
-  public : static void printBoolOptions (void) ;
+  public: static void printUsageOfBoolOptions (void) ;
+  public: static void printBoolOptions (void) ;
 
 //--- Option introspection
-  public : static void getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) ;
+  public: static void getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) ;
 
-  public : static utf32 getBoolOptionInvocationLetter (const C_String & inDomainName,
+  public: static utf32 getBoolOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static C_String getBoolOptionInvocationString (const C_String & inDomainName,
+  public: static C_String getBoolOptionInvocationString (const C_String & inDomainName,
                                                           const C_String & inIdentifier) ;
 
-  public : static C_String getBoolOptionCommentString (const C_String & inDomainName,
+  public: static C_String getBoolOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static bool getBoolOptionValue (const C_String & inDomainName,
+  public: static bool getBoolOptionValue (const C_String & inDomainName,
                                            const C_String & inIdentifier) ;
 
-  public : static void setBoolOptionValue (const C_String & inDomainName,
+  public: static void setBoolOptionValue (const C_String & inDomainName,
                                            const C_String & inIdentifier,
                                            const bool inValue) ;
 } ;

@@ -177,11 +177,11 @@ void myFreeRoutine (void * inPointer) {
 
 #ifdef GENERATE_BLOCK_SIZE_STATS
   typedef struct cAllocatedSizeDescriptorNode {
-    public : struct cAllocatedSizeDescriptorNode * mInfPtr ;
-    public : struct cAllocatedSizeDescriptorNode * mSupPtr ;
-    public : size_t mAllocatedSize ;
-    public : uint32_t mCount ;
-    public : int16_t mBalance ;    
+    public: struct cAllocatedSizeDescriptorNode * mInfPtr ;
+    public: struct cAllocatedSizeDescriptorNode * mSupPtr ;
+    public: size_t mAllocatedSize ;
+    public: uint32_t mCount ;
+    public: int16_t mBalance ;    
   } cAllocatedSizeDescriptorNode ; 
 #endif
 

@@ -128,6 +128,8 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   @private IBOutlet NSTextField * mPageGuideColumnTextField ;
 }
 
+- (NSSet *) allExtensionsOfCurrentApplication ;
+
 - (IBAction) clearSourceDocumentPreferencesEntries: (id) inSender ;
 
 - (IBAction) showAllocationWindow: (id) inSender ;

@@ -33,7 +33,7 @@
 
 class cSourceTextInString : public C_SharedObject {
 //--- Constructor
-  public : cSourceTextInString (const C_String & inSourceString,
+  public: cSourceTextInString (const C_String & inSourceString,
                                 const C_String & inFilePath,
                                 const bool inShowSourceOnDetailledErrorMessage
                                 COMMA_LOCATION_ARGS) :
@@ -43,64 +43,72 @@ class cSourceTextInString : public C_SharedObject {
   mShowSourceOnDetailledErrorMessage (inShowSourceOnDetailledErrorMessage) {
   }
   
-  public : C_String mFilePath ;
-  public : C_String mSourceString ;
-  public : bool mShowSourceOnDetailledErrorMessage ;
+  public: C_String mFilePath ;
+  public: C_String mSourceString ;
+  public: bool mShowSourceOnDetailledErrorMessage ;
 
 //--- No copy
-  private : cSourceTextInString (const cSourceTextInString &) ;
-  private : cSourceTextInString & operator = (const cSourceTextInString &) ;
+  private: cSourceTextInString (const cSourceTextInString &) ;
+  private: cSourceTextInString & operator = (const cSourceTextInString &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_SourceTextInString {
 //--- Default constructor
-  public : C_SourceTextInString (void) ;
+  public: C_SourceTextInString (void) ;
 
 //--- Constructor
-  public : C_SourceTextInString (const C_String & inSourceString,
+  public: C_SourceTextInString (const C_String & inSourceString,
                                  const C_String & inFilePath,
                                  const bool inShowSourceOnDetailledErrorMessage) ;
 
 //--- Default constructor
-  public : virtual ~ C_SourceTextInString (void) ;
+  public: virtual ~ C_SourceTextInString (void) ;
 
 //--- Handle copy
-  public : C_SourceTextInString (const C_SourceTextInString & inSource) ;
-  public : C_SourceTextInString & operator = (const C_SourceTextInString & inSource) ;
+  public: C_SourceTextInString (const C_SourceTextInString & inSource) ;
+  public: C_SourceTextInString & operator = (const C_SourceTextInString & inSource) ;
   
 //--- Source file Name
-  private : cSourceTextInString * mObject ;
+  private: cSourceTextInString * mObject ;
 
-  public : inline C_String sourceFilePath (void) const {
+  public: inline C_String sourceFilePath (void) const {
     return (mObject == NULL) ? "" : mObject->mFilePath ;
   }
 
 //--- Source text
-  public : inline C_String sourceString (void) const {
+  public: inline C_String sourceString (void) const {
     return (mObject == NULL) ? "" : mObject->mSourceString ;
   }
 
-  public : inline bool isValid (void) const {
+  public: inline bool isValid (void) const {
     return mObject != NULL ;
   }
 
-  public : int32_t sourceLength (void) const {
+  public: inline bool operator == (const C_SourceTextInString & inOther) const {
+    return mObject == inOther.mObject ;
+  }
+
+  public: inline bool operator != (const C_SourceTextInString & inOther) const {
+    return mObject != inOther.mObject ;
+  }
+
+  public: int32_t sourceLength (void) const {
     return (mObject == NULL) ? 0 : mObject->mSourceString.length () ;
   }
 
-  public : utf32 readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
+  public: utf32 readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
     return (mObject == NULL) ? TO_UNICODE (0) : mObject->mSourceString.readCharOrNul (inIndex COMMA_THERE) ;
   }
 
-  public : const utf32 * temporaryUTF32StringAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
+  public: const utf32 * temporaryUTF32StringAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
     return (mObject == NULL) ? NULL : & (mObject->mSourceString.utf32String (THERE)) [inIndex] ;
   }
 
-  public : C_String getLineForLocation (const class C_LocationInSource & inLocation) const ;
+  public: C_String getLineForLocation (const class C_LocationInSource & inLocation) const ;
 
-  public : void appendSourceContents (C_String & ioMessage) const ;
+  public: void appendSourceContents (C_String & ioMessage) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

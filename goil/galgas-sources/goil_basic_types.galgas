@@ -200,7 +200,7 @@ func sint32OrError
   ?@object_t t
   ?@string     att
   ->@sint      v {
-  v = 0S
+  v = 0
   cast t
   case == @sint32_class ui :
     v = [ui value]
@@ -220,7 +220,7 @@ func uint64OrError
   ?@object_t t
   ?@string     att
   ->@uint64    v {
-  v = 0L
+  v = 0
   cast t
   case == @uint64_class ui :
     v = [ui value]
@@ -237,7 +237,7 @@ func luint64OrError
   case == @uint64_class ui :
     v = @luint64. new { ![ui value] ![ui location]}
   else
-    v = @luint64. new { !0L !@location.here}
+    v = @luint64. new { !0 !@location.here}
     error [t location]: "Internal error, "+att+" has a wrong datatype"
   end
 }
@@ -253,7 +253,7 @@ func sint64OrError
   ?@object_t t
   ?@string     att
   ->@sint64    v {
-  v = 0LS
+  v = 0
   cast t
   case == @sint64_class ui :
     v = [ui value]

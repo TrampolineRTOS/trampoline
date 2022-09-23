@@ -34,42 +34,42 @@ class cCollectionElement ;
 
 class capCollectionElement {
 //--- Private pointer
-  private : cCollectionElement * mPtr ;
+  private: cCollectionElement * mPtr ;
 
 //--- Default constructor
-  public : capCollectionElement (void) ;
+  public: capCollectionElement (void) ;
 
 //--- Destructor
-  public : virtual ~ capCollectionElement (void) ;
+  public: virtual ~ capCollectionElement (void) ;
 
 //--- Handle copy
-  public : capCollectionElement (const capCollectionElement & inSource) ;
-  public : capCollectionElement & operator = (const capCollectionElement & inSource) ;
+  public: capCollectionElement (const capCollectionElement & inSource) ;
+  public: capCollectionElement & operator = (const capCollectionElement & inSource) ;
 
 //--- set pointer
-  public : void setPointer (cCollectionElement * inObjectPointer) ;
+  public: void setPointer (cCollectionElement * inObjectPointer) ;
 
 //--- Method that checks that all attributes are valid
-  public : bool isValid (void) const ;
+  public: bool isValid (void) const ;
 
 //--- Method that ensures that pointer object is unique
-  public : void insulate (void) ;
+  public: void insulate (void) ;
 
 //--- Method that release object
-  public : void drop (void) ;
+  public: void drop (void) ;
 
 //--- Get pointer (for temporary use)
-  public : inline cCollectionElement * ptr (void) { return mPtr ; }
-  public : inline const cCollectionElement * ptr (void) const { return mPtr ; }
+  public: inline cCollectionElement * ptr (void) { return mPtr ; }
+  public: inline const cCollectionElement * ptr (void) const { return mPtr ; }
 
 //--- Method for comparing elements
-  public : typeComparisonResult compare (const capCollectionElement & inOperand) const ;
+  public: typeComparisonResult compare (const capCollectionElement & inOperand) const ;
 
 //--- Method that returns a copy of current object
-  public : capCollectionElement copy (void) ;
+  public: capCollectionElement copy (void) ;
 
 //--- Description
- public : void description (C_String & ioString, const int32_t inIndentation) const ;
+ public: void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -64,7 +64,7 @@ getter @string gtlType
 getter @lstring gtlType
   ->@type type
 {
-  @string typeName = [self string]
+  let @string typeName = [self string]
   if    typeName == "int"           then type = `@gtlInt
   elsif typeName == "char"          then type = `@gtlChar
   elsif typeName == "float"         then type = `@gtlFloat
@@ -166,8 +166,8 @@ private proc argumentsCheck
   ?@gtlTypedArgumentList abstractArgumentList
   ?@gtlDataList         concreteArgumentList
 {
-  @uint concreteLength = [concreteArgumentList length]
-  @uint abstractLength = [abstractArgumentList length]
+  let @uint concreteLength = [concreteArgumentList length]
+  let @uint abstractLength = [abstractArgumentList length]
   if [abstractArgumentList length] != [concreteArgumentList length] then
     error methodName : [methodName string] + " expects " + abstractLength +
                        " arguments. " + concreteLength + " arguments provided."
@@ -520,7 +520,7 @@ override setter @gtlUnconstructed performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -709,7 +709,7 @@ override setter @gtlType performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -906,7 +906,7 @@ override setter @gtlEnum performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -1188,7 +1188,7 @@ override setter @gtlChar performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -1350,8 +1350,8 @@ override getter @gtlInt xorOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlInt slOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlInt then
-    @bigint r = [right as @gtlInt value];
-    if r >= 0_G then 
+    let @bigint r = [right as @gtlInt value];
+    if r >= 0 then 
       result = @gtlInt.new {
         !where
         !emptylstring()
@@ -1367,8 +1367,8 @@ override getter @gtlInt slOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlInt srOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlInt then
-    @bigint r = [right as @gtlInt value];
-    if r >= 0_G then 
+    let @bigint r = [right as @gtlInt value];
+    if r >= 0 then 
       result = @gtlInt.new { !where !emptylstring() !value >> [r uint] }
     else
       error [right where] : "positive int expected" : result
@@ -1477,7 +1477,7 @@ override getter @gtlInt performGetter
     }
   elsif "padded"                 == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint   fieldSize = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint fieldSize = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlString.new {
       ![methodName location]
       !emptylstring()
@@ -1485,7 +1485,7 @@ override getter @gtlInt performGetter
     }
   elsif "leftPadded"             == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint   fieldSize = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint fieldSize = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlString.new {
       ![methodName location] 
       !emptylstring() 
@@ -1493,7 +1493,7 @@ override getter @gtlInt performGetter
     }
   elsif "rightPadded"            == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint   fieldSize = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint fieldSize = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlString.new {
       ![methodName location] 
       !emptylstring() 
@@ -1609,7 +1609,7 @@ override getter @gtlInt performGetter
     }
   elsif "bitAtIndex"             == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlBool.new {
       ![methodName location]
       !emptylstring()
@@ -1659,18 +1659,18 @@ override setter @gtlInt performSetter
 {
   if    [methodName string] == "setBitAtIndex" then
     argumentsCheck(!methodName !boolIntArguments() !arguments)
-    @bool bit = [[arguments dataAtIndex !0] as @gtlBool value]
-    @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
+    let @bool bit = [[arguments dataAtIndex !0] as @gtlBool value]
+    let @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
     [!?value setBitAtIndex !bit !index]
     where = methodName
   elsif [methodName string] == "complementBitAtIndex" then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     [!?value complementBitAtIndex !index]
     where = methodName
   elsif "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -1960,7 +1960,7 @@ override getter @gtlFloat performGetter
     }
   elsif "power"                  == methodName then
     argumentsCheck(!methodName !floatArgument() !arguments)
-    @double power = [[arguments dataAtIndex !0] as @gtlFloat value]
+    let @double power = [[arguments dataAtIndex !0] as @gtlFloat value]
     result = @gtlFloat.new {
       ![methodName location] !emptylstring() ![value power !power]
     }
@@ -2013,7 +2013,7 @@ override setter @gtlFloat performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -2224,15 +2224,15 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "charAtIndex" then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlChar.new {
       ![methodName location] !emptylstring() ![value characterAtIndex !index]
     }
   elsif [methodName string] == "indexOfChar" then
     argumentsCheck(!methodName !charArgument() !arguments)
-    @char lookedUpChar = [[arguments dataAtIndex !0] as @gtlChar value]
+    let @char lookedUpChar = [[arguments dataAtIndex !0] as @gtlChar value]
     @uint index = 0
-    @uint length = [value length]
+    let @uint length = [value length]
     @bool found = false
     loop (length)
     while not found && index < length do
@@ -2245,18 +2245,18 @@ override getter @gtlString performGetter
     result = @gtlInt.new {
       ![methodName location] 
       !emptylstring() 
-      !if found then [index bigint] else -1_G end
+      !if found then [index bigint] else -1 end
     }
   elsif [methodName string] == "indexOfCharInRange" then
     argumentsCheck(!methodName !charCharArguments() !arguments)
-    @char minChar = [[arguments dataAtIndex !0] as @gtlChar value]
-    @char maxChar = [[arguments dataAtIndex !1] as @gtlChar value]
+    let @char minChar = [[arguments dataAtIndex !0] as @gtlChar value]
+    let @char maxChar = [[arguments dataAtIndex !1] as @gtlChar value]
     @uint index = 0
-    @uint length = [value length]
+    let @uint length = [value length]
     @bool found = false
     loop (length)
     while not found && index < length do
-      @char currentChar = [value characterAtIndex !index]
+      let @char currentChar = [value characterAtIndex !index]
       if currentChar >= minChar && currentChar <= maxChar then
         found = true
       else
@@ -2266,11 +2266,11 @@ override getter @gtlString performGetter
     result = @gtlInt.new {
       ![methodName location]
       !emptylstring()
-      !if found then [index bigint] else -1_G end
+      !if found then [index bigint] else -1 end
     }
   elsif [methodName string] == "containsChar" then
     argumentsCheck(!methodName !charArgument() !arguments)
-    @char lookedUpChar = [[arguments dataAtIndex !0] as @gtlChar value]
+    let @char lookedUpChar = [[arguments dataAtIndex !0] as @gtlChar value]
     result = @gtlBool.new {
       ![methodName location] 
       !emptylstring() 
@@ -2278,8 +2278,8 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "containsCharInRange" then
     argumentsCheck(!methodName !charCharArguments() !arguments)
-    @char minChar = [[arguments dataAtIndex !0] as @gtlChar value]
-    @char maxChar = [[arguments dataAtIndex !1] as @gtlChar value]
+    let @char minChar = [[arguments dataAtIndex !0] as @gtlChar value]
+    let @char maxChar = [[arguments dataAtIndex !1] as @gtlChar value]
     result = @gtlBool.new {
       ![methodName location] 
       !emptylstring() 
@@ -2328,10 +2328,10 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "subStringExists" then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @string subString = [[arguments dataAtIndex !0] as @gtlString value]
-    @uint subStringLength = [subString length]
+    let @string subString = [[arguments dataAtIndex !0] as @gtlString value]
+    let @uint subStringLength = [subString length]
     @uint start = 0
-    @uint stop = [value length] - subStringLength
+    let @uint stop = [value length] - subStringLength
     @bool exists = false 
     loop ( [value length] )
     while (not exists) && (start <= stop) do
@@ -2345,20 +2345,20 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "leftSubString" then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlString.new {
       ![methodName location] !emptylstring() ![value leftSubString !index]
     }
   elsif [methodName string] == "rightSubString" then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     result = @gtlString.new {
       ![methodName location] !emptylstring() ![value rightSubString !index]
     }
   elsif [methodName string] == "subString" then
     argumentsCheck(!methodName !intIntArguments() !arguments)
-    @uint start = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
-    @uint length = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
+    let @uint start = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint length = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
     result = @gtlString.new {
       ![methodName location] !emptylstring() ![value subString !start !length]
     }
@@ -2369,8 +2369,8 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "componentsSeparatedByString" then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @string separator = [[arguments dataAtIndex !0] as @gtlString value]
-    @stringlist stringlist = [value componentsSeparatedByString !separator]
+    let @string separator = [[arguments dataAtIndex !0] as @gtlString value]
+    let @stringlist stringlist = [value componentsSeparatedByString !separator]
     @list components = .emptyList
     for (str) in stringlist do
       components += !@gtlString.new {
@@ -2385,7 +2385,7 @@ override getter @gtlString performGetter
     result = self
   elsif [methodName string] == "columnPrefixedBy" then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @string prefix = [[arguments dataAtIndex !0] as @gtlString value]
+    let @string prefix = [[arguments dataAtIndex !0] as @gtlString value]
     result = @gtlString.new {
       ![methodName location]
       !emptylstring() 
@@ -2393,13 +2393,13 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "wrap" then
     argumentsCheck(!methodName !intIntArguments() !arguments)
-    @uint width = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
-    @uint shift = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
-    @string stringShift = .stringWithSequenceOfCharacters { !' ' !shift }
-    @stringlist paragraphs = [value componentsSeparatedByString !"\n"]
+    let @uint width = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint shift = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
+    let @string stringShift = .stringWithSequenceOfCharacters { !' ' !shift }
+    let @stringlist paragraphs = [value componentsSeparatedByString !"\n"]
     var @stringlist resultParagraphs = .emptyList{}
     for (paragraph) in paragraphs do
-      @stringlist words = [paragraph componentsSeparatedByString !" "]
+      let @stringlist words = [paragraph componentsSeparatedByString !" "]
       @uint lineWidth = 0
       @string line = ""
       for (word) in words do
@@ -2421,8 +2421,8 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "replaceString" then
     argumentsCheck(!methodName !stringStringArgument() !arguments)
-    @string find = [[arguments dataAtIndex !0] as @gtlString value]
-    @string rep  = [[arguments dataAtIndex !1] as @gtlString value]
+    let @string find = [[arguments dataAtIndex !0] as @gtlString value]
+    let @string rep  = [[arguments dataAtIndex !1] as @gtlString value]
     result = @gtlString.new {
       ![methodName location]
       !emptylstring() 
@@ -2430,10 +2430,10 @@ override getter @gtlString performGetter
     }
   elsif [methodName string] == "subStringExists" then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @string subString = [[arguments dataAtIndex !0] as @gtlString string]
-    @uint subLength = [subString length]
+    let @string subString = [[arguments dataAtIndex !0] as @gtlString string]
+    let @uint subLength = [subString length]
     @uint start = 0
-    @uint stop = [value length] - subLength
+    let @uint stop = [value length] - subLength
     @bool exists = false
     loop ([value length])
     while start <= stop & not exists do
@@ -2491,10 +2491,7 @@ override getter @gtlString performGetter
     }
   elsif "files" == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
-    @stringlist  fileList = [value regularFiles !false]
-    @gtlList resultList = @gtlList.new {
-      ![methodName location] !emptylstring() !.emptyList
-    }
+    let @stringlist  fileList = [value regularFiles !false]
     @lstringset files = .emptyMap
     for (file) in fileList do
       [!?files put !@lstring.new { !file ![methodName location] } ]
@@ -2508,10 +2505,7 @@ override getter @gtlString performGetter
     for (ext) in [[arguments dataAtIndex !0] as @gtlSet value] do
       extensions += ![ext string]
     end
-    @stringlist  fileList = [value regularFilesWithExtensions !false !extensions]
-    @gtlList resultList = @gtlList.new {
-      ![methodName location] !emptylstring() !.emptyList
-    }
+    let @stringlist  fileList = [value regularFilesWithExtensions !false !extensions]
     @lstringset files = .emptyMap
     for (file) in fileList do
       [!?files put !@lstring.new { !file ![methodName location] } ]
@@ -2536,7 +2530,7 @@ override setter @gtlString performSetter
 {
   if    "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif          "touch" == methodName then
@@ -2544,19 +2538,19 @@ override setter @gtlString performSetter
     where = methodName
   elsif "setCharAtIndex" == methodName then
     argumentsCheck(!methodName !charIntArguments() !arguments)
-    @char charToSet = [[arguments dataAtIndex !0] as @gtlChar value]
-    @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
+    let @char charToSet = [[arguments dataAtIndex !0] as @gtlChar value]
+    let @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
     [!?value setCharacterAtIndex !charToSet !index]
     where = methodName
   elsif "insertCharAtIndex" == methodName then
     argumentsCheck(!methodName !charIntArguments() !arguments)
-    @char charToInsert = [[arguments dataAtIndex !0] as @gtlChar value]
-    @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
+    let @char charToInsert = [[arguments dataAtIndex !0] as @gtlChar value]
+    let @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
     [!?value insertCharacterAtIndex !charToInsert !index]
     where = methodName
   elsif "removeCharAtIndex" == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    let @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
     [!?value removeCharacterAtIndex ?* !index]
     where = methodName
   elsif [lib setterExists !"string" !methodName] then
@@ -2600,7 +2594,7 @@ override getter @gtlBool bool   -> @bool result {
 }
 
 override getter @gtlBool int    -> @bigint result {
-  result = if value then 1_G else 0_G end
+  result = if value then 1 else 0 end
 }
 
 override getter @gtlBool float  -> @double result {
@@ -2815,7 +2809,7 @@ override getter @gtlBool performGetter
     result = @gtlInt.new {
       ![methodName location]
       !emptylstring()
-      !if value then 1_G else 0_G end
+      !if value then 1 else 0 end
     }
   elsif "type"                   == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
@@ -2862,7 +2856,7 @@ override setter @gtlBool performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -2954,7 +2948,7 @@ override getter @gtlSet notOp   -> @gtlData result {
 
 override getter @gtlSet addOp ?let @gtlData right -> @gtlData result {
   @lstringset set = value
-  @lstring element = [right lstring]
+  let @lstring element = [right lstring]
   if [set hasKey !element] then
     [!?set del !element]
   end
@@ -3147,14 +3141,14 @@ override getter @gtlSet performGetter
     end
   elsif "contains"               == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @string key = [[arguments dataAtIndex !0] string]
+    let @string key = [[arguments dataAtIndex !0] string]
     result = @gtlBool.new {
       ![methodName location] !emptylstring() ![value hasKey !key]
     }
   elsif "elementNamed"           == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @string key = [[arguments dataAtIndex !0] string]
-    @location loc = [value locationForKey !key]
+    let @string key = [[arguments dataAtIndex !0] string]
+    let @location loc = [value locationForKey !key]
     result = @gtlString.new {
       !loc !emptylstring() !key
     }
@@ -3198,7 +3192,7 @@ override setter @gtlSet performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -3206,7 +3200,7 @@ override setter @gtlSet performSetter
     where = methodName
   elsif       "add"   == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @lstring key = [[arguments dataAtIndex !0] lstring]
+    let @lstring key = [[arguments dataAtIndex !0] lstring]
     if [value hasKey !key] then
       [!?value del !key]
     end
@@ -3214,7 +3208,7 @@ override setter @gtlSet performSetter
     where = methodName
   elsif      "remove" == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @lstring key = [[arguments dataAtIndex !0] lstring]
+    let @lstring key = [[arguments dataAtIndex !0] lstring]
     if [value hasKey !key] then
       [!?value del !key]
     end
@@ -3329,7 +3323,7 @@ override getter @gtlStruct srOp ?let @gtlData unused right -> @gtlData result {
 
 override getter @gtlStruct neqOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlStruct then
-    @gtlVarMap rValue = [right as @gtlStruct value]
+    let @gtlVarMap rValue = [right as @gtlStruct value]
     @bool equal
     if [value count] != [rValue count] then
       equal = false
@@ -3337,7 +3331,7 @@ override getter @gtlStruct neqOp ?let @gtlData right -> @gtlData result {
       equal = true
       for (lkey lValue) in value do
         if [rValue hasKey !lkey] then
-          [rValue get !lkey ?@gtlData rData]
+          [rValue get !lkey ?let @gtlData rData]
           equal = equal & [lValue eqOp !rData]
         else
           equal = false
@@ -3352,7 +3346,7 @@ override getter @gtlStruct neqOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlStruct eqOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlStruct then
-    @gtlVarMap rValue = [right as @gtlStruct value]
+    let @gtlVarMap rValue = [right as @gtlStruct value]
     @bool equal
     if [value count] != [rValue count] then
       equal = false
@@ -3360,7 +3354,7 @@ override getter @gtlStruct eqOp ?let @gtlData right -> @gtlData result {
       equal = true
       for (lkey lValue) in value do
         if [rValue hasKey !lkey] then
-          [rValue get !lkey ?@gtlData rData]
+          [rValue get !lkey ?let @gtlData rData]
           equal = equal & [lValue eqOp !rData]
         else
           equal = false
@@ -3458,7 +3452,7 @@ override setter @gtlStruct performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -3652,7 +3646,7 @@ override getter @gtlList srOp ?let @gtlData unused right -> @gtlData result {
 
 override getter @gtlList neqOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlList then
-    @list rValue = [right as @gtlList value]
+    let @list rValue = [right as @gtlList value]
     @bool equal
     if [value length] != [rValue length] then
       equal = false
@@ -3670,7 +3664,7 @@ override getter @gtlList neqOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlList eqOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlList then
-    @list rValue = [right as @gtlList value]
+    let @list rValue = [right as @gtlList value]
     @bool equal
     if [value length] != [rValue length] then
       equal = false
@@ -3737,7 +3731,7 @@ override getter @gtlList performGetter
     [value last ?result]
   elsif "elementAtIndex"         == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[arguments dataAtIndex !0] int]
+    let @uint index = [[arguments dataAtIndex !0] int]
     if index < [value length] then
       result = [value valueAtIndex !index]
     else
@@ -3745,7 +3739,7 @@ override getter @gtlList performGetter
     end
   elsif "subListTo"              == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[arguments dataAtIndex !0] int]
+    let @uint index = [[arguments dataAtIndex !0] int]
     if index < [value length] then
       result = @gtlList.new {
         !methodName
@@ -3757,7 +3751,7 @@ override getter @gtlList performGetter
     end
   elsif "subListFrom"            == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
-    @uint index = [[arguments dataAtIndex !0] int]
+    let @uint index = [[arguments dataAtIndex !0] int]
     if index < [value length] then
       result = @gtlList.new {
         !methodName
@@ -3773,7 +3767,7 @@ override getter @gtlList performGetter
     end
   elsif "subList"                == methodName then
     argumentsCheck(!methodName !intIntArguments() !arguments)
-    @uint start  = [[arguments dataAtIndex !0] int]
+    let @uint start  = [[arguments dataAtIndex !0] int]
     @uint length = [[arguments dataAtIndex !1] int]
     if start < [value length] then
       if start + length > [value length] then
@@ -3793,13 +3787,13 @@ override getter @gtlList performGetter
     end
   elsif "mapBy"                  == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @lstring key = [[arguments dataAtIndex !0] lstring]
+    let @lstring key = [[arguments dataAtIndex !0] lstring]
     @gtlVarMap resultMap = .emptyMap
     for (item) in [self value] do (index)
       cast item
       case == @gtlStruct itemStruct:
         if [[itemStruct value] hasKey ![key string]] then
-          [[itemStruct value] get !key ?@gtlData keyValue]
+          [[itemStruct value] get !key ?let @gtlData keyValue]
           [!?resultMap put
             ![keyValue lstring]
             !item
@@ -3810,7 +3804,7 @@ override getter @gtlList performGetter
         end
       case == @gtlMap itemMap:
         if [[itemMap value] hasKey ![key string]] then
-          [[itemMap value] get !key ?@gtlData keyValue]
+          [[itemMap value] get !key ?let @gtlData keyValue]
           [!?resultMap put
             ![keyValue lstring]
             !item
@@ -3828,7 +3822,7 @@ override getter @gtlList performGetter
     argumentsCheck(!methodName !noArgument() !arguments)
     @lstringset resultSet = .emptyMap
     for (item) in value do
-      @lstring itemKey = [item lstring]
+      let @lstring itemKey = [item lstring]
       if [resultSet hasKey !itemKey] then
         [!?resultSet del !itemKey]
       end
@@ -3839,11 +3833,11 @@ override getter @gtlList performGetter
     }
   elsif "setBy"                    == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @lstring key = [[arguments dataAtIndex !0] lstring]
+    let @lstring key = [[arguments dataAtIndex !0] lstring]
     @lstringset resultSet = .emptyMap
     for (item) in value do
-      [item structField !key ?@gtlData field ?*]
-      @lstring resKey = [field lstring]
+      [item structField !key ?let @gtlData field ?*]
+      let @lstring resKey = [field lstring]
       if [resultSet hasKey !resKey] then
         [!?resultSet del !resKey]
       end
@@ -3854,7 +3848,7 @@ override getter @gtlList performGetter
     }
   elsif "componentsJoinedByString" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @string joiner = [[arguments dataAtIndex !0] string]
+    let @string joiner = [[arguments dataAtIndex !0] string]
     @string stringResult = ""
     for (item) in value
     do
@@ -3898,12 +3892,12 @@ override getter @gtlList performGetter
         else
           vars = .new { !where !emptylstring() !.emptyMap }
         end
-        @gtlExpression expr = [[arguments dataAtIndex !0] as @gtlExpr value]
+        let @gtlExpression expr = [[arguments dataAtIndex !0] as @gtlExpr value]
         @list resultList = .emptyList
         for (item) in value
         do
           [!?vars setStructField !@lstring.new {!"__item__" ![item where]} !item]
-          @gtlData evalResult = [expr eval !context !vars !lib]
+          let @gtlData evalResult = [expr eval !context !vars !lib]
           if [evalResult bool] then
             resultList += !item
           end
@@ -3945,7 +3939,7 @@ override setter @gtlList performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -3953,8 +3947,8 @@ override setter @gtlList performSetter
     where = methodName
   elsif      "insert" == methodName then
     argumentsCheck(!methodName !intAnyArguments() !arguments)
-    @uint insertIndex = [[arguments dataAtIndex !0] int]
-    @gtlData node = [arguments dataAtIndex !1]
+    let @uint insertIndex = [[arguments dataAtIndex !0] int]
+    let @gtlData node = [arguments dataAtIndex !1]
     if insertIndex < [value length] then
       [!?value insertAtIndex !node !insertIndex]
     else
@@ -3988,7 +3982,7 @@ override setter @gtlList setItemAtIndex
 override setter @gtlList deleteItemAtIndex
   ?let @gtlInt  index
 {
-  @uint indexUint = [[index value] uint]
+  let @uint indexUint = [[index value] uint]
   if indexUint < [value length] then
     if indexUint == 0 then
       value = [value subListFromIndex !1]
@@ -4114,7 +4108,7 @@ override getter @gtlMap srOp ?let @gtlData unused right -> @gtlData result {
 
 override getter @gtlMap neqOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlMap then
-    @gtlVarMap rValue = [right as @gtlMap value]
+    let @gtlVarMap rValue = [right as @gtlMap value]
     @bool equal
     if [value count] != [rValue count] then
       equal = false
@@ -4122,7 +4116,7 @@ override getter @gtlMap neqOp ?let @gtlData right -> @gtlData result {
       equal = true
       for (lkey lValue) in value do
         if [rValue hasKey !lkey] then
-          [rValue get !lkey ?@gtlData rData]
+          [rValue get !lkey ?let @gtlData rData]
           equal = equal & [lValue eqOp !rData]
         else
           equal = false
@@ -4137,7 +4131,7 @@ override getter @gtlMap neqOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlMap eqOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlMap then
-    @gtlVarMap rValue = [right as @gtlMap value]
+    let @gtlVarMap rValue = [right as @gtlMap value]
     @bool equal
     if [value count] != [rValue count] then
       equal = false
@@ -4145,7 +4139,7 @@ override getter @gtlMap eqOp ?let @gtlData right -> @gtlData result {
       equal = true
       for (lkey lValue) in value do
         if [rValue hasKey !lkey] then
-          [rValue get !lkey ?@gtlData rData]
+          [rValue get !lkey ?let @gtlData rData]
           equal = equal & [lValue eqOp !rData]
         else
           equal = false
@@ -4214,7 +4208,7 @@ override getter @gtlMap performGetter
   elsif "list"                   == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
     @list resultList = .emptyList
-    for (key item) in [self value] do
+    for (unused key item) in [self value] do
       resultList += !item
     end
     result = @gtlList.new { !where !emptylstring() !resultList }
@@ -4236,12 +4230,12 @@ override getter @gtlMap performGetter
         else
           vars = .new { !where !emptylstring() !.emptyMap }
         end
-        @gtlExpression expr = [[arguments dataAtIndex !0] as @gtlExpr value]
+        let @gtlExpression expr = [[arguments dataAtIndex !0] as @gtlExpr value]
         @gtlVarMap resultMap = .emptyMap
         for (key item) in value
         do
           [!?vars setStructField !@lstring.new {!"__item__" ![item where]} !item]
-          @gtlData evalResult = [expr eval !context !vars !lib]
+          let @gtlData evalResult = [expr eval !context !vars !lib]
           if [evalResult bool] then
             [!?resultMap put !key !item]
           end
@@ -4288,7 +4282,7 @@ override setter @gtlMap performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then
@@ -4612,7 +4606,7 @@ override getter @gtlExpr performGetter
 {
   if     [methodName string] == "eval" then
     argumentsCheck(!methodName !structArgument() !arguments)
-    @gtlData vars = [arguments dataAtIndex !0]
+    let @gtlData vars = [arguments dataAtIndex !0]
     result = [value eval !context !vars !lib]
   elsif "type"                   == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
@@ -4659,7 +4653,7 @@ override setter @gtlExpr performSetter
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
-    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    let @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
     [!?self setMeta !descriptionToSet]
     where = methodName
   elsif       "touch" == methodName then

@@ -37,41 +37,41 @@ class C_String ;
 //----------------------------------------------------------------------------------------------------------------------
 
 class C_LocationInSource {
-  private : int32_t mIndex ;
-  private : int32_t mLineNumber ;
-  private : int32_t mColumnNumber ;
-  private : C_SourceTextInString mSourceText ;
+  private: int32_t mIndex ;
+  private: int32_t mLineNumber ;
+  private: int32_t mColumnNumber ;
+  private: C_SourceTextInString mSourceText ;
 
 //---  
-  public : C_LocationInSource (void) ;
-  public : virtual ~C_LocationInSource (void) ;
+  public: C_LocationInSource (void) ;
+  public: virtual ~C_LocationInSource (void) ;
 
-  public : C_LocationInSource (const C_LocationInSource & inObject) ;
+  public: C_LocationInSource (const C_LocationInSource & inObject) ;
 
-  public : C_LocationInSource & operator = (const C_LocationInSource & inObject) ;
+  public: C_LocationInSource & operator = (const C_LocationInSource & inObject) ;
 
-  public : C_LocationInSource (const C_SourceTextInString & inSourceText,
+  public: C_LocationInSource (const C_SourceTextInString & inSourceText,
                                const int32_t inIndex,
                                const int32_t inLine,
                                const int32_t inColumn) ;
 
-  public : C_LocationInSource (const C_SourceTextInString & inSourceText,
+  public: C_LocationInSource (const C_SourceTextInString & inSourceText,
                                const int32_t inLine,
                                const int32_t inColumn) ;
 
-  public : void gotoNextLocation (const bool inPreviousCharWasEndOfLine) ;
+  public: void gotoNextLocation (const bool inPreviousCharWasEndOfLine) ;
 
-  public : void resetLocation (void) ;
+  public: void resetLocation (void) ;
 
-  public : void resetWithSourceText (const C_SourceTextInString & inSourceText) ;
+  public: void resetWithSourceText (const C_SourceTextInString & inSourceText) ;
 
-  public : inline int32_t index (void) const { return mIndex ; }
+  public: inline int32_t index (void) const { return mIndex ; }
 
-  public : inline int32_t lineNumber (void) const { return mLineNumber ; }
+  public: inline int32_t lineNumber (void) const { return mLineNumber ; }
 
-  public : inline int32_t columnNumber (void) const { return mColumnNumber ; }
+  public: inline int32_t columnNumber (void) const { return mColumnNumber ; }
 
-  public : C_String sourceFilePath (void) const ;
+  public: C_String sourceFilePath (void) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -60,39 +60,39 @@ class C_galgas_type_descriptor ;
 
 class AC_GALGAS_root {
 //--- Default constructor
-  public : inline AC_GALGAS_root (void) {}
+  public: inline AC_GALGAS_root (void) {}
 
 //--- Destructor
-  public : inline virtual ~ AC_GALGAS_root (void) {}
+  public: inline virtual ~ AC_GALGAS_root (void) {}
   
 //--- Methods that every type should implement
-  public : virtual bool isValid (void) const = 0 ;
+  public: virtual bool isValid (void) const = 0 ;
   
-  public : virtual void drop (void) = 0 ;
+  public: virtual void drop (void) = 0 ;
 
-  public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
+  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
 
-  public : virtual const C_galgas_type_descriptor * dynamicTypeDescriptor (void) const ;
+  public: virtual const C_galgas_type_descriptor * dynamicTypeDescriptor (void) const ;
 
 //--- Log instruction
-  public : VIRTUAL_IN_DEBUG void log (const char * inMessage COMMA_LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void log (const char * inMessage COMMA_LOCATION_ARGS) const ;
 
-  public : virtual void description (C_String & ioString,
+  public: virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const = 0 ;
 
 //--- Readers implemented in this class
-  public : VIRTUAL_IN_DEBUG GALGAS_string getter_description (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_string getter_description (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_type getter_staticType (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_type getter_staticType (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_type getter_dynamicType (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_type getter_dynamicType (LOCATION_ARGS) const ;
 
 //--- "object" reader
-  public : VIRTUAL_IN_DEBUG GALGAS_object getter_object (LOCATION_ARGS) const ;
-  protected : virtual AC_GALGAS_root * clonedObject (void) const = 0 ;
+  public: VIRTUAL_IN_DEBUG GALGAS_object getter_object (LOCATION_ARGS) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const = 0 ;
 
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    public : virtual void checkIsValid (LOCATION_ARGS) const ;
+    public: virtual void checkIsValid (LOCATION_ARGS) const ;
   #endif
 } ;
 

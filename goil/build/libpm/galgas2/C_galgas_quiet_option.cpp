@@ -35,7 +35,7 @@ gOption_galgas_5F_builtin_5F_options_quiet_5F_output ("galgas_builtin_options",
 //----------------------------------------------------------------------------------------------------------------------
 
 bool verboseOutput (void) {
-  return !gOption_galgas_5F_builtin_5F_options_quiet_5F_output.getter_value () ;
+  return !gOption_galgas_5F_builtin_5F_options_quiet_5F_output.readProperty_value () ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

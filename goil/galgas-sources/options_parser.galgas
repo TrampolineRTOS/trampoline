@@ -41,7 +41,7 @@ rule <option_item>
 {
   $idf$ ?let @lstring key
   $=$
-  @gtlData opt
+  let @gtlData opt
   select
     <option_value> ?opt
   or

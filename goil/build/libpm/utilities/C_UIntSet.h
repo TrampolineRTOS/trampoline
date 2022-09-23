@@ -28,47 +28,47 @@
 
 class C_UIntSet {
 //--- Default constructor
-  public : C_UIntSet (void) ;
+  public: C_UIntSet (void) ;
 
 //--- Singleton
-  public : C_UIntSet (const uint32_t inValue) ;
+  public: C_UIntSet (const uint32_t inValue) ;
 
 //--- Methods
-  public : void add (const uint32_t inNodeIndex) ;
+  public: void add (const uint32_t inNodeIndex) ;
 
-  public : void remove (const uint32_t inNodeIndex) ;
+  public: void remove (const uint32_t inNodeIndex) ;
 
-  public : void operator &= (const C_UIntSet & inOther) ;
+  public: void operator &= (const C_UIntSet & inOther) ;
 
-  public : void operator |= (const C_UIntSet & inOther) ;
+  public: void operator |= (const C_UIntSet & inOther) ;
 
-  public : void operator -= (const C_UIntSet & inOther) ;
+  public: void operator -= (const C_UIntSet & inOther) ;
 
-  public : bool operator == (const C_UIntSet & inOther) const ;
+  public: bool operator == (const C_UIntSet & inOther) const ;
 
-  public : bool operator != (const C_UIntSet & inOther) const ;
+  public: bool operator != (const C_UIntSet & inOther) const ;
 
 //--- Accessors
-  public : void getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const ;
+  public: void getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const ;
   
-  public : void getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const ;
+  public: void getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const ;
   
-  public : bool contains (const uint32_t inNodeIndex) const ;
+  public: bool contains (const uint32_t inNodeIndex) const ;
   
-  public : uint32_t firstValueNotIsSet (void) const ;
+  public: uint32_t firstValueNotIsSet (void) const ;
   
-  public : uint32_t count (void) const ;
+  public: uint32_t count (void) const ;
   
-  public : inline bool isEmpty (void) const {
+  public: inline bool isEmpty (void) const {
     return mDefinition.count () == 0 ;
   }
   
 //--- Attributes
-  private : TC_Array <uint64_t> mDefinition ;
+  private: TC_Array <uint64_t> mDefinition ;
 
 
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    private : void check (void) const ;
+    private: void check (void) const ;
   #endif
 } ;
 

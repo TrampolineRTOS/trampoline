@@ -47,7 +47,7 @@
   {
     checkTemplatesPath()
     grammar arxml_grammar in inSourceFile
-      ?@arxmlNode root
+      ?let @arxmlNode root
       !true
       !true
     [root print !0]

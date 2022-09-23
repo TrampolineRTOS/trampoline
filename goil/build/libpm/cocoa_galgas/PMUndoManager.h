@@ -22,10 +22,6 @@
 
 @interface PMUndoManager : NSUndoManager
 
-- (NSArray *) undoStack ;
-
-- (NSArray *) redoStack ;
-
 @end
 
 //----------------------------------------------------------------------------------------------------------------------

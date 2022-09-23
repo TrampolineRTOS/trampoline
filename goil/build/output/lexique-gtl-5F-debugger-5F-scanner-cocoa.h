@@ -7,20 +7,20 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                    E X T E R N    R O U T I N E S                                             
+//                    E X T E R N    R O U T I N E S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                    E X T E R N    F U N C T I O N S                                           
+//                    E X T E R N    F U N C T I O N S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         T E R M I N A L    S Y M B O L    E N U M E R A T I O N                               
+//         T E R M I N A L    S Y M B O L    E N U M E R A T I O N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -124,32 +124,28 @@ enum {gtl_debugger_scanner_1_,
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//        U N I C O D E    T E S T    F U N C T I O N S                                          
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//                     S C A N N E R    C L A S S                                                
+//                     S C A N N E R    C L A S S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 @interface OC_Lexique_gtl_debugger_scanner : OC_Lexique {
 //--- Attributes
-  @private NSMutableString * mLexicalAttribute_a_string ;
-  @private UInt32 mLexicalAttribute_charValue ;
-  @private double mLexicalAttribute_floatValue ;
-  @private NSMutableString * mLexicalAttribute_functionContent ;
-  @private NSMutableString * mLexicalAttribute_identifierString ;
-  @private NSMutableString * mLexicalAttribute_intValue ;
-  @private NSMutableString * mLexicalAttribute_tokenString ;
-  @private UInt32 mLexicalAttribute_uint32value ;
+  @protected NSMutableString * mLexicalAttribute_a_string ;
+  @protected UInt32 mLexicalAttribute_charValue ;
+  @protected double mLexicalAttribute_floatValue ;
+  @protected NSMutableString * mLexicalAttribute_functionContent ;
+  @protected NSMutableString * mLexicalAttribute_identifierString ;
+  @protected NSMutableString * mLexicalAttribute_intValue ;
+  @protected NSMutableString * mLexicalAttribute_tokenString ;
+  @protected UInt32 mLexicalAttribute_uint32value ;
 
 }
 
 - (NSUInteger) terminalVocabularyCount ;
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal ;
+
+- (BOOL) internalParseLexicalTokenForLexicalColoring ;
 
 - (void) parseLexicalTokenForLexicalColoring ;
 

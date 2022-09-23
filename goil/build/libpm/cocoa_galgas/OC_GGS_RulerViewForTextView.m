@@ -61,7 +61,15 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
+- (void) drawRect: (NSRect) inRect { // Indispensable sous Monterey ?
+  [self drawHashMarksAndLabelsInRect: inRect] ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
 - (void) drawHashMarksAndLabelsInRect: (NSRect) inRect {
+//  [super drawHashMarksAndLabelsInRect: inRect] ;
+//  NSLog (@"baselineLocation %g", self.baselineLocation) ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s %p [%g, %g ; %g, %g]", __PRETTY_FUNCTION__, self, inRect.origin.x, inRect.origin.y, inRect.size.width, inRect.size.height) ;
   #endif
@@ -69,7 +77,7 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
   const NSRect viewBounds = self.bounds ;
 //-------- Draw background
   [[NSColor windowBackgroundColor] setFill] ;
-  [NSBezierPath fillRect:self.bounds] ;
+  [NSBezierPath fillRect: self.bounds] ;
 //-------- Set draw text attributes and find point size
   NSFont * font = [NSFont fontWithName:@"Courier" size:11.0] ;
   NSDictionary * attributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -78,7 +86,7 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
     nil
   ] ;
 //-------- Note: ruler view and text view are both flipped
-  NSScrollView * __strong scrollView = self.scrollView ;
+  NSScrollView * scrollView = self.scrollView ;
   OC_GGS_TextView * textView = scrollView.documentView ;
   NSLayoutManager * lm = textView.layoutManager ;
   NSTextContainer * textContainer = textView.textContainer ;
@@ -86,14 +94,13 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
   NSString * sourceString = textView.string ;
   const NSUInteger sourceStringLength = sourceString.length ;
 //-------- Compute layout
- // [lm ensureLayoutForCharacterRange:NSMakeRange (0, sourceStringLength)] ;
   [lm ensureLayoutForTextContainer:textContainer] ;
 //-------- Find the characters that are currently visible
   const NSRange visibleGlyphRange = [lm
-    glyphRangeForBoundingRect:scrollView.contentView.bounds
+    glyphRangeForBoundingRect: scrollView.contentView.bounds
     inTextContainer:textContainer
   ] ;
-  const NSRange visibleRange = [lm characterRangeForGlyphRange:visibleGlyphRange actualGlyphRange:NULL] ;
+  const NSRange visibleRange = [lm characterRangeForGlyphRange: visibleGlyphRange actualGlyphRange: NULL] ;
 //--- Find first line number to draw
   NSUInteger idx = 0 ;
   NSInteger lineIndex = 1 ;

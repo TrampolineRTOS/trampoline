@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2008, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2008, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -38,117 +38,117 @@ class cMapNode ;
 
 class cSharedMapRoot : public C_SharedObject {
 //--------------------------------- Attributes
-  private : cMapNode * mRoot ;
-  private : uint32_t mCount ;
-  protected : cSharedMapRoot * mOverridenMap ;
+  private: cMapNode * mRoot ;
+  private: uint32_t mCount ;
+  protected: cSharedMapRoot * mOverridenMap ;
   private: bool mActivateReplacementSuggestions ;
 
 
 //--------------------------------- Accessors
-  public : inline const cMapNode * root (void) const { return mRoot ; }
-  public : inline uint32_t count (void) const { return mCount ; }
+  public: inline const cMapNode * root (void) const { return mRoot ; }
+  public: inline uint32_t count (void) const { return mCount ; }
 
 //--------------------------------- Constructor
-  protected : cSharedMapRoot (const bool inActivateReplacementSuggestions COMMA_LOCATION_ARGS) ;
+  protected: cSharedMapRoot (const bool inActivateReplacementSuggestions COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Virtual destructor
-  public : virtual ~ cSharedMapRoot (void) ;
+  public: virtual ~ cSharedMapRoot (void) ;
 
 //--------------------------------- No copy
-  private : cSharedMapRoot (const cSharedMapRoot &) ;
-  private : cSharedMapRoot & operator = (const cSharedMapRoot &) ;
+  private: cSharedMapRoot (const cSharedMapRoot &) ;
+  private: cSharedMapRoot & operator = (const cSharedMapRoot &) ;
 
 //--------------------------------- Copy a map
-  protected : VIRTUAL_IN_DEBUG void copyFrom (const cSharedMapRoot * inSource) ;
-  protected : VIRTUAL_IN_DEBUG void copyCurrentAndOverridenMapsFrom (const cSharedMapRoot * inSource) ;
+  protected: VIRTUAL_IN_DEBUG void copyFrom (const cSharedMapRoot * inSource) ;
+  protected: VIRTUAL_IN_DEBUG void copyCurrentAndOverridenMapsFrom (const cSharedMapRoot * inSource) ;
 
 //--------------------------------- Attribute read access
-  private : VIRTUAL_IN_DEBUG const cMapNode * findNodeForKeyInMapOrInOverridenMaps (const GALGAS_string & inKey,
+  private: VIRTUAL_IN_DEBUG const cMapNode * findNodeForKeyInMapOrInOverridenMaps (const GALGAS_string & inKey,
                                                                                     C_Compiler * inCompiler
                                                                                     COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Insert or Replace
-  protected : VIRTUAL_IN_DEBUG void performInsertOrReplace (const capCollectionElement & inAttributes) ;
+  protected: VIRTUAL_IN_DEBUG void performInsertOrReplace (const capCollectionElement & inAttributes) ;
 
 //--------------------------------- Insert
-  protected : VIRTUAL_IN_DEBUG cMapNode * performInsert (const capCollectionElement & inAttributes,
+  protected: VIRTUAL_IN_DEBUG cMapNode * performInsert (const capCollectionElement & inAttributes,
                                                          C_Compiler * inCompiler,
                                                          const char * inInsertErrorMessage,
                                                          const char * inShadowErrorMessage
                                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Search
-  private : VIRTUAL_IN_DEBUG cMapNode * findEntryInMap (const C_String & inKey,
+  private: VIRTUAL_IN_DEBUG cMapNode * findEntryInMap (const C_String & inKey,
                                                         const cSharedMapRoot * inFirstMap) const ;
 
-  private : VIRTUAL_IN_DEBUG cMapNode * findEntryInMapAtLevel (const C_String & inKey,
+  private: VIRTUAL_IN_DEBUG cMapNode * findEntryInMapAtLevel (const C_String & inKey,
                                                                const uint32_t inLevel,
                                                                const cSharedMapRoot * inFirstMap) const ;
 
-  public : VIRTUAL_IN_DEBUG void findNearestKey (const C_String & inKey,
+  public: VIRTUAL_IN_DEBUG void findNearestKey (const C_String & inKey,
                                                  TC_UniqueArray <C_String> & ioNearestKeyArray) const ;
 
-  protected : VIRTUAL_IN_DEBUG cMapNode * performSearch (const GALGAS_lstring & inKey,
+  protected: VIRTUAL_IN_DEBUG cMapNode * performSearch (const GALGAS_lstring & inKey,
                                                          C_Compiler * inCompiler,
                                                          const char * inSearchErrorMessage
                                                          COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG const cMapElement * searchForKey (const GALGAS_string & inKey) const ;
+  protected: VIRTUAL_IN_DEBUG const cMapElement * searchForKey (const GALGAS_string & inKey) const ;
 
-  protected : VIRTUAL_IN_DEBUG const cMapElement * searchForReadingAttribute (const GALGAS_string & inKey,
+  protected: VIRTUAL_IN_DEBUG const cMapElement * searchForReadingAttribute (const GALGAS_string & inKey,
                                                                               C_Compiler * inCompiler
                                                                               COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_string & inKey,
+  protected: VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_string & inKey,
                                                                           const bool inErrorOnUnknownKey,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-  protected : VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_lstring & inKey,
+  protected: VIRTUAL_IN_DEBUG cMapElement * searchForReadWriteAttribute (const GALGAS_lstring & inKey,
                                                                           C_Compiler * inCompiler,
                                                                           const char * inSearchErrorMessage
                                                                           COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Remove
-  protected : VIRTUAL_IN_DEBUG void performRemove (GALGAS_lstring & inKey,
+  protected: VIRTUAL_IN_DEBUG void performRemove (GALGAS_lstring & inKey,
                                                    capCollectionElement & outResult,
                                                    C_Compiler * inCompiler,
                                                    const char * inRemoveErrorMessage
                                                    COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Readers
-  protected : VIRTUAL_IN_DEBUG GALGAS_bool hasKey (const GALGAS_string & inKey
+  protected: VIRTUAL_IN_DEBUG GALGAS_bool hasKey (const GALGAS_string & inKey
                                                    COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_uint levels (UNUSED_LOCATION_ARGS) const ;
+  protected: VIRTUAL_IN_DEBUG GALGAS_uint levels (UNUSED_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool hasKeyAtLevel (const GALGAS_string & inKey,
+  public: VIRTUAL_IN_DEBUG GALGAS_bool hasKeyAtLevel (const GALGAS_string & inKey,
                                                        const GALGAS_uint & inLevel
                                                        COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_location locationForKey (const GALGAS_string & inKey,
+  protected: VIRTUAL_IN_DEBUG GALGAS_location locationForKey (const GALGAS_string & inKey,
                                                                C_Compiler * inCompiler
                                                                COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_stringset keySet (LOCATION_ARGS) const ;
+  protected: VIRTUAL_IN_DEBUG GALGAS_stringset keySet (LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_lstringlist keyList (LOCATION_ARGS) const ;
+  protected: VIRTUAL_IN_DEBUG GALGAS_lstringlist keyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Implementation of reader 'description'
-  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
                                               const int32_t inIndentation,
                                               const uint32_t inLevel) const ;
 
 //--------------------------------- Internal method for enumeration
-  protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const ;
+  protected: VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult mapCompare (const cSharedMapRoot * inOperand) const ;
+  public: VIRTUAL_IN_DEBUG typeComparisonResult mapCompare (const cSharedMapRoot * inOperand) const ;
 
 
 //--------------------------------- Check Map
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    private : VIRTUAL_IN_DEBUG void checkMap (LOCATION_ARGS) const ;
+    private: VIRTUAL_IN_DEBUG void checkMap (LOCATION_ARGS) const ;
   #endif
 
 //--------------------------------- Friend
@@ -162,24 +162,24 @@ class cSharedMapRoot : public C_SharedObject {
 //----------------------------------------------------------------------------------------------------------------------
 
 class cMapNode {
-  public : cMapNode * mInfPtr ;
-  public : cMapNode * mSupPtr ;
-  public : int32_t mBalance ;
-  public : const C_String mKey ;
-  public : capCollectionElement mAttributes ;
+  public: cMapNode * mInfPtr ;
+  public: cMapNode * mSupPtr ;
+  public: int32_t mBalance ;
+  public: const C_String mKey ;
+  public: capCollectionElement mAttributes ;
 
 //--- Constructors
-  public : cMapNode (const C_String & inKey,
+  public: cMapNode (const C_String & inKey,
                      const capCollectionElement & inAttributes) ;
 
-  public : cMapNode (cMapNode * inNode) ;
+  public: cMapNode (cMapNode * inNode) ;
 
 //--- Destructor
-  public : virtual ~ cMapNode (void) ;
+  public: virtual ~ cMapNode (void) ;
 
 //--- No copy
-  private : cMapNode (const cMapNode &) ;
-  private : cMapNode & operator = (const cMapNode &) ;
+  private: cMapNode (const cMapNode &) ;
+  private: cMapNode & operator = (const cMapNode &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1615,11 +1615,9 @@ void cSharedMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnu
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_map::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const {
-  // printf ("MAP COUNT %u\n", count ()) ;
   if (isValid ()) {
     mSharedMap->populateEnumerationArray (ioEnumerationArray) ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-

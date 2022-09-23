@@ -33,26 +33,26 @@ class AC_GALGAS_root ;
 
 class cPtr_object : public C_SharedObject {
 //--- Default Constructor
-  public : cPtr_object (LOCATION_ARGS) ;
+  public: cPtr_object (LOCATION_ARGS) ;
 
 //--- Constructor with embedded object
-  public : cPtr_object (AC_GALGAS_root * inObjectPointer
+  public: cPtr_object (AC_GALGAS_root * inObjectPointer
                         COMMA_LOCATION_ARGS) ;
 
 //--- Destructor
-  public : virtual ~cPtr_object (void) ;
+  public: virtual ~cPtr_object (void) ;
 
 //--- No Copy
-  private : cPtr_object (const cPtr_object &) ;
-  private : cPtr_object & operator = (const cPtr_object &) ;
+  private: cPtr_object (const cPtr_object &) ;
+  private: cPtr_object & operator = (const cPtr_object &) ;
 
 //--- Private attribute
-  private : AC_GALGAS_root * mEmbeddedObjectPtr ;
-  public : const AC_GALGAS_root * embeddedObjectPtr (void) const { return mEmbeddedObjectPtr ; }
+  private: AC_GALGAS_root * mEmbeddedObjectPtr ;
+  public: const AC_GALGAS_root * embeddedObjectPtr (void) const { return mEmbeddedObjectPtr ; }
 
 //--- Accessing embedded object types
-  public : GALGAS_type objectStaticType (void) const ;
-  public : GALGAS_type objectDynamicType (void) const ;
+  public: GALGAS_type objectStaticType (void) const ;
+  public: GALGAS_type objectDynamicType (void) const ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

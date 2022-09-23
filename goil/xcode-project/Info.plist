@@ -19,7 +19,7 @@
  <key>CFBundleSignature</key>
  <string>????</string>
  <key>LSMinimumSystemVersion</key>
- <string>10.10</string>
+ <string>10.13</string>
  <key>CFBundleShortVersionString</key>
  <string>3.1.12</string>
  <key>NSMainNibFile</key>
@@ -29,84 +29,168 @@
  <key>CFBundleDocumentTypes</key>
  <array>
   <dict>
-   <key>CFBundleTypeIconFile</key>
-   <string>OIL_icns</string>
-   <key>CFBundleTypeExtensions</key>
-   <array>
+      <key>CFBundleTypeIconFile</key>
+      <string>OIL_icns</string>
+      <key>CFBundleTypeIconSystemGenerated</key>
+      <integer>0</integer>
+      <key>CFBundleTypeName</key>
+      <string>goil Source</string>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>LSHandlerRank</key>
+      <string>Default</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>$(PRODUCT_BUNDLE_IDENTIFIER).OIL</string>
+      </array>
+      <key>NSDocumentClass</key>
+      <string>OC_GGS_Document</string>
+  </dict>
+  <dict>
+      <key>CFBundleTypeIconFile</key>
+      <string>arxml_icns</string>
+      <key>CFBundleTypeIconSystemGenerated</key>
+      <integer>0</integer>
+      <key>CFBundleTypeName</key>
+      <string>goil Source</string>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>LSHandlerRank</key>
+      <string>Default</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>$(PRODUCT_BUNDLE_IDENTIFIER).arxml</string>
+      </array>
+      <key>NSDocumentClass</key>
+      <string>OC_GGS_Document</string>
+  </dict>
+  <dict>
+      <key>CFBundleTypeIconFile</key>
+      <string>goilTemplate_icns</string>
+      <key>CFBundleTypeIconSystemGenerated</key>
+      <integer>0</integer>
+      <key>CFBundleTypeName</key>
+      <string>goil Source</string>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>LSHandlerRank</key>
+      <string>Default</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>$(PRODUCT_BUNDLE_IDENTIFIER).goilTemplate</string>
+      </array>
+      <key>NSDocumentClass</key>
+      <string>OC_GGS_Document</string>
+  </dict>
+  <dict>
+      <key>CFBundleTypeIconFile</key>
+      <string>oil_icns</string>
+      <key>CFBundleTypeIconSystemGenerated</key>
+      <integer>0</integer>
+      <key>CFBundleTypeName</key>
+      <string>goil Source</string>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>LSHandlerRank</key>
+      <string>Default</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>$(PRODUCT_BUNDLE_IDENTIFIER).oil</string>
+      </array>
+      <key>NSDocumentClass</key>
+      <string>OC_GGS_Document</string>
+  </dict>
+
+ </array>
+ <key>UTExportedTypeDeclarations</key>
+ <array>
+  <dict>
+    <key>UTTypeConformsTo</key>
+    <array>
+      <string>public.text</string>
+    </array>
+    <key>UTTypeDescription</key>
     <string>OIL</string>
-   </array>
-   <key>CFBundleTypeName</key>
-   <string>goil Source</string>
-   <key>CFBundleTypeOSTypes</key>
-   <array>
-    <string>TEXT</string>
-   </array>
-   <key>CFBundleTypeRole</key>
-   <string>Editor</string>
-   <key>LSTypeIsPackage</key>
-   <false/>
-   <key>NSDocumentClass</key>
-   <string>OC_GGS_Document</string>
+    <key>UTTypeIcons</key>
+    <dict>
+      <key>UTTypeIconBadgeName</key>
+      <string>galgasDocuments</string>
+    </dict>
+    <key>UTTypeIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER).OIL</string>
+    <key>UTTypeTagSpecification</key>
+    <dict>
+      <key>public.filename-extension</key>
+      <array>
+        <string>OIL</string>
+      </array>
+    </dict>
   </dict>
   <dict>
-   <key>CFBundleTypeIconFile</key>
-   <string>arxml_icns</string>
-   <key>CFBundleTypeExtensions</key>
-   <array>
+    <key>UTTypeConformsTo</key>
+    <array>
+      <string>public.text</string>
+    </array>
+    <key>UTTypeDescription</key>
     <string>arxml</string>
-   </array>
-   <key>CFBundleTypeName</key>
-   <string>goil Source</string>
-   <key>CFBundleTypeOSTypes</key>
-   <array>
-    <string>TEXT</string>
-   </array>
-   <key>CFBundleTypeRole</key>
-   <string>Editor</string>
-   <key>LSTypeIsPackage</key>
-   <false/>
-   <key>NSDocumentClass</key>
-   <string>OC_GGS_Document</string>
+    <key>UTTypeIcons</key>
+    <dict>
+      <key>UTTypeIconBadgeName</key>
+      <string>galgasDocuments</string>
+    </dict>
+    <key>UTTypeIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER).arxml</string>
+    <key>UTTypeTagSpecification</key>
+    <dict>
+      <key>public.filename-extension</key>
+      <array>
+        <string>arxml</string>
+      </array>
+    </dict>
   </dict>
   <dict>
-   <key>CFBundleTypeIconFile</key>
-   <string>goilTemplate_icns</string>
-   <key>CFBundleTypeExtensions</key>
-   <array>
+    <key>UTTypeConformsTo</key>
+    <array>
+      <string>public.text</string>
+    </array>
+    <key>UTTypeDescription</key>
     <string>goilTemplate</string>
-   </array>
-   <key>CFBundleTypeName</key>
-   <string>goil Source</string>
-   <key>CFBundleTypeOSTypes</key>
-   <array>
-    <string>TEXT</string>
-   </array>
-   <key>CFBundleTypeRole</key>
-   <string>Editor</string>
-   <key>LSTypeIsPackage</key>
-   <false/>
-   <key>NSDocumentClass</key>
-   <string>OC_GGS_Document</string>
+    <key>UTTypeIcons</key>
+    <dict>
+      <key>UTTypeIconBadgeName</key>
+      <string>galgasDocuments</string>
+    </dict>
+    <key>UTTypeIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER).goilTemplate</string>
+    <key>UTTypeTagSpecification</key>
+    <dict>
+      <key>public.filename-extension</key>
+      <array>
+        <string>goilTemplate</string>
+      </array>
+    </dict>
   </dict>
   <dict>
-   <key>CFBundleTypeIconFile</key>
-   <string>oil_icns</string>
-   <key>CFBundleTypeExtensions</key>
-   <array>
+    <key>UTTypeConformsTo</key>
+    <array>
+      <string>public.text</string>
+    </array>
+    <key>UTTypeDescription</key>
     <string>oil</string>
-   </array>
-   <key>CFBundleTypeName</key>
-   <string>goil Source</string>
-   <key>CFBundleTypeOSTypes</key>
-   <array>
-    <string>TEXT</string>
-   </array>
-   <key>CFBundleTypeRole</key>
-   <string>Editor</string>
-   <key>LSTypeIsPackage</key>
-   <false/>
-   <key>NSDocumentClass</key>
-   <string>OC_GGS_Document</string>
+    <key>UTTypeIcons</key>
+    <dict>
+      <key>UTTypeIconBadgeName</key>
+      <string>galgasDocuments</string>
+    </dict>
+    <key>UTTypeIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER).oil</string>
+    <key>UTTypeTagSpecification</key>
+    <dict>
+      <key>public.filename-extension</key>
+      <array>
+        <string>oil</string>
+      </array>
+    </dict>
   </dict>
 
  </array>

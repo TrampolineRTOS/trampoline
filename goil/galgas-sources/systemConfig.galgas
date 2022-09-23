@@ -52,7 +52,7 @@ override method @boolAttribute set ?let @lstring name ?!@gtlData result {
   [!?result setStructField !name !@gtlBool.new { !location !oil_desc !value }]
   @gtlData subAttrs = [subAttributes fieldMap]
   if [[subAttrs as @gtlStruct value] count] > 0 then
-    @lstring structName = @lstring. new { ![name string]+"_S" ![name location] }
+    let @lstring structName = @lstring. new { ![name string]+"_S" ![name location] }
     [!?subAttrs setMeta !oil_desc]
     [!?result setStructField !structName !subAttrs]
   end
@@ -66,7 +66,7 @@ override method @enumAttribute set ?let @lstring name ?!@gtlData result {
   [!?result setStructField !name !@gtlString.new { !location !oil_desc !value }]
   @gtlData subAttrs = [subAttributes fieldMap]
   if [[subAttrs as @gtlStruct value] count] > 0 then
-    @lstring structName = @lstring. new { ![name string]+"_S" ![name location] }
+    let @lstring structName = @lstring. new { ![name string]+"_S" ![name location] }
     [!?subAttrs setMeta !oil_desc]
     [!?result setStructField !structName !subAttrs]
   end
@@ -98,7 +98,7 @@ override method @multipleAttribute set ?let @lstring name ?!@gtlData result {
           ![aStruct structName]
         }
       ] 
-      @gtlData subAttrs = [[aStruct subAttributes] fieldMap]
+      let @gtlData subAttrs = [[aStruct subAttributes] fieldMap]
       if [[subAttrs as @gtlStruct value] count] > 0 then
         for () in  [subAttrs as @gtlStruct value] do
           [!?multipleItem setStructField !lkey !value]
@@ -301,7 +301,7 @@ getter @applicationDefinition templateData
     !lstring(!"Passed options")
     !.emptyMap 
   }
-  @string optionString = [[[option goil_options.passOption value] trimLeft] trimRight]
+  let @string optionString = [[[option goil_options.passOption value] trimLeft] trimRight]
   if [optionString length] > 0 || [option goil_options.pierreOption value] then
     grammar options_grammar on ([option goil_options.passOption value],"Passed options") ?opts
   end
@@ -315,11 +315,11 @@ getter @applicationDefinition templateData
 #    message [lkey string]."\n";
     # Check if the object is multiple or not. If not, attributes
     # are stored in a struct otherwise instances are stored in a map.
-    [[imp imp] get !lkey ?@implementationObject implementationObject]
+    [[imp imp] get !lkey ?let @implementationObject implementationObject]
     if [[implementationObject multiple] bool] then
       @gtlList objs = .new { !.here !lkey !.emptyList }
       for () in  [objectsOfKind objects] do
-        @gtlData attrs = [attributes fieldMap]
+        let @gtlData attrs = [attributes fieldMap]
         
         [!?objs appendItem !attrs]
       end

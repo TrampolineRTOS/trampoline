@@ -32,7 +32,7 @@ static C_RelationSingleType::cType * gLastRelation ;
 
 class C_RelationSingleType::cType : public C_SharedObject {
 //--- Constructor
-  public : inline cType (const C_String & inTypeName,
+  public: inline cType (const C_String & inTypeName,
                          const uint32_t inBDDBitCount
                          COMMA_LOCATION_ARGS) :
   C_SharedObject (THERE),
@@ -47,7 +47,7 @@ class C_RelationSingleType::cType : public C_SharedObject {
   }
 
 //--- Desctructor
-  public : inline virtual ~cType (void) {
+  public: inline virtual ~cType (void) {
     if (NULL == mNextPtr) {
       gLastRelation = mPreviousPtr ;
     }else{
@@ -61,19 +61,19 @@ class C_RelationSingleType::cType : public C_SharedObject {
   }
 
 //--- No copy
-  private : cType (const cType &) ;
-  private : cType & operator = (const cType &) ;
+  private: cType (const cType &) ;
+  private: cType & operator = (const cType &) ;
 
 //--- Accessors
-  public : virtual uint32_t constantCount (void) const = 0 ;
-  public : virtual C_String nameForValue (const uint32_t inIndex
+  public: virtual uint32_t constantCount (void) const = 0 ;
+  public: virtual C_String nameForValue (const uint32_t inIndex
                                           COMMA_LOCATION_ARGS) const = 0 ;
 
 //--- Attribute
-  public : const C_String mTypeName ;
-  public : const uint32_t mBDDBitCount ;
-  public : cType * mNextPtr ;
-  private : cType * mPreviousPtr ;
+  public: const C_String mTypeName ;
+  public: const uint32_t mBDDBitCount ;
+  public: cType * mNextPtr ;
+  private: cType * mPreviousPtr ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -82,26 +82,26 @@ class C_RelationSingleType::cType : public C_SharedObject {
 
 class C_EnumeratedTypeInRelation : public C_RelationSingleType::cType {
 //--- Constructor
-  public : C_EnumeratedTypeInRelation (const C_String & inTypeName,
+  public: C_EnumeratedTypeInRelation (const C_String & inTypeName,
                                        const TC_UniqueArray <C_String> & inConstantNameArray
                                        COMMA_LOCATION_ARGS) ;
 
 //--- Accessors
-  public : virtual uint32_t constantCount (void) const {
+  public: virtual uint32_t constantCount (void) const {
     return (uint32_t) mConstantNameArray.count () ;
   }
 
-  public : virtual C_String nameForValue (const uint32_t inIndex
+  public: virtual C_String nameForValue (const uint32_t inIndex
                                           COMMA_LOCATION_ARGS) const {
     return mConstantNameArray ((int32_t) inIndex COMMA_THERE) ;
   }
 
-  public : inline bool isConstantArrayEqualTo (const TC_UniqueArray <C_String> & inConstantNameArray) const {
+  public: inline bool isConstantArrayEqualTo (const TC_UniqueArray <C_String> & inConstantNameArray) const {
     return mConstantNameArray == inConstantNameArray ;
   }
 
 //--- Attributes
-  private : TC_UniqueArray <C_String> mConstantNameArray ;
+  private: TC_UniqueArray <C_String> mConstantNameArray ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -146,22 +146,22 @@ mTypePtr (NULL) {
 
 class C_UnsignedTypeInRelation : public C_RelationSingleType::cType {
 //--- Constructor
-  public : C_UnsignedTypeInRelation (const C_String & inTypeName,
+  public: C_UnsignedTypeInRelation (const C_String & inTypeName,
                                      const uint32_t inValueCount
                                      COMMA_LOCATION_ARGS) ;
 
 //--- Accessors
-  public : virtual uint32_t constantCount (void) const {
+  public: virtual uint32_t constantCount (void) const {
     return mValueCount ;
   }
 
-  public : virtual C_String nameForValue (const uint32_t inIndex
+  public: virtual C_String nameForValue (const uint32_t inIndex
                                           COMMA_UNUSED_LOCATION_ARGS) const {
     return cStringWithUnsigned (inIndex) ;
   }
 
 //--- Attributes
-  private : const uint32_t mValueCount ;
+  private: const uint32_t mValueCount ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

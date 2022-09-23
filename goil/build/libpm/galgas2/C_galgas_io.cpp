@@ -243,6 +243,7 @@ void signalLexicalError (C_Compiler * inCompiler,
 
 void signalParsingError (C_Compiler * inCompiler,
                          const C_SourceTextInString & inSourceText,
+                         const C_LocationInSource & inPreviousTokenEndLocation,
                          const C_IssueWithFixIt & inIssue,
                          const C_String & inFoundTokenMessage,
                          const TC_UniqueArray <C_String> & inAcceptedTokenNames
@@ -257,6 +258,12 @@ void signalParsingError (C_Compiler * inCompiler,
   for (int32_t i=0 ; i<inAcceptedTokenNames.count () ; i++) {
     errorMessage << "-  " << inAcceptedTokenNames (i COMMA_HERE) << "\n" ;  
   }
+//--- Previous token location
+  errorMessage << "Previous token end location:"
+               << cStringWithSigned (inPreviousTokenEndLocation.lineNumber ())
+               << ":"
+               << cStringWithSigned (inPreviousTokenEndLocation.columnNumber ())
+               << "\n" ;
 //--- Print
   ggs_printError (inCompiler, inSourceText, inIssue, errorMessage COMMA_THERE) ;
 //--- Error max count reached ?

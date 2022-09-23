@@ -34,9 +34,9 @@ proc generate_signed_type
   ?@string err
   !@string type {
   # compute the max for each size
-  @uint64 max_s8  = 1L << 7
-  @uint64 max_s16 = 1L << 15
-  @uint64 max_s32 = 1L << 31
+  let @uint64 max_s8  = 1 << 7
+  let @uint64 max_s16 = 1 << 15
+  let @uint64 max_s32 = 1 << 31
   
   if count < max_s8 then
     type = "s8"
@@ -59,9 +59,9 @@ proc generate_unsigned_type
   ?@string err
   !@string type {
   # compute the max for each size
-  @uint64 max_u8  = 1L << 8
-  @uint64 max_u16 = 1L << 16
-  @uint64 max_u32 = 1L << 32
+  let @uint64 max_u8  = 1 << 8
+  let @uint64 max_u16 = 1 << 16
+  let @uint64 max_u32 = 1 << 32
 
   if count < max_u8 then
     type = "u8"
@@ -84,9 +84,9 @@ proc generate_mask_type
   ?@string err
   !@string type {
   # compute the max for each size
-  @uint64 max_u8  = 8L
-  @uint64 max_u16 = 16L
-  @uint64 max_u32 = 32L
+  let @uint64 max_u8  = 8
+  let @uint64 max_u16 = 16
+  let @uint64 max_u32 = 32
 
   if count <= max_u8 then
     type = "u8"
@@ -688,13 +688,13 @@ override getter @goilContext fullPrefix
 {
   @string stringPrefix = prefix
   if "compiler" == stringPrefix then
-    [vars structField !lstring(!"COMPILER") ?@gtlData compiler ?*]
+    [vars structField !lstring(!"COMPILER") ?let @gtlData compiler ?*]
     stringPrefix += "/" + (compiler as @gtlString)
   elsif "linker" == stringPrefix then
-    [vars structField !lstring(!"LINKER") ?@gtlData linker ?*]
+    [vars structField !lstring(!"LINKER") ?let @gtlData linker ?*]
     stringPrefix += "/" + (linker as @gtlString)
   elsif "assembler" == stringPrefix then
-    [vars structField !lstring(!"ASSEMBLER") ?@gtlData assembler ?*]
+    [vars structField !lstring(!"ASSEMBLER") ?let @gtlData assembler ?*]
     stringPrefix += "/" + (assembler as @gtlString)
   elsif stringPrefix == "ROOT" then
     stringPrefix = ""
@@ -732,10 +732,10 @@ proc generate_all
   # code generation
 #  @string timestamp := [@string stringWithCurrentDateTime];
 
-  @string temp_dir = templates_directory(!"code")
+  let @string temp_dir = templates_directory(!"code")
 
   if temp_dir != "" then
-      @string target = [option goil_options.target_platform value]
+      let @string target = [option goil_options.target_platform value]
       if target != "" then
 
           @gtlContext context = emptyGoilContext()
@@ -757,8 +757,7 @@ proc generate_all
             ![option goil_options.target_platform value]
           ]
                     
-          @library    lib = emptyLib()
-          @string     goilLog = invokeGTL (
+          let @string  goilLog = invokeGTL (
             !@gtlString.new { 
                 !.here 
                 !lstring(!"root template filename") 

@@ -464,12 +464,12 @@ override getter @impStructType mergeWithType
   ?@impType typeToMerge
   ->@impType mergedType
 {
-  @impStructType castTypeToMerge = typeToMerge as @impStructType
+  let @impStructType castTypeToMerge = typeToMerge as @impStructType
   @implementationObjectMap mergedAttributes = .emptyMap
   for () in structAttributes do
     @impType mergedAttr = type
     if [[castTypeToMerge structAttributes] hasKey ![lkey string]] then
-      [[castTypeToMerge structAttributes] get !lkey ?@impType subTypeToMerge]
+      [[castTypeToMerge structAttributes] get !lkey ?let @impType subTypeToMerge]
       mergedAttr = [type mergeWithType !subTypeToMerge]
     end
     [!?mergedAttributes put !lkey !mergedAttr]
@@ -555,10 +555,10 @@ override getter @refType mergeWithType
   ?@impType typeToMerge
   ->@impType mergedType
 {
-  @refType castTypeToMerge = typeToMerge as @refType
+  let @refType castTypeToMerge = typeToMerge as @refType
   if [ref string] != [[castTypeToMerge ref] string] then
     log ref
-    @lstring csatRef = [castTypeToMerge ref]
+    let @lstring csatRef = [castTypeToMerge ref]
     log csatRef
     multiError(![typeToMerge locations] !"Redefinition of "+name)
     multiError(!locations !"Was defined here")
@@ -611,7 +611,7 @@ override getter @impRangedType mergeWithType
   ?@impType typeToMerge
   ->@impType mergedType
 {
-  @impRangedType castTypeToMerge = typeToMerge as @impRangedType
+  let @impRangedType castTypeToMerge = typeToMerge as @impRangedType
   if checkRanged(!self !castTypeToMerge) then
     mergedType = typeToMerge
   else
@@ -628,13 +628,13 @@ override getter @impBoolType mergeWithType
   ?@impType typeToMerge
   ->@impType mergedType
 {
-  @impBoolType castTypeToMerge = typeToMerge as @impBoolType
+  let @impBoolType castTypeToMerge = typeToMerge as @impBoolType
   @implementationObjectMap mergedTrueAttributes = .emptyMap
   @implementationObjectMap mergedFalseAttributes = .emptyMap
   for () in trueSubAttributes do
     @impType mergedAttr = type
     if [[castTypeToMerge trueSubAttributes] hasKey ![lkey string]] then
-      [[castTypeToMerge trueSubAttributes] get !lkey ?@impType subTypeToMerge]
+      [[castTypeToMerge trueSubAttributes] get !lkey ?let @impType subTypeToMerge]
       mergedAttr = [type mergeWithType !subTypeToMerge]
     end
     [!?mergedTrueAttributes put !lkey !mergedAttr]
@@ -649,7 +649,7 @@ override getter @impBoolType mergeWithType
   for () in falseSubAttributes do
     @impType mergedAttr = type
     if [[castTypeToMerge falseSubAttributes] hasKey ![lkey string]] then
-      [[castTypeToMerge falseSubAttributes] get !lkey ?@impType subTypeToMerge]
+      [[castTypeToMerge falseSubAttributes] get !lkey ?let @impType subTypeToMerge]
       mergedAttr = [type mergeWithType !subTypeToMerge]
     end
     [!?mergedFalseAttributes put !lkey !mergedAttr]
@@ -686,11 +686,11 @@ override method @impBoolType setDefault ?!@objectAttributes attributes {
         # the value has been set by the user, get the default subvalues
         # corresponding to the value set
         @identifierMap userAttributes = [attributes objectParams]
-        @object_t value
+        let @object_t value
         [userAttributes get !name ?value]
         cast value
         case == @boolAttribute boolValue :
-          @implementationObjectMap subImpAttributes
+          let @implementationObjectMap subImpAttributes
           if [boolValue value] then
             subImpAttributes = trueSubAttributes
           else
@@ -705,7 +705,7 @@ override method @impBoolType setDefault ?!@objectAttributes attributes {
           [!?attributes setObjectParams !userAttributes]
         else end
       else
-        @implementationObjectMap subImpAttributes
+        let @implementationObjectMap subImpAttributes
         if [b value] then
           subImpAttributes = trueSubAttributes
         else
@@ -713,7 +713,7 @@ override method @impBoolType setDefault ?!@objectAttributes attributes {
         end
         @objectAttributes subAttributes = emptyObject()
         setDefaultsForType ( !subImpAttributes !?subAttributes)
-        @boolAttribute defaults = @boolAttribute. new { ![b oil_desc] ![b location] ![b value] !subAttributes}
+        let @boolAttribute defaults = @boolAttribute. new { ![b oil_desc] ![b location] ![b value] !subAttributes}
         @identifierMap attr = [attributes objectParams]
         [!?attr put !name !defaults]
         [!?attributes setObjectParams !attr]
@@ -735,7 +735,7 @@ getter @enumValues mergeWithEnum
   for () in self do
     @implementationObjectMap attributes = subAttributes
     if [enumToMerge hasKey ![lkey string]] then
-      [enumToMerge get !lkey ?@implementationObjectMap attributesToMerge]
+      [enumToMerge get !lkey ?let @implementationObjectMap attributesToMerge]
       attributes = [subAttributes mergeImplementationObjectAttributesWith !attributesToMerge]
     end
     [!?mergedEnum put !lkey !attributes]
@@ -751,7 +751,7 @@ override getter @impEnumType mergeWithType
   ?@impType typeToMerge
   ->@impType mergedType
 {
-  @impEnumType castTypeToMerge = typeToMerge as @impEnumType
+  let @impEnumType castTypeToMerge = typeToMerge as @impEnumType
   mergedType = @impEnumType.new {
     !locations + [typeToMerge locations]
     !type
@@ -822,7 +822,7 @@ method @implementation checkTypeForKind
   ?let @string objKind
   ?let @string attributeName
   ?let @dataType expectedType {
-  @implementationObject obj = [self impObject !objKind]
+  let @implementationObject obj = [self impObject !objKind]
   checkTypeForAttribute ( ![obj attributes] !attributeName !expectedType)
 }
 
@@ -843,9 +843,9 @@ func checkAndGetIntegerNumber
 {
   if signed then
     if type == @dataType. sint32Number then
-      value = @sint32_class. new { !oil_desc ![number location] ![[number uint64] sint] * -1S}
+      value = @sint32_class. new { !oil_desc ![number location] ![[number uint64] sint] * -1}
     elsif type == @dataType. sint64Number then
-      value = @sint64_class. new { !oil_desc ![number location] ![[number uint64] sint64] * -1LS}
+      value = @sint64_class. new { !oil_desc ![number location] ![[number uint64] sint64] * -1}
     else
       value = @void. new { !oil_desc ![number location]} 
       error number: [type oilType]+" expected, got a SINT"
@@ -894,7 +894,7 @@ proc checkTypeForAttribute
   ?let @string attributeName
   ?let @dataType expectedType {
   if [obj hasKey !attributeName] then
-    @impType type
+    let @impType type
     [obj get !lstringWith(!attributeName) ?type]
     if [type type] != expectedType then
       for () in [type locations] do
@@ -912,7 +912,7 @@ func boolSubAttributes
   ->@implementationObjectMap subImplementation {
   subImplementation = @implementationObjectMap. emptyMap
   if [[obj attributes] hasKey !attributeName] then
-    @impType type
+    let @impType type
     [[obj attributes] get !lstringWith(!attributeName) ?type]
     cast type
     case == @impBoolType boolType :
@@ -932,7 +932,7 @@ func enumSubAttributes
   ->@implementationObjectMap subImplementation {
   subImplementation = @implementationObjectMap. emptyMap
   if [[obj attributes] hasKey !attributeName] then
-    @impType type
+    let @impType type
     [[obj attributes] get !lstringWith(!attributeName) ?type]
     cast type
     case == @impEnumType enumType :
@@ -1055,7 +1055,7 @@ getter @implementationObjectMap mergeImplementationObjectAttributesWith
   for () in self do
     @impType merged = type
     if [attributesToMerge hasKey ![lkey string]] then
-      [attributesToMerge get !lkey ?@impType typeToMerge]
+      [attributesToMerge get !lkey ?let @impType typeToMerge]
       if [type dynamicType] == [typeToMerge dynamicType] then
         merged = [type mergeWithType !typeToMerge]
       else

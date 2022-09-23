@@ -194,7 +194,7 @@ override method @arxmlElementNode getSubElementsFromName
 {
   for (@arxmlNode currentNode) in enclosedNodes do
     if currentNode is == @arxmlElementNode then
-      @arxmlElementNode currentElement = currentNode as @arxmlElementNode
+      let @arxmlElementNode currentElement = currentNode as @arxmlElementNode
       if [currentElement name].string == nodeName then
         nodeList += !currentElement
       end
@@ -209,7 +209,7 @@ method @arxmlElementNode getSubElements
 
   for (@arxmlNode currentNode) in enclosedNodes do
     if currentNode is == @arxmlElementNode then
-      @arxmlElementNode currentElement = currentNode as @arxmlElementNode
+      let @arxmlElementNode currentElement = currentNode as @arxmlElementNode
       nodeList += !currentElement
     end
   end
@@ -241,7 +241,7 @@ method @arxmlElementNode getText
   while not found
   do
     if subnode is == @arxmlTextNode then
-      @arxmlTextNode textnode = subnode as @arxmlTextNode
+      let @arxmlTextNode textnode = subnode as @arxmlTextNode
       [textnode getText ?value]
       found = true
     end
@@ -399,8 +399,8 @@ method @arxmlElementValue getElementsByPath
     outElements += !self
   else
     @stringlist pathCopy = path
-    @string nextInPathName
-    @arxmlElementValueList nextInPathElems
+    let @string nextInPathName
+    let @arxmlElementValueList nextInPathElems
     [!?pathCopy popFirst ?nextInPathName]
     [self getElements !nextInPathName ?nextInPathElems]
     for(@arxmlElementValue nextElem) in nextInPathElems do
@@ -413,7 +413,7 @@ method @arxmlElementValue getElements
   ?@string elementName
   !@arxmlElementValueList outElements
 {
-  @lstring key = .new{!elementName !.nowhere}
+  let @lstring key = .new{!elementName !.nowhere}
   if [elements hasKey !key] then
     [elements searchKey !key ?outElements]
   else
@@ -425,7 +425,7 @@ method @arxmlElementValue getElement
   ?@string elementName
   !@arxmlElementValue outElement
 {
-  @arxmlElementValueList foundElements
+  let @arxmlElementValueList foundElements
   [self getElements !elementName ?foundElements]
   if [foundElements length] != 1 then
     error .here : "Found " + [[foundElements length] string] + " elements"
@@ -440,7 +440,7 @@ getter @arxmlElementValue hasElement
   ?@string elementName
   -> @bool outBool
 {
-  @arxmlElementValueList foundElements
+  let @arxmlElementValueList foundElements
   [self getElements !elementName ?foundElements]
   if [foundElements length] != 0 then
     outBool = true
@@ -453,7 +453,7 @@ getter @arxmlElementValue getTextFromElement
   ?@string elementName
   -> @lstring outText
 {
-  @arxmlElementValue textElement
+  let @arxmlElementValue textElement
   [self getElement !elementName ?textElement]
   outText = [textElement text]
 }
@@ -484,9 +484,9 @@ getter @arxmlElementValue getAttributeValueFromElement
   ?@string attributeName
   -> @lstring outText
 {
-  @arxmlElementValue textElement
+  let @arxmlElementValue textElement
   [self getElement !elementName ?textElement]
-  @lstring attributeNamelString = .new{!attributeName !.nowhere}
+  let @lstring attributeNamelString = .new{!attributeName !.nowhere}
   [[textElement attributes] searchKey !attributeNamelString ?outText]
 }
 

@@ -29,41 +29,41 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 class cEnumAssociatedValues : public C_SharedObject {
-  public : cEnumAssociatedValues (LOCATION_ARGS) ;
+  public: cEnumAssociatedValues (LOCATION_ARGS) ;
 
-  public : virtual void description (class C_String & ioString,
+  public: virtual void description (class C_String & ioString,
                                      const int32_t inIndentation) const = 0 ;
-  public : virtual typeComparisonResult compare (const cEnumAssociatedValues * inOperand) const = 0 ;
+  public: virtual typeComparisonResult compare (const cEnumAssociatedValues * inOperand) const = 0 ;
   
-  public : virtual ~ cEnumAssociatedValues (void) {}
+  public: virtual ~ cEnumAssociatedValues (void) {}
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_enumAssociatedValues {
-  private : const cEnumAssociatedValues * mSharedPtr ;
+  private: const cEnumAssociatedValues * mSharedPtr ;
 
 //--- Default constructor
-  public : AC_GALGAS_enumAssociatedValues (void) ;
+  public: AC_GALGAS_enumAssociatedValues (void) ;
 
 //---
-  public : void setPointer (const cEnumAssociatedValues * inUniquePtr) ;
+  public: void setPointer (const cEnumAssociatedValues * inUniquePtr) ;
 
 //--- Handle copy
-  public : AC_GALGAS_enumAssociatedValues (const AC_GALGAS_enumAssociatedValues & inSource) ;
-  public : AC_GALGAS_enumAssociatedValues & operator = (const AC_GALGAS_enumAssociatedValues & inSource) ;
+  public: AC_GALGAS_enumAssociatedValues (const AC_GALGAS_enumAssociatedValues & inSource) ;
+  public: AC_GALGAS_enumAssociatedValues & operator = (const AC_GALGAS_enumAssociatedValues & inSource) ;
 
 //--- Destructor
-  public : virtual ~ AC_GALGAS_enumAssociatedValues (void) ;
+  public: virtual ~ AC_GALGAS_enumAssociatedValues (void) ;
 
 //---
-  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
                                               const int32_t inIndentation) const ;
 
 
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_enumAssociatedValues & inOperand) const ;
+  public: VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_enumAssociatedValues & inOperand) const ;
 
-  public : VIRTUAL_IN_DEBUG const cEnumAssociatedValues * unsafePointer (void) const {
+  public: VIRTUAL_IN_DEBUG const cEnumAssociatedValues * unsafePointer (void) const {
     return mSharedPtr ;
   }
 } ;

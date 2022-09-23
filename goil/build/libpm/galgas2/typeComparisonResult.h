@@ -24,28 +24,28 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   class typeComparisonResult {
-    private : typedef enum {
+    private: typedef enum {
       kPrivateOperandNotValid,
       kPrivateFirstOperandLowerThanSecond,
       kPrivateOperandEqual,
       kPrivateFirstOperandGreaterThanSecond
     } enumComparisonResult ;
   //--- Attribute
-    private : enumComparisonResult mComparisonResult ;
+    private: enumComparisonResult mComparisonResult ;
   //--- Private constructor
-    private : typeComparisonResult (const enumComparisonResult inComparisonResult) ;
+    private: typeComparisonResult (const enumComparisonResult inComparisonResult) ;
   //--- Constructor (static methods)
-    public : static typeComparisonResult operandNotValid (void) ;
-    public : static typeComparisonResult firstOperandLowerThanSecond (void) ;
-    public : static typeComparisonResult operandEqual (void) ;
-    public : static typeComparisonResult firstOperandGreaterThanSecond (void) ;
+    public: static typeComparisonResult operandNotValid (void) ;
+    public: static typeComparisonResult firstOperandLowerThanSecond (void) ;
+    public: static typeComparisonResult operandEqual (void) ;
+    public: static typeComparisonResult firstOperandGreaterThanSecond (void) ;
   //--- Comparison operators
-    public : bool operator == (const typeComparisonResult & inOperand) const ;
-    public : bool operator != (const typeComparisonResult & inOperand) const ;
-    public : bool operator >= (const typeComparisonResult & inOperand) const ;
-    public : bool operator >  (const typeComparisonResult & inOperand) const ;
-    public : bool operator <= (const typeComparisonResult & inOperand) const ;
-    public : bool operator <  (const typeComparisonResult & inOperand) const ;
+    public: bool operator == (const typeComparisonResult & inOperand) const ;
+    public: bool operator != (const typeComparisonResult & inOperand) const ;
+    public: bool operator >= (const typeComparisonResult & inOperand) const ;
+    public: bool operator >  (const typeComparisonResult & inOperand) const ;
+    public: bool operator <= (const typeComparisonResult & inOperand) const ;
+    public: bool operator <  (const typeComparisonResult & inOperand) const ;
   } ;
   #define kOperandNotValid               typeComparisonResult::operandNotValid ()
   #define kFirstOperandLowerThanSecond   typeComparisonResult::firstOperandLowerThanSecond ()
@@ -64,7 +64,7 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   class typeComparisonKind {
-    private : typedef enum {
+    private: typedef enum {
       kPrivateIsEqual,
       kPrivateIsNotEqual,
       kPrivateIsSupOrEqual,
@@ -73,16 +73,16 @@
       kPrivateIsStrictInf
     } enumComparisonKind ;
   //--- Attribute
-    private : enumComparisonKind mComparisonKind ;
+    private: enumComparisonKind mComparisonKind ;
   //--- Private constructor
-    private : typeComparisonKind (const enumComparisonKind inComparisonKind) ;
+    private: typeComparisonKind (const enumComparisonKind inComparisonKind) ;
   //--- Constructor (static methods)
-    public : static typeComparisonKind isEqual (void) ;
-    public : static typeComparisonKind isNotEqual (void) ;
-    public : static typeComparisonKind isSupOrEqual (void) ;
-    public : static typeComparisonKind isInfOrEqual (void) ;
-    public : static typeComparisonKind isStrictSup (void) ;
-    public : static typeComparisonKind isStrictInf (void) ;
+    public: static typeComparisonKind isEqual (void) ;
+    public: static typeComparisonKind isNotEqual (void) ;
+    public: static typeComparisonKind isSupOrEqual (void) ;
+    public: static typeComparisonKind isInfOrEqual (void) ;
+    public: static typeComparisonKind isStrictSup (void) ;
+    public: static typeComparisonKind isStrictInf (void) ;
   //--- Friend
     friend bool boolValueFromComparisonKindAndComparisonResult (const typeComparisonKind inComparisonKind,
                                                                 const typeComparisonResult inComparisonResult) ;

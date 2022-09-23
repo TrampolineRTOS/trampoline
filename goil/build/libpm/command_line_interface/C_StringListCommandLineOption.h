@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2014, ..., 2017 Pierre Molinaro.
+//  Copyright (C) 2014, ..., 2021 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -29,42 +29,42 @@
 
 class C_StringListCommandLineOption : public C_CommandLineOption {
 //--- Constructor
-  public : C_StringListCommandLineOption (const char * inDomainName,
+  public: C_StringListCommandLineOption (const char * inDomainName,
                                           const char * inIdentifier,
                                           const char inChar,
                                           const char * inString,
                                           const char * inComment) ;
 //--- No Copy
-  private : C_StringListCommandLineOption (const C_StringListCommandLineOption &) ;
-  private : C_StringListCommandLineOption & operator = (const C_StringListCommandLineOption &) ;
+  private: C_StringListCommandLineOption (const C_StringListCommandLineOption &) ;
+  private: C_StringListCommandLineOption & operator = (const C_StringListCommandLineOption &) ;
 
 //--- Attributes
-  private : C_StringListCommandLineOption * mNext ;
-  public : TC_Array <C_String> mValue ;
-  public : inline TC_Array <C_String> getter_value (void) const { return mValue ; }
+  private: C_StringListCommandLineOption * mNext ;
+  public: TC_Array <C_String> mValue ;
+  public: inline TC_Array <C_String> readProperty_value (void) const { return mValue ; }
 
 //--- Static methods
-  public : static void setStringListOptionForCommandChar (const char * inCommandCommandLineOptionString,
+  public: static void setStringListOptionForCommandChar (const char * inCommandCommandLineOptionString,
                                                           bool & outFound,
                                                           bool & outCommandLineOptionStringIsValid) ;
-  public : static void setStringListOptionForCommandString (const char * inCommandCommandLineOptionString,
+  public: static void setStringListOptionForCommandString (const char * inCommandCommandLineOptionString,
                                                             bool & outFound,
                                                             bool & outCommandLineOptionStringIsValid)  ;
-  public : static void printUsageOfStringOptions (void) ;
-  public : static void printStringOptions (void) ;
+  public: static void printUsageOfStringOptions (void) ;
+  public: static void printStringOptions (void) ;
 
-  public : static void releaseStrings (void) ; // Called at the end of main routine
+  public: static void releaseStrings (void) ; // Called at the end of main routine
 
 //--- Option introspection
-  public : static void getStringOptionNameList (TC_UniqueArray <C_String> & outArray) ;
+  public: static void getStringOptionNameList (TC_UniqueArray <C_String> & outArray) ;
 
-  public : static utf32 getStringOptionInvocationLetter (const C_String & inDomainName,
+  public: static utf32 getStringOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 
-  public : static C_String getStringOptionInvocationString (const C_String & inDomainName,
+  public: static C_String getStringOptionInvocationString (const C_String & inDomainName,
                                                           const C_String & inIdentifier) ;
 
-  public : static C_String getStringOptionCommentString (const C_String & inDomainName,
+  public: static C_String getStringOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) ;
 } ;
 

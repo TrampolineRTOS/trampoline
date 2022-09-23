@@ -28,24 +28,24 @@
 
 class C_TCPSocketOut : public AC_OutputStream {
 //--- Constructor
-  public : C_TCPSocketOut (void) ; // No connection
+  public: C_TCPSocketOut (void) ; // No connection
 
 //--- Destructor
-  public : virtual ~ C_TCPSocketOut (void) ;
+  public: virtual ~ C_TCPSocketOut (void) ;
 
 //--- Connect (call it once)
-  public : bool connect (const uint16_t inServerPort,
+  public: bool connect (const uint16_t inServerPort,
                          const C_String & inHostName) ;
 
 //--- General stream methods
-  protected : virtual void performActualCharArrayOutput (const char * inCharArray,
+  protected: virtual void performActualCharArrayOutput (const char * inCharArray,
                                                          const int32_t inArrayCount) ;
 
-  protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
+  protected: virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
                                                             const int32_t inArrayCount) ;
 
 //---
-  private : int mSocket ;
+  private: int mSocket ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

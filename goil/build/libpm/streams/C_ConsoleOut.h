@@ -28,17 +28,17 @@
 
 class C_ConsoleOut : public C_ColoredConsole {
 //--- Constructor
-  public : C_ConsoleOut (void) ;
+  public: C_ConsoleOut (void) ;
 
 //--- Flush output
-  public : virtual void flush (void) ;
+  public: virtual void flush (void) ;
   
 //--- General stream method
-  protected : virtual void
+  protected: virtual void
   performActualCharArrayOutput (const char * inCharArray,
                                 const int32_t inArrayCount) ;
 
-  protected : virtual void
+  protected: virtual void
   performActualUnicodeArrayOutput (const utf32 * inCharArray, const int32_t inArrayCount) ;
 
 } ;

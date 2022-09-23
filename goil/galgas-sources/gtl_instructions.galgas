@@ -61,7 +61,7 @@ method @gtlInstructionList execute
     [!?context pushInstructionList !self]
     @uint lastErrorCount = .errorCount
     for () in self do (index)
-      @bool errorCountIncreased = (@uint.errorCount - lastErrorCount) > 0
+      let @bool errorCountIncreased = (@uint.errorCount - lastErrorCount) > 0
       if [context breakOnNext] | [context breakOn !instruction]
          | [context watchOn !context !vars !lib] | errorCountIncreased then
         [!?context setBreakOnNext !true]
@@ -72,9 +72,9 @@ method @gtlInstructionList execute
         [!?context setLoopOnCommand !true]
         loop (@uint.max)
           message [context promptStyle] + "gtl> " + endc()
-          [!?context getCommand ?@string input]
-          @gtlInstruction command
-          @uint currentErrorCount = @uint.errorCount
+          [!?context getCommand ?let @string input]
+          let @gtlInstruction command
+          let @uint currentErrorCount = @uint.errorCount
           if [input stringByTrimmingWhiteSpaces] == "" then
             command = @gtlStepInstruction.new { !.here !"" }
           else
@@ -415,14 +415,14 @@ override method @gtlWriteToInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 { 
-  @uint currentErrorCount = @uint.errorCount
-  @string fullFileName = [[fileNameExpression eval !context !vars !lib] string]
-  @gtlString fileName = .new{
+  let @uint currentErrorCount = @uint.errorCount
+  let @string fullFileName = [[fileNameExpression eval !context !vars !lib] string]
+  let @gtlString fileName = .new{
     !where
     !emptylstring()
     ![fullFileName lastPathComponent]
   }
-  @gtlString filePath = .new{
+  let @gtlString filePath = .new{
     !where 
     !emptylstring() 
     ![fullFileName nativePathWithUnixPath]
@@ -446,7 +446,7 @@ override method @gtlWriteToInstruction execute
     [instructions execute !?context !?varsCopy !?lib !?result]
     if (currentErrorCount == @uint.errorCount) then
       if isExecutable then
-        @string directory = [fullFileName stringByDeletingLastPathComponent]
+        let @string directory = [fullFileName stringByDeletingLastPathComponent]
         if directory != "" then [directory makeDirectory] end
         [result writeToExecutableFile !fullFileName]
       else
@@ -480,7 +480,7 @@ override method @gtlTemplateInstruction execute
     [!?newContext setPrefix !prefix]
   end
 
-  @lstring templateFileName = [newContext fullTemplateFileName
+  let @lstring templateFileName = [newContext fullTemplateFileName
     !context
     !vars
     ![[fileName eval !context !vars !lib] as @gtlString lstring]
@@ -492,7 +492,7 @@ override method @gtlTemplateInstruction execute
     # build the variable map for the template
     localVars = @gtlStruct.new { !where !emptylstring() !.emptyMap }
     for (argumentExpression) in arguments do
-      @gtlData evaluedArg = [argumentExpression eval !context !vars !lib]
+      let @gtlData evaluedArg = [argumentExpression eval !context !vars !lib]
       [!?newContext addInputVariable !evaluedArg]
     end
   else
@@ -504,8 +504,8 @@ override method @gtlTemplateInstruction execute
     !templateFileName
     !ifExists
     !?lib
-    ?@bool        found
-    ?@gtlTemplate result
+    ?let @bool        found
+    ?let @gtlTemplate result
   ]
   
   if found then
@@ -577,9 +577,9 @@ override method @gtlIfStatementInstruction execute
   
   @bool noConditionMatching = true
   for () in thenElsifList while noConditionMatching do
-    @gtlData dataCondition = [condition eval !context !localMap !lib]
+    let @gtlData dataCondition = [condition eval !context !localMap !lib]
     if dataCondition is == @gtlBool then
-      @bool boolCondition = [dataCondition as @gtlBool value]
+      let @bool boolCondition = [dataCondition as @gtlBool value]
       if boolCondition then
         [instructionList execute !?context !?localMap !?lib !?outputString]
         noConditionMatching = false
@@ -616,7 +616,7 @@ method @gtlForeachStatementInstruction iterateOnMap
   ?!@string     outputString
   ? let @gtlMap iterableMap
 {
-  @lstring actualKeyName = if "" == keyName then
+  let @lstring actualKeyName = if "" == keyName then
     .new { !"KEY" !keyName }
   else
     keyName
@@ -704,7 +704,7 @@ override method @gtlForeachStatementInstruction execute
   ?!@string     outputString
 {
   @gtlData localMap = [vars overrideMap]
-  @gtlData iterableData = [iterable eval !context !localMap !lib]
+  let @gtlData iterableData = [iterable eval !context !localMap !lib]
   cast iterableData
   case == @gtlMap  iterableMap:
     [self iterateOnMap !?context !?localMap !?lib !?outputString !iterableMap]
@@ -734,11 +734,11 @@ override method @gtlForStatementInstruction execute
   ?!@library    lib
   ?!@string     outputString
 {
-  @lstring indexName = .new{!"INDEX" !where}
+  let @lstring indexName = .new{!"INDEX" !where}
   @gtlData localMap = [vars overrideMap]
   for () in iterable
   do (index)
-    @gtlData value = [expression eval !context !localMap !lib]
+    let @gtlData value = [expression eval !context !localMap !lib]
     [!?localMap setStructField !identifier !value]
     [!?localMap setStructField
       !indexName
@@ -773,12 +773,12 @@ override method @gtlLoopStatementInstruction execute
   ?!@string     outputString
 {
   @gtlData localMap = [vars overrideMap]
-  @gtlData startData = [start eval !context !localMap !lib]
-  @gtlData stopData  = [stop  eval !context !localMap !lib]
-  @gtlData stepData  = [step  eval !context !localMap !lib]
+  let @gtlData startData = [start eval !context !localMap !lib]
+  let @gtlData stopData  = [stop  eval !context !localMap !lib]
+  let @gtlData stepData  = [step  eval !context !localMap !lib]
   @bigint startVal
-  @bigint stopVal
-  @bigint stepVal
+  let @bigint stopVal
+  let @bigint stepVal
   if startData is == @gtlInt then 
     startVal = [startData as @gtlInt value]
   else
@@ -794,11 +794,11 @@ override method @gtlLoopStatementInstruction execute
   else
     error [step location] : "int expected" : stepVal
   end
-  @bigint direction = 1_G
-  if stepVal < 0_G then direction = -1_G end
-  if (stopVal - startVal) * direction >= 0_G then
+  @bigint direction = 1
+  if stepVal < 0 then direction = -1 end
+  if (stopVal - startVal) * direction >= 0 then
     [beforeList execute !?context !?localMap !?lib !?outputString]
-    @uint count = [(stopVal - startVal) * direction + 1LS uint]
+    let @uint count = [(stopVal - startVal) * direction + 1 uint]
     loop (count)
       [!?localMap setStructField
         !identifier
@@ -806,7 +806,7 @@ override method @gtlLoopStatementInstruction execute
       ]
       [doList execute !?context !?localMap !?lib !?outputString]
       startVal = startVal + stepVal
-    while (stopVal - startVal) * direction >= 0_G do
+    while (stopVal - startVal) * direction >= 0 do
       [betweenList execute !?context !?localMap !?lib !?outputString]
     end
     [afterList execute !?context !?localMap !?lib !?outputString]
@@ -832,8 +832,8 @@ override method @gtlRepeatStatementInstruction execute
 {
   @gtlData localMap = [vars overrideMap]
   @bool boolCondition = false
-  @gtlData limitData = [limit eval !context !vars !lib]
-  @uint limitVal
+  let @gtlData limitData = [limit eval !context !vars !lib]
+  let @uint limitVal
   
   if limitData is == @gtlInt then
     limitVal = [[limitData as @gtlInt value] uint]
@@ -843,7 +843,7 @@ override method @gtlRepeatStatementInstruction execute
   
   loop (limitVal)
     [continueList execute !?context !?localMap !?lib !?outputString]
-    @gtlData conditionData = [condition eval !context !localMap !lib]
+    let @gtlData conditionData = [condition eval !context !localMap !lib]
     if [conditionData dynamicType] == `@gtlBool then
       boolCondition = [conditionData as @gtlBool value] 
     else
@@ -870,13 +870,13 @@ override method @gtlErrorStatementInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 {
-  @location errorLocation
+  let @location errorLocation
   if hereInstead then 
     errorLocation = where
   else
     errorLocation = [[identifier get !context !vars !lib] where]
   end
-  @gtlData errorMessageData = [errorMessage eval !context !vars !lib] 
+  let @gtlData errorMessageData = [errorMessage eval !context !vars !lib] 
   if [errorMessageData dynamicType] == `@gtlString then
     error errorLocation : [errorMessageData as @gtlString value]
     [!?context setPropagateError !false]
@@ -900,13 +900,13 @@ override method @gtlWarningStatementInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 {
-  @location warningLocation
+  let @location warningLocation
   if hereInstead then 
     warningLocation = where
   else
     warningLocation = [[identifier get !context !vars !lib] where]
   end
-  @gtlData warningMessageData = [warningMessage eval !context !vars !lib]
+  let @gtlData warningMessageData = [warningMessage eval !context !vars !lib]
   if [warningMessageData dynamicType] == `@gtlString then
     warning warningLocation : [warningMessageData as @gtlString value]
   else
@@ -928,7 +928,7 @@ override method @gtlPrintStatementInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 {
-  @string messageToPrintString =
+  let @string messageToPrintString =
     [[messageToPrint eval !context !vars !lib] string]
   message messageToPrintString
   if carriageReturn then message "\n" end
@@ -947,7 +947,7 @@ override method @gtlDisplayStatementInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 {
-  @gtlData variable = [variablePath get !context !vars !lib]
+  let @gtlData variable = [variablePath get !context !vars !lib]
   message [variablePath stringPath !context !vars !lib]
         + " from " + [where locationString] + "\n"
         + [variable desc !4]
@@ -975,7 +975,7 @@ method @gtlAbstractSortInstruction swap
   ?let @uint index1
   ?let @uint index2
 {
-  @gtlData temp = [aList valueAtIndex !index1]
+  let @gtlData temp = [aList valueAtIndex !index1]
   [!?aList setValueAtIndex ![aList valueAtIndex !index2] !index1]
   [!?aList setValueAtIndex !temp !index2]
 }
@@ -986,13 +986,13 @@ method @gtlAbstractSortInstruction partition
   ?let @uint max
   ?!@uint    pivotIndex
 {
-  @gtlData pivot = [aList valueAtIndex !pivotIndex]
+  let @gtlData pivot = [aList valueAtIndex !pivotIndex]
   [self swap !?aList !pivotIndex !max]
   @uint storeIndex = min
   @uint i = min
   loop (max - min)
   while i < max do
-    if [self compare ![aList valueAtIndex !i] !pivot] == -1s then
+    if [self compare ![aList valueAtIndex !i] !pivot] == -1 then
       [self swap !?aList !i !storeIndex]
       storeIndex++
     end
@@ -1021,11 +1021,11 @@ override method @gtlAbstractSortInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 {
-  @gtlData variable = [variablePath get !context !vars !lib]
+  let @gtlData variable = [variablePath get !context !vars !lib]
   cast variable
   case == @gtlList variableList:
     @list listToSort = [variableList value]
-    @uint length = [listToSort length]    
+    let @uint length = [listToSort length]    
     if length > 0 then
       [self sort !?listToSort !0 !length-1]
     end
@@ -1036,7 +1036,7 @@ override method @gtlAbstractSortInstruction execute
       !@gtlList.new { !where !emptylstring() !listToSort }
     ]
   else
-    [variablePath last ?@gtlVarItem lastComponent]
+    [variablePath last ?let @gtlVarItem lastComponent]
     error lastComponent : "list expected"
   end
 }
@@ -1063,16 +1063,16 @@ getter @gtlSortStatementStructInstruction compareElements
   if [keyList length] > 0 then
     if s1 is == @gtlStruct then
       if s2 is == @gtlStruct then 
-        @gtlStruct s1Struct = s1 as @gtlStruct
-        @gtlStruct s2Struct = s2 as @gtlStruct
-        [!?keyList popFirst ?@lstring field ?@lsint order]
-        [[s1Struct value] get !field ?@gtlData s1Field]
-        [[s2Struct value] get !field ?@gtlData s2Field]
+        let @gtlStruct s1Struct = s1 as @gtlStruct
+        let @gtlStruct s2Struct = s2 as @gtlStruct
+        [!?keyList popFirst ?let @lstring field ?let @lsint order]
+        [[s1Struct value] get !field ?let @gtlData s1Field]
+        [[s2Struct value] get !field ?let @gtlData s2Field]
         if [s1Field ltOp !s2Field] then
-          result = -1S * order
+          result = -1 * [order bigint]
         else
           if [s1Field gtOp !s2Field] then
-            result = 1S * order
+            result = 1 * [order bigint]
           else
             result = [self compareElements !s1 !s2 !keyList]
           end
@@ -1084,7 +1084,7 @@ getter @gtlSortStatementStructInstruction compareElements
       error [s1 location] : "struct expected" : result
     end
   else
-    result = 0S
+    result = 0
   end
 }
 
@@ -1099,12 +1099,12 @@ override getter @gtlSortStatementInstruction compare
   ->@sint          result
 {
   if [s1 ltOp !s2] then
-    result = -1S * order
+    result = -1 * [order bigint]
   else
     if [s1 gtOp !s2] then
-      result = 1S * order
+      result = 1 * [order bigint]
     else
-      result = 0S
+      result = 0
     end
   end
 }
@@ -1122,12 +1122,12 @@ override method @gtlTabStatementInstruction execute
   ?!@library    lib
   ?!@string     outputString
 {
-  @gtlData tabValueData = [tabValue eval !context !vars !lib]
+  let @gtlData tabValueData = [tabValue eval !context !vars !lib]
   if tabValueData is == @gtlInt then
-    @gtlInt tabValueInt = tabValueData as @gtlInt
-    @uint currentColumn = [outputString currentColumn]
-    if [tabValueInt value] >= 0_G then
-      @uint tabColumn = [[tabValueInt value] uint]
+    let @gtlInt tabValueInt = tabValueData as @gtlInt
+    let @uint currentColumn = [outputString currentColumn]
+    if [tabValueInt value] >= 0 then
+      let @uint tabColumn = [[tabValueInt value] uint]
       if tabColumn > currentColumn then
         outputString += @string.stringWithSequenceOfCharacters{
           !' '
@@ -1166,9 +1166,9 @@ method @gtlVariablesInstruction displayShort
 method @gtlVariablesInstruction displayLong
   ?let @gtlData vars
 {
-  @string delimitor = @string.stringWithSequenceOfCharacters{!'=' !79 } + "\n"
-  @string varDelim  = @string.stringWithSequenceOfCharacters{!'-' !79 } + "\n"
-  @string separator = @string.stringWithSequenceOfCharacters{!'=' !17 }
+  let @string delimitor = @string.stringWithSequenceOfCharacters{!'=' !79 } + "\n"
+  let @string varDelim  = @string.stringWithSequenceOfCharacters{!'-' !79 } + "\n"
+  let @string separator = @string.stringWithSequenceOfCharacters{!'=' !17 }
   message separator + " Variables "
         + separator + "= Displayed from "
         + separator + "\n"
@@ -1212,9 +1212,9 @@ override method @gtlLibrariesInstruction execute
   ?!@library           lib
   ?!@string     unused outputString
 {
-  @string delimitor = @string.stringWithSequenceOfCharacters{!'=' !79 } + "\n"
-  @string varDelim  = @string.stringWithSequenceOfCharacters{!'-' !79 } + "\n"
-  @string separator = @string.stringWithSequenceOfCharacters{!'=' !17 }
+  let @string delimitor = @string.stringWithSequenceOfCharacters{!'=' !79 } + "\n"
+  let @string varDelim  = @string.stringWithSequenceOfCharacters{!'-' !79 } + "\n"
+  let @string separator = @string.stringWithSequenceOfCharacters{!'=' !17 }
   message separator + " Libraries "
         + separator + "= Displayed from "
         + separator + "\n"
@@ -1328,7 +1328,7 @@ override method @gtlInputStatementInstruction execute
   ?!@string  unused outputString
 {
   for (typed type name) in formalArguments do
-    [!?context popFirstInputArg !name ?@gtlData arg]
+    [!?context popFirstInputArg !name ?let @gtlData arg]
     if typed then
       if type != [arg dynamicType] then
         error arg : "mistyped argument, " + [[arg dynamicType] typeName] + " provided"

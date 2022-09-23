@@ -32,10 +32,10 @@
 
 class cIssueDescriptor {
 //--- Default constructor
-  public : cIssueDescriptor (void) ;
+  public: cIssueDescriptor (void) ;
 
 //--- Constructor
-  public : cIssueDescriptor (const bool inIsError,
+  public: cIssueDescriptor (const bool inIsError,
                              const C_String & inFile,
                              const int32_t inLine,
                              const int32_t inStartColumn,
@@ -43,21 +43,21 @@ class cIssueDescriptor {
                              const C_String & inMessage) ;
 
 //--- Copy constructor
-  public : cIssueDescriptor (const cIssueDescriptor & inSource) ;
+  public: cIssueDescriptor (const cIssueDescriptor & inSource) ;
 
 //--- Assignment
-  public : cIssueDescriptor & operator = (const cIssueDescriptor & inSource) ;
+  public: cIssueDescriptor & operator = (const cIssueDescriptor & inSource) ;
 
 //--- Append issue to JSON string
-  public : void appendToJSONstring (C_String & ioJSONstring, const bool inIsFirstIssue) const ;
+  public: void appendToJSONstring (C_String & ioJSONstring, const bool inIsFirstIssue) const ;
 
 //--- Properties
-  private : bool mIsError ; // false: warning
-  private : C_String mFile ;
-  private : int32_t mLine ;
-  private : int32_t mStartColumn ;
-  private : int32_t mEndColumn ;
-  private : C_String mMessage ;
+  private: bool mIsError ; // false: warning
+  private: C_String mFile ;
+  private: int32_t mLine ;
+  private: int32_t mStartColumn ;
+  private: int32_t mEndColumn ;
+  private: C_String mMessage ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

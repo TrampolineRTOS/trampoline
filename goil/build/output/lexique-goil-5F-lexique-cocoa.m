@@ -7,16 +7,12 @@
 #import "PMDebug.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//            Unicode test functions                                                             
-//----------------------------------------------------------------------------------------------------------------------
- 
-//----------------------------------------------------------------------------------------------------------------------
 
 @implementation OC_Lexique_goil_lexique
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                           Template Replacements                                               
+//                           Template Replacements
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -24,7 +20,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                           Template Delimiters                                                 
+//                           Template Delimiters
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -35,11 +31,11 @@
   self = [super init] ;
   if (self) {
     noteObjectAllocation (self) ;
-    mLexicalAttribute_a_string = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_att_token = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_floatNumber = 0.0 ;
-    mLexicalAttribute_integerNumber = 0 ;
-    mLexicalAttribute_number = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_a_string = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_att_token = [[NSMutableString alloc] init] ;
+   mLexicalAttribute_floatNumber = 0.0 ;
+   mLexicalAttribute_integerNumber = 0 ;
+   mLexicalAttribute_number = [[NSMutableString alloc] init] ;
   }
   return self ;
 }
@@ -52,7 +48,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 I N D E X I N G    D I R E C T O R Y                                          
+//                 I N D E X I N G    D I R E C T O R Y
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -62,7 +58,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                 I N D E X I N G    T I T L E S                                                
+//                 I N D E X I N G    T I T L E S
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -73,7 +69,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//            Terminal Symbols as end of script in template mark                                 
+//            Terminal Symbols as end of script in template mark
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -180,215 +176,226 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//               P A R S E    L E X I C A L    T O K E N                                         
+//               I N T E R N A L    P A R S E    L E X I C A L    T O K E N
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+- (BOOL) internalParseLexicalTokenForLexicalColoring {
+  BOOL loop = YES ;
+  BOOL scanningOk = YES ;
+  [mLexicalAttribute_a_string setString:@""] ;
+  [mLexicalAttribute_att_token setString:@""] ;
+  mLexicalAttribute_floatNumber = 0.0 ;
+  mLexicalAttribute_integerNumber = 0 ;
+  [mLexicalAttribute_number setString:@""] ;
+  mTokenStartLocation = mCurrentLocation ;
+  if (scanningOk && ([self testForInputString:@"//" advance:YES])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:1 toChar:9] || [self testForInputChar:11] || [self testForInputChar:12] || [self testForInputFromChar:14 toChar:65533])) {
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    mTokenCode = goil_lexique_1_comment ;
+  }else if (scanningOk && ([self testForInputString:@"/*" advance:YES])) {
+    do {
+      if (scanningOk && ([self notTestForInputString:@"*/" error:& scanningOk])) {
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    mTokenCode = goil_lexique_1_comment ;
+  }else if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
+    do {
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_att_token, mPreviousChar) ;
+      if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_goil_5F_lexique_oilVersion (mLexicalAttribute_att_token) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_goil_5F_lexique_oilDefinitions (mLexicalAttribute_att_token) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_goil_5F_lexique_dataTypes (mLexicalAttribute_att_token) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_goil_5F_lexique_miscSpecifiers (mLexicalAttribute_att_token) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_goil_5F_lexique_boolean (mLexicalAttribute_att_token) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = goil_lexique_1_idf ;
+    }
+  }else if (scanningOk && [self testForInputString:@".." advance:YES]) {
+    mTokenCode = goil_lexique_1__2E__2E_ ;
+  }else if (scanningOk && [self testForInputString:@"}" advance:YES]) {
+    mTokenCode = goil_lexique_1__7D_ ;
+  }else if (scanningOk && [self testForInputString:@"{" advance:YES]) {
+    mTokenCode = goil_lexique_1__7B_ ;
+  }else if (scanningOk && [self testForInputString:@"]" advance:YES]) {
+    mTokenCode = goil_lexique_1__5D_ ;
+  }else if (scanningOk && [self testForInputString:@"[" advance:YES]) {
+    mTokenCode = goil_lexique_1__5B_ ;
+  }else if (scanningOk && [self testForInputString:@"=" advance:YES]) {
+    mTokenCode = goil_lexique_1__3D_ ;
+  }else if (scanningOk && [self testForInputString:@";" advance:YES]) {
+    mTokenCode = goil_lexique_1__3B_ ;
+  }else if (scanningOk && [self testForInputString:@":" advance:YES]) {
+    mTokenCode = goil_lexique_1__3A_ ;
+  }else if (scanningOk && [self testForInputString:@"." advance:YES]) {
+    mTokenCode = goil_lexique_1__2E_ ;
+  }else if (scanningOk && [self testForInputString:@"-" advance:YES]) {
+    mTokenCode = goil_lexique_1__2D_ ;
+  }else if (scanningOk && [self testForInputString:@"," advance:YES]) {
+    mTokenCode = goil_lexique_1__2C_ ;
+  }else if (scanningOk && [self testForInputString:@"+" advance:YES]) {
+    mTokenCode = goil_lexique_1__2B_ ;
+  }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
+  }else if (scanningOk && ([self testForInputChar:34])) {
+    do {
+      if (scanningOk && ([self testForInputChar:92])) {
+        if (scanningOk && ([self testForInputChar:34])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 34) ;
+        }else if (scanningOk && ([self testForInputChar:92])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 92) ;
+        }else if (scanningOk && ([self testForInputChar:110])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 10) ;
+        }else if (scanningOk && ([self testForInputChar:114])) {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 13) ;
+        }else{
+          scanningOk = NO ;
+        }
+      }else if (scanningOk && ([self testForInputFromChar:32 toChar:33] || [self testForInputFromChar:35 toChar:65533])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (scanningOk && ([self testForInputChar:34])) {
+      mTokenCode = goil_lexique_1_string ;
+    }else{
+      scanningOk = NO ;
+    }
+  }else if (scanningOk && ([self testForInputChar:39])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:32 toChar:38] || [self testForInputFromChar:40 toChar:65533])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (scanningOk && ([self testForInputChar:39])) {
+      mTokenCode = goil_lexique_1_string ;
+    }else{
+      scanningOk = NO ;
+    }
+  }else if (scanningOk && ([self testForInputChar:60])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:32 toChar:61] || [self testForInputFromChar:63 toChar:65533])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (scanningOk && ([self testForInputChar:62])) {
+      mTokenCode = goil_lexique_1_g_5F_string ;
+    }else{
+      scanningOk = NO ;
+    }
+  }else if (scanningOk && ([self testForInputString:@"0x" advance:YES] || [self testForInputString:@"0X" advance:YES])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
+        scanner_cocoa_routine_enterHexDigitIntoUInt64 (& scanningOk, mPreviousChar, & mLexicalAttribute_integerNumber) ;
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    mTokenCode = goil_lexique_1_uint_5F_number ;
+  }else if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+    do {
+      scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_number, mPreviousChar) ;
+      scanner_cocoa_routine_enterDigitIntoUInt64 (& scanningOk, mPreviousChar, & mLexicalAttribute_integerNumber) ;
+      if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (scanningOk && ([self testForInputChar:46])) {
+      if (scanningOk && ([self testForInputChar:46])) {
+        mTokenCode = goil_lexique_1_set_5F_start_5F_uint_5F_number ;
+      }else{
+        do {
+          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_number, mPreviousChar) ;
+          if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
+          }else{
+            loop = NO ;
+          }
+        }while (loop && scanningOk) ;
+        loop = YES ;
+        scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_number, & mLexicalAttribute_floatNumber) ;
+        mTokenCode = goil_lexique_1_float_5F_number ;
+      }
+    }else{
+      mTokenCode = goil_lexique_1_uint_5F_number ;
+    }
+  }else if (scanningOk && ([self testForInputChar:35])) {
+    do {
+      if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
+        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_att_token, mPreviousChar) ;
+      }else{
+        loop = NO ;
+      }
+    }while (loop && scanningOk) ;
+    loop = YES ;
+    if (mTokenCode == 0) {
+      mTokenCode = search_into_goil_5F_lexique_commands (mLexicalAttribute_att_token) ;
+    }
+    if (mTokenCode == 0) {
+      mTokenCode = goil_lexique_1_command ;
+    }
+  }else   if ([self testForInputChar:'\0']) { // End of source text ?
+    mTokenCode = goil_lexique_1_ ; // Empty string code
+  }else{ // Unknown input character
+    scanningOk = NO ;
+    [self advance] ;
+  }
+  return scanningOk ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//               P A R S E    L E X I C A L    T O K E N
 //
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) parseLexicalTokenForLexicalColoring {
-  mLoop = YES ;
   BOOL scanningOk = YES ;
   mTokenCode = 0 ;
   while ((mTokenCode == 0) && (mCurrentChar != '\0')) {
-    mTokenStartLocation = mCurrentLocation ;
-    [mLexicalAttribute_a_string setString:@""] ;
-    [mLexicalAttribute_att_token setString:@""] ;
-    mLexicalAttribute_floatNumber = 0.0 ;
-    mLexicalAttribute_integerNumber = 0 ;
-    [mLexicalAttribute_number setString:@""] ;
-    mTokenStartLocation = mCurrentLocation ;
-    if (scanningOk && ([self testForInputString:@"//" advance:YES])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:1 toChar:9] || [self testForInputChar:11] || [self testForInputChar:12] || [self testForInputFromChar:14 toChar:65533])) {
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      mTokenCode = goil_lexique_1_comment ;
-    }else if (scanningOk && ([self testForInputString:@"/*" advance:YES])) {
-      do {
-        if (scanningOk && ([self notTestForInputString:@"*/" error:& scanningOk])) {
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      mTokenCode = goil_lexique_1_comment ;
-    }else if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
-      do {
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_att_token, mPreviousChar) ;
-        if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_goil_5F_lexique_oilVersion (mLexicalAttribute_att_token) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_goil_5F_lexique_oilDefinitions (mLexicalAttribute_att_token) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_goil_5F_lexique_dataTypes (mLexicalAttribute_att_token) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_goil_5F_lexique_miscSpecifiers (mLexicalAttribute_att_token) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_goil_5F_lexique_boolean (mLexicalAttribute_att_token) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = goil_lexique_1_idf ;
-      }
-    }else if (scanningOk && [self testForInputString:@".." advance:YES]) {
-      mTokenCode = goil_lexique_1__2E__2E_ ;
-    }else if (scanningOk && [self testForInputString:@"}" advance:YES]) {
-      mTokenCode = goil_lexique_1__7D_ ;
-    }else if (scanningOk && [self testForInputString:@"{" advance:YES]) {
-      mTokenCode = goil_lexique_1__7B_ ;
-    }else if (scanningOk && [self testForInputString:@"]" advance:YES]) {
-      mTokenCode = goil_lexique_1__5D_ ;
-    }else if (scanningOk && [self testForInputString:@"[" advance:YES]) {
-      mTokenCode = goil_lexique_1__5B_ ;
-    }else if (scanningOk && [self testForInputString:@"=" advance:YES]) {
-      mTokenCode = goil_lexique_1__3D_ ;
-    }else if (scanningOk && [self testForInputString:@";" advance:YES]) {
-      mTokenCode = goil_lexique_1__3B_ ;
-    }else if (scanningOk && [self testForInputString:@":" advance:YES]) {
-      mTokenCode = goil_lexique_1__3A_ ;
-    }else if (scanningOk && [self testForInputString:@"." advance:YES]) {
-      mTokenCode = goil_lexique_1__2E_ ;
-    }else if (scanningOk && [self testForInputString:@"-" advance:YES]) {
-      mTokenCode = goil_lexique_1__2D_ ;
-    }else if (scanningOk && [self testForInputString:@"," advance:YES]) {
-      mTokenCode = goil_lexique_1__2C_ ;
-    }else if (scanningOk && [self testForInputString:@"+" advance:YES]) {
-      mTokenCode = goil_lexique_1__2B_ ;
-    }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
-    }else if (scanningOk && ([self testForInputChar:34])) {
-      do {
-        if (scanningOk && ([self testForInputChar:92])) {
-          if (scanningOk && ([self testForInputChar:34])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 34) ;
-          }else if (scanningOk && ([self testForInputChar:92])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 92) ;
-          }else if (scanningOk && ([self testForInputChar:110])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 10) ;
-          }else if (scanningOk && ([self testForInputChar:114])) {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 13) ;
-          }else{
-            scanningOk = NO ;
-          }
-        }else if (scanningOk && ([self testForInputFromChar:32 toChar:33] || [self testForInputFromChar:35 toChar:65533])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (scanningOk && ([self testForInputChar:34])) {
-        mTokenCode = goil_lexique_1_string ;
-      }else{
-        scanningOk = NO ;
-      }
-    }else if (scanningOk && ([self testForInputChar:39])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:32 toChar:38] || [self testForInputFromChar:40 toChar:65533])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (scanningOk && ([self testForInputChar:39])) {
-        mTokenCode = goil_lexique_1_string ;
-      }else{
-        scanningOk = NO ;
-      }
-    }else if (scanningOk && ([self testForInputChar:60])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:32 toChar:61] || [self testForInputFromChar:63 toChar:65533])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (scanningOk && ([self testForInputChar:62])) {
-        mTokenCode = goil_lexique_1_g_5F_string ;
-      }else{
-        scanningOk = NO ;
-      }
-    }else if (scanningOk && ([self testForInputString:@"0x" advance:YES] || [self testForInputString:@"0X" advance:YES])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
-          scanner_cocoa_routine_enterHexDigitIntoUInt64 (& scanningOk, mPreviousChar, & mLexicalAttribute_integerNumber) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      mTokenCode = goil_lexique_1_uint_5F_number ;
-    }else if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-      do {
-        scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_number, mPreviousChar) ;
-        scanner_cocoa_routine_enterDigitIntoUInt64 (& scanningOk, mPreviousChar, & mLexicalAttribute_integerNumber) ;
-        if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (scanningOk && ([self testForInputChar:46])) {
-        if (scanningOk && ([self testForInputChar:46])) {
-          mTokenCode = goil_lexique_1_set_5F_start_5F_uint_5F_number ;
-        }else{
-          do {
-            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_number, mPreviousChar) ;
-            if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
-            }else{
-              mLoop = NO ;
-            }
-          }while (mLoop && scanningOk) ;
-          mLoop = YES ;
-          scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_number, & mLexicalAttribute_floatNumber) ;
-          mTokenCode = goil_lexique_1_float_5F_number ;
-        }
-      }else{
-        mTokenCode = goil_lexique_1_uint_5F_number ;
-      }
-    }else if (scanningOk && ([self testForInputChar:35])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_att_token, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (mTokenCode == 0) {
-        mTokenCode = search_into_goil_5F_lexique_commands (mLexicalAttribute_att_token) ;
-      }
-      if (mTokenCode == 0) {
-        mTokenCode = goil_lexique_1_command ;
-      }
-    }else if ([self testForInputChar:'\0']) { // End of source text ? 
-      mTokenCode = goil_lexique_1_ ; // Empty string code
-    }else{ // Unknown input character
-      scanningOk = NO ;
-      [self advance] ;
-    }
-  //--- Error ?
-    if (! scanningOk) {
-      mTokenCode = -1 ;
-    }
+    scanningOk = [self internalParseLexicalTokenForLexicalColoring] ;
+  }
+//--- Error ?
+  if (! scanningOk) {
+    mTokenCode = -1 ;
   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                   T E R M I N A L    C O U N T                                                
+//                   T E R M I N A L    C O U N T
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -398,7 +405,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                     S T Y L E   C O U N T                                                     
+//                     S T Y L E   C O U N T
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -408,7 +415,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//                I S    T E M P L A T E    L E X I Q U E                                        
+//                I S    T E M P L A T E    L E X I Q U E
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -418,7 +425,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//   S T Y L E   I N D E X    F O R    T E R M I N A L                                           
+//   S T Y L E   I N D E X    F O R    T E R M I N A L
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -470,7 +477,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//    A T O M I C    S E L E C T I O N   F O R    T E R M I N A L                                
+//    A T O M I C    S E L E C T I O N   F O R    T E R M I N A L
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -522,7 +529,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//             S T Y L E   N A M E    F O R    I N D E X                                         
+//             S T Y L E   N A M E    F O R    I N D E X
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -548,7 +555,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         S T Y L E   I D E N T I F I E R    F O R    I N D E X                                 
+//         S T Y L E   I D E N T I F I E R    F O R    I N D E X
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -574,7 +581,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-//         L E X I Q U E   I D E N T I F I E R                                                   
+//         L E X I Q U E   I D E N T I F I E R
 //
 //----------------------------------------------------------------------------------------------------------------------
 

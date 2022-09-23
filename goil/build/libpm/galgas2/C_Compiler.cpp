@@ -376,7 +376,13 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
       if (UNICODE_VALUE (c) == 'K') {
         message << key ;
       }else if (UNICODE_VALUE (c) == 'L') {
-        message << inExistingKeyLocation.getter_locationString (this COMMA_THERE) ; // §§
+        if (!inExistingKeyLocation.isValid ()) {
+          message << "<<unknown>>" ;
+        }else if (inExistingKeyLocation.getter_isNowhere (HERE).boolEnum () == kBoolTrue) {
+          message << "<<unknown>>" ;
+        }else{
+          message << inExistingKeyLocation.getter_locationString (this COMMA_THERE) ;
+        }
       }
       perCentFound = false ;
     }else if (UNICODE_VALUE (c) == '%') {
@@ -408,7 +414,7 @@ void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
       if (UNICODE_VALUE (c) == 'K') {
         message << key ;
       }else if (UNICODE_VALUE (c) == 'L') {
-        message << inExistingKeyLocation.getter_locationString (this COMMA_THERE) ; // §§
+        message << inExistingKeyLocation.getter_locationString (this COMMA_THERE) ;
       }
       perCentFound = false ;
     }else if (UNICODE_VALUE (c) == '%') {

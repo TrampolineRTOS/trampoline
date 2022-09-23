@@ -33,30 +33,30 @@ class GALGAS_uint ;
 
 class cEnumerator_range {
 //--- Constructor
-  public : cEnumerator_range (const GALGAS_range & inEnumeratedRange,
+  public: cEnumerator_range (const GALGAS_range & inEnumeratedRange,
                               const typeEnumerationOrder inOrder) ;
 
 //--- Virtual destructor
-  public : virtual ~ cEnumerator_range (void) ;
+  public: virtual ~ cEnumerator_range (void) ;
 
 //--- No copy
-  private : cEnumerator_range (const cEnumerator_range &) ;
-  private : cEnumerator_range & operator = (const cEnumerator_range &) ;
+  private: cEnumerator_range (const cEnumerator_range &) ;
+  private: cEnumerator_range & operator = (const cEnumerator_range &) ;
 
 //--- 
-  public : bool hasCurrentObject (void) const ;
-  public : bool hasNextObject (void) const ;
-  public : void gotoNextObject (void) ;
+  public: bool hasCurrentObject (void) const ;
+  public: bool hasNextObject (void) const ;
+  public: void gotoNextObject (void) ;
 
 //--- Current element access
-  public : GALGAS_uint current (LOCATION_ARGS) const ;
+  public: GALGAS_uint current (LOCATION_ARGS) const ;
 
 //---- Attributes
-  private : const bool mIsValid ;
-  private : const bool mAscending ;
-  private : const int64_t mStart ;
-  private : const int64_t mLength ;
-  private : int64_t mCurrent ;
+  private: const bool mIsValid ;
+  private: const bool mAscending ;
+  private: const int64_t mStart ;
+  private: const int64_t mLength ;
+  private: int64_t mCurrent ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

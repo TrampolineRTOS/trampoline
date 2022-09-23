@@ -35,22 +35,22 @@
 
 class capCollectionRoot : public C_SharedObject {
 //--- Default constructor
-  public : capCollectionRoot (void) ;
+  public: capCollectionRoot (void) ;
   
 //--- Special copy constructor
-  public : capCollectionRoot (const capCollectionRoot * inSource) ;
+  public: capCollectionRoot (const capCollectionRoot * inSource) ;
   
 //--- Destructor
-  public : virtual ~ capCollectionRoot (void) ;
+  public: virtual ~ capCollectionRoot (void) ;
 
 //--- No copy
-  private : capCollectionRoot (const capCollectionRoot &) ;
-  private : capCollectionRoot & operator = (const capCollectionRoot &) ;
+  private: capCollectionRoot (const capCollectionRoot &) ;
+  private: capCollectionRoot & operator = (const capCollectionRoot &) ;
   
 //--- Private properties
-  private : capCollectionElement * mArray ;
-  private : uint32_t mCapacity ;
-  private : uint32_t mCount ;
+  private: capCollectionElement * mArray ;
+  private: uint32_t mCapacity ;
+  private: uint32_t mCount ;
 
 //--- Friend
   friend class capCollectionElementArray ;

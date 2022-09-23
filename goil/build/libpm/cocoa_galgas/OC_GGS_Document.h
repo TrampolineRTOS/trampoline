@@ -37,7 +37,8 @@
 @interface OC_GGS_Document : NSDocument <NSTextViewDelegate,
                                          NSSplitViewDelegate,
                                          NSWindowDelegate,
-                                         NSTableViewDataSource> {
+                                         NSTableViewDataSource,
+                                         NSFilePresenter> {
   @private IBOutlet NSSplitView * mFirstSplitView ;
   @private IBOutlet NSSplitView * mSecondSplitView ;
 
@@ -101,7 +102,7 @@
 
   @private NSString * mBaseFilePreferenceKey ;
   
-  @private BOOL mHasSpoken ;
+//  @private BOOL mHasSpoken ;
 }
 
 @property (assign, atomic) BOOL mBuildTaskIsRunning ;

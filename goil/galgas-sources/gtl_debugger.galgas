@@ -29,7 +29,7 @@ func signature
   ->@string result
 {
   if [option gtl_options.debug value] then
-    @string signatureString =
+    let @string signatureString =
       [[loc file] lastPathComponent]
       + ":"
       + [loc line]
@@ -69,7 +69,7 @@ method @string loadCommandFile
   # Look for a .gtlinit file
   if [self fileExists] then
     message "loading file " + self + "\n"
-    @stringlist commands = [@string.stringWithContentsOfFile{ !self }
+    let @stringlist commands = [@string.stringWithContentsOfFile{ !self }
       componentsSeparatedByString !"\n"]
 
     @string whatInFile = ""
@@ -81,7 +81,7 @@ method @string loadCommandFile
       for (input) in commands do
         if [input stringByTrimmingWhiteSpaces] != "" then
           grammar gtl_debugger_grammar on ( input, "Debugger command" )
-            ?@gtlInstruction command
+            ?let @gtlInstruction command
           message [[context debuggerContext] instructionColor]
                 + [[context debuggerContext] instructionFace]
           [command display]
@@ -135,9 +135,9 @@ setter @debuggerContext deleteStepDoInstruction
   ?let @lbigint numToDelete
 {
   if [numToDelete bigint] <= [@uint.max bigint] then
-    @uint numToDeleteUInt = [numToDelete uint]
+    let @uint numToDeleteUInt = [numToDelete uint]
     if numToDeleteUInt < [doList length] then
-      [!?doList removeAtIndex ?@gtlInstruction instruction !numToDeleteUInt]
+      [!?doList removeAtIndex ?let @gtlInstruction instruction !numToDeleteUInt]
       message "Command: "
       message instructionColor + instructionFace
       [instruction display]
@@ -181,7 +181,7 @@ setter @debuggerContext setBreakpoint
   ?let @string fileName
   ?let @uint   lineNum
 {
-  @string signature = [fileName + ":" + lineNum md5]
+  let @string signature = [fileName + ":" + lineNum md5]
   @bool notThere = true
   for (bp) in breakpoints do
     if [bp signature] == signature then 
@@ -215,9 +215,9 @@ setter @debuggerContext deleteBreakpoint
   ?let @lbigint numToDelete
 {
   if [numToDelete bigint] <= [@uint.max bigint] then
-    @uint numToDeleteUInt = [numToDelete uint]
+    let @uint numToDeleteUInt = [numToDelete uint]
     if numToDeleteUInt < [breakpoints length] then
-      [!?breakpoints removeAtIndex ?@gtlBreakpoint bp !numToDeleteUInt]
+      [!?breakpoints removeAtIndex ?let @gtlBreakpoint bp !numToDeleteUInt]
       message "Breakpoint: "
       message instructionColor + instructionFace
       message [bp fileName] + ":" + [bp lineNum]
@@ -268,9 +268,9 @@ setter @debuggerContext deleteWatchpoint
   ?let @lbigint numToDelete
 {
   if [numToDelete bigint] <= [@uint.max bigint] then
-    @uint numToDeleteUInt = [numToDelete uint]
+    let @uint numToDeleteUInt = [numToDelete uint]
     if numToDeleteUInt < [watchpoints length] then
-      [!?watchpoints removeAtIndex ?@gtlExpression wp !numToDeleteUInt]
+      [!?watchpoints removeAtIndex ?let @gtlExpression wp !numToDeleteUInt]
       message "Watchpoint: "
       message instructionColor + instructionFace
       message [wp stringRepresentation]
@@ -314,9 +314,9 @@ getter @debuggerContext watchOn
 {
   watchOn = false
   for (wp) in watchpoints do
-    @gtlData watchResult = [wp eval !context !vars !lib]
+    let @gtlData watchResult = [wp eval !context !vars !lib]
     if watchResult is == @gtlBool then
-      @bool matchWatch = [watchResult as @gtlBool value]
+      let @bool matchWatch = [watchResult as @gtlBool value]
       if matchWatch then
         message outputColor + outputFace
         message "match "
@@ -341,9 +341,9 @@ method @debuggerContext hereWeAre
     indentation = indentation + 4
   end
 
-  @string identationString = .stringWithSequenceOfCharacters{ !' ' !indentation }
-  @uint startIndex
-  @uint displayLength
+  let @string identationString = .stringWithSequenceOfCharacters{ !' ' !indentation }
+  let @uint startIndex
+  let @uint displayLength
 
   if nextInstructionIndex >= window then
     startIndex = nextInstructionIndex - window
@@ -1117,7 +1117,7 @@ getter @gtlArgumentList stringRepresentation
 getter @lsint stringRepresentation
   ->@string result
 {
-  result = if 0S < self then "<" else ">" end
+  result = if 0 < [self bigint] then "<" else ">" end
 }
 
 #=============================================================================*
@@ -1267,7 +1267,7 @@ override method @gtlLoopStatementInstruction display
     + identifier
     + " from "
     + [start stringRepresentation]
-    + if upDown == -1S then " down" else "" end
+    + if upDown == -1 then " down" else "" end
     + " to "
     + [stop stringRepresentation]
     + " step "

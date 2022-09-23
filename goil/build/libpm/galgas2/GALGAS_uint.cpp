@@ -100,9 +100,9 @@ void GALGAS_uint::class_method_setRandomSeed (class GALGAS_uint inSeed
 
 GALGAS_uint GALGAS_uint::constructor_random (UNUSED_LOCATION_ARGS) {
   #if COMPILE_FOR_WINDOWS == 1
-    return GALGAS_uint ((uint32_t) rand ()) ;
+    return GALGAS_uint (uint32_t (rand ())) ;
   #else
-    return GALGAS_uint ((uint32_t) random ()) ;
+    return GALGAS_uint (uint32_t (random ())) ;
   #endif
 }
 
@@ -115,13 +115,13 @@ GALGAS_uint GALGAS_uint::constructor_max (UNUSED_LOCATION_ARGS) {
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_uint::constructor_errorCount (UNUSED_LOCATION_ARGS) {
-  return GALGAS_uint ((uint32_t) totalErrorCount ()) ;
+  return GALGAS_uint (uint32_t (totalErrorCount ())) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_uint::constructor_warningCount (UNUSED_LOCATION_ARGS) {
-  return GALGAS_uint ((uint32_t) totalWarningCount ()) ;
+  return GALGAS_uint (uint32_t (totalWarningCount ())) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -139,7 +139,7 @@ GALGAS_uint GALGAS_uint::constructor_valueWithMask (const GALGAS_uint & inLowerI
     }else if (upperIndex > 31) {
       inCompiler->onTheFlyRunTimeError ("upper index greater than 31" COMMA_THERE) ;
     }else{
-      const uint32_t value = (uint32_t) (((1 << (upperIndex + 1)) - 1) & ~ ((1 << lowerIndex) - 1)) ;
+      const uint32_t value = uint32_t (((1 << (upperIndex + 1)) - 1) & ~ ((1 << lowerIndex) - 1)) ;
       result = GALGAS_uint (value) ;
     }
   }
@@ -249,7 +249,7 @@ GALGAS_bool GALGAS_uint::getter_isInRange (const GALGAS_range & inRange
 GALGAS_sint GALGAS_uint::getter_sint (C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) const {
   GALGAS_sint result ;
-  if (mUIntValue > ((uint32_t) INT32_MAX)) {
+  if (mUIntValue > (uint32_t (INT32_MAX))) {
     inCompiler->onTheFlyRunTimeError ("@uint to signed value conversion overflow" COMMA_THERE) ;
   }else{
     result = GALGAS_sint ((int32_t) mUIntValue) ;

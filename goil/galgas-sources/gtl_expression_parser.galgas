@@ -36,12 +36,12 @@ rule <gtl_expression>
   <gtl_relation_term> ?expression
   repeat
   while
-    $|$ @location opLocation = .here
-    <gtl_relation_term> ?@gtlExpression rightSon
+    $|$ let @location opLocation = .here
+    <gtl_relation_term> ?let @gtlExpression rightSon
     expression = @gtlOrExpression.new { !opLocation !expression !rightSon }
   while
-    $^$ @location opLocation = .here
-    <gtl_relation_term> ?@gtlExpression rightSon
+    $^$ let @location opLocation = .here
+    <gtl_relation_term> ?let @gtlExpression rightSon
     expression = @gtlXorExpression.new { !opLocation !expression !rightSon }
   end
 }
@@ -56,8 +56,8 @@ rule <gtl_relation_term>
   <gtl_relation_factor> ?expression
   repeat
   while
-    $&$ @location opLocation = .here
-    <gtl_relation_factor> ?@gtlExpression rightSon
+    $&$ let @location opLocation = .here
+    <gtl_relation_factor> ?let @gtlExpression rightSon
     expression = @gtlAndExpression.new { !opLocation !expression !rightSon }
   end
 }
@@ -72,38 +72,38 @@ rule <gtl_relation_factor>
   <gtl_simple_expression> ?expression
   select
   or
-    $==$ @location opLocation = .here
-    <gtl_simple_expression> ?@gtlExpression rightSon
+    $==$ let @location opLocation = .here
+    <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $!=$ @location opLocation = .here
-    <gtl_simple_expression> ?@gtlExpression rightSon
+    $!=$ let @location opLocation = .here
+    <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlNotEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $<=$ @location opLocation = .here
-    <gtl_simple_expression> ?@gtlExpression rightSon
+    $<=$ let @location opLocation = .here
+    <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlLowerOrEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $>=$ @location opLocation = .here
-    <gtl_simple_expression> ?@gtlExpression rightSon
+    $>=$ let @location opLocation = .here
+    <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlGreaterOrEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $>$ @location opLocation = .here
-    <gtl_simple_expression> ?@gtlExpression rightSon
+    $>$ let @location opLocation = .here
+    <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlGreaterThanExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $<$ @location opLocation = .here
-    <gtl_simple_expression> ?@gtlExpression rightSon
+    $<$ let @location opLocation = .here
+    <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlLowerThanExpression.new {
       !opLocation !expression !rightSon
     }
@@ -120,35 +120,35 @@ rule <gtl_simple_expression>
   <gtl_term> ?expression
   repeat
   while 
-    $<<$ @location opLocation = .here
-    <gtl_term> ?@gtlExpression rightSon
+    $<<$ let @location opLocation = .here
+    <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlShiftLeftExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $>>$ @location opLocation = .here
-    <gtl_term> ?@gtlExpression rightSon
+    $>>$ let @location opLocation = .here
+    <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlShiftRightExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $+$ @location opLocation = .here
-    <gtl_term> ?@gtlExpression rightSon
+    $+$ let @location opLocation = .here
+    <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlAddExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $.$ @location opLocation = .here
+    $.$ let @location opLocation = .here
     if [option gtl_options.warnDeprecated value] then
       warning opLocation : "'.' operator is deprecated" fixit { replace "+" }
     end
-    <gtl_term> ?@gtlExpression rightSon
+    <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlAddExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $-$ @location opLocation = .here
-    <gtl_term> ?@gtlExpression rightSon
+    $-$ let @location opLocation = .here
+    <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlSubstractExpression.new {
       !opLocation !expression !rightSon
     }
@@ -165,20 +165,20 @@ rule <gtl_term>
   <gtl_factor> ?expression
   repeat
   while 
-    $*$ @location opLocation = .here
-    <gtl_factor> ?@gtlExpression rightSon
+    $*$ let @location opLocation = .here
+    <gtl_factor> ?let @gtlExpression rightSon
     expression = @gtlMultiplyExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $/$ @location opLocation = .here
-    <gtl_factor> ?@gtlExpression rightSon
+    $/$ let @location opLocation = .here
+    <gtl_factor> ?let @gtlExpression rightSon
     expression = @gtlDivideExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $mod$ @location opLocation = .here
-    <gtl_factor> ?@gtlExpression rightSon
+    $mod$ let @location opLocation = .here
+    <gtl_factor> ?let @gtlExpression rightSon
     expression = @gtlModulusExpression.new {
       !opLocation !expression !rightSon
     }
@@ -192,8 +192,8 @@ rule <gtl_term>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $($ @location opLocation = .here
-  <gtl_expression> ?@gtlExpression factorExpression
+  $($ let @location opLocation = .here
+  <gtl_expression> ?let @gtlExpression factorExpression
   expression = @gtlParenthesizedExpression.new {
     !opLocation
     !factorExpression
@@ -208,8 +208,8 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $not$ @location opLocation = .here
-  <gtl_factor> ?@gtlExpression notExpression
+  $not$ let @location opLocation = .here
+  <gtl_factor> ?let @gtlExpression notExpression
   expression = @gtlNotExpression.new { !opLocation !notExpression }
 }
 
@@ -220,8 +220,8 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $~$ @location opLocation = .here
-  <gtl_factor> ?@gtlExpression notExpression
+  $~$ let @location opLocation = .here
+  <gtl_factor> ?let @gtlExpression notExpression
   expression = @gtlNotExpression.new { !opLocation !notExpression }
 }
 
@@ -232,8 +232,8 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $-$ @location opLocation = .here
-  <gtl_factor> ?@gtlExpression minusExpression
+  $-$ let @location opLocation = .here
+  <gtl_factor> ?let @gtlExpression minusExpression
   expression = @gtlMinusExpression.new { !opLocation !minusExpression }
 }
 
@@ -244,8 +244,8 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $+$ @location opLocation = .here
-  <gtl_factor> ?@gtlExpression plusExpression
+  $+$ let @location opLocation = .here
+  <gtl_factor> ?let @gtlExpression plusExpression
   expression = @gtlPlusExpression.new { !opLocation !plusExpression }
 }
 
@@ -256,7 +256,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $yes$ @location opLocation = .here
+  $yes$ let @location opLocation = .here
   expression = @gtlTerminal.new{
     !opLocation !@gtlBool.new { !opLocation !emptylstring() !true }
   }
@@ -336,7 +336,7 @@ rule <gtl_factor>
   !@gtlExpression expression
 {
   $[$
-  <gtl_expression> ?@gtlExpression target
+  <gtl_expression> ?let @gtlExpression target
   $identifier$ ?let @lstring getterName
   if [option gtl_options.warnDeprecated value] then
     if "stringByCapitalizingFirstCharacter" == getterName then
@@ -349,7 +349,7 @@ rule <gtl_factor>
   or
     $:$
     repeat
-      <gtl_expression> ?@gtlExpression argument
+      <gtl_expression> ?let @gtlExpression argument
       argumentList += !argument
     while
       $,$
@@ -380,14 +380,14 @@ rule <gtl_factor>
     $($
     select
       repeat
-        <gtl_expression> ?@gtlExpression expression
+        <gtl_expression> ?let @gtlExpression expression
         functionArguments += !expression
       while
         $,$
       end
     or end
     $)$
-    @lstring functionName = [path pathAsFunctionName]
+    let @lstring functionName = [path pathAsFunctionName]
     expression = @gtlFunctionCallExpression.new {
       !.here
       !functionName
@@ -405,7 +405,7 @@ rule <gtl_factor>
   select
     $default$
     $($
-    <gtl_expression> ?@gtlExpression defaultExpression
+    <gtl_expression> ?let @gtlExpression defaultExpression
     $)$
     expression = @gtlExistsDefaultExpression.new {
       !.here !path !defaultExpression
@@ -478,8 +478,8 @@ rule <gtl_factor>
   !@gtlExpression expression
 {
   $@$ $identifier$ ?let @lstring typeName
-  @string name = [typeName string]
-  @gtlType type
+  let @string name = [typeName string]
+  let @gtlType type
   if    name == "int"    then
     type = .new { ![typeName location] !emptylstring() !`@gtlInt }
   elsif name == "float"  then
@@ -553,10 +553,10 @@ rule <gtl_factor>
   !@gtlExpression expression
 {
   $mapof$
-  <gtl_expression> ?@gtlExpression data
+  <gtl_expression> ?let @gtlExpression data
   select
     $by$
-    $identifier$ ?var @lstring key
+    $identifier$ ?let @lstring key
     expression = @gtlMapOfListExpression.new {
       !.here
       !data
@@ -591,7 +591,7 @@ rule <gtl_factor>
   @gtlExpressionList expressionList = .emptyList
   select
     repeat
-      <gtl_expression> ?@gtlExpression listItem
+      <gtl_expression> ?let @gtlExpression listItem
       expressionList += !listItem
     while $,$
     end
@@ -612,7 +612,7 @@ rule <gtl_factor>
     repeat
       $string$ ?let @lstring key
       $:$
-      <gtl_expression> ?@gtlExpression mapItem
+      <gtl_expression> ?let @gtlExpression mapItem
       [!?expressionMap put !key !mapItem]
     while $,$
     end
@@ -633,7 +633,7 @@ rule <gtl_factor>
     repeat
       $identifier$ ?let @lstring fieldName
       $:$
-      <gtl_expression> ?@gtlExpression structField
+      <gtl_expression> ?let @gtlExpression structField
       [!?expressionMap put !fieldName !structField]
     while $,$
     end
@@ -652,7 +652,7 @@ rule <gtl_factor>
   @gtlExpressionList expressionList = .emptyList
   select
     repeat
-      <gtl_expression> ?@gtlExpression setElement
+      <gtl_expression> ?let @gtlExpression setElement
       expressionList += !setElement
     while $,$
     end
@@ -668,7 +668,7 @@ rule <gtl_factor>
   !@gtlExpression expression
 {
   $@?$
-  <gtl_expression> ?@gtlExpression exp
+  <gtl_expression> ?let @gtlExpression exp
   $?$
   expression = @gtlTerminal.new { !.here !@gtlExpr.new { !.here !emptylstring() !exp } }
 }
@@ -689,7 +689,7 @@ rule <gtl_variable>
 {
   path = .emptyList
   repeat
-    $identifier$ ?var @lstring variableName
+    $identifier$ ?let @lstring variableName
     select
       $[$
       <gtl_expression> ?let @gtlExpression expression

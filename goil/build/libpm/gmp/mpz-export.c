@@ -53,7 +53,7 @@ mpz_export (void *data, size_t *countp, int order,
   mp_srcptr      zp;
   size_t         count, dummy;
   unsigned long  numbx;
-  unsigned       align;
+  unsigned long  align; // unsigned -> unsigned long by PM (may 11, 2022)
 
   ASSERT (order == 1 || order == -1);
   ASSERT (endian == 1 || endian == 0 || endian == -1);
@@ -82,7 +82,8 @@ mpz_export (void *data, size_t *countp, int order,
   if (endian == 0)
     endian = HOST_ENDIAN;
 
-  align = (unsigned) ((char *) data - (char *) NULL) % sizeof (mp_limb_t); // (unsigned) added by PM
+//  align = (unsigned) ((char *) data - (char *) NULL) % sizeof (mp_limb_t); // (unsigned) added by PM
+  align = (unsigned long) ((char *) data) % sizeof (mp_limb_t) ; // (char *) NULL removed by by PM (may 11, 2022)
 
   if (nail == GMP_NAIL_BITS)
     {

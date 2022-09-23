@@ -37,7 +37,7 @@ proc setDefaults
       @objectKindMap objOfKind = [objectsOfKind objects]
       for (@lstring objectName) in  [objOfKind keyList] do
         with objectName in !?objOfKind error message get  do
-          @implementationObject impObject = [imp impObject ![objectKind string]]
+          let @implementationObject impObject = [imp impObject ![objectKind string]]
           setDefaultsForType ( ![impObject attributes] !?attributes)
         end
       end

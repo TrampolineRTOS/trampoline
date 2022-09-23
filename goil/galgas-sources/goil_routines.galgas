@@ -42,7 +42,7 @@ func oil_dir -> @string dir {
 # a target architecture is the instruction set (ie ARM, PowerPC, ...)
 #
 func arch -> @string arch_name {
-  @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+  let @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
   [components first ?arch_name]
 }
 
@@ -51,7 +51,7 @@ func arch -> @string arch_name {
 # a target implementation is the kind of microcontroller (ie ARM7, ARM9, ...)
 #
 func chip -> @string chip_name {
-  @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+  let @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
   if [components length] > 1 then
     chip_name = [components mValueAtIndex !1]
   else
@@ -79,10 +79,10 @@ func board -> @string board_name {
 # targetPathList returns the target as a list of strings.
 #
 func targetPathList -> @list pathList {
-  @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+  let @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
   pathList = .emptyList
   for (@string comp) in components do
-    @gtlData cont = @gtlString.new { !.here !emptylstring() !comp }
+    let @gtlData cont = @gtlString.new { !.here !emptylstring() !comp }
     pathList += !cont
   end
 }
@@ -107,7 +107,7 @@ func rootTemplatesDirectory
   if [option goil_options.template_dir value] != "" then
     templateDirectory = [option goil_options.template_dir value]
   else
-    @string env = @string.stringWithEnvironmentVariableOrEmpty { !"GOIL_TEMPLATES"}
+    let @string env = @string.stringWithEnvironmentVariableOrEmpty { !"GOIL_TEMPLATES"}
     if env != "" then
       templateDirectory = env
     else
@@ -120,11 +120,11 @@ func rootTemplatesDirectory
 
   if [templateDirectory characterAtIndex !0] != '/' then
     if [templateDirectory characterAtIndex !0] == '~' then
-      @string home = @string.stringWithEnvironmentVariableOrEmpty { !"HOME"}
-      @string relativeToHome = [templateDirectory rightSubString ![templateDirectory length] - 1]
+      let @string home = @string.stringWithEnvironmentVariableOrEmpty { !"HOME"}
+      let @string relativeToHome = [templateDirectory rightSubString ![templateDirectory length] - 1]
       templateDirectory = home + relativeToHome
     else
-      @string currentDirectory = @string. stringWithCurrentDirectory
+      let @string currentDirectory = @string. stringWithCurrentDirectory
       templateDirectory = currentDirectory + "/" + templateDirectory
     end
     templateDirectory = [templateDirectory stringByStandardizingPath]
@@ -137,7 +137,7 @@ func templates_directory ?@string prefix -> @string temp_dir {
         temp_dir = add_path_component(!temp_dir !prefix) 
         # check the path is an absolute one
         if [temp_dir characterAtIndex !0] != '/' then
-            @string curdir = @string. stringWithCurrentDirectory
+            let @string curdir = @string. stringWithCurrentDirectory
             if [temp_dir characterAtIndex !0] == '.' & [temp_dir characterAtIndex !1] == '/' then
                 temp_dir = [[temp_dir stringByRemovingCharacterAtIndex !0] stringByRemovingCharacterAtIndex !0]
             end
@@ -156,14 +156,14 @@ func templateFilePath
   ?let @string file
   ->@string path {
   @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
-  @string templateDir = templates_directory(!prefix)
+  let @string templateDir = templates_directory(!prefix)
   @bool notFound = true
   @bool notOver = true
   path = ""
   
   loop( [components length]+1)
   while notFound & notOver do
-    @string targetPath = templateDir+@string. componentsJoinedByString { !components !"/"}+"/"+file
+    let @string targetPath = templateDir+@string. componentsJoinedByString { !components !"/"}+"/"+file
 #    message "Checking ".targetPath."\n";
     if [targetPath fileExists] then
       notFound = false
@@ -181,7 +181,7 @@ func allTemplatePaths
   ?let @string prefix
   ->@stringlist paths
 {
-  @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+  let @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
   @string partialPath = templates_directory(!prefix)
   
   paths = @stringlist. listWithValue { !partialPath }
@@ -194,13 +194,13 @@ func allTemplatePaths
 
 proc checkTemplatesPath
 {
-  @string configDir = rootTemplatesDirectory() + "/config"
+  let @string configDir = rootTemplatesDirectory() + "/config"
   if not [configDir directoryExists] then
     error @location.here: "The templates path '" + configDir + "' is not set to the templates directory"
   else
     @string partialPath = configDir
     @bool continueIt = true
-    @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+    let @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
     for (@string comp) in components do
       partialPath = partialPath + "/" + comp
       if continueIt && not [partialPath directoryExists] then
@@ -218,7 +218,7 @@ func allTemplateFilePaths
   ->@stringlist paths
 {
   @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
-  @string templateDir = templates_directory(!prefix)
+  let @string templateDir = templates_directory(!prefix)
   @bool notOver = true
   paths = @stringlist. emptyList
   
@@ -226,7 +226,7 @@ func allTemplateFilePaths
   while notOver do
     @string intermediatePath = @string. componentsJoinedByString { !components !"/"}
     if intermediatePath != "" then intermediatePath += "/" end
-    @string targetPath = templateDir+intermediatePath+file
+    let @string targetPath = templateDir+intermediatePath+file
 #    message "Checking ".targetPath."\n";
     if [targetPath fileExists] then
       paths += !targetPath
@@ -240,14 +240,14 @@ func allTemplateFilePaths
 }
 
 proc prefix ?@prefix_map p ?@string key !@string val {
-    @lstring lkey = @lstring. new { !key !@location.here}
+    let @lstring lkey = @lstring. new { !key !@location.here}
     [p prefix !lkey ?val ?*]
 }
 
 proc performReplace ?@prefix_map p ?@string key ?@string name ?!@string res {
-    @lstring lkey = @lstring. new { !key !@location.here}
-    @string prefix
-    @string tag_to_rep
+    let @lstring lkey = @lstring. new { !key !@location.here}
+    let @string prefix
+    let @string tag_to_rep
     [p prefix !lkey ?prefix ?tag_to_rep]
     res = [res stringByReplacingStringByString !tag_to_rep !prefix+name]
 }
@@ -265,9 +265,9 @@ proc do_replace_default ?!@string s ?@string o ?@string n ?@string d {
 }
 
 proc replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res {
-    @lstring lkey = @lstring. new { !key !@location.here}
+    let @lstring lkey = @lstring. new { !key !@location.here}
 #    @string prefix ;
-    @string tag_to_rep
+    let @string tag_to_rep
     [p prefix !lkey ?* ?tag_to_rep]
     res = [res stringByReplacingStringByString !tag_to_rep !name]
 }
@@ -415,18 +415,18 @@ proc add_to_stringset
 
 proc file_in_path
     ?!@lstring file_name {
-    @string include_path = @string. stringWithEnvironmentVariableOrEmpty { !"GOIL_INCLUDE_PATH"}
+    let @string include_path = @string. stringWithEnvironmentVariableOrEmpty { !"GOIL_INCLUDE_PATH"}
 
     # Append the directories along the path of 
     # the target in reverse order but after the GOIL_INCLUDE_PATH
-    @stringlist systemPaths = allTemplatePaths(!"config")
-    @stringlist includePathList
+    let @stringlist systemPaths = allTemplatePaths(!"config")
+    let @stringlist includePathList
     if (include_path != "") then
       includePathList = [include_path componentsSeparatedByString !":"]
     else
       includePathList = @stringlist.emptyList
     end
-    @stringlist path_list = includePathList + systemPaths
+    let @stringlist path_list = includePathList + systemPaths
 
     @bool not_found = true
     for (@string path) in  path_list do
@@ -475,8 +475,8 @@ proc add_lstring_unique
   ?!@lstringlist l
   ?@lstring e
   ?@string att {
-  @bool found
-  @lstring res
+  let @bool found
+  let @lstring res
   is_in_lstringlist ( !l !e ?res ?found )
   if found then
     error e : att+" "+[e string]+" has already be listed"

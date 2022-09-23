@@ -84,10 +84,10 @@
       const NSPoint p = [self convertPoint:NSMakePoint (0.0, NSMidY (r) - 8.0) fromView:textView] ;
       const NSRect rImage = {{4.0, p.y}, {16.0, 16.0}} ;
       [issue.isError ? errorImage : warningImage
-        drawInRect:rImage
-        fromRect:NSZeroRect
-        operation:NSCompositeSourceOver
-        fraction:1.0
+        drawInRect: rImage
+        fromRect: NSZeroRect
+        operation: NSCompositeSourceOver
+        fraction: 1.0
       ] ;
     }
   }

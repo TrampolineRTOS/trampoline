@@ -41,7 +41,7 @@ func invokeGTL
   end
   
   # Build a template instruction
-  @gtlTemplateInstruction rootTemplateInstruction = .new {
+  let @gtlTemplateInstruction rootTemplateInstruction = .new {
     !.here
     !""
     !emptylstring()          # empty prefix

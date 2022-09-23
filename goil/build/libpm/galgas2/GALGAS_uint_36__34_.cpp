@@ -580,7 +580,7 @@ GALGAS_uint GALGAS_uint_36__34_::getter_uint (C_Compiler * inCompiler
   if (mUInt64Value > ((uint64_t) UINT32_MAX)) {
     inCompiler->onTheFlyRunTimeError ("64-bit unsigned value to 32-bit unsigned value conversion overflow" COMMA_THERE) ;
   }else{
-    result = GALGAS_uint ((uint32_t) (mUInt64Value & UINT32_MAX)) ;
+    result = GALGAS_uint (uint32_t (mUInt64Value & UINT32_MAX)) ;
   }
   return result ;
 }
@@ -614,7 +614,7 @@ GALGAS_string GALGAS_uint_36__34_::getter_alphaString (UNUSED_LOCATION_ARGS) con
     uint64_t v = mUInt64Value ;
     int32_t idx = 13 ;
     while (v > 0) {
-      const utf32 c = TO_UNICODE ((uint32_t) ((v % 26) + 'a')) ;
+      const utf32 c = TO_UNICODE (uint32_t ((v % 26) + 'a')) ;
       s.setUnicodeCharacterAtIndex (c, idx COMMA_HERE) ;
       idx -= 1 ;
       v /= 26 ;
@@ -713,7 +713,7 @@ GALGAS_uint GALGAS_uint_36__34_::getter_uintSlice (const GALGAS_uint & inStartBi
     }else{
       uint64_t v = mUInt64Value >> inStartBit.uintValue () ;
       v &= ((1ULL << inBitCount.uintValue ()) - 1ULL) ;
-      result = GALGAS_uint ((uint32_t) (v & UINT32_MAX)) ;
+      result = GALGAS_uint (uint32_t (v & UINT32_MAX)) ;
     }
   }
   return result ;

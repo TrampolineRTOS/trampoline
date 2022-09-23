@@ -32,21 +32,21 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 class cSortedListNode {
-  public : cSortedListNode * mInfPtr ;
-  public : cSortedListNode * mSupPtr ;
-  public : int32_t mBalance ;
-  public : cSortedListNode * mNextPtr ;
-  public : cSortedListNode * mPreviousPtr ;
-  public : capSortedListElement mProperties ;
+  public: cSortedListNode * mInfPtr ;
+  public: cSortedListNode * mSupPtr ;
+  public: int32_t mBalance ;
+  public: cSortedListNode * mNextPtr ;
+  public: cSortedListNode * mPreviousPtr ;
+  public: capSortedListElement mProperties ;
 
 //---  
-  public : cSortedListNode (const capSortedListElement & inAttributes) ;
+  public: cSortedListNode (const capSortedListElement & inAttributes) ;
 
-  public : cSortedListNode (cSortedListNode * inNode) ;
+  public: cSortedListNode (cSortedListNode * inNode) ;
 
 //--- No copy
-  private : cSortedListNode (const cSortedListNode &) ;
-  private : cSortedListNode & operator = (const cSortedListNode &) ;
+  private: cSortedListNode (const cSortedListNode &) ;
+  private: cSortedListNode & operator = (const cSortedListNode &) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -104,65 +104,65 @@ static void disposeNodes (cSortedListNode * inNode) {
 
 class cSharedSortedListRoot : public C_SharedObject {
 //--------------------------------- Private data members
-  private : cSortedListNode * mRoot ; // For AVL tree
-  private : cSortedListNode * mFirst ;
-  private : cSortedListNode * mLast ;
-  private : uint32_t mCount ;
+  private: cSortedListNode * mRoot ; // For AVL tree
+  private: cSortedListNode * mFirst ;
+  private: cSortedListNode * mLast ;
+  private: uint32_t mCount ;
 
 //--------------------------------- Native constructor
-  protected : cSharedSortedListRoot (LOCATION_ARGS) ;
+  protected: cSharedSortedListRoot (LOCATION_ARGS) ;
 
 //--------------------------------- Virtual destructor
-  protected : virtual ~ cSharedSortedListRoot (void) ;
+  protected: virtual ~ cSharedSortedListRoot (void) ;
 
 //--------------------------------- No copy
-  private : cSharedSortedListRoot (const cSharedSortedListRoot &) ;
-  private : cSharedSortedListRoot & operator = (const cSharedSortedListRoot &) ;
+  private: cSharedSortedListRoot (const cSharedSortedListRoot &) ;
+  private: cSharedSortedListRoot & operator = (const cSharedSortedListRoot &) ;
 
 //--------------------------------- Accessor
-  protected : inline uint32_t count (void) const { return mCount ; }
+  protected: inline uint32_t count (void) const { return mCount ; }
 
 //--------------------------------- Implementation of reader 'description'
-  protected : virtual void description (C_String & ioString,
+  protected: virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
 
 //--- Enumeration handling
-  protected : virtual void populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const ;
+  protected: virtual void populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const ;
 
 //--- Object Compare
-  protected : typeComparisonResult objectCompare (const cSharedSortedListRoot * inOperand) const ;
+  protected: typeComparisonResult objectCompare (const cSharedSortedListRoot * inOperand) const ;
 
 //--- Adding an object
-  protected : void appendObject (capSortedListElement & inAttributes) ;
+  protected: void appendObject (capSortedListElement & inAttributes) ;
 
-  private : void addEntry (cSortedListNode * & ioRootPtr,
+  private: void addEntry (cSortedListNode * & ioRootPtr,
                            cSortedListNode * inCurrentNode,
                            const capSortedListElement & inAttributes,
                            bool & ioExtension) ;
 
 //--------------------------------- Append a list
-  protected : void appendSortedList (const cSharedSortedListRoot * inList) ;
+  protected: void appendSortedList (const cSharedSortedListRoot * inList) ;
 
 //--------------------------------- Method Implementation
-  protected : void smallestObjectAttributeList (capSortedListElement & outAttributes,
+  protected: void smallestObjectAttributeList (capSortedListElement & outAttributes,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) const ;
 
-  protected : void greatestObjectAttributeList (capSortedListElement & outAttributes,
+  protected: void greatestObjectAttributeList (capSortedListElement & outAttributes,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Modifier Implementation
-  protected : void removeSmallestObject (capSortedListElement & outAttributes,
+  protected: void removeSmallestObject (capSortedListElement & outAttributes,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
-  protected : void removeGreatestObject (capSortedListElement & outAttributes,
+  protected: void removeGreatestObject (capSortedListElement & outAttributes,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Copy from a other list
-  protected : void copyFrom (const cSharedSortedListRoot * inList) ;
+  protected: void copyFrom (const cSharedSortedListRoot * inList) ;
 
 //--------------------------------- Friend
   friend class AC_GALGAS_sortedlist ;

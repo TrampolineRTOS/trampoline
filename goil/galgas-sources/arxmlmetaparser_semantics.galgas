@@ -106,7 +106,7 @@ setter @arxmlMetaClass legacyUpdate
   lAttributeLegacy += iAttribute
 }
 method @arxmlMetaClass display
-  ?@arxmlMetaClassMap classMap
+  ?@arxmlMetaClassMap unused classMap
   ?!@string ioString
 {
   @string svgString = ""
@@ -143,7 +143,7 @@ method @arxmlMetaClass display
     end
 
     # Check if the type is a simplified one
-    [classMap searchKey ![eElement type] ?var @arxmlMetaClass elemKey]
+    #[classMap searchKey ![eElement type] ?let @arxmlMetaClass elemKey]
     #if elemKey is == @arxmlMetaSimpletype then
     #  @arxmlMetaSimpletype elemSimpletype = elemKey as @arxmlMetaSimpletype
     #  if [[elemSimpletype type] isRestrictionSimple] then
@@ -190,7 +190,7 @@ method @arxmlMetaClass display
   #    warning .here : "Missing attribute's type : " + attrNameRepr
     end
 
-    [classMap searchKey ![eAttribute type] ?var @arxmlMetaClass attrKey]
+    #[classMap searchKey ![eAttribute type] ?var @arxmlMetaClass attrKey]
 
     # Get the type :
     # The type may be either a primary type (uint, string, ...), or a
