@@ -21,6 +21,7 @@ CPU blink {
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
+      APP_SRC = "leds.c";
       APP_NAME = "blink_exe";
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=blink.map";
@@ -62,8 +63,8 @@ CPU blink {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 50;
-      CYCLETIME = 50;
+      ALARMTIME = 100;
+      CYCLETIME = 100;
     };
   };
 };
