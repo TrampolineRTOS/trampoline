@@ -93,9 +93,9 @@ SECTIONS {
  * at the beginning of the FRAM, so that the MPU is easier to configure.
  */
 SECTIONS {
-  .NVdata ORIGIN(FRAM) : AT ( __nvdata_load_start) {
+  .NVdata : {
     . = ALIGN(4);
-    __nvdata_start = .; /* create a global symbol at non volatile data start */%
+%
 foreach SECTION_KIND in @("_NON_VOLATILE_") do
   foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
@@ -114,10 +114,6 @@ foreach proc in PROCESSES do%
     end foreach
    end foreach
   end foreach%
-
-    . = ALIGN(2);
-    __nvdata_end = .;        /* define a global symbol at non volatile data end */
-    __nvdata_size = SIZEOF(.NVdata); /* define a global symbol at non volatile data end */
   } >FRAM
 
   .NVdataInit : {
