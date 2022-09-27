@@ -712,17 +712,28 @@ foreach obj in PRIO2 do
       let highest_priority_task_uses_resource := exists obj::RESOURCE
     end if
   elsif obj::KIND == "Resource" then
+    # If a resource is used by ISR2 and RES_SCHEDULER is used then the priority
+    # is increased by one to fit the priorities of ISR2s
+    if OS::USERESSCHEDULER | OS::HASNONPREEMPTABLETASK then
+      if exists obj::ISRUSAGE then
+        if [obj::ISRUSAGE length] > 0 then
+          let obj::PRIORITY += 1
+        end if
+      end if
+    end if
     let RESOURCES += obj
   end if
 end foreach
 
-# Check no extended task as an ACTIVATION attribute greater than 1
+#------------------------------------------------------------------------------*
+# Check no extended task has an ACTIVATION attribute greater than 1
 foreach task in EXTENDEDTASKS do
   if task::ACTIVATION > 1 then
     error task::ACTIVATION : "An extended task cannot have ACTIVATION greater than 1"
   end if
 end foreach
 
+#------------------------------------------------------------------------------*
 # increase the RESSCHEDULERPRIORITY by one and have it
 # set between the highest priority task and the lowest ISR priority
 let OS::RESSCHEDULERPRIORITY := OS::RESSCHEDULERPRIORITY + 1
