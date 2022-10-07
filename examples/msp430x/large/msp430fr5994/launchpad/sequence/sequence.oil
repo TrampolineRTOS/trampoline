@@ -92,7 +92,7 @@ CPU sequence {
     AUTOSTART = FALSE;
     ALARMTIME = 1000;
     CYCLETIME = 1000;
-    NB_ACTIVATION = 3;
+    NB_ACTIVATION = 5;
   };
 
   STATE E1{};
@@ -100,8 +100,8 @@ CPU sequence {
   STATE E2{};
 
   TRANSITION E0_E1{
-    ENERGY = 2000;
-    TASK = fibo;
+    ENERGY = 2500;
+    // TASK = fibo;
     ALARM = al_blink_red;
     FROM_STATE = E0;
     TO_STATE = E1;
@@ -115,23 +115,28 @@ CPU sequence {
   };
     
   TRANSITION E1_E0{
-    ENERGY = 2000;
-    TASK = fibo;
+    ENERGY = 2500;
+    // TASK = fibo;
     ALARM = al_blink_green;
     FROM_STATE = E1;
     TO_STATE = E0;
   };
   TRANSITION E1_E2{
     ENERGY = 1000;
-    ALARM = al_blink_green;
+    TASK = fibo;
     FROM_STATE = E1;
     TO_STATE = E2;
   };
-  TRANSITION E2_E0{
-    ENERGY = 2000;
-    ALARM = al_blink_green;
+  TRANSITION E2_E1{
+    ENERGY = 2500;
     ALARM = al_blink_red;
     FROM_STATE = E2;
-    TO_STATE = E0;
+    TO_STATE = E1;
+  };
+  TRANSITION E2_E2{
+    ENERGY = 1000;
+    TASK = fibo;
+    FROM_STATE = E2;
+    TO_STATE = E2;
   };
 };
