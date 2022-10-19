@@ -30,6 +30,7 @@ import subprocess, sys, os, copy
 import urllib, shutil, subprocess
 import platform, json, operator
 import threading, types, traceback
+from wsgiref.simple_server import sys_version
 
 if sys.version_info >= (2, 6) :
   import multiprocessing
@@ -709,10 +710,15 @@ class Make:
                   if not os.path.exists (absTargetDirectory):
                     displayLock.acquire ()
                     print (BOLD_BLUE () + "Making \"" + os.path.dirname (aTarget) + "\" directory" + ENDC())
-                    try:
-                      os.makedirs (os.path.dirname (aTarget))
-                    except FileExistsError:
-                      pass
+                    if sys.version[0] == '2':
+                      try:
+                        os.makedirs (os.path.dirname (aTarget))
+                      except OSError:
+                        pass
+                    elif sys.version[0] == '3':
+                      os.makedirs (os.path.dirname (aTarget), exist_ok=True)
+                    else:
+                      print('ERROR: unsupported Python version.')
                     displayLock.release ()
                 #--- Progress string
                 launchedJobCount += 1.0
