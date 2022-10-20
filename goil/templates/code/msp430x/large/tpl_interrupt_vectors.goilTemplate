@@ -22,7 +22,6 @@
 end if
 
 if OS::CHECKPOINTING == true then
-  if OS::CHECKPOINTING_S::MODE == "PERIODIC" then
   let ISR += @{
     SOURCE : "RTC_VECTOR",
     SOURCE_S : @{BIT : 3},
@@ -30,7 +29,6 @@ if OS::CHECKPOINTING == true then
     PRIORITY : 1,
     EXIT_FROM_LPM : true
   }
-  end if
 end if
 #------------------------------------------------------------------------------*
 # Target specific initializations

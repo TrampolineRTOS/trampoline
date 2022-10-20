@@ -36,8 +36,9 @@ MEMORY
    ! size % bytes - %
    ! size / 2 % vectors */
   FRAM (rx)  : ORIGIN = 0x04000, LENGTH = 0xBF80 /* ends at 0xff80. size is 47,875k */
-  FRAM_UP (rw)  : ORIGIN = 0x010000, LENGTH = 0x32000 /* ends at 0x041fff. size is 204,800k */
-  FRAM_CHKPT (rw)  : ORIGIN = 0x042000, LENGTH = 0x2000 /* ends at 0x043fff. size is 8k */
+  FRAM_UP (rw)  : ORIGIN = 0x010000, LENGTH = 0x30000 /* ends at 0x03ffff. size is 196,608k */
+  FRAM_CHKPT_1 (rw)  : ORIGIN = 0x042000, LENGTH = 0x2000 /* ends at 0x043fff. size is 8k */
+  FRAM_CHKPT_0 (rw)  : ORIGIN = 0x040000, LENGTH = 0x2000 /* ends at 0x41fff. size is 8k */
 %
 if OS::LEA then
   if OS::LEA_S::LEA_RAM > 4096 then

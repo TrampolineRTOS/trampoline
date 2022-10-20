@@ -79,13 +79,19 @@ SECTIONS {
 /*----------------------------------------------------------------------------*/
 
 /* 
- * Section for checkpoint. For the moment, number = 1, inserted at the end
+ * Section for checkpoint. For the moment, 2 buffers, inserted at the end
  * of high fram memory.
  */
 SECTIONS {
-  .chkpt :{
-      _chkptStartAddress = .;
-  } > FRAM_CHKPT
+  .chkpt0 :{
+      _chkptStartAddress_0 = .;
+  } > FRAM_CHKPT_0
+}
+
+SECTIONS {
+  .chkpt1 :{
+      _chkptStartAddress_1 = .;
+  } > FRAM_CHKPT_1
 }
 
 /*

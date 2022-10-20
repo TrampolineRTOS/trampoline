@@ -6,6 +6,7 @@
 #include "tpl_chkpt_adc.h"
 #include <stdint.h>
 
+#if WITH_CHECKPOINTING_PERIODIC == YES
 
 /*----------------------------------------------------------------------------*/
 /* TASK that checks the remaining energy, based on a measure of the ADC       */
@@ -29,5 +30,6 @@ TASK(task_tpl_chkpt_energy)
 #define APP_Task_task_tpl_chkpt_energy_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+#endif // WITH_CHECKPOINTING_PERIODIC
 
 #endif //WITH_CHECKPOINTING

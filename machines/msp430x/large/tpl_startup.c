@@ -21,7 +21,6 @@
 #if WITH_CHECKPOINTING == YES
 #  include "tpl_chkpt_checkpoint_kernel.h"
 #  include "tpl_chkpt_io.h"
-#  include "tpl_chkpt_adc.h"
 #endif
 
 extern int main (void);
@@ -170,7 +169,6 @@ FUNC(void, OS_CODE) tpl_continue_reset_handler(void)
   }
 
 #if WITH_CHECKPOINTING == YES
-  tpl_adc_init_simple();
   if (tpl_cold_startup() //button pushed during startup ?
       || (tpl_checkpoint_buffer == NO_CHECKPOINT) // no checkpoint available ?
       ) {

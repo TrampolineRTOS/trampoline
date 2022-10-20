@@ -36,7 +36,7 @@
 #include "tpl_chkpt_checkpoint_kernel.h"
 
 #include "msp430.h"
-#include "tpl_chkpt_adc.h"
+#include <stdint.h>
 
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore_kernel.h"
@@ -141,8 +141,6 @@ void tpl_lpm_hibernate()
   TA3CCTL0 |= CCIE;
 }
 
-uint16_t readPowerVoltage_simple(void);
-
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
   sint16 l_buffer;
@@ -187,8 +185,8 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   UNLOCK_KERNEL()
 
   l_buffer = (tpl_checkpoint_buffer + 1) % 2;
-  // tpl_save_checkpoint(l_buffer);
-  tpl_save_checkpoint_dma();
+  // tpl_save_checkpoint();
+  tpl_save_checkpoint_dma(l_buffer);
   tpl_checkpoint_buffer = l_buffer;
   
   uint16_t waiting_loop = 1;
@@ -274,8 +272,8 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
      * if such a task exists.
      */
 
-  // tpl_load_checkpoint(tpl_checkpoint_buffer);
-  tpl_load_checkpoint_dma();
+  // tpl_load_checkpoint();
+  tpl_load_checkpoint_dma(tpl_checkpoint_buffer);
 
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)

@@ -62,7 +62,9 @@ IMPLEMENTATION  msp430x {
                UINT32 HIBERNATE_THRESHOLD = 2000;
                UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;
             },
-           STATIC
+           STATIC {
+             UINT32 RESUME_FROM_HIBERNATE_THRESHOLD = 2500;
+           }
          ] MODE = PERIODIC;
       },
       FALSE
@@ -110,7 +112,7 @@ CPU msp430x {
     ASFILE = "tpl_sc_handler.S";
 //    CFILE  = "tpl_trace.c";
     /* Checkpointing */
-//    ASFILE = "framtr.S";
+    ASFILE = "framtr.S";
     CFILE = "tpl_checkpoint.c"; 
     CFILE = "tpl_checkpointing.c";
   };
