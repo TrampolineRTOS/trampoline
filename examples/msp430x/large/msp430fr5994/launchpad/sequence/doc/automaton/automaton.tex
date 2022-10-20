@@ -1,0 +1,24 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+
+\begin{document}
+\begin{tikzpicture}[scale=5]
+	\tikzstyle{state}=[circle,draw,fill=black!10]
+	\tikzstyle{arc}=[thick,->]
+	\tikzstyle{br}=[bend right=25]
+	\tikzstyle{bl}=[bend left=15]
+	\tikzstyle{legend}=[sloped,text width=3.5cm,align=center]
+	\fill[white] (-2,-2) rectangle (2,1); 
+	\node[state] (E0) at (0,0) {E0};
+	\node[state] (E1) at (-.75,-1) {E1};
+	\node[state] (E2) at (.75,-1) {E2};
+	\draw[arc] (0,.2) -- (E0);
+	\draw[arc] (E0) edge[br] node[legend,above] {\emph{Energy} $\geq 2500$\\toggle red 5 times} (E1);
+	\draw[arc] (E1) edge[] node[legend,below] {\emph{Energy} $\geq 2500$\\toggle green 3 times}(E0);
+	\draw[arc] (E1) edge[br] node[legend,below] {\emph{Energy} $\geq 1000$\\fibonacci} (E2);
+	\draw[arc] (E2) edge[] node[legend,above] {\emph{Energy} $\geq 2500$\\toggle red 5 times} (E1);
+	\draw[arc] (E2) edge[loop right] node[text width=2.5cm,align=left] {\emph{Energy} $\geq 1000$\\fibonacci} (E2);
+	\draw[arc] (E0) edge[bl] node[legend,above] {\emph{Energy} $\geq 1000$\\fibonacci} (E2);
+\end{tikzpicture}
+\end{document}
