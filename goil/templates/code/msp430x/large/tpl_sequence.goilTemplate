@@ -235,7 +235,7 @@ end foreach
 foreach state in STATE
 before
 %
-CONSTP2CONST(tpl_sequence*, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state [STATE_COUNT] = {
+CONSTP2CONST(tpl_sequence_ref, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state [STATE_COUNT] = {
 %
 do
 %(P2CONST(tpl_sequence*, AUTOMATIC, OS_APPL_DATA))sequence_from_state_%!state::NAME
