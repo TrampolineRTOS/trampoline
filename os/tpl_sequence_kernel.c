@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -25,15 +25,15 @@
  */
 
 #include "tpl_sequence_kernel.h"
-#include "tpl_os_os_kernel.h"
-#include "tpl_os_kernel.h"
-#include "tpl_os_error.h"
-#include "tpl_os_definitions.h"
-#include "tpl_machine_interface.h"
-#include "tpl_trace.h"
-#include "tpl_os_alarm_kernel.h"
-#include "tpl_os_hooks.h"
 #include "tpl_chkpt_checkpoint_kernel.h"
+#include "tpl_machine_interface.h"
+#include "tpl_os_alarm_kernel.h"
+#include "tpl_os_definitions.h"
+#include "tpl_os_error.h"
+#include "tpl_os_hooks.h"
+#include "tpl_os_kernel.h"
+#include "tpl_os_os_kernel.h"
+#include "tpl_trace.h"
 
 #include "msp430.h"
 
@@ -55,11 +55,11 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode_sequence = NOAPPMODE;
 //   static uint8_t use1V2Ref = 0;
 
 //   ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
-//   ADC12CTL0 = ADC12ON | ADC12SHT0_2;          
-//   ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz) / 8
-//   ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
-//   ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling timer
-//   ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
+//   ADC12CTL0 = ADC12ON | ADC12SHT0_2;
+//   ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz)
+//   / 8 ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
+//   ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling
+//   timer ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
 //   while (REFCTL0 & REFGENBUSY);               // If ref generator busy, WAIT
 //   if (use1V2Ref) {
 //     REFCTL0 = REFON | REFVSEL_0;                // 1.2V reference
@@ -70,8 +70,8 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode_sequence = NOAPPMODE;
 //     ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
 //   }
 
-//   if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref generator ready
-//   ADC12CTL0 |= ADC12ENC;
+//   if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref
+//   generator ready ADC12CTL0 |= ADC12ENC;
 // 	return;
 // }
 
@@ -81,13 +81,15 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode_sequence = NOAPPMODE;
 // 	return ADC12MEM0;
 // }
 
-void end_adc(){
+void end_adc()
+{
   ADC12CTL0 &= ~ADC12ENC;
   ADC12CTL0 &= ~ADC12ON;
   return;
 }
 
-FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
+FUNC(void, OS_CODE)
+tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
   GET_CURRENT_CORE_ID(core_id);
   VAR(uint16, AUTOMATIC) i;
@@ -106,71 +108,81 @@ FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) 
   }
 #endif
 
-/* Get energy level from ADC */
-init_adc();
-/* Polling */
-uint16 energy = tpl_ADC_read(); 
-end_adc();
-/* Compare energy level with energy from sequences with FROM_STATE = tpl_kern_seq->state */
-CONSTP2CONST(tpl_sequence *, AUTOMATIC, OS_VAR) ptr_state = tpl_sequence_state[tpl_kern_seq.state];
-// tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
-for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
-  CONSTP2CONST(tpl_sequence, AUTOMATIC, OS_VAR) ptr_seq = ptr_state[i];
-  // tpl_sequence *ptr_seq = ptr_state[i];
-  if (energy >= ptr_seq->energy){
-    tpl_kern_seq.elected = (CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_seq;
-    break;
+  /* Get energy level from ADC */
+  init_adc();
+  /* Polling */
+  uint16 energy = tpl_ADC_read();
+  end_adc();
+  /* Compare energy level with energy from sequences with FROM_STATE =
+   * tpl_kern_seq->state */
+  CONSTP2CONST(tpl_sequence_ref, AUTOMATIC, OS_VAR)
+  ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+  // tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+  for (i = 0; i < ENERGY_LEVEL_COUNT; i++)
+  {
+    CONSTP2CONST(tpl_sequence, AUTOMATIC, OS_VAR) ptr_seq = ptr_state[i];
+    // tpl_sequence *ptr_seq = ptr_state[i];
+    if (energy >= ptr_seq->energy)
+    {
+      tpl_kern_seq.elected =
+          (CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_seq;
+      break;
+    }
   }
-}
 
-/* Activate tasks from the sequence */
-P2CONST(uint8, AUTOMATIC, OS_VAR) ptr = tpl_kern_seq.elected->seqTaskTab;
-// uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
-for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-  result = tpl_activate_task(*ptr);
-  ptr++;
-}
+  /* Activate tasks from the sequence */
+  P2CONST(uint8, AUTOMATIC, OS_VAR) ptr = tpl_kern_seq.elected->seqTaskTab;
+  // uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
+  for (i = 0; i < tpl_kern_seq.elected->nb_task; i++)
+  {
+    result = tpl_activate_task(*ptr);
+    ptr++;
+  }
 
 /* Activate alarms from the sequence */
 #if ALARM_COUNT > 0
 
-P2CONST(tpl_sequence_alarm, AUTOMATIC, OS_VAR) ptr_al = tpl_kern_seq.elected->seqAlarmTab;
-// tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+  P2CONST(tpl_sequence_alarm, AUTOMATIC, OS_VAR)
+  ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+  // tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
 
-for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
-  /* yep we can't do Syscall :( */
-  // tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
-  alarm = tpl_alarm_table[ptr_al->al_id];
-  TPL_UPDATE_COUNTERS(alarm);
-  if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP){
-    /* the alarm is not in use, proceed */
-    alarm->date = ptr_al->al_alarmTime;
-    alarm->cycle = ptr_al->al_cycleTime;
-    alarm->state = ALARM_ACTIVE;
-    tpl_insert_time_obj(alarm);
+  for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++)
+  {
+    /* yep we can't do Syscall :( */
+    // tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id],
+    // ptr_al->al_alarmTime, ptr_al->al_cycleTime);
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+    alarm = tpl_alarm_table[ptr_al->al_id];
+    TPL_UPDATE_COUNTERS(alarm);
+    if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
+    {
+      /* the alarm is not in use, proceed */
+      alarm->date = ptr_al->al_alarmTime;
+      alarm->cycle = ptr_al->al_cycleTime;
+      alarm->state = ALARM_ACTIVE;
+      tpl_insert_time_obj(alarm);
+    }
+    else
+    {
+      /* the alarm is in use, ? */
+      /* Should never happend */
+    }
+    TPL_ENABLE_SHAREDSOURCE(alarm);
+    ptr_al++;
   }
-  else{
-    /* the alarm is in use, ? */
-    /* Should never happend */
-  }
-  TPL_ENABLE_SHAREDSOURCE(alarm);
-  ptr_al++;
-}
 #endif
-/* Update tpl_kern_seq.state with next state from sequence elected */
-tpl_kern_seq.state = tpl_kern_seq.elected->to_state;
-
+  /* Update tpl_kern_seq.state with next state from sequence elected */
+  tpl_kern_seq.state = tpl_kern_seq.elected->to_state;
 }
 
-FUNC(void, OS_CODE) tpl_start_os_sequence_service(
-  CONST(tpl_application_mode, AUTOMATIC) mode)
+FUNC(void, OS_CODE)
+tpl_start_os_sequence_service(CONST(tpl_application_mode, AUTOMATIC) mode)
 {
   GET_CURRENT_CORE_ID(core_id)
   tpl_init_machine();
-#if WITH_MODULES_INIT ==YES
+#if WITH_MODULES_INIT == YES
   tpl_init_modules();
-#endif 
+#endif
 #if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES) | (WITH_ORTI == YES)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -219,7 +231,8 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
   UNLOCK_KERNEL()
 }
 
-FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
+FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void)
+{
 
   GET_CURRENT_CORE_ID(core_id)
 
@@ -240,7 +253,8 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
   CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
 
 #if TASK_COUNT > 0
-  IF_NO_EXTENDED_ERROR(result){
+  IF_NO_EXTENDED_ERROR(result)
+  {
     /* the activate count is decreased */
     TPL_KERN(core_id).running->activate_count--;
     /* terminate the running task */
@@ -251,36 +265,44 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
 #endif
   /* update mask for task in tpl_kern_seq */
 
-  tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
+  tpl_kern_seq.elected->mask_seq_terminate &=
+      ~(1 << TPL_KERN(core_id).s_running->id);
 
   /* test if all task from sequence are terminated */
-  if(tpl_kern_seq.elected->mask_seq_terminate == 0x00){
+  if (tpl_kern_seq.elected->mask_seq_terminate == 0x00)
+  {
     /* reset task_terminate */
-    tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate;
- 
+    tpl_kern_seq.elected->mask_seq_terminate =
+        tpl_kern_seq.elected->vec_seq_terminate;
+
     VAR(uint16, AUTOMATIC) i;
-    CONSTP2CONST(tpl_sequence *, AUTOMATIC, OS_VAR) ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+    CONSTP2CONST(tpl_sequence_ref, AUTOMATIC, OS_VAR)
+    ptr_state = tpl_sequence_state[tpl_kern_seq.state];
     // tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
     P2VAR(tpl_sequence, AUTOMATIC, OS_VAR) ptr_seq = NULL;
     P2VAR(tpl_sequence, AUTOMATIC, OS_VAR) tmp_ptr_seq = NULL;
 
-    while (ptr_seq == NULL){
+    while (ptr_seq == NULL)
+    {
       /* Get energy level from ADC */
       init_adc();
       /* Polling */
-      uint16 energy = tpl_ADC_read(); 
+      uint16 energy = tpl_ADC_read();
       end_adc();
 
-      for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
+      for (i = 0; i < ENERGY_LEVEL_COUNT; i++)
+      {
         tmp_ptr_seq = (P2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_state[i];
-        if (energy >= tmp_ptr_seq->energy){
+        if (energy >= tmp_ptr_seq->energy)
+        {
           tpl_kern_seq.elected = tmp_ptr_seq;
           ptr_seq = tmp_ptr_seq;
           break;
         }
       }
       /* Not enough energy to elect next sequence --> hibernate */
-      if (ptr_seq == NULL){
+      if (ptr_seq == NULL)
+      {
         tpl_chkpt_hibernate();
       }
     }
@@ -288,19 +310,22 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     /* Activate tasks from the sequence */
     P2CONST(uint8, AUTOMATIC, OS_VAR) ptr = tpl_kern_seq.elected->seqTaskTab;
     // uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
-    for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
+    for (i = 0; i < tpl_kern_seq.elected->nb_task; i++)
+    {
       result = tpl_activate_task(*ptr);
       ptr++;
     }
 
     /* Activate alarms from the sequence */
 
-    #if ALARM_COUNT > 0
+#if ALARM_COUNT > 0
 
-    // CONSTP2VAR(tpl_sequence_alarm, AUTOMATIC, OS_VAR) ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+    // CONSTP2VAR(tpl_sequence_alarm, AUTOMATIC, OS_VAR) ptr_al =
+    // tpl_kern_seq.elected->seqAlarmTab;
     tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
 
-    for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
+    for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++)
+    {
 
       P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
       P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
@@ -308,11 +333,13 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
 
       alarm = tpl_alarm_table[ptr_al->al_id];
       TPL_UPDATE_COUNTERS(alarm);
-      if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP){
+      if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
+      {
         /* the alarm is not in use, proceed */
         cnt = alarm->stat_part->counter;
         date = cnt->current_date + ptr_al->al_alarmTime;
-        if (date > cnt->max_allowed_value){
+        if (date > cnt->max_allowed_value)
+        {
           date -= (cnt->max_allowed_value + 1);
         }
 
@@ -321,16 +348,16 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
         alarm->state = ALARM_ACTIVE;
         tpl_insert_time_obj(alarm);
       }
-      else{
+      else
+      {
         /* the alarm is in use, ? */
       }
       TPL_ENABLE_SHAREDSOURCE(alarm);
       ptr_al++;
     }
-    #endif
+#endif
     /* Update tpl_kern_seq.state with next state from sequence elected */
-    tpl_kern_seq.state = tpl_kern_seq.elected->to_state; 
-
+    tpl_kern_seq.state = tpl_kern_seq.elected->to_state;
   }
 
   /* start the highest priority process */
@@ -345,4 +372,4 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif //WITH_SEQUENCING
+#endif // WITH_SEQUENCING
