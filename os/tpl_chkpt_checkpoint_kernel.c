@@ -44,7 +44,9 @@
 # include "tpl_as_spinlock_kernel.h"
 # endif
 #endif
-
+#if WITH_SEQUENCING == YES
+#include "tpl_sequence_kernel.h"
+#endif
 
 extern FUNC(void, OS_CODE) tpl_restart_os(void);
 
@@ -160,6 +162,7 @@ FUNC(void, OS_CODE) tpl_chkpt_hibernate(void){
 	  }
   }
 }
+
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
@@ -276,9 +279,12 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
 
   // tpl_load_checkpoint();
   tpl_load_checkpoint_dma(tpl_checkpoint_buffer);
-#if WITH_SEQUENCING
-  // Ici, relancer une sequence (call init_sequence_os ???)
-#endif
+  #if WITH_SEQUENCING == YES
+    tpl_choose_next_sequence();
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
+    SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
+  #endif
+
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)
       //  }

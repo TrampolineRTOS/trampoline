@@ -19,7 +19,7 @@ CPU sequence {
     PAINT_REGISTERS = TRUE;
     SEQUENCING = TRUE {ENERGY_LEVEL = 2;};
     CHECKPOINTING = TRUE {
-       MODE = STATIC {RESUME_FROM_HIBERNATE_THRESHOLD = 2300;};
+       MODE = STATIC {RESUME_FROM_HIBERNATE_THRESHOLD = 2500;};
     };
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
@@ -104,38 +104,38 @@ CPU sequence {
   STATE E2 {};
 
   TRANSITION E0_E1 {
-    ENERGY = 2500;
+    ENERGY = 2800;
     ALARM = al_blink_red;
     FROM_STATE = E0;
     TO_STATE = E1;
   };
   
   TRANSITION E0_E2 {
-    ENERGY = 1000;
+    ENERGY = 2500;
     TASK = fibo;
     FROM_STATE = E0;
     TO_STATE = E2;
   };
   TRANSITION E1_E0 {
-    ENERGY = 2500;
+    ENERGY = 2800;
     ALARM = al_blink_green;
     FROM_STATE = E1;
     TO_STATE = E0;
   };
   TRANSITION E1_E2 {
-    ENERGY = 1000;
+    ENERGY = 2500;
     TASK = fibo;
     FROM_STATE = E1;
     TO_STATE = E2;
   };
   TRANSITION E2_E1 {
-    ENERGY = 2500;
+    ENERGY = 2800;
     ALARM = al_blink_red;
     FROM_STATE = E2;
     TO_STATE = E1;
   };
   TRANSITION E2_E2 {
-    ENERGY = 1000;
+    ENERGY = 2500;
     TASK = fibo;
     FROM_STATE = E2;
     TO_STATE = E2;
