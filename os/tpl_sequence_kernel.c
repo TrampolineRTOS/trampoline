@@ -219,38 +219,11 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(
   UNLOCK_KERNEL()
 }
 
-FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
 
-  GET_CURRENT_CORE_ID(core_id)
-
-  /* init the error to no error */
+FUNC(void, OS_CODE) tpl_choose_next_sequence(void){
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-  /* lock the kernel */
-  LOCK_KERNEL()
-  /* store information for error hook routine */
-  STORE_SERVICE(OSServiceId_TerminateTaskSequence)
-  /* check interrupts are not disabled by user */
-  CHECK_INTERRUPT_LOCK(result)
-  /* check we are at the task level */
-  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
-  /* check the task does not own a ressource */
-  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
-  /* check the task does not occupy spinlock(s) */
-  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
-
-#if TASK_COUNT > 0
-  IF_NO_EXTENDED_ERROR(result){
-    /* the activate count is decreased */
-    TPL_KERN(core_id).running->activate_count--;
-    /* terminate the running task */
-    tpl_terminate();
-    /* task switching should occur */
-    TPL_KERN(core_id).need_switch = NEED_SWITCH;
-  }
-#endif
   /* update mask for task in tpl_kern_seq */
-
   tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<TPL_KERN(core_id).s_running->id);
 
   /* test if all task from sequence are terminated */
@@ -330,18 +303,52 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     #endif
     /* Update tpl_kern_seq.state with next state from sequence elected */
     tpl_kern_seq.state = tpl_kern_seq.elected->to_state; 
-
   }
+}
+FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
+
+  GET_CURRENT_CORE_ID(core_id)
+
+  /* init the error to no error */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+
+  /* lock the kernel */
+  LOCK_KERNEL()
+  /* store information for error hook routine */
+  STORE_SERVICE(OSServiceId_TerminateTaskSequence)
+  /* check interrupts are not disabled by user */
+  CHECK_INTERRUPT_LOCK(result)
+  /* check we are at the task level */
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
+  /* check the task does not own a ressource */
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /* check the task does not occupy spinlock(s) */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
+
+#if TASK_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result){
+    /* the activate count is decreased */
+    TPL_KERN(core_id).running->activate_count--;
+    /* terminate the running task */
+    tpl_terminate();
+    /* task switching should occur */
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
+  }
+#endif
+
+  /* unlock kernel */
+  UNLOCK_KERNEL()
+  
+  tpl_choose_next_sequence();
 
   /* start the highest priority process */
   tpl_start(CORE_ID_OR_NOTHING(core_id));
   SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
 
   PROCESS_ERROR(result)
-  /* unlock kernel */
-  UNLOCK_KERNEL()
   return;
 }
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

@@ -83,6 +83,7 @@ FUNC(void, OS_CODE) tpl_start_os_sequence_service(CONST(tpl_application_mode, AU
 
 FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void);
 
+FUNC(void, OS_CODE) tpl_choose_next_sequence(void);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
