@@ -49,7 +49,7 @@ struct TPL_SEQUENCE {
     CONST(uint8, TYPEDEF) vec_seq_terminate;
     CONST(uint8, TYPEDEF) *seqTaskTab;
     CONST(uint8, TYPEDEF) nb_alarm;
-    CONST(tpl_sequence_alarm, TYPEDEF) *seqAlarmTab;
+    VAR(tpl_sequence_alarm, TYPEDEF) *seqAlarmTab;
 };
 
 typedef struct TPL_SEQUENCE tpl_sequence;
@@ -64,10 +64,17 @@ typedef struct {
 
 extern VAR(tpl_kern_seq_state, OS_VAR) tpl_kern_seq;
 
-extern CONSTP2VAR(tpl_sequence *, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT];
-
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+extern CONSTP2CONST(tpl_sequence *, AUTOMATIC, OS_APPL_DATA) tpl_sequence_state[STATE_COUNT];
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

@@ -54,6 +54,7 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void);
 
 FUNC(void, OS_CODE) tpl_restart_os_service(void);
 
+FUNC(void, OS_CODE) tpl_chkpt_hibernate(void);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

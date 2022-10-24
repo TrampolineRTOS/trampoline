@@ -5,7 +5,8 @@
 #define APP_COMMON_START_SEC_CODE
 #include "tpl_memmap.h"
 
-FUNC(int, OS_APPL_CODE) main(void)
+
+FUNC(void, OS_APPL_CODE) io_init()
 {
 	// Disable the GPIO power-on default high-impedance mode
 	// to activate previously configured port settings
@@ -13,12 +14,30 @@ FUNC(int, OS_APPL_CODE) main(void)
   	//set GPIO P1.0 (LED1) as an output
 	P1DIR |= BIT0 + BIT1;
     P1OUT &= ~(BIT0 + BIT1);
+
     tpl_serial_begin(SERIAL_TX_MODE_BLOCK);
+    __bis_SR_register(GIE);
+}
+FUNC(int, OS_APPL_CODE) main(void)
+{
+    io_init();
+    tpl_serial_print_string("main\n");
+    tpl_serial_tx_fifo_flush();
 	StartOSSequence(OSDEFAULTAPPMODE);
 	return 0;
 }
+
+FUNC(int, OS_APPL_CODE) restart_main(void)
+{
+    io_init();
+    tpl_serial_print_string("restart_main\n");
+    tpl_serial_tx_fifo_flush();
+    RestartOS();
+    return 0;
+}
 #define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
 
 #define APP_Task_blink_red_START_SEC_CODE
 #include "tpl_memmap.h"

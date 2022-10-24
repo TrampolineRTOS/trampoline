@@ -33,6 +33,7 @@
 #include "tpl_trace.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_hooks.h"
+#include "tpl_chkpt_checkpoint_kernel.h"
 
 #include "msp430.h"
 
@@ -49,36 +50,36 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode_sequence = NOAPPMODE;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-void init_adc() {
+// void init_adc() {
 
-  static uint8_t use1V2Ref = 0;
+//   static uint8_t use1V2Ref = 0;
 
-  ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
-  ADC12CTL0 = ADC12ON | ADC12SHT0_2;          
-  ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz) / 8
-  ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
-  ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling timer
-  ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
-  while (REFCTL0 & REFGENBUSY);               // If ref generator busy, WAIT
-  if (use1V2Ref) {
-    REFCTL0 = REFON | REFVSEL_0;                // 1.2V reference
-    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
-  }
-  else {
-    REFCTL0 = REFON | REFVSEL_1;                // 2V reference
-    ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
-  }
+//   ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
+//   ADC12CTL0 = ADC12ON | ADC12SHT0_2;          
+//   ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_7;       // ADC12OSC as ADC12CLK (~5MHz) / 8
+//   ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;       // Map Temp and BAT
+//   ADC12CTL1 |= ADC12SHP;                      // ADCCLK = MODOSC; sampling timer
+//   ADC12CTL2 |= ADC12RES_2;                    // 12-bit resolution
+//   while (REFCTL0 & REFGENBUSY);               // If ref generator busy, WAIT
+//   if (use1V2Ref) {
+//     REFCTL0 = REFON | REFVSEL_0;                // 1.2V reference
+//     ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+//   }
+//   else {
+//     REFCTL0 = REFON | REFVSEL_1;                // 2V reference
+//     ADC12MCTL0 = ADC12INCH_31 | ADC12VRSEL_1;   // idem. Channel 31 is AVCC/2
+//   }
 
-  if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref generator ready
-  ADC12CTL0 |= ADC12ENC;
-	return;
-}
+//   if (REFCTL0 & REFON) while (!(REFCTL0 & REFGENRDY)); // wait till ref generator ready
+//   ADC12CTL0 |= ADC12ENC;
+// 	return;
+// }
 
-uint16 tpl_ADC_read(){
-	ADC12CTL0 |= ADC12SC;
-	while(!(ADC12IFGR0 & BIT0));
-	return ADC12MEM0;
-}
+// uint16 tpl_ADC_read(){
+// 	ADC12CTL0 |= ADC12SC;
+// 	while(!(ADC12IFGR0 & BIT0));
+// 	return ADC12MEM0;
+// }
 
 void end_adc(){
   ADC12CTL0 &= ~ADC12ENC;
@@ -89,19 +90,8 @@ void end_adc(){
 FUNC(void, OS_CODE) tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
   GET_CURRENT_CORE_ID(core_id);
-#if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   VAR(uint16, AUTOMATIC) i;
-  CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
-#endif
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-#if ALARM_COUNT > 0
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#endif
-
-#if (WITH_AUTOSAR == YES) && (ALARM_COUNT == 0) && (SCHEDTABLE_COUNT > 0)
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#endif
-
   /*  Start the idle task */
 #if NUMBER_OF_CORES == 1
   result = tpl_activate_task(IDLE_TASK_ID);
@@ -122,25 +112,30 @@ init_adc();
 uint16 energy = tpl_ADC_read(); 
 end_adc();
 /* Compare energy level with energy from sequences with FROM_STATE = tpl_kern_seq->state */
-tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+CONSTP2CONST(tpl_sequence *, AUTOMATIC, OS_VAR) ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+// tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
 for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
-  tpl_sequence *ptr_seq = ptr_state[i];
+  CONSTP2CONST(tpl_sequence, AUTOMATIC, OS_VAR) ptr_seq = ptr_state[i];
+  // tpl_sequence *ptr_seq = ptr_state[i];
   if (energy >= ptr_seq->energy){
-    tpl_kern_seq.elected = ptr_seq;
+    tpl_kern_seq.elected = (CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_seq;
     break;
   }
 }
 
 /* Activate tasks from the sequence */
-uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
+P2CONST(uint8, AUTOMATIC, OS_VAR) ptr = tpl_kern_seq.elected->seqTaskTab;
+// uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
 for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-  result = tpl_activate_task(*ptr++);
+  result = tpl_activate_task(*ptr);
+  ptr++;
 }
 
 /* Activate alarms from the sequence */
 #if ALARM_COUNT > 0
 
-tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+P2CONST(tpl_sequence_alarm, AUTOMATIC, OS_VAR) ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+// tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
 
 for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
   /* yep we can't do Syscall :( */
@@ -157,9 +152,10 @@ for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
   }
   else{
     /* the alarm is in use, ? */
+    /* Should never happend */
   }
   TPL_ENABLE_SHAREDSOURCE(alarm);
-  *ptr_al++;
+  ptr_al++;
 }
 #endif
 /* Update tpl_kern_seq.state with next state from sequence elected */
@@ -262,37 +258,50 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
     /* reset task_terminate */
     tpl_kern_seq.elected->mask_seq_terminate = tpl_kern_seq.elected->vec_seq_terminate;
  
-    /* Get energy level from ADC */
-    init_adc();
-    /* Polling */
-    uint16 energy = tpl_ADC_read(); 
-    end_adc();
-
     VAR(uint16, AUTOMATIC) i;
-    tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
-    for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
-      tpl_sequence *ptr_seq = ptr_state[i];
-      if (energy >= ptr_seq->energy){
-        tpl_kern_seq.elected = ptr_seq;
-        break;
+    CONSTP2CONST(tpl_sequence *, AUTOMATIC, OS_VAR) ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+    // tpl_sequence **ptr_state = tpl_sequence_state[tpl_kern_seq.state];
+    P2VAR(tpl_sequence, AUTOMATIC, OS_VAR) ptr_seq = NULL;
+    P2VAR(tpl_sequence, AUTOMATIC, OS_VAR) tmp_ptr_seq = NULL;
+
+    while (ptr_seq == NULL){
+      /* Get energy level from ADC */
+      init_adc();
+      /* Polling */
+      uint16 energy = tpl_ADC_read(); 
+      end_adc();
+
+      for (i = 0; i < ENERGY_LEVEL_COUNT; i++){
+        tmp_ptr_seq = (P2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_state[i];
+        if (energy >= tmp_ptr_seq->energy){
+          tpl_kern_seq.elected = tmp_ptr_seq;
+          ptr_seq = tmp_ptr_seq;
+          break;
+        }
       }
-    } 
+      /* Not enough energy to elect next sequence --> hibernate */
+      if (ptr_seq == NULL){
+        tpl_chkpt_hibernate();
+      }
+    }
 
     /* Activate tasks from the sequence */
-    uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
+    P2CONST(uint8, AUTOMATIC, OS_VAR) ptr = tpl_kern_seq.elected->seqTaskTab;
+    // uint8 *ptr = tpl_kern_seq.elected->seqTaskTab;
     for (i = 0; i < tpl_kern_seq.elected->nb_task; i++){
-      result = tpl_activate_task(*ptr++);
+      result = tpl_activate_task(*ptr);
+      ptr++;
     }
 
     /* Activate alarms from the sequence */
 
     #if ALARM_COUNT > 0
 
+    // CONSTP2VAR(tpl_sequence_alarm, AUTOMATIC, OS_VAR) ptr_al = tpl_kern_seq.elected->seqAlarmTab;
     tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
 
     for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
-      /* yep we can't do Syscall :( */
-      // tpl_set_abs_alarm_service(tpl_alarm_table[ptr_al->al_id], ptr_al->al_alarmTime, ptr_al->al_cycleTime);
+
       P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
       P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
       VAR(tpl_tick, AUTOMATIC) date;
@@ -316,7 +325,7 @@ FUNC(void, OS_CODE) tpl_terminate_task_sequence_service(void){
         /* the alarm is in use, ? */
       }
       TPL_ENABLE_SHAREDSOURCE(alarm);
-      *ptr_al++;
+      ptr_al++;
     }
     #endif
     /* Update tpl_kern_seq.state with next state from sequence elected */

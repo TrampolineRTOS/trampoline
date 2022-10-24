@@ -10,6 +10,9 @@
 #include "stdint.h"
 #include "stdbool.h"
 
+#define STATUS_SUCCESS  0x01
+#define STATUS_FAIL     0x00
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /* Access abstraction to registers                                            */

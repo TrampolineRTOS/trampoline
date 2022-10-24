@@ -141,10 +141,27 @@ void tpl_lpm_hibernate()
   TA3CCTL0 |= CCIE;
 }
 
+FUNC(void, OS_CODE) tpl_chkpt_hibernate(void){
+  sint16 l_buffer;
+  l_buffer = (tpl_checkpoint_buffer + 1) % 2;
+  // tpl_save_checkpoint();
+  tpl_save_checkpoint_dma(l_buffer);
+  tpl_checkpoint_buffer = l_buffer;
+  
+  uint16_t waiting_loop = 1;
+  init_adc();
+  while(waiting_loop){
+    tpl_RTC_init(); //startRTC => interrupt next 1 min
+    if(tpl_ADC_read() > RESUME_FROM_HIBERNATE_THRESHOLD){
+      tpl_RTC_stop();
+		  waiting_loop = 0;
+	  } else {
+      tpl_lpm_hibernate();
+	  }
+  }
+}
 FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
 {
-  sint16 l_buffer;
-
   GET_CURRENT_CORE_ID(core_id)
 
   /* init the error to no error */
@@ -184,22 +201,7 @@ FUNC(void, OS_CODE) tpl_hibernate_os_service(void)
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
-  l_buffer = (tpl_checkpoint_buffer + 1) % 2;
-  // tpl_save_checkpoint();
-  tpl_save_checkpoint_dma(l_buffer);
-  tpl_checkpoint_buffer = l_buffer;
-  
-  uint16_t waiting_loop = 1;
-  init_adc();
-  while(waiting_loop){
-    tpl_RTC_init(); //startRTC => interrupt next 1 min
-    if(tpl_ADC_read() > RESUME_FROM_HIBERNATE_THRESHOLD){
-      tpl_RTC_stop();
-		  waiting_loop = 0;
-	  } else {
-      tpl_lpm_hibernate();
-	  }
-  }
+  tpl_chkpt_hibernate();
   PROCESS_ERROR(result)
 }
 
@@ -274,7 +276,9 @@ FUNC(void, OS_CODE) tpl_restart_os_service(void)
 
   // tpl_load_checkpoint();
   tpl_load_checkpoint_dma(tpl_checkpoint_buffer);
-
+#if WITH_SEQUENCING
+  // Ici, relancer une sequence (call init_sequence_os ???)
+#endif
     /* Posix */
   //    SWITCH_CONTEXT_NOSAVE(core_id)
       //  }

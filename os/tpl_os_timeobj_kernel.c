@@ -376,10 +376,14 @@ FUNC(void, OS_CODE) tpl_counter_tick(
           do
           {
             #if WITH_SEQUENCING == YES
-            tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+            // CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_VAR) ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+            P2VAR(tpl_sequence_alarm, AUTOMATIC, OS_VAR) ptr_al = tpl_kern_seq.elected->seqAlarmTab;
+            // tpl_sequence_alarm *ptr_al = tpl_kern_seq.elected->seqAlarmTab;
             VAR(uint16, AUTOMATIC) i;
             for (i = 0; i < tpl_kern_seq.elected->nb_alarm; i++){
               if(t_obj->stat_part->id_al == ptr_al->al_id){
+              // if(t_obj->stat_part->id_al == tpl_kern_seq.elected->seqAlarmTab->al_id){
+                // tpl_kern_seq.elected->seqAlarmTab->al_nbActivation--;
                 ptr_al->al_nbActivation--;
               }
             } 
@@ -391,9 +395,12 @@ FUNC(void, OS_CODE) tpl_counter_tick(
             expire(t_obj);
             #if WITH_SEQUENCING == YES
             if(ptr_al->al_nbActivation == 0){
+            // if(tpl_kern_seq.elected->seqAlarmTab->al_nbActivation == 0){
               /* update mask */
               tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<(ptr_al->al_id + TASK_COUNT));
+              // tpl_kern_seq.elected->mask_seq_terminate &= ~(1<<(tpl_kern_seq.elected->seqAlarmTab->al_id + TASK_COUNT));
               /* reset nbActivation */
+              // tpl_kern_seq.elected->seqAlarmTab->al_nbActivation = tpl_kern_seq.elected->seqAlarmTab->al_nbActivationReset;
               ptr_al->al_nbActivation = ptr_al->al_nbActivationReset;
               /* make sure we don't rearm the alarm */
               t_obj->cycle = 0;

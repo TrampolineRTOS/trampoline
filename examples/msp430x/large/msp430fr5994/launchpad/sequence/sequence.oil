@@ -18,6 +18,9 @@ CPU sequence {
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
     SEQUENCING = TRUE {ENERGY_LEVEL = 2;};
+    CHECKPOINTING = TRUE {
+       MODE = STATIC {RESUME_FROM_HIBERNATE_THRESHOLD = 2300;};
+    };
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "sequence.c";
@@ -28,6 +31,7 @@ CPU sequence {
         TXBUFFER = 16;
         RXBUFFER = 16;
       };
+      LIBRARY = checkpointing;
       //use either msp-gcc (provided with Energia)..
 //      COMPILER  = "msp430-gcc";
 //      ASSEMBLER = "msp430-gcc";
