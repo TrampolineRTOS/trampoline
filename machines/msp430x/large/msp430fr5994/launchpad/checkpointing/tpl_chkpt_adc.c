@@ -136,16 +136,16 @@ uint16_t readPowerVoltage_simple(void)
 #define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/*----------------------------------------------------------------------------*/
-/* ISR ADC12                                                                  */
-/*----------------------------------------------------------------------------*/
-#define APP_ISR_handler_adc_end_conversion_START_SEC_CODE
-#include "tpl_memmap.h"
-ISR(handler_adc_end_conversion)
-{
-  adc_conv_ready = 1;
-  ADC12_B_clearInterrupt(ADC12_B_BASE, 0, ADC12_B_IFG0);
-}
-#define APP_ISR_handler_adc_end_conversion_STOP_SEC_CODE
-#include "tpl_memmap.h"
+// /*----------------------------------------------------------------------------*/
+// /* ISR ADC12                                                                  */
+// /*----------------------------------------------------------------------------*/
+// #define APP_ISR_handler_adc_end_conversion_START_SEC_CODE
+// #include "tpl_memmap.h"
+// ISR(handler_adc_end_conversion)
+// {
+//   adc_conv_ready = 1;
+//   ADC12_B_clearInterrupt(ADC12_B_BASE, 0, ADC12_B_IFG0);
+// }
+// #define APP_ISR_handler_adc_end_conversion_STOP_SEC_CODE
+// #include "tpl_memmap.h"
 #endif //WITH_CHECKPOINTING

@@ -37,6 +37,8 @@
 
 #include "msp430.h"
 
+#include "tpl_chkpt_adc.h"
+
 #include <stdint.h>
 
 #if WITH_SEQUENCING == YES
@@ -81,12 +83,12 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode_sequence = NOAPPMODE;
 // 	return ADC12MEM0;
 // }
 
-void end_adc()
-{
-  ADC12CTL0 &= ~ADC12ENC;
-  ADC12CTL0 &= ~ADC12ON;
-  return;
-}
+// void end_adc()
+// {
+//   ADC12CTL0 &= ~ADC12ENC;
+//   ADC12CTL0 &= ~ADC12ON;
+//   return;
+// }
 
 FUNC(void, OS_CODE)
 tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
@@ -109,10 +111,10 @@ tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 
   /* Get energy level from ADC */
-  init_adc();
+  tpl_adc_init_simple();
   /* Polling */
-  uint16 energy = tpl_ADC_read();
-  end_adc();
+  uint16 energy = readPowerVoltage_simple();
+  // end_adc();
   /* Compare energy level with energy from sequences with FROM_STATE =
    * tpl_kern_seq->state */
   CONSTP2CONST(tpl_sequence_ref, AUTOMATIC, OS_VAR)
@@ -255,10 +257,10 @@ FUNC(void, OS_CODE) tpl_choose_next_sequence(void){
     while (ptr_seq == NULL)
     {
       /* Get energy level from ADC */
-      init_adc();
+      tpl_adc_init_simple();
       /* Polling */
-      uint16 energy = tpl_ADC_read();
-      end_adc();
+      uint16 energy = readPowerVoltage_simple();
+      // end_adc();
 
       for (i = 0; i < ENERGY_LEVEL_COUNT; i++)
       {

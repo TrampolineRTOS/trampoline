@@ -113,7 +113,6 @@ CPU msp430x {
 //    CFILE  = "tpl_trace.c";
     /* Checkpointing */
     ASFILE = "framtr.S";
-    CFILE = "tpl_checkpoint.c"; 
     CFILE = "tpl_checkpointing.c";
   };
 
