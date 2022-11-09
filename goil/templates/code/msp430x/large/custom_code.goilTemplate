@@ -34,7 +34,19 @@ write to PROJECT+"/tpl_irq_handlers.S":
  template tpl_irq_handlers in code
 end write
 
-write to PROJECT+"/tpl_sequence.c":
- let EXTENSIONINTERMITTENT := "c"
- template tpl_sequence in code
-end write
+if OS::SEQUENCING then 
+ write to PROJECT+"/tpl_sequence.c":
+  let EXTENSIONINTERMITTENT := "c"
+  template tpl_sequence in code
+ end write
+end if
+
+#if exists OS::CHECKPOINTING then
+#  if OS::CHECKPOINTING_S::MODE == "PERIODIC" then
+#    write to PROJECT+"/tpl_checkpointing.c":
+#     let EXTENSIONCHECKPOINTING := "c"
+#     template tpl_checkpointing_periodic in code
+#    end write
+#  end if
+#end if
+    
