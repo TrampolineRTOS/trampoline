@@ -1,0 +1,66 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+  TASK {
+   UINT32 STACKSIZE = 1000;
+  };
+  
+  ISR {
+    UINT32 STACKSIZE = 100;
+    };
+};
+
+CPU base {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+    CPU_FREQ_MHZ = 1;
+    IDLE_POWER_MODE = ACTIVE;
+    // LEA = TRUE {
+    //  LEA_RAM = 4096;
+    // };
+    
+    BUILD = TRUE {
+     TRAMPOLINE_BASE_PATH = "/home/user/Source/trampoline";
+     APP_SRC = "main.c";
+     APP_SRC = "dnn.c";
+     APP_SRC = "dnn_calc.c";
+     APP_SRC = "fixed.c";
+     APP_SRC = "mat.c";
+     APP_NAME = "bench_dnn_exe";
+    //  LIBRARY = dsplib;
+    //  LIBRARY = serial {
+    //    TXBUFFER = 1024;
+    //    RXBUFFER = 1024;
+    //  };
+     CFLAGS = "-O0 -g3 -gdwarf-2 -ggdb";
+     CFLAGS    = "-mhwmult=none";
+     LDFLAGS = "-Map=bench_dnn.map";
+     LDFLAGS = "--undefined=__mspabi_mpyi -lmul_f5";
+     COMPILER = "msp430-elf-gcc";
+     ASSEMBLER = "msp430-elf-gcc";
+     LINKER = "msp430-elf-ld";
+     COPIER = "msp430-elf-objcopy";
+     CFLAGS = "-I/opt/msp430-gcc-support-files/include";
+     SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+     COMPILER = gcc;
+     LINKER = gnu_ld { SCRIPT = "script.ld";};
+     ASSEMBLER = gnu_as;
+     MEMORY_PROTECTION = FALSE;
+    };
+   };
+   
+   APPMODE std {};
+   
+   TASK dnn_main {
+     PRIORITY = 2;
+     SCHEDULE = FULL; 
+     AUTOSTART = TRUE {APPMODE = std;};
+     ACTIVATION = 1;
+   };
+};
+ 
