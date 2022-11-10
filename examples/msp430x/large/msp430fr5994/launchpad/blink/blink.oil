@@ -14,6 +14,12 @@ IMPLEMENTATION trampoline {
 
 CPU blink {
   OS config {
+    // CHECKPOINTING = TRUE { MODE = PERIODIC 
+    //                           {CYCLETIME = 5000;
+    //                           HIBERNATE_THRESHOLD = 2500;
+    //                           RESUME_FROM_HIBERNATE_THRESHOLD = 2800;
+    //                           };
+    // };
     STATUS = EXTENDED;
     PAINT_STACK = TRUE;
     PAINT_REGISTERS = TRUE;
@@ -36,6 +42,11 @@ CPU blink {
       COPIER    = "msp430-elf-objcopy";
       CFLAGS    = "-I/opt/msp430-gcc-support-files/include";
       SYSTEM = PYTHON;
+      // LIBRARY = serial {
+      //   TXBUFFER = 100;
+      //   RXBUFFER=100;
+      // };
+      // LIBRARY = checkpointing;
     };
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {
@@ -46,7 +57,7 @@ CPU blink {
     };
   };
 
-  APPMODE std {};
+  APPMODE Std {};
 
   TASK blink {
     PRIORITY = 3;
@@ -61,9 +72,17 @@ CPU blink {
       TASK = blink;
     };
     AUTOSTART = TRUE {
-      APPMODE = std;
-      ALARMTIME = 1000;
-      CYCLETIME = 1000;
+      APPMODE = Std;
+      ALARMTIME = 500;
+      CYCLETIME = 500;
     };
+  };
+
+  ISR timerA {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = TIMER0_A0_VECTOR {
+      BIT = 6;
+    }; /* Button S1 is on GPIO port 5, bit 6 */
   };
 };
