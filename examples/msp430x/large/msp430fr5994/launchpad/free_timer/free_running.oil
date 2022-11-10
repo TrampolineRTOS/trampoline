@@ -25,9 +25,13 @@ CPU blink {
     PAINT_REGISTERS = TRUE;
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
-      APP_SRC = "blink.c";
+      APP_SRC = "free_running.c";
       APP_SRC = "leds.c";
-      APP_NAME = "blink_exe";
+      APP_NAME = "free_running_exe";
+      LIBRARY = serial {
+        TXBUFFER = 32;
+        RXBUFFER = 16;
+      };
       CFLAGS  = "-O0 -g3 -gdwarf-2 -ggdb"; //gdb usage
       LDFLAGS = "-Map=blink.map";
       //use either msp-gcc (provided with Energia)..
@@ -57,25 +61,32 @@ CPU blink {
     };
   };
 
-  APPMODE Std {};
+  APPMODE std {};
 
-  TASK blink {
+  TASK free_running {
     PRIORITY = 3;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
 
-  ALARM blink_blink {
+  ALARM free_running_alarm {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {
-      TASK = blink;
+      TASK = free_running;
     };
     AUTOSTART = TRUE {
-      APPMODE = Std;
-      ALARMTIME = 500;
-      CYCLETIME = 500;
+      APPMODE = std;
+      ALARMTIME = 1000;
+      CYCLETIME = 1000;
     };
   };
 
+  ISR timerA {
+    CATEGORY = 2;
+    PRIORITY = 1;
+    SOURCE = TIMER0_A0_VECTOR {
+      BIT = 6;
+    };
+  };
 };
