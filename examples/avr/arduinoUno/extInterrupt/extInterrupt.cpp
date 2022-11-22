@@ -53,4 +53,5 @@ TASK(periodicTask)
 	static unsigned int state = LOW;
 	digitalWrite(13,state);
 	state = !state;
+	TerminateTask();
 }
