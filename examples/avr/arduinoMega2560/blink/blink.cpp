@@ -20,5 +20,6 @@ TASK(periodicTask)
 	nb++;
 	if(nb & 1) digitalWrite(13, HIGH); //odd
 	else digitalWrite(13, LOW);        //even
+	TerminateTask();
 }
 
