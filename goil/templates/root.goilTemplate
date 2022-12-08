@@ -81,7 +81,7 @@ let TRANSACTION := exists TRANSACTION default (@())
 let OBJECT := exists OBJECT default (@())
 let SPINLOCK := exists SPINLOCK default (@())
 
-template if exists configCheck
+template if exists configCheck in check
 
 let ioc_queued_list := @()
 let ioc_unqueued_list := @()
@@ -486,6 +486,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let SCHEDULETABLE := st_with_app
 end if
 
+
 #------------------------------------------------------------------------------*
 # Add informations to tasks
 # Multiply the priority by 2 to add room for the ressources
@@ -510,22 +511,11 @@ foreach task in TASK do
     let task_max_priority := task::PRIORITY
   end if
 
+  # Check transfered to configCheck.goilTemplate
   let task::USEINTERNALRESOURCE := false
   let internal_found := false
   if exists task::RESOURCE then
-    let internal_name := ""
-    foreach owned_resource in task::RESOURCE do
-      foreach resource in RESOURCE do
-        if resource::NAME == owned_resource::VALUE & resource::RESOURCEPROPERTY == "INTERNAL" then
-          if internal_found then
-            error owned_resource : "No more than one internal resource may be assigned to a task"
-          else
-            let internal_found := true
-            let internal_name := owned_resource::VALUE
-          end if
-        end if
-      end foreach
-    end foreach
+    let internal_found := true
     let task::USEINTERNALRESOURCE := internal_found
     if internal_found then
       let task::INTERNALRESOURCE := internal_name
@@ -542,10 +532,7 @@ foreach task in TASK do
     end if
     let INTERNAL_RESCHEDULER_STRUCT::VALUE := INTERNAL_RESCHEDULER::NAME
     let task::RESOURCE += INTERNAL_RESCHEDULER_STRUCT
-    if internal_found then
-      error internal_name : "Internal resource cannot be assigned"
-      error task::SCHEDULE : "to a non-preemptable task"
-    end if
+    # Check transfered to checkConfig.goilTemplate
   else
     let task::NONPREEMPTABLE := false
   end if
@@ -717,11 +704,7 @@ foreach obj in PRIO2 do
 end foreach
 
 # Check no extended task as an ACTIVATION attribute greater than 1
-foreach task in EXTENDEDTASKS do
-  if task::ACTIVATION > 1 then
-    error task::ACTIVATION : "An extended task cannot have ACTIVATION greater than 1"
-  end if
-end foreach
+# Check transfered to configCheck.goilTemplate
 
 # increase the RESSCHEDULERPRIORITY by one and have it
 # set between the highest priority task and the lowest ISR priority
@@ -876,25 +859,13 @@ foreach sel_event (sel_INDEX) in USEREVENTS do
   #
   # a MASK with 0 is an error
   #
-  if sel_event::MASK == 0 then
-    error sel_event::MASK : "0 is not allowed in MASK"
-  end if
+  # Check transfered to configCheck.goilTemplate
   
   #
   # Warn if a MASK has more than one bit
   #
-  let more_than_one_bit := false
-  loop bit from 0 to 63 do
-    let mask := 1 << bit
-    let masked_evt := sel_event::MASK & mask
-    if masked_evt != 0 & masked_evt != sel_event::MASK then
-      let more_than_one_bit := true
-    end if
-  end loop
-  if more_than_one_bit then
-    warning sel_event::MASK : "Event " + sel_event::NAME + " uses more than one bit"
-  end if
-  
+  # Check transfered to configCheck.goilTemplate
+
   #
   # Having 2 mask with common bits is an error if the events are
   # used by the same task
@@ -1018,28 +989,7 @@ end foreach
 let counterMap := mapof COUNTERS by NAME
 let taskMap := mapof TASKS by NAME
 let ALARMS := ALARM
-foreach alarm in ALARMS do
-  if alarm::AUTOSTART then
-    # verify an AUTOSTART alarm is compatible with the counter
-    let counter := counterMap[alarm::COUNTER]
-    if alarm::AUTOSTART_S::CYCLETIME < counter::MINCYCLE & alarm::AUTOSTART_S::CYCLETIME != 0 then
-      error alarm::AUTOSTART_S::CYCLETIME : "CYCLETIME is lower than MINCYCLE"
-      error counter::MINCYCLE : "as declared there"
-    end if
-  end if
-  # verify the alarm action is compatible with the target
-  if exists alarm::ACTION then
-    if alarm::ACTION == "INCREMENTCOUNTER" then
-      if counterMap[alarm::ACTION_S::COUNTER]::TYPE != "SOFTWARE" then
-        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter ("+alarm::ACTION_S::COUNTER+" is not a software counter)." 
-      end if
-    elsif alarm::ACTION == "SETEVENT" then
-      if not exists taskMap[alarm::ACTION_S::TASK]::EVENT then
-        error alarm::ACTION_S::TASK : "An alarm can't set an Event to a basic task (Task "+alarm::ACTION_S::TASK+" is a basic task)."
-      end if
-    end if
-  end if
-end foreach
+# Check transfered to configCheck.goilTemplate
 
 #------------------------------------------------------------------------------*
 # Compute the list of destination messages. This allow
@@ -1164,6 +1114,7 @@ end foreach
 #------------------------------------------------------------------------------*
 # Compute the SCHEDULETABLES
 #
+
 let SCHEDULETABLES := SCHEDULETABLE
 
 #------------------------------------------------------------------------------*
@@ -1182,6 +1133,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
 #------------------------------------------------------------------------------*
 # add the computed attributes
   foreach app in APPLICATION do
+
     if not exists app::TASK then let app::TASK := @() end if
     if not exists app::ISR then let app::ISR := @() end if
     if not exists app::ALARM then let app::ALARM := @() end if
@@ -1191,6 +1143,8 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     if not exists app::IOC then let app::IOC := @() end if
 
     let isr_map := mapof ISRS2 by NAME
+
+    # Check transfered to configCheck.goilTemplate
 
     # vectors for process access
     let process_of_app := app::TASK

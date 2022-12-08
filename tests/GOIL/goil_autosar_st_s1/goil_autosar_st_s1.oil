@@ -74,6 +74,7 @@ CPU test {
     AUTOSTART = NONE;
     LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
     LENGTH = 10;
+    PERIODIC = TRUE;
   };
   SCHEDULETABLE sched2 {
     COUNTER = Software_Counter;
