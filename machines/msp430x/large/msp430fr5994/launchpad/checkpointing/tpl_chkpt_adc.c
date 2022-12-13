@@ -12,9 +12,9 @@ VAR(uint16_t,AUTOMATIC) adc_conv_ready = 0;
 /*----------------------------------------------------------------------------*/
 /* tpl_adc_init                                                               */
 /*----------------------------------------------------------------------------*/
-FUNC(void, OS_APPL_CODE) tpl_adc_init_simple(void)
+FUNC(void, OS_APPL_CODE) tpl_adc_init_simple(bool use1V2Ref)
 {
-  static bool use1V2Ref = false;
+  // static bool use1V2Ref = true;
 
   ADC12CTL0 &= ~ADC12ENC;                     // disable ADC
   ADC12CTL0 = ADC12ON | ADC12SHT0_4;          // turn ADC ON; sample + hold @ 64 × ADC12CLKs

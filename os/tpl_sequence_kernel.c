@@ -111,9 +111,20 @@ tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 
   /* Get energy level from ADC */
-  tpl_adc_init_simple();
+  bool use1V2Ref = true;
+  tpl_adc_init_simple(use1V2Ref);
   /* Polling */
-  uint16 energy = readPowerVoltage_simple();
+  uint16_t energy = readPowerVoltage_simple();
+  uint16_t voltageInMillis;
+  if(energy == 0x0FFF){
+    use1V2Ref = false;
+    tpl_adc_init_simple(use1V2Ref);
+    energy = readPowerVoltage_simple();
+    voltageInMillis = energy;
+  }
+  else{
+    voltageInMillis = energy*3/5;
+  }
   // end_adc();
   /* Compare energy level with energy from sequences with FROM_STATE =
    * tpl_kern_seq->state */
@@ -124,7 +135,7 @@ tpl_init_sequence_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   {
     CONSTP2CONST(tpl_sequence, AUTOMATIC, OS_VAR) ptr_seq = ptr_state[i];
     // tpl_sequence *ptr_seq = ptr_state[i];
-    if (energy >= ptr_seq->energy)
+    if (voltageInMillis >= ptr_seq->energy)
     {
       tpl_kern_seq.elected =
           (CONSTP2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_seq;
@@ -257,15 +268,25 @@ FUNC(void, OS_CODE) tpl_choose_next_sequence(void){
     while (ptr_seq == NULL)
     {
       /* Get energy level from ADC */
-      tpl_adc_init_simple();
+      bool use1V2Ref = true;
+      tpl_adc_init_simple(use1V2Ref);
       /* Polling */
-      uint16 energy = readPowerVoltage_simple();
-      // end_adc();
+      uint16_t energy = readPowerVoltage_simple();
+      uint16_t voltageInMillis;
+      if(energy == 0x0FFF){
+        use1V2Ref = false;
+        tpl_adc_init_simple(use1V2Ref);
+        energy = readPowerVoltage_simple();
+        voltageInMillis = energy;
+      }
+      else{
+        voltageInMillis = energy*3/5;
+      }
 
       for (i = 0; i < ENERGY_LEVEL_COUNT; i++)
       {
         tmp_ptr_seq = (P2VAR(tpl_sequence, AUTOMATIC, OS_VAR))ptr_state[i];
-        if (energy >= tmp_ptr_seq->energy)
+        if (voltageInMillis >= tmp_ptr_seq->energy)
         {
           tpl_kern_seq.elected = tmp_ptr_seq;
           ptr_seq = tmp_ptr_seq;
