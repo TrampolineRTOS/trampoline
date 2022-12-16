@@ -1,0 +1,11 @@
+CC = ccrh
+AS = ccrh
+LD = rlink
+
+
+override CFLAGS += -Xcpu=g4mh -g -g_line -Xfxu=off
+override CFLAGS += -Xasm_path=.
+
+override LDFLAGS += -debug -nocompress -NOOPtimize -memory=high -nologo 
+override LDFLAGS += -SHow=ALL
+
