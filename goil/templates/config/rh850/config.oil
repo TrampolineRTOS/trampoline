@@ -1,0 +1,46 @@
+IMPLEMENTATION renesas {
+
+  OS {
+    BOOLEAN [
+      TRUE {
+        STRING APP_SRC[];
+        STRING CFLAGS[];
+        STRING CPPFLAGS[];
+        STRING ASFLAGS[];
+        STRING LDFLAGS[];
+        STRING APP_NAME = "trampoline";
+        STRING TRAMPOLINE_BASE_PATH = "..";
+        STRING COMPILER = "ccrh";
+        STRING ASSEMBLER = "ccrh";
+        STRING LINKER = "nm";
+      },
+      FALSE
+    ] BUILD = FALSE;
+    
+    BOOLEAN SYSTEM_CALL = TRUE;
+  };
+  
+  TASK {
+    UINT32 STACKSIZE = 32768;
+  };
+  
+  ISR {
+    UINT32 STACKSIZE = 32768;
+    ENUM [SIGTERM, SIGQUIT, SIGUSR2, SIGPIPE, SIGTRAP] SOURCE; 
+  };
+
+  COUNTER {
+    UINT32 MAXALLOWEDVALUE = 4294967295; /*32 bits unsigned value*/
+  };
+  
+};
+
+CPU renesas {
+  PLATFORM_FILES renesas {
+    PATH = "rh850";
+    CFILE = "tpl_machine_renesas.c";
+    CFILE = "cstart0.asm";
+    CFILE = "tpl_startup.asm";
+    CFILE = "tpl_sc_handler.asm";
+  };
+};
