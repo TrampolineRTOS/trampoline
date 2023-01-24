@@ -39,13 +39,18 @@ tpl_kernel_stack_bottom:
 #define OS_STOP_SEC_VAR
 #include "tpl_as_memmap.h"
 
-
+#if MEASURE_OS_SERVICE_MSP == 1
+  #include "msp430.h"
+#endif
 /*
     the code starts here
 */
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
+
+/* test */
+#define MEASURE_OS_SERVICE_MSP 1
 
 /*=============================================================================
  * System call handler
@@ -54,6 +59,9 @@ tpl_kernel_stack_bottom:
 .type   tpl_sc_handler, %function
 
 tpl_sc_handler:
+#if MEASURE_OS_SERVICE_MSP == 1
+  mov.b REG_SID, &P3OUT 
+#endif
 /*
  * PROCESS STACK:
  *    +-------------------+
@@ -407,6 +415,9 @@ tpl_sc_handler_no_save_running_context:
  * r15} are popped and we return.
  */
   popm.a   #12,r15                 /* pop r4 to r15 at once              */
+  #if MEASURE_OS_SERVICE_MSP == 1
+    mov.b #00h, &P3OUT 
+  #endif
   reti                             /* and return with interrupts enabled */
 /*-----------------------------------------------------------------------------
  * -17- We get there from stage 9 and we are on the kernel stack and r13
@@ -449,6 +460,9 @@ tpl_sc_handler_no_context_switch:
   movx.a      REG_RETARG_OFFSET(r1), REG_RETARG     /* get back REG_RETARG     */
   popx.a      r11                                   /* get back r11            */
   addx.a      #16, r1                               /* clean the stack         */
+  #if MEASURE_OS_SERVICE_MSP == 1
+    mov.b #00h, &P3OUT 
+  #endif
   reti                                             /* return with int enabled */
 /*-----------------------------------------------------------------------------
  * -18- We get here coming from stage 2. We are on the kernel stack because
@@ -461,6 +475,9 @@ tpl_sc_handler_from_hook:
   rlax.a      REG_SID                      /* index -> offset               */
   rlax.a      REG_SID                      /* index -> offset               */
   calla     tpl_dispatch_table(REG_SID)
+  #if MEASURE_OS_SERVICE_MSP == 1
+    mov.b #00h, &P3OUT 
+  #endif
   reta
 
 #define OS_STOP_SEC_CODE
