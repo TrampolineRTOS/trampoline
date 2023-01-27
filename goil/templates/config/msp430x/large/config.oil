@@ -76,6 +76,12 @@ IMPLEMENTATION  msp430x {
      FALSE {UINT32 LEA_RAM = 0;}
     ] LEA = FALSE; 
 
+    /* Enable or not Systick at startup */
+    BOOLEAN [
+      TRUE,
+      FALSE
+    ] SYSTICK = TRUE;
+    
     /* enable intermittent sequence */
     BOOLEAN [
       TRUE {
