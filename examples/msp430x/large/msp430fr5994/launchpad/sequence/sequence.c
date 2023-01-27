@@ -15,6 +15,9 @@ FUNC(void, OS_APPL_CODE) io_init()
 	P1DIR |= BIT0 + BIT1;
     P1OUT &= ~(BIT0 + BIT1);
 
+    /* measure system call response time */
+    P3DIR = 0xFF;
+
     tpl_serial_begin(SERIAL_TX_MODE_BLOCK);
     __bis_SR_register(GIE);
 }
