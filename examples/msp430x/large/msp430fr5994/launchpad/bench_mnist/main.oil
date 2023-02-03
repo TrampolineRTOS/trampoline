@@ -1,0 +1,89 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+  TASK {
+   UINT32 STACKSIZE = 500;
+  };
+  
+  ISR {
+    UINT32 STACKSIZE = 200;
+    };
+};
+
+CPU base {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+    CPU_FREQ_MHZ = 8;
+    IDLE_POWER_MODE = ACTIVE;
+    
+    BUILD = TRUE {
+     TRAMPOLINE_BASE_PATH = "/home/user/Source/trampoline";
+     APP_SRC = "main.c";
+     APP_NAME = "bench_mnist_exe";
+     CFLAGS = "-O0 -g3 -gdwarf-2 -ggdb";
+    //  CFLAGS    = "-mhwmult=none";
+     LDFLAGS = "-Map=bench_mnist.map";
+    //  LDFLAGS = "--undefined=__mspabi_mpyi -lmul_f5";
+     COMPILER = "msp430-elf-gcc";
+     ASSEMBLER = "msp430-elf-gcc";
+     LINKER = "msp430-elf-ld";
+     COPIER = "msp430-elf-objcopy";
+     SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+     COMPILER = gcc;
+     LINKER = gnu_ld { SCRIPT = "script.ld";};
+     ASSEMBLER = gnu_as;
+     MEMORY_PROTECTION = FALSE;
+    };
+   };
+   
+   APPMODE std {};
+   
+   TASK task_init {
+     PRIORITY = 2;
+     SCHEDULE = FULL; 
+     AUTOSTART = TRUE {APPMODE = std;};
+     ACTIVATION = 1;
+   };
+   
+   TASK task_neural_network_hypothesis {
+     PRIORITY = 3;
+     SCHEDULE = FULL; 
+     AUTOSTART = FALSE;
+     ACTIVATION = 1;
+   };
+
+   TASK task_neural_network_softmax_max {
+     PRIORITY = 2;
+     SCHEDULE = FULL; 
+     AUTOSTART = FALSE;
+     ACTIVATION = 1;
+   };
+   
+   TASK task_neural_network_softmax_sum {
+     PRIORITY = 2;
+     SCHEDULE = FULL; 
+     AUTOSTART = FALSE;
+     ACTIVATION = 1;
+   };
+   
+   TASK task_neural_network_softmax {
+     PRIORITY = 2;
+     SCHEDULE = FULL; 
+     AUTOSTART = FALSE;
+     ACTIVATION = 1;
+   };
+   
+   
+   TASK task_classify {
+     PRIORITY = 2;
+     SCHEDULE = FULL; 
+     AUTOSTART = FALSE;
+     ACTIVATION = 1;
+   };
+};
+ 
