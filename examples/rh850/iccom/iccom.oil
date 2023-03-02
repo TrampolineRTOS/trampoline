@@ -1,0 +1,59 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 STACKSIZE = 2048 ;
+  } ;
+
+  ISR {
+    UINT32 STACKSIZE = 2048 ;
+  } ;
+};
+
+CPU iccom {
+  OS config {
+    STATUS = EXTENDED;
+    PAINT_STACK = TRUE;
+    PAINT_REGISTERS = TRUE;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../";
+      APP_SRC = "iccom.c";
+      APP_SRC = "iccom_ll.c"; 
+      APP_NAME = "iccom_exe";
+      LDFLAGS="-debug -nocompress -NOOPtimize -memory=high -nologo -SHow=ALL";
+      CFLAGS="-Xcpu=g4mh -g -g_line -Xfxu=off -Xasm_path=.";
+      LINKER = "rlink";
+      SYSTEM = CMAKE;
+    };
+    SYSTEM_CALL = TRUE;
+  };
+
+  APPMODE std {};
+
+  TASK iccom {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ISR iccomIntClear {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = iccomInt;
+  };
+  
+  ISR iccomInt {
+    CATEGORY = 2; //FSY unsupported
+    PRIORITY = 1;
+    SOURCE = iccomInt; //SysTick;
+  };
+
+  COUNTER SystemCounter {
+    SOURCE = SysTick;
+    MAXALLOWEDVALUE = 10000;
+    TICKSPERBASE = 1;
+    MINCYCLE = 1;
+  };
+};
