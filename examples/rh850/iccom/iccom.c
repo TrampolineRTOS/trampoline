@@ -137,6 +137,16 @@ static void iccom_handle_rx_msg(size_t size)
 		//	iccom_send((uint8*)reply_pkt, sizeof(struct read_chunk_reply));
 		//	break;
 		//}
+		case ECHO: {
+			struct echo_command* cmd_pkt = (struct read_chunk_command*) rx_buffer;
+			struct echo_reply* reply_pkt = (struct read_chunk_reply*) tx_buffer;
+
+			// Just copy the data back
+			memcpy(reply_pkt, cmd_pkt, size);
+			iccom_send((uint8*)reply_pkt, size);
+			break;
+		}
+
 		default:
 			break;
 	}
