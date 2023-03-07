@@ -4,8 +4,8 @@
 //#include "Compiler.h"
 #include "tpl_compiler.h"
 
-uint32 ICCOM_CTA_MEMORY_CH0 = 0x47FC7000;
-uint32 ICCOM_CTA_MEMORY_CH1 = 0x47FC8000;
+uint32 ICCOM_CTA_MEMORY_CH0 = 0x47fc7000;
+uint32 ICCOM_CTA_MEMORY_CH1 = 0x47fc9000;
 
 void iccom_ll_init(void)
 {
