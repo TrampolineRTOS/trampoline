@@ -157,3 +157,13 @@ void iccom_cta_read(uint8 * buff, size_t size)
 
 	memcpy(buff, ctaPtr, size);
 }
+
+uint8* iccom_get_read_cta_ptr()
+{
+	return (uint8*)ICCOM_CTA_MEMORY_CH0;
+}
+
+uint8* iccom_cta_write_cta_ptr()
+{
+	return (uint8*)ICCOM_CTA_MEMORY_CH1;
+}

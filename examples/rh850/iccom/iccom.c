@@ -24,8 +24,6 @@ enum ICCOM_MSG {
 #define HOST_INT_CLEAR_TIMEOUT_MS		(500U*TIMER_TICKS_PER_MS)
 
 uint8 iccom_initalized = 0;
-uint8 rx_buffer[ICCOM_BUF_MAX_SIZE];
-uint8 tx_buffer[ICCOM_BUF_MAX_SIZE];
 
 static void iccom_notify_tx_data(size_t message)
 {
@@ -67,9 +65,13 @@ static sint32 iccom_wait_for_out_interrupt_clear(uint32_t timeout_ms)
 	return 0;
 }
 
-static void iccom_send(uint8* data, size_t size)
+static void iccom_send(uint8* data, size_t size, uint8_t copy_to_out_cta)
 {
-	iccom_cta_write(data, size);
+	// If this function is called with data already on the CTA buffer,
+	// then there is no need to update it
+	if (copy_to_out_cta) {
+		iccom_cta_write(data, size);
+	}
 	iccom_notify_tx_data(size);
 }
 
@@ -77,8 +79,10 @@ static void iccom_handle_rx_msg(size_t size)
 {
 	struct command_header* in_pkt;
 	sint32 ret;
-	
-	iccom_cta_read(rx_buffer, size);
+
+	// Casting to the most simple structure in order to get the "cmd_id".
+	// Later the proper casting will be done
+	in_pkt = (struct command_header*) iccom_get_read_cta_ptr();
 	iccom_send_rx_data_ack((uint32)size);
 	ret = iccom_wait_for_out_interrupt_clear(HOST_INT_CLEAR_TIMEOUT_MS);
 	if (ret < 0) {
@@ -87,17 +91,14 @@ static void iccom_handle_rx_msg(size_t size)
 		goto Exit;
 	}
 
-	// Casting to the most simple structure in order to get the "cmd_id".
-	// Later the proper casting will be done
-	in_pkt = (struct command_header*) rx_buffer;
 	switch (in_pkt->cmd_id) {
 		case ECHO: {
-			struct echo_command* cmd_pkt = (struct read_chunk_command*) rx_buffer;
-			struct echo_reply* reply_pkt = (struct read_chunk_reply*) tx_buffer;
+			struct echo_command* cmd_pkt = in_pkt;
+			struct echo_reply* reply_pkt = iccom_cta_write_cta_ptr();
 
 			// Just copy the data back
 			memcpy(reply_pkt, cmd_pkt, size);
-			iccom_send((uint8*)reply_pkt, size);
+			iccom_send((uint8*)reply_pkt, size, 0);
 			break;
 		}
 

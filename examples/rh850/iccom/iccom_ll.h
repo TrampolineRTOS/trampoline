@@ -36,4 +36,7 @@ void iccom_clear_interrupt_locked(void);
 void iccom_cta_read(uint8 * buff, size_t size);
 void iccom_cta_write(uint8 * buff, size_t size);
 
+uint8* iccom_get_read_cta_ptr(void);
+uint8* iccom_cta_write_cta_ptr(void);
+
 #endif //__ICCOM_LL_H__
