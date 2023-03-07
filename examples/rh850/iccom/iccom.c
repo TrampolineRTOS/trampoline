@@ -1,10 +1,7 @@
 #include "tpl_os.h"
 #include "iccom.h"
 #include "iccom_ll.h"
-//#include "qspi_flash_writer.h"
 #include "iccom_commands.h"
-//#include "tpl_app_config.h"
-//#include "tpl_as_counter_kernel.h"
 
 #define APP_Task_iccom_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -12,12 +9,6 @@
 #include "iccom_commands.h"
 
 extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
-
-//DeclareCounter(Hardware_Counter);
-//DeclareCounter(Software_Counter);
-//DeclareCounter(SystemCounter);
-//DeclareCounter(0);
-
 
 /* ICCOM protocol */
 enum ICCOM_MSG {
@@ -54,33 +45,14 @@ static void iccom_send_initialization_ack(void)
 	iccom_set_out_ctrl_reg(ICCOM_CTRL_INIT_COMPLETED | ICCOM_CTRL_INT);
 }
 
-/*
- * delay comme sur l'arduino
- */
-//FUNC(void, OS_CODE) delay(CONST(uint32, AUTOMATIC) howMuch)
-//{
-//  CONST(uint32, AUTOMATIC) start = tpl_time_counter;
-//  while (tpl_time_counter - start < howMuch);
-//}
-
 static sint32 iccom_wait_for_out_interrupt_clear(uint32_t timeout_ms)
 {
 	uint32 out_ctrl_reg;
 	TickType start_val, curr_val;
 
-	//JN what is this MAIN_HW_COUNTER?
-	//GetCounterValue(MAIN_HW_COUNTER, &start_val);
-	//GetCounterValue(Hardware_Counter, &start_val);
-	//GetCounterValue(Software_Counter, &start_val);
-	//GetCounterValue(SystemCounter, &start_val);
-	//GetCounterValue(0, &start_val);
-	//GetCounterValue(Software_Counter1, &start_val);
 	start_val = tpl_time_counter;
 	do {
 		iccom_get_out_ctrl_reg(&out_ctrl_reg);
-		//JN
-		//GetCounterValue(MAIN_HW_COUNTER, &curr_val);
-		//GetCounterValue(Hardware_Counter, &curr_val);
 		curr_val = tpl_time_counter;
 		// If the host processor doesn't clear the interrupt before the timeout
 		// then it's likely that the host application stopped/crashed and this
@@ -119,24 +91,6 @@ static void iccom_handle_rx_msg(size_t size)
 	// Later the proper casting will be done
 	in_pkt = (struct command_header*) rx_buffer;
 	switch (in_pkt->cmd_id) {
-		case READ_FLASH_ID: {
-			//struct read_flash_id_command* cmd_pkt = (struct read_flash_id_command*) rx_buffer;
-			struct simple_reply_uint32 reply_pkt;
-			//uint32 chip_id = flash_read_chip_id();
-			reply_pkt.cmd_id = 0;
-			reply_pkt.ret_val = 0xB0CAD0;
-			iccom_send((uint8*)&reply_pkt, sizeof(struct simple_reply_uint32));
-			break;
-		}
-		//case READ_CHUNK: {
-		//	struct read_chunk_command* cmd_pkt = (struct read_chunk_command*) rx_buffer;
-		//	struct read_chunk_reply* reply_pkt = (struct read_chunk_reply*) tx_buffer;
-		//	reply_pkt->cmd_id = cmd_pkt->cmd_id;
-		//	reply_pkt->ret_val = flash_read_chunk(cmd_pkt->start_address,
-		//								cmd_pkt->size, reply_pkt->data);
-		//	iccom_send((uint8*)reply_pkt, sizeof(struct read_chunk_reply));
-		//	break;
-		//}
 		case ECHO: {
 			struct echo_command* cmd_pkt = (struct read_chunk_command*) rx_buffer;
 			struct echo_reply* reply_pkt = (struct read_chunk_reply*) tx_buffer;
