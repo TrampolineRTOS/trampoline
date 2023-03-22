@@ -6,8 +6,6 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline avr specifics
- *
  */
 
 #ifndef __TPL_MACHINE_RENESAS_H__
@@ -18,11 +16,11 @@
 
 typedef enum
 {
-  reg_pc = 0,
-  reg_lr = 2,
+  reg_pc = 11, /* eipc */
+  reg_lr = 0, /* r31 */
 } tpl_register_names;
 
-#define NB_REG_ON_SC_HANDLER_FRAME 21
+#define NB_REG_ON_SC_HANDLER_FRAME 31
 
 struct TPL_CONTEXT {
     u32 stackPointer;

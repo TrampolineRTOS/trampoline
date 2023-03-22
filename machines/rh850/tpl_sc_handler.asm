@@ -48,49 +48,67 @@ __tpl_syscall_table:
 	.endm
 
  ; +------------------+
- ; | eipc             | <- SP
+ ; | R31              | <- SP
  ; +------------------+
- ; | eipsw            | <- SP+4
+ ; | R30              | <- SP+4
  ; +------------------+
- ; | R31              | <- SP+8
+ ; | R29              | <- SP+8
  ; +------------------+
- ; | R30              | <- SP+12
+ ; | R28              | <- SP+12
  ; +------------------+
- ; | R29              | <- SP+16
+ ; | R27              | <- SP+16
  ; +------------------+
- ; | R28              | <- SP+20
+ ; | R26              | <- SP+20
  ; +------------------+
- ; | R27              | <- SP+24
+ ; | R25              | <- SP+24
  ; +------------------+
- ; | R26              | <- SP+28
+ ; | R24              | <- SP+28
  ; +------------------+
- ; | R25              | <- SP+32
+ ; | R23              | <- SP+32
  ; +------------------+
- ; | R24              | <- SP+36
+ ; | R22              | <- SP+36
  ; +------------------+
- ; | R23              | <- SP+40
+ ; | R21              | <- SP+40
  ; +------------------+
- ; | R22              | <- SP+44
+ ; | eipc             | <- SP+44
  ; +------------------+
- ; | R31              | <- SP+48
+ ; | eipsw            | <- SP+48
  ; +------------------+
  ; | R20              | <- SP+52
  ; +------------------+
- ; | R10              | <- SP+56
+ ; | R19              | <- SP+56
  ; +------------------+
- ; | R9               | <- SP+60
+ ; | R18              | <- SP+60
  ; +------------------+
- ; | R8               | <- SP+64
+ ; | R17              | <- SP+64
  ; +------------------+
- ; | R7               | <- SP+68
+ ; | R16              | <- SP+68
  ; +------------------+
- ; | R6               | <- SP+72
+ ; | R15              | <- SP+72
  ; +------------------+
- ; | R5               | <- SP+76
+ ; | R14              | <- SP+76
  ; +------------------+
- ; | R4               | <- SP+80
+ ; | R13              | <- SP+80
  ; +------------------+
- ; | R2               | <- SP+84
+ ; | R12              | <- SP+84
+ ; +------------------+
+ ; | R11              | <- SP+88
+ ; +------------------+
+ ; | R10              | <- SP+92
+ ; +------------------+
+ ; | R9               | <- SP+96
+ ; +------------------+
+ ; | R8               | <- SP+100
+ ; +------------------+
+ ; | R7               | <- SP+104
+ ; +------------------+
+ ; | R6               | <- SP+108
+ ; +------------------+
+ ; | R5               | <- SP+112
+ ; +------------------+
+ ; | R4               | <- SP+116
+ ; +------------------+
+ ; | R2               | <- SP+120
  ; +------------------+
  
 
@@ -98,13 +116,13 @@ __tpl_sc_handler:
 	; Save working registers on the calling task stack
 	pushsp r2, r2
 	pushsp r4, r10
-	pushsp r20, r31
+	add 40, sp ; skip caller saved registers: r11-r20
+
 	stsr 1, r20 ; retrieve eipsw: calling status
 	pushsp r20, r20
 	stsr 0, r20 ; retrieve eipc: calling pc
 	pushsp r20, r20
-
-	; Should we clear interrupts ? : set PSW.EP to 0?
+	pushsp r21, r31
 
 	; Check if we already use the kernel stack
 	; tpl_reentrancy_counter++
@@ -219,12 +237,13 @@ no_context_switch:
 
 tpl_leave_kernel_end:
 	; epilogue
-    	popsp r20, r20
+
+	popsp r21, r31
+	popsp r20, r20
 	ldsr r20, 0 ; restore eipc: calling pc
-    	popsp r20, r20
+	popsp r20, r20
 	ldsr r20, 1 ; restore eipsw: calling status
-	popsp r20, r31
-	popsp r4, r10
+	popsp r4, r20
 	popsp r2, r2
 
 	eiret
