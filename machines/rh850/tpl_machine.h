@@ -54,4 +54,11 @@ typedef struct TPL_STACK *tpl_stack;
  */
 #define IDLE_STACK_SIZE 200
 
+/* TODO : This function is called after an ISR2 has been terminated. It should
+ *        restore the hardware's cpu priority if it has been increased before
+ *        the execution of the ISR2 (see ppc/multicore/tpl_machine.h for an
+ *        example).
+ */
+#define tpl_restore_cpu_priority()
+
 #endif

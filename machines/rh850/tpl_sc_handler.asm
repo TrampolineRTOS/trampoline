@@ -33,6 +33,7 @@ _tpl_kernel_stack:
 	.dw 0xDEADBEEF
 	.endm
 
+    .public _tpl_kernel_stack_bottom
 _tpl_kernel_stack_bottom:
 	.dw 0x00000000
 

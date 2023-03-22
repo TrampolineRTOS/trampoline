@@ -110,10 +110,6 @@ $endif
 	; apply PSW and PC to start user mode
 	feret
 
-	.public	__irq_handler
-__irq_handler:
-	jr32 _irq_handler
-
 _exit:
 	br	_exit			;  end of program
 

@@ -176,7 +176,3 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
 	init_systick();
 }
-
-//defined in cstart0.asm... usefull?
-#pragma interrupt irq_handler
-void irq_handler(unsigned long arg) {}

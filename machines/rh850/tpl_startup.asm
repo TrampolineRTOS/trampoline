@@ -87,75 +87,75 @@
 
 	.align	16
 	syncp
-	jr32	__irq_handler ; _Dummy_EI ; INTn(priority0)
+	jr32	__irq_handler ; INTn(priority0)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority1)
+	jr32	__irq_handler ; INTn(priority1)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority2)
+	jr32	__irq_handler ; INTn(priority2)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority3)
+	jr32	__irq_handler ; INTn(priority3)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority4)
+	jr32	__irq_handler ; INTn(priority4)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority5)
+	jr32	__irq_handler ; INTn(priority5)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority6)
+	jr32	__irq_handler ; INTn(priority6)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority7)
+	jr32	__irq_handler ; INTn(priority7)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority8)
+	jr32	__irq_handler ; INTn(priority8)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority9)
+	jr32	__irq_handler ; INTn(priority9)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority10)
+	jr32	__irq_handler ; INTn(priority10)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority11)
+	jr32	__irq_handler ; INTn(priority11)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority12)
+	jr32	__irq_handler ; INTn(priority12)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority13)
+	jr32	__irq_handler ; INTn(priority13)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority14)
+	jr32	__irq_handler ; INTn(priority14)
 
 	.align	16
 	syncp
-	jr32	_Dummy_EI ; INTn(priority15)
+	jr32	__irq_handler ; INTn(priority15)
 
 	.section "EIINTTBL_PE0", const
 	.align	512
-	.dw	#_Dummy_EI ; INT0
-	.dw	#_Dummy_EI ; INT1
-	.dw	#_Dummy_EI ; INT2
+	.dw	#__irq_handler ; INT0
+	.dw	#__irq_handler ; INT1
+	.dw	#__irq_handler ; INT2
 	.rept	2048 - 3
-	.dw	#_Dummy_EI ; INTn
+	.dw	#__irq_handler ; INTn
 	.endm
 
 	.section ".text", text

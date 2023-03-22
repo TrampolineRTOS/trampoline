@@ -1,0 +1,205 @@
+#include "tpl_machine.h"
+#include "iodefine.h"
+
+%
+
+  #check that source is found in target for ISR2
+  foreach isr2 in ISRS2 do
+    let source_ok := false
+    foreach it_source in INTERRUPT do
+      if isr2::SOURCE == it_source::NAME then
+        let source_ok := true
+      end if
+    end foreach
+    if source_ok == false then
+      error isr2::SOURCE : "This interrupt source ".isr2::SOURCE." does not exist"
+    end if
+  end foreach
+  #check that source is found in target for ISR2
+  foreach counter in HARDWARECOUNTERS do
+    let source_ok := false
+    foreach it_source in INTERRUPT do
+      if counter::SOURCE == it_source::NAME then
+        let source_ok := true
+      end if
+    end foreach
+    if source_ok == false & counter::SOURCE != "" then
+      error counter::SOURCE : "This interrupt source ".counter::SOURCE." does not exist"
+    end if
+  end foreach
+
+let current_entry := 0
+%
+/* Functions prototypes */
+%
+  loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+    do
+      let current_entry := ENTRY
+      let function_generated := false # don't produce function entry twice for one source id
+      let source_user_found := false # don't produce function while source is not used
+      foreach interrupt in INTERRUPT do
+        if ENTRY == interrupt::ID then
+          if not function_generated then
+            foreach counter in HARDWARECOUNTERS do
+              if counter::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach isr1 in ISRS1 do
+              if isr1::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach isr2 in ISRS2 do
+              if isr2::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+          end if
+
+          # Nothing to do for hardware counters (software counters call directly tpl_counter_tick function)
+          # Nothing to do for ISR category 2
+          # Declare prototypes handlers for ISR category 1
+          foreach isr1 in ISRS1 do
+            if isr1::SOURCE == interrupt::NAME then
+%
+extern FUNC(void, OS_CODE) % !isr1::NAME %_function(void); 
+%
+            end if
+          end foreach
+        end if
+      end foreach
+  end loop
+
+let current_entry := 0
+%
+/* Interrupt functions */
+%
+  loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+    before 
+%
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+    do
+      let current_entry := ENTRY
+      let function_generated := false # don't produce function entry twice for one source id
+      let source_user_found := false # don't produce function while source is not used
+      foreach interrupt in INTERRUPT do
+        if ENTRY == interrupt::ID then
+          if not function_generated then
+            foreach counter in HARDWARECOUNTERS do
+              if counter::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach isr1 in ISRS1 do
+              if isr1::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach isr2 in ISRS2 do
+              if isr2::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+          end if
+
+          if (not function_generated) & source_user_found then
+%
+FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt::ID %()
+{
+  /* usefull to clear EICn.EIRFn ? */
+  INTC2.EIC% !interrupt::ID %.BIT.EIRF% !interrupt::ID % = 0;
+
+%
+            template if exists tpl_interrupt_ack in code
+            let function_generated := true
+          end if              
+          # check first for hardware counters (software counters call directly tpl_counter_tick function)
+          foreach counter in HARDWARECOUNTERS do
+            if counter::SOURCE == interrupt::NAME then
+%
+  tpl_tick_% !interrupt::NAME %();
+%  
+            end if
+          end foreach
+          # then check for ISR category 2
+          foreach isr2 in ISRS2 do
+            if isr2::SOURCE == interrupt::NAME then
+%
+  tpl_central_interrupt_handler(% !([TASKS length] + INDEX) %); 
+%    
+            end if
+          end foreach
+          # finally check for ISR category 1
+          foreach isr1 in ISRS1 do
+            if isr1::SOURCE == interrupt::NAME then
+%
+  % !isr1::NAME %_function(); 
+%
+            end if
+          end foreach
+        end if
+
+   # Close the function bracket if it has been produced
+      after
+        if function_generated then
+%}
+%     
+        end if
+      end foreach
+    after
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+  end loop
+%
+
+/* Interrupt table vector */
+%
+  loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+    before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+    do
+      let interrupt_source_detected := false # we just need to know if a source number is used, if not, we link with tpl_null_it function
+      foreach interrupt in INTERRUPT do
+        if ENTRY == interrupt::ID & not interrupt_source_detected then
+          foreach counter in HARDWARECOUNTERS do
+            if counter::SOURCE == interrupt::NAME then
+            let interrupt_source_detected := true
+            end if
+          end foreach
+          foreach isr1 in ISRS1 do
+            if isr1::SOURCE == interrupt::NAME then
+            let interrupt_source_detected := true
+            end if
+          end foreach
+          foreach isr2 in ISRS2 do
+            if isr2::SOURCE == interrupt::NAME then
+            let interrupt_source_detected := true
+            end if
+          end foreach
+        end if
+      end foreach
+      if not interrupt_source_detected then
+        %  { tpl_null_it, (void *)NULL }%
+   else
+        %  { tpl_interrupt_source_% !ENTRY %, (void *)NULL }%
+      end if
+   between %,
+%
+    after
+%
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+  end loop
+%
+%
