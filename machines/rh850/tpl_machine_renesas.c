@@ -8,6 +8,51 @@ VAR (tpl_context, OS_VAR) idle_task_context;
 
 VAR(tpl_stack_word, OS_VAR) idle_stack[IDLE_STACK_SIZE/sizeof(tpl_stack_word)];
 
+#define SYSTICK_HZ		((u32) 80000000) /* 80MHz : is it the correct frequency? */
+#define TICKS_FOR_10MS	SYSTICK_HZ / 100
+
+static void stop_systick()
+{
+	/* Stop timer */
+	TAUJ1.TT.BIT.TT00 = 1;
+
+	/* Clear interrupt request */
+	INTC2.EIC364.BIT.EIRF364 = 0;
+}
+
+static void init_systick()
+{
+	/* Enable access to clock registers */
+	SYSCTRL.MSRKCPROT.UINT32 = 0xA5A5A501;
+
+	/* Supply TAUJ1 clock */
+	SYSCTRL.MSR_TAUJ_ISO.BIT.MS_TAUJ_1 = 0;
+
+	/* Disable interrupts */
+	INTC2.EIC364.BIT.EIMK364 = 1;
+
+	/* Stop timer */
+	stop_systick();
+
+	/* clear TAUJnPRS0 to use PCLK clock for CK0 (ie diviser = 2^0) */
+	TAUJ1.TPS.BIT.PRS0 = 0;
+
+	/* set systick as interval timer */
+	TAUJ1.CMOR0.BIT.MD = 0;
+
+	/* use rising edge */
+	TAUJ1.CMUR0.BIT.TIS = 0x1;
+
+	/* set interval for 10ms period */
+	TAUJ1.CDR0 = TICKS_FOR_10MS;
+
+	/* Enable interrupts */
+	INTC2.EIC364.BIT.EIMK364 = 0;
+
+	/* Start timer */
+	TAUJ1.TS.BIT.TS00 = 1;
+}
+
 FUNC (void, OS_CODE) tpl_sleep (void)
 {
 	while(1);
@@ -15,6 +60,7 @@ FUNC (void, OS_CODE) tpl_sleep (void)
 
 FUNC (void, OS_CODE) tpl_shutdown (void)
 {
+	stop_systick();
 	while(1);
 }
 
@@ -127,10 +173,10 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 	/* Initialize Syscall registers */
 	__ldsr_rh(11, 1, SYSCALL_COUNT); /* SCCFG */
 	__ldsr_rh(12, 1, (u32) &_tpl_syscall_table); /* SCBP */
+
+	init_systick();
 }
 
 //defined in cstart0.asm... usefull?
 #pragma interrupt irq_handler
 void irq_handler(unsigned long arg) {}
-
-
