@@ -313,6 +313,7 @@ let includeDirSet += "${TRAMPOLINE_BASE_PATH}/ioc"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/os"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/debug"
 let includeDirSet += "${TRAMPOLINE_BASE_PATH}/com"
+let includeDirSet += "${TRAMPOLINE_BASE_PATH}/autosar"
 let includeDirSet += PROJECT
 
 %
