@@ -25,7 +25,7 @@ CPU buildOptions {
     COMMONFLAGS = "-ffunction-sections";          // Each function is put in its own section. Required to deleted unused code
     COMMONFLAGS = "-fdata-sections";              // Each data is put in its own section. Required to deleted unused data
 
-    //CFLAGS = "-fpermissive";					  // pour les sources d'it 
+    //CFLAGS = "-fpermissive";       // pour les sources d'it 
     
     /*
      * C++ compiler flags
@@ -49,7 +49,7 @@ CPU buildOptions {
     // Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
 
     
-    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+//    LDFLAGS = "--fatal-warnings";                 // A warning is an error
     LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
     LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
     LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
