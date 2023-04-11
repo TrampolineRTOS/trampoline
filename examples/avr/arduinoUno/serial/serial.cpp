@@ -24,4 +24,5 @@ TASK(periodicTask)
 
 	Serial.print(nb);
 	Serial.println(" done");
+	TerminateTask();
 }

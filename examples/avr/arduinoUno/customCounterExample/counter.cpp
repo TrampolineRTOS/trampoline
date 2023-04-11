@@ -40,4 +40,5 @@ TASK(periodicTask)
     digitalWrite(13, HIGH); // odd
   else
     digitalWrite(13, LOW); // even
+  TerminateTask();
 }
