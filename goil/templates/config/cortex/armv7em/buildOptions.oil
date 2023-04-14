@@ -49,7 +49,7 @@ CPU buildOptions {
     // Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
 
     
-    LDFLAGS = "--no-warn-rwx-segment";            // fix gnu-ld 2.39 snafu 
+  //  LDFLAGS = "--no-warn-rwx-segment";            // fix gnu-ld 2.39 snafu 
     LDFLAGS = "--fatal-warnings";                 // A warning is an error
     LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
     LDFLAGS = "--no-undefined";                   // Report unresolved symbol references

@@ -1,3 +1,6 @@
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 
 # In monocore, the tpl_kern variable is the well known structure used
@@ -68,3 +71,6 @@ CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[% ! OS::NUMBER_OF_CORES %]
 %
   end loop
 end if
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
