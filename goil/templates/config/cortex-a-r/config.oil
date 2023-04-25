@@ -38,7 +38,6 @@ CPU arm_interrupt {
     CFILE = "tpl_system_call.S";
     CFILE = "tpl_stacks.S";
     CFILE = "tpl_trusted_fct.S";
-    CFILE = "tpl_vector_table.s";
     CFILE = "tpl_machine_arm.c";
   };
 };
