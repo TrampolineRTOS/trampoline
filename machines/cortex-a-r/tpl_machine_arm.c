@@ -32,8 +32,6 @@
 #endif
 #include "tpl_os_interrupt.h"
 
-#include "rpi2_trace.h"
-
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 /**
@@ -57,10 +55,21 @@ volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 #include "tpl_memmap.h"
 
 #if TASK_COUNT > 0
+/**
+ * Call Terminate Task function when no TerminateTask hasn't been called
+ * or when TerminateTask didn't success because of resource hold or
+ * interrupts disabled.
+ *
+ */
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
 #endif
 
 #if ISR_COUNT > 0
+/**
+ * Call Terminate ISR2 function when TerminateISR didn't success doing it
+ * because of resource hold or interrupts disabled.
+ *
+ */
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 #endif
 
@@ -89,22 +98,6 @@ void idle_function(void)
   while(1) {
   };
 }
-
-/**
- * Call Terminate Task function when no TerminateTask hasn't been called
- * or when TerminateTask didn't success because of resource hold or
- * interrupts disabled.
- *
- */
-extern FUNC(void, OS_CODE) CallTerminateTask(void);
-
-
-/**
- * Call Terminate ISR2 function when TerminateISR didn't success doing it
- * because of resource hold or interrupts disabled.
- *
- */
-extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 /*
  * As kernel mode is non-interruptible, these function does nothing
@@ -195,8 +188,17 @@ FUNC(void, OS_CODE) tpl_init_context(
    * the behaviour is controled
    */
   core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
+#if ISR_COUNT > 0
                                 (uint32)(CallTerminateISR2) :
+#else
+                                (uint32)(NULL) :
+#endif
+
+#if TASK_COUNT > 0
                                 (uint32)(CallTerminateTask); /*  lr  */
+#else
+                                (uint32)(NULL); /*  lr  */
+#endif
 
   // trace_var((const unsigned char*)"core_context->r[armreg_sp]", core_context->r[armreg_sp]);
   /* TODO: initialize stack footprint */
