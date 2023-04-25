@@ -1,0 +1,7 @@
+#includeifexists <buildOptions.oil>
+
+CPU armv8 {
+  PLATFORM_FILES armv8 {
+    PATH = "cortex-a-r/armv8";
+  };
+};

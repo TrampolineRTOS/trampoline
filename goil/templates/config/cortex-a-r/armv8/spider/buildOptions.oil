@@ -1,0 +1,44 @@
+/*
+ * ARMv8 Cortex-R52 build options for gcc
+ */
+CPU buildOptions {
+  BUILDOPTIONS defaultBuildOptionsForARM8_CortexR52 {
+    /*
+     * Common flags for C and C++ compiling
+     * -Wall -O2 -nostdlib -nostartfiles -ffreestanding
+     */
+//    COMMONFLAGS = "-g";                           // Produce debugging information
+    COMMONFLAGS = "-Wall";                        // All warnings on
+    COMMONFLAGS = "-pedantic";
+    COMMONFLAGS = "-Wformat";
+    COMMONFLAGS = "-std=c99";
+    COMMONFLAGS = "-mcpu=cortex-r52";              // Compile for arm r52
+    COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
+    COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
+
+    /*
+     * C++ compiler flags
+     */
+    CPPFLAGS = "-fno-rtti";                       // No information for runtime (run time type information) - reduce exe size
+    CPPFLAGS = "-felide-constructors";            // Optimization to omit creating temporary object when used to initialize another object
+    CPPFLAGS = "-fno-threadsafe-statics";         // No thread safe init of local static variables - reduce code size
+    CPPFLAGS = "-fno-use-cxa-get-exception-ptr";  // Don't use the __cxa_get_exception_ptr runtime routine (no exception anyway)
+    CPPFLAGS = "-fno-enforce-eh-specs";           // Don't generate code to check for violation of exception specifications at runtime (no exception anyway)
+
+    /*
+     * Assembler flags
+     */
+//    ASFLAGS = "-g";                               // Produce debugging information
+    ASFLAGS = "-mcpu=cortex-r52";                 // Assemble for arm r52
+    ASFLAGS = "--fatal-warnings";                 // A warning is an error
+    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software gcc-options-to-the-arm-mcu-fpu-datasheet
+
+//    LDFLAGS = "-g";
+    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+    LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
+    LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
+    LDFLAGS = "--no-warn-rwx-segments";           // 
+
+/*    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above*/
+  };
+};
