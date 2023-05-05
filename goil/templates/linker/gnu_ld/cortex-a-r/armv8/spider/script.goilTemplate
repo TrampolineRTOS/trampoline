@@ -5,15 +5,15 @@ ENTRY (_start)
 
 MEMORY
 {
-    FLASH (rx) : ORIGIN = 0x40040000, LENGTH = (0*1K - 0x0)
-    RAM (wx) : ORIGIN = 0x40040000, LENGTH = (32512 * 1K - 16 * 1K)
+    FLASH (rx) : ORIGIN = 0x0, LENGTH = (0*1K - 0x0)
+    RAM (wx) : ORIGIN = 0x0, LENGTH = (32512 * 1K - 16 * 1K)
    
     IDT_LIST (wx) : ORIGIN = 0xFFFFF7FF, LENGTH = 2K
 }
 
 SECTIONS
 {
-  __rom_region_start = 0x40040000;
+  __rom_region_start = 0x0;
   rom_start :
   {
     *(.vectbl)
