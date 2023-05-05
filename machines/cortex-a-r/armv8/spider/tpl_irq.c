@@ -27,18 +27,6 @@
 
 extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[31];
 
-static inline uint32 cp15_read_irq_id(void)
-{
-    uint32 irq_id;
-    __asm__ volatile
-    (
-        "mrc p15, 0, %[result], c12, c8, 0;"
-        :[result] "=r" (irq_id)::"memory"
-    );
-
-    return irq_id;
-}
-
 
 void tpl_arm_subarch_irq_handler ()
 {
@@ -46,11 +34,19 @@ void tpl_arm_subarch_irq_handler ()
   VAR(tpl_it_handler, AUTOMATIC) isr_vector;
 
   /*
-   * get interrupt id
+   * Get group0 interrupt id
+   * Use 'cp15_read32(0, 12, 8, 0, isr_id_dec);' for group1
    */
-  isr_id_dec = cp15_read_irq_id();
+   cp15_read32(0, 12, 12, 0, isr_id_dec);
 
-  /* launch interrupt fonction */
+  /*
+   * Launch interrupt function
+   */
   isr_vector = tpl_it_vector[isr_id_dec].func;
   isr_vector(tpl_it_vector[isr_id_dec].args);
+
+  /*
+   * Clear interrupt
+   */
+  cp15_write32(0, 12, 12, 1, isr_id_dec);
 }
