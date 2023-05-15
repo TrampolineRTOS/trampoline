@@ -107,9 +107,10 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 {
     cp15_write32(0, 12, 0, 0, &vectors);  /* write VBAR */
 
+    init_irq();
+
     tpl_init_machine_generic ();
 
-    init_irq();
 }
 
 FUNC(void, OS_CODE) tpl_shutdown(void)

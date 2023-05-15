@@ -37,6 +37,7 @@
 #define NB_TICK	((uint64)12500000 / (uint64)100) // systick 100 times per seconds (every 10ms)
 
 #define GICR_ISENABLER0     (0xf0110100)
+#define GICR_ICPENDR0       (0xf0110280)
 
 inline uint32 __attribute__((always_inline)) CNTV_CTL_read(void) {
     uint32 val;
@@ -102,5 +103,13 @@ FUNC(void, OS_CODE) tpl_set_systick_timer(void) {
     /* Unmask interrupt */
     CNTV_CTL_write(CNTV_CTL_read() & ~CNTV_CTL_IMASK);
 }
+
+FUNC(void, OS_CODE) ARM_TIMER_ClearFlag(void) {
+	/*
+	 * Clear the ARM Timer interrupt
+	 */
+    writeToAddress(GICR_ICPENDR0, 0x08000000);
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

@@ -56,13 +56,3 @@ FUNC(void, OS_CODE) c_svc_handler(void) {
 FUNC(void, OS_CODE) c_hang_handler(void) {
   while(1);
 }
-
-/******************************************************************************
- * IRQ acknowledge functions.
- ******************************************************************************/
-FUNC(void, OS_CODE) ARM_TIMER_ClearFlag(void) {
-	/* 
-	 * Clear the ARM Timer interrupt
-	 */
-	//FSY writeToReg(ARM_TIMER_CLI,0);
-}
