@@ -49,13 +49,13 @@ inline void __attribute__((always_inline)) CNTV_CTL_write(uint32 val) {
     cp15_write32(0, 14, 3, 1, val);
 }
 
-inline uint64 __attribute__((always_inline)) CNTV_VAL_read(void) {
+inline uint64 __attribute__((always_inline)) CNTV_CVAL_read(void) {
     uint32 val;
     cp15_read64(3, 14, val);
     return val;
 }
 
-inline void __attribute__((always_inline)) CNTV_VAL_write(uint64 val) {
+inline void __attribute__((always_inline)) CNTV_CVAL_write(uint64 val) {
     cp15_write64(3, 14, val);
 }
 
@@ -93,7 +93,7 @@ FUNC(void, OS_CODE) tpl_set_systick_timer(void) {
 
     enable_systick_timer(0);
 
-    CNTV_VAL_write(get_systick_timer() + NB_TICK); // can set CNTV_TVAL
+    CNTV_CVAL_write(get_systick_timer() + NB_TICK); // can set CNTV_TVAL
 
     enable_systick_timer(1);
 
@@ -108,7 +108,7 @@ FUNC(void, OS_CODE) ARM_TIMER_ClearFlag(void) {
 	/*
 	 * Clear the ARM Timer interrupt
 	 */
-    writeToAddress(GICR_ICPENDR0, 0x08000000);
+    CNTV_CVAL_write(get_systick_timer() + NB_TICK);
 }
 
 #define OS_STOP_SEC_CODE
