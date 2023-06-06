@@ -4,5 +4,15 @@
 ENUM [
   /* ARM IRQs */
   ARM_TIMER,              /* 0 */
-  ICCOM_INT               /* 1 */
+  ICCOM_INT,              /* 1 */
+  GWCA0_RX_TX_INT,        /* 2 */
+  GWCA1_RX_TX_INT,        /* 3 */
+  GWCA0_RX_TS_INT,        /* 4 */
+  GWCA1_RX_TS_INT,        /* 5 */
+  COMA_ERR_INT,           /* 6 */
+  GWCA0_ERR_INT,          /* 7 */
+  GWCA1_ERR_INT,          /* 8 */
+  ETHA0_ERR_INT,          /* 9 */
+  ETHA1_ERR_INT,          /* 10 */
+  ETHA2_ERR_INT           /* 11 */
 ] SOURCE;
