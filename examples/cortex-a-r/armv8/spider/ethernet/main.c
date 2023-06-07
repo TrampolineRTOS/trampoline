@@ -20,7 +20,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 TASK(sample_init) {
 	int ret;
 
-	mcu_init();
+	rswitch_enable_clock_and_reset();
 	port_init();
 	// Interrupt initializazion done by Trampoline
 	eth_disable_fuse_ovr();

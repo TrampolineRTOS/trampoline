@@ -1,11 +1,14 @@
 #include "tpl_os.h"
 #include "utils.h"
-#include "pfcmap.h"
-#include "device_cfg.h"
 
 #define ETH_CPUCLK_MHZ 1066UL
-#define ETH_WAIT_NS(t)  { volatile uint32 cnt; \
-  for ( cnt = 0;cnt < ((((uint32)ETH_CPUCLK_MHZ * ((uint32)t)) / (uint32)1000) + (uint32)1);cnt++ ); }
+#define ETH_WAIT_NS(t) \
+    { \
+        volatile uint32 cnt; \
+        for (cnt = 0; \
+             cnt < ((((uint32)ETH_CPUCLK_MHZ * ((uint32)t)) / (uint32)1000) + (uint32)1); \
+             cnt++); \
+    }
 
 /* Module Standby, Software reset */
 #define MSTPCR_ETH_1        (*((volatile uint32 *)0xE6152D3CUL)) /* MSTPCR15 Register */
@@ -23,11 +26,11 @@
 #define SRCR_BIT_ETHIP      (uint32)(1 << 5)
 #define SRCR_BIT_ETHPHY     (uint32)(1 << 6)
 
-void mcu_init(void)
+void rswitch_enable_clock_and_reset(void)
 {
     volatile uint32 regval = 0x0UL;
 
-    /* Supply RSW2�� clock by writing 0 to CKCR */
+    /* Enable RSW2 clock by writing 0 to CKCR */
     regval = CKCR_ETH_1;                             /* RSW2CKCR */
     if (regval & CKCR_BIT_ETHIP)                     /* 1: Stops the clock */
     {
@@ -55,6 +58,17 @@ void mcu_init(void)
     CPG_CPGWPR = ~(SRCR_BIT_ETHIP | SRCR_BIT_ETHPHY); /* Release SRSTCLR write protection by writing the inverse of the value to CPGWR */
     SRSTCLR_ETH_1 = (uint32)(SRCR_BIT_ETHIP | SRCR_BIT_ETHPHY); /* SRSTCLR does not require read-modify write */
     ETH_WAIT_NS(40*1000);
+}
+
+extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
+uint32 get_time(void)
+{
+    return tpl_time_counter;
+}
+
+uint32 get_elapsed_time(uint32 start_val)
+{
+    return (tpl_time_counter - start_val);
 }
 
 void port_init(void)

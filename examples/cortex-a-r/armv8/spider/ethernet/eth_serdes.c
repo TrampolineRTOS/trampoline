@@ -51,8 +51,6 @@ typedef enum {
 #define ETH_SERDES_REG_READ(ch, offset) \
         (*(volatile uint32*)(eth_serdes_base_addr[ch] + (uint16)offset))
 
-extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
-
 void eth_disable_fuse_ovr(void)
 {
     /* Disable Fuse_override_en */
@@ -70,20 +68,16 @@ static int eth_serdes_wait_for_update(uint32 ch, uint16 offset, uint32 mask,
                                       uint32 exp_val, uint32 timeout)
 {
     uint32 start_time;
-    uint32 elapsed_time;
-    uint32 curr_time;
     uint32 reg_val;
 
-    start_time = tpl_time_counter;
+    start_time = get_time();
 
     do {
-        curr_time = tpl_time_counter;
         reg_val = ETH_SERDES_REG_READ(ch, offset);
-        elapsed_time = curr_time - start_time;
         if ((reg_val & mask) == exp_val) {
             return 0;
         }
-    } while (elapsed_time < timeout);
+    } while (get_elapsed_time(start_time) < timeout);
 
     return ERR_TIMEOUT;
 }
