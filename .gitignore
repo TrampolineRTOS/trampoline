@@ -1,6 +1,4 @@
 *~
-#goil compiler
-goil/makefile-unix/goil
 # temporary directory to compile all examples.
 tmpExamplesCompilation
 ## Vim...
