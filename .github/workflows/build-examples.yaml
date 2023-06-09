@@ -48,3 +48,28 @@ jobs:
       - name: Build the code
         run: ./build.py
         working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
+
+  avr-arduino-uno-examples:
+    name: Build AVR Arduino Uno examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    strategy:
+      matrix:
+        example_name: [blink, customCounterExample, extInterrupt, serial, trace]
+    steps:
+      - name: Install AVR toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y avr-libc gcc-avr
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        # Use a wildcard to find the .oil file because it is not always named the same than the directory is it contained by
+        run: ${{ env.GOIL }} --target=avr/arduino/uno --templates=../../../../goil/templates/ *.oil
+        working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
+      - name: Build the code
+        run: ./build.py
+        working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
