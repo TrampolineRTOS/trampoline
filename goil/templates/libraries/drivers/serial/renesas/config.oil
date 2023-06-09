@@ -1,0 +1,7 @@
+CPU net_serial_renesas_spider_driver_files {
+  LIBRARY serial {
+    PATH = "drivers/serial/renesas";
+    CFILE = "spider_serial.c";
+    CFILE = "printf.c";
+  };
+};

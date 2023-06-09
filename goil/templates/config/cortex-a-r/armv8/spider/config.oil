@@ -5,6 +5,7 @@ IMPLEMENTATION spider {
     BOOLEAN [
       TRUE {
         ENUM [
+          serial,
           can
         ] LIBRARY[];
       },
@@ -43,6 +44,11 @@ CPU spider {
     CFILE = "tpl_stubs.c";
     CFILE = "tpl_irq.c";
     CFILE = "tpl_vector_table_ns.s";
+  };
+
+  LIBRARY serial {
+    GLOBAL = TRUE;
+    PATH = "drivers/serial/renesas";
   };
 
   LIBRARY net_can_renesas_spider_driver {
