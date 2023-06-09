@@ -3,6 +3,7 @@ on: [push, pull_request]
 env:
   # Create a new and unique cache for each run, otherwise the cache from the previous actions would be used
   CACHE_KEY: repo-${{ github.run_id }}
+  GOIL: ${{ github.workspace }}/goil/makefile-unix/goil
 
 jobs:
   goil:
@@ -22,3 +23,28 @@ jobs:
         with:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
+
+  raspberry-pi-examples:
+    name: Build Raspberry Pi examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    strategy:
+      matrix:
+        # List only the examples that currently compile
+        example_name: [blink]
+    steps:
+      - name: Install ARM toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: ${{ env.GOIL }} --target=cortex-a/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
+      - name: Build the code
+        run: ./build.py
+        working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
