@@ -73,3 +73,27 @@ jobs:
       - name: Build the code
         run: ./build.py
         working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
+
+  avr-arduino-mega-2560-examples:
+    name: Build AVR Arduino Mega 2560 examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    strategy:
+      matrix:
+        example_name: [blink, extInterrupt, serial]
+    steps:
+      - name: Install AVR toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y avr-libc gcc-avr
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: ${{ env.GOIL }} --target=avr/arduino/mega --templates=../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/avr/arduinoMega2560/${{ matrix.example_name }}
+      - name: Build the code
+        run: ./build.py
+        working-directory: examples/avr/arduinoMega2560/${{ matrix.example_name }}
