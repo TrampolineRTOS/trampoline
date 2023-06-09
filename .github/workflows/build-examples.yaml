@@ -1,0 +1,24 @@
+name: Build compiler and examples
+on: [push, pull_request]
+env:
+  # Create a new and unique cache for each run, otherwise the cache from the previous actions would be used
+  CACHE_KEY: repo-${{ github.run_id }}
+
+jobs:
+  goil:
+    name: Build Goil compiler
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build Goil
+        run: ./build.py
+        working-directory: goil/makefile-unix
+      - name: Cache Goil build
+        # Cache the source and build files to share them later with other jobs
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
