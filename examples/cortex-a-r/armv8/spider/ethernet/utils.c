@@ -1,5 +1,6 @@
 #include "tpl_os.h"
 #include "utils.h"
+#include "pfcmap.h"
 
 #define ETH_CPUCLK_MHZ 1066UL
 #define ETH_WAIT_NS(t) \
@@ -60,6 +61,16 @@ void rswitch_enable_clock_and_reset(void)
     ETH_WAIT_NS(40*1000);
 }
 
+uint32 reg_read32(uint32 addr)
+{
+    return *((volatile uint32*)addr);
+}
+
+void reg_write32(uint32 data, uint32 addr)
+{
+    *((volatile uint32*)addr) = data;
+}
+
 extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
 uint32 get_time(void)
 {
@@ -69,6 +80,13 @@ uint32 get_time(void)
 uint32 get_elapsed_time(uint32 start_val)
 {
     return (tpl_time_counter - start_val);
+}
+
+void ms_delay(uint32 value)
+{
+    uint32 start_time = get_time();
+
+    while((get_elapsed_time(start_time) - start_time) < value);
 }
 
 void port_init(void)
@@ -115,4 +133,11 @@ void port_init(void)
     dataL &= ~(0x0007FFFFUL);
     *((volatile uint32 *)(PFC_PMMR(PFC_GPn_BASE(3)))) = ~dataL;
     *((volatile uint32 *)(PFC_POC_GPn_DM0(3))) = dataL;
+}
+
+#define GICD_ISENABLER     (0xf0000100)
+
+void enable_int(uint32 num)
+{
+	*((volatile uint32 *)(GICD_ISENABLER + 4 * (num / 32)))  = 1 << (num % 32);
 }

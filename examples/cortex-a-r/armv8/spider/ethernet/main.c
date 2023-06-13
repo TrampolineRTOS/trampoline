@@ -2,8 +2,7 @@
 #include "utils.h"
 #include "eth_serdes.h"
 #include "rswitch.h"
-
-#define debug_msg(x)	do { (void)x; } while(0)
+#include "eth_gptp.h"
 
 #define APP_Task_sample_init_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -27,12 +26,23 @@ TASK(sample_init) {
 
 	ret = eth_serdes_initialize();
 	if (ret != 0) {
-		debug_msg("Error in serdes initialization\n");
+		debug_msg("Error in eth_serdes_initialize\n");
 		goto exit;
 	}
 
-	rswitch_init();
+	ret = rswitch_init();
+	if (ret != 0) {
+		debug_msg("Error in rswitch_init\n");
+		goto exit;
+	}
 
+	eth_gptp_init();
+
+	ret = rswitch_open();
+	if (ret != 0) {
+		debug_msg("Error in rswitch_open\n");
+		goto exit;
+	}
 
 exit:
 	TerminateTask();
@@ -49,6 +59,7 @@ exit:
 
 ISR(gwca1_rx_tx_int)
 {
+	debug_msg("gwca1_rx_tx_int");
 	//CallTerminateISR2();
 }
 
@@ -68,6 +79,7 @@ FUNC(void, OS_CODE) GWCA1_RX_TX_INT_ClearFlag(void)
 
 ISR(gwca1_rx_ts_int)
 {
+	debug_msg("gwca1_rx_ts_int");
 	//CallTerminateISR2();
 }
 
@@ -87,6 +99,7 @@ FUNC(void, OS_CODE) GWCA1_RX_TS_INT_ClearFlag(void)
 
 ISR(coma_err_int)
 {
+	debug_msg("coma_err_int");
 	//CallTerminateISR2();
 }
 
@@ -106,6 +119,7 @@ FUNC(void, OS_CODE) COMA_ERR_INT_ClearFlag(void)
 
 ISR(gwca1_err_int)
 {
+	debug_msg("gwca1_err_int");
 	//CallTerminateISR2();
 }
 
@@ -125,6 +139,7 @@ FUNC(void, OS_CODE) GWCA1_ERR_INT_ClearFlag(void)
 
 ISR(etha0_err_int)
 {
+	debug_msg("etha0_err_int");
 	//CallTerminateISR2();
 }
 

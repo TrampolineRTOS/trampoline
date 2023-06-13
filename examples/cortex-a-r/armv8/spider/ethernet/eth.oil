@@ -20,6 +20,7 @@ CPU eth {
       APP_SRC = "utils.c";
       APP_SRC = "eth_serdes.c";
       APP_SRC = "rswitch.c";
+      APP_SRC = "eth_gptp.c";
       APP_NAME = "eth_exe.elf";
       CFLAGS  = "-O0";
       LDFLAGS = "-Map=eth_exe.map";
