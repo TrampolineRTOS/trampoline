@@ -98,13 +98,13 @@ More examples are coming.
 Updated to version 3.1.12 on 2020, November 2.
 
 
-* Linux 32 bits: [goil-linux-32.zip](http://trampolinebin.rts-software.org/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](http://trampolinebin.rts-software.org/goil-linux-64.zip)
-* Windows: [goil-windows.zip](http://trampolinebin.rts-software.org/goil-windows.zip)
-* Mac OS X (Intel)  : [goil-mac-os-x.zip](http://trampolinebin.rts-software.org/goil-mac-os-x.zip)
-* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](http://trampolinebin.rts-software.org/goil-mac-os-x-silicon.zip)
-* Mac OS X Cocoa Application with editor (Intel)  : [CocoaGoil.app.zip](http://trampolinebin.rts-software.org/CocoaGoil.app.zip)
-* Mac OS X Cocoa Application with editor (Silicon): [CocoaGoil-silicon.app.zip](http://trampolinebin.rts-software.org/CocoaGoil-silicon.app.zip)
+* Linux 32 bits: [goil-linux-32.zip](http://osek.triskell.org/goil-linux-32.zip)
+* Linux 64 bits: [goil-linux-64.zip](http://osek.triskell.org/goil-linux-64.zip)
+* Windows: [goil-windows.zip](http://osek.triskell.org/goil-windows.zip)
+* Mac OS X (Intel)  : [goil-mac-os-x.zip](http://osek.triskell.org/goil-mac-os-x.zip)
+* Mac OS X (Silicon): [goil-mac-os-x-silicon.zip](http://osek.triskell.org/goil-mac-os-x-silicon.zip)
+* Mac OS X Cocoa Application with editor (Intel)  : [CocoaGoil.app.zip](http://osek.triskell.org/CocoaGoil.app.zip)
+* Mac OS X Cocoa Application with editor (Silicon): [CocoaGoil-silicon.app.zip](http://osek.triskell.org/CocoaGoil-silicon.app.zip)
 
 Note: goil binaries for Mac OS X are not signed. You can either recompile goil rom sources (script in `goil/makefile-macosx`) or self sign the binary (information [here](https://stackoverflow.com/questions/58356844/what-are-the-ways-or-technologies-to-sign-an-executable-application-file-in-mac))
 
@@ -114,11 +114,11 @@ Note: goil binaries for Mac OS X are not signed. You can either recompile goil r
 
 The OSEK-VDX portal is down since at least june 2017 because the working group has been disbanded in favor of AUTOSAR. Here are copies of a part of the documents that were available for download:
 
-* [OIL specification](http://trampolinebin.rts-software.org/oil25.pdf)
-* [OS specification](http://trampolinebin.rts-software.org/os223.pdf)
-* [COM specification](http://trampolinebin.rts-software.org/OSEKCOM303.pdf)
-* [ORTI A](http://trampolinebin.rts-software.org/orti-a-22.pdf) and [ORTI B](http://trampolinebin.rts-software.org/orti-b-22.pdf) specifications
-* [OS Test Plan](http://trampolinebin.rts-software.org/ostestplan20.pdf)
-* [OS Test Procedure](http://trampolinebin.rts-software.org/ostestproc20.pdf)
-* [COM Test Plan](http://trampolinebin.rts-software.org/comtestplan20.pdf)
-* [COM Test Procedure](http://trampolinebin.rts-software.org/comtestproc20.pdf)
+* [OIL specification](http://osek.triskell.org/oil25.pdf)
+* [OS specification](http://osek.triskell.org/os223.pdf)
+* [COM specification](http://osek.triskell.org/OSEKCOM303.pdf)
+* [ORTI A](http://osek.triskell.org/orti-a-22.pdf) and [ORTI B](http://osek.triskell.org/orti-b-22.pdf) specifications
+* [OS Test Plan](http://osek.triskell.org/ostestplan20.pdf)
+* [OS Test Procedure](http://osek.triskell.org/ostestproc20.pdf)
+* [COM Test Plan](http://osek.triskell.org/comtestplan20.pdf)
+* [COM Test Procedure](http://osek.triskell.org/comtestproc20.pdf)
