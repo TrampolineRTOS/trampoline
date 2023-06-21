@@ -34,7 +34,8 @@
 #define CNTV_CTL_ENABLE   1
 #define CNTV_CTL_IMASK    2
 
-#define NB_TICK	((uint64)12500000 / (uint64)100) // systick 100 times per seconds (every 10ms)
+#define CPU_CLOCK (1060*1000*1000) // 1060 MHz
+#define NB_TICK	((uint64)(CPU_CLOCK/64) / (uint64)100) // systick 100 times per seconds (every 10ms)
 
 #define GICR_ISENABLER0     (0xf0110100)
 #define GICR_ICPENDR0       (0xf0110280)
