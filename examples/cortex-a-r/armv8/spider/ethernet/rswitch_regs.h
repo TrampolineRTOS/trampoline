@@ -1,7 +1,7 @@
 #ifndef RSWITCH_REGS_H
 #define RSWITCH_REGS_H
 
-#define RSWITCH_BASE            0xE6880000
+#define RSWITCH_BASE            0xE68C0000
 
 #define RSWITCH_FWD_ADDR      (RSWITCH_BASE + 0x00000000)
 #define RSWITCH_FAB_ADDR      (RSWITCH_BASE + 0x00008000)
