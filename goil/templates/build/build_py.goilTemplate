@@ -209,6 +209,7 @@ end foreach
 %
 if with_ioc:
   includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
+includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
 includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 includeDirs += ["-I", "% !PROJECT %"]
