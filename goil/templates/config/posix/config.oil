@@ -13,6 +13,9 @@ IMPLEMENTATION posix {
         STRING COMPILER = "gcc";
         STRING ASSEMBLER = "gcc";
         STRING LINKER = "gcc";
+        ENUM [
+          can
+        ] LIBRARY[];
       },
       FALSE
     ] BUILD = FALSE;
@@ -62,5 +65,10 @@ CPU posix {
     PATH = "../viper";
   };
 
+  LIBRARY can {
+    PATH = "../net/can";
+    CFILE = "tpl_can_core.c";
+    CFILE = "../../machines/posix/tpl_can_demo_driver.c";
+  };
 };
 
