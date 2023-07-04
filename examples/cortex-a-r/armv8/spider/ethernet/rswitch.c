@@ -19,7 +19,7 @@
 #define GWCA1_PORT_NUM   4
 
 #define TSN_PORT_IN_USE   TSNA0_PORT_NUM
-#define GWCA_PORT_IN_USE  GWCA1_PORT_NUM
+#define GWCA_PORT_IN_USE  (GWCA1_PORT_NUM - PORT_TSNA_N)
 
 /* GWCA */
 enum rswitch_gwca_mode {
@@ -263,7 +263,7 @@ struct rswitch_device {
 #define ETHA1_ERR_IRQ         294
 #define ETHA2_ERR_IRQ         295
 
-#define RSWITCH_TIMEOUT_MS	1000
+#define RSWITCH_TIMEOUT_MS  10000
 static int rswitch_reg_wait(uint32 addr, uint32 mask, uint32 expected)
 {
     int i;
@@ -365,13 +365,13 @@ static void rswitch_agent_clock_ctrl(int port, int enable)
         reg_write32(val | RCEC_RCE | BIT(port),
                     rsw_dev.coma_base_addr + RCEC);
     } else {
-        val = reg_read32(RCDC);
-        reg_write32(val | BIT(port), RCDC);
+        val = reg_read32(rsw_dev.coma_base_addr + RCDC);
+        reg_write32(val | BIT(port), rsw_dev.coma_base_addr + RCDC);
     }
 }
 
-// mac is supposed to be an array of 6 bytes
-static void rswitch_etha_read_mac_address(struct rswitch_etha *eth_dev)
+/* mac is supposed to be an array of 6 bytes */
+static void __unused rswitch_etha_read_mac_address(struct rswitch_etha *eth_dev)
 {
     uint32 mrmac0 = reg_read32(eth_dev->base_addr + MRMAC0);
     uint32 mrmac1 = reg_read32(eth_dev->base_addr + MRMAC1);
@@ -385,9 +385,10 @@ static void rswitch_etha_read_mac_address(struct rswitch_etha *eth_dev)
 }
 
 /* This function sets only data in the global strucure, not on the hardware */
-static void rswitch_set_mac_address(struct rswitch_etha *eth_dev)
+static void rswitch_etha_set_mac_address(struct rswitch_etha *eth_dev)
 {
     int i;
+    uint32 tmp = 0;
 
     // Values from MCAL
     static const uint8 predefined_mac_address[PORT_TSNA_N][6] = {
@@ -396,18 +397,17 @@ static void rswitch_set_mac_address(struct rswitch_etha *eth_dev)
         {0x74U, 0x90U, 0x50U, 0x00U, 0x00U, 0x02U},
     };
 
-    // Set only if not already valid (at least 1 value != 0)
-    for (i = 0; i < MAC_ADDRESS_LEN; i++) {
-        if (eth_dev->mac_addr[i] != 0) {
-            return;
-        }
-    }
-
     /* The following works only because TSN port's numbers starts from 0 as
      * if they were indexes. */
     for (i = 0; i < MAC_ADDRESS_LEN; i++) {
         eth_dev->mac_addr[i] = predefined_mac_address[eth_dev->port_num][i];
     }
+
+    tmp = (eth_dev->mac_addr[0] << 8) + (eth_dev->mac_addr[1]);
+    reg_write32(tmp, eth_dev->base_addr + MRMAC0);
+    tmp = (eth_dev->mac_addr[2] << 24) + (eth_dev->mac_addr[3] << 16) +
+          (eth_dev->mac_addr[4] << 8) + (eth_dev->mac_addr[5]);
+    reg_write32(tmp, eth_dev->base_addr + MRMAC1);
 }
 
 static void rswitch_soft_reset(void)
@@ -472,13 +472,10 @@ static void rswitch_gwca_set_rate_limit(struct rswitch_gwca *gwca)
 static int rswitch_gwca_hw_init(struct rswitch_device *rswitch)
 {
     int ret, i;
-    uint64 descriptors_addr = (uint32) rswitch->base_descriptors;
+    uint32 descriptors_addr = (uint32) rswitch->base_descriptors;
     struct rswitch_gwca *gwca = rswitch->gwca;
 
-    /* Note: this is setting the base descriptors for all the devices but
-     * perhaps we should just set the one we are using. Setting for all
-     * might impact what Linux/Uboot has already configured on its side. */
-    for (i = 0; i < NUM_CHAINS_PER_NDEV * NUM_DEVICES; i++) {
+    for (i = 0; i < NUM_CHAINS_PER_NDEV; i++) {
         rswitch->base_descriptors[i].die_dt = DT_EOS;
     }
 
@@ -490,8 +487,8 @@ static int rswitch_gwca_hw_init(struct rswitch_device *rswitch)
     /* Full setting flow */
     reg_write32(GWVCC_VEM_SC_TAG, gwca->base_addr + GWVCC);
     reg_write32(0, gwca->base_addr + GWTTFC);
-    reg_write32(0x00, gwca->base_addr + GWDCBAC1);
-    reg_write32((descriptors_addr >> 32) & 0xFFFFFFFF, gwca->base_addr + GWDCBAC0);
+    reg_write32(descriptors_addr, gwca->base_addr + GWDCBAC1);
+    reg_write32(0x00, gwca->base_addr + GWDCBAC0);
 
     gwca->speed = 1000;
     rswitch_gwca_set_rate_limit(gwca);
@@ -507,11 +504,11 @@ static void rswitch_gwca_chain_format(struct rswitch_device *rswitch,
 {
     struct rswitch_ext_desc *ring;
     struct rswitch_desc *base_desc;
-    int tx_ring_size = sizeof(*ring) * c->num_ring;
+    int ring_size = sizeof(*ring) * c->num_ring;
     int i;
 
-    memset(c->ring, 0, tx_ring_size);
-    for (i = 0, ring = c->ring; i < c->num_ring; i++, ring++) {
+    memset(c->ring, 0, ring_size);
+    for (i = 0, ring = c->ring; i < c->num_ring - 1; i++, ring++) {
         if (!c->dir_tx) {
             ring->info_ds = PKT_BUF_SZ;
             ring->dptrl = (uint32) c->data_buffers[i];
@@ -538,16 +535,16 @@ static void rswitch_gwca_chain_format(struct rswitch_device *rswitch,
                 rswitch->gwca->base_addr + GWDCC_OFFS(c->chain_index));
 }
 
-static __unused void rswitch_gwca_chain_ts_format(struct rswitch_device *rswitch,
+static void rswitch_gwca_chain_ts_format(struct rswitch_device *rswitch,
                                          struct rswitch_gwca_chain *c)
 {
     struct rswitch_ext_ts_desc *ring;
     struct rswitch_desc *base_desc;
-    int tx_ring_size = sizeof(*ring) * c->num_ring;
+    int ring_size = sizeof(*ring) * c->num_ring;
     int i;
 
-    memset(c->ring, 0, tx_ring_size);
-    for (i = 0, ring = c->ts_ring; i < c->num_ring; i++, ring++) {
+    memset(c->ring, 0, ring_size);
+    for (i = 0, ring = c->ts_ring; i < c->num_ring - 1; i++, ring++) {
         if (!c->dir_tx) {
             ring->info_ds = PKT_BUF_SZ;
             ring->dptrl = (uint32) c->data_buffers[i];
@@ -559,14 +556,14 @@ static __unused void rswitch_gwca_chain_ts_format(struct rswitch_device *rswitch
     }
 
     /* Close the loop */
-    ring->dptrl = (uint32) c->ring;
+    ring->dptrl = (uint32) c->ts_ring;
     ring->dptrh = 0x00;
     ring->die_dt = DT_LINKFIX;
 
     /* Configure the base descriptor */
     base_desc = &rswitch->base_descriptors[c->chain_index];
     base_desc->die_dt = DT_LINKFIX;
-    base_desc->dptrl = (uint32) c->ring;
+    base_desc->dptrl = (uint32) c->ts_ring;
     base_desc->dptrh = 0x00;
 
     /* FIXME: GWDCC_DCP */
@@ -588,29 +585,20 @@ static int rswitch_bpool_config(struct rswitch_device *rswitch)
 
 static void rswitch_fwd_init(struct rswitch_device *rswitch)
 {
-    int i;
     int eth_port_num = rswitch->etha->port_num;
     int gwca_port_num = rswitch->gwca->port_num;
     int gwca_idx = RSWITCH_HW_NUM_TO_GWCA_IDX(gwca_port_num);
 
-    /* Note: this configures FWD for all the ports, but this might conflict
-     * with previous configurations... */
-    for (i = 0; i < TOT_PORT_NUM; i++) {
-        reg_write32(FWPC0_DEFAULT, rswitch->fwd_base_addr + FWPC0(i));
-        reg_write32(0, rswitch->fwd_base_addr + FWPBFC(i));
-    }
-
-    /* Static routing between the specified ETHA and GWCA ports. */
+    /* Set RX chain as destination for port based forwarding from the selected
+     * ethernet port. */
     reg_write32(rswitch->gwca->rx_chain.chain_index,
                rswitch->fwd_base_addr + FWPBFCSDC(gwca_idx, eth_port_num));
+    /* Static routing ETHA --> GWCA. */
     reg_write32(BIT(rswitch->gwca->port_num),
                 rswitch->fwd_base_addr + FWPBFC(eth_port_num));
-
-    /* For GWCA */
-    reg_write32(FWPC0_DEFAULT, rswitch->fwd_base_addr + FWPC0(gwca_port_num));
-    reg_write32(FWPC1_DDE, rswitch->fwd_base_addr + FWPC1(gwca_port_num));
+    /* Static routing GWCA --> ETHA. */
     reg_write32(0, rswitch->fwd_base_addr + FWPBFC(gwca_port_num));
-    reg_write32(eth_port_num, rswitch->fwd_base_addr + FWPBFC(gwca_port_num));
+    reg_write32(BIT(eth_port_num), rswitch->fwd_base_addr + FWPBFC(gwca_port_num));
 }
 
 static __unused void rswitch_get_data_irq_status(struct rswitch_device *rswitch, uint32 *dis)
@@ -649,15 +637,12 @@ int rswitch_init(void)
 {
     int i, ret;
 
+    memset(rx_data_buff, 0, sizeof(rx_data_buff));
+    memset(tx_data_buff, 0, sizeof(tx_data_buff));
+
     // Enable clocks to all the agents
     for (i = 0; i < TOT_PORT_NUM; i++) {
         rswitch_agent_clock_ctrl(i, 1);
-    }
-
-    /* Read MAC addresses (since it's only reading it does not affect other
-     * ports that we are not using) */
-    for (i = 0; i < NUM_DEVICES; i++) {
-        rswitch_etha_read_mac_address(&etha_props[i]);
     }
 
     rswitch_soft_reset();
@@ -666,8 +651,6 @@ int rswitch_init(void)
 
     /* Copy speed property from GWCA */
     rsw_dev.etha->speed = rsw_dev.gwca->speed;
-
-    rswitch_set_mac_address(rsw_dev.etha);
 
     rsw_dev.gwca->rx_chain.chain_index = 0;
     rsw_dev.gwca->rx_chain.ts_ring = rx_ring;
@@ -760,6 +743,8 @@ static int rswitch_etha_hw_init(struct rswitch_etha *etha)
     /* Change to CONFIG Mode */
     CHECK_RET(rswitch_etha_change_mode(etha, EAMC_OPC_DISABLE));
     CHECK_RET(rswitch_etha_change_mode(etha, EAMC_OPC_CONFIG));
+
+    rswitch_etha_set_mac_address(etha);
 
     reg_write32(EAVCC_VEM_SC_TAG, etha->base_addr + EAVCC);
 
