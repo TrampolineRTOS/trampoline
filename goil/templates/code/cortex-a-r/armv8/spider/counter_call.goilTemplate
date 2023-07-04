@@ -28,8 +28,8 @@ FUNC(void, OS_CODE) tpl_tick_% !interrupt::NAME %()
     do
       %  tpl_counter_tick(&% !cpt_fct %_counter_desc);
 %
-  if interrupt::NAME == "SystemCounter" then
-    %   tpl_time_counter++;
+  if interrupt::NAME == "ARM_TIMER" then
+    %  tpl_time_counter++;
 %
   end if
 
