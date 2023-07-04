@@ -2,8 +2,13 @@
 #define _UTILS_H_
 
 #include "tpl_os.h"
+#include "printf.h"
 
-#define debug_msg(...)    do {} while(0) // TODO
+#define debug_msg(...) \
+        do { \
+            debug_printf(__VA_ARGS__); \
+            debug_printf("\n\r"); \
+        } while(0)
 
 #define BIT(x)      (1UL << x)
 #define BITS_PER_TYPE(x)    (sizeof(x) * 8)
