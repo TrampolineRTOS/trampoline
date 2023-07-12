@@ -6,7 +6,7 @@ ENTRY (_start)
 MEMORY
 {
     FLASH (rx) : ORIGIN = 0x0, LENGTH = (0*1K - 0x0)
-    RAM (wx) : ORIGIN = 0x0, LENGTH = (32512 * 1K - 16 * 1K)
+    RAM (wx) : ORIGIN = 0x40040000, LENGTH = 0x1fc0000
    
     IDT_LIST (wx) : ORIGIN = 0xFFFFF7FF, LENGTH = 2K
 }
