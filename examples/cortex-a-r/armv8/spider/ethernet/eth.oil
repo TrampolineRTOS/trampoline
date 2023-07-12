@@ -59,25 +59,25 @@ CPU eth {
 
   ISR gwca1_rx_ts_int {
     CATEGORY = 2;
-    PRIORITY = 1;
+    PRIORITY = 2;
     SOURCE = GWCA1_RX_TS_INT;
   };
 
   ISR coma_err_int {
     CATEGORY = 2;
-    PRIORITY = 1;
+    PRIORITY = 3;
     SOURCE = COMA_ERR_INT;
   };
 
   ISR gwca1_err_int {
     CATEGORY = 2;
-    PRIORITY = 1;
+    PRIORITY = 4;
     SOURCE = GWCA1_ERR_INT;
   };
 
   ISR etha0_err_int {
     CATEGORY = 2;
-    PRIORITY = 1;
+    PRIORITY = 5;
     SOURCE = ETHA0_ERR_INT;
   };
 };

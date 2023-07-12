@@ -197,9 +197,9 @@ struct rswitch_gwca_chain {
         struct rswitch_ext_ts_desc *ts_ring;
     };
     uint32 num_ring;
-    uint32 cur;
-    uint32 dirty;
+    uint32 next_index; // next descriptor (as index) to be processed
     uint8 *data_buffers[TX_RX_RING_SIZE];
+    uint8 irq_triggered;
 };
 
 struct rswitch_gwca {
@@ -207,7 +207,6 @@ struct rswitch_gwca {
     uint32 base_addr;
     struct rswitch_gwca_chain rx_chain;
     struct rswitch_gwca_chain tx_chain;
-    uint32 irq_queue;
     int speed;
 } gwca_props[PORT_GWCA_N] = {
     { .port_num = GWCA0_PORT_NUM, .base_addr = RSWITCH_GWCA0_ADDR },
@@ -262,6 +261,14 @@ struct rswitch_device {
 #define ETHA0_ERR_IRQ         293
 #define ETHA1_ERR_IRQ         294
 #define ETHA2_ERR_IRQ         295
+
+/* GWCA data interrupt status */
+#define GWDIS0i_OFFSET(index)      (GWDIS0 + (index/32) * 0x10)
+#define GWDIS0i_BIT(index)         (BIT(index % 32))
+
+/* Well, this shouldn't be here as it should be included from "tpl_os.h", but
+ * that doesn't work, so we will redeclare it here... */
+extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 #define RSWITCH_TIMEOUT_MS  10000
 static int rswitch_reg_wait(uint32 addr, uint32 mask, uint32 expected)
@@ -660,7 +667,6 @@ int rswitch_init(void)
     rsw_dev.gwca->rx_chain.num_ring = TX_RX_RING_SIZE;
     rsw_dev.gwca->rx_chain.dir_tx = 0;
     rswitch_gwca_chain_ts_format(&rsw_dev, &(rsw_dev.gwca->rx_chain));
-    rsw_dev.gwca->irq_queue = 0;
 
     rsw_dev.gwca->tx_chain.chain_index = 1;
     rsw_dev.gwca->tx_chain.ring = tx_ring;
@@ -670,7 +676,6 @@ int rswitch_init(void)
     rsw_dev.gwca->tx_chain.num_ring = TX_RX_RING_SIZE;
     rsw_dev.gwca->tx_chain.dir_tx = 1;
     rswitch_gwca_chain_format(&rsw_dev, &(rsw_dev.gwca->tx_chain));
-    rsw_dev.gwca->irq_queue = 1;
 
     CHECK_RET(rswitch_bpool_config(&rsw_dev));
 
@@ -813,3 +818,177 @@ int rswitch_open(void)
 
     return 0;
 }
+
+/* Determine which chain (rx or tx) generated the interrupt */
+static void rswitch_get_interrupt_source_and_clear()
+{
+    struct rswitch_gwca_chain *chain;
+    uint32 chain_index;
+    uint32 reg_val;
+
+    /* Check if the IRQ was triggered by the RX chain */
+    chain = &rsw_dev.gwca->rx_chain;
+    chain_index = chain->chain_index;
+    reg_val = reg_read32(rsw_dev.gwca->base_addr + GWDIS0i_OFFSET(chain_index));
+    if (reg_val & GWDIS0i_BIT(chain_index)) {
+        chain->irq_triggered = 1;
+        reg_write32(GWDIS0i_BIT(chain_index), rsw_dev.gwca->base_addr +
+                                                GWDIS0i_OFFSET(chain_index));
+    }
+
+    /* Check if the IRQ was triggered by the TX chain */
+    chain_index = rsw_dev.gwca->tx_chain.chain_index;
+    reg_val = reg_read32(rsw_dev.gwca->base_addr + GWDIS0i_OFFSET(chain_index));
+    if (reg_val & GWDIS0i_BIT(chain_index)) {
+        rsw_dev.gwca->tx_chain.irq_triggered = 1;
+        reg_write32(GWDIS0i_BIT(chain_index), rsw_dev.gwca->base_addr +
+                                                GWDIS0i_OFFSET(chain_index));
+    }
+}
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+#define APP_ISR_gwca1_rx_tx_int_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(gwca1_rx_tx_int)
+{
+    struct rswitch_gwca_chain *chain;
+    struct rswitch_ext_ts_desc *desc;
+    uint8 *data_ptr;
+    uint16 data_len;
+
+    debug_msg("%s", __func__);
+
+    chain = &rsw_dev.gwca->rx_chain;
+    if (chain->irq_triggered != 0) {
+        /* Go through the descriptors chain to parse received data */
+        while (1) {
+            desc = &(chain->ts_ring[chain->next_index]);
+            /* Stop once we get to a descriptor that was not modified */
+            if (desc->die_dt == (DT_FEMPTY | DIE)) {
+                break;
+            }
+            /* We know that "dptrh" is always 0x0 so we ignore it intentionally */
+            data_ptr = (uint8 *) desc->dptrl;
+            data_len = (desc->info_ds) & 0xFFF;
+            debug_print_buffer(data_ptr, data_len);
+            /* Reset the data buffer */
+            memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
+            /* Reset the descriptor so that it can be used again in the next round */
+            memset(desc, 0, sizeof(*desc));
+            desc->die_dt = (DT_FEMPTY | DIE);
+            desc->info_ds = PKT_BUF_SZ;
+            desc->dptrl = (uint32) data_ptr;
+            /* Move to the next item in the list. */
+            chain->next_index++;
+            /* The last item is a LINKFIX and we know that, so we wrap back
+             * to the 1st item earlier. */
+            if (chain->next_index >= chain->num_ring - 1) {
+                chain->next_index = 0;
+            }
+        }
+        /* Remove the flag for the received data.
+         * Note = this is not the best technique because another IRQ might
+         *        be triggered in the meanwhile (is it possible?) so we might
+         *        miss it. Might be improved if problems appear... */
+        chain->irq_triggered = 0;
+    }
+
+    chain = &rsw_dev.gwca->tx_chain;
+    if (chain->irq_triggered) {
+        // TODO: restore the descriptors that have been used to send the data
+        chain->irq_triggered = 0;
+    }
+    CallTerminateISR2();
+}
+
+FUNC(void, OS_CODE) GWCA1_RX_TX_INT_ClearFlag(void)
+{
+	//debug_msg("%s", __func__);
+    rswitch_get_interrupt_source_and_clear();
+}
+
+#define APP_ISR_gwca1_rx_tx_int_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+#define APP_ISR_gwca1_rx_ts_int_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(gwca1_rx_ts_int)
+{
+	debug_msg("%s", __func__);
+	CallTerminateISR2();
+}
+
+FUNC(void, OS_CODE) GWCA1_RX_TS_INT_ClearFlag(void)
+{
+	debug_msg("%s", __func__);
+}
+
+#define APP_ISR_gwca1_rx_ts_int_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+#define APP_ISR_coma_err_int_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(coma_err_int)
+{
+	debug_msg("%s", __func__);
+	CallTerminateISR2();
+}
+
+FUNC(void, OS_CODE) COMA_ERR_INT_ClearFlag(void)
+{
+	debug_msg("%s", __func__);
+}
+
+#define APP_ISR_coma_err_int_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+#define APP_ISR_gwca1_err_int_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(gwca1_err_int)
+{
+	debug_msg("%s", __func__);
+	CallTerminateISR2();
+}
+
+FUNC(void, OS_CODE) GWCA1_ERR_INT_ClearFlag(void)
+{
+	debug_msg("%s", __func__);
+}
+
+#define APP_ISR_gwca1_err_int_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+#define APP_ISR_etha0_err_int_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(etha0_err_int)
+{
+	debug_msg("%s", __func__);
+	CallTerminateISR2();
+}
+
+FUNC(void, OS_CODE) ETHA0_ERR_INT_ClearFlag(void)
+{
+	debug_msg("%s", __func__);
+}
+
+#define APP_ISR_etha0_err_int_STOP_SEC_CODE
+#include "tpl_memmap.h"
