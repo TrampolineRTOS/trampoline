@@ -141,3 +141,16 @@ void enable_int(uint32 num)
 {
 	*((volatile uint32 *)(GICD_ISENABLER + 4 * (num / 32)))  = 1 << (num % 32);
 }
+
+void debug_print_buffer(uint8 *buf, uint32 len)
+{
+    uint32 i = 0;
+
+    for (i = 0; i < len; i++) {
+        if ((i != 0) && ((i % 16) == 0)) {
+            debug_printf("\n\r");
+        }
+        debug_printf("%02x ", buf[i]);
+    }
+    debug_printf("\n\r");
+}

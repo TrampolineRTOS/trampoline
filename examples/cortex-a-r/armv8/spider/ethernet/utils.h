@@ -38,4 +38,6 @@ uint32 get_time(void);
 uint32 get_elapsed_time(uint32 start_val);
 void ms_delay(uint32 value);
 
+void debug_print_buffer(uint8 *buf, uint32 len);
+
 #endif /* _UTILS_H_ */
