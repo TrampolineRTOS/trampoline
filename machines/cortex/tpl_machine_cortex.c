@@ -289,7 +289,10 @@ FUNC(uint8, OS_CODE) tpl_check_stack_footprint(CONST(tpl_proc_id, OS_APPL_DATA) 
  */
 void idle_function(void)
 {
-    while(1);
+    while(1)
+  {
+      __WFE();
+  }
 }
 
 void tpl_init_machine()
