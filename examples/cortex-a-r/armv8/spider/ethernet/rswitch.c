@@ -270,6 +270,9 @@ struct rswitch_device {
  * that doesn't work, so we will redeclare it here... */
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 
+/* This is the callback function that is invoked every time some data is received */
+rx_callback_fn rx_cb = NULL;
+
 #define RSWITCH_TIMEOUT_MS  10000
 static int rswitch_reg_wait(uint32 addr, uint32 mask, uint32 expected)
 {
@@ -522,6 +525,9 @@ static void rswitch_gwca_chain_format(struct rswitch_device *rswitch,
             ring->dptrh = 0x00;
             ring->die_dt = DT_FEMPTY | DIE;
         } else {
+            ring->info_ds = 0;
+            ring->dptrl = (uint32) c->data_buffers[i];
+            ring->dptrh = 0x00;
             ring->die_dt = DT_EEMPTY | DIE;
         }
     }
@@ -558,6 +564,9 @@ static void rswitch_gwca_chain_ts_format(struct rswitch_device *rswitch,
             ring->dptrh = 0x00;
             ring->die_dt = DT_FEMPTY | DIE;
         } else {
+            ring->info_ds = 0;
+            ring->dptrl = (uint32) c->data_buffers[i];
+            ring->dptrh = 0x00;
             ring->die_dt = DT_EEMPTY | DIE;
         }
     }
@@ -819,6 +828,52 @@ int rswitch_open(void)
     return 0;
 }
 
+int rswitch_send_data(uint8 *buf, uint16 size)
+{
+    struct rswitch_gwca_chain *chain = &rsw_dev.gwca->tx_chain;
+    struct rswitch_ext_desc *desc;
+    uint8 *dest_buf;
+
+    /* Temporary code: try to fit into a single packet. This can be extended
+     * in the future but it requires code to handle data splitting. */
+    if (size > PKT_BUF_SZ) {
+        debug_msg("Error: transmitted buffer is too large");
+        return ERR_BUFF_TOO_LARGE;
+    }
+
+    /* Pick the 1st not used descriptor that can be used for transmission */
+    desc = &chain->ring[chain->next_index];
+    /* Check that this descriptor is REALLY free */
+    if (desc->die_dt != (DT_EEMPTY | DIE)) {
+        debug_msg("Error: invalid descriptor selected for transmission");
+        return ERR_TX_FAILURE;
+    }
+    /* Prepare the descriptor */
+    desc->die_dt = DT_FSINGLE | DIE;
+    desc->info_ds = size & 0xFFF;
+    /* Copy data to be transmitted */
+    dest_buf = (uint8 *) desc->dptrl;
+    memcpy(dest_buf, buf, size);
+
+    /* Start transmission */
+    rswitch_modify(rsw_dev.gwca->base_addr + GWTRC0, 0, BIT(chain->chain_index));
+
+    /* Move to the next item in the list. */
+    chain->next_index++;
+    /* The last item is a LINKFIX and we know that, so we wrap back
+     * to the 1st item earlier. */
+    if (chain->next_index >= chain->num_ring - 1) {
+        chain->next_index = 0;
+    }
+
+    return 0;
+}
+
+void rswitch_regiter_data_received_callback(rx_callback_fn func)
+{
+    rx_cb = func;
+}
+
 /* Determine which chain (rx or tx) generated the interrupt */
 static void rswitch_get_interrupt_source_and_clear()
 {
@@ -855,9 +910,11 @@ static void rswitch_get_interrupt_source_and_clear()
 ISR(gwca1_rx_tx_int)
 {
     struct rswitch_gwca_chain *chain;
-    struct rswitch_ext_ts_desc *desc;
+    struct rswitch_ext_ts_desc *ts_desc;
+    struct rswitch_ext_desc *desc;
     uint8 *data_ptr;
     uint16 data_len;
+    int i;
 
     debug_msg("%s", __func__);
 
@@ -865,22 +922,28 @@ ISR(gwca1_rx_tx_int)
     if (chain->irq_triggered != 0) {
         /* Go through the descriptors chain to parse received data */
         while (1) {
-            desc = &(chain->ts_ring[chain->next_index]);
+            ts_desc = &(chain->ts_ring[chain->next_index]);
             /* Stop once we get to a descriptor that was not modified */
-            if (desc->die_dt == (DT_FEMPTY | DIE)) {
+            if (ts_desc->die_dt == (DT_FEMPTY | DIE)) {
                 break;
             }
             /* We know that "dptrh" is always 0x0 so we ignore it intentionally */
-            data_ptr = (uint8 *) desc->dptrl;
-            data_len = (desc->info_ds) & 0xFFF;
-            debug_print_buffer(data_ptr, data_len);
+            data_ptr = (uint8 *) ts_desc->dptrl;
+            data_len = (ts_desc->info_ds) & 0xFFF;
+            /* If the callback is present then call it, otherwise just print
+             * the data */
+            if (rx_cb != NULL) {
+                rx_cb(data_ptr, data_len);
+            } else {
+                debug_print_buffer(data_ptr, data_len);
+            }
             /* Reset the data buffer */
             memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
             /* Reset the descriptor so that it can be used again in the next round */
-            memset(desc, 0, sizeof(*desc));
-            desc->die_dt = (DT_FEMPTY | DIE);
-            desc->info_ds = PKT_BUF_SZ;
-            desc->dptrl = (uint32) data_ptr;
+            memset(ts_desc, 0, sizeof(*ts_desc));
+            ts_desc->die_dt = (DT_FEMPTY | DIE);
+            ts_desc->info_ds = PKT_BUF_SZ;
+            ts_desc->dptrl = (uint32) data_ptr;
             /* Move to the next item in the list. */
             chain->next_index++;
             /* The last item is a LINKFIX and we know that, so we wrap back
@@ -898,7 +961,17 @@ ISR(gwca1_rx_tx_int)
 
     chain = &rsw_dev.gwca->tx_chain;
     if (chain->irq_triggered) {
-        // TODO: restore the descriptors that have been used to send the data
+        /* Here we reset all the descriptors and data buffers of the TX chain.
+         * It works only if 1 descriptor is transmitted at a time.
+         * TODO: improve to handle transmissions of multiple descriptors. */
+        for (i = 0; i < chain->num_ring - 1; i++) {
+            desc = &(chain->ring[i]);
+            desc->die_dt = DT_EEMPTY | DIE;
+            desc->info_ds = 0;
+            desc->info1 = 0;
+            data_ptr = (uint8 *) desc->dptrl;
+            memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
+        }
         chain->irq_triggered = 0;
     }
     CallTerminateISR2();

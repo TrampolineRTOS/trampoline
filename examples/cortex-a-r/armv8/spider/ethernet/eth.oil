@@ -51,6 +51,13 @@ CPU eth {
     SCHEDULE = FULL;
   };
 
+  TASK echo {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
   ISR gwca1_rx_tx_int {
     CATEGORY = 2;
     PRIORITY = 1;
