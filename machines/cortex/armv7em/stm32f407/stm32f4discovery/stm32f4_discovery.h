@@ -93,6 +93,20 @@ typedef enum
 #define LED6_PIN                         GPIO_Pin_15
 #define LED6_GPIO_PORT                   GPIOD
 #define LED6_GPIO_CLK                    RCC_AHB1Periph_GPIOD
+
+
+/*****************************************************************************
+ *Pin map led life
+******************************************************************************/
+#define LED_BOOT_IO_PIN					(GPIO_Pin_6)
+#define LED_BOOT_IO_PORT				(GPIOA)
+#define LED_BOOT_IO_CLOCK				(RCC_AHB1Periph_GPIOA)
+
+#define LED_LIFE_IO_PIN					(GPIO_Pin_7)
+#define LED_LIFE_IO_PORT				(GPIOA)
+#define LED_LIFE_IO_CLOCK				(RCC_AHB1Periph_GPIOA)
+
+
 /**
   * @}
   */
@@ -144,6 +158,13 @@ static inline uint32_t millis(void)
 {
 	return tpl_time_counter; // single aligned 32 bit is atomic;
 }
+
+/******************************************************************************
+* led status function
+*******************************************************************************/
+void led_life_init();
+void led_life_on();
+void led_life_off();
 
 #ifdef __cplusplus
 }

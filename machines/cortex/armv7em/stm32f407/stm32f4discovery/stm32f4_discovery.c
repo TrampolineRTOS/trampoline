@@ -115,18 +115,16 @@ NVIC_InitTypeDef   NVIC_InitStructure;
   */
 void STM_EVAL_LEDInit(Led_TypeDef Led)
 {
-  GPIO_InitTypeDef  GPIO_InitStructure;
-  
-  /* Enable the GPIO_LED Clock */
-  RCC_AHB1PeriphClockCmd(GPIO_CLK[Led], ENABLE);
+	GPIO_InitTypeDef        GPIO_InitStructure;
 
-  /* Configure the GPIO_LED pin */
-  GPIO_InitStructure.GPIO_Pin = GPIO_PIN[Led];
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIO_PORT[Led], &GPIO_InitStructure);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
 /**
@@ -141,7 +139,7 @@ void STM_EVAL_LEDInit(Led_TypeDef Led)
   */
 void STM_EVAL_LEDOn(Led_TypeDef Led)
 {
-  GPIO_PORT[Led]->BSRRL = GPIO_PIN[Led];
+  GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 }
 
 /**
@@ -156,7 +154,7 @@ void STM_EVAL_LEDOn(Led_TypeDef Led)
   */
 void STM_EVAL_LEDOff(Led_TypeDef Led)
 {
-  GPIO_PORT[Led]->BSRRH = GPIO_PIN[Led];  
+  GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 }
 
 /**
@@ -232,6 +230,54 @@ void STM_EVAL_PBInit(Button_TypeDef Button, ButtonMode_TypeDef Button_Mode)
 uint32_t STM_EVAL_PBGetState(Button_TypeDef Button)
 {
   return GPIO_ReadInputDataBit(BUTTON_PORT[Button], BUTTON_PIN[Button]);
+}
+
+/******************************************************************************
+* led status function
+*******************************************************************************/
+void led_life_init() {
+	GPIO_InitTypeDef        GPIO_InitStructure;
+
+	RCC_AHB1PeriphClockCmd(LED_LIFE_IO_CLOCK, ENABLE);
+
+	GPIO_InitStructure.GPIO_Pin = LED_LIFE_IO_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(LED_LIFE_IO_PORT, &GPIO_InitStructure);
+}
+
+void led_life_on() {
+	GPIO_ResetBits(LED_LIFE_IO_PORT, LED_LIFE_IO_PIN);
+}
+
+void led_life_off() {
+	GPIO_SetBits(LED_LIFE_IO_PORT, LED_LIFE_IO_PIN);
+}
+
+/******************************************************************************
+* led boot function
+*******************************************************************************/
+void led_boot_init() {
+	GPIO_InitTypeDef        GPIO_InitStructure;
+
+	RCC_AHB1PeriphClockCmd(LED_BOOT_IO_CLOCK, ENABLE);
+
+	GPIO_InitStructure.GPIO_Pin = LED_BOOT_IO_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(LED_BOOT_IO_PORT, &GPIO_InitStructure);
+}
+
+void led_boot_on() {
+	GPIO_ResetBits(LED_BOOT_IO_PORT, LED_BOOT_IO_PIN);
+}
+
+void led_boot_off() {
+	GPIO_SetBits(LED_LIFE_IO_PORT, LED_BOOT_IO_PIN);
 }
 
 /**

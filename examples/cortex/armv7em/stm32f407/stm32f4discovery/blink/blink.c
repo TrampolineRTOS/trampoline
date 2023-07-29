@@ -5,17 +5,37 @@
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  initBoard();
+
+  ledinit();
+  ledBootInit();
+
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
 
 TASK(blink)
 {
-  ledToggle(BLUE);
-  TerminateTask();
+    // ledon();
+    // for(long long i = 0; i < 2000000; i++);
+    // ledoff();
+    // for(long long i = 0; i < 2000000; i++);
+    TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_life_START_SEC_CODE
+#include "tpl_memmap.h"
+
+TASK(life)
+{
+    // ledBootOn();
+    // for(long long i = 0; i < 2000000; i++);
+    // ledBootOff();
+    // for(long long i = 0; i < 2000000; i++);
+    TerminateTask();
+}
+#define APP_Task_life_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
@@ -32,7 +52,7 @@ FUNC(void, OS_CODE) PreTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == blink) {
-    ledOn(ORANGE);
+    ledBootOn();
   }
 }
 
@@ -41,7 +61,7 @@ FUNC(void, OS_CODE) PostTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == blink) {
-    ledOff(ORANGE);
+    ledBootOff();
   }
 }
 #define OS_STOP_SEC_CODE

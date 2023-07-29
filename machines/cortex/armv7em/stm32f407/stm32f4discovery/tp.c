@@ -21,9 +21,9 @@ FUNC(void, OS_CODE) initBoard(void)
 {
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
-  STM_EVAL_LEDInit(LED5);
-  STM_EVAL_LEDInit(LED6);
-  STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
+  //STM_EVAL_LEDInit(LED5);
+  //STM_EVAL_LEDInit(LED6);
+  //STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
 }
 
 /*
@@ -105,6 +105,36 @@ FUNC(void, OS_CODE) delay(CONST(uint32, AUTOMATIC) howMuch)
 {
   CONST(uint32, AUTOMATIC) start = tpl_time_counter;
   while (tpl_time_counter - start < howMuch);
+}
+
+FUNC(void, OS_CODE) ledinit(void)
+{
+  led_life_init();
+}
+
+FUNC(void, OS_CODE) ledon(void)
+{
+  led_life_on();
+}
+
+FUNC(void, OS_CODE) ledoff(void)
+{
+  led_life_off();
+}
+
+FUNC(void, OS_CODE) ledBootInit(void)
+{
+  led_boot_init();
+}
+
+FUNC(void, OS_CODE) ledBootOn(void)
+{
+  led_boot_on();
+}
+
+FUNC(void, OS_CODE) ledBootOff(void)
+{
+  led_boot_off();
 }
 
 #ifdef __cplusplus

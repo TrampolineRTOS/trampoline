@@ -46,7 +46,7 @@ CPU blink {
   
   TASK blink {
     PRIORITY = 1;
-    AUTOSTART = FALSE;
+    AUTOSTART = TRUE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
@@ -58,9 +58,29 @@ CPU blink {
     };
     AUTOSTART = TRUE {
       APPMODE = std;
-      ALARMTIME = 250;
+      ALARMTIME = 1000;
       CYCLETIME = 250;
     };
   };
+
+  TASK life {
+    PRIORITY = 2;
+    AUTOSTART = TRUE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ALARM life_life {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = life;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 1000;
+      CYCLETIME = 250;
+    };
+  };
+
 };
 
