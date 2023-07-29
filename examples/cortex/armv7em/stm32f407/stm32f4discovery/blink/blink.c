@@ -15,10 +15,10 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(blink)
 {
-    // ledon();
-    // for(long long i = 0; i < 2000000; i++);
-    // ledoff();
-    // for(long long i = 0; i < 2000000; i++);
+    ledon();
+    for(long long i = 0; i < 2000000; i++);
+    ledoff();
+    for(long long i = 0; i < 2000000; i++);
     TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
