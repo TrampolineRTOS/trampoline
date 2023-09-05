@@ -33,6 +33,16 @@ typedef tpl_status      StatusType;
 #endif
 
 /**
+ * @typedef Std_ReturnType
+ *
+ * This type can be used as standard API return type which is shared between the
+ * RTE and the BSW modules.
+ *
+ * See AUTOSAR R21-11 AUTOSAR_SWS_StandardTypes chapter 8.1.1.
+ */
+typedef uint8 Std_ReturnType;
+
+/**
  * @typedef TaskStateType
  *
  * identifies the state of a task
