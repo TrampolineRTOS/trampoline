@@ -50,8 +50,8 @@ TASK(can_task)
 
 	printf("Transmitting a CAN 2.0 frame with standard ID...\r\n");
 	can_pdu.id = 0x123 | TPL_CAN_ID_TYPE_STANDARD;
-	strcpy(payload, "Ciao !");
-	can_pdu.length = strlen(payload);
+	strcpy((char *) payload, "Ciao !");
+	can_pdu.length = strlen((char *) payload);
 	can_pdu.sdu = payload;
 	pdu_info.SduDataPtr = (uint8 *) &can_pdu;
 	pdu_info.SduLength = sizeof(can_pdu);
