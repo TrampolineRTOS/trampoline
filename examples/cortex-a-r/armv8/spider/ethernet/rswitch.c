@@ -916,7 +916,7 @@ ISR(gwca1_rx_tx_int)
     uint16 data_len;
     int i;
 
-    debug_msg("%s", __func__);
+    // debug_msg("%s", __func__);
 
     chain = &rsw_dev.gwca->rx_chain;
     if (chain->irq_triggered != 0) {

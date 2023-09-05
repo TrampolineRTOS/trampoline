@@ -1,7 +1,7 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include "tpl_os.h"
+#include "../../../../../../machines/virt-v7/tpl_os_std_types.h"
 #include "printf.h"
 
 #define debug_msg(...) \
@@ -17,8 +17,6 @@
 #define GENMASK(h, l) \
         (((~(0UL)) - ((1UL) << (l)) + 1) & \
          (~(0UL) >> (BITS_PER_LONG - 1 - (h))))
-
-#define __unused    __attribute__((unused))
 
 #define CHECK_RET(f)    \
     ret = (f); \

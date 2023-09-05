@@ -22,9 +22,11 @@ CPU eth {
       APP_SRC = "rswitch.c";
       APP_SRC = "eth_gptp.c";
       APP_SRC = "printf.c";
+      APP_SRC = "lwip-port/sys_arch.c";
+      APP_SRC = "lwip-port/ethif.c";
       APP_NAME = "eth_exe.elf";
-      CFLAGS  = "-O0 -g -DHSCIF_1843200BPS";
-      LDFLAGS = "-Map=eth_exe.map";
+      CFLAGS  = "-O0 -g -DHSCIF_1843200BPS -I. -Ilwip/src/include -Ilwip-port";
+      LDFLAGS = "-Map=eth_exe.map -L. -llwipcore -llwipallapps";
       COMPILER = "arm-none-eabi-gcc";
       CPPCOMPILER = "arm-none-eabi-g++";
       ASSEMBLER = "arm-none-eabi-as";
@@ -51,7 +53,7 @@ CPU eth {
     SCHEDULE = FULL;
   };
 
-  TASK echo {
+  TASK monitor {
     PRIORITY = 1;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
