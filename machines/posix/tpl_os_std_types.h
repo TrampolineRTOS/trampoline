@@ -27,47 +27,49 @@
 #ifndef TPL_OS_STD_TYPES_H
 #define TPL_OS_STD_TYPES_H
 
+#include <stdint.h>
+
 /**
  * @typedef uint8
  *
  * 8 bits unsigned number
  */
-typedef unsigned char   uint8;
+typedef uint8_t uint8;
 
 /**
  * @typedef sint8
  *
  * 8 bits signed number
  */
-typedef signed char     sint8;
+typedef int8_t sint8;
 
 /**
  * @typedef uint16
  *
  * 16 bits unsigned number
  */
-typedef unsigned short  uint16;
+typedef uint16_t uint16;
 
 /**
  * @typedef sint16
  *
  * 16 bits signed number
  */
-typedef signed short    sint16;
+typedef int16_t sint16;
 
 /**
  * @typedef uint32
  *
  * 32 bits unsigned number
  */
-typedef unsigned long   uint32;
+typedef uint32_t uint32;
 
 /**
  * @typedef sint32
  *
  * 32 bits signed number
  */
-typedef signed long     sint32;
+typedef int32_t sint32;
 
 #endif /* TPL_OS_STD_TYPES_H */
 
