@@ -56,6 +56,8 @@ tpl_can_controller_t can_demo_driver_controller_2 =
 
 static int can_demo_driver_init(struct tpl_can_controller_t *ctrl, void *data)
 {
+	(void) data;
+
 	printf("[%s:%d] Initialized controller 0x%08X.\r\n", __func__, __LINE__, ctrl->base_address);
 	return 0;
 }
@@ -81,7 +83,7 @@ static int can_demo_driver_set_baudrate(struct tpl_can_controller_t *ctrl, tpl_c
 
 	if (baud_rate >= CAN_BAUD_RATE_COUNT)
 	{
-		printf("[%s:%d] Wrong baud rate code %d, aborting.\r\n", baud_rate);
+		printf("[%s:%d] Wrong baud rate code %d, aborting.\r\n", __func__, __LINE__, baud_rate);
 		return -1;
 	}
 	bits_per_second = baud_rate_lut[baud_rate];
@@ -105,13 +107,17 @@ static Std_ReturnType can_demo_driver_transmit(struct tpl_can_controller_t *ctrl
 
 static Std_ReturnType can_demo_driver_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info)
 {
+	(void) ctrl;
+
 	pdu_info->id = 0x1ab; // Random value
-	strcpy(pdu_info->sdu, "Test");
-	pdu_info->length = strlen(pdu_info->sdu);
+	strcpy((char *) pdu_info->sdu, "Test");
+	pdu_info->length = strlen((char *) pdu_info->sdu);
 	return 0;
 }
 
 static int can_demo_driver_is_data_available(struct tpl_can_controller_t *ctrl)
 {
+	(void) ctrl;
+
 	return 1;
 }
