@@ -206,6 +206,9 @@ FUNC(uint8, OS_CODE) tpl_check_stack_footprint (
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
   uint8 tmp;
+
+  (void) proc_id;
+
   /*to do*/
   tmp=0;
   return tmp;
