@@ -112,7 +112,7 @@
     ShutdownHook(error); \
     RESET_RUNNING_TRUSTED
 #else
-#   define CALL_SHUTDOWN_HOOK(error)
+#   define CALL_SHUTDOWN_HOOK(error) { (void) error; }
 #endif
 
 /**
