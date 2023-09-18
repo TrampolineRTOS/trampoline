@@ -266,6 +266,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
 {
   /* empty function */
+  (void) foo;
 }
 
 #define OS_STOP_SEC_CODE
