@@ -12,6 +12,7 @@ IMPLEMENTATION trampoline {
 CPU test {
   OS config {
     STATUS = STANDARD;
+    ACK_ISR2_ON_TERMINATE = TRUE;
     BUILD = TRUE {
         TRAMPOLINE_BASE_PATH = "../../..";
         SYSTEM = PYTHON;
@@ -36,4 +37,20 @@ CPU test {
      PRIORITY = 2;
   };
 
+  TASK toto {
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    AUTOSTART = FALSE;
+    SCHEDULE = FULL;
+  };
+
+  EVENT titiEV { MASK = AUTO; };
+
+  TASK titi {
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    AUTOSTART = FALSE;
+    SCHEDULE = FULL;
+    EVENT = titiEV;
+  };
 };
