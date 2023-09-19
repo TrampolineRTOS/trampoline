@@ -9,6 +9,7 @@ CPU can_task {
 			LDFLAGS = "-lrt -lpthread";
 			APP_NAME = "can_demo_exe";
 			LINKER = "gcc";
+			CFLAGS = "-W -Wall";
 			SYSTEM = PYTHON;
 			LIBRARY = can;
 		};
