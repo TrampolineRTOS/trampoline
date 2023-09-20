@@ -1,5 +1,18 @@
 #includeifexists <buildOptions.oil>
 
+IMPLEMENTATION spider {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          can
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
 /*
  * Interrupt sources of the board
  */
@@ -30,6 +43,17 @@ CPU spider {
     CFILE = "tpl_stubs.c";
     CFILE = "tpl_irq.c";
     CFILE = "tpl_vector_table_ns.s";
+  };
+
+  LIBRARY net_can_renesas_spider_driver {
+    GLOBAL = TRUE;
+    PATH = "drivers/can/renesas";
+  };
+
+  LIBRARY can {
+    GLOBAL = TRUE;
+    NEEDS = net_can_renesas_spider_driver;
+    PATH = "net/can";
   };
 
   POSTBUILD all {
