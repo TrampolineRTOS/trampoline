@@ -1,0 +1,52 @@
+OIL_VERSION = "4.2";
+
+IMPLEMENTATION trampoline {
+	/* This fix the default STACKSIZE of tasks */
+	TASK {
+		UINT32 STACKSIZE = 1000 ;
+	};
+
+	/* This fix the default STACKSIZE of ISRs */
+	ISR {
+		UINT32 STACKSIZE = 1000 ;
+	};
+};
+
+CPU can_task {
+	OS config {
+		STATUS = EXTENDED;
+		BUILD = TRUE {
+			TRAMPOLINE_BASE_PATH = "../../../../..";
+			APP_SRC = "can_demo.c";
+			APP_NAME = "can_demo_exe.elf";
+			CFLAGS  = "-O0 -g -DHSCIF_1843200BPS -W -Wall";
+			LDFLAGS = "-Map=can_demo.map";
+			COMPILER = "arm-none-eabi-gcc";
+			CPPCOMPILER = "arm-none-eabi-g++";
+			ASSEMBLER = "arm-none-eabi-as";
+			LINKER = "arm-none-eabi-ld";
+			COPIER = "arm-none-eabi-objcopy";
+			SYSTEM = PYTHON;
+			LIBRARY = can;
+		};
+
+		SYSTEM_CALL = TRUE;
+		MEMMAP = TRUE {
+			COMPILER = gcc;
+			LINKER = gnu_ld { SCRIPT = "script.ld"; };
+			ASSEMBLER = gnu_as;
+			MEMORY_PROTECTION = FALSE;
+		};
+	};
+
+	APPMODE stdAppmode {};
+
+	TASK can_task {
+		PRIORITY = 1;
+		AUTOSTART = TRUE {
+			APPMODE = stdAppmode;
+		};
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+};
