@@ -50,7 +50,7 @@ struct TPL_TASK_EVENTS
  */
 typedef struct TPL_TASK_EVENTS tpl_task_events;
 
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #if EXTENDED_TASK_COUNT > 0
@@ -61,7 +61,7 @@ extern CONSTP2VAR(tpl_task_events, AUTOMATIC,
                   OS_APPL_DATA) tpl_task_events_table[EXTENDED_TASK_COUNT];
 #endif /* EXTENDED_TASK_COUNT */
 
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
