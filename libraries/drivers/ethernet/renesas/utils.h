@@ -1,7 +1,7 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include "../../../../../../machines/virt-v7/tpl_os_std_types.h"
+#include "tpl_os_types.h"
 #include "printf.h"
 
 #define debug_msg(...) \
