@@ -1,11 +1,11 @@
 #include "tpl_os.h"
 #include "utils.h"
-#include "serial.h"
+#include "spider_serial.h"
 #include "string.h"
 #include "lwip/netif.h"
 #include "lwip/ip4_addr.h"
 #include "lwip/timeouts.h"
-#include "lwip-port/ethif.h"
+#include "ethif.h"
 
 #define APP_Task_sample_init_START_SEC_CODE
 #include "tpl_memmap.h"
