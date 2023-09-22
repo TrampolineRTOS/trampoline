@@ -1,13 +1,28 @@
-#define LWIP_DEBUG                      1
+#if NO_SYS
+#define SYS_LIGHTWEIGHT_PROT            0
+#define LWIP_SOCKET                     0
+#else
+#define SYS_LIGHTWEIGHT_PROT            1
+#define LWIP_SOCKET                     1
+#endif
+
+#define LWIP_TCP                        1
+#define LWIP_TCPIP_CORE_LOCKING         0
+#define LWIP_RAW                        1
+#define SO_REUSE                        1
+
+#define TCPIP_MBOX_SIZE                 5
+#define PBUF_POOL_SIZE                  16
+#define MEMP_NUM_PBUF                   30
+
+//#define LWIP_DEBUG                      1
+
 /* test an lwipopts.h file with default contents */
-#define NO_SYS                          1
 #define NO_SYS_NO_TIMERS                1
 #define LWIP_TIMERS                     1
 #define LWIP_TIMERS_CUSTOM              0
 #define LWIP_MPU_COMPATIBLE             0
-#define LWIP_TCPIP_CORE_LOCKING         1
 #define LWIP_TCPIP_CORE_LOCKING_INPUT   0
-#define SYS_LIGHTWEIGHT_PROT            0
 #define MEM_LIBC_MALLOC                 0
 #define MEMP_MEM_MALLOC                 0
 #define MEMP_MEM_INIT                   0
@@ -70,7 +85,6 @@
 #define ICMP_TTL                        (IP_DEFAULT_TTL)
 #define LWIP_BROADCAST_PING             0
 #define LWIP_MULTICAST_PING             0
-#define LWIP_RAW                        0
 #define RAW_TTL                         (IP_DEFAULT_TTL)
 #define LWIP_DHCP                       1
 #define LWIP_DHCP_CHECK_LINK_UP         0
@@ -98,7 +112,6 @@
 #define LWIP_UDPLITE                    0
 #define UDP_TTL                         (IP_DEFAULT_TTL)
 #define LWIP_NETBUF_RECVINFO            0
-#define LWIP_TCP                        0
 #define TCP_TTL                         (IP_DEFAULT_TTL)
 #define TCP_WND                         (4 * TCP_MSS)
 #define TCP_MAXRTX                      12
@@ -166,7 +179,6 @@
 #define LWIP_TCPIP_TIMEOUT              0
 #define LWIP_NETCONN_SEM_PER_THREAD     0
 #define LWIP_NETCONN_FULLDUPLEX         0
-#define LWIP_SOCKET                     0
 #define LWIP_COMPAT_SOCKETS             1 /* 0..2 */
 #define LWIP_POSIX_SOCKETS_IO_NAMES     1
 #define LWIP_SOCKET_OFFSET              0
@@ -178,7 +190,6 @@
 #define LWIP_SO_LINGER                  0
 #define RECV_BUFSIZE_DEFAULT            INT_MAX
 #define LWIP_TCP_CLOSE_TIMEOUT_MS_DEFAULT 20000
-#define SO_REUSE                        0
 #define SO_REUSE_RXTOALL                0
 #define LWIP_FIONREAD_LINUXMODE         0
 #define LWIP_SOCKET_SELECT              1
