@@ -906,9 +906,16 @@ static void rswitch_get_interrupt_source_and_clear()
 
 #define APP_ISR_gwca1_rx_tx_int_START_SEC_CODE
 #include "tpl_memmap.h"
+static int nb_int = 0;
 
 ISR(gwca1_rx_tx_int)
 {
+    nb_int++;
+    ActivateTask(gwca1_rx_tx_task);
+    CallTerminateISR2();
+}
+
+TASK(gwca1_rx_tx_task) {
     struct rswitch_gwca_chain *chain;
     struct rswitch_ext_ts_desc *ts_desc;
     struct rswitch_ext_desc *desc;
@@ -917,64 +924,71 @@ ISR(gwca1_rx_tx_int)
     int i;
 
     // debug_msg("%s", __func__);
-
-    chain = &rsw_dev.gwca->rx_chain;
-    if (chain->irq_triggered != 0) {
-        /* Go through the descriptors chain to parse received data */
-        while (1) {
-            ts_desc = &(chain->ts_ring[chain->next_index]);
-            /* Stop once we get to a descriptor that was not modified */
-            if (ts_desc->die_dt == (DT_FEMPTY | DIE)) {
-                break;
+    while(1) {
+        chain = &rsw_dev.gwca->rx_chain;
+        if (chain->irq_triggered != 0) {
+            /* Go through the descriptors chain to parse received data */
+            while (1) {
+                ts_desc = &(chain->ts_ring[chain->next_index]);
+                /* Stop once we get to a descriptor that was not modified */
+                if (ts_desc->die_dt == (DT_FEMPTY | DIE)) {
+                    break;
+                }
+                /* We know that "dptrh" is always 0x0 so we ignore it intentionally */
+                data_ptr = (uint8 *) ts_desc->dptrl;
+                data_len = (ts_desc->info_ds) & 0xFFF;
+                /* If the callback is present then call it, otherwise just print
+                * the data */
+                if (rx_cb != NULL) {
+                    rx_cb(data_ptr, data_len);
+                } else {
+                    debug_print_buffer(data_ptr, data_len);
+                }
+                /* Reset the data buffer */
+                memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
+                /* Reset the descriptor so that it can be used again in the next round */
+                memset(ts_desc, 0, sizeof(*ts_desc));
+                ts_desc->die_dt = (DT_FEMPTY | DIE);
+                ts_desc->info_ds = PKT_BUF_SZ;
+                ts_desc->dptrl = (uint32) data_ptr;
+                /* Move to the next item in the list. */
+                chain->next_index++;
+                /* The last item is a LINKFIX and we know that, so we wrap back
+                * to the 1st item earlier. */
+                if (chain->next_index >= chain->num_ring - 1) {
+                    chain->next_index = 0;
+                }
             }
-            /* We know that "dptrh" is always 0x0 so we ignore it intentionally */
-            data_ptr = (uint8 *) ts_desc->dptrl;
-            data_len = (ts_desc->info_ds) & 0xFFF;
-            /* If the callback is present then call it, otherwise just print
-             * the data */
-            if (rx_cb != NULL) {
-                rx_cb(data_ptr, data_len);
-            } else {
-                debug_print_buffer(data_ptr, data_len);
-            }
-            /* Reset the data buffer */
-            memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
-            /* Reset the descriptor so that it can be used again in the next round */
-            memset(ts_desc, 0, sizeof(*ts_desc));
-            ts_desc->die_dt = (DT_FEMPTY | DIE);
-            ts_desc->info_ds = PKT_BUF_SZ;
-            ts_desc->dptrl = (uint32) data_ptr;
-            /* Move to the next item in the list. */
-            chain->next_index++;
-            /* The last item is a LINKFIX and we know that, so we wrap back
-             * to the 1st item earlier. */
-            if (chain->next_index >= chain->num_ring - 1) {
-                chain->next_index = 0;
-            }
+            /* Remove the flag for the received data.
+            * Note = this is not the best technique because another IRQ might
+            *        be triggered in the meanwhile (is it possible?) so we might
+            *        miss it. Might be improved if problems appear... */
+            chain->irq_triggered = 0;
         }
-        /* Remove the flag for the received data.
-         * Note = this is not the best technique because another IRQ might
-         *        be triggered in the meanwhile (is it possible?) so we might
-         *        miss it. Might be improved if problems appear... */
-        chain->irq_triggered = 0;
+
+        chain = &rsw_dev.gwca->tx_chain;
+        if (chain->irq_triggered) {
+            /* Here we reset all the descriptors and data buffers of the TX chain.
+            * It works only if 1 descriptor is transmitted at a time.
+            * TODO: improve to handle transmissions of multiple descriptors. */
+            for (i = 0; i < chain->num_ring - 1; i++) {
+                desc = &(chain->ring[i]);
+                desc->die_dt = DT_EEMPTY | DIE;
+                desc->info_ds = 0;
+                desc->info1 = 0;
+                data_ptr = (uint8 *) desc->dptrl;
+                memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
+            }
+            chain->irq_triggered = 0;
+        }
+
+        DisableAllInterrupts();
+        nb_int--;
+        if (nb_int==0) break;
+        EnableAllInterrupts();
     }
 
-    chain = &rsw_dev.gwca->tx_chain;
-    if (chain->irq_triggered) {
-        /* Here we reset all the descriptors and data buffers of the TX chain.
-         * It works only if 1 descriptor is transmitted at a time.
-         * TODO: improve to handle transmissions of multiple descriptors. */
-        for (i = 0; i < chain->num_ring - 1; i++) {
-            desc = &(chain->ring[i]);
-            desc->die_dt = DT_EEMPTY | DIE;
-            desc->info_ds = 0;
-            desc->info1 = 0;
-            data_ptr = (uint8 *) desc->dptrl;
-            memset(data_ptr, 0, PKT_BUF_SZ_ALIGN);
-        }
-        chain->irq_triggered = 0;
-    }
-    CallTerminateISR2();
+    TerminateTask();
 }
 
 FUNC(void, OS_CODE) GWCA1_RX_TX_INT_ClearFlag(void)
