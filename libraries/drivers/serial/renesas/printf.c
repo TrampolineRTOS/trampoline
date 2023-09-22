@@ -18,7 +18,7 @@
 */
 
 #include "printf.h"
-#include "serial.h"
+#include "spider_serial.h"
 
 static void printchar(char **str, int c)
 {
