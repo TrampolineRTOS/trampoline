@@ -86,7 +86,7 @@ void ms_delay(uint32 value)
 {
     uint32 start_time = get_time();
 
-    while((get_elapsed_time(start_time) - start_time) < value);
+    while(get_elapsed_time(start_time) < value);
 }
 
 void port_init(void)
