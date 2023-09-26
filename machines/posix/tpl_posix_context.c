@@ -79,6 +79,8 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_create_context_trampoline(int sigid)
 {
+    (void) sigid;
+
     /* 5 : new context created. We go back to tpl_init_context */
     if( 0==setjmp(tpl_stat_proc_table[new_proc_id]->context->initial) )
     {
