@@ -62,7 +62,7 @@ tpl_can_controller_t spider_can_controller_0 =
 // Refer to the figure 6.2 of the datasheet "158_23_uciaprcn0140kai_IPSpec_v010401.pdf" to find the TSEG1 and TSEG2 for each desired baud rate.
 // Then, compute the number of time quanta per bit : Total_TQ_Per_Bit = TSEG1 + TSEG2 + 1 (see datasheet section 6.1.1 for more information).
 // It is now possible to compute the prescaler value : Prescaler = (DLL / (Baud_Rate * Total_TQ_Per_Bit)) - 1. DLL is the CAN module clock in MHz, Baud_Rate is the desired baud rate in bit/s and Total_TQ_Per_Bit has been computed previously.
-// On the R-Car S4 Spider board, the DLL clock is 20MHz. The prescaler value might need to be adjusted (add 1 or remove 1) to be the closest to the target baud rate.
+// On the R-Car S4 Spider board, the DLL clock is 80MHz. The prescaler value might need to be adjusted (add 1 or remove 1) to be the closest to the target baud rate.
 static spider_bus_speed_settings_t bus_speed_settings[CAN_BAUD_RATE_COUNT] =
 {
 	// CAN_BAUD_RATE_50_KBPS
@@ -70,13 +70,15 @@ static spider_bus_speed_settings_t bus_speed_settings[CAN_BAUD_RATE_COUNT] =
 	// CAN_BAUD_RATE_100_KBPS
 	{ 0, 0, 0, 0 }, // TODO
 	// CAN_BAUD_RATE_125_KBPS
-	{ 8, 11, 4, 4 },
+	{ 34, 11, 4, 4 }, // Measured at 123.153KHz
 	// CAN_BAUD_RATE_250_KBPS
 	{ 0, 0, 0, 0 }, // TODO
 	// CAN_BAUD_RATE_500_KBPS
 	{ 0, 0, 0, 0 }, // TODO
 	// CAN_BAUD_RATE_1_MBPS
-	{ 0, 13, 6, 4 }
+	{ 7, 5, 2, 2 }, // Measured at 1MHz
+	// CAN_BAUD_RATE_2_MBPS
+	// CAN_BAUD_RATE_5_MBPS
 };
 
 static int spider_can_init(struct tpl_can_controller_config_t *config)
@@ -85,6 +87,14 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	struct tpl_can_controller_t *ctrl = config->controller;
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
 	struct __tag743 nominal_bitrate_configuration_register;
+
+	// Clock the CAN module with a 80MHz clock to be able to reach 8Mbit/s bus speed in CAN-FD mode (see datasheet table 13.6)
+	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_DISABLE_KEY; // Allow access to the clock controller registers
+	SYSCTRL.CLKD_PLLC.UINT32 = 0x00000001; // Make sure the PLL output clock is not divided
+	while (!SYSCTRL.CLKD_PLLS.BIT.PLLCLKDSYNC);
+	SYSCTRL.CKSC_CPUC.UINT32 = 0; // Select the PLL output as the source for the system clock
+	while (SYSCTRL.CKSC_CPUS.BIT.CPUCLKSACT);
+	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_ENABLE_KEY; // Re-enable the clock controller registers protection
 
 	// Allow access to the standby controller registers
 	SYSCTRL.STBCKCPROT.UINT32 = PROTECTION_DISABLE_KEY;
@@ -100,14 +110,9 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 		return -1;
 	SYSCTRL.MSR_RSCFD.UINT32 = val;
 
-	// Re-enable he standby controller registers protection
+	// Re-enable the standby controller registers protection
 	SYSCTRL.STBCKCPROT.UINT32 = PROTECTION_ENABLE_KEY;
 	SYSCTRL.MSRKCPROT.UINT32 = PROTECTION_ENABLE_KEY;
-
-	// Clock the CAN module directly from the main oscillator (MOSC)
-	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_DISABLE_KEY;
-	SYSCTRL.CKSC_RCANC.UINT32 = 0x00000001;
-	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_ENABLE_KEY;
 
 	// Wait for the CAN RAM initialization to terminate
 	while (ctrl_base_address->CFDGSTS.BIT.GRAMINIT);
@@ -120,7 +125,7 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	ctrl_base_address->CFDC0CTR.UINT32 = 0x00000001;
 	while (ctrl_base_address->CFDC0STS.BIT.CSLPSTS);
 
-	// Configure bus speed (TODO there is only classic CAN for now)
+	// Configure bus speed (TODO there is only classic CAN for now, also check < 1Mbps)
 	if (config->nominal_baud_rate >= CAN_BAUD_RATE_COUNT)
 		return -2;
 	nominal_bitrate_configuration_register.NBRP = bus_speed_settings[config->nominal_baud_rate].baud_rate_prescaler;
