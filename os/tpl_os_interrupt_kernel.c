@@ -132,9 +132,6 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 {
     GET_CURRENT_CORE_ID(core_id)
-  #if defined(__unix__) || defined(__APPLE__)
-	assert( GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) >= 0 );
-  #endif
 
 	if( GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) != 0 )
 	{
@@ -202,9 +199,6 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  #if defined(__unix__) || defined(__APPLE__)
-	assert(GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) >= 0);
-  #endif
 
 	if (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) != 0)
 	{
