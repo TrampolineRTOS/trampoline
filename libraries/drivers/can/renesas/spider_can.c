@@ -43,7 +43,7 @@ typedef struct
 	uint16 synchronization_jump_width;
 } spider_bus_speed_settings_t;
 
-static int spider_can_init(struct tpl_can_controller_t *ctrl, void *data);
+static int spider_can_init(struct tpl_can_controller_config_t *config);
 static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, tpl_can_baud_rate_t baud_rate);
 static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info);
 static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
@@ -52,7 +52,6 @@ static int spider_is_data_available(struct tpl_can_controller_t *ctrl);
 tpl_can_controller_t spider_can_controller_0 =
 {
 	RSCFD0_BASE_ADDR,
-	CAN_BAUD_RATE_125_KBPS,
 	spider_can_init,
 	spider_set_baudrate,
 	spider_transmit,
@@ -80,13 +79,12 @@ static spider_bus_speed_settings_t bus_speed_settings[CAN_BAUD_RATE_COUNT] =
 	{ 0, 13, 6, 4 }
 };
 
-static int spider_can_init(struct tpl_can_controller_t *ctrl, void *data)
+static int spider_can_init(struct tpl_can_controller_config_t *config)
 {
 	uint32 val;
+	struct tpl_can_controller_t *ctrl = config->controller;
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
 	struct __tag743 nominal_bitrate_configuration_register;
-
-	(void) data;
 
 	// Allow access to the standby controller registers
 	SYSCTRL.STBCKCPROT.UINT32 = PROTECTION_DISABLE_KEY;
@@ -122,13 +120,13 @@ static int spider_can_init(struct tpl_can_controller_t *ctrl, void *data)
 	ctrl_base_address->CFDC0CTR.UINT32 = 0x00000001;
 	while (ctrl_base_address->CFDC0STS.BIT.CSLPSTS);
 
-	// Configure bus speed
-	if (ctrl->initial_baud_rate >= CAN_BAUD_RATE_COUNT)
+	// Configure bus speed (TODO there is only classic CAN for now)
+	if (config->nominal_baud_rate >= CAN_BAUD_RATE_COUNT)
 		return -2;
-	nominal_bitrate_configuration_register.NBRP = bus_speed_settings[ctrl->initial_baud_rate].baud_rate_prescaler;
-	nominal_bitrate_configuration_register.NSJW = bus_speed_settings[ctrl->initial_baud_rate].synchronization_jump_width;
-	nominal_bitrate_configuration_register.NTSEG1 = bus_speed_settings[ctrl->initial_baud_rate].t_seg_1;
-	nominal_bitrate_configuration_register.NTSEG2 = bus_speed_settings[ctrl->initial_baud_rate].t_seg_2;
+	nominal_bitrate_configuration_register.NBRP = bus_speed_settings[config->nominal_baud_rate].baud_rate_prescaler;
+	nominal_bitrate_configuration_register.NSJW = bus_speed_settings[config->nominal_baud_rate].synchronization_jump_width;
+	nominal_bitrate_configuration_register.NTSEG1 = bus_speed_settings[config->nominal_baud_rate].t_seg_1;
+	nominal_bitrate_configuration_register.NTSEG2 = bus_speed_settings[config->nominal_baud_rate].t_seg_2;
 	ctrl_base_address->CFDC0NCFG.BIT = nominal_bitrate_configuration_register;
 
 	// Configure rule table (create 2 rules that match all possible frames in reception and transmission)
