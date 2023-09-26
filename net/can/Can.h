@@ -38,7 +38,8 @@
  */
 typedef struct
 {
-	tpl_can_controller_t **controllers_list;
+	tpl_can_controller_config_t *configs;
+	unsigned int configs_count;
 } Can_ConfigType;
 
 /**

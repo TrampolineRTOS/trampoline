@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5";
+OIL_VERSION = "4.2";
 
 CPU can_task {
 	OS config {
@@ -6,6 +6,7 @@ CPU can_task {
 		BUILD = TRUE {
 			APP_SRC = "can_demo.c";
 			TRAMPOLINE_BASE_PATH = "../../..";
+			CFLAGS = "-W -Wall";
 			LDFLAGS = "-lrt -lpthread";
 			APP_NAME = "can_demo_exe";
 			LINKER = "gcc";

@@ -34,6 +34,8 @@
 #define TPL_CAN_ID_TYPE_EXTENDED (0x02 << 30)
 #define TPL_CAN_ID_TYPE_FD_EXTENDED (0x03 << 30)
 #define TPL_CAN_ID_TYPE_MASK (0x03 << 30)
+#define TPL_CAN_ID_TYPE_GET(id) ((id & TPL_CAN_ID_TYPE_MASK) >> 30)
+#define TPL_CAN_ID_MASK (0x3FFFFFFF)
 
 /**
  * @note This will be replaced by a table provided to Can_Init() with
@@ -47,8 +49,23 @@ typedef enum
 	CAN_BAUD_RATE_250_KBPS,
 	CAN_BAUD_RATE_500_KBPS,
 	CAN_BAUD_RATE_1_MBPS,
+	CAN_BAUD_RATE_2_MBPS,
+	CAN_BAUD_RATE_5_MBPS,
 	CAN_BAUD_RATE_COUNT
 } tpl_can_baud_rate_t;
+
+/**
+ * @typedef tpl_can_protocol_version_t
+ *
+ * Select the version of the CAN protocol to operate for a specific CAN
+ * controller.
+ */
+typedef enum
+{
+	CAN_PROTOCOL_VERSION_CLASSIC,
+	CAN_PROTOCOL_VERSION_FD,
+	CAN_PROTOCOL_VERSION_XL
+} tpl_can_protocol_version_t;
 
 /**
  * @typedef Can_IdType
@@ -79,6 +96,7 @@ typedef struct
 	uint8 *sdu;
 } Can_PduType;
 
+struct tpl_can_controller_config_t;
 /**
  * @struct tpl_can_controller_t
  *
@@ -88,13 +106,27 @@ typedef struct
 struct tpl_can_controller_t
 {
 	uint32 base_address;
-	int (*init)(struct tpl_can_controller_t *ctrl, void *data);
+	int (*init)(struct tpl_can_controller_config_t *config);
 	int (*set_baudrate)(struct tpl_can_controller_t *ctrl, tpl_can_baud_rate_t baud_rate);
 	Std_ReturnType (*transmit)(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info);
 	Std_ReturnType (*receive)(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
 	int (*is_data_available)(struct tpl_can_controller_t *ctrl);
 };
 typedef struct tpl_can_controller_t tpl_can_controller_t;
+
+/**
+ * @struct tpl_can_controller_config_t
+ *
+ * Associate a CAN controller and its configuration for the current application.
+ */
+struct tpl_can_controller_config_t
+{
+	tpl_can_controller_t *controller;
+	tpl_can_protocol_version_t protocol_version;
+	tpl_can_baud_rate_t nominal_baud_rate; // The classic CAN baud rate, or the arbitration baud rate when in CAN FD mode
+	tpl_can_baud_rate_t fd_data_baud_rate; // The data baud rate for CAN-FD when bit rate switch is set, this value is ignored for classic CAN
+};
+typedef struct tpl_can_controller_config_t tpl_can_controller_config_t;
 
 /**
  * @typedef Can_HwHandleType
