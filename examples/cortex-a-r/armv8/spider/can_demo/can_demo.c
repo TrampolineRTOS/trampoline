@@ -32,15 +32,21 @@
 
 int main(void)
 {
-	// Statically list the CAN controllers to use in the application
-	static tpl_can_controller_t *can_controllers[] =
+	// Statically list the configuration of each CAN controller used in the application
+	static tpl_can_controller_config_t can_controllers_config[] =
 	{
-		&spider_can_controller_0,
-		NULL
+		// First controller will use CAN 2.0
+		{
+			&spider_can_controller_0,
+			CAN_PROTOCOL_VERSION_CLASSIC,
+			CAN_BAUD_RATE_125_KBPS,
+			CAN_BAUD_RATE_125_KBPS // This value is ignored for classic CAN
+		},
 	};
 	static Can_ConfigType can_config_type =
 	{
-		can_controllers
+		can_controllers_config,
+		sizeof(can_controllers_config) / sizeof(can_controllers_config[0])
 	};
 	int ret;
 
