@@ -33,23 +33,45 @@
 
 int main(void)
 {
-	// Statically list the configuration of each CAN controller used in the
-	// application
+	// Statically list the configuration of each CAN controller used in the application
 	static tpl_can_controller_config_t can_controllers_config[] =
 	{
-		// First controller will use CAN 2.0
+		// First controller will use CAN 2.0 (values are fake)
 		{
 			&can_demo_driver_controller_1,
 			CAN_PROTOCOL_VERSION_CLASSIC,
-			CAN_BAUD_RATE_250_KBPS,
-			CAN_BAUD_RATE_250_KBPS // This value is ignored for classic CAN
+			{
+				.CanControllerBaudRate = 250,
+				.CanControllerBaudRateConfigID = 0,
+				.CanControllerPropSeg = 0,
+				.CanControllerSeg1 = 11,
+				.CanControllerSeg2 = 4,
+				.CanControllerSyncJumpWidth = 4,
+				.use_fd_configuration = FALSE
+			},
 		},
-		// Second controller will use CAN FD with bit rate switch
+		// Second controller will use CAN FD with bit rate switch (values are fake)
 		{
 			&can_demo_driver_controller_2,
 			CAN_PROTOCOL_VERSION_FD,
-			CAN_BAUD_RATE_1_MBPS,
-			CAN_BAUD_RATE_5_MBPS
+			{
+				.CanControllerBaudRate = 1000,
+				.CanControllerBaudRateConfigID = 1,
+				.CanControllerPropSeg = 0,
+				.CanControllerSeg1 = 31,
+				.CanControllerSeg2 = 8,
+				.CanControllerSyncJumpWidth = 8,
+				.use_fd_configuration = TRUE,
+				{
+					.CanControllerFdBaudRate = 5000,
+					.CanControllerPropSeg = 0,
+					.CanControllerSeg1 = 10,
+					.CanControllerSeg2 = 5,
+					.CanControllerSspOffset = 15,
+					.CanControllerSyncJumpWidth = 5,
+					.CanControllerTxBitRateSwitch = TRUE
+				},
+			},
 		}
 	};
 	static Can_ConfigType can_config_type =
@@ -138,6 +160,23 @@ TASK(can_task)
 			printf("0x%02X ", pointer_can_pdu->sdu[i]);
 		printf("\r\n");
 	}
+
+	printf("Setting the controller 0 baud rate with configuration 1...\r\n");
+	ret = CanIf_SetBaudrate(0, 1);
+	if (ret)
+		printf("[%s:%d] Error : CanIf_SetBaudrate() failed (%d).\r\n", __func__, __LINE__, ret);
+
+	printf("Setting the controller 1 baud rate with configuration 0...\r\n");
+	ret = CanIf_SetBaudrate(1, 0);
+	if (ret)
+		printf("[%s:%d] Error : CanIf_SetBaudrate() failed (%d).\r\n", __func__, __LINE__, ret);
+
+	printf("Setting an invalid baud rate configuration for controller 1...\r\n");
+	ret = CanIf_SetBaudrate(1, 100);
+	if (ret)
+		printf("[%s:%d] The baud rate configuration setting failed as expected.\r\n", __func__, __LINE__);
+	else
+		printf("[%s:%d] Error : CanIf_SetBaudrate() succeeded while it should have not (%d).\r\n", __func__, __LINE__, ret);
 
 	printf("\r\nEnd of the CAN demo. Press 'q' to exit.\r\n");
 

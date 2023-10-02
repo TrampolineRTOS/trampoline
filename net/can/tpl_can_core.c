@@ -68,13 +68,26 @@ int Can_Init(const Can_ConfigType *Config)
 Std_ReturnType Can_SetBaudrate(uint8 Controller, uint16 BaudRateConfigID)
 {
 	tpl_can_controller_t *controller;
+	CanControllerBaudrateConfig *baud_rate_config;
+	unsigned int i;
 
 	// Make sure the controller has been registered and initialized
 	if (Controller >= controllers_count)
 		return E_NOT_OK;
 	controller = controller_configs[Controller].controller;
 
-	if (controller->set_baudrate(controller, BaudRateConfigID))
+	// Look for the baud rate configuration matching the requested ID
+	for (i = 0; i < controllers_count; i++)
+	{
+		baud_rate_config = &controller_configs[i].baud_rate_config;
+		if (baud_rate_config->CanControllerBaudRateConfigID == BaudRateConfigID)
+			break;
+	}
+	// Was a matching baud rate configuration found ?
+	if (i == controllers_count)
+		return E_NOT_OK;
+
+	if (controller->set_baudrate(controller, baud_rate_config))
 		return E_NOT_OK;
 	return E_OK;
 }

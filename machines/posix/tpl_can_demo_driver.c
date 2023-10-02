@@ -30,30 +30,10 @@
 #include <tpl_os.h>
 
 static int can_demo_driver_init(struct tpl_can_controller_config_t *config);
-static int can_demo_driver_set_baudrate(struct tpl_can_controller_t *ctrl, tpl_can_baud_rate_t baud_rate);
+static int can_demo_driver_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config);
 static Std_ReturnType can_demo_driver_transmit(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info);
 static Std_ReturnType can_demo_driver_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
 static int can_demo_driver_is_data_available(struct tpl_can_controller_t *ctrl);
-
-static uint32 baud_rate_lut[CAN_BAUD_RATE_COUNT] =
-{
-	// CAN_BAUD_RATE_50_KBPS
-	50000,
-	// CAN_BAUD_RATE_100_KBPS
-	100000,
-	// CAN_BAUD_RATE_125_KBPS
-	125000,
-	// CAN_BAUD_RATE_250_KBPS
-	250000,
-	// CAN_BAUD_RATE_500_KBPS
-	500000,
-	// CAN_BAUD_RATE_1_MBPS
-	1000000,
-	// CAN_BAUD_RATE_2_MBPS
-	2000000,
-	// CAN_BAUD_RATE_5_MBPS
-	5000000
-};
 
 tpl_can_controller_t can_demo_driver_controller_1 =
 {
@@ -81,26 +61,26 @@ static int can_demo_driver_init(struct tpl_can_controller_config_t *config)
 		__func__,
 		__LINE__,
 		config->controller->base_address);
-	printf("Protocol version : %s\r\nNominal baud rate : %u\r\n",
+	printf("Protocol version : %s\r\nNominal baud rate : %u kbps\r\n",
 		config->protocol_version == CAN_PROTOCOL_VERSION_CLASSIC ? "CAN classic 2.0" : "CAN-FD",
-		baud_rate_lut[config->nominal_baud_rate]);
+		config->baud_rate_config.CanControllerBaudRate);
 	if (config->protocol_version == CAN_PROTOCOL_VERSION_FD)
-		printf("Data baud rate (only for CAN-FD) : %u\r\n", baud_rate_lut[config->fd_data_baud_rate]);
+		printf("Data baud rate (only for CAN-FD) : %u kbps\r\n", config->baud_rate_config.can_fd_config.CanControllerFdBaudRate);
 	return 0;
 }
 
-static int can_demo_driver_set_baudrate(struct tpl_can_controller_t *ctrl, tpl_can_baud_rate_t baud_rate)
+static int can_demo_driver_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config)
 {
-	uint32 bits_per_second;
+	printf("[%s:%d] Setting a new baud rate for controller 0x%08X. Protocol version : %s, nominal baud rate : %u kbps",
+		__func__,
+		__LINE__,
+		ctrl->base_address,
+		baud_rate_config->use_fd_configuration ? "CAN-FD" : "CAN classic 2.0",
+		baud_rate_config->CanControllerBaudRate);
+	if (baud_rate_config->use_fd_configuration)
+		printf(", CAN-FD baud rate : %u kbps", baud_rate_config->can_fd_config.CanControllerFdBaudRate);
+	printf(".\r\n");
 
-	if (baud_rate >= CAN_BAUD_RATE_COUNT)
-	{
-		printf("[%s:%d] Wrong baud rate code %d, aborting.\r\n", __func__, __LINE__, baud_rate);
-		return -1;
-	}
-	bits_per_second = baud_rate_lut[baud_rate];
-
-	printf("[%s:%d] Baud rate set to %u for controller 0x%08X.\r\n", __func__, __LINE__, bits_per_second, ctrl->base_address);
 	return 0;
 }
 
