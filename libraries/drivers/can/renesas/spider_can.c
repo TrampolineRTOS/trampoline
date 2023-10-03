@@ -35,16 +35,14 @@
 
 #define SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl) (((volatile struct __tag5586 *) ctrl->base_address)->CFDRMND0.UINT32 & 0x00000001)
 
-typedef struct
-{
-	uint16 baud_rate_prescaler;
-	uint16 t_seg_1;
-	uint16 t_seg_2;
-	uint16 synchronization_jump_width;
-} spider_bus_speed_settings_t;
+/**
+ * The CAN clock that feeds the prescalers (in Hertz).
+ */
+#define SPIDER_CAN_CLOCK (80000000)
+#define SPIDER_CAN_COMPUTE_PRESCALER(baud_rate, prop_seg, tseg1, tseg2) ((SPIDER_CAN_CLOCK / (baud_rate * (1 + prop_seg + tseg1 + tseg2))) - 1)
 
 static int spider_can_init(struct tpl_can_controller_config_t *config);
-static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, tpl_can_baud_rate_t baud_rate);
+static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config);
 static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info);
 static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
 static int spider_is_data_available(struct tpl_can_controller_t *ctrl);
@@ -59,34 +57,45 @@ tpl_can_controller_t spider_can_controller_0 =
 	spider_is_data_available
 };
 
-// Refer to the figure 6.2 of the datasheet "158_23_uciaprcn0140kai_IPSpec_v010401.pdf" to find the TSEG1 and TSEG2 for each desired baud rate.
-// Then, compute the number of time quanta per bit : Total_TQ_Per_Bit = TSEG1 + TSEG2 + 1 (see datasheet section 6.1.1 for more information).
-// It is now possible to compute the prescaler value : Prescaler = (DLL / (Baud_Rate * Total_TQ_Per_Bit)) - 1. DLL is the CAN module clock in MHz, Baud_Rate is the desired baud rate in bit/s and Total_TQ_Per_Bit has been computed previously.
-// On the R-Car S4 Spider board, the DLL clock is 80MHz. The prescaler value might need to be adjusted (add 1 or remove 1) to be the closest to the target baud rate.
-static spider_bus_speed_settings_t bus_speed_settings[CAN_BAUD_RATE_COUNT] =
+/**
+ * Refer to the figure 6.2 of the datasheet "158_23_uciaprcn0140kai_IPSpec_v010401.pdf" to find the TSEG1 and TSEG2 for each desired baud rate.
+ * Then, compute the number of time quanta per bit : Total_TQ_Per_Bit = TSEG1 + TSEG2 + 1 (see datasheet section 6.1.1 for more information).
+ * It is now possible to compute the prescaler value : Prescaler = (DLL / (Baud_Rate * Total_TQ_Per_Bit)) - 1.
+ * DLL is the CAN module clock in MHz, Baud_Rate is the desired baud rate in bit/s and Total_TQ_Per_Bit has been computed previously.
+ * On the R-Car S4 Spider board, the DLL clock is 80MHz.
+ * The computed prescaler does not correspond to the measured baud rate, so adding 1 or 2 to Total_TQ_Per_Bit allows to get a correct value.
+ * For this, use the CanControllerPropSeg value from the baud rate configuration.
+ */
+static int spider_configure_baud_rate_registers(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config)
 {
-	// CAN_BAUD_RATE_50_KBPS
-	{ 0, 0, 0, 0 }, // TODO
-	// CAN_BAUD_RATE_100_KBPS
-	{ 0, 0, 0, 0 }, // TODO
-	// CAN_BAUD_RATE_125_KBPS
-	{ 34, 11, 4, 4 }, // Measured at 123.153KHz
-	// CAN_BAUD_RATE_250_KBPS
-	{ 0, 0, 0, 0 }, // TODO
-	// CAN_BAUD_RATE_500_KBPS
-	{ 0, 0, 0, 0 }, // TODO
-	// CAN_BAUD_RATE_1_MBPS
-	{ 7, 5, 2, 2 }, // Measured at 1MHz
-	// CAN_BAUD_RATE_2_MBPS
-	// CAN_BAUD_RATE_5_MBPS
-};
+	struct __tag743 nominal_bitrate_configuration_register;
+	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+
+	// Make sure the CAN baud rates are in the allowed range
+	if (baud_rate_config->CanControllerBaudRate > 1000)
+		return -1;
+	if (baud_rate_config->use_fd_configuration && baud_rate_config->can_fd_config.CanControllerFdBaudRate > 8000)
+		return -1;
+
+	// Set the CAN 2.0 baud rate registers
+	nominal_bitrate_configuration_register.NBRP = SPIDER_CAN_COMPUTE_PRESCALER(
+		baud_rate_config->CanControllerBaudRate * 1000,
+		baud_rate_config->CanControllerPropSeg,
+		baud_rate_config->CanControllerSeg1,
+		baud_rate_config->CanControllerSeg2);
+	nominal_bitrate_configuration_register.NSJW = baud_rate_config->CanControllerSyncJumpWidth;
+	nominal_bitrate_configuration_register.NTSEG1 = baud_rate_config->CanControllerSeg1;
+	nominal_bitrate_configuration_register.NTSEG2 = baud_rate_config->CanControllerSeg2;
+	ctrl_base_address->CFDC0NCFG.BIT = nominal_bitrate_configuration_register;
+
+	return 0;
+}
 
 static int spider_can_init(struct tpl_can_controller_config_t *config)
 {
 	uint32 val;
 	struct tpl_can_controller_t *ctrl = config->controller;
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
-	struct __tag743 nominal_bitrate_configuration_register;
 
 	// Clock the CAN module with a 80MHz clock to be able to reach 8Mbit/s bus speed in CAN-FD mode (see datasheet table 13.6)
 	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_DISABLE_KEY; // Allow access to the clock controller registers
@@ -125,14 +134,9 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	ctrl_base_address->CFDC0CTR.UINT32 = 0x00000001;
 	while (ctrl_base_address->CFDC0STS.BIT.CSLPSTS);
 
-	// Configure bus speed (TODO there is only classic CAN for now, also check < 1Mbps)
-	if (config->nominal_baud_rate >= CAN_BAUD_RATE_COUNT)
-		return -2;
-	nominal_bitrate_configuration_register.NBRP = bus_speed_settings[config->nominal_baud_rate].baud_rate_prescaler;
-	nominal_bitrate_configuration_register.NSJW = bus_speed_settings[config->nominal_baud_rate].synchronization_jump_width;
-	nominal_bitrate_configuration_register.NTSEG1 = bus_speed_settings[config->nominal_baud_rate].t_seg_1;
-	nominal_bitrate_configuration_register.NTSEG2 = bus_speed_settings[config->nominal_baud_rate].t_seg_2;
-	ctrl_base_address->CFDC0NCFG.BIT = nominal_bitrate_configuration_register;
+	// Configure bus speed (TODO there is only classic CAN for now)
+	if (spider_configure_baud_rate_registers(ctrl, &config->baud_rate_config) != 0)
+		return E_NOT_OK;
 
 	// Configure rule table (create 2 rules that match all possible frames in reception and transmission)
 	ctrl_base_address->CFDGAFLECTR.UINT32 = 1 << 8; // Enable write access for page 0
@@ -174,11 +178,11 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	return E_OK;
 }
 
-static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, tpl_can_baud_rate_t baud_rate)
+static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config)
 {
 	// Does nothing for now
 	(void) ctrl;
-	(void) baud_rate;
+	(void) baud_rate_config;
 
 	return E_OK;
 }
