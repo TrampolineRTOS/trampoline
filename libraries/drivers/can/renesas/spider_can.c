@@ -190,6 +190,8 @@ static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerB
 static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info)
 {
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	int i;
+	volatile uint8 *src, *dest;
 
 	if (ctrl == NULL)
 		return E_NOT_OK;
@@ -209,7 +211,16 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 	// Set the frame payload
 	if (pdu_info->length > 8)
 		return E_NOT_OK;
-	memcpy((void *) &ctrl_base_address->CFD0TMDF0_0.UINT8, pdu_info->sdu, pdu_info->length);
+	src = pdu_info->sdu;
+	dest = ctrl_base_address->CFD0TMDF0_0.UINT8;
+	// Use a for loop instead of memcpy() to make sure the buffer registers are accessed one byte at a time
+	// Using memcpy() triggers a data abort exception for a 7-byte CAN payload
+	for (i = 0; i < pdu_info->length; i++)
+	{
+		*dest = *src;
+		src++;
+		dest++;
+	}
 
 	// Configure the frame format
 	ctrl_base_address->CFD0TMFDCTR0.UINT32 = 0;
@@ -223,6 +234,8 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info)
 {
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	int i;
+	volatile uint8 *src, *dest;
 
 	// Do not block if no data are available
 	if (!SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl))
@@ -237,7 +250,16 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 		goto Exit;
 
 	// Retrieve the frame payload
-	memcpy(pdu_info->sdu, (void *) &ctrl_base_address->CFDRMDF0_0.UINT8, pdu_info->length);
+	src = ctrl_base_address->CFDRMDF0_0.UINT8;
+	dest = pdu_info->sdu;
+	// Use a for loop instead of memcpy() to make sure the buffer registers are accessed one byte at a time
+	// Using memcpy() triggers a data abort exception for a 7-byte CAN payload
+	for (i = 0; i < pdu_info->length; i++)
+	{
+		*dest = *src;
+		src++;
+		dest++;
+	}
 
 Exit:
 	// Clear the reception flag
