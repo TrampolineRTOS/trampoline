@@ -26,6 +26,7 @@
  */
 #include <Can.h>
 #include <CanIf.h>
+#include <spider_can.h>
 #include <stdio.h>
 #include <string.h>
 #include <tpl_os.h>
@@ -39,9 +40,16 @@ int main(void)
 		{
 			&spider_can_controller_0,
 			CAN_PROTOCOL_VERSION_CLASSIC,
-			CAN_BAUD_RATE_125_KBPS,
-			CAN_BAUD_RATE_125_KBPS // This value is ignored for classic CAN
-		},
+			{
+				.CanControllerBaudRate = 250,
+				.CanControllerBaudRateConfigID = 0,
+				.CanControllerPropSeg = 1, // Fine tune the bus speed, it is measured at 245KHz
+				.CanControllerSeg1 = 11,
+				.CanControllerSeg2 = 4,
+				.CanControllerSyncJumpWidth = 4,
+				.use_fd_configuration = FALSE
+			},
+		}
 	};
 	static Can_ConfigType can_config_type =
 	{
