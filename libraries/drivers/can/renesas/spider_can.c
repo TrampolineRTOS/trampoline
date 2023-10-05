@@ -198,10 +198,6 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 	if (pdu_info == NULL)
 		return E_NOT_OK;
 
-	// Wait for the previous frame to finish transmission
-	while (ctrl_base_address->CFDTMSTS0.BIT.TMTSTS);
-	ctrl_base_address->CFDTMSTS0.UINT8 = 0; // Clear TMTRF bits to allow the CFDTMCi.TMTR bit to be set again
-
 	// Set the CAN ID
 	ctrl_base_address->CFD0TMID0.UINT32 = pdu_info->id & 0x000007FF;
 
@@ -226,7 +222,11 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 	ctrl_base_address->CFD0TMFDCTR0.UINT32 = 0;
 
 	// Start the frame transmission
+	ctrl_base_address->CFDTMSTS0.UINT8 = 0; // Clear TMTRF bits to allow the CFDTMCi.TMTR bit to be set again
 	ctrl_base_address->CFDTMC0.UINT8 = 0x01;
+
+	// Wait for the transmission to finish (this way the buffer used for transmission can't be altered by the code following the start of the transmission)
+	while (ctrl_base_address->CFDTMC0.BIT.TMTR);
 
 	return E_OK;
 }
