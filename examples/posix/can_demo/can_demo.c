@@ -39,7 +39,6 @@ int main(void)
 		// First controller will use CAN 2.0 (values are fake)
 		{
 			&can_demo_driver_controller_1,
-			CAN_PROTOCOL_VERSION_CLASSIC,
 			{
 				.CanControllerBaudRate = 250,
 				.CanControllerBaudRateConfigID = 0,
@@ -53,7 +52,6 @@ int main(void)
 		// Second controller will use CAN FD with bit rate switch (values are fake)
 		{
 			&can_demo_driver_controller_2,
-			CAN_PROTOCOL_VERSION_FD,
 			{
 				.CanControllerBaudRate = 1000,
 				.CanControllerBaudRateConfigID = 1,

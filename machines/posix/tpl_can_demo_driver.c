@@ -35,6 +35,13 @@ static Std_ReturnType can_demo_driver_transmit(struct tpl_can_controller_t *ctrl
 static Std_ReturnType can_demo_driver_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
 static int can_demo_driver_is_data_available(struct tpl_can_controller_t *ctrl);
 
+struct can_demo_driver_priv
+{
+	int is_can_fd_enabled;
+};
+
+static struct can_demo_driver_priv can_demo_driver_controller_priv[2];
+
 tpl_can_controller_t can_demo_driver_controller_1 =
 {
 	0x12341111,
@@ -42,7 +49,8 @@ tpl_can_controller_t can_demo_driver_controller_1 =
 	can_demo_driver_set_baudrate,
 	can_demo_driver_transmit,
 	can_demo_driver_receive,
-	can_demo_driver_is_data_available
+	can_demo_driver_is_data_available,
+	&can_demo_driver_controller_priv[0]
 };
 
 tpl_can_controller_t can_demo_driver_controller_2 =
@@ -52,19 +60,28 @@ tpl_can_controller_t can_demo_driver_controller_2 =
 	can_demo_driver_set_baudrate,
 	can_demo_driver_transmit,
 	can_demo_driver_receive,
-	can_demo_driver_is_data_available
+	can_demo_driver_is_data_available,
+	&can_demo_driver_controller_priv[1]
 };
 
 static int can_demo_driver_init(struct tpl_can_controller_config_t *config)
 {
+	struct can_demo_driver_priv *priv = config->controller->priv;
+
+	// Determine the CAN protocol version
+	if (config->baud_rate_config.use_fd_configuration)
+		priv->is_can_fd_enabled = 1;
+	else
+		priv->is_can_fd_enabled = 0;
+
 	printf("[%s:%d] Initializing controller 0x%08X...\r\n",
 		__func__,
 		__LINE__,
 		config->controller->base_address);
 	printf("Protocol version : %s\r\nNominal baud rate : %u kbps\r\n",
-		config->protocol_version == CAN_PROTOCOL_VERSION_CLASSIC ? "CAN classic 2.0" : "CAN-FD",
+		priv->is_can_fd_enabled ? "CAN-FD" : "CAN classic 2.0",
 		config->baud_rate_config.CanControllerBaudRate);
-	if (config->protocol_version == CAN_PROTOCOL_VERSION_FD)
+	if (priv->is_can_fd_enabled)
 		printf("Data baud rate (only for CAN-FD) : %u kbps\r\n", config->baud_rate_config.can_fd_config.CanControllerFdBaudRate);
 	return 0;
 }
@@ -78,7 +95,7 @@ static int can_demo_driver_set_baudrate(struct tpl_can_controller_t *ctrl, CanCo
 		baud_rate_config->use_fd_configuration ? "CAN-FD" : "CAN classic 2.0",
 		baud_rate_config->CanControllerBaudRate);
 	if (baud_rate_config->use_fd_configuration)
-		printf(", CAN-FD baud rate : %u kbps", baud_rate_config->can_fd_config.CanControllerFdBaudRate);
+		printf(", CAN-FD data baud rate : %u kbps", baud_rate_config->can_fd_config.CanControllerFdBaudRate);
 	printf(".\r\n");
 
 	return 0;

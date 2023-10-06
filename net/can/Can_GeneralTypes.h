@@ -30,29 +30,16 @@
 #include <ComStack_Types.h>
 #include <tpl_os.h>
 
-#define TPL_CAN_ID_TYPE_STANDARD (0x00 << 30)
-#define TPL_CAN_ID_TYPE_FD_STANDARD (0x01 << 30)
-#define TPL_CAN_ID_TYPE_EXTENDED (0x02 << 30)
-#define TPL_CAN_ID_TYPE_FD_EXTENDED (0x03 << 30)
-#define TPL_CAN_ID_TYPE_MASK (0x03 << 30)
+#define TPL_CAN_ID_TYPE_STANDARD (0x00U << 30)
+#define TPL_CAN_ID_TYPE_FD_STANDARD (0x01U << 30)
+#define TPL_CAN_ID_TYPE_EXTENDED (0x02U << 30)
+#define TPL_CAN_ID_TYPE_FD_EXTENDED (0x03U << 30)
+#define TPL_CAN_ID_TYPE_MASK (0x03U << 30)
 #define TPL_CAN_ID_TYPE_GET(id) ((id & TPL_CAN_ID_TYPE_MASK) >> 30)
-#define TPL_CAN_ID_MASK (0x3FFFFFFF)
+#define TPL_CAN_ID_MASK (0x3FFFFFFFU)
 
 #define TPL_CAN_CLASSIC_FRAME_MAXIMUM_PAYLOAD_SIZE (8)
 #define TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE (64)
-
-/**
- * @typedef tpl_can_protocol_version_t
- *
- * Select the version of the CAN protocol to operate for a specific CAN
- * controller.
- */
-typedef enum
-{
-	CAN_PROTOCOL_VERSION_CLASSIC,
-	CAN_PROTOCOL_VERSION_FD,
-	CAN_PROTOCOL_VERSION_XL
-} tpl_can_protocol_version_t;
 
 /**
  * @typedef Can_IdType
@@ -137,6 +124,7 @@ struct tpl_can_controller_t
 	Std_ReturnType (*transmit)(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info);
 	Std_ReturnType (*receive)(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
 	int (*is_data_available)(struct tpl_can_controller_t *ctrl);
+	void *priv; // Store a custom structure for the driver internal use
 };
 typedef struct tpl_can_controller_t tpl_can_controller_t;
 
@@ -148,7 +136,6 @@ typedef struct tpl_can_controller_t tpl_can_controller_t;
 struct tpl_can_controller_config_t
 {
 	tpl_can_controller_t *controller;
-	tpl_can_protocol_version_t protocol_version;
 	CanControllerBaudrateConfig baud_rate_config;
 };
 typedef struct tpl_can_controller_config_t tpl_can_controller_config_t;
