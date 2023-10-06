@@ -39,7 +39,8 @@ int main(void)
 		// First controller will use CAN 2.0
 		{
 			&spider_can_controller_0,
-			CAN_PROTOCOL_VERSION_CLASSIC,
+			// CAN 2.0 at 250Kbps
+			#if 0
 			{
 				.CanControllerBaudRate = 250,
 				.CanControllerBaudRateConfigID = 0,
@@ -48,7 +49,29 @@ int main(void)
 				.CanControllerSeg2 = 4,
 				.CanControllerSyncJumpWidth = 4,
 				.use_fd_configuration = FALSE
-			},
+			}
+			#endif
+			// CAN-FD at 1Mbps without BRS
+			#if 1
+			{
+				.CanControllerBaudRate = 1000,
+				.CanControllerBaudRateConfigID = 0,
+				.CanControllerPropSeg = 1, // Fine tune the bus speed, it is measured at 1MHz
+				.CanControllerSeg1 = 5,
+				.CanControllerSeg2 = 2,
+				.CanControllerSyncJumpWidth = 2,
+				.use_fd_configuration = TRUE,
+				{
+					.CanControllerFdBaudRate = 5000,
+					.CanControllerPropSeg = 2,
+					.CanControllerSeg1 = 10,
+					.CanControllerSeg2 = 5,
+					.CanControllerSspOffset = 15,
+					.CanControllerSyncJumpWidth = 5,
+					.CanControllerTxBitRateSwitch = FALSE
+				}
+			}
+			#endif
 		}
 	};
 	static Can_ConfigType can_config_type =
@@ -71,7 +94,7 @@ TASK(can_task)
 {
 	Can_PduType can_pdu, *pointer_can_pdu;
 	PduInfoType pdu_info;
-	uint8 payload[64];
+	uint8 payload[TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE];
 	int i;
 
 	// Send a frame to tell that the program is ready
@@ -88,9 +111,9 @@ TASK(can_task)
 	{
 		if (CanIf_ReadRxPduData(0, &pdu_info) == E_OK)
 		{
-			// Make sure the payload size is compatible with CAN 2.0
+			// Make sure the payload size is compatible with CAN-FD
 			pointer_can_pdu = (Can_PduType *) pdu_info.SduDataPtr;
-			if (pointer_can_pdu->length > 8)
+			if (pointer_can_pdu->length > TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE)
 				continue;
 
 			// Increment the CAN ID and the payload bytes
