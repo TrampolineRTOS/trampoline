@@ -47,6 +47,14 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info);
 static int spider_is_data_available(struct tpl_can_controller_t *ctrl);
 
+struct spider_can_priv
+{
+	int is_can_fd_enabled;
+	int is_can_fd_bit_rate_switch_enabled;
+};
+
+static struct spider_can_priv spider_can_controller_0_priv;
+
 tpl_can_controller_t spider_can_controller_0 =
 {
 	RSCFD0_BASE_ADDR,
@@ -54,7 +62,8 @@ tpl_can_controller_t spider_can_controller_0 =
 	spider_set_baudrate,
 	spider_transmit,
 	spider_receive,
-	spider_is_data_available
+	spider_is_data_available,
+	&spider_can_controller_0_priv
 };
 
 /**
@@ -66,10 +75,13 @@ tpl_can_controller_t spider_can_controller_0 =
  * The computed prescaler does not correspond to the measured baud rate, so adding 1 or 2 to Total_TQ_Per_Bit allows to get a correct value.
  * For this, use the CanControllerPropSeg value from the baud rate configuration.
  */
-static int spider_configure_baud_rate_registers(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config)
+static int spider_can_configure_baud_rate_registers(struct tpl_can_controller_t *ctrl, CanControllerBaudrateConfig *baud_rate_config)
 {
-	struct __tag743 nominal_bitrate_configuration_register;
+	struct __tag743 nominal_bitrate_conf_reg = { 0 };
+	struct __tag900 data_bitrate_config_reg = { 0 };
+	struct __tag901 can_fd_config_reg = { 0 };
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	struct spider_can_priv *priv = ctrl->priv;
 
 	// Make sure the CAN baud rates are in the allowed range
 	if (baud_rate_config->CanControllerBaudRate > 1000)
@@ -78,15 +90,60 @@ static int spider_configure_baud_rate_registers(struct tpl_can_controller_t *ctr
 		return -1;
 
 	// Set the CAN 2.0 baud rate registers
-	nominal_bitrate_configuration_register.NBRP = SPIDER_CAN_COMPUTE_PRESCALER(
+	nominal_bitrate_conf_reg.NBRP = SPIDER_CAN_COMPUTE_PRESCALER(
 		baud_rate_config->CanControllerBaudRate * 1000,
 		baud_rate_config->CanControllerPropSeg,
 		baud_rate_config->CanControllerSeg1,
 		baud_rate_config->CanControllerSeg2);
-	nominal_bitrate_configuration_register.NSJW = baud_rate_config->CanControllerSyncJumpWidth;
-	nominal_bitrate_configuration_register.NTSEG1 = baud_rate_config->CanControllerSeg1;
-	nominal_bitrate_configuration_register.NTSEG2 = baud_rate_config->CanControllerSeg2;
-	ctrl_base_address->CFDC0NCFG.BIT = nominal_bitrate_configuration_register;
+	nominal_bitrate_conf_reg.NSJW = baud_rate_config->CanControllerSyncJumpWidth;
+	nominal_bitrate_conf_reg.NTSEG1 = baud_rate_config->CanControllerSeg1;
+	nominal_bitrate_conf_reg.NTSEG2 = baud_rate_config->CanControllerSeg2;
+	ctrl_base_address->CFDC0NCFG.BIT = nominal_bitrate_conf_reg;
+
+	if (baud_rate_config->use_fd_configuration)
+	{
+		// Set the CAN-FD baud rate registers
+		data_bitrate_config_reg.DBRP = SPIDER_CAN_COMPUTE_PRESCALER(
+			baud_rate_config->can_fd_config.CanControllerFdBaudRate * 1000,
+			baud_rate_config->can_fd_config.CanControllerPropSeg,
+			baud_rate_config->can_fd_config.CanControllerSeg1,
+			baud_rate_config->can_fd_config.CanControllerSeg2);
+		data_bitrate_config_reg.DSJW = baud_rate_config->can_fd_config.CanControllerSyncJumpWidth;
+		data_bitrate_config_reg.DTSEG1 = baud_rate_config->can_fd_config.CanControllerSeg1;
+		data_bitrate_config_reg.DTSEG2 = baud_rate_config->can_fd_config.CanControllerSeg2;
+		ctrl_base_address->CFDC0DCFG.BIT = data_bitrate_config_reg;
+
+		// Configure the CAN-FD to work alongside the CAN 2.0
+		can_fd_config_reg.EOCCFG = 0; // The error counter counts all transmitted or received frames
+		can_fd_config_reg.TDCOC = 0; // Use the programmed offset and the measured one for the transceiver delay compensation
+		can_fd_config_reg.TDCE = 0; // TODO enable the transceiver delay compensation
+		can_fd_config_reg.ESIC = 0; // The Error State Indication bit represents the node itself
+		can_fd_config_reg.RPNMD = 0; // Unused, set default value
+		can_fd_config_reg.TDCO = baud_rate_config->can_fd_config.CanControllerSspOffset; // Set the transceiver delay compensation offset
+		can_fd_config_reg.GWEN = 0; // Disable the multi gateway feature
+		can_fd_config_reg.GWFDF = 0; // Unused, set default value
+		can_fd_config_reg.GWBRS = 0; // Unused, set default value
+		can_fd_config_reg.FDOE = 0; // Disable FD-only mode to allow both modes
+		can_fd_config_reg.REFE = 0; // Disable RX edge filter for now
+		can_fd_config_reg.CLOE = 0; // Disable classical-only mode to allow both modes
+		ctrl_base_address->CFDC0FDCFG.BIT = can_fd_config_reg;
+	}
+	else
+	{
+		// Disable CAN-FD
+		ctrl_base_address->CFDC0DCFG.UINT32 = 0;
+		ctrl_base_address->CFDC0FDCFG.UINT32 = 0;
+	}
+
+	// Cache some configuration parameters to quickly access to these information in the transmit() function
+	priv->is_can_fd_enabled = 0;
+	priv->is_can_fd_bit_rate_switch_enabled = 0;
+	if (baud_rate_config->use_fd_configuration)
+	{
+		priv->is_can_fd_enabled = 1;
+		if (baud_rate_config->can_fd_config.CanControllerTxBitRateSwitch)
+			priv->is_can_fd_bit_rate_switch_enabled = 1;
+	}
 
 	return 0;
 }
@@ -134,8 +191,8 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	ctrl_base_address->CFDC0CTR.UINT32 = 0x00000001;
 	while (ctrl_base_address->CFDC0STS.BIT.CSLPSTS);
 
-	// Configure bus speed (TODO there is only classic CAN for now)
-	if (spider_configure_baud_rate_registers(ctrl, &config->baud_rate_config) != 0)
+	// Configure bus speed
+	if (spider_can_configure_baud_rate_registers(ctrl, &config->baud_rate_config) != 0)
 		return E_NOT_OK;
 
 	// Configure rule table (create 2 rules that match all possible frames in reception and transmission)
@@ -190,22 +247,29 @@ static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerB
 static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info)
 {
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
-	int i;
+	int is_can_fd;
 	volatile uint8 *src, *dest;
+	uint32 i, val, adjusted_payload_length;
+	struct spider_can_priv *priv = ctrl->priv;
 
-	if (ctrl == NULL)
-		return E_NOT_OK;
-	if (pdu_info == NULL)
-		return E_NOT_OK;
+	// Cache the protocol type of the frame
+	val = pdu_info->id & TPL_CAN_ID_TYPE_MASK;
+	if ((val == TPL_CAN_ID_TYPE_FD_STANDARD) || (val == TPL_CAN_ID_TYPE_FD_EXTENDED))
+		is_can_fd = 1;
+	else
+		is_can_fd = 0;
 
-	// Set the CAN ID
+	// Set the CAN ID (TODO add support for extended ID)
 	ctrl_base_address->CFD0TMID0.UINT32 = pdu_info->id & 0x000007FF;
 
 	// Set the payload size
-	ctrl_base_address->CFD0TMPTR0.UINT32 = pdu_info->length << 28;
+	val = tpl_can_get_dlc_from_length(pdu_info->length, &adjusted_payload_length);
+	ctrl_base_address->CFD0TMPTR0.UINT32 = val << 28;
 
 	// Set the frame payload
-	if (pdu_info->length > 8)
+	if (!is_can_fd && pdu_info->length > TPL_CAN_CLASSIC_FRAME_MAXIMUM_PAYLOAD_SIZE)
+		return E_NOT_OK;
+	if (pdu_info->length > TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE)
 		return E_NOT_OK;
 	src = pdu_info->sdu;
 	dest = ctrl_base_address->CFD0TMDF0_0.UINT8;
@@ -217,9 +281,24 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 		src++;
 		dest++;
 	}
+	// Pad the remaining data if needed if this is a CAN-FD frame
+	for (; i < adjusted_payload_length; i++)
+	{
+		*dest = 0;
+		dest++;
+	}
 
 	// Configure the frame format
-	ctrl_base_address->CFD0TMFDCTR0.UINT32 = 0;
+	val = 0; // This corresponds to a classic CAN frame and also initializes the register bits not changed by the CAN-FD specific code
+	if (is_can_fd)
+	{
+		val |= 1 << 2; // Tell to transmit a FD frame
+		if (priv->is_can_fd_bit_rate_switch_enabled)
+		{
+			// TODO add BRS support
+		}
+	}
+	ctrl_base_address->CFD0TMFDCTR0.UINT32 = val;
 
 	// Start the frame transmission
 	ctrl_base_address->CFDTMSTS0.UINT8 = 0; // Clear TMTRF bits to allow the CFDTMCi.TMTR bit to be set again
@@ -236,17 +315,23 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
 	int i;
 	volatile uint8 *src, *dest;
+	Std_ReturnType ret = E_NOT_OK;
+	struct spider_can_priv *priv = ctrl->priv;
+	uint32 val;
 
 	// Do not block if no data are available
 	if (!SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl))
 		return E_NOT_OK;
 
-	// Retrieve the CAN ID
+	// Retrieve the CAN ID (TODO add extended ID support)
 	pdu_info->id = ctrl_base_address->CFDRMID0.UINT32 & 0x000007FF;
 
 	// Retrieve the frame length
-	pdu_info->length = ctrl_base_address->CFDRMPTR0.UINT32 >> 28;
-	if (pdu_info->length > 8)
+	val = ctrl_base_address->CFDRMPTR0.UINT32 >> 28;
+	pdu_info->length = tpl_can_get_length_from_dlc(val);
+	if (!priv->is_can_fd_enabled && pdu_info->length > TPL_CAN_CLASSIC_FRAME_MAXIMUM_PAYLOAD_SIZE)
+		goto Exit;
+	if (pdu_info->length > TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE)
 		goto Exit;
 
 	// Retrieve the frame payload
@@ -261,11 +346,18 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 		dest++;
 	}
 
+	// Tell userspace about the type of the frame that has been received
+	// TODO add support for extended ID
+	if (ctrl_base_address->CFDRMFDSTS0.BIT.RMFDF)
+		pdu_info->id |= TPL_CAN_ID_TYPE_FD_STANDARD;
+
+	ret = E_OK;
+
 Exit:
 	// Clear the reception flag
 	ctrl_base_address->CFDRMND0.UINT32 &= ~0x00000001;
 
-	return E_OK;
+	return ret;
 }
 
 static int spider_is_data_available(struct tpl_can_controller_t *ctrl)
