@@ -38,6 +38,9 @@
 #define TPL_CAN_ID_TYPE_GET(id) ((id & TPL_CAN_ID_TYPE_MASK) >> 30)
 #define TPL_CAN_ID_MASK (0x3FFFFFFF)
 
+#define TPL_CAN_CLASSIC_FRAME_MAXIMUM_PAYLOAD_SIZE (8)
+#define TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE (64)
+
 /**
  * @typedef tpl_can_protocol_version_t
  *

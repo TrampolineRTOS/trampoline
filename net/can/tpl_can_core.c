@@ -99,6 +99,10 @@ Std_ReturnType Can_Write(Can_HwHandleType Hth, const Can_PduType *PduInfo)
 
 	if (controller == NULL)
 		return E_NOT_OK;
+	if (PduInfo == NULL)
+		return E_NOT_OK;
+
+	// TODO check if CAN FD enabled for CAN FD frame, otherwise send as CAN classic if SDU < 8 (see parag 7.12 "CAN FD Support" in AUTOSAR_SWS_CANDriver R22-11)
 
 	// No need to check for the transmit callback presence, this has already been done by Can_Init()
 	ret = controller->transmit(controller, PduInfo);
@@ -144,4 +148,47 @@ Std_ReturnType CanIf_ReadRxPduData(PduIdType CanIfRxSduId, PduInfoType *CanIfRxI
 
 	can_pdu = (Can_PduType *) CanIfRxInfoPtr->SduDataPtr;
 	return controller->receive(controller, can_pdu);
+}
+
+uint32 tpl_can_get_dlc_from_length(uint32 length, uint32 *adjusted_length)
+{
+	struct length_code_t
+	{
+		uint32 dlc;
+		uint32 adjusted_length;
+	};
+	static struct length_code_t length_code_table[TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE + 1] =
+	{
+		{ 0x0,  0 }, { 0x1,  1 }, { 0x2,  2 }, { 0x3,  3 }, { 0x4,  4 }, { 0x5,  5 }, { 0x6,  6 }, { 0x7,  7 },
+		{ 0x8,  8 }, { 0x9, 12 }, { 0x9, 12 }, { 0x9, 12 }, { 0x9, 12 }, { 0xA, 16 }, { 0xA, 16 }, { 0xA, 16 },
+		{ 0xA, 16 }, { 0xB, 20 }, { 0xB, 20 }, { 0xB, 20 }, { 0xB, 20 }, { 0xC, 24 }, { 0xC, 24 }, { 0xC, 24 },
+		{ 0xC, 24 }, { 0xD, 32 }, { 0xD, 32 }, { 0xD, 32 }, { 0xD, 32 }, { 0xD, 32 }, { 0xD, 32 }, { 0xD, 32 },
+		{ 0xD, 32 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 },
+		{ 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 }, { 0xE, 48 },
+		{ 0xE, 48 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 },
+		{ 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 }, { 0xF, 64 },
+		{ 0xF, 64 }
+	};
+
+	if (length > TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE)
+		return 0;
+
+	if (adjusted_length != NULL)
+		*adjusted_length = length_code_table[length].adjusted_length;
+
+	return length_code_table[length].dlc;
+}
+
+uint32 tpl_can_get_length_from_dlc(uint32 dlc)
+{
+	static uint32 length[16] =
+	{
+		 0,  1,  2,  3,  4,  5,  6,  7,
+		 8, 12, 16, 20, 24, 32, 48, 64
+	};
+
+	if (dlc > 0x0F)
+		return 0;
+
+	return length[dlc];
 }
