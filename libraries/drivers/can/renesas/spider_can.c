@@ -259,8 +259,12 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 	else
 		is_can_fd = 0;
 
-	// Set the CAN ID (TODO add support for extended ID)
-	ctrl_base_address->CFD0TMID0.UINT32 = pdu_info->id & 0x000007FF;
+	// Set the CAN ID
+	if ((val == TPL_CAN_ID_TYPE_EXTENDED) || (val == TPL_CAN_ID_TYPE_FD_EXTENDED))
+		val = (pdu_info->id & TPL_CAN_ID_EXTENDED_MASK) | (1 << 31); // Tell this is an extended ID frame
+	else
+		val = pdu_info->id & TPL_CAN_ID_STANDARD_MASK;
+	ctrl_base_address->CFD0TMID0.UINT32 = val;
 
 	// Set the payload size
 	val = tpl_can_get_dlc_from_length(pdu_info->length, &adjusted_payload_length);
@@ -313,7 +317,7 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info)
 {
 	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
-	int i;
+	int i, is_extended_id;
 	volatile uint8 *src, *dest;
 	Std_ReturnType ret = E_NOT_OK;
 	struct spider_can_priv *priv = ctrl->priv;
@@ -323,8 +327,19 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 	if (!SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl))
 		return E_NOT_OK;
 
-	// Retrieve the CAN ID (TODO add extended ID support)
-	pdu_info->id = ctrl_base_address->CFDRMID0.UINT32 & 0x000007FF;
+	// Retrieve the CAN ID
+	val = ctrl_base_address->CFDRMID0.UINT32;
+	if (val & 0x80000000)
+	{
+		is_extended_id = 1;
+		val &= TPL_CAN_ID_EXTENDED_MASK;
+	}
+	else
+	{
+		is_extended_id = 0;
+		val &= TPL_CAN_ID_STANDARD_MASK;
+	}
+	pdu_info->id = val;
 
 	// Retrieve the frame length
 	val = ctrl_base_address->CFDRMPTR0.UINT32 >> 28;
@@ -347,9 +362,22 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 	}
 
 	// Tell userspace about the type of the frame that has been received
-	// TODO add support for extended ID
+	// Is this CAN-FD ?
 	if (ctrl_base_address->CFDRMFDSTS0.BIT.RMFDF)
-		pdu_info->id |= TPL_CAN_ID_TYPE_FD_STANDARD;
+	{
+		if (is_extended_id)
+			pdu_info->id |= TPL_CAN_ID_TYPE_FD_EXTENDED;
+		else
+			pdu_info->id |= TPL_CAN_ID_TYPE_FD_STANDARD;
+	}
+	// So it is CAN classic
+	else
+	{
+		if (is_extended_id)
+			pdu_info->id |= TPL_CAN_ID_TYPE_EXTENDED;
+		else
+			pdu_info->id |= TPL_CAN_ID_TYPE_STANDARD;
+	}
 
 	ret = E_OK;
 
