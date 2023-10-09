@@ -121,7 +121,7 @@ TASK(can_task)
 
 		pointer_can_pdu = (Can_PduType *) pdu_info.SduDataPtr;
 		printf("ID = 0x%X, flags = 0x%02X, length = %d, payload = ",
-			pointer_can_pdu->id & TPL_CAN_ID_MASK,
+			pointer_can_pdu->id & TPL_CAN_ID_STANDARD_MASK,
 			TPL_CAN_ID_TYPE_GET(pointer_can_pdu->id),
 			pointer_can_pdu->length);
 		for (i = 0; i < pointer_can_pdu->length; i++)
@@ -151,7 +151,7 @@ TASK(can_task)
 
 		pointer_can_pdu = (Can_PduType *) pdu_info.SduDataPtr;
 		printf("ID = 0x%X, flags = 0x%02X, length = %d, payload = ",
-			pointer_can_pdu->id & TPL_CAN_ID_MASK,
+			pointer_can_pdu->id & TPL_CAN_ID_EXTENDED_MASK,
 			TPL_CAN_ID_TYPE_GET(pointer_can_pdu->id),
 			pointer_can_pdu->length);
 		for (i = 0; i < pointer_can_pdu->length; i++)

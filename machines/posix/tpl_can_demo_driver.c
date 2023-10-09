@@ -109,7 +109,7 @@ static Std_ReturnType can_demo_driver_transmit(struct tpl_can_controller_t *ctrl
 		__func__,
 		__LINE__,
 		ctrl->base_address,
-		pdu_info->id & TPL_CAN_ID_MASK,
+		pdu_info->id & TPL_CAN_ID_EXTENDED_MASK,
 		TPL_CAN_ID_TYPE_GET(pdu_info->id),
 		pdu_info->length);
 	for (i = 0; i < pdu_info->length; i++)
