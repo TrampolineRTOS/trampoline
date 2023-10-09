@@ -81,7 +81,7 @@ int main(void)
 	};
 	int ret;
 
-	// Initialize the CAN module 0 channel 0 at 125 Kbit/s (the default baud rate)
+	// Initialize the CAN module 0 channel 0 with the enabled configuration
 	ret = Can_Init(&can_config_type);
 	if (ret)
 		return -1;
@@ -96,6 +96,7 @@ TASK(can_task)
 	PduInfoType pdu_info;
 	uint8 payload[TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE];
 	int i;
+	Can_IdType id_without_flags, id_flags;
 
 	// Send a frame to tell that the program is ready
 	can_pdu.id = 0x123 | TPL_CAN_ID_TYPE_STANDARD;
@@ -116,8 +117,27 @@ TASK(can_task)
 			if (pointer_can_pdu->length > TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE)
 				continue;
 
-			// Increment the CAN ID and the payload bytes
-			pointer_can_pdu->id++;
+			// Increment the CAN ID and wrap to 0 if the highest ID was received
+			id_flags = pointer_can_pdu->id & TPL_CAN_ID_TYPE_MASK;
+			if ((id_flags == TPL_CAN_ID_TYPE_STANDARD) || (id_flags == TPL_CAN_ID_TYPE_FD_STANDARD))
+			{
+				id_without_flags = pointer_can_pdu->id & TPL_CAN_ID_STANDARD_MASK;
+				if (id_without_flags >= 1023) // 11-bit standard ID
+					id_without_flags = 0;
+				else
+					id_without_flags++;
+			}
+			else
+			{
+				id_without_flags = pointer_can_pdu->id & TPL_CAN_ID_EXTENDED_MASK;
+				if (id_without_flags >= 536870911) // 29-bit extended ID
+					id_without_flags = 0;
+				else
+					id_without_flags++;
+			}
+			pointer_can_pdu->id = id_flags | id_without_flags;
+
+			// Increment the payload bytes
 			for (i = 0; i < pointer_can_pdu->length; i++)
 				pointer_can_pdu->sdu[i]++;
 
