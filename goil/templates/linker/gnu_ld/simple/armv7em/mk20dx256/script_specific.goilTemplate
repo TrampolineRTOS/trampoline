@@ -1,4 +1,0 @@
-  /* Flash configuration; */
-  .flashConfiguration :  {
-    KEEP(*(.flashconfig*))
-  } >FLASHCONFIG
