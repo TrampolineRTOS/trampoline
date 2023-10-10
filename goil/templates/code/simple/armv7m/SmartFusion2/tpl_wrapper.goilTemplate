@@ -1,2 +1,0 @@
-//this header file should include CMSIS related files.
-#include "m2sxxx.h"

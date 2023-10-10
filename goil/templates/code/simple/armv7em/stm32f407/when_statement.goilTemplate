@@ -1,4 +1,0 @@
-  if (tpl_% !OS::STRATEGY::NAME %_action_% !actionName %_when_% !when::NAME  %())
-  {
-    tpl_% !OS::STRATEGY::NAME %_process_% !actionName %_when_% !when::NAME %();
-  }%
