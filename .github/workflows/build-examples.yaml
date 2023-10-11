@@ -239,3 +239,28 @@ jobs:
       - name: Build the code
         run: ./make.py
         working-directory: examples/cortex/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
+
+  cortex-m-smart-stm32f4discovery-examples:
+    name: Build Cortex-M STM32F4DISCOVERY examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    strategy:
+      matrix:
+        # List only the examples that currently compile
+        example_name: [blink, readbutton, testDisableEnable]
+    steps:
+      - name: Install ARM toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: ${{ env.GOIL }} --target=cortex/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
+      - name: Build the code
+        run: ./make.py
+        working-directory: examples/cortex/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
