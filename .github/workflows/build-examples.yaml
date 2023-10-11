@@ -141,3 +141,27 @@ jobs:
       - name: Build the code
         run: ./make.py
         working-directory: examples/cortex/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
+
+  cortex-m-xplained-pro-examples:
+    name: Build Cortex-M Xplained Pro examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    strategy:
+      matrix:
+        example_name: [blink, readbutton, readbutton_isr]
+    steps:
+      - name: Install ARM toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: ${{ env.GOIL }} --target=cortex/armv6m/samd21/XPlainedPro --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
+      - name: Build the code
+        run: ./make.py
+        working-directory: examples/cortex/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
