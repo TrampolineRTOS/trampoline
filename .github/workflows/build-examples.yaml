@@ -46,7 +46,7 @@ jobs:
         run: ${{ env.GOIL }} --target=cortex-a/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
       - name: Build the code
-        run: ./build.py
+        run: ./make.py
         working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
 
   avr-arduino-uno-examples:
@@ -71,7 +71,7 @@ jobs:
         run: ${{ env.GOIL }} --target=avr/arduino/uno --templates=../../../../goil/templates/ *.oil
         working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
       - name: Build the code
-        run: ./build.py
+        run: ./make.py
         working-directory: examples/avr/arduinoUno/${{ matrix.example_name }}
 
   avr-arduino-mega-2560-examples:
@@ -95,7 +95,7 @@ jobs:
         run: ${{ env.GOIL }} --target=avr/arduino/mega --templates=../../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/avr/arduinoMega2560/${{ matrix.example_name }}
       - name: Build the code
-        run: ./build.py
+        run: ./make.py
         working-directory: examples/avr/arduinoMega2560/${{ matrix.example_name }}
 
   posix-examples:
@@ -115,5 +115,5 @@ jobs:
         run: ${{ env.GOIL }} --target=posix/linux  --templates=../../../goil/templates/ ${{ matrix.example_name }}.oil
         working-directory: examples/posix/${{ matrix.example_name }}
       - name: Build the code
-        run: ./build.py
+        run: ./make.py
         working-directory: examples/posix/${{ matrix.example_name }}
