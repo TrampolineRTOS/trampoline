@@ -214,3 +214,28 @@ jobs:
       - name: Build the code
         run: ./make.py
         working-directory: examples/cortex/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
+
+  cortex-m-smart-nucleo-f303-examples:
+    name: Build Cortex-M Nucleo-F303 examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    strategy:
+      matrix:
+        # List only the examples that currently compile
+        example_name: [blink, serial]
+    steps:
+      - name: Install ARM toolchain
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: ${{ env.GOIL }} --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
+      - name: Build the code
+        run: ./make.py
+        working-directory: examples/cortex/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
