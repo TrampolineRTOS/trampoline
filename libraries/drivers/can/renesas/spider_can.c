@@ -33,7 +33,7 @@
 // TODO make this value accessible globally
 #define PROTECTION_ENABLE_KEY 0xA5A5A500
 
-#define SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl) (((volatile struct __tag5586 *) ctrl->base_address)->CFDRMND0.UINT32 & 0x00000001)
+#define SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl) (!(((volatile struct __tag5586 *) ctrl->base_address)->CFDFESTS.UINT32 & 0x00000001))
 
 /**
  * The CAN clock that feeds the prescalers (in Hertz).
@@ -195,17 +195,24 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	if (spider_can_configure_baud_rate_registers(ctrl, &config->baud_rate_config) != 0)
 		return E_NOT_OK;
 
-	// Configure rule table (create 2 rules that match all possible frames in reception and transmission)
+	// Configure rule table (create 1 rule that match all possible frames in reception and transmission)
 	ctrl_base_address->CFDGAFLECTR.UINT32 = 1 << 8; // Enable write access for page 0
 	ctrl_base_address->CFDGAFLCFG0.UINT32 = 1 << 16; // Configure one rule for channel 0
 	ctrl_base_address->CFDGAFLID1.UINT32 = 0; // Do not set IDs as they won't be taken into account with the mask register
 	ctrl_base_address->CFDGAFLM1.UINT32 = 0; // Accept all received CAN frames
-	ctrl_base_address->CFDGAFLP01.UINT32 = 0x00008000; // Disable DLC check, use RX message address 0
-	ctrl_base_address->CFDGAFLP11.UINT32 = 0; // Do not use FIFO for now
+	ctrl_base_address->CFDGAFLP01.UINT32 = 0; // Disable DLC check
+	ctrl_base_address->CFDGAFLP11.UINT32 = 0x00000001; // Use RX FIFO 0 as target for reception
 	ctrl_base_address->CFDGAFLECTR.UINT32 = 0; // Disable write access for page 0
 
-	// Configure the reception message buffers
-	ctrl_base_address->CFDRMNB.UINT32 = (0x7 << 8) | 1; // Allocate one RX message buffer with a 64-byte payload
+	// Disable the reception message buffers as FIFO is used instead
+	ctrl_base_address->CFDRMNB.UINT32 = 0;
+
+	// Configure the reception FIFO
+	val = 0x06 << 8; // Disable all interrupts, set a FIFO depth of 64 messages, do not enable the FIFO yet
+	// The default maximum allowed payload size is 8 bytes, set a 64-byte payload if CAN-FD is enabled
+	if (config->baud_rate_config.use_fd_configuration)
+		val |= 0x07 << 4;
+	ctrl_base_address->CFDRFCC0.UINT32 = val;
 
 	// Switch the module to global operation mode
 	ctrl_base_address->CFDGCTR.UINT32 = 0;
@@ -231,6 +238,11 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	val |= 0x00000003;
 	PFC1.PMMR7_B0A0 = ~val;
 	PFC1.DRV0CTRL7_B0A0 = val;
+
+	// Enable reception FIFO (the write must be done separately, after all other bits of the register have been configured)
+	val = ctrl_base_address->CFDRFCC0.UINT32;
+	val |= 0x00000001;
+	ctrl_base_address->CFDRFCC0.UINT32 = val;
 
 	return E_OK;
 }
@@ -328,7 +340,7 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 		return E_NOT_OK;
 
 	// Retrieve the CAN ID
-	val = ctrl_base_address->CFDRMID0.UINT32;
+	val = ctrl_base_address->CFDRFID0.UINT32;
 	if (val & 0x80000000)
 	{
 		is_extended_id = 1;
@@ -342,7 +354,7 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 	pdu_info->id = val;
 
 	// Retrieve the frame length
-	val = ctrl_base_address->CFDRMPTR0.UINT32 >> 28;
+	val = ctrl_base_address->CFDRFPTR0.UINT32 >> 28;
 	pdu_info->length = tpl_can_get_length_from_dlc(val);
 	if (!priv->is_can_fd_enabled && pdu_info->length > TPL_CAN_CLASSIC_FRAME_MAXIMUM_PAYLOAD_SIZE)
 		goto Exit;
@@ -350,7 +362,7 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 		goto Exit;
 
 	// Retrieve the frame payload
-	src = ctrl_base_address->CFDRMDF0_0.UINT8;
+	src = ctrl_base_address->CFDRFDF0_0.UINT8;
 	dest = pdu_info->sdu;
 	// Use a for loop instead of memcpy() to make sure the buffer registers are accessed one byte at a time
 	// Using memcpy() triggers a data abort exception for a 7-byte CAN payload
@@ -363,7 +375,7 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 
 	// Tell userspace about the type of the frame that has been received
 	// Is this CAN-FD ?
-	if (ctrl_base_address->CFDRMFDSTS0.BIT.RMFDF)
+	if (ctrl_base_address->CFDRFFDSTS0.BIT.RFFDF)
 	{
 		if (is_extended_id)
 			pdu_info->id |= TPL_CAN_ID_TYPE_FD_EXTENDED;
@@ -382,8 +394,8 @@ static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduT
 	ret = E_OK;
 
 Exit:
-	// Clear the reception flag
-	ctrl_base_address->CFDRMND0.UINT32 &= ~0x00000001;
+	// Increment the FIFO read pointer to get access to the next received frame
+	ctrl_base_address->CFDRFPCTR0.UINT32 = 0x000000FF;
 
 	return ret;
 }
