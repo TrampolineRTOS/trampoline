@@ -185,6 +185,8 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 
 void quit(int n)
 {
+    (void) n;
+
     ShutdownOS(E_OK);
 }
 

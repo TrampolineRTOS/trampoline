@@ -1087,6 +1087,9 @@ tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
   {
     result = E_OS_STATE;
   }
+#else
+  (void) task_id;
+  (void) incoming_event;
 #endif
 
   return result;
