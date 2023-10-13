@@ -214,6 +214,14 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 		val |= 0x07 << 4;
 	ctrl_base_address->CFDRFCC0.UINT32 = val;
 
+	// Configure the transmission FIFO
+	val = (0x06 << 21) | (0x01 << 8); // Set the FIFO depth to 64 messages, select transmission mode, do not enable the FIFO yet
+	// The default maximum allowed payload size is 8 bytes, set a 64-byte payload if CAN-FD is enabled
+	if (config->baud_rate_config.use_fd_configuration)
+		val |= 0x07 << 4;
+	ctrl_base_address->CFDCFCC0.UINT32 = val;
+	ctrl_base_address->CFDCFCCE0.UINT32 = 0; // Enable transmission
+
 	// Switch the module to global operation mode
 	ctrl_base_address->CFDGCTR.UINT32 = 0;
 	while ((ctrl_base_address->CFDGSTS.UINT32 & 0x0000000F) != 0);
@@ -239,10 +247,15 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	PFC1.PMMR7_B0A0 = ~val;
 	PFC1.DRV0CTRL7_B0A0 = val;
 
-	// Enable reception FIFO (the write must be done separately, after all other bits of the register have been configured)
+	// Enable reception FIFO (the write must be done separately, after all other bits of the register have been configured, and when the module is in global operation mode)
 	val = ctrl_base_address->CFDRFCC0.UINT32;
 	val |= 0x00000001;
 	ctrl_base_address->CFDRFCC0.UINT32 = val;
+
+	// Enable transmission FIFO, the requirements are the same than the reception FIFO
+	val = ctrl_base_address->CFDCFCC0.UINT32;
+	val |= 0x00000001;
+	ctrl_base_address->CFDCFCC0.UINT32 = val;
 
 	return E_OK;
 }
@@ -264,6 +277,9 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 	uint32 i, val, adjusted_payload_length;
 	struct spider_can_priv *priv = ctrl->priv;
 
+	// If the FIFO is full, wait for a transmission to finish to get a free FIFO slot
+	while (ctrl_base_address->CFDFFSTS.BIT.CF0FLL);
+
 	// Cache the protocol type of the frame
 	val = pdu_info->id & TPL_CAN_ID_TYPE_MASK;
 	if ((val == TPL_CAN_ID_TYPE_FD_STANDARD) || (val == TPL_CAN_ID_TYPE_FD_EXTENDED))
@@ -276,11 +292,11 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 		val = (pdu_info->id & TPL_CAN_ID_EXTENDED_MASK) | (1 << 31); // Tell this is an extended ID frame
 	else
 		val = pdu_info->id & TPL_CAN_ID_STANDARD_MASK;
-	ctrl_base_address->CFD0TMID0.UINT32 = val;
+	ctrl_base_address->CFDCFID0.UINT32 = val;
 
 	// Set the payload size
 	val = tpl_can_get_dlc_from_length(pdu_info->length, &adjusted_payload_length);
-	ctrl_base_address->CFD0TMPTR0.UINT32 = val << 28;
+	ctrl_base_address->CFDCFPTR0.UINT32 = val << 28;
 
 	// Set the frame payload
 	if (!is_can_fd && pdu_info->length > TPL_CAN_CLASSIC_FRAME_MAXIMUM_PAYLOAD_SIZE)
@@ -288,7 +304,7 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 	if (pdu_info->length > TPL_CAN_FD_FRAME_MAXIMUM_PAYLOAD_SIZE)
 		return E_NOT_OK;
 	src = pdu_info->sdu;
-	dest = ctrl_base_address->CFD0TMDF0_0.UINT8;
+	dest = ctrl_base_address->CFDCFDF0_0.UINT8;
 	// Use a for loop instead of memcpy() to make sure the buffer registers are accessed one byte at a time
 	// Using memcpy() triggers a data abort exception for a 7-byte CAN payload
 	for (i = 0; i < pdu_info->length; i++)
@@ -314,14 +330,10 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 			// TODO add BRS support
 		}
 	}
-	ctrl_base_address->CFD0TMFDCTR0.UINT32 = val;
+	ctrl_base_address->CFDCFFDCSTS0.UINT32 = val;
 
 	// Start the frame transmission
-	ctrl_base_address->CFDTMSTS0.UINT8 = 0; // Clear TMTRF bits to allow the CFDTMCi.TMTR bit to be set again
-	ctrl_base_address->CFDTMC0.UINT8 = 0x01;
-
-	// Wait for the transmission to finish (this way the buffer used for transmission can't be altered by the code following the start of the transmission)
-	while (ctrl_base_address->CFDTMC0.BIT.TMTR);
+	ctrl_base_address->CFDCFPCTR0.UINT32 = 0x000000FF;
 
 	return E_OK;
 }
