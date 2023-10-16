@@ -144,7 +144,7 @@ tpl_schedtable_static % !st::NAME %_st_stat = {
 %
 if OS::USEID then
 %
-    /* timeobj id         */  , % !INDEX %
+    /* timeobj id         */  , % !INDEX
 end if
 %
 #if (WITH_TRACE == YES)
