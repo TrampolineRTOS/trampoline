@@ -75,8 +75,8 @@ extern VAR(tpl_isr2_enable_state, OS_VAR) tpl_isr2_enable_table[ISR_COUNT];
  *
  * @see #DisableInterruptSource
  */
-extern FUNC(void, OS_CODE) tpl_disable_isr2_by_user(
-  CONST(tpl_isr_id, AUTOMATIC) isr_id);
+extern FUNC(void, OS_CODE)
+    tpl_disable_isr2_by_user(CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -86,8 +86,8 @@ extern FUNC(void, OS_CODE) tpl_disable_isr2_by_user(
  *
  * @param isr2 the isr to disable
  */
-extern FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
-  CONST(tpl_isr_id, AUTOMATIC) isr_id);
+extern FUNC(void, OS_CODE)
+    tpl_disable_isr2_by_timing_protection(CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -96,16 +96,16 @@ extern FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
  *
  * @see #EnableInterruptSource
  */
-extern FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
-  CONST(tpl_isr_id, AUTOMATIC) isr_id);
+extern FUNC(void, OS_CODE)
+    tpl_enable_isr2_by_user(CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
  *
  * called when a timeframe is reached
  */
-extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
-  CONST(tpl_isr_id, AUTOMATIC) isr_id);
+extern FUNC(void, OS_CODE)
+    tpl_enable_isr2_by_timing_protection(CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -115,8 +115,8 @@ extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
  * @retval FALSE this ISR2 is disabled
  * @retval TRUE this ISR2 is enabled
  */
-FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
-  CONST(tpl_isr_id, AUTOMATIC) isr_id);
+FUNC(tpl_bool, OS_CODE)
+tpl_is_isr2_enabled(CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /*
  * Get the ID of the currently running ISR.
@@ -124,7 +124,7 @@ FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
  * It returns the identifier of the currently running ISR
  * or INVALID_ISR when called from outside a running ISR.
  *
- * see paragraph 8.4.2 page 51 of
+ * see ยง8.4.2 page 51 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
 FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void);
@@ -132,21 +132,20 @@ FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void);
 /**
  * Disables the specified ISR
  *
- * see ง8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ยง8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
-    VAR(tpl_isr_id, AUTOMATIC) isr_id);
+FUNC(tpl_status, OS_CODE)
+tpl_disable_interrupt_source_service(VAR(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * Enables the specified ISR
  *
- * see ง8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ยง8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
-    VAR(tpl_isr_id, AUTOMATIC) isr_id);
+FUNC(tpl_status, OS_CODE)
+tpl_enable_interrupt_source_service(VAR(tpl_isr_id, AUTOMATIC) isr_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_AS_ISR_KERNEL_H */
-

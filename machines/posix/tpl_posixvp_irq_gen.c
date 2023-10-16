@@ -76,7 +76,7 @@ void reset_leds(uint8_t leds)
   print_leds();
 }
 
-void switch_to_raw()
+void switch_to_raw(void)
 {
   struct termios new_mode;
   if (!mode_is_raw)
@@ -89,7 +89,7 @@ void switch_to_raw()
   }
 }
 
-void switch_to_cooked()
+void switch_to_cooked(void)
 {
   if (mode_is_raw)
   {
@@ -107,7 +107,7 @@ void set_quit_vp(int sig)
   }
 }
 
-void tpl_posixvp_irq_gen_init()
+void tpl_posixvp_irq_gen_init(void)
 {
   struct sigaction set_quit_vp_act;
   struct sigaction prev_chld_act;

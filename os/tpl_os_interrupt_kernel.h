@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -26,8 +26,8 @@
 #ifndef TPL_OS_IT_KERNEL_H
 #define TPL_OS_IT_KERNEL_H
 
-#include "tpl_os_kernel.h"
 #include "tpl_machine.h"
+#include "tpl_os_kernel.h"
 
 /**
  * An ISR helper is a function which should return true
@@ -39,27 +39,30 @@
  */
 typedef P2FUNC(tpl_bool, OS_APPL_CODE, tpl_isr_helper)(void);
 
-typedef P2FUNC(void, OS_APPL_CODE, tpl_it_handler)(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+typedef P2FUNC(void, OS_APPL_CODE,
+               tpl_it_handler)(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
 
 /**
  * Function pointer type for enable/disable interrupts functions
  */
-typedef P2FUNC(void, OS_APPL_CODE, tpl_enable_disable_func)();
-
+typedef P2FUNC(void, OS_APPL_CODE, tpl_enable_disable_func)(void);
 
 /**
  * @struct TPL_IT_VECTOR_ENTRY
  *
  * Entry of the tpl interrupt vector
  */
-struct TPL_IT_VECTOR_ENTRY {
-  CONST(tpl_it_handler, AUTOMATIC) func;      /**< pointer to the request
-                                                    handling function for
-                                                    this interrupt
-                                                */
-  P2VAR(void, OS_APPL_DATA, AUTOMATIC) args;  /**< pointer to the
-                                                  arguments the function
-                                                */
+struct TPL_IT_VECTOR_ENTRY
+{
+  CONST(tpl_it_handler, AUTOMATIC)
+  func; /**< pointer to the request
+              handling function for
+              this interrupt
+          */
+  P2VAR(void, OS_APPL_DATA, AUTOMATIC)
+  args; /**< pointer to the
+            arguments the function
+          */
 };
 
 /**
@@ -76,23 +79,24 @@ typedef struct TPL_IT_VECTOR_ENTRY tpl_it_vector_entry;
  *
  * Static descriptor of a category 2 interrupt service routine
  */
-struct TPL_ISR_STATIC {
-    CONST(tpl_isr_helper, AUTOMATIC)
-                              helper; /**<  pointer to a helper function used
-                                            to search for hardware that
-                                            launched the interrupt
-                                      */
-    struct P2VAR(TPL_ISR_STATIC, OS_APPL_DATA, AUTOMATIC)
-                              next;   /**<  when there is several handler for
-                                            the same interrupt priority, the
-                                            tpl_isr are chained. In this case.
-                                            Trampoline uses the helper to check
-                                            what handler will be called for the
-                                            interrupt.
-                                      */
-    CONST(tpl_isr_id, AUTOMATIC)
-                              isr_id; /**<  The id of the ISR
-                                      */
+struct TPL_ISR_STATIC
+{
+  CONST(tpl_isr_helper, AUTOMATIC)
+  helper; /**<  pointer to a helper function used
+                to search for hardware that
+                launched the interrupt
+          */
+  struct P2VAR(TPL_ISR_STATIC, OS_APPL_DATA,
+               AUTOMATIC) next; /**<  when there is several handler for
+                                      the same interrupt priority, the
+                                      tpl_isr are chained. In this case.
+                                      Trampoline uses the helper to check
+                                      what handler will be called for the
+                                      interrupt.
+                                */
+  CONST(tpl_isr_id, AUTOMATIC)
+  isr_id; /**<  The id of the ISR
+           */
 };
 
 /**
@@ -109,8 +113,8 @@ typedef struct TPL_ISR_STATIC tpl_isr_static;
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-extern CONSTP2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA)
-  tpl_isr_stat_table[ISR_COUNT];
+extern CONSTP2CONST(tpl_isr_static, AUTOMATIC,
+                    OS_APPL_DATA) tpl_isr_stat_table[ISR_COUNT];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -156,7 +160,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(uint16, AUTOMATIC) id);
  *
  * @param interrupt service routine identifier
  */
-FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(CONST(uint16, AUTOMATIC) id);
+FUNC(void, OS_CODE)
+tpl_fast_central_interrupt_handler(CONST(uint16, AUTOMATIC) id);
 
 /**
  * This is the dispatcher of interrupts. It should be called by
@@ -164,7 +169,8 @@ FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(CONST(uint16, AUTOMATIC) 
  *
  * @param interrupt service routine identifier
  */
-FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) id);
+FUNC(void, OS_CODE)
+tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) id);
 
 /**
  * This function is called when an unknown interrupt is raised.
@@ -175,19 +181,17 @@ FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
 
 /**
  * Enable all interrupts service
-*
+ *
  * @see #EnableAllInterrupts
  */
 FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void);
 
-
 /**
  * Disable all interrupts
-*
+ *
  * @see #DisableAllInterrupts
  */
 FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void);
-
 
 /**
  * Resume all interrupts
@@ -196,7 +200,6 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void);
  */
 FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void);
 
-
 /**
  * Suspend all interrupts
  *
@@ -204,14 +207,12 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void);
  */
 FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void);
 
-
 /**
  * Resume category 2 interrupts
  *
  * @see #ResumeOSInterrupts
  */
 FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void);
-
 
 /**
  * Suspend category 2 interrupts
@@ -229,8 +230,8 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void);
  *
  * @param isr isr for which interrupts have to be masked
  */
-extern FUNC(void, OS_CODE) tpl_mask_isr2_priority(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+extern FUNC(void, OS_CODE)
+    tpl_mask_isr2_priority(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -240,8 +241,8 @@ extern FUNC(void, OS_CODE) tpl_mask_isr2_priority(
  *
  * @param isr isr for which interrupts have to be unmasked
  */
-extern FUNC(void, OS_CODE) tpl_unmask_isr2_priority(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+extern FUNC(void, OS_CODE)
+    tpl_unmask_isr2_priority(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 #endif /* WITH_ISR2_PRIORITY_MASKING */
 

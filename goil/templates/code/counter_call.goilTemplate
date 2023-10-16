@@ -4,7 +4,7 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick()
+FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick(void)
 {
 %
 foreach counter in HARDWARECOUNTERS do

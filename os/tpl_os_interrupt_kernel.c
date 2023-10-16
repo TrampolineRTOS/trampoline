@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -23,13 +23,13 @@
  * $URL$
  */
 
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
-#include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
-#include "tpl_machine_interface.h"
+#include "tpl_os_kernel.h"
 #include "tpl_trace.h"
-#include "tpl_os_interrupt_kernel.h"
 
 #if defined(__unix__) || defined(__APPLE__)
 #include <assert.h>
@@ -48,14 +48,13 @@
 #include "tpl_as_timing_protec.h"
 #endif
 
-
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 #if NUMBER_OF_CORES > 1
 volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES] = {0};
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES] = {0} ;
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES] = {0};
 VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All[NUMBER_OF_CORES] = {0};
-VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES] = {0} ;
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES] = {0};
 VAR(uint32, OS_VAR) tpl_cpt_os_task_lock[NUMBER_OF_CORES] = {0};
 #else
 volatile VAR(uint32, OS_VAR) tpl_locking_depth = 0;
@@ -66,7 +65,7 @@ VAR(uint32, OS_VAR) tpl_cpt_os_task_lock = 0;
 #endif
 
 #if ISR_COUNT > 0
-STATIC VAR(sint32, OS_VAR) tpl_it_nesting =  0;
+STATIC VAR(sint32, OS_VAR) tpl_it_nesting = 0;
 
 #if WITH_ISR2_PRIORITY_MASKING == YES
 extern CONST(tpl_enable_disable_func, OS_CONST) tpl_enable_table[];
@@ -82,33 +81,34 @@ extern CONST(tpl_enable_disable_func, OS_CONST) tpl_disable_table[];
 #include "tpl_memmap.h"
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
-    GET_CURRENT_CORE_ID(core_id)
-    VAR(tpl_bool, AUTOMATIC) result;
+  GET_CURRENT_CORE_ID(core_id)
+  VAR(tpl_bool, AUTOMATIC) result;
 
-    if ((TRUE == GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id)) ||
-        (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) > 0) ||
-        (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) > 0))
-    {
-        result = TRUE;
-    }
-    else
-    {
-        result = FALSE;
-    }
+  if ((TRUE == GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock, core_id)) ||
+      (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS, core_id) > 0) ||
+      (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All, core_id) > 0))
+  {
+    result = TRUE;
+  }
+  else
+  {
+    result = FALSE;
+  }
 
-    return result;
+  return result;
 }
 
 FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
-    GET_CURRENT_CORE_ID(core_id)
+  GET_CURRENT_CORE_ID(core_id)
 
-	GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) = FALSE;
+  GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock, core_id) = FALSE;
 
-	GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) = 0;
-	GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) = 0;
+  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All, core_id) = 0;
+  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS, core_id) = 0;
 
-	GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) = GET_LOCK_CNT_FOR_CORE(tpl_cpt_os_task_lock,core_id);
+  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id) =
+      GET_LOCK_CNT_FOR_CORE(tpl_cpt_os_task_lock, core_id);
 }
 
 /**
@@ -116,14 +116,13 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
  */
 FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 {
-    GET_CURRENT_CORE_ID(core_id)
+  GET_CURRENT_CORE_ID(core_id)
 
   tpl_disable_interrupts();
 
-  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
+  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id)++;
 
-  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id)++;
-
+  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All, core_id)++;
 }
 
 /**
@@ -131,20 +130,19 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 {
-    GET_CURRENT_CORE_ID(core_id)
+  GET_CURRENT_CORE_ID(core_id)
 
-	if( GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) != 0 )
-	{
-		GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)--;
+  if (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All, core_id) != 0)
+  {
+    GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id)--;
 
-		GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id)--;
+    GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All, core_id)--;
 
-		if( GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) == 0)
-		{
-			tpl_enable_interrupts();
-		}
-	}
-
+    if (GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id) == 0)
+    {
+      tpl_enable_interrupts();
+    }
+  }
 }
 
 /**
@@ -152,14 +150,14 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 {
-    GET_CURRENT_CORE_ID(core_id)
+  GET_CURRENT_CORE_ID(core_id)
 
-  if ((0 == GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id)) &&
-      (0 == GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id)))
+  if ((0 == GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All, core_id)) &&
+      (0 == GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS, core_id)))
   {
-	  tpl_disable_interrupts();
+    tpl_disable_interrupts();
 
-	  GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) = TRUE;
+    GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock, core_id) = TRUE;
   }
 }
 
@@ -168,14 +166,14 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 {
-    GET_CURRENT_CORE_ID(core_id)
+  GET_CURRENT_CORE_ID(core_id)
 
-	if (GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) != FALSE)
-	{
-		GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) = FALSE;
+  if (GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock, core_id) != FALSE)
+  {
+    GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock, core_id) = FALSE;
 
-		tpl_enable_interrupts();
-	}
+    tpl_enable_interrupts();
+  }
 }
 
 /**
@@ -187,10 +185,9 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 
   tpl_disable_os_interrupts();
 
-  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
+  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id)++;
 
-  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id)++;
-
+  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS, core_id)++;
 }
 
 /**
@@ -200,17 +197,17 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
 
-	if (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) != 0)
-	{
-		GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)--;
+  if (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS, core_id) != 0)
+  {
+    GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id)--;
 
-		GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id)--;
+    GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS, core_id)--;
 
-		if (0 == GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id))
-		{
-			tpl_enable_os_interrupts();
-		}
-	}
+    if (0 == GET_LOCK_CNT_FOR_CORE(tpl_locking_depth, core_id))
+    {
+      tpl_enable_os_interrupts();
+    }
+  }
 }
 
 /*
@@ -260,7 +257,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
 {
   /* empty function */
-  (void) foo;
+  (void)foo;
 }
 
 #define OS_STOP_SEC_CODE
@@ -273,11 +270,10 @@ FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
 
 /*
  */
-STATIC FUNC(void, OS_CODE) tpl_activate_isr(
-  CONST(tpl_isr_id, AUTOMATIC) isr_id)
+STATIC FUNC(void, OS_CODE) tpl_activate_isr(CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr =
-    tpl_dyn_proc_table[isr_id];
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
+  isr = tpl_dyn_proc_table[isr_id];
   /*
    * MISRA RULE 33 VIOLATION: the right statement does
    * not need to be executed if the first test fails
@@ -286,7 +282,7 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
 #if WITH_AUTOSAR == YES
       && (tpl_is_isr2_enabled(isr_id))
 #endif
-      )
+  )
   {
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /* a new instance is about to be activated: we need the agreement
@@ -329,15 +325,15 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
  * task / interrupt handler, switches to the context of the handler
  * and calls the handler
  */
-FUNC(void, OS_CODE) tpl_central_interrupt_handler(
-  CONST(uint16, AUTOMATIC) isr_id)
+FUNC(void, OS_CODE)
+tpl_central_interrupt_handler(CONST(uint16, AUTOMATIC) isr_id)
 {
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
   GET_CURRENT_CORE_ID(core_id)
 
 #if WITH_STACK_MONITORING == YES
-    GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   /*
@@ -369,7 +365,6 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
           {
             /* activate the handler */
             tpl_activate_isr(isr->isr_id);
-
           }
           isr = isr->next;
         }
@@ -393,15 +388,15 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
  * task / interrupt handler, switches to the context of the handler
  * and calls the handler
  */
-FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(
-  CONST(uint16, AUTOMATIC) isr_id)
+FUNC(void, OS_CODE)
+tpl_fast_central_interrupt_handler(CONST(uint16, AUTOMATIC) isr_id)
 {
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
   GET_CURRENT_CORE_ID(core_id)
 
 #if WITH_STACK_MONITORING == YES
-    GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   /*
@@ -435,13 +430,14 @@ FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(
  * task / interrupt handler, switches to the context of the handler
  * and calls the handler. VP2 version
  */
-FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) isr_id)
+/* FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void,
+OS_APPL_DATA, AUTOMATIC) isr_id)
 {
     uint32 tmp;
     tmp = (uint32)isr_id;
     tpl_central_interrupt_handler(tmp);
 }
-
+ */
 #if WITH_ISR2_PRIORITY_MASKING == YES && ISR_COUNT > 0
 /**
  * @internal
@@ -451,11 +447,11 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, 
  *
  * @param isr isr for which interrupts have to be masked
  */
-FUNC(void, OS_CODE) tpl_mask_isr2_priority(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(void, OS_CODE)
+tpl_mask_isr2_priority(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  CONST(tpl_priority, AUTOMATIC) index =
-    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+  CONST(tpl_priority, AUTOMATIC)
+  index = tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
   tpl_disable_table[index]();
 }
 
@@ -467,11 +463,11 @@ FUNC(void, OS_CODE) tpl_mask_isr2_priority(
  *
  * @param isr isr for which interrupts have to be unmasked
  */
-extern FUNC(void, OS_CODE) tpl_unmask_isr2_priority(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+extern FUNC(void, OS_CODE)
+    tpl_unmask_isr2_priority(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  CONST(tpl_priority, AUTOMATIC) index =
-    tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
+  CONST(tpl_priority, AUTOMATIC)
+  index = tpl_stat_proc_table[proc_id]->base_priority - ISR2_LOWEST_PRIO;
   tpl_enable_table[index]();
 }
 

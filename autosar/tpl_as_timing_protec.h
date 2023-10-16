@@ -40,17 +40,16 @@
 #ifndef TPL_AS_TIMING_PROTEC_H
 #define TPL_AS_TIMING_PROTEC_H
 
-#include "tpl_os_internal_types.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
+#include "tpl_os_internal_types.h"
 
- 
-struct TPL_TP_WATCHDOG 
+struct TPL_TP_WATCHDOG
 {
-    VAR(tpl_bool, TYPEDEF) is_active;        /* flag set when the watchdog is active */
-    VAR(tpl_time, TYPEDEF) start_date;      /* last start date of this watchdog     */
-    VAR(tpl_time, TYPEDEF) remaining;       /* remaining budget of this watchdog    */
+  VAR(tpl_bool, TYPEDEF) is_active;  /* flag set when the watchdog is active */
+  VAR(tpl_time, TYPEDEF) start_date; /* last start date of this watchdog     */
+  VAR(tpl_time, TYPEDEF) remaining;  /* remaining budget of this watchdog    */
 };
 
 typedef struct TPL_TP_WATCHDOG tpl_tp_watchdog;
@@ -71,7 +70,7 @@ typedef struct TPL_TP_WATCHDOG tpl_tp_watchdog;
  *
  * Id of the EXECUTIONBUDGET watchdog
  */
-#define EXECUTIONBUDGET       0
+#define EXECUTIONBUDGET 0
 
 /**
  * @def RESOURCELOCK
@@ -79,21 +78,21 @@ typedef struct TPL_TP_WATCHDOG tpl_tp_watchdog;
  * Id of the RESOURCELOCK watchdog
  */
 
-#define RESOURCELOCK          1
+#define RESOURCELOCK 1
 
 /**
  * @def ALLINTERRUPTLOCK
  *
  * Id of the ALLINTERRUPTLOCK watchdog
  */
-#define ALLINTERRUPTLOCK      2
+#define ALLINTERRUPTLOCK 2
 
 /**
  * @def OSINTERRUPTLOCK
  *
  * Id of the OSINTERRUPTLOCK watchdog
  */
-#define OSINTERRUPTLOCK       3
+#define OSINTERRUPTLOCK 3
 
 /**
  * @internal
@@ -101,7 +100,7 @@ typedef struct TPL_TP_WATCHDOG tpl_tp_watchdog;
  * @struct TPL_TIMING_PROTECTION
  *
  * This structure gathers all informations about timing protection
- * of an executable object (task or isr). See AUTOSAR OS SWS ง7.6.2
+ * of an executable object (task or isr). See AUTOSAR OS SWS ยง7.6.2
  * about timing protection.
  *
  * @see #tpl_timing_protection
@@ -110,12 +109,14 @@ typedef struct TPL_TP_WATCHDOG tpl_tp_watchdog;
 
 struct TPL_TIMING_PROTECTION
 {
-    VAR(tpl_time, TYPEDEF) last_activation;             /* date of the last successfull activation */
-    VAR(tpl_bool, TYPEDEF) first_instance;              /* initialized to TRUE to change
-                                                           the behavior of the timeframe watchdog
-                                                           for the first instance of a task */
-    VAR(tpl_tp_watchdog, TYPEDEF) watchdogs[NB_WATCHDOGS_PER_PROC]; 
-                                                        /* set of watchdogs of this task */
+  VAR(tpl_time, TYPEDEF)
+  last_activation; /* date of the last successfull activation */
+  VAR(tpl_bool, TYPEDEF)
+  first_instance; /* initialized to TRUE to change
+                     the behavior of the timeframe watchdog
+                     for the first instance of a task */
+  VAR(tpl_tp_watchdog, TYPEDEF) watchdogs[NB_WATCHDOGS_PER_PROC];
+  /* set of watchdogs of this task */
 };
 
 typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
@@ -132,21 +133,21 @@ extern FUNC(tpl_bool, OS_CODE) tpl_watchdog_expiration(void);
 
 /**
  * Function used to initialize the activity flags of the watchdog
- * of the timing protection service. Must be called when an instance is 
+ * of the timing protection service. Must be called when an instance is
  * terminated.
  *
  * @param this_exec_obj: id of the concerned proc
  */
-extern FUNC(tpl_bool, OS_CODE) tpl_tp_reset_watchdogs (
-        CONST(tpl_proc_id, AUTOMATIC) proc_id);
+extern FUNC(tpl_bool, OS_CODE)
+    tpl_tp_reset_watchdogs(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 /**
  * Function used to start the measure of a time frame for a task/isr2
  *
  * @param this_exec_obj: object owner of the time frame to start
  *
  */
-extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_activate_or_release(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+extern FUNC(tpl_bool, OS_CODE)
+    tpl_tp_on_activate_or_release(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * Function used to stop the measure of a time frame for a task/isr2
@@ -154,8 +155,8 @@ extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_activate_or_release(
  * @param this_exec_obj: object owner of the time frame to stop
  *
  */
-extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+extern FUNC(tpl_bool, OS_CODE)
+    tpl_tp_on_terminate_or_wait(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -170,8 +171,8 @@ extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
  * @see #tpl_pause_budget_monitor
  * @see #tpl_continue_budget_monitor
  */
-extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_start (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+extern FUNC(tpl_bool, OS_CODE)
+    tpl_tp_on_start(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -186,12 +187,10 @@ extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_start (
  * @see #tpl_start_budget_monitor
  * @see #tpl_continue_budget_monitor
  */
-extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_preempt(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-
+extern FUNC(tpl_bool, OS_CODE)
+    tpl_tp_on_preempt(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_AS_TIMING_PROTEC_H */
-
