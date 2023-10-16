@@ -197,12 +197,24 @@ foreach flags in exists OS::BUILD_S::PRECOMMONFLAGS default ( @() ) do
 precflags += "% !flags::VALUE %".split()
 precppflags += "% !flags::VALUE %".split()%
 end foreach
+
 #include dirs
 
-let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
-foreach platform in exists PLATFORM_FILES default ( @() ) do%
+let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH + "/machines"
+foreach platform in exists PLATFORM_FILES default ( @() ) do
+  let condPlat := true
+  if exists platform::IF then
+    if [platform::IF type] == @string then
+      let OSasMap := [OS map]
+      let condPlat := exists OSasMap[platform::IF] default (false)
+    end if
+  end if
+  if condPlat then
+%
 includeDirs += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]%
+  end if
 end foreach
+
 foreach library in exists USEDLIB default ( @() ) do%
 includeDirs += ["-I","% !MACHINESPATH + "/" + library::PATH %"]%
 end foreach
@@ -435,21 +447,30 @@ sSourceList.append(projfile.ProjectFile("% !PROJECT+"/"+file::VALUE %"))%
   end foreach
 end foreach
 foreach platform in exists PLATFORM_FILES default ( @() ) do
-  if not exists platform::CFILE then let platform::CFILE := @() end if
-  if not exists platform::CPPFILE then let platform::CPPFILE := @() end if
-  if not exists platform::ASFILE then let platform::ASFILE := @() end if
-  foreach file in platform::CFILE do
+  let condPlat := true
+  if exists platform::IF then
+    if [platform::IF type] == @string then
+      let OSasMap := [OS map]
+      let condPlat := exists OSasMap[platform::IF] default (false)
+    end if
+  end if
+  if condPlat then
+    if not exists platform::CFILE then let platform::CFILE := @() end if
+    if not exists platform::CPPFILE then let platform::CPPFILE := @() end if
+    if not exists platform::ASFILE then let platform::ASFILE := @() end if
+    foreach file in platform::CFILE do
 %
 cSourceList.append(projfile.ProjectFile("% !"machines/"+platform::PATH+"/"+file::VALUE %", trampoline_base_path))%
-  end foreach
-  foreach file in platform::CPPFILE do
+    end foreach
+    foreach file in platform::CPPFILE do
 %
 cppSourceList.append(projfile.ProjectFile("% !"machines/"+platform::PATH+"/"+file::VALUE %", trampoline_base_path))%
-  end foreach
-  foreach file in platform::ASFILE do
+    end foreach
+    foreach file in platform::ASFILE do
 %
 sSourceList.append(projfile.ProjectFile("% !"machines/"+platform::PATH+"/"+file::VALUE %", trampoline_base_path))%
-  end foreach
+    end foreach
+  end if
 end foreach
 
 # add the libraries

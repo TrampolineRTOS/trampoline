@@ -216,7 +216,51 @@ begin
 Some other flags can be added directly in the main \file{config.oil} file in the templates.
 
 \subsection{Additionnal files}
-TODO
+
+Depending on the target, additional files may need to be compiled. For example, for the \posix\ target, the C files located in the \file{machines/posix} directory must be compiled to enable Trampoline and the application to run in a Unix process. The list of required files is given in one or many OIL objects located along the path in the \file{config} subdirectory of the template directory.
+
+For example, for the target \posix, the list of additional files is as follows:
+
+\begin{lstlisting}[language=OIL]
+PLATFORM_FILES posix_port {
+    PATH = "posix";
+    CFILE = "tpl_machine_posix.c";
+    CFILE = "tpl_viper_interface.c";
+    CFILE = "tpl_posix_autosar.c";
+    CFILE = "tpl_posix_irq.c";
+    CFILE = "tpl_posix_context.c";
+    CFILE = "tpl_posixvp_irq_gen.c";
+};
+
+PLATFORM_FILES posix_port_trace {
+    IF = TRACE;
+    PATH = "posix";
+    CFILE = "tpl_trace.c";
+};
+\end{lstlisting}
+
+The first object, \lstinline{posix_port}, lists the files that are always required, and the second, \lstinline{posix_port_trace}, lists the file \file{tpl_trace.c} that is required if trace is enabled.
+
+A \oilobj{PLATFORM_FILES} object has the following attributes:
+
+\begin{description}
+\item[\texttt{PATH}] is mandatory. It indicates in which directory, relative to the \file{machines} directory, the files are located;
+\item[\texttt{CFILE}] gives a C file to be compiled. Several \oilattr{CFILE} attributes may be present;
+\item[\texttt{CPPFILE}] gives a C++ file to be compiled. Several \oilattr{CPPFILE} attributes may be present;
+\item[\texttt{ASFILE}] gives a assembly language file to be compiled. Several \oilattr{ASFILE} attributes may be present;
+\item[\texttt{IF}] refers to a Boolean attribute of the OS object. If this attribute is \oilval{TRUE}, the files are compiled, otherwise they are not.
+\end{description}
+
+For example, the following statement indicates that the file \file{machines/tpl_trace.c} should be compiled if the \oilattr{TRACE} attribute of the \oilattr{OS} object is \oilval{TRUE}.
+
+\begin{lstlisting}[language=OIL]
+PLATFORM_FILES posix_port_trace {
+    IF = TRACE;
+    PATH = "posix";
+    CFILE = "tpl_trace.c";
+};
+\end{lstlisting}
+
 
 \subsection{Libraries}
 TODO

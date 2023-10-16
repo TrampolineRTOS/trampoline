@@ -58,6 +58,11 @@ CPU posix {
     CFILE = "tpl_posix_irq.c";
     CFILE = "tpl_posix_context.c";
     CFILE = "tpl_posixvp_irq_gen.c";
+  };
+
+  PLATFORM_FILES posix_port_trace {
+    IF = TRACE;
+    PATH = "posix";
     CFILE = "tpl_trace.c";
   };
 
