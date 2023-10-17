@@ -192,3 +192,13 @@ uint32 tpl_can_get_length_from_dlc(uint32 dlc)
 
 	return length[dlc];
 }
+
+void tpl_can_fill_pdu_info(Can_PduType *can_pdu, PduInfoType *pdu_info, Can_IdType id_and_flags, void *payload, uint32 payload_length)
+{
+	can_pdu->id = id_and_flags;
+	can_pdu->sdu = payload;
+	can_pdu->length = (uint8) payload_length;
+
+	pdu_info->SduDataPtr = (uint8 *) can_pdu;
+	pdu_info->SduLength = sizeof(can_pdu) + payload_length;
+}
