@@ -22,7 +22,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * @section infos File informations
  *
@@ -44,24 +45,22 @@ an activation of a task*/
 static void test_callback_instance(void)
 {
 
-	StatusType result_inst_1;
+  StatusType result_inst_1;
 
-	SCHEDULING_CHECK_INIT(2);
-	result_inst_1 = ActivateTask(t2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_CALLEVEL, result_inst_1);
-
-
+  SCHEDULING_CHECK_INIT(2);
+  result_inst_1 = ActivateTask(t2);
+  SCHEDULING_CHECK_AND_EQUAL_INT(2, E_OS_CALLEVEL, result_inst_1);
 }
 
 /*create the test suite with all the test cases*/
 TestRef AlarmsTest_seq10_callback_instance(void)
 {
-	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_callback_instance",test_callback_instance)
-	};
-	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence10",NULL,NULL,fixtures);
+  EMB_UNIT_TESTFIXTURES(fixtures){
+      new_TestFixture("test_callback_instance", test_callback_instance)};
+  EMB_UNIT_TESTCALLER(AlarmsTest, "AlarmsTest_sequence10", NULL, NULL,
+                      fixtures);
 
-	return (TestRef)&AlarmsTest;
+  return (TestRef)&AlarmsTest;
 }
 
 /* End of file alarms_s10/callback_instance.c */

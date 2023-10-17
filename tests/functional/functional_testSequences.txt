@@ -12,7 +12,7 @@ alarms_s7
 alarms_s8
 alarms_s9_full
 alarms_s9_non
-#alarms_s10
+alarms_s10
 alarms_s11
 
 autosar_app_s1

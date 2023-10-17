@@ -22,7 +22,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  *
  * @section infos File informations
  *
@@ -40,32 +41,31 @@ DeclareAlarm(Alarm1);
 
 void WaitActivationOneShotAlarm(AlarmType Alarm);
 
-/*test case:test the reaction of the system called with 
+/*test case:test the reaction of the system called with
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	
-	StatusType result_inst_1;
-	
-	SCHEDULING_CHECK_INIT(1);
-	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
-	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
 
-	WaitActivationOneShotAlarm(Alarm1);
+  StatusType result_inst_1;
 
-	SCHEDULING_CHECK_STEP(4);
-	
+  SCHEDULING_CHECK_INIT(1);
+  result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
+  SCHEDULING_CHECK_AND_EQUAL_INT(1, E_OK, result_inst_1);
+
+  WaitActivationOneShotAlarm(Alarm1);
+
+  SCHEDULING_CHECK_STEP(3);
 }
 
 /*create the test suite with all the test cases*/
 TestRef AlarmsTest_seq10_t1_instance(void)
 {
-	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_t1_instance",test_t1_instance)
-	};
-	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence10",NULL,NULL,fixtures);
+  EMB_UNIT_TESTFIXTURES(fixtures){
+      new_TestFixture("test_t1_instance", test_t1_instance)};
+  EMB_UNIT_TESTCALLER(AlarmsTest, "AlarmsTest_sequence10", NULL, NULL,
+                      fixtures);
 
-	return (TestRef)&AlarmsTest;
+  return (TestRef)&AlarmsTest;
 }
 
 /* End of file alarms_s10/task1_instance.c */
