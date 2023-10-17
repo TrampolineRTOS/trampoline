@@ -149,8 +149,51 @@ INTERNAL_RES_SCHEDULER = {
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+#define OS_START_SEC_VAR_BOOLEAN
+#include "tpl_memmap.h"
+/*
+ * alarm_callback_running is true if the current triggered alarm is running
+ * a callback routine and false otherwise.
+ */
+STATIC VAR(tpl_bool, OS_VAR) alarm_callback_running = FALSE;
+#define OS_STOP_SEC_VAR_BOOLEAN
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+/*
+ * @internal
+ *
+ * tpl_begin_alarm_callback sets alarm_callback_running to TRUE. It is called
+ * from tpl_action_callback function (see tpl_os_action.c file)
+ */
+FUNC(void, OS_CODE) tpl_begin_alarm_callback(void)
+{
+  alarm_callback_running = TRUE;
+}
+
+/*
+ * @internal
+ *
+ * tpl_end_alarm_callback sets alarm_callback_running to FALSE. It is called
+ * from tpl_action_callback function (see tpl_os_action.c file)
+ */
+FUNC(void, OS_CODE) tpl_end_alarm_callback(void)
+{
+  alarm_callback_running = FALSE;
+}
+
+/*
+ * @internal
+ *
+ * tpl_alarm_callback_running returns alarm_callback_running. It is called
+ * from CHECK_NO_CALLBACK_CALL_LEVEL_ERROR macro (see tpl_os_error.h) and
+ * tpl_current_os_state function (see below).
+ */
+FUNC(tpl_bool, OS_CODE) tpl_alarm_callback_running(void)
+{
+  return alarm_callback_running;
+}
 
 #ifdef WITH_DOW
 #include <stdio.h>
@@ -494,7 +537,11 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id))
 
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID)
+  if (tpl_alarm_callback_running())
+  {
+    state = OS_CALLBACK;
+  }
+  else if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID)
   {
     state = OS_INIT;
   }
@@ -1088,8 +1135,8 @@ tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
     result = E_OS_STATE;
   }
 #else
-  (void) task_id;
-  (void) incoming_event;
+  (void)task_id;
+  (void)incoming_event;
 #endif
 
   return result;

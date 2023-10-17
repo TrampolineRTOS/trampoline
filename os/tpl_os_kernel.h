@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -53,6 +53,7 @@
  * - #OS_TASK means running a task
  * - #OS_IDLE means no task running and the OS has nothing else to do
  * - #OS_ISR2 means running a category 2 interrupt service routine
+ * - #OS_CALLBACK means an alarm callback is running
  * - #OS_UNKNOWN means the OS is not in a known state. This should not happen.
  */
 typedef uint8 tpl_os_state;
@@ -64,35 +65,42 @@ typedef uint8 tpl_os_state;
  * and until a task get the CPU (#OS_TASK), it goes idle (#OS_IDLE) or an ISR2
  * takes the CPU (#OS_ISR2)
  */
-#define OS_INIT     0
+#define OS_INIT 0
 
 /**
  * @def OS_TASK
  *
  * A task is running
  */
-#define OS_TASK     1
+#define OS_TASK 1
 
 /**
  * @def OS_IDLE
  *
  * A task is running
  */
-#define OS_IDLE     2
+#define OS_IDLE 2
 
 /**
  * @def OS_IDLE
  *
  * An ISR2 is running
  */
-#define OS_ISR2     3
+#define OS_ISR2 3
+
+/**
+ * @def OS_CALLBACK
+ *
+ * An alarm callback is running
+ */
+#define OS_CALLBACK 4
 
 /**
  * @def OS_UNKNOWN
  *
  * The state is unknown. This should not happen.
  */
-#define OS_UNKNOWN  4
+#define OS_UNKNOWN 5
 
 /**
  * @def AUTOSTART
@@ -101,7 +109,7 @@ typedef uint8 tpl_os_state;
  *
  * @see #tpl_exec_state
  */
-#define AUTOSTART       0x4
+#define AUTOSTART 0x4
 
 /**
  * @def READY_AND_NEW
@@ -110,7 +118,7 @@ typedef uint8 tpl_os_state;
  *
  * @see #tpl_exec_state
  */
-#define READY_AND_NEW   0x5
+#define READY_AND_NEW 0x5
 
 /**
  * @typedef tpl_exec_obj_type
@@ -142,18 +150,19 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_proc_function)(void);
  * structure than tpl_resource since only one internal resource can be taken
  * and there is no need to store the owner
  */
-typedef struct {
+typedef struct
+{
   CONST(tpl_priority, TYPEDEF)
-    ceiling_priority;     /**<  Ceiling priority as computed at system
-                                generation time                               */
+  ceiling_priority; /**<  Ceiling priority as computed at system
+                          generation time                               */
   VAR(tpl_priority, TYPEDEF)
-    owner_prev_priority;  /**<  Priority of the owner prior to the access
-                                to the resource. This field is used to
-                                restore the priority of the task when the
-                                resource is released                          */
+  owner_prev_priority; /**<  Priority of the owner prior to the access
+                             to the resource. This field is used to
+                             restore the priority of the task when the
+                             resource is released                          */
   VAR(tpl_bool, TYPEDEF)
-    taken;                /**<  Flag to tell if the internal resource
-                                is taken or not                               */
+  taken; /**<  Flag to tell if the internal resource
+               is taken or not                               */
 } tpl_internal_resource;
 
 /**
@@ -163,44 +172,45 @@ typedef struct {
  * descriptors or category 2 Interrupt Service Routines. Static means this
  * part of the descriptor can be stored in ROM.
  */
-struct TPL_PROC_STATIC {
+struct TPL_PROC_STATIC
+{
   VAR(tpl_context, TYPEDEF)
-    context;            /**<  context(s) of the task/isr                     */
+  context; /**<  context(s) of the task/isr                     */
   VAR(tpl_stack, TYPEDEF)
-    stack;              /**<  stack(s) of the  task/isr                      */
+  stack; /**<  stack(s) of the  task/isr                      */
   CONST(tpl_proc_function, TYPEDEF)
-    entry;              /**<  function that is the entry point
-                              of the task/isr                                */
+  entry; /**<  function that is the entry point
+               of the task/isr                                */
   CONSTP2VAR(tpl_internal_resource, TYPEDEF, OS_APPL_DATA)
-    internal_resource;  /**<  pointer to an internal resource. NULL if the
-                              task does not have an internal resource        */
+  internal_resource; /**<  pointer to an internal resource. NULL if the
+                           task does not have an internal resource        */
   CONST(tpl_task_id, TYPEDEF)
-    id;                 /**<  id of task/isr                                 */
+  id; /**<  id of task/isr                                 */
 #if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
-    app_id;             /**<  id of the OS application which owns
-                              the task/ISR                                    */
+  app_id; /**<  id of the OS application which owns
+                the task/ISR                                    */
 #endif
 #if NUMBER_OF_CORES > 1
   CONST(tpl_core_id, TYPEDEF)
-    core_id;            /**<  id of the core the process is assigned to      */
+  core_id; /**<  id of the core the process is assigned to      */
 #endif
   CONST(tpl_priority, TYPEDEF)
-    base_priority;      /**<  base priority of the task/isr                  */
+  base_priority; /**<  base priority of the task/isr                  */
   CONST(tpl_activate_counter, TYPEDEF)
-    max_activate_count; /**<  max activation count of a task/isr             */
+  max_activate_count; /**<  max activation count of a task/isr             */
   CONST(tpl_proc_type, TYPEDEF)
-    type;               /**<  TASK_BASIC,TASK_EXTENDED or IS_ROUTINE         */
+  type; /**<  TASK_BASIC,TASK_EXTENDED or IS_ROUTINE         */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   CONST(tpl_time, TYPEDEF)
-    executionbudget ;   /**<  execution budget                               */
+  executionbudget; /**<  execution budget                               */
   CONST(tpl_time, TYPEDEF)
-    timeframe ;         /**<  length of the time frame                       */
+  timeframe; /**<  length of the time frame                       */
   CONSTP2VAR(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
-    timing_protection;  /**<  dynamic variables needed to handle
-                              the timing protection. Set to NULL if
-                              the proc is not supervised by the mechanism    */
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+  timing_protection; /**<  dynamic variables needed to handle
+                           the timing protection. Set to NULL if
+                           the proc is not supervised by the mechanism    */
+#endif               /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
 /**
@@ -218,19 +228,20 @@ typedef struct TPL_PROC_STATIC tpl_proc_static;
  * This structure gathers the common members of executable objects dynamic
  * descriptors
  */
-struct TPL_PROC {
-  struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
-    resources;          /**< head of the ressources held          */
+struct TPL_PROC
+{
+  struct P2VAR(TPL_RESOURCE, TYPEDEF,
+               OS_APPL_DATA) resources; /**< head of the ressources held */
 #if WITH_OSAPPLICATION == YES
   VAR(tpl_trusted_count, TYPEDEF)
-    trusted_counter;    /**<  if > 0 the process is trusted       */
-#endif /* WITH_OSAPPLICATION */
+  trusted_counter; /**<  if > 0 the process is trusted       */
+#endif             /* WITH_OSAPPLICATION */
   VAR(tpl_activate_counter, TYPEDEF)
-    activate_count;     /**< current activate count               */
+  activate_count; /**< current activate count               */
   VAR(tpl_priority, TYPEDEF)
-    priority;           /**< current priority                     */
+  priority; /**< current priority                     */
   VAR(tpl_proc_state, TYPEDEF)
-    state;              /**< state (READY, RUNNING, ...)*/
+  state; /**< state (READY, RUNNING, ...)*/
 };
 
 /**
@@ -249,32 +260,32 @@ typedef struct
 {
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_elected;
-  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
-  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            elected;
-  VAR(sint32, TYPEDEF)                        running_id;
-  VAR(sint32, TYPEDEF)                        elected_id;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR) running;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR) elected;
+  VAR(sint32, TYPEDEF) running_id;
+  VAR(sint32, TYPEDEF) elected_id;
 
-/**
- * 2 bits are used in this field.
- * bit 0 indicates a context switch is needed after calling a service,
- * bit 1 indicated the context of the processus that loses the cpu
- * should be saved.
- */
-  VAR(uint8, TYPEDEF)                         need_switch;
+  /**
+   * 2 bits are used in this field.
+   * bit 0 indicates a context switch is needed after calling a service,
+   * bit 1 indicated the context of the processus that loses the cpu
+   * should be saved.
+   */
+  VAR(uint8, TYPEDEF) need_switch;
 
-/**
- * Boolean used to notify a rescheduling should be done
- */
-  VAR(tpl_bool, TYPEDEF)                      need_schedule;
+  /**
+   * Boolean used to notify a rescheduling should be done
+   */
+  VAR(tpl_bool, TYPEDEF) need_schedule;
 
 #if WITH_MEMORY_PROTECTION == YES
-/**
- * This flag is set before running a hook or a (transitionnal) trusted
- * process to disable some checkings
- */
-  VAR(uint8, TYPEDEF)                         running_trusted;
+  /**
+   * This flag is set before running a hook or a (transitionnal) trusted
+   * process to disable some checkings
+   */
+  VAR(uint8, TYPEDEF) running_trusted;
 #endif /* WITH_MEMORY_PROTECTION */
-/*  VAR(tpl_priority, TYPEDEF)                  running_priority; */
+  /*  VAR(tpl_priority, TYPEDEF)                  running_priority; */
 } tpl_kern_state;
 
 /**
@@ -283,11 +294,11 @@ typedef struct
  * This type gather a key used to sort the heap and the identifier of
  * the process
  */
-typedef struct {
-  VAR(tpl_priority, TYPEDEF)  key;
-  VAR(tpl_proc_id, TYPEDEF)   id;
+typedef struct
+{
+  VAR(tpl_priority, TYPEDEF) key;
+  VAR(tpl_proc_id, TYPEDEF) id;
 } tpl_heap_entry;
-
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -328,7 +339,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
  * @see #INVALID_TASK
  *
  */
-#define INVALID_PROC_ID  -1
+#define INVALID_PROC_ID -1
 
 /**
  * @internal
@@ -338,24 +349,20 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
  * In multicore does the intercore interrupt if needed
  */
 #if WITH_SYSTEM_CALL == NO
-#define LOCAL_SWITCH_CONTEXT(a_core_id)                         \
-  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)        \
-  {                                                             \
-    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;           \
-    tpl_switch_context(                                         \
-      tpl_run_elected(TRUE),                                    \
-      &(TPL_KERN(a_core_id).s_elected->context)                 \
-    );                                                          \
+#define LOCAL_SWITCH_CONTEXT(a_core_id)                                        \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)                       \
+  {                                                                            \
+    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;                          \
+    tpl_switch_context(tpl_run_elected(TRUE),                                  \
+                       &(TPL_KERN(a_core_id).s_elected->context));             \
   }
 
-#define LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)             \
-  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)   \
-  {                                                        \
-    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;      \
-    tpl_switch_context(                                    \
-      tpl_run_elected(FALSE),                              \
-      &(TPL_KERN(a_core_id).s_elected->context)            \
-    );                                                     \
+#define LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)                                 \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)                       \
+  {                                                                            \
+    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;                          \
+    tpl_switch_context(tpl_run_elected(FALSE),                                 \
+                       &(TPL_KERN(a_core_id).s_elected->context));             \
   }
 #else
 #define LOCAL_SWITCH_CONTEXT(a_core_id)
@@ -366,46 +373,52 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 #define REMOTE_SWITCH_CONTEXT()
 
-#define SWITCH_CONTEXT(a_core_id)        LOCAL_SWITCH_CONTEXT(0)
+#define SWITCH_CONTEXT(a_core_id) LOCAL_SWITCH_CONTEXT(0)
 #define SWITCH_CONTEXT_NOSAVE(a_core_id) LOCAL_SWITCH_CONTEXT_NOSAVE(0)
 
 #else
 /* NUMBER_OF_CORES > 1, Multicore definitions */
-#define REMOTE_SWITCH_CONTEXT(a_core_id)                          \
-  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)          \
-  {                                                               \
-    /* need_switch flag will be resetted by the remote core */    \
-    tpl_send_intercore_it(a_core_id);                             \
+#define REMOTE_SWITCH_CONTEXT(a_core_id)                                       \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)                       \
+  {                                                                            \
+    /* need_switch flag will be resetted by the remote core */                 \
+    tpl_send_intercore_it(a_core_id);                                          \
   }
 
 #if WITH_SYSTEM_CALL == NO
 
-#define SWITCH_CONTEXT(a_core_id)         \
-  if (a_core_id == tpl_get_core_id()) {   \
-    LOCAL_SWITCH_CONTEXT(a_core_id)       \
-  }                                       \
-  else {                                  \
-    REMOTE_SWITCH_CONTEXT(a_core_id);     \
+#define SWITCH_CONTEXT(a_core_id)                                              \
+  if (a_core_id == tpl_get_core_id())                                          \
+  {                                                                            \
+    LOCAL_SWITCH_CONTEXT(a_core_id)                                            \
+  }                                                                            \
+  else                                                                         \
+  {                                                                            \
+    REMOTE_SWITCH_CONTEXT(a_core_id);                                          \
   }
 
-#define SWITCH_CONTEXT_NOSAVE(a_core_id)  \
-  if (a_core_id == tpl_get_core_id()) {   \
-    LOCAL_SWITCH_CONTEXT(a_core_id)       \
-  }                                       \
-  else {                                  \
-    REMOTE_SWITCH_CONTEXT(a_core_id);     \
+#define SWITCH_CONTEXT_NOSAVE(a_core_id)                                       \
+  if (a_core_id == tpl_get_core_id())                                          \
+  {                                                                            \
+    LOCAL_SWITCH_CONTEXT(a_core_id)                                            \
+  }                                                                            \
+  else                                                                         \
+  {                                                                            \
+    REMOTE_SWITCH_CONTEXT(a_core_id);                                          \
   }
 
 #else
 /* WITH_SYSTEM_CALL == YES */
 
-#define SWITCH_CONTEXT(a_core_id)                 \
-  if (a_core_id != tpl_get_core_id()) {           \
-    tpl_send_intercore_it(a_core_id);             \
+#define SWITCH_CONTEXT(a_core_id)                                              \
+  if (a_core_id != tpl_get_core_id())                                          \
+  {                                                                            \
+    tpl_send_intercore_it(a_core_id);                                          \
   }
-#define SWITCH_CONTEXT_NOSAVE(a_core_id)          \
-  if (a_core_id != tpl_get_core_id()) {           \
-    tpl_send_intercore_it(a_core_id);             \
+#define SWITCH_CONTEXT_NOSAVE(a_core_id)                                       \
+  if (a_core_id != tpl_get_core_id())                                          \
+  {                                                                            \
+    tpl_send_intercore_it(a_core_id);                                          \
   }
 
 #endif
@@ -463,8 +476,8 @@ extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-extern CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR)
-  tpl_tail_for_prio[NUMBER_OF_CORES];
+extern CONSTP2VAR(tpl_rank_count, OS_CONST,
+                  OS_VAR) tpl_tail_for_prio[NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -492,20 +505,25 @@ extern VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[];
  * (one Idle task per core).
  */
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
-  tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+NUMBER_OF_CORES];
+    tpl_stat_proc_table[TASK_COUNT + ISR_COUNT + NUMBER_OF_CORES];
 
 extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
-  tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+NUMBER_OF_CORES];
+    tpl_dyn_proc_table[TASK_COUNT + ISR_COUNT + NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 /**
  * Kernel functions
  */
+FUNC(void, OS_CODE) tpl_begin_alarm_callback(void);
+
+FUNC(void, OS_CODE) tpl_end_alarm_callback(void);
+
+FUNC(tpl_bool, OS_CODE) tpl_alarm_callback_running(void);
+
 FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID(core_id));
 
 FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id));
@@ -528,7 +546,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id));
  *          that was running before the elected task replace it
  */
 FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
-  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save);
+tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save);
 
 /**
  * @internal
@@ -560,23 +578,21 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
  */
 FUNC(void, OS_CODE) tpl_terminate(void);
 
-FUNC(void, OS_CODE) tpl_init_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+FUNC(void, OS_CODE) tpl_init_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_put_preempted_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+FUNC(void, OS_CODE)
+tpl_put_preempted_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_put_new_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+FUNC(void, OS_CODE) tpl_put_new_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_init_os(
-  CONST(tpl_application_mode, AUTOMATIC) app_mode);
+FUNC(void, OS_CODE)
+tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode);
 
-FUNC(void, OS_CODE) tpl_get_internal_resource(
-  CONST(tpl_proc_id, AUTOMATIC) task_id);
+FUNC(void, OS_CODE)
+tpl_get_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id);
 
-FUNC(void, OS_CODE) tpl_release_internal_resource(
-  CONST(tpl_proc_id, AUTOMATIC) task_id);
+FUNC(void, OS_CODE)
+tpl_release_internal_resource(CONST(tpl_proc_id, AUTOMATIC) task_id);
 
 /**
  * If a task is ended without calling TerminateTask() :
@@ -594,8 +610,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void);
 FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void);
 
 #if WITH_OSAPPLICATION == YES
-FUNC(void, OS_CODE) tpl_remove_proc(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 #endif
 
 /**
@@ -608,8 +623,8 @@ FUNC(void, OS_CODE) tpl_remove_proc(
  *
  * @param   a_task  pointer to the task structure of the task to activate.
  */
-FUNC(tpl_status, OS_CODE) tpl_activate_task(
-    CONST(tpl_task_id, AUTOMATIC) task_id);
+FUNC(tpl_status, OS_CODE)
+tpl_activate_task(CONST(tpl_task_id, AUTOMATIC) task_id);
 
 /**
  * @internal
@@ -622,9 +637,9 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
  * @param   a_task          pointer to the task structure of the target task.
  * @param   incoming_event  the event mask.
  */
-FUNC(tpl_status, OS_CODE) tpl_set_event(
-    CONST(tpl_task_id, AUTOMATIC)     task_id,
-    CONST(tpl_event_mask, AUTOMATIC)  incoming_event);
+FUNC(tpl_status, OS_CODE)
+tpl_set_event(CONST(tpl_task_id, AUTOMATIC) task_id,
+              CONST(tpl_event_mask, AUTOMATIC) incoming_event);
 
 #if NUMBER_OF_CORES > 1
 /**
@@ -633,7 +648,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
  * tpl_multi_schedule does multiple rescheduling when many tasks could
  * have been activated on several cores (messages, alarms, schedule tables)
  */
-FUNC(void, OS_CODE)tpl_multi_schedule(void);
+FUNC(void, OS_CODE) tpl_multi_schedule(void);
 
 /**
  * @internal

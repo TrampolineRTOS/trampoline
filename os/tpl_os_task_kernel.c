@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -23,20 +23,20 @@
  * $URL$
  */
 
+#include "tpl_os_task_kernel.h"
+#include "tpl_dow.h"
 #include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_error.h"
-#include "tpl_os_hooks.h"
 #include "tpl_os_errorhook.h"
-#include "tpl_os_task_kernel.h"
+#include "tpl_os_hooks.h"
 #include "tpl_trace.h"
-#include "tpl_dow.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
 #if SPINLOCK_COUNT > 0
-#  include "tpl_as_spinlock_kernel.h"
+#include "tpl_as_spinlock_kernel.h"
 #endif
 #endif
 
@@ -52,8 +52,8 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 /*
  * Kernel service for task activation
  */
-FUNC(StatusType, OS_CODE) tpl_activate_task_service(
-  CONST(tpl_task_id, AUTOMATIC) task_id)
+FUNC(StatusType, OS_CODE)
+tpl_activate_task_service(CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
@@ -71,8 +71,11 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   STORE_SERVICE(OSServiceId_ActivateTask)
   STORE_TASK_ID(task_id)
 
-  /*  Check a task_id error   */
-  CHECK_TASK_ID_ERROR(task_id,result)
+  /* Check call level error */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
+  /* Check a task_id error   */
+  CHECK_TASK_ID_ERROR(task_id, result)
 
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
@@ -101,7 +104,6 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   return result;
 }
 
-
 FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
@@ -116,7 +118,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /* check interrupts are not disabled by user */
   CHECK_INTERRUPT_LOCK(result)
   /* check we are at the task level */
-  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
   /* check the task does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
   /*  checks the task does not occupy spinlock(s)   */
@@ -147,13 +149,12 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   return result;
 }
 
-
-FUNC(StatusType, OS_CODE) tpl_chain_task_service(
-  CONST(tpl_task_id, AUTOMATIC) task_id)
+FUNC(StatusType, OS_CODE)
+tpl_chain_task_service(CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   GET_CURRENT_CORE_ID(core_id)
 
-  VAR(StatusType, AUTOMATIC)  result = E_OK;
+  VAR(StatusType, AUTOMATIC) result = E_OK;
 
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -166,9 +167,9 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   STORE_TASK_ID(task_id)
 
   /*  Check a call level error    */
-  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
   /*  Check a task_id error       */
-  CHECK_TASK_ID_ERROR(task_id,result)
+  CHECK_TASK_ID_ERROR(task_id, result)
   /*  Check no resource is held by the terminating task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
   /*  checks the task does not occupy spinlock(s)   */
@@ -234,7 +235,6 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   return result;
 }
 
-
 FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
@@ -251,7 +251,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   STORE_SERVICE(OSServiceId_Schedule)
 
   /*  Check a call level error    */
-  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
   /*  Check no resource is held by the calling task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
   /*  checks the task does not occupy spinlock(s)   */
@@ -284,9 +284,9 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   return result;
 }
 
-
-FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
-  CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id)
+FUNC(StatusType, OS_CODE)
+tpl_get_task_id_service(CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)
+                            task_id)
 {
   GET_CURRENT_CORE_ID(core_id)
 
@@ -300,6 +300,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetTaskID)
   STORE_TASK_ID_REF(task_id)
+
+  /* Check call level error */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
 
   /* check state is in an authorized memory region */
   CHECK_DATA_LOCATION(core_id, task_id, result);
@@ -327,10 +330,10 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   return result;
 }
 
-
-FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
-  CONST(tpl_task_id, AUTOMATIC)                        task_id,
-  CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state)
+FUNC(StatusType, OS_CODE)
+tpl_get_task_state_service(CONST(tpl_task_id, AUTOMATIC) task_id,
+                           CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)
+                               state)
 {
   GET_CURRENT_CORE_ID(core_id)
 
@@ -346,8 +349,11 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   STORE_TASK_ID(task_id)
   STORE_TASK_STATE_REF(state)
 
+  /* Check call level error */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
   /*  Check a task_id error       */
-  CHECK_TASK_ID_ERROR(task_id,result)
+  CHECK_TASK_ID_ERROR(task_id, result)
 
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)

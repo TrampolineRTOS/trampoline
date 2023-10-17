@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -25,20 +25,20 @@
  */
 
 #include "tpl_os_os_kernel.h"
-#include "tpl_os_kernel.h"
+#include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_error.h"
-#include "tpl_machine_interface.h"
-#include "tpl_trace.h"
 #include "tpl_os_hooks.h"
+#include "tpl_os_kernel.h"
+#include "tpl_trace.h"
 
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore_kernel.h"
-# if SPINLOCK_COUNT > 0
-# include "tpl_as_spinlock_kernel.h"
-# endif
+#if SPINLOCK_COUNT > 0
+#include "tpl_as_spinlock_kernel.h"
+#endif
 
-#define START_OS_SYNC_LOCK_ID   0
+#define START_OS_SYNC_LOCK_ID 0
 #endif
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -74,8 +74,8 @@ VAR(tpl_lock, OS_VAR) tpl_startos_sync_lock = UNLOCKED_LOCK;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
-  void)
+FUNC(tpl_application_mode, OS_CODE)
+tpl_get_active_application_mode_service(void)
 {
   VAR(tpl_application_mode, AUTOMATIC) app_mode;
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -102,8 +102,8 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
   return app_mode;
 }
 
-FUNC(void, OS_CODE) tpl_start_os_service(
-  CONST(tpl_application_mode, AUTOMATIC) mode)
+FUNC(void, OS_CODE)
+tpl_start_os_service(CONST(tpl_application_mode, AUTOMATIC) mode)
 {
   GET_CURRENT_CORE_ID(core_id)
 
@@ -170,8 +170,8 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   UNLOCK_KERNEL()
 }
 
-FUNC(void, OS_CODE) tpl_call_shutdown_os(
-  CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
+FUNC(void, OS_CODE)
+tpl_call_shutdown_os(CONST(tpl_status, AUTOMATIC) error /*@unused@*/)
 {
   GET_CURRENT_CORE_ID(core_id)
   /*
@@ -190,8 +190,8 @@ FUNC(void, OS_CODE) tpl_call_shutdown_os(
   tpl_shutdown();
 }
 
-FUNC(void, OS_CODE) tpl_shutdown_os_service(
-  CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
+FUNC(void, OS_CODE)
+tpl_shutdown_os_service(CONST(tpl_status, AUTOMATIC) error /*@unused@*/)
 {
   GET_CURRENT_CORE_ID(core_id)
 
@@ -223,4 +223,3 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 #include "tpl_memmap.h"
 
 /* End of file tpl_os_os_kernel.c */
-

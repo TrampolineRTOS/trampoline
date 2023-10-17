@@ -10,8 +10,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -26,9 +26,9 @@
 
 /*#include "tpl_os_definitions.h"*/
 #include "tpl_os_timeobj_kernel.h"
-#include "tpl_os_kernel.h"
-#include "tpl_os_definitions.h"
 #include "tpl_debug.h"
+#include "tpl_os_definitions.h"
+#include "tpl_os_kernel.h"
 #include "tpl_trace.h"
 
 #if WITH_AUTOSAR == YES
@@ -49,7 +49,7 @@ STATIC VAR(tpl_bool, OS_VAR) tpl_counters_enabled = FALSE;
 
 FUNC(void, OS_CODE) tpl_enable_counters(void)
 {
-    tpl_counters_enabled = TRUE;
+  tpl_counters_enabled = TRUE;
 }
 
 /*
@@ -61,121 +61,121 @@ FUNC(void, OS_CODE) tpl_enable_counters(void)
  * and a time object is inserted starting from the
  * head of the list
  */
-FUNC(void, OS_CODE) tpl_insert_time_obj(
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
+FUNC(void, OS_CODE)
+tpl_insert_time_obj(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
-    /*  get the counter                                                     */
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)
-        counter = time_obj->stat_part->counter;
-    /*  initialize the current time object to the head                      */
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
-        current_to = counter->first_to;
-    /*  initialize the time object that precede the current one to NULL     */
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
-        prev_to = NULL_PTR;
+  /*  get the counter                                                     */
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)
+  counter = time_obj->stat_part->counter;
+  /*  initialize the current time object to the head                      */
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
+  current_to = counter->first_to;
+  /*  initialize the time object that precede the current one to NULL     */
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
+  prev_to = NULL_PTR;
 
-    if (current_to == NULL)
+  if (current_to == NULL)
+  {
+    /*  The time object queue is empty
+        So the time object is alone in the queue                        */
+    counter->first_to = time_obj;
+    counter->next_to = time_obj;
+    time_obj->next_to = time_obj->prev_to = NULL;
+  }
+  else
+  {
+    /*  The time object queue is not empty
+        look for the place to insert the time object                    */
+    while ((current_to != NULL) && (current_to->date <= time_obj->date))
     {
-        /*  The time object queue is empty
-            So the time object is alone in the queue                        */
-        counter->first_to = time_obj;
-        counter->next_to = time_obj;
-        time_obj->next_to = time_obj->prev_to = NULL;
+      prev_to = current_to;
+      current_to = current_to->next_to;
+    }
+
+    time_obj->next_to = current_to;
+    time_obj->prev_to = prev_to;
+
+    /*  insert the alarm    */
+    if (current_to != NULL)
+    {
+      current_to->prev_to = time_obj;
+    }
+    if (prev_to != NULL)
+    {
+      /*  add at the end of the queue or insert                       */
+      prev_to->next_to = time_obj;
     }
     else
     {
-        /*  The time object queue is not empty
-            look for the place to insert the time object                    */
-        while ((current_to != NULL) &&
-               (current_to->date <= time_obj->date))
-        {
-            prev_to = current_to;
-            current_to = current_to->next_to;
-        }
-
-        time_obj->next_to = current_to;
-        time_obj->prev_to = prev_to;
-
-        /*  insert the alarm    */
-        if (current_to != NULL)
-        {
-            current_to->prev_to = time_obj;
-        }
-        if (prev_to != NULL)
-        {
-            /*  add at the end of the queue or insert                       */
-            prev_to->next_to = time_obj;
-        }
-        else
-        {
-            /*  the condition current_to->date <= time_object->date was
-                false a the beginning of the while. So the time object
-                have to be added at the head of the time object queue       */
-            counter->first_to = time_obj;
-        }
-
-        /*  Update the next_to to point to the newly
-            inserted time_object if the date of the newly inserted time
-            object is within the current date and the next_alarm_to_raise
-            date, taking account the modulo                                 */
-        if (counter->next_to->date < counter->current_date)
-        {
-            if ((time_obj->date > counter->current_date) ||
-                (time_obj->date < counter->next_to->date))
-            {
-                counter->next_to = time_obj;
-            }
-        }
-        else
-        {
-            if ((time_obj->date > counter->current_date) &&
-                (time_obj->date < counter->next_to->date))
-            {
-                counter->next_to = time_obj;
-            }
-        }
+      /*  the condition current_to->date <= time_object->date was
+          false a the beginning of the while. So the time object
+          have to be added at the head of the time object queue       */
+      counter->first_to = time_obj;
     }
+
+    /*  Update the next_to to point to the newly
+        inserted time_object if the date of the newly inserted time
+        object is within the current date and the next_alarm_to_raise
+        date, taking account the modulo                                 */
+    if (counter->next_to->date < counter->current_date)
+    {
+      if ((time_obj->date > counter->current_date) ||
+          (time_obj->date < counter->next_to->date))
+      {
+        counter->next_to = time_obj;
+      }
+    }
+    else
+    {
+      if ((time_obj->date > counter->current_date) &&
+          (time_obj->date < counter->next_to->date))
+      {
+        counter->next_to = time_obj;
+      }
+    }
+  }
 }
 
 /*
  * tpl_remove_time_obj removes a time object from the time object queue
  * of the counter it belongs to.
  */
-FUNC(void, OS_CODE) tpl_remove_time_obj(
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
+FUNC(void, OS_CODE)
+tpl_remove_time_obj(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
 
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = time_obj->stat_part->counter;
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)
+  counter = time_obj->stat_part->counter;
 
-    /*  adjust the head of the queue if the
-        removed alarm is at the head            */
-    if (time_obj == counter->first_to)
-    {
-        counter->first_to = time_obj->next_to;
-    }
-    /*  adjust the next alarm to raise if it is
-        the removed alarm                       */
-    if (time_obj == counter->next_to)
-    {
-        counter->next_to = time_obj->next_to;
-    }
-    /*  build the link between the previous and next alarm in the queue */
-    if (time_obj->next_to != NULL)
-    {
-        time_obj->next_to->prev_to = time_obj->prev_to;
-    }
-    if (time_obj->prev_to != NULL)
-    {
-        time_obj->prev_to->next_to = time_obj->next_to;
-    }
-    /*  if the next_alarm_to_raise was pointing to the
-        alarm and the alarm was at the end of the queue
-        next_alarm_to_raise is NULL and must be reset to
-        the first alarm of the queue                        */
-    if (counter->next_to == NULL)
-    {
-        counter->next_to = counter->first_to;
-    }
+  /*  adjust the head of the queue if the
+      removed alarm is at the head            */
+  if (time_obj == counter->first_to)
+  {
+    counter->first_to = time_obj->next_to;
+  }
+  /*  adjust the next alarm to raise if it is
+      the removed alarm                       */
+  if (time_obj == counter->next_to)
+  {
+    counter->next_to = time_obj->next_to;
+  }
+  /*  build the link between the previous and next alarm in the queue */
+  if (time_obj->next_to != NULL)
+  {
+    time_obj->next_to->prev_to = time_obj->prev_to;
+  }
+  if (time_obj->prev_to != NULL)
+  {
+    time_obj->prev_to->next_to = time_obj->next_to;
+  }
+  /*  if the next_alarm_to_raise was pointing to the
+      alarm and the alarm was at the end of the queue
+      next_alarm_to_raise is NULL and must be reset to
+      the first alarm of the queue                        */
+  if (counter->next_to == NULL)
+  {
+    counter->next_to = counter->first_to;
+  }
 }
 
 /*
@@ -183,44 +183,46 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  * the same date starting with the next_to of the counter given as parameter.
  * Added:jlb:2008-09-25.
  */
-STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_timeobj_set(
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
+STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE)
+    tpl_remove_timeobj_set(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) first_to = counter->next_to;
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to = NULL;
 
   if (first_to != NULL)
   {
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    last_to;
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    t_obj = first_to;
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    af_to;
-    VAR(tpl_tick, AUTOMATIC)                        date = first_to->date;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) last_to;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) t_obj = first_to;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) af_to;
+    VAR(tpl_tick, AUTOMATIC) date = first_to->date;
     VAR(tpl_bool, AUTOMATIC) object = FALSE;
 
     /*  look for the last time object with the same date as the first one   */
     do
     {
 #if WITH_AUTOSAR == YES
-			/* if BOOSTRAP, let this object in the queue setting it as the previous object
-			 to first_to */
-			if ((t_obj->state & SCHEDULETABLE_BOOTSTRAP) == SCHEDULETABLE_BOOTSTRAP)
-			{
-				if (t_obj == counter->next_to)
-				{
-					/*Careful if all the objects are boostrap, remove date from the counter*/
-					counter->next_to = t_obj->next_to;
-					first_to = t_obj->next_to;
-					last_to = t_obj;
-					t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
+      /* if BOOSTRAP, let this object in the queue setting it as the previous
+       object to first_to */
+      if ((t_obj->state & SCHEDULETABLE_BOOTSTRAP) == SCHEDULETABLE_BOOTSTRAP)
+      {
+        if (t_obj == counter->next_to)
+        {
+          /*Careful if all the objects are boostrap, remove date from the
+           * counter*/
+          counter->next_to = t_obj->next_to;
+          first_to = t_obj->next_to;
+          last_to = t_obj;
+          t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
           TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, t_obj->state)
-				}
-				else
-				{
-					/* if next object is null, it's impossible to store next_to->prev_to, so*/
-					if (t_obj->next_to != NULL)
-					{
-						t_obj->next_to->prev_to = t_obj->prev_to;
-					}
+        }
+        else
+        {
+          /* if next object is null, it's impossible to store next_to->prev_to,
+           * so*/
+          if (t_obj->next_to != NULL)
+          {
+            t_obj->next_to->prev_to = t_obj->prev_to;
+          }
           t_obj->prev_to->next_to = t_obj->next_to;
           t_obj->prev_to = first_to->prev_to;
           t_obj->prev_to->next_to = t_obj;
@@ -229,21 +231,20 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
           t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
           TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, t_obj->state)
           t_obj = last_to;
-				}
-			}
-			else
-			{
-				last_to = t_obj;
-				object = TRUE;
-			}
-            t_obj = t_obj->next_to;
+        }
+      }
+      else
+      {
+        last_to = t_obj;
+        object = TRUE;
+      }
+      t_obj = t_obj->next_to;
 #else
-			object = TRUE;
-			last_to = t_obj;
-			t_obj = t_obj->next_to;
+      object = TRUE;
+      last_to = t_obj;
+      t_obj = t_obj->next_to;
 #endif /* WITH_AUTOSAR */
-    }
-    while ((t_obj != NULL) && (t_obj->date == date));
+    } while ((t_obj != NULL) && (t_obj->date == date));
 
     /*  disconnect the chain of object(s). */
     t_obj = first_to->prev_to;
@@ -264,29 +265,29 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
       counter->first_to = af_to;
     }
 
-		/* if object == TRUE, return counter->next_to (by saving it first)
-		   else, return NULL
-		 */
+    /* if object == TRUE, return counter->next_to (by saving it first)
+       else, return NULL
+     */
 
-		if (object == TRUE)
-		{
-			real_next_to = counter->next_to;
-		}
+    if (object == TRUE)
+    {
+      real_next_to = counter->next_to;
+    }
 
-		/*  update the next_to of the counter           */
-		if (af_to != NULL)
-		{
-			counter->next_to = af_to;
-		}
-		else
-		{
-			counter->next_to = counter->first_to;
-		}
-		/*  update the end of the chain of object(s)    */
+    /*  update the next_to of the counter           */
+    if (af_to != NULL)
+    {
+      counter->next_to = af_to;
+    }
+    else
+    {
+      counter->next_to = counter->first_to;
+    }
+    /*  update the end of the chain of object(s)    */
     last_to->next_to = NULL;
   }
 
-	return real_next_to;
+  return real_next_to;
 }
 
 /*
@@ -309,12 +310,13 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
  */
 extern FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg);
 
-FUNC(void, OS_CODE) tpl_counter_tick(
-  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
+FUNC(void, OS_CODE)
+tpl_counter_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
-  /* temporary pointeur to adjust the next object of a counter when the first time
-     object at a date is a "BOOTSTRAP" time object (for schedule table only) */
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) t_obj;
+  /* temporary pointeur to adjust the next object of a counter when the first
+     time object at a date is a "BOOTSTRAP" time object (for schedule table
+     only) */
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) real_next_to_temp;
   /*
    * A non constant function pointer is used
@@ -322,11 +324,14 @@ FUNC(void, OS_CODE) tpl_counter_tick(
    * the action on each alarm. The function pointed is know at conception time,
    * because only 3 function can be pointed to.
    */
-  VAR(tpl_expire_func, AUTOMATIC)               expire;
-  VAR(tpl_tick, AUTOMATIC)                      date;
-  /* this variable is added because the same name was used twice in this function for
-   2 different variables, this behavior was dependent on the compiler */
-  VAR(tpl_tick, AUTOMATIC)                      new_date;
+  VAR(tpl_expire_func, AUTOMATIC) expire;
+  VAR(tpl_tick, AUTOMATIC) date;
+  /*
+   * this variable is added because the same name was used twice in this
+   * function for 2 different variables, this behavior was dependent on the
+   * compiler
+   */
+  VAR(tpl_tick, AUTOMATIC) new_date;
 
   if (tpl_counters_enabled)
   {
@@ -355,11 +360,12 @@ FUNC(void, OS_CODE) tpl_counter_tick(
          extract the time object with this date
          from the list. (if object from schedule
          table has been BOOTSTRAP, don't process
-         the expiry point(s))								*/
+         the expiry point(s))
+       */
 
         real_next_to_temp = tpl_remove_timeobj_set(counter);
 
-        if( real_next_to_temp != NULL)
+        if (real_next_to_temp != NULL)
         {
           /* save the "real one" next_to (in case of a schedule table,
            if the first time object is a BOOTSTRAP, change the next_to's
@@ -394,7 +400,8 @@ FUNC(void, OS_CODE) tpl_counter_tick(
                queue of the counter it belongs to    */
               tpl_insert_time_obj(t_obj);
             }
-            else {
+            else
+            {
               t_obj->state = TIME_OBJ_SLEEP;
               TRACE_TIMEOBJ_CHANGE_STATE(t_obj->stat_part->id, TIME_OBJ_SLEEP)
             }
@@ -407,29 +414,31 @@ FUNC(void, OS_CODE) tpl_counter_tick(
 }
 
 #if TPL_OPTIMIZE_TICKS == YES
-FUNC(tpl_tick, OS_CODE) tpl_time_before_next_tick(
-  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
+FUNC(tpl_tick, OS_CODE)
+tpl_time_before_next_tick(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
-  VAR(tpl_tick, AUTOMATIC)                      date;
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) t_obj;
+  VAR(tpl_tick, AUTOMATIC) date;
 
   t_obj = counter->next_to;
-  if(counter->next_to == NULL) return -1; /* FIXME : 0 is a possible value */
+  if (counter->next_to == NULL)
+    return -1; /* FIXME : 0 is a possible value */
 
   /* FIXME : Ternaire ? */
   date = counter->next_to->date;
-  if(date < counter->current_date){
+  if (date < counter->current_date)
+  {
     date += counter->max_allowed_value + 1;
   }
   date -= counter->current_date;
 
-  return (date - 1 ) * counter->ticks_per_base
-       + (counter->ticks_per_base - counter->current_tick);
+  return (date - 1) * counter->ticks_per_base +
+         (counter->ticks_per_base - counter->current_tick);
 }
 
-FUNC(void, OS_CODE) tpl_increment_counter(
-  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter,
-  VAR(tpl_tick, AUTOMATIC) ticks)
+FUNC(void, OS_CODE)
+tpl_increment_counter(P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter,
+                      VAR(tpl_tick, AUTOMATIC) ticks)
 {
   VAR(tpl_tick, AUTOMATIC) date;
   VAR(tpl_tick, AUTOMATIC) i;
@@ -437,7 +446,7 @@ FUNC(void, OS_CODE) tpl_increment_counter(
   if (tpl_counters_enabled)
   {
     /* FIXME Should be done without a for */
-    for(i = 0; i < ticks; i++)
+    for (i = 0; i < ticks; i++)
     {
       /*  inc the current tick value of the counter     */
       counter->current_tick++;
@@ -452,7 +461,6 @@ FUNC(void, OS_CODE) tpl_increment_counter(
         }
         counter->current_date = date;
         counter->current_tick = 0;
-
       }
     }
   }

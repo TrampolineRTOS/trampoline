@@ -25,11 +25,11 @@
  */
 
 #include "tpl_os_alarm_kernel.h"
+#include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
-#include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
-#include "tpl_machine_interface.h"
+#include "tpl_os_kernel.h"
 #include "tpl_trace.h"
 
 #include "tpl_debug.h"
@@ -63,8 +63,8 @@ CONST(tpl_alarm_id, AUTOMATIC) INVALID_ALARM = (-1);
  *
  * @param time_obj  The alarm to raise.
  */
-FUNC(void, OS_CODE) tpl_raise_alarm(
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
+FUNC(void, OS_CODE)
+tpl_raise_alarm(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
   /*
    * A tpl_time_obj_static * is cast to a tpl_alarm_static *
@@ -73,20 +73,19 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
    * This cast behaves correctly.
    */
   /*  Get the alarm descriptor                            */
-  P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
-    (tpl_alarm_static *)time_obj->stat_part;
+  P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA)
+  stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
   /*  Get the action to perform from the alarm descriptor */
-  CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
-    stat_alarm->action;
+  CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST)
+  action_desc = stat_alarm->action;
 
   /*  Call the action                                     */
-  (action_desc->action)(action_desc) ;
+  (action_desc->action)(action_desc);
 }
 
-
-FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
-    CONST(tpl_alarm_id, AUTOMATIC)                  alarm_id,
-    P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info)
+FUNC(tpl_status, OS_CODE)
+tpl_get_alarm_base_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                           P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA) info)
 {
   GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -97,17 +96,20 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 
   LOCK_KERNEL()
 
-/* check interrupts are not disabled by user    */
+  /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
   STORE_SERVICE(OSServiceId_GetAlarmBase)
   STORE_ALARM_ID(alarm_id)
   STORE_ALARM_BASE_REF(info)
 
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
   CHECK_ALARM_ID_ERROR(alarm_id, result)
 
-	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
 
   /* check info is in an authorized memory region */
   CHECK_DATA_LOCATION(core_id, info, result);
@@ -130,9 +132,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
   return result;
 }
 
-FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
-  CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
-  P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick)
+FUNC(tpl_status, OS_CODE)
+tpl_get_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                      P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA) tick)
 {
   GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -150,10 +152,13 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   STORE_ALARM_ID(alarm_id)
   STORE_TICK_REF_1(tick)
 
-  CHECK_ALARM_ID_ERROR(alarm_id,result)
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
+  CHECK_ALARM_ID_ERROR(alarm_id, result)
 
   /* check access right */
-  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
 
   /* check tick is in an authorized memory region */
   CHECK_DATA_LOCATION(core_id, tick, result);
@@ -171,8 +176,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
     if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
     {
       VAR(tpl_tick, AUTOMATIC) alarm_date = alarm->date;
-      VAR(tpl_tick, AUTOMATIC) current_date =
-        alarm->stat_part->counter->current_date;
+      VAR(tpl_tick, AUTOMATIC)
+      current_date = alarm->stat_part->counter->current_date;
       if (alarm_date < current_date)
       {
         alarm_date += alarm->stat_part->counter->max_allowed_value;
@@ -199,10 +204,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   return result;
 }
 
-FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
-  CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
-  CONST(tpl_tick, AUTOMATIC)      increment,
-  CONST(tpl_tick, AUTOMATIC)      cycle)
+FUNC(tpl_status, OS_CODE)
+tpl_set_rel_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                          CONST(tpl_tick, AUTOMATIC) increment,
+                          CONST(tpl_tick, AUTOMATIC) cycle)
 {
   GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -215,7 +220,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 
   LOCK_KERNEL()
 
-/* check interrupts are not disabled by user    */
+  /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
   STORE_SERVICE(OSServiceId_SetRelAlarm)
@@ -223,13 +228,16 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   STORE_TICK_1(increment)
   STORE_TICK_2(cycle)
 
-  CHECK_ALARM_ID_ERROR(alarm_id,result)
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
 
-	/* check access right */
-  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id, result)
 
-  CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
-  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
+
+  CHECK_ALARM_INCREMENT_ERROR(alarm_id, increment, result)
+  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id, cycle, result)
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -247,7 +255,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
       date = cnt->current_date + increment;
       if (date > cnt->max_allowed_value)
       {
-          date -= (cnt->max_allowed_value + 1);
+        date -= (cnt->max_allowed_value + 1);
       }
       alarm->date = date;
       alarm->cycle = cycle;
@@ -281,10 +289,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
  *
  * See page 64 of the OSEK spec
  */
-FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
-  CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
-  CONST(tpl_tick, AUTOMATIC)      start,
-  CONST(tpl_tick, AUTOMATIC)      cycle)
+FUNC(tpl_status, OS_CODE)
+tpl_set_abs_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id,
+                          CONST(tpl_tick, AUTOMATIC) start,
+                          CONST(tpl_tick, AUTOMATIC) cycle)
 {
   GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -303,13 +311,16 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   STORE_TICK_1(start)
   STORE_TICK_2(cycle)
 
-  CHECK_ALARM_ID_ERROR(alarm_id,result)
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
 
-	/* check access right */
-  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id, result)
 
-  CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
-  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
+
+  CHECK_ALARM_INCREMENT_ERROR(alarm_id, start, result)
+  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id, cycle, result)
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -355,8 +366,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
  *
  * See page 65 of the OSEK spec
  */
-FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
-  CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
+FUNC(tpl_status, OS_CODE)
+tpl_cancel_alarm_service(CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -367,16 +378,19 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 
   LOCK_KERNEL()
 
-	/* check interrupts are not disabled by user    */
+  /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
   STORE_SERVICE(OSServiceId_CancelAlarm)
   STORE_ALARM_ID(alarm_id)
 
-  CHECK_ALARM_ID_ERROR(alarm_id,result)
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
 
-	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id, result)
+
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

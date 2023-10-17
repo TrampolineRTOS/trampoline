@@ -9,8 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -23,19 +23,19 @@
  * $URL$
  */
 
+#include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_task_kernel.h"
-#include "tpl_machine_interface.h"
 #include "tpl_trace.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
 #if SPINLOCK_COUNT > 0
-#  include "tpl_as_spinlock_kernel.h"
+#include "tpl_as_spinlock_kernel.h"
 #endif
 #endif
 
@@ -51,9 +51,9 @@
 /*
  * tpl_set_event_service.
  */
-FUNC(tpl_status, OS_CODE) tpl_set_event_service(
-  CONST(tpl_task_id, AUTOMATIC)       task_id,
-  CONST(tpl_event_mask, AUTOMATIC)    event)
+FUNC(tpl_status, OS_CODE)
+tpl_set_event_service(CONST(tpl_task_id, AUTOMATIC) task_id,
+                      CONST(tpl_event_mask, AUTOMATIC) event)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_PROC_CORE_ID(task_id, proc_core_id)
@@ -69,15 +69,18 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK(event)
 
-  CHECK_TASK_ID_ERROR(task_id,result)
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
+  CHECK_TASK_ID_ERROR(task_id, result)
 
   /* check access right */
-  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id,result)
+  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
   /*  checks the task is an extended one  */
-  CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
+  CHECK_NOT_EXTENDED_TASK_ERROR(task_id, result)
   /*  checks the task is not in the SUSPENDED state   */
-  CHECK_SUSPENDED_TASK_ERROR(task_id,result)
+  CHECK_SUSPENDED_TASK_ERROR(task_id, result)
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -98,12 +101,11 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   return result;
 }
 
-
 /*
  * tpl_clear_event_service
  */
-FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
-  CONST(tpl_event_mask, AUTOMATIC) event)
+FUNC(tpl_status, OS_CODE)
+tpl_clear_event_service(CONST(tpl_event_mask, AUTOMATIC) event)
 {
   GET_CURRENT_CORE_ID(core_id)
 
@@ -118,7 +120,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   STORE_EVENT_MASK(event)
 
   /*  ClearEvent cannot be called from ISR level  */
-  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(core_id, result)
 
@@ -126,7 +128,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   IF_NO_EXTENDED_ERROR(result)
   {
     tpl_task_events_table[(tpl_proc_id)TPL_KERN(core_id).running_id]->evt_set &=
-      (tpl_event_mask)(~event);
+        (tpl_event_mask)(~event);
     TRACE_EVENT_RESET(event)
   }
 #endif
@@ -141,9 +143,9 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
 /*
  * tpl_get_event_service
  */
-FUNC(tpl_status, OS_CODE) tpl_get_event_service(
-  CONST(tpl_task_id, AUTOMATIC)                       task_id,
-  CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
+FUNC(tpl_status, OS_CODE)
+tpl_get_event_service(CONST(tpl_task_id, AUTOMATIC) task_id,
+                      CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
 {
   GET_CURRENT_CORE_ID(core_id)
 
@@ -158,15 +160,18 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK_REF(event)
 
-  CHECK_TASK_ID_ERROR(task_id,result)
+  /* Check call level error: forbidden from an alarm callback */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
+  CHECK_TASK_ID_ERROR(task_id, result)
 
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
   /*  checks the task is an extended one  */
-  CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
+  CHECK_NOT_EXTENDED_TASK_ERROR(task_id, result)
   /*  checks the task is not in the SUSPENDED state   */
-  CHECK_SUSPENDED_TASK_ERROR(task_id,result)
+  CHECK_SUSPENDED_TASK_ERROR(task_id, result)
 
   /* check event is in an authorized memory region */
   CHECK_DATA_LOCATION(core_id, event, result);
@@ -188,8 +193,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 /*
  * tpl_wait_event_service
  */
-FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
-  CONST(tpl_event_mask, AUTOMATIC) event)
+FUNC(tpl_status, OS_CODE)
+tpl_wait_event_service(CONST(tpl_event_mask, AUTOMATIC) event)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
@@ -197,8 +202,8 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
   /* event mask of the caller */
-  CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =
-    tpl_task_events_table[TPL_KERN_REF(kern).running_id];
+  CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_VAR)
+  task_events = tpl_task_events_table[TPL_KERN_REF(kern).running_id];
 
   LOCK_KERNEL()
 
@@ -209,7 +214,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   STORE_EVENT_MASK(event)
 
   /*  WaitEvent cannot be called from ISR level  */
-  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id, result)
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(core_id, result)
   /*  checks the task does not occupy resource(s)   */

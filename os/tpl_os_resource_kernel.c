@@ -10,8 +10,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de
+ * Nantes Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
  * Check the LICENSE file in the root directory of Trampoline
@@ -25,13 +25,13 @@
  */
 
 #include "tpl_os_resource_kernel.h"
+#include "tpl_dow.h"
+#include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
-#include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
-#include "tpl_machine_interface.h"
+#include "tpl_os_kernel.h"
 #include "tpl_trace.h"
-#include "tpl_dow.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_protec_hook.h"
@@ -81,12 +81,12 @@ CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (tpl_resource_id)(-1);
  * of the process is not changed by this function.
  * No rescheduling is done.
  */
-FUNC(void, OS_CODE) tpl_release_all_resources(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(void, OS_CODE)
+tpl_release_all_resources(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
   /*  Get the resource pointer of the process */
-  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
-  tpl_dyn_proc_table[proc_id]->resources;
+  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
+  res = tpl_dyn_proc_table[proc_id]->resources;
 #if WITH_TRACE == YES
   GET_CURRENT_CORE_ID(core_id)
 #endif /* WITH_TRACE */
@@ -97,17 +97,18 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 
     do
     {
-      CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) next_res =
-      res->next_res;
+      CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
+      next_res = res->next_res;
       res->owner = INVALID_TASK;
       res->next_res = NULL;
 
-	  /* find the id of the resource for the trace */
+      /* find the id of the resource for the trace */
 #if WITH_TRACE == YES
-    TRACE_RES_CHANGE_STATE(res->res_id, (tpl_trace_resource_state)RESOURCE_FREE)
+      TRACE_RES_CHANGE_STATE(res->res_id,
+                             (tpl_trace_resource_state)RESOURCE_FREE)
 #endif /* WITH_TRACE */
 
-	  res = next_res;
+      res = next_res;
     } while (res != NULL);
   }
 }
@@ -119,8 +120,8 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
  *  The ressource RES_SCHEDULER is now put in the tpl_resource_table array
  *  as the last item. This simplify tpl_get_resource_service.
  */
-FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
-    CONST(tpl_resource_id, AUTOMATIC) res_id)
+FUNC(tpl_status, OS_CODE)
+tpl_get_resource_service(CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
@@ -139,6 +140,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 
   STORE_SERVICE(OSServiceId_GetResource)
   STORE_RESOURCE_ID(res_id)
+
+  /* Check call level error */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
 
   CHECK_RESOURCE_ID_ERROR(res_id, result)
 
@@ -171,9 +175,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
       /*  save the current priority of the task in the resource */
       res->owner_prev_priority = TPL_KERN_REF(kern).running->priority;
 
-     DOW_DO(printf("*** GetResource: task %s stores priority %d\n",
-                   proc_name_table[TPL_KERN_REF(kern).running_id],
-                   TPL_KERN_REF(kern).running->priority));
+      DOW_DO(printf("*** GetResource: task %s stores priority %d\n",
+                    proc_name_table[TPL_KERN_REF(kern).running_id],
+                    TPL_KERN_REF(kern).running->priority));
 
       if (ACTUAL_PRIO(TPL_KERN_REF(kern).running->priority) <
           res->ceiling_priority)
@@ -183,10 +187,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
             if the ceiling priority is greater than the current priority of
             the task  */
         TPL_KERN_REF(kern).running->priority =
-          DYNAMIC_PRIO(res->ceiling_priority, tail_for_prio);
+            DYNAMIC_PRIO(res->ceiling_priority, tail_for_prio);
       }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-/*    tpl_start_resource_monitor((tpl_proc_id)TPL_KERN_REF(kern).running_id, res_id); */
+/*    tpl_start_resource_monitor((tpl_proc_id)TPL_KERN_REF(kern).running_id,
+ * res_id); */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
   }
@@ -205,8 +210,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
  *  The ressource RES_SCHEDULER is now put in the tpl_resource_table array
  *  as the last item. This simplify tpl_get_resource_service.
  */
-FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
-  CONST(tpl_resource_id, AUTOMATIC) res_id)
+FUNC(tpl_status, OS_CODE)
+tpl_release_resource_service(CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   /*  init the error to no error  */
@@ -222,6 +227,9 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   STORE_SERVICE(OSServiceId_ReleaseResource)
   STORE_RESOURCE_ID(res_id)
 
+  /* Check call level error */
+  CHECK_CALLBACK_CALL_LEVEL_ERROR(result, core_id)
+
   CHECK_RESOURCE_ID_ERROR(res_id, result)
 
   /* check access right */
@@ -235,10 +243,9 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     res = NULL; /* error */
 #endif
 
-
     /* Return an error if the task that attempt to release
-  	   the resource has a higher priority than the resource    */
-    CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(core_id, res,result)
+           the resource has a higher priority than the resource    */
+    CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(core_id, res, result)
 
     /* the spec requires resources to be released in
        the reverse order of the getting. if the resource
@@ -255,8 +262,8 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
       TPL_KERN(core_id).running->priority = res->owner_prev_priority;
 
       DOW_DO(printf("*** ReleaseResource:task %s takes back priority %d\n",
-             proc_name_table[TPL_KERN(core_id).running_id],
-             TPL_KERN(core_id).running->priority));
+                    proc_name_table[TPL_KERN(core_id).running_id],
+                    TPL_KERN(core_id).running->priority));
 
       /*  remove the resource from the resource list  */
       TPL_KERN(core_id).running->resources = res->next_res;
@@ -265,9 +272,10 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
       res->owner = INVALID_TASK;
       TRACE_RES_CHANGE_STATE(res_id, (tpl_trace_resource_state)RESOURCE_FREE)
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
-# if WITH_AUTOSAR_TIMING_PROTECTION == YES
-/*    tpl_stop_resource_monitor((tpl_proc_id)TPL_KERN(core_id).running_id, res_id); */
-# endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+/*    tpl_stop_resource_monitor((tpl_proc_id)TPL_KERN(core_id).running_id,
+ * res_id); */
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
       LOCAL_SWITCH_CONTEXT(core_id)
     }
