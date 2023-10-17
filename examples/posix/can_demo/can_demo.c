@@ -100,12 +100,8 @@ TASK(can_task)
 	int i;
 
 	printf("Transmitting a CAN 2.0 frame with standard ID...\r\n");
-	can_pdu.id = 0x123 | TPL_CAN_ID_TYPE_STANDARD;
 	strcpy((char *) payload, "Ciao !");
-	can_pdu.length = strlen((char *) payload);
-	can_pdu.sdu = payload;
-	pdu_info.SduDataPtr = (uint8 *) &can_pdu;
-	pdu_info.SduLength = sizeof(can_pdu);
+	tpl_can_fill_pdu_info(&can_pdu, &pdu_info, 0x123 | TPL_CAN_ID_TYPE_STANDARD, payload, strlen((char *) payload));
 	ret = CanIf_Transmit(0, &pdu_info);
 	if (ret)
 		printf("[%s:%d] Error : failed to transmit the frame (%d).\r\n", __func__, __LINE__, ret);
@@ -130,12 +126,8 @@ TASK(can_task)
 	}
 
 	printf("Transmitting a CAN-FD frame with extended ID...\r\n");
-	can_pdu.id = 0xABCD123 | TPL_CAN_ID_TYPE_FD_EXTENDED;
 	strcpy((char *) payload, "This is a longer string.");
-	can_pdu.length = strlen((char *) payload); // The FD length will be automatically adapted by the driver
-	can_pdu.sdu = payload;
-	pdu_info.SduDataPtr = (uint8 *) &can_pdu;
-	pdu_info.SduLength = sizeof(can_pdu);
+	tpl_can_fill_pdu_info(&can_pdu, &pdu_info, 0xABCD123 | TPL_CAN_ID_TYPE_FD_EXTENDED, payload, strlen((char *) payload)); // The FD length will be automatically adapted by the driver
 	ret = CanIf_Transmit(1, &pdu_info);
 	if (ret)
 		printf("[%s:%d] Error : failed to transmit the frame (%d).\r\n", __func__, __LINE__, ret);
