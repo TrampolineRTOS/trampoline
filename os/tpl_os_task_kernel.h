@@ -9,7 +9,8 @@
  *
  * Trampoline RTOS
  *
- * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is copyright (c) CNRS,
+ * University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the GNU Public Licence V2.
@@ -34,9 +35,10 @@
  * This structure is used to store the event masks of the events
  * that have been set and the events a task waits for.
  */
-struct TPL_TASK_EVENTS {
-    VAR(tpl_event_mask, TYPEDEF)  evt_set;    /**< events received           */
-    VAR(tpl_event_mask, TYPEDEF)  evt_wait;   /**< events the task waits for */
+struct TPL_TASK_EVENTS
+{
+  VAR(tpl_event_mask, TYPEDEF) evt_set;  /**< events received           */
+  VAR(tpl_event_mask, TYPEDEF) evt_wait; /**< events the task waits for */
 };
 
 /**
@@ -48,7 +50,6 @@ struct TPL_TASK_EVENTS {
  */
 typedef struct TPL_TASK_EVENTS tpl_task_events;
 
-
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -56,8 +57,8 @@ typedef struct TPL_TASK_EVENTS tpl_task_events;
 /**
  * Alias to the tpl_task_events_table table
  */
-extern CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
-        tpl_task_events_table[EXTENDED_TASK_COUNT];
+extern CONSTP2VAR(tpl_task_events, AUTOMATIC,
+                  OS_APPL_DATA) tpl_task_events_table[EXTENDED_TASK_COUNT];
 #endif /* EXTENDED_TASK_COUNT */
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
@@ -76,9 +77,8 @@ extern CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
  * @retval  E_OS_ID     (extended error only) task_id is invalid
  *
  */
-FUNC(tpl_status, OS_CODE) tpl_activate_task_service(
-  CONST(tpl_task_id, AUTOMATIC)   task_id);
-
+FUNC(tpl_status, OS_CODE)
+tpl_activate_task_service(CONST(tpl_task_id, AUTOMATIC) task_id);
 
 /**
  * Terminates the execution of a task.
@@ -92,7 +92,6 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task_service(
  */
 FUNC(tpl_status, OS_CODE) tpl_terminate_task_service(void);
 
-
 /**
  * Chain terminaison of current task with activation of another.
  *
@@ -105,9 +104,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_task_service(void);
  * @retval  E_OS_ID (extended error only) task_id is invalid
  *
  */
-FUNC(tpl_status, OS_CODE) tpl_chain_task_service(
-  CONST(tpl_task_id, AUTOMATIC)   task_id);
-
+FUNC(tpl_status, OS_CODE)
+tpl_chain_task_service(CONST(tpl_task_id, AUTOMATIC) task_id);
 
 /**
  * Call to the scheduler.
@@ -120,7 +118,6 @@ FUNC(tpl_status, OS_CODE) tpl_chain_task_service(
  */
 FUNC(tpl_status, OS_CODE) tpl_schedule_service(void);
 
-
 /**
  * Gives the identifier of the running task
  *
@@ -131,9 +128,9 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_service(void);
  *
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
-FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
-  CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)   task_id);
-
+FUNC(tpl_status, OS_CODE)
+tpl_get_task_id_service(CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)
+                            task_id);
 
 /**
  * Gives the state of a task
@@ -147,10 +144,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
  *
  * see paragraph 13.2.3.6 page 53 of OSEK/VDX 2.2.3 spec
  */
-FUNC(tpl_status, OS_CODE) tpl_get_task_state_service(
-  CONST(tpl_task_id, AUTOMATIC)                        task_id,
-  CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state);
-
+FUNC(tpl_status, OS_CODE)
+tpl_get_task_state_service(CONST(tpl_task_id, AUTOMATIC) task_id,
+                           CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)
+                               state);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
