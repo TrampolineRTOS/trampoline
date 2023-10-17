@@ -1553,12 +1553,6 @@ template if exists custom_files in config
 
 template if exists custom_code in code
 
-!PROJECT %/stm_structure.c
-%
-write to PROJECT+"/stm_structure.c":
-  template stm_structure_c in code
-end write
-
 if OS::WITHORTI then
   if OS::WITHORTI_S::FILE == "" then
     let OS::WITHORTI_S::FILE := PROJECT + ".orti"
