@@ -1,0 +1,15 @@
+name: Build ViPER (Virtual Processor EmulatoR)
+on: [push, pull_request]
+
+jobs:
+  viper:
+    name: Build ViPER
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build
+        run: make
+        working-directory: viper
