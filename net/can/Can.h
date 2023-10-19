@@ -38,7 +38,8 @@
  */
 typedef struct
 {
-	tpl_can_controller_t **controllers_list;
+	tpl_can_controller_config_t *configs;
+	unsigned int configs_count;
 } Can_ConfigType;
 
 /**
@@ -87,5 +88,31 @@ Std_ReturnType Can_SetBaudrate(uint8 Controller, uint16 BaudRateConfigID);
  * Can_Write that can't be implemented re-entrant (see Can_ReturnType).
  */
 Std_ReturnType Can_Write(Can_HwHandleType Hth, const Can_PduType *PduInfo);
+
+/**
+ * Convert a CAN-FD payload size in bytes to the corresponding CAN Data Length
+ * Code.
+ *
+ * @param length The payload length in bytes.
+ * @param adjusted_length If not NULL, contain on output the payload adjusted
+ * length in bytes.
+ *
+ * @retval 0 if the provided payload length exceeds 64 bytes,
+ * @return The DLC code if the provided payload length is valid.
+ *
+ * @note See https://www.can-cia.org/can-knowledge/can/can-fd for more details.
+ */
+uint32 tpl_can_get_dlc_from_length(uint32 length, uint32 *adjusted_length);
+
+/**
+ * Convert a CAN or CAN-FD DLC code to the corresponding payload length in
+ * bytes.
+ *
+ * @param dlc The CAN or CAN-FD frame DLC field value.
+ *
+ * @retval 0 if the provided DLC value exceeds 0x0F,
+ * @return The payload length in bytes if the provided DLC value is valid.
+ */
+uint32 tpl_can_get_length_from_dlc(uint32 dlc);
 
 #endif

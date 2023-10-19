@@ -84,4 +84,24 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId, const PduInfoType *PduInfoPtr);
  */
 Std_ReturnType CanIf_ReadRxPduData(PduIdType CanIfRxSduId, PduInfoType *CanIfRxInfoPtr);
 
+/**
+ * Ease the filling of a PduInfoType struct from the content of a Can_PduType
+ * struct, and also prepares the Can_PduType content.
+ * This way, it is faster to prepare a CAN frame to be sent with the
+ * CanIf_Transmit() function.
+ *
+ * @param can_pdu A non-initialized CAN PDU structure, it will be filled by this
+ * function.
+ * @param pdu_info A non-initialized generic PDU info structure, it will also
+ * be filled by this function.
+ * @param id_and_flags The CAN ID (standard or extended) ORed with the frame
+ * type flag (use a constant from TPL_CAN_ID_TYPE_xx).
+ * @param payload A pointer to the buffer already containing the frame payload.
+ * @param payload_length The payload length in bytes. The length will be
+ * automatically rounded by the CAN stack if it is of CAN-FD format and should
+ * be adjusted to an available Data Length Code (@see
+ * tpl_can_get_dlc_from_length).
+ */
+void tpl_can_fill_pdu_info(Can_PduType *can_pdu, PduInfoType *pdu_info, Can_IdType id_and_flags, void *payload, uint32 payload_length);
+
 #endif
