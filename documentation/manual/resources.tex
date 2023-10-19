@@ -4,7 +4,7 @@
 \chapter{Resources}
 \label{chap:resources}
 
-\lettrine{A} resource is an object used to protect a critical section in a task or in an ISR and to insure mutual exclusion.
+\lettrine{A} resource is an object used to protect a critical section in a task or in an ISR category 2 and to insure mutual exclusion.
 By using a resource to protect the use of a shared piece of data or a shared hardware device, the programmer avoids race conditions.
 Figure \ref{fig:exampleRaceCondition} shows an example of race condition.
 
@@ -170,7 +170,7 @@ RESOURCE l_res {
 };
 \end{lstlisting}
 
-\warning{Every task and ISR that uses a resource in the C code must declare it in the OIL file. Otherwise \goil\ will compute a wrong priority for the resource and the scheduling of tasks and the execution of ISR will not be as expected.}
+\warning{Every task and ISR category 2 that uses a resource in the C code must declare it in the OIL file. Otherwise \goil\ will compute a wrong priority for the resource and the scheduling of tasks and the execution of ISR will not be as expected.}
 
 \section{Resources services}
 
