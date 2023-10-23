@@ -1,0 +1,39 @@
+%
+#
+# Template to generate an acknowledge sequence
+# 
+
+input(it,obj,DEVICE,DEVICE_KIND)
+
+let UART := [
+  [DEVICE where: @? __item__::VECTOR == NAME ?, @{ NAME : it::NAME }]
+  first
+]
+
+let UART_DESC := [
+  [DEVICE_KIND where: @? __item__::NAME == KIND ?, @{ KIND: UART::KIND }]
+  first
+]
+
+let eventBits := [
+  [UART_DESC::EVENT where: @? exists __item__::ACK default (false) ? ]
+  mapBy:"NAME"
+]
+
+foreach reg in exists UART_DESC::REGISTER default ( @() ) do
+  foreach bit in exists reg::BIT default ( @() ) do
+    if exists eventBits[bit::NAME] then
+      let eventBits[bit::NAME]::ACCESS := @{ REG : reg::NAME, LOC : bit::LOC }
+    end if
+  end foreach
+end foreach
+
+if exists obj::SOURCE_S then
+  foreach ev in obj::SOURCE_S::EVFLAG do
+    if exists eventBits[ev::VALUE] then
+%
+  /* Clear the % !ev::VALUE % flag */
+  % !UART::NAME %->% !eventBits[ev::VALUE]::ACCESS::REG % = ~(1U << % !eventBits[ev::VALUE]::ACCESS::LOC %) & 0x3FFU;%
+    end if
+  end foreach
+end if

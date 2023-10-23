@@ -1,0 +1,6 @@
+alarms
+build
+*_exe
+*.bin
+*.map
+*.py

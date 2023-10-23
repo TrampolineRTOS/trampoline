@@ -1,0 +1,64 @@
+%
+#
+# Template to generate a dispatch sequence for each
+# event of the UART without the CTS event, that is UART4 and 5.
+# 
+
+input(it,obj,DEVICE,DEVICE_KIND)
+
+let UART := [
+  [DEVICE where: @? __item__::VECTOR == NAME ?, @{ NAME : it::NAME }]
+  first
+]
+
+let UART_DESC := [
+  [DEVICE_KIND where: @? __item__::NAME == KIND ?, @{ KIND: UART::KIND }]
+  first
+]
+
+let eventBits := [UART_DESC::EVENT mapBy:"NAME"]
+
+let enableSet := @!!
+foreach ev in eventBits do
+  foreach en in exists ev::ENABLE default ( @() ) do
+    let enableSet += en::VALUE
+  end foreach
+end foreach
+
+let enableBits := @[]
+
+foreach reg in exists UART_DESC::REGISTER default ( @() ) do
+  foreach bit in exists reg::BIT default ( @() ) do
+    if exists eventBits[bit::NAME] then
+      let eventBits[bit::NAME]::ACCESS := @{ REG : reg::NAME, LOC : bit::LOC }
+    else
+      if [enableSet contains: bit::NAME] then
+        let enableBits[bit::NAME] := @{ REG : reg::NAME, LOC : bit::LOC }
+      end if
+    end if
+  end foreach
+end foreach
+
+if exists obj::SOURCE_S then
+  let flagTestList := @()
+  foreach ev in obj::SOURCE_S::EVFLAG do
+    let test := "((" + UART::NAME + "->" + eventBits[ev::VALUE]::ACCESS::REG +
+      " & (1U << " + [eventBits[ev::VALUE]::ACCESS::LOC string] +
+      "))"
+    foreach enBit in eventBits[ev::VALUE]::ENABLE
+    before
+      let test += " && ("
+    do
+      let test += UART::NAME + "->" + enableBits[enBit::VALUE]::REG +
+        " & (1U << " + [enableBits[enBit::VALUE]::LOC string] + ")"
+    after
+      let test += ")"
+    end foreach
+    let test += ")"
+    let flagTestList += test
+  end foreach
+%
+  if (% ![flagTestList componentsJoinedByString: " || "] %)
+    % !obj::NAME %_function();%
+end if
+

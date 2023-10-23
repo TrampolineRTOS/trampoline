@@ -1,0 +1,96 @@
+/*
+ * @file timer
+ *
+ * @section desc File description
+ *
+ * A simple application that uses the timer 2 (TIM2) to trigger an ISR2.
+ *
+ * A periodic task runs every 100ms and programs timer 2as a one shot timer
+ * to trigger an ISR2 after 30ms. the ISR2 toggles a LED.
+ * 
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 300 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 200 ;
+    } ;
+};
+
+CPU timer {
+  OS config {
+    STATUS = EXTENDED;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "timer.c";
+      APP_NAME = "timer_exe";
+      CFLAGS  = "-O0"; 
+      LDFLAGS = "-Map=timer.map";
+      COMPILER = "arm-none-eabi-gcc";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+      
+      LIBRARY = gpt;
+      
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE stdAppmode {};
+  
+  TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+  ALARM blink_alarm {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = blink;
+    };
+    AUTOSTART = TRUE {
+      ALARMTIME = 100;
+      CYCLETIME = 100;
+      APPMODE = stdAppmode;
+    };
+  };
+
+  ISR isr_timer {
+    CATEGORY = 2;
+    PRIORITY = 1;
+    SOURCE = TIM2_IRQ;
+  };
+};
