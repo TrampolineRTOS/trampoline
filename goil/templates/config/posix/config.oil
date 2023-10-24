@@ -70,10 +70,15 @@ CPU posix {
     PATH = "../viper";
   };
 
+  LIBRARY net_can_demo_driver {
+    GLOBAL = TRUE;
+    PATH = "net/can/demo_driver";
+  };
+
   LIBRARY can {
-    PATH = "../net/can";
-    CFILE = "tpl_can_core.c";
-    CFILE = "../../machines/posix/tpl_can_demo_driver.c";
+    GLOBAL = TRUE;
+    NEEDS = net_can_demo_driver;
+    PATH = "net/can";
   };
 };
 

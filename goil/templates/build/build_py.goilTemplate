@@ -215,8 +215,14 @@ includeDirs += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]%
   end if
 end foreach
 
-foreach library in exists USEDLIB default ( @() ) do%
+let GLOBAL_LIB_PATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH + "/libraries/"
+
+foreach library in exists USEDLIB default ( @() ) do
+  if library::GLOBAL == true then%
+includeDirs += ["-I","% !GLOBAL_LIB_PATH + library::PATH %"]%
+  else%
 includeDirs += ["-I","% !MACHINESPATH + "/" + library::PATH %"]%
+  end if
 end foreach
 %
 if with_ioc:
@@ -478,17 +484,23 @@ foreach library in exists USEDLIB default ( @() ) do
   if not exists library::CFILE then let library::CFILE := @() end if
   if not exists library::CPPFILE then let library::CPPFILE := @() end if
   if not exists library::ASFILE then let library::ASFILE := @() end if
+  let libpath := ""
+  if library::GLOBAL then
+    let libpath := "libraries/" + library::PATH + "/"
+  else
+    let libpath := "libraries/" + library::PATH + "/"
+  end if
   foreach file in library::CFILE do
 %
-cSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !libpath + file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in library::CPPFILE do
 %
-cppSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
+cppSourceList.append(projfile.ProjectFile("% !libpath + file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in library::ASFILE do
 %
-sSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
+sSourceList.append(projfile.ProjectFile("% !libpath + file::VALUE %", trampoline_base_path))%
   end foreach
 end foreach
 %

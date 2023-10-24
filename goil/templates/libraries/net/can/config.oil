@@ -1,0 +1,7 @@
+CPU net_can_files {
+  LIBRARY can {
+    PATH = "net/can";
+    CFILE = "tpl_can_core.c";
+  };
+};
+

@@ -1,0 +1,11 @@
+IMPLEMENTATION libraries {
+    LIBRARY [] {
+    LIBRARY_TYPE NEEDS [];
+    STRING CHEADER[];
+    STRING CPPHEADER[];
+    STRING PATH;
+    STRING CFILE[];
+    STRING CPPFILE[];
+    STRING ASFILE[];
+  };
+};
