@@ -7,7 +7,6 @@ CPU can_task {
 			APP_SRC = "can_demo.c";
 			TRAMPOLINE_BASE_PATH = "../../..";
 			CFLAGS = "-W -Wall";
-			LDFLAGS = "-lrt -lpthread";
 			APP_NAME = "can_demo_exe";
 			LINKER = "gcc";
 			CFLAGS = "-W -Wall";
