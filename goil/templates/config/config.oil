@@ -69,10 +69,11 @@ IMPLEMENTATION trampoline_common {
    * Libraries to add to the build system
    */
   LIBRARY [] {
-    LIBRARY_TYPE NEEDS [];
+    BOOLEAN GLOBAL = FALSE;
+    STRING PATH;
+    LIBRARY_TYPE NEEDS[];
     STRING CHEADER[];
     STRING CPPHEADER[];
-    STRING PATH;
     STRING CFILE[];
     STRING CPPFILE[];
     STRING ASFILE[];

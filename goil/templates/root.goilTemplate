@@ -27,7 +27,7 @@ import "vectors"
 #------------------------------------------------------------------------------*
 # Check goil version is ok
 #
-let NEEDED_VERSION := "3.1.12"
+let NEEDED_VERSION := "3.1.13"
 
 if version() != NEEDED_VERSION then
   error here : "Goil version " + NEEDED_VERSION + " required"
@@ -1393,15 +1393,35 @@ end foreach
 # build the library tree dependencies
 #
 let AVAILABLELIB := @[]
-if exists LIBRARY then
-  let AVAILABLELIB := mapof LIBRARY by NAME
-end if
+
+#
+# Libraries defined in the target tree structure
+#
+foreach lib in exists LIBRARY default ( @() ) do
+  if lib::GLOBAL == false then
+    let AVAILABLELIB[lib::NAME] := lib
+  else
+    # get the global lib path and parse the oil
+    let glib := [lib::PATH + "/config.oil" parseOIL]
+    foreach gl in exists glib::LIBRARY default ( @() ) do
+      let gl::GLOBAL := true
+      if exists lib::NEEDS then
+        let gl::NEEDS := lib::NEEDS
+      end if
+      let AVAILABLELIB[lib::NAME] := gl
+    end foreach
+  end if
+end foreach
 
 let USEDLIB := @[]
 foreach lib in exists OS::BUILD_S::LIBRARY default (@()) do
   let key := lib::VALUE
   if not exists USEDLIB[key] then
-    let USEDLIB[key] := AVAILABLELIB[key]
+    if exists AVAILABLELIB[key] then
+      let USEDLIB[key] := AVAILABLELIB[key]
+    else
+      error lib : "referenced library does not exist"
+    end if
   end if
 end foreach
 
