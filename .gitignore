@@ -3,16 +3,16 @@
 tmpExamplesCompilation
 ## Vim...
 .*.swp
-##python
+## python
 *.pyc
-##Xcode related file
+## Xcode related file
 *.pbxproj
-##build stuff
+## build stuff
 *.o
 *.dep
-##Mac OS X stuff
+## Mac OS X stuff
 .DS_Store
-##LaTeX stuff
+## LaTeX stuff
 *.aux
 *.log
 *.idx
@@ -25,3 +25,5 @@ tmpExamplesCompilation
 *.fls
 *.ilg
 *.ind
+## VSCode
+.vscode
