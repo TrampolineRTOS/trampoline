@@ -10,6 +10,410 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Phase 1: @arxmlElementValue  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_arxmlElementValue : public AC_GALGAS_value_class {
+//--------------------------------- Default constructor
+  public: GALGAS_arxmlElementValue (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_arxmlElementValue constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_arxmlElementValue * ptr (void) const {
+    return (const cPtr_arxmlElementValue *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_arxmlElementValue (const cPtr_arxmlElementValue * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_lstring readProperty_type (void) const ;
+
+  public: class GALGAS_lstring readProperty_text (void) const ;
+
+  public: class GALGAS_arxmlElementValueMap readProperty_elements (void) const ;
+
+  public: class GALGAS_arxmlAttributeMap readProperty_attributes (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_arxmlElementValue extractObject (const GALGAS_object & inObject,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_arxmlElementValue constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                 const class GALGAS_lstring & inOperand1,
+                                                                 const class GALGAS_arxmlElementValueMap & inOperand2,
+                                                                 const class GALGAS_arxmlAttributeMap & inOperand3
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValue & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setAttributes (class GALGAS_arxmlAttributeMap inArgument0
+                                                      COMMA_LOCATION_ARGS) ;
+
+  public: VIRTUAL_IN_DEBUG void setter_setElements (class GALGAS_arxmlElementValueMap inArgument0
+                                                    COMMA_LOCATION_ARGS) ;
+
+  public: VIRTUAL_IN_DEBUG void setter_setText (class GALGAS_lstring inArgument0
+                                                COMMA_LOCATION_ARGS) ;
+
+  public: VIRTUAL_IN_DEBUG void setter_setType (class GALGAS_lstring inArgument0
+                                                COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_arxmlElementValue class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValue ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @arxmlElementValue class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_arxmlElementValue : public acPtr_class {
+
+//--- Extension getter getAttributeValueFromElement
+  public: virtual class GALGAS_lstring getter_getAttributeValueFromElement (const class GALGAS_string elementName,
+           const class GALGAS_string attributeName,
+           C_Compiler * COMMA_LOCATION_ARGS) const ;
+
+//--- Extension getter getTextFromElement
+  public: virtual class GALGAS_lstring getter_getTextFromElement (const class GALGAS_string elementName,
+           C_Compiler * COMMA_LOCATION_ARGS) const ;
+
+//--- Extension getter hasElement
+  public: virtual class GALGAS_bool getter_hasElement (const class GALGAS_string elementName,
+           C_Compiler * COMMA_LOCATION_ARGS) const ;
+
+//--- Extension method getAllTextsInSelf
+  public: virtual void method_getAllTextsInSelf (class GALGAS_string separator,
+           class GALGAS_lstring & outString,
+           C_Compiler * COMMA_LOCATION_ARGS) ;
+
+//--- Extension method getElement
+  public: virtual void method_getElement (class GALGAS_string elementName,
+           class GALGAS_arxmlElementValue & outElement,
+           C_Compiler * COMMA_LOCATION_ARGS) ;
+
+//--- Extension method getElements
+  public: virtual void method_getElements (class GALGAS_string elementName,
+           class GALGAS_arxmlElementValueList & outElements,
+           C_Compiler * COMMA_LOCATION_ARGS) ;
+
+//--- Extension method getElementsByPath
+  public: virtual void method_getElementsByPath (class GALGAS_stringlist path,
+           class GALGAS_arxmlElementValueList & outElements,
+           C_Compiler * COMMA_LOCATION_ARGS) ;
+
+
+//--- Properties
+  public: GALGAS_lstring mProperty_type ;
+  public: GALGAS_lstring mProperty_text ;
+  public: GALGAS_arxmlElementValueMap mProperty_elements ;
+  public: GALGAS_arxmlAttributeMap mProperty_attributes ;
+
+//--- Constructor
+  public: cPtr_arxmlElementValue (const GALGAS_lstring & in_type,
+                                  const GALGAS_lstring & in_text,
+                                  const GALGAS_arxmlElementValueMap & in_elements,
+                                  const GALGAS_arxmlAttributeMap & in_attributes
+                                  COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_type (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setType (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
+  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_text (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setText (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
+  public: VIRTUAL_IN_DEBUG GALGAS_arxmlElementValueMap getter_elements (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setElements (GALGAS_arxmlElementValueMap inValue COMMA_LOCATION_ARGS) ;
+  public: VIRTUAL_IN_DEBUG GALGAS_arxmlAttributeMap getter_attributes (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setAttributes (GALGAS_arxmlAttributeMap inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @arxmlElementValueList_2D_element struct
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
+//--------------------------------- Properties
+  public: GALGAS_arxmlElementValue mProperty_value ;
+  public: inline GALGAS_arxmlElementValue readProperty_value (void) const {
+    return mProperty_value ;
+  }
+
+//--------------------------------- Accessors
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_arxmlElementValueList_2D_element constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Default constructor
+  public: GALGAS_arxmlElementValueList_2D_element (void) ;
+
+//--------------------------------- Property setters
+  public: inline void setter_setValue (const GALGAS_arxmlElementValue & inValue COMMA_UNUSED_LOCATION_ARGS) {
+    mProperty_value = inValue ;
+  }
+
+//--------------------------------- Virtual destructor (in debug mode)
+  public: virtual ~ GALGAS_arxmlElementValueList_2D_element (void) ;
+
+//--------------------------------- Native constructor
+  public: GALGAS_arxmlElementValueList_2D_element (const GALGAS_arxmlElementValue & in_value) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_arxmlElementValueList_2D_element extractObject (const GALGAS_object & inObject,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_arxmlElementValueList_2D_element constructor_new (const class GALGAS_arxmlElementValue & inOperand0
+                                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Implementation of getter 'description'
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
+                                              const int32_t inIndentation) const override ;
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValueList_2D_element & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_arxmlElementValueList_2D_element class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueList_2D_element ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//LEXIQUE arxmlmetaparser_5F_scanner
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+#include "galgas2/C_Lexique.h"
+
+//----------------------------------------------------------------------------------------------------------------------
+//                    E X T E R N    R O U T I N E S
+//----------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------
+//                    E X T E R N    F U N C T I O N S
+//----------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------
+//                       T O K E N    C L A S S
+//----------------------------------------------------------------------------------------------------------------------
+
+class cTokenFor_arxmlmetaparser_5F_scanner : public cToken {
+  public: C_String mLexicalAttribute_tokenString ;
+
+  public: cTokenFor_arxmlmetaparser_5F_scanner (void) ;
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                     S C A N N E R    C L A S S
+//----------------------------------------------------------------------------------------------------------------------
+
+class C_Lexique_arxmlmetaparser_5F_scanner : public C_Lexique {
+//--- Constructors
+  public: C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
+                       const C_String & inSourceFileName
+                       COMMA_LOCATION_ARGS) ;
+
+  public: C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
+                       const C_String & inSourceString,
+                       const C_String & inStringForError
+                       COMMA_LOCATION_ARGS) ;
+
+//--- Instrospection
+  public: static GALGAS_stringlist symbols (LOCATION_ARGS) ;
+
+//--- Declaring a protected virtual destructor enables the compiler to raise
+//    an error if a direct delete is performed; only the static method
+//    C_SharedObject::detachPointer may invoke delete.
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    protected: virtual ~ C_Lexique_arxmlmetaparser_5F_scanner (void) {}
+  #endif
+
+//--- Scanner mode for template scanner
+  private: int32_t mMatchedTemplateDelimiterIndex ;
+
+
+
+//--- Terminal symbols enumeration
+  public: enum {kToken_,
+   kToken_comment,
+   kToken_xmlTag,
+   kToken_xmlTagValue,
+   kToken_identifier,
+   kToken__3C_,
+   kToken__3C_xsd_3A_,
+   kToken__3C__2F_xsd_3A_,
+   kToken__3C__3F_xml,
+   kToken__3E_,
+   kToken__3F__3E_,
+   kToken__2F__3E_,
+   kToken__3C__2F_,
+   kToken__3D_,
+   kToken_group,
+   kToken_annotation,
+   kToken_appinfo,
+   kToken_attribute,
+   kToken_attributeGroup,
+   kToken_choice,
+   kToken_complexType,
+   kToken_documentation,
+   kToken_element,
+   kToken_enumeration,
+   kToken_extension,
+   kToken_import,
+   kToken_maxLength,
+   kToken_pattern,
+   kToken_restriction,
+   kToken_schema,
+   kToken_sequence,
+   kToken_simpleContent,
+   kToken_simpleType,
+   kToken_whiteSpace,
+   kToken_abstract,
+   kToken_attributeFormDefault,
+   kToken_attributeRef,
+   kToken_base,
+   kToken_category,
+   kToken_CATEGORY,
+   kToken_color,
+   kToken_customType,
+   kToken_elementFormDefault,
+   kToken_encoding,
+   kToken_enforceMinMultiplicity,
+   kToken_globalElement,
+   kToken_id,
+   kToken_latestBindingTime,
+   kToken_maxOccurs,
+   kToken_minOccurs,
+   kToken_mixed,
+   kToken_name,
+   kToken_namePlural,
+   kToken_namespace,
+   kToken_noteType,
+   kToken_nsPrefix,
+   kToken_qualifiedName,
+   kToken_recommendedPackage,
+   kToken_ref,
+   kToken_roleElement,
+   kToken_roleWrapperElement,
+   kToken_schemaLocation,
+   kToken_sequenceOffset,
+   kToken_source,
+   kToken_Splitkey,
+   kToken_Status,
+   kToken_StatusRevisionBegin,
+   kToken_targetNamespace,
+   kToken_type,
+   kToken_typeElement,
+   kToken_typeWrapperElement,
+   kToken_use,
+   kToken_value,
+   kToken_version,
+   kToken_xmlns_3A_AR,
+   kToken_xmlns_3A_xsd,
+   kToken_TODO} ;
+
+//--- Key words table 'xmlDelimitorsList'
+  public: static int16_t search_into_xmlDelimitorsList (const C_String & inSearchedString) ;
+
+//--- Key words table 'keyWordList'
+  public: static int16_t search_into_keyWordList (const C_String & inSearchedString) ;
+  
+
+//--- Assign from attribute
+  public: GALGAS_lstring synthetizedAttribute_tokenString (void) const ;
+
+
+//--- Attribute access
+  public: C_String attributeValue_tokenString (void) const ;
+
+
+//--- Indexing keys
+
+//--- Parse lexical token
+  protected: void internalParseLexicalToken (cTokenFor_arxmlmetaparser_5F_scanner & token) ;
+  protected: virtual bool parseLexicalToken (void) override ;
+
+//--- Get terminal message
+  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const override ;
+
+//--- Get terminal count
+  public: virtual int16_t terminalVocabularyCount (void) const override { return 76 ; }
+
+//--- Get Token String
+  public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;
+
+//--- Enter Token
+  protected: void enterToken (cTokenFor_arxmlmetaparser_5F_scanner & ioToken) ;
+
+//--- Style name for Latex
+  protected: virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const override ;
+  protected: virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const override ;
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Phase 1: @arxmlMetaClassMap map
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -33,7 +437,7 @@ class GALGAS_arxmlMetaClassMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaClassMap extractObject (const GALGAS_object & inObject,
@@ -51,6 +455,11 @@ class GALGAS_arxmlMetaClassMap : public AC_GALGAS_map {
                                                      const class GALGAS_arxmlMetaClass & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_arxmlMetaClassMap add_operation (const GALGAS_arxmlMetaClassMap & inOperand,
+                                                                   C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_insertKey (class GALGAS_lstring constinArgument0,
@@ -92,7 +501,7 @@ class GALGAS_arxmlMetaClassMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_arxmlMetaClassMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                               const GALGAS_string & inKey
                                                                                               COMMA_LOCATION_ARGS) ;
@@ -161,7 +570,7 @@ class GALGAS_arxmlMetaClass : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaClass extractObject (const GALGAS_object & inObject,
@@ -212,7 +621,7 @@ class GALGAS_arxmlMetaClass : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaClass class
 
@@ -268,8 +677,8 @@ class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlMetaClassMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -296,7 +705,7 @@ class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaClassMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -310,7 +719,7 @@ class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlMetaClassMap_2D_element & inOperand) const ;
 
@@ -324,7 +733,7 @@ class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaClassMap_2D_element class
 
@@ -366,7 +775,7 @@ class GALGAS_arxmlMetaAttributeList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaAttributeList extractObject (const GALGAS_object & inObject,
@@ -454,7 +863,7 @@ class GALGAS_arxmlMetaAttributeList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_arxmlMetaAttributeList ;
@@ -500,7 +909,7 @@ class GALGAS_arxmlMetaElementList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaElementList extractObject (const GALGAS_object & inObject,
@@ -588,7 +997,7 @@ class GALGAS_arxmlMetaElementList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_arxmlMetaElementList ;
@@ -717,7 +1126,7 @@ class GALGAS_arxmlMetaElement : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaElement extractObject (const GALGAS_object & inObject,
@@ -760,7 +1169,7 @@ class GALGAS_arxmlMetaElement : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaElement class
 
@@ -885,7 +1294,7 @@ class GALGAS_arxmlMetaAttribute : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaAttribute extractObject (const GALGAS_object & inObject,
@@ -924,7 +1333,7 @@ class GALGAS_arxmlMetaAttribute : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaAttribute class
 
@@ -1056,8 +1465,8 @@ void extensionMethod_display (const class GALGAS_arxmlMetaClassMap inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_display (class cPtr_arxmlMetaClass * inObject,
-                                  GALGAS_arxmlMetaClassMap in_classMap,
-                                  GALGAS_string & io_ioString,
+                                  class GALGAS_arxmlMetaClassMap in_classMap,
+                                  class GALGAS_string & io_ioString,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -1074,7 +1483,7 @@ class GALGAS_arxmlMetaClassGraph : public AC_GALGAS_graph {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaClassGraph extractObject (const GALGAS_object & inObject,
@@ -1140,7 +1549,7 @@ class GALGAS_arxmlMetaClassGraph : public AC_GALGAS_graph {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaClassGraph class
 
@@ -1170,7 +1579,7 @@ class GALGAS_arxmlMetaClasslist : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaClasslist extractObject (const GALGAS_object & inObject,
@@ -1258,7 +1667,7 @@ class GALGAS_arxmlMetaClasslist : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_arxmlMetaClasslist ;
@@ -1297,8 +1706,8 @@ class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlMetaClasslist_2D_element constructor_default (LOCATION_ARGS) ;
@@ -1320,7 +1729,7 @@ class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaClasslist_2D_element extractObject (const GALGAS_object & inObject,
@@ -1333,7 +1742,7 @@ class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlMetaClasslist_2D_element & inOperand) const ;
 
@@ -1347,7 +1756,7 @@ class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaClasslist_2D_element class
 
@@ -1370,8 +1779,8 @@ class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlMetaElementList_2D_element constructor_default (LOCATION_ARGS) ;
@@ -1393,7 +1802,7 @@ class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaElementList_2D_element extractObject (const GALGAS_object & inObject,
@@ -1406,7 +1815,7 @@ class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlMetaElementList_2D_element & inOperand) const ;
 
@@ -1420,7 +1829,7 @@ class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaElementList_2D_element class
 
@@ -1443,8 +1852,8 @@ class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlMetaAttributeList_2D_element constructor_default (LOCATION_ARGS) ;
@@ -1466,7 +1875,7 @@ class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaAttributeList_2D_element extractObject (const GALGAS_object & inObject,
@@ -1479,7 +1888,7 @@ class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlMetaAttributeList_2D_element & inOperand) const ;
 
@@ -1493,7 +1902,7 @@ class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaAttributeList_2D_element class
 
@@ -1545,14 +1954,14 @@ class GALGAS_restrictionType : public AC_GALGAS_root {
   private: enumeration mEnum ;
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const { return kNotBuilt != mEnum ; }
-  public: VIRTUAL_IN_DEBUG inline void drop (void) { mEnum = kNotBuilt ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return kNotBuilt != mEnum ; }
+  public: VIRTUAL_IN_DEBUG inline void drop (void) override { mEnum = kNotBuilt ; }
   public: inline enumeration enumValue (void) const { return mEnum ; }
 
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_restrictionType extractObject (const GALGAS_object & inObject,
@@ -1570,7 +1979,7 @@ class GALGAS_restrictionType : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_restrictionType & inOperand) const ;
 
@@ -1600,7 +2009,7 @@ class GALGAS_restrictionType : public AC_GALGAS_root {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_restrictionType class
 
@@ -1632,14 +2041,14 @@ class GALGAS_restrictionBaseType : public AC_GALGAS_root {
   private: enumeration mEnum ;
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const { return kNotBuilt != mEnum ; }
-  public: VIRTUAL_IN_DEBUG inline void drop (void) { mEnum = kNotBuilt ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return kNotBuilt != mEnum ; }
+  public: VIRTUAL_IN_DEBUG inline void drop (void) override { mEnum = kNotBuilt ; }
   public: inline enumeration enumValue (void) const { return mEnum ; }
 
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_restrictionBaseType extractObject (const GALGAS_object & inObject,
@@ -1657,7 +2066,7 @@ class GALGAS_restrictionBaseType : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_restrictionBaseType & inOperand) const ;
 
@@ -1687,7 +2096,7 @@ class GALGAS_restrictionBaseType : public AC_GALGAS_root {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_restrictionBaseType class
 
@@ -1703,10 +2112,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_restrictionBaseType
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_execute (class cPtr_gtlTemplate * inObject,
-                                  GALGAS_gtlContext & io_context,
-                                  GALGAS_gtlData & io_vars,
-                                  GALGAS_library & io_lib,
-                                  GALGAS_string & io_outputString,
+                                  class GALGAS_gtlContext & io_context,
+                                  class GALGAS_gtlData & io_vars,
+                                  class GALGAS_library & io_lib,
+                                  class GALGAS_string & io_outputString,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -1717,7 +2126,7 @@ void callExtensionMethod_execute (class cPtr_gtlTemplate * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_functionExists (const cPtr_library * inObject,
-                                                      const GALGAS_lstring constin_name,
+                                                      const class GALGAS_lstring constin_name,
                                                       class C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
@@ -1728,7 +2137,7 @@ class GALGAS_bool callExtensionGetter_functionExists (const cPtr_library * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlFunction callExtensionGetter_getFunction (const cPtr_library * inObject,
-                                                          const GALGAS_lstring constin_name,
+                                                          const class GALGAS_lstring constin_name,
                                                           class C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) ;
 
@@ -1764,8 +2173,8 @@ void callExtensionSetter_putFunction (class cPtr_library * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_getterExists (const cPtr_library * inObject,
-                                                    const GALGAS_string constin_type,
-                                                    const GALGAS_lstring constin_name,
+                                                    const class GALGAS_string constin_type,
+                                                    const class GALGAS_lstring constin_name,
                                                     class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
@@ -1776,8 +2185,8 @@ class GALGAS_bool callExtensionGetter_getterExists (const cPtr_library * inObjec
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlGetter callExtensionGetter_getGetter (const cPtr_library * inObject,
-                                                      const GALGAS_string constin_type,
-                                                      const GALGAS_lstring constin_name,
+                                                      const class GALGAS_string constin_type,
+                                                      const class GALGAS_lstring constin_name,
                                                       class C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
@@ -1861,8 +2270,8 @@ void callExtensionSetter_putGetter (class cPtr_library * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_setterExists (const cPtr_library * inObject,
-                                                    const GALGAS_string constin_type,
-                                                    const GALGAS_lstring constin_name,
+                                                    const class GALGAS_string constin_type,
+                                                    const class GALGAS_lstring constin_name,
                                                     class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
@@ -1873,8 +2282,8 @@ class GALGAS_bool callExtensionGetter_setterExists (const cPtr_library * inObjec
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlSetter callExtensionGetter_getSetter (const cPtr_library * inObject,
-                                                      const GALGAS_string constin_type,
-                                                      const GALGAS_lstring constin_name,
+                                                      const class GALGAS_string constin_type,
+                                                      const class GALGAS_lstring constin_name,
                                                       class C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
@@ -1957,7 +2366,7 @@ void callExtensionSetter_putSetter (class cPtr_library * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasImport (const cPtr_library * inObject,
-                                                 const GALGAS_string constin_importPath,
+                                                 const class GALGAS_string constin_importPath,
                                                  class C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
@@ -2044,10 +2453,10 @@ class GALGAS_location callExtensionGetter_location (const cPtr_gtlExpression * i
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_eval (const class cPtr_gtlExpression * inObject,
-                                               const GALGAS_gtlContext constin_context,
-                                               const GALGAS_gtlData constin_vars,
-                                               const GALGAS_library constin_lib,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlContext constin_context,
+                                               const class GALGAS_gtlData constin_vars,
+                                               const class GALGAS_library constin_lib,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2057,7 +2466,7 @@ class GALGAS_gtlData callExtensionGetter_eval (const class cPtr_gtlExpression * 
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string callExtensionGetter_string (const class cPtr_gtlData * inObject,
-                                                C_Compiler * inCompiler
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2067,7 +2476,7 @@ class GALGAS_string callExtensionGetter_string (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_lstring callExtensionGetter_lstring (const class cPtr_gtlData * inObject,
-                                                  C_Compiler * inCompiler
+                                                  class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2077,7 +2486,7 @@ class GALGAS_lstring callExtensionGetter_lstring (const class cPtr_gtlData * inO
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bigint callExtensionGetter_int (const class cPtr_gtlData * inObject,
-                                             C_Compiler * inCompiler
+                                             class C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2087,7 +2496,7 @@ class GALGAS_bigint callExtensionGetter_int (const class cPtr_gtlData * inObject
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_double callExtensionGetter_float (const class cPtr_gtlData * inObject,
-                                               C_Compiler * inCompiler
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2097,7 +2506,7 @@ class GALGAS_double callExtensionGetter_float (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_plusOp (const class cPtr_gtlData * inObject,
-                                                 C_Compiler * inCompiler
+                                                 class C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2107,7 +2516,7 @@ class GALGAS_gtlData callExtensionGetter_plusOp (const class cPtr_gtlData * inOb
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_minusOp (const class cPtr_gtlData * inObject,
-                                                  C_Compiler * inCompiler
+                                                  class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2117,7 +2526,7 @@ class GALGAS_gtlData callExtensionGetter_minusOp (const class cPtr_gtlData * inO
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_notOp (const class cPtr_gtlData * inObject,
-                                                C_Compiler * inCompiler
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2127,8 +2536,8 @@ class GALGAS_gtlData callExtensionGetter_notOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_addOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2138,8 +2547,8 @@ class GALGAS_gtlData callExtensionGetter_addOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_subOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2149,8 +2558,8 @@ class GALGAS_gtlData callExtensionGetter_subOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_mulOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2160,8 +2569,8 @@ class GALGAS_gtlData callExtensionGetter_mulOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_divOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2171,8 +2580,8 @@ class GALGAS_gtlData callExtensionGetter_divOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_modOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2182,8 +2591,8 @@ class GALGAS_gtlData callExtensionGetter_modOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_andOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2193,8 +2602,8 @@ class GALGAS_gtlData callExtensionGetter_andOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_orOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2204,8 +2613,8 @@ class GALGAS_gtlData callExtensionGetter_orOp (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_xorOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2215,8 +2624,8 @@ class GALGAS_gtlData callExtensionGetter_xorOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_slOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2226,8 +2635,8 @@ class GALGAS_gtlData callExtensionGetter_slOp (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_srOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2237,8 +2646,8 @@ class GALGAS_gtlData callExtensionGetter_srOp (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_neqOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData constin_right,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_gtlData constin_right,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2248,8 +2657,8 @@ class GALGAS_gtlData callExtensionGetter_neqOp (const class cPtr_gtlData * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_eqOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2259,8 +2668,8 @@ class GALGAS_gtlData callExtensionGetter_eqOp (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_leOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2270,8 +2679,8 @@ class GALGAS_gtlData callExtensionGetter_leOp (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_geOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2281,7 +2690,7 @@ class GALGAS_gtlData callExtensionGetter_geOp (const class cPtr_gtlData * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_type callExtensionGetter_embeddedType (const class cPtr_gtlData * inObject,
-                                                    C_Compiler * inCompiler
+                                                    class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2291,8 +2700,8 @@ class GALGAS_type callExtensionGetter_embeddedType (const class cPtr_gtlData * i
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_addMyValue (class cPtr_gtlData * inObject,
-                                     GALGAS_objectlist & io_objectList,
-                                     C_Compiler * inCompiler
+                                     class GALGAS_objectlist & io_objectList,
+                                     class C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2302,11 +2711,11 @@ void callExtensionMethod_addMyValue (class cPtr_gtlData * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_performGetter (const class cPtr_gtlData * inObject,
-                                                        const GALGAS_lstring constin_methodName,
-                                                        const GALGAS_gtlDataList constin_arguments,
-                                                        const GALGAS_gtlContext constin_context,
-                                                        const GALGAS_library constin_lib,
-                                                        C_Compiler * inCompiler
+                                                        const class GALGAS_lstring constin_methodName,
+                                                        const class GALGAS_gtlDataList constin_arguments,
+                                                        const class GALGAS_gtlContext constin_context,
+                                                        const class GALGAS_library constin_lib,
+                                                        class C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2345,9 +2754,9 @@ void callExtensionSetter_performSetter (class cPtr_gtlData * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_structField (class cPtr_gtlData * inObject,
-                                      const GALGAS_lstring constin_name,
-                                      GALGAS_gtlData & out_result,
-                                      GALGAS_bool & out_found,
+                                      const class GALGAS_lstring constin_name,
+                                      class GALGAS_gtlData & out_result,
+                                      class GALGAS_bool & out_found,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 
@@ -2358,7 +2767,7 @@ void callExtensionMethod_structField (class cPtr_gtlData * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_resultField (const cPtr_gtlData * inObject,
-                                                      const GALGAS_lstring constin_name,
+                                                      const class GALGAS_lstring constin_name,
                                                       class C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
@@ -2419,7 +2828,7 @@ void callExtensionSetter_deleteStructField (class cPtr_gtlData * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasStructField (const cPtr_gtlData * inObject,
-                                                      const GALGAS_lstring constin_name,
+                                                      const class GALGAS_lstring constin_name,
                                                       class C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
 
@@ -2450,8 +2859,8 @@ class GALGAS_gtlStruct callExtensionGetter_overriddenMap (const cPtr_gtlData * i
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_mapItem (class cPtr_gtlData * inObject,
-                                  const GALGAS_lstring constin_name,
-                                  GALGAS_gtlData & out_result,
+                                  const class GALGAS_lstring constin_name,
+                                  class GALGAS_gtlData & out_result,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -2462,7 +2871,7 @@ void callExtensionMethod_mapItem (class cPtr_gtlData * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasMapItem (const cPtr_gtlData * inObject,
-                                                  const GALGAS_lstring constin_name,
+                                                  const class GALGAS_lstring constin_name,
                                                   class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
@@ -2488,123 +2897,6 @@ void enterExtensionSetter_setMapItem (const int32_t inClassIndex,
 void callExtensionSetter_setMapItem (class cPtr_gtlData * inObject,
                                      const GALGAS_lstring constin_name,
                                      const GALGAS_gtlData constin_data,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData deleteMapItem'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_deleteMapItem) (class cPtr_gtlData * inObject,
-                                                                const class GALGAS_lstring constinArgument0,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_deleteMapItem (const int32_t inClassIndex,
-                                         extensionSetterSignature_gtlData_deleteMapItem inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_deleteMapItem (class cPtr_gtlData * inObject,
-                                        const GALGAS_lstring constin_name,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension method '@gtlData itemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionMethod_itemAtIndex (class cPtr_gtlData * inObject,
-                                      GALGAS_gtlData & out_result,
-                                      const GALGAS_gtlInt constin_index,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension getter '@gtlData hasItemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
-                                                      const GALGAS_gtlInt constin_index,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData setItemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_setItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                 const class GALGAS_gtlData constinArgument0,
-                                                                 const class GALGAS_gtlInt constinArgument1,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
-                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
-                                         const GALGAS_gtlData constin_data,
-                                         const GALGAS_gtlInt constin_index,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData deleteItemAtIndex'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_deleteItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlInt constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_deleteItemAtIndex (const int32_t inClassIndex,
-                                             extensionSetterSignature_gtlData_deleteItemAtIndex inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_deleteItemAtIndex (class cPtr_gtlData * inObject,
-                                            const GALGAS_gtlInt constin_index,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlData appendItem'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlData_appendItem) (class cPtr_gtlData * inObject,
-                                                             const class GALGAS_gtlData constinArgument0,
-                                                             class C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_appendItem (const int32_t inClassIndex,
-                                      extensionSetterSignature_gtlData_appendItem inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_appendItem (class cPtr_gtlData * inObject,
-                                     const GALGAS_gtlData constin_item,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 

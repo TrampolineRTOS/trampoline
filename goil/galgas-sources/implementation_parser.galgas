@@ -36,16 +36,16 @@ rule <sign> !@bool signed
 rule <implementation_definition>
   ?!@implementation implementation {
 #  $IMPLEMENTATION$ $idf$ ?let @lstring implementationName ${$
-  $IMPLEMENTATION$ $idf$ ?* ${$
+  $IMPLEMENTATION$ ; $idf$ ?* ; ${$
   <implementation_object_list> !?implementation
-  $}$ $;$
+  $}$ ; $;$
 }
 
 rule <implementation_object_list>
   ?!@implementation implementation
 {
   repeat
-  while <implementation_objects> !?implementation $;$
+  while <implementation_objects> !?implementation ; $;$
   while <include_implementation_level> !?implementation
   end
 }
@@ -57,7 +57,7 @@ rule <include_implementation_level>
   select
     $include$
   or
-    $includeifexists$ includeIfExists = true
+    $includeifexists$ ; includeIfExists = true
   end
   @lstring file_name
   select
@@ -78,7 +78,7 @@ rule <include_type_level>
   select
     $include$
   or
-    $includeifexists$ includeIfExists = true
+    $includeifexists$ ; includeIfExists = true
   end
   @lstring file_name
   select
@@ -101,7 +101,7 @@ rule <implementation_objects>
   let @lbool multiple
   select
    # object may have multiple instances
-    $[$ $]$ multiple = @lbool.new { !true !@location.here} 
+    $[$ ; $]$ ; multiple = @lbool.new { !true !@location.here} 
   or
     multiple = @lbool.new { !false !@location.here}
   end
@@ -211,27 +211,27 @@ rule <implementation_type>
   !@lstring attributeName
   !@impType type {
   select
-    $UINT32$ <number_options> ?attributeName ?type !@dataType. uint32Number
+    $UINT32$    ; <number_options> ?attributeName ?type !@dataType. uint32Number
   or
-    $INT32$  <number_options> ?attributeName ?type !@dataType. sint32Number
+    $INT32$     ; <number_options> ?attributeName ?type !@dataType. sint32Number
   or
-    $UINT64$ <number_options> ?attributeName ?type !@dataType. uint64Number
+    $UINT64$    ; <number_options> ?attributeName ?type !@dataType. uint64Number
   or
-    $INT64$ <number_options> ?attributeName ?type !@dataType. sint64Number
+    $INT64$     ; <number_options> ?attributeName ?type !@dataType. sint64Number
   or
-    $FLOAT$ <number_options> ?attributeName ?type !@dataType. floatNumber
+    $FLOAT$     ; <number_options> ?attributeName ?type !@dataType. floatNumber
   or
-    $ENUM$ <enum_options> ?attributeName ?type
+    $ENUM$      ; <enum_options> ?attributeName ?type
   or
-    $BOOLEAN$ <boolean_options> ?attributeName ?type
+    $BOOLEAN$   ; <boolean_options> ?attributeName ?type
   or
-    $STRING$ <string_options> ?attributeName ?type
+    $STRING$    ; <string_options> ?attributeName ?type
   or
-    $IDENTIFIER$  <type_options> ?attributeName ?type !@dataType. identifier
+    $IDENTIFIER$ ; <type_options> ?attributeName ?type !@dataType. identifier
   or
-    $STRUCT$ <struct_options> ?attributeName ?type
+    $STRUCT$    ; <struct_options> ?attributeName ?type
   or
-    let @lstring typeName $idf$ ?typeName <objref_option> ?attributeName ?type !typeName
+    let @lstring typeName ; $idf$ ?typeName ; <objref_option> ?attributeName ?type !typeName
   end
 }
 
@@ -342,7 +342,7 @@ rule <boolean_options>
   let @lstring oil_desc
   select
     let @lbool boolValue
-    $=$ <boolean> ?boolValue
+    $=$ ; <boolean> ?boolValue
     <description> ?oil_desc
     defaultValue = @boolAttribute. new { !oil_desc ![boolValue location] ![boolValue bool] !@objectAttributes. new { !@identifierMap. emptyMap}}
   or
@@ -375,7 +375,7 @@ rule <enum_options>
   <enum_item> !?items
   repeat
   while
-    $,$ <enum_item> !?items
+    $,$ ; <enum_item> !?items
   end
   $]$
   <identifier_or_attribute> ?name
@@ -493,7 +493,7 @@ rule <type_options>
 rule <with_auto>
   !@bool withAuto {
   select
-    $WITH_AUTO$ withAuto = true
+    $WITH_AUTO$ ; withAuto = true
   or
     withAuto = false
   end
@@ -547,7 +547,7 @@ rule <range_content>
     $uint_number$ ?number
     start = checkAndGetIntegerNumber(!emptyLString() !type !number !signed)
     select
-      $..$ <int_or_float> ?stop !type
+      $..$ ; <int_or_float> ?stop !type
       range = buildRange(!type !start !stop)
     or
       @numberList numbers = @numberList. listWithValue { !@location.here !start}
@@ -559,7 +559,7 @@ rule <range_content>
     $float_number$ ?number
     start = checkAndGetFloatNumber(!emptyLString() !type !number !signed)
     select
-      $..$ <int_or_float> ?stop !type
+      $..$ ; <int_or_float> ?stop !type
       range = buildRange(!type !start !stop)
     or
       @numberList numbers = @numberList. listWithValue { !@location.here !start}
@@ -573,7 +573,7 @@ rule <range>
   !@attributeRange range
   ?let @dataType rangeType {
   select
-    $[$ <range_content> ?range !rangeType $]$
+    $[$ ; <range_content> ?range !rangeType ; $]$
   or
     range = @noRange. new { !@location.here}
   end
@@ -582,7 +582,7 @@ rule <range>
 rule <multiple>
   !@bool multi {
   select
-    $[$ $]$
+    $[$ ; $]$
     multi = true
   or
     multi = false

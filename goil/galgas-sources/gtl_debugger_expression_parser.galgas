@@ -36,11 +36,11 @@ rule <gtl_expression>
   <gtl_relation_term> ?expression
   repeat
   while
-    $|$ let @location opLocation = .here
+    $|$ ; let @location opLocation = .here
     <gtl_relation_term> ?let @gtlExpression rightSon
     expression = @gtlOrExpression.new { !opLocation !expression !rightSon }
   while
-    $^$ let @location opLocation = .here
+    $^$ ; let @location opLocation = .here
     <gtl_relation_term> ?let @gtlExpression rightSon
     expression = @gtlXorExpression.new { !opLocation !expression !rightSon }
   end
@@ -56,7 +56,7 @@ rule <gtl_relation_term>
   <gtl_relation_factor> ?expression
   repeat
   while
-    $&$ let @location opLocation = .here
+    $&$ ; let @location opLocation = .here
     <gtl_relation_factor> ?let @gtlExpression rightSon
     expression = @gtlAndExpression.new { !opLocation !expression !rightSon }
   end
@@ -72,37 +72,37 @@ rule <gtl_relation_factor>
   <gtl_simple_expression> ?expression
   select
   or
-    $==$ let @location opLocation = .here
+    $==$ ; let @location opLocation = .here
     <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $!=$ let @location opLocation = .here
+    $!=$ ; let @location opLocation = .here
     <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlNotEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $<=$ let @location opLocation = .here
+    $<=$ ; let @location opLocation = .here
     <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlLowerOrEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $>=$ let @location opLocation = .here
+    $>=$ ; let @location opLocation = .here
     <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlGreaterOrEqualExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $>$ let @location opLocation = .here
+    $>$ ; let @location opLocation = .here
     <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlGreaterThanExpression.new {
       !opLocation !expression !rightSon
     }
   or
-    $<$ let @location opLocation = .here
+    $<$ ; let @location opLocation = .here
     <gtl_simple_expression> ?let @gtlExpression rightSon
     expression = @gtlLowerThanExpression.new {
       !opLocation !expression !rightSon
@@ -120,25 +120,25 @@ rule <gtl_simple_expression>
   <gtl_term> ?expression
   repeat
   while 
-    $<<$ let @location opLocation = .here
+    $<<$ ; let @location opLocation = .here
     <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlShiftLeftExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $>>$ let @location opLocation = .here
+    $>>$ ; let @location opLocation = .here
     <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlShiftRightExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $+$ let @location opLocation = .here
+    $+$ ; let @location opLocation = .here
     <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlAddExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $.$ let @location opLocation = .here
+    $.$ ; let @location opLocation = .here
     if [option gtl_options.warnDeprecated value] then
       warning opLocation : "'.' operator is deprecated" fixit { replace "+" }
     end
@@ -147,7 +147,7 @@ rule <gtl_simple_expression>
       !opLocation !expression !rightSon
     }
   while 
-    $-$ let @location opLocation = .here
+    $-$ ; let @location opLocation = .here
     <gtl_term> ?let @gtlExpression rightSon
     expression = @gtlSubstractExpression.new {
       !opLocation !expression !rightSon
@@ -165,19 +165,19 @@ rule <gtl_term>
   <gtl_factor> ?expression
   repeat
   while 
-    $*$ let @location opLocation = .here
+    $*$ ; let @location opLocation = .here
     <gtl_factor> ?let @gtlExpression rightSon
     expression = @gtlMultiplyExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $/$ let @location opLocation = .here
+    $/$ ; let @location opLocation = .here
     <gtl_factor> ?let @gtlExpression rightSon
     expression = @gtlDivideExpression.new {
       !opLocation !expression !rightSon
     }
   while 
-    $mod$ let @location opLocation = .here
+    $mod$ ; let @location opLocation = .here
     <gtl_factor> ?let @gtlExpression rightSon
     expression = @gtlModulusExpression.new {
       !opLocation !expression !rightSon
@@ -192,7 +192,7 @@ rule <gtl_term>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $($ let @location opLocation = .here
+  $($ ; let @location opLocation = .here
   <gtl_expression> ?let @gtlExpression factorExpression
   expression = @gtlParenthesizedExpression.new {
     !opLocation
@@ -208,7 +208,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $not$ let @location opLocation = .here
+  $not$ ; let @location opLocation = .here
   <gtl_factor> ?let @gtlExpression notExpression
   expression = @gtlNotExpression.new { !opLocation !notExpression }
 }
@@ -220,7 +220,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $~$ let @location opLocation = .here
+  $~$ ; let @location opLocation = .here
   <gtl_factor> ?let @gtlExpression notExpression
   expression = @gtlNotExpression.new { !opLocation !notExpression }
 }
@@ -232,7 +232,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $-$ let @location opLocation = .here
+  $-$ ; let @location opLocation = .here
   <gtl_factor> ?let @gtlExpression minusExpression
   expression = @gtlMinusExpression.new { !opLocation !minusExpression }
 }
@@ -244,7 +244,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $+$ let @location opLocation = .here
+  $+$ ; let @location opLocation = .here
   <gtl_factor> ?let @gtlExpression plusExpression
   expression = @gtlPlusExpression.new { !opLocation !plusExpression }
 }
@@ -256,7 +256,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $yes$ let @location opLocation = .here
+  $yes$ ; let @location opLocation = .here
   expression = @gtlTerminal.new{
     !opLocation !@gtlBool.new { !opLocation !emptylstring() !true }
   }
@@ -401,7 +401,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $exists$ <gtl_variable> ?let @gtlVarPath path
+  $exists$ ; <gtl_variable> ?let @gtlVarPath path
   select
     $default$
     $($
@@ -420,7 +420,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $typeof$ <gtl_variable> ?let @gtlVarPath path
+  $typeof$ ; <gtl_variable> ?let @gtlVarPath path
   expression = @gtlTypeOfExpression.new { !.here !path }
 }
 
@@ -477,7 +477,7 @@ rule <gtl_factor>
 rule <gtl_factor>
   !@gtlExpression expression
 {
-  $@$ $identifier$ ?let @lstring typeName
+  $@$ ; $identifier$ ?let @lstring typeName
   let @string name = [typeName string]
   let @gtlType type
   if    name == "int"    then

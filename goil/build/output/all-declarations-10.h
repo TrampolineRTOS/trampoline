@@ -10,6 +10,570 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+//Function 'trueFalse'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_trueFalse (const class GALGAS_bool & constinArgument0,
+                                        class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'TrueFalse'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_TrueFalse (const class GALGAS_bool & constinArgument0,
+                                        class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'yesNo'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_yesNo (const class GALGAS_bool & constinArgument0,
+                                    class C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'TRUEFALSE'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_TRUEFALSE (const class GALGAS_bool & constinArgument0,
+                                        class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'listOfSize'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_list function_listOfSize (class GALGAS_bigint inArgument0,
+                                       class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'version'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_version (class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'majorVersion'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_majorVersion (class C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'minorVersion'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_minorVersion (class C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'revision'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_revision (class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'currentDir'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_currentDir (class C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'homeDir'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_homeDir (class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'currentDateTime'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_currentDateTime (class C_Compiler * inCompiler
+                                              COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max8bitsUnsignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_38_bitsUnsignedInt (class C_Compiler * inCompiler
+                                                     COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max8bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_38_bitsSignedInt (class C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'min8bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_min_38_bitsSignedInt (class C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max16bitsUnsignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_31__36_bitsUnsignedInt (class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max16bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_31__36_bitsSignedInt (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'min16bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_min_31__36_bitsSignedInt (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max32bitsUnsignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_33__32_bitsUnsignedInt (class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max32bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_33__32_bitsSignedInt (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'min32bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_min_33__32_bitsSignedInt (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max64bitsUnsignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_36__34_bitsUnsignedInt (class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'max64bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_max_36__34_bitsSignedInt (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'min64bitsSignedInt'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bigint function_min_36__34_bitsSignedInt (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'pi'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_double function_pi (class C_Compiler * inCompiler
+                                 COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'underline'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_underline (class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'blink'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_blink (class C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'black'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_black (class C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'green'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_green (class C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'yellow'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_yellow (class C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'blue'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_blue (class C_Compiler * inCompiler
+                                   COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'magenta'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_magenta (class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'cyan'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_cyan (class C_Compiler * inCompiler
+                                   COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'darkred'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_darkred (class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'darkgreen'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_darkgreen (class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'darkyellow'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_darkyellow (class C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'darkblue'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_darkblue (class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'darkmagenta'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_darkmagenta (class C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'darkcyan'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_darkcyan (class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'white'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_white (class C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'checkEnums'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bool function_checkEnums (const class GALGAS_impEnumType & constinArgument0,
+                                       const class GALGAS_impEnumType & constinArgument1,
+                                       class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'checkRanged'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_bool function_checkRanged (const class GALGAS_impRangedType & constinArgument0,
+                                        const class GALGAS_impRangedType & constinArgument1,
+                                        class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'floatOrError'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_double function_floatOrError (class GALGAS_object_5F_t inArgument0,
+                                           class GALGAS_string inArgument1,
+                                           class C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'sint32OrError'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint function_sint_33__32_OrError (class GALGAS_object_5F_t inArgument0,
+                                                class GALGAS_string inArgument1,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'sint64OrError'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_36__34_ function_sint_36__34_OrError (class GALGAS_object_5F_t inArgument0,
+                                                        class GALGAS_string inArgument1,
+                                                        class C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'uint32OrError'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint function_uint_33__32_OrError (class GALGAS_object_5F_t inArgument0,
+                                                class GALGAS_string inArgument1,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'uint64OrError'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_36__34_ function_uint_36__34_OrError (class GALGAS_object_5F_t inArgument0,
+                                                        class GALGAS_string inArgument1,
+                                                        class C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'stringWithUInt32List'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_stringWithUInt_33__32_List (const class GALGAS_uint_33__32_List & constinArgument0,
+                                                         class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'stringWithUInt64List'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_stringWithUInt_36__34_List (const class GALGAS_uint_36__34_List & constinArgument0,
+                                                         class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'stringWithSInt32List'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_stringWithSInt_33__32_List (const class GALGAS_sint_33__32_List & constinArgument0,
+                                                         class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'stringWithSInt64List'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_stringWithSInt_36__34_List (const class GALGAS_sint_36__34_List & constinArgument0,
+                                                         class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'stringWithFloatList'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_string function_stringWithFloatList (const class GALGAS_floatList & constinArgument0,
+                                                  class C_Compiler * inCompiler
+                                                  COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'uint32ListWithNumberList'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_33__32_List function_uint_33__32_ListWithNumberList (const class GALGAS_numberList & constinArgument0,
+                                                                       class C_Compiler * inCompiler
+                                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'sint32ListWithNumberList'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_33__32_List function_sint_33__32_ListWithNumberList (const class GALGAS_numberList & constinArgument0,
+                                                                       class C_Compiler * inCompiler
+                                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'uint64ListWithNumberList'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_36__34_List function_uint_36__34_ListWithNumberList (const class GALGAS_numberList & constinArgument0,
+                                                                       class C_Compiler * inCompiler
+                                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'sint64ListWithNumberList'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_36__34_List function_sint_36__34_ListWithNumberList (const class GALGAS_numberList & constinArgument0,
+                                                                       class C_Compiler * inCompiler
+                                                                       COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Function 'floatListWithNumberList'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_floatList function_floatListWithNumberList (const class GALGAS_numberList & constinArgument0,
+                                                         class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'multiError'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void routine_multiError (class GALGAS_locationList inArgument0,
+                         class GALGAS_string inArgument1,
+                         class C_Compiler * inCompiler
+                         COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+//Routine 'setDefaultsForType'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void routine_setDefaultsForType (const class GALGAS_implementationObjectMap constinArgument0,
+                                 class GALGAS_objectAttributes & ioArgument1,
+                                 class C_Compiler * inCompiler
+                                 COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 //Function 'boolSubAttributes'
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -477,318 +1041,4 @@ void routine_generate_5F_mask_5F_type (class GALGAS_uint_36__34_ inArgument0,
 
 class GALGAS_goilContext function_emptyGoilContext (class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'nodeToClassRes'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_nodeToClassRes (class GALGAS_arxmlElementNode inArgument0,
-                             class GALGAS_arxmlMetaClassMap inArgument1,
-                             class GALGAS_arxmlElementValue & outArgument2,
-                             class C_Compiler * inCompiler
-                             COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlDefinitionPackage'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlDefinitionPackage (class GALGAS_implementation & ioArgument0,
-                                     class GALGAS_applicationDefinition & ioArgument1,
-                                     class GALGAS_arxmlElementValue inArgument2,
-                                     class GALGAS_lstring inArgument3,
-                                     class C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationPackage'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationPackage (class GALGAS_implementation & ioArgument0,
-                                         class GALGAS_arxmlElementValue inArgument1,
-                                         class GALGAS_lstring inArgument2,
-                                         class C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationRoot'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationRoot (class GALGAS_implementation & ioArgument0,
-                                      class GALGAS_arxmlElementValue inArgument1,
-                                      class GALGAS_lstring inArgument2,
-                                      class C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlGetDescription'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlGetDescription (class GALGAS_arxmlElementValue inArgument0,
-                                  class GALGAS_lstring & outArgument1,
-                                  class C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationObject'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationObject (class GALGAS_implementation & ioArgument0,
-                                        class GALGAS_arxmlElementValue inArgument1,
-                                        class GALGAS_lstring inArgument2,
-                                        class C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlGetMultiplicity'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlGetMultiplicity (class GALGAS_arxmlElementValue inArgument0,
-                                   class GALGAS_lstring inArgument1,
-                                   class GALGAS_lbool & outArgument2,
-                                   class C_Compiler * inCompiler
-                                   COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainer'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainer (class GALGAS_implementationObjectMap & ioArgument0,
-                                           class GALGAS_arxmlElementValue inArgument1,
-                                           class GALGAS_lstring inArgument2,
-                                           class C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerBoolean'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerBoolean (class GALGAS_lstring & outArgument0,
-                                                  class GALGAS_impType & outArgument1,
-                                                  const class GALGAS_dataType constinArgument2,
-                                                  class GALGAS_arxmlElementValue inArgument3,
-                                                  class GALGAS_lstring inArgument4,
-                                                  class C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerEnumeration'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerEnumeration (class GALGAS_lstring & outArgument0,
-                                                      class GALGAS_impType & outArgument1,
-                                                      const class GALGAS_dataType constinArgument2,
-                                                      class GALGAS_arxmlElementValue inArgument3,
-                                                      class GALGAS_lstring inArgument4,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerIdentifier'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerIdentifier (class GALGAS_lstring & outArgument0,
-                                                     class GALGAS_impType & outArgument1,
-                                                     const class GALGAS_dataType constinArgument2,
-                                                     class GALGAS_arxmlElementValue inArgument3,
-                                                     class GALGAS_lstring inArgument4,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerNumber'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerNumber (class GALGAS_lstring & outArgument0,
-                                                 class GALGAS_impType & outArgument1,
-                                                 const class GALGAS_dataType constinArgument2,
-                                                 class GALGAS_arxmlElementValue inArgument3,
-                                                 class GALGAS_lstring inArgument4,
-                                                 class C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerReference'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerReference (class GALGAS_lstring & outArgument0,
-                                                    class GALGAS_impType & outArgument1,
-                                                    const class GALGAS_dataType constinArgument2,
-                                                    class GALGAS_arxmlElementValue inArgument3,
-                                                    class GALGAS_lstring inArgument4,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerString'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerString (class GALGAS_lstring & outArgument0,
-                                                 class GALGAS_impType & outArgument1,
-                                                 const class GALGAS_dataType constinArgument2,
-                                                 class GALGAS_arxmlElementValue inArgument3,
-                                                 class GALGAS_lstring inArgument4,
-                                                 class C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlImplementationContainerStructure'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlImplementationContainerStructure (class GALGAS_lstring & outArgument0,
-                                                    class GALGAS_impType & outArgument1,
-                                                    const class GALGAS_dataType constinArgument2,
-                                                    class GALGAS_arxmlElementValue inArgument3,
-                                                    class GALGAS_lstring inArgument4,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlInsertObjectAttribute'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlInsertObjectAttribute (class GALGAS_implementationObjectMap & ioArgument0,
-                                         class GALGAS_lstring inArgument1,
-                                         class GALGAS_impType inArgument2,
-                                         class C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlGetName'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlGetName (class GALGAS_arxmlElementValue inArgument0,
-                           class GALGAS_lstring & outArgument1,
-                           class C_Compiler * inCompiler
-                           COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlGetWithAuto'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlGetWithAuto (class GALGAS_arxmlElementValue inArgument0,
-                               class GALGAS_bool & outArgument1,
-                               class C_Compiler * inCompiler
-                               COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlPopSign'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlPopSign (class GALGAS_lstring & ioArgument0,
-                           class GALGAS_bool & outArgument1,
-                           class C_Compiler * inCompiler
-                           COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlDefinitionRoot'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlDefinitionRoot (class GALGAS_implementation & ioArgument0,
-                                  class GALGAS_applicationDefinition & ioArgument1,
-                                  class GALGAS_arxmlElementValue inArgument2,
-                                  class GALGAS_lstring inArgument3,
-                                  class C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlDefinitionObject'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlDefinitionObject (class GALGAS_implementation & ioArgument0,
-                                    class GALGAS_objectsMap & ioArgument1,
-                                    class GALGAS_arxmlElementValue inArgument2,
-                                    class GALGAS_lstring inArgument3,
-                                    class C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlDefinitionContainer'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlDefinitionContainer (const class GALGAS_implementationObjectMap constinArgument0,
-                                       class GALGAS_objectAttributes & ioArgument1,
-                                       class GALGAS_arxmlElementValue inArgument2,
-                                       class GALGAS_lstring inArgument3,
-                                       class C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'oilEquivalentName'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_oilEquivalentName (class GALGAS_lstring inArgument0,
-                                class GALGAS_lstring inArgument1,
-                                class GALGAS_lstring & outArgument2,
-                                class C_Compiler * inCompiler
-                                COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'arxmlDefinitionParameter'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_arxmlDefinitionParameter (const class GALGAS_implementationObjectMap constinArgument0,
-                                       class GALGAS_objectAttributes & ioArgument1,
-                                       class GALGAS_arxmlElementValue inArgument2,
-                                       class GALGAS_lstring inArgument3,
-                                       class C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Routine 'testTypeError'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-void routine_testTypeError (class GALGAS_dataType inArgument0,
-                            class GALGAS_lstring inArgument1,
-                            class C_Compiler * inCompiler
-                            COMMA_LOCATION_ARGS) ;
 

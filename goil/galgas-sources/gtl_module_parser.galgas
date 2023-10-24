@@ -96,7 +96,7 @@ rule <gtl_function>
   <gtl_argument_list> ?let @gtlArgumentList arguments
   $identifier$ ?let @lstring returnVariable
   <gtl_instruction_list> ?let @gtlInstructionList instructionList
-  $end$ $func$
+  $end$ ; $func$
   
   function = .new {
     !where !functionName !arguments !instructionList !returnVariable
@@ -110,13 +110,13 @@ rule <gtl_getter>
   !@gtlGetter aGetter
 {
   $getter$
-  $@$ $identifier$ ?let @lstring targetType
+  $@$ ; $identifier$ ?let @lstring targetType
   $identifier$ ?let @lstring getterName
   let @location where = .here
   <gtl_argument_list> ?let @gtlArgumentList arguments
   $identifier$ ?let @lstring returnVariable
   <gtl_instruction_list> ?let @gtlInstructionList instructionList
-  $end$ $getter$
+  $end$ ; $getter$
   
   aGetter = .new {
     !where
@@ -135,12 +135,12 @@ rule <gtl_setter>
   !@gtlSetter aSetter
 {
   $setter$
-  $@$ $identifier$ ?let @lstring targetType
+  $@$ ; $identifier$ ?let @lstring targetType
   $identifier$ ?let @lstring getterName
   let @location where = .here
   <gtl_argument_list> ?let @gtlArgumentList arguments
   <gtl_instruction_list> ?let @gtlInstructionList instructionList
-  $end$ $setter$
+  $end$ ; $setter$
   
   aSetter = .new {
     !where
@@ -160,7 +160,7 @@ rule <gtl_instruction>
   @gtlThenElsifStatementList thenElsifList = .emptyList
   @gtlInstructionList elseList = .emptyList
   
-  $if$ let @location where = .here
+  $if$ ; let @location where = .here
   repeat
     <gtl_expression> ?let @gtlExpression condition
     $then$
@@ -197,16 +197,16 @@ rule <gtl_instruction>
   let @lstring indexName
   let @lstring variableName
 
-  $foreach$ let @location where = .here
+  $foreach$ ; let @location where = .here
   $identifier$ ?var @lstring keyName
   select
-    $,$ $identifier$ ?variableName
+    $,$ ; $identifier$ ?variableName
   or
     variableName = keyName
     keyName = .new { !"" !where }
   end
   select
-    $($ $identifier$ ?indexName $)$
+    $($ ; $identifier$ ?indexName ; $)$
   or
     indexName = .new { !"INDEX" !.here }
   end
@@ -258,7 +258,7 @@ rule <gtl_instruction>
   @gtlInstructionList betweenList = .emptyList
   @gtlExpressionList  iterable = .emptyList 
 
-  $for$ let @location where = .here
+  $for$ ; let @location where = .here
   if [option gtl_options.warnDeprecated value] then
     warning .here : "for var in expression, ..., expression is deprecated"
       fixit { replace "foreach var in @( expression, ..., expression )" }
@@ -299,7 +299,7 @@ rule <gtl_instruction>
   @gtlInstructionList afterList = .emptyList
   @sint64 direction = 1
   
-  $loop$ let @location where = .here
+  $loop$ ; let @location where = .here
 
   @gtlExpression step = @gtlTerminal.new {
     !where !@gtlInt.new { !where !emptylstring() !1 }
@@ -312,7 +312,7 @@ rule <gtl_instruction>
   or
     $up$
   or
-    $down$ direction = -1
+    $down$ ; direction = -1
   end
   $to$
   <gtl_expression>  ?let @gtlExpression stop
@@ -356,7 +356,7 @@ rule <gtl_instruction>
 {
   let @gtlExpression limit
   
-  $repeat$ let @location where = .here
+  $repeat$ ; let @location where = .here
   select
     $($
     <gtl_expression> ?limit

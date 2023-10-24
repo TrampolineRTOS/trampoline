@@ -123,7 +123,7 @@ int32_t utf32_strlen (const utf32 * inString) {
 //       } else {
 //         p = s2;
 //         if (!*s) {
-//           return NULL;
+//           return nullptr;
 //         }
 //         s = ++s1;
 //       }
@@ -144,7 +144,7 @@ const utf32 * utf32_strstr (const utf32 * haystack, const utf32 * needle) {
     }else{
       p = needle;
       if (!UNICODE_VALUE (*s)) {
-        return NULL;
+        return nullptr;
       }
       s = ++haystack;
     }

@@ -25,15 +25,10 @@
 #---------------------------------------------------------------------------*
 
 grammar goil_grammar "LL1" {
-#--- References to syntax components used when source file extension is .gGrammar
-#    Theses constructs are silently parsed when source file extension is .ggs
     syntax goil_syntax
     syntax implementation_parser
     
-#--- References to syntax components used when source file extension is .ggs
-#    Theses constructs are silently parsed when source file extension is .gGrammar
-     <start>
-     
+    <start> 
 }
 
 # vim:ft=ggs:ts=4:sw=4

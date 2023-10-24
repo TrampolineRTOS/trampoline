@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1996, ..., 2011 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -36,30 +36,17 @@ class C_String ;
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-class C_LocationInSource {
+class C_LocationInSource final {
   private: int32_t mIndex ;
   private: int32_t mLineNumber ;
   private: int32_t mColumnNumber ;
   private: C_SourceTextInString mSourceText ;
 
-//---  
   public: C_LocationInSource (void) ;
-  public: virtual ~C_LocationInSource (void) ;
 
-  public: C_LocationInSource (const C_LocationInSource & inObject) ;
+  public: void gotoNextLocation (void) ;
 
-  public: C_LocationInSource & operator = (const C_LocationInSource & inObject) ;
-
-  public: C_LocationInSource (const C_SourceTextInString & inSourceText,
-                               const int32_t inIndex,
-                               const int32_t inLine,
-                               const int32_t inColumn) ;
-
-  public: C_LocationInSource (const C_SourceTextInString & inSourceText,
-                               const int32_t inLine,
-                               const int32_t inColumn) ;
-
-  public: void gotoNextLocation (const bool inPreviousCharWasEndOfLine) ;
+  public: void goForward (const uint32_t inCount) ;
 
   public: void resetLocation (void) ;
 
@@ -70,6 +57,8 @@ class C_LocationInSource {
   public: inline int32_t lineNumber (void) const { return mLineNumber ; }
 
   public: inline int32_t columnNumber (void) const { return mColumnNumber ; }
+
+//  public: LineColumnContents lineColumnNumber (void) const ;
 
   public: C_String sourceFilePath (void) const ;
 } ;

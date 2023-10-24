@@ -85,7 +85,7 @@
   void * reallocAndRegisterPODArray (void * inPointer,
                                      const size_t inSize
                                      COMMA_LOCATION_ARGS) {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       macroValidPointerThere (inPointer) ;
       unregisterPointer (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
     }
@@ -93,7 +93,7 @@
     registerPointerDescriptor (ptr, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
     gReallocatedPODArrayCount ++ ;
     if (ptr != inPointer) {
-      if (inPointer == NULL) {
+      if (inPointer == nullptr) {
         gAllocatedPODArrayCount ++ ;
         gExistingPODArrayCount ++ ;
       }else{
@@ -108,7 +108,7 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePODArrayPointer (void * inPointer COMMA_LOCATION_ARGS) {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       gExistingPODArrayCount -- ;
       myFreeRoutine (inPointer) ;
       unregisterPointer (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
@@ -139,7 +139,7 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePointer (const void * inPointer COMMA_LOCATION_ARGS) {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       unregisterPointer (inPointer, kAllocatedByMacroMyNew COMMA_THERE) ;
       #ifdef TRACE_DELETE
         co << "macroMyDelete -> "
@@ -158,7 +158,7 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreeArrayPointer (const void * inPointer COMMA_LOCATION_ARGS) {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       unregisterPointer (inPointer, kAllocatedByMacroMyNewArray COMMA_THERE) ;
       #ifdef TRACE_DELETE
         co << "macroMyDeleteArray -> "
@@ -198,7 +198,7 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static const uint32_t ROOT_TABLE_SIZE = 33554467 ;
-  static cPointerDescriptor * gPointerDescriptorTreeRoot [ROOT_TABLE_SIZE] ; // Initialized to array of NULL
+  static cPointerDescriptor * gPointerDescriptorTreeRoot [ROOT_TABLE_SIZE] ; // Initialized to array of nullptr
   static int32_t gCreatedPointersCount = 0 ;
   static int32_t gPointersCurrentCount = 0 ;
 #endif
@@ -369,7 +369,7 @@
   static void getPreviousElement (cPointerDescriptor * & ioRoot,
                                   cPointerDescriptor * & e,
                                   bool & h) {
-    if (ioRoot->mSupPtr == NULL) {
+    if (ioRoot->mSupPtr == nullptr) {
       e = ioRoot;
       ioRoot = ioRoot->mInfPtr ;
       h = true;
@@ -389,8 +389,8 @@
                                                    const void * inPointerToUnregister,
                                                    cPointerDescriptor * & outDeletedElementPtr,
                                                    bool & h) {
-    if (ioRoot == NULL) {
-      outDeletedElementPtr = NULL;
+    if (ioRoot == nullptr) {
+      outDeletedElementPtr = nullptr;
     }else{
       switch (comparePointers (inPointerToUnregister, ioRoot->mPointer)) {
       case kLeftKeyGreater:
@@ -407,20 +407,20 @@
         break;
       case kEqualKeys:
         outDeletedElementPtr = ioRoot ;
-        if (outDeletedElementPtr->mInfPtr == NULL) {
+        if (outDeletedElementPtr->mInfPtr == nullptr) {
           ioRoot = outDeletedElementPtr->mSupPtr ;
-          outDeletedElementPtr->mSupPtr = NULL ;
+          outDeletedElementPtr->mSupPtr = nullptr ;
           h = true;
-        }else if (outDeletedElementPtr->mSupPtr == NULL) {
+        }else if (outDeletedElementPtr->mSupPtr == nullptr) {
           ioRoot = outDeletedElementPtr->mInfPtr ;
-          outDeletedElementPtr->mInfPtr = NULL ;
+          outDeletedElementPtr->mInfPtr = nullptr ;
           h = true;
         }else{
           getPreviousElement (outDeletedElementPtr->mInfPtr, ioRoot, h) ;
           ioRoot->mSupPtr = outDeletedElementPtr->mSupPtr ;
-          outDeletedElementPtr->mSupPtr = NULL ;
+          outDeletedElementPtr->mSupPtr = nullptr ;
           ioRoot->mInfPtr = outDeletedElementPtr->mInfPtr ;
-          outDeletedElementPtr->mInfPtr = NULL ;
+          outDeletedElementPtr->mInfPtr = nullptr ;
           ioRoot->mBalance = outDeletedElementPtr->mBalance ;
           outDeletedElementPtr->mBalance = 0;
           if (h) {
@@ -441,15 +441,15 @@
                                           bool & ioAlreadyExists,
                                           cPointerDescriptor * & ioPointerNewElement,
                                           bool & ioExtension) {
-    if (ioRoot == NULL) {
+    if (ioRoot == nullptr) {
       ioPointerNewElement = (cPointerDescriptor *) myAllocRoutine (sizeof (cPointerDescriptor)) ;
-      if (ioPointerNewElement != NULL) {
-        ioPointerNewElement->mInfPtr = NULL ;
-        ioPointerNewElement->mSupPtr = NULL ;
+      if (ioPointerNewElement != nullptr) {
+        ioPointerNewElement->mInfPtr = nullptr ;
+        ioPointerNewElement->mSupPtr = nullptr ;
         ioPointerNewElement->mBalance = 0 ;
         ioPointerNewElement->mPointer = inNewKey ;
         ioPointerNewElement->mUniquePointerID = gCreatedPointersCount ;
-        ioPointerNewElement->mSourceFileName = NULL ;
+        ioPointerNewElement->mSourceFileName = nullptr ;
         ioPointerNewElement->mSourceLine = -1 ;
         ioRoot = ioPointerNewElement;
         ioAlreadyExists = false;
@@ -525,17 +525,17 @@
                                          const enumAllocationKind inAllocation
                                          COMMA_LOCATION_ARGS) {
     // printf ("*** registering pointer %p\n", p) ;
-    if (NULL != inPointerToRegister) {
+    if (nullptr != inPointerToRegister) {
       bool ioAlreadyExists = false ;
       bool ioExtension = false ;
-      cPointerDescriptor * ioPointerNewElement = NULL ;
+      cPointerDescriptor * ioPointerNewElement = nullptr ;
       gPointersCurrentCount ++ ;
       gCreatedPointersCount ++ ;
       insertInBalancedBinaryTree (gPointerDescriptorTreeRoot [hashCodeForPointer(inPointerToRegister)], inPointerToRegister, ioAlreadyExists, ioPointerNewElement, ioExtension);
       if (ioAlreadyExists) {
         runtime_error_routine ("(detectee par " __FILE__ ") Le pointeur existe deja", 0, 0, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
       }
-      if (NULL != ioPointerNewElement) {
+      if (nullptr != ioPointerNewElement) {
         ioPointerNewElement->mSourceFileName = IN_SOURCE_FILE ;
         ioPointerNewElement->mSourceLine = IN_SOURCE_LINE ;
         ioPointerNewElement->mAllocationKind = inAllocation ;
@@ -564,11 +564,11 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static cPointerDescriptor * searchPointerDescriptor (const void * inPointer) {
-    cPointerDescriptor * p = NULL ;
-    if (inPointer != NULL) {
+    cPointerDescriptor * p = nullptr ;
+    if (inPointer != nullptr) {
       p = gPointerDescriptorTreeRoot[hashCodeForPointer(inPointer)];
       bool notFound = true;
-      while (notFound && (p != NULL)) {
+      while (notFound && (p != nullptr)) {
         switch (comparePointers (p->mPointer, inPointer)) {
         case kLeftKeyGreater:
           p = p->mInfPtr;
@@ -593,13 +593,13 @@
                           const enumAllocationKind inAllocationKind
                           COMMA_LOCATION_ARGS) {
     bool h = false ;
-    cPointerDescriptor * pointerToDelete = NULL ;
+    cPointerDescriptor * pointerToDelete = nullptr ;
     recursiveDeleteInBalancedBinaryTree (gPointerDescriptorTreeRoot [hashCodeForPointer (inPointer)],
                                          inPointer, pointerToDelete, h);
-    if (pointerToDelete == NULL) {
+    if (pointerToDelete == nullptr) {
       runtime_error_routine ("(" __FILE__ ") Pointer (0x%X) is unknown", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
-    if (NULL != pointerToDelete) {
+    if (nullptr != pointerToDelete) {
       const int32_t inSourceFileLine = pointerToDelete->mSourceLine ;
       const char * nomFichierSource = pointerToDelete->mSourceFileName ;
       // printf ("------- %p %d\n", pointerToDelete, pointerToDelete->mAllocationKind) ;
@@ -637,8 +637,8 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineVoidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
-    if (inPointer != NULL) {
-      runtime_error_routine ("pointer (%p) not NULL", (intptr_t) inPointer, 0 COMMA_THERE) ;
+    if (inPointer != nullptr) {
+      runtime_error_routine ("pointer (%p) not nullptr", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
   }
 #endif
@@ -651,11 +651,11 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineValidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
-    if (inPointer == NULL) {
-      runtime_error_routine ("(detected by " __FILE__ ") NULL pointer", 0, 0 COMMA_THERE) ;
+    if (inPointer == nullptr) {
+      runtime_error_routine ("(detected by " __FILE__ ") nullptr pointer", 0, 0 COMMA_THERE) ;
     }
     cPointerDescriptor * p = searchPointerDescriptor (inPointer) ;
-    if (p == NULL) {
+    if (p == nullptr) {
       runtime_error_routine ("(detected by " __FILE__ ") unknown (%p) pointer", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
   }
@@ -665,7 +665,7 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void recursiveDisplay (const cPointerDescriptor * inRoot) {
-    if (NULL != inRoot) {
+    if (nullptr != inRoot) {
       recursiveDisplay (inRoot->mInfPtr) ;
     //---
       switch (inRoot->mAllocationKind) {

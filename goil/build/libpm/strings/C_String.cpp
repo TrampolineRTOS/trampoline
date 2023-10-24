@@ -778,15 +778,12 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void C_String::lineAndColumnFromIndex (const int32_t inIndex,
-                                       int32_t & outLineNumber,
-                                       int32_t & outColumnNumber,
-                                       C_String & outLineContents) const {
+LineColumnContents C_String::lineAndColumnFromIndex (const int32_t inIndex) const {
+  LineColumnContents result ;
   const int32_t receiverLength = length () ;
   if (inIndex < receiverLength) {
     const utf32 * ptr = utf32String (HERE) ;
-    outLineNumber = 0 ;
-    outColumnNumber = 0 ;
+    int32_t lineNumber = 0 ;
     int32_t startOfLineIndex = 0 ;
     int32_t idx = 0 ;
     bool parseLine = true ;
@@ -799,13 +796,15 @@ void C_String::lineAndColumnFromIndex (const int32_t inIndex,
         parseLine = true ;
         idx ++ ; // Pass '\n'
         startOfLineIndex = idx ;
-        outLineNumber ++ ;
+        lineNumber ++ ;
       }
     }
   //---
-    outColumnNumber = inIndex - startOfLineIndex ;
-    outLineContents = subString (startOfLineIndex, idx - startOfLineIndex) ;
+    const int32_t columnNumber = inIndex - startOfLineIndex ;
+    const C_String lineContents = subString (startOfLineIndex, idx - startOfLineIndex) ;
+    result = LineColumnContents (lineNumber, columnNumber, lineContents) ;
   }
+  return result ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1483,7 +1482,7 @@ C_String C_String::assemblerRepresentation (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_String C_String::utf8RepresentationEnclosedWithin (const utf32 inCharacter) const {
+C_String C_String::utf8RepresentationEnclosedWithin (const utf32 inCharacter, const bool inEscapeQuestionMark) const {
   C_String s ;
   const int32_t receiver_length = length () ;
   s.setCapacity ((uint32_t) receiver_length) ;
@@ -1497,6 +1496,12 @@ C_String C_String::utf8RepresentationEnclosedWithin (const utf32 inCharacter) co
     }else if (UNICODE_VALUE (c) == '\n') {
       s.appendUnicodeCharacter ('\\' COMMA_HERE) ;
       s.appendUnicodeCharacter ('n' COMMA_HERE) ;
+    }else if (UNICODE_VALUE (c) == '\r') {
+      s.appendUnicodeCharacter ('\\' COMMA_HERE) ;
+      s.appendUnicodeCharacter ('r' COMMA_HERE) ;
+    }else if (inEscapeQuestionMark && (UNICODE_VALUE (c) == '?')) { // Trigraph protection !!!
+      s.appendUnicodeCharacter ('\\' COMMA_HERE) ;
+      s.appendUnicodeCharacter ('?' COMMA_HERE) ;
     }else if (c == inCharacter) {
       s.appendUnicodeCharacter ('\\' COMMA_HERE) ;
       s.appendUnicodeCharacter (inCharacter COMMA_HERE) ;

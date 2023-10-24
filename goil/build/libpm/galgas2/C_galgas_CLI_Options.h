@@ -82,4 +82,6 @@ bool executionModeIsLatex (void) ;
 
 C_String latexModeStyleSuffixString (void) ;
 
+C_String indexingModeOutputFilePath (void) ;
+
 //----------------------------------------------------------------------------------------------------------------------

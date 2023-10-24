@@ -153,7 +153,7 @@
 
 - (void) applyNewFontValue: (id) inValue {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <applyNewFontValue:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   if (NSIsControllerMarker (inValue)) {
     id dph = [PMFontButton defaultPlaceholderForMarker:inValue withBinding:@"fontValue"] ;
@@ -185,7 +185,7 @@
 
 - (instancetype) init {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <init>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   self = [super init] ;
   if (self) {
@@ -200,7 +200,7 @@
 
 - (id) initWithCoder: (NSCoder *) inCoder {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <initWithCoder:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   self = [super initWithCoder:inCoder] ;
   if (self) {
@@ -215,7 +215,7 @@
 
 - (id) initWithFrame: (NSRect) inRect {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <initWithFrame:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   self = [super initWithFrame:inRect] ;
   if (self) {
@@ -230,7 +230,7 @@
 
 - (void) setEnabled: (BOOL) flag {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <setEnabled:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   mInheritedEnableState = flag ;
 //  NSLog (@"setEnabled mInheritedEnableState %d, mFontButtonBindingEnableState %d", mInheritedEnableState, mFontButtonBindingEnableState) ;
@@ -242,7 +242,7 @@
 - (void) valueFor_fontValue_didChange_marker: (id) inMarker 
          defaultPlaceholder: (id) inDefaultPlaceholder {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <valueFor_fontValue_didChange_marker:defaultPlaceholder:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   [self setTitle:inDefaultPlaceholder] ;
   mFontButtonBindingEnableState = NO ;
@@ -253,25 +253,20 @@
 
 - (void) valueFor_fontValue_didChange_NSFont: (NSFont *) inNewValue {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <valueFor_fontValue_didChange_NSFont:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   NSString * displayNameWithSize = [NSString stringWithFormat: @"%@ - %3.1f pt.", [inNewValue displayName], [inNewValue pointSize]] ;
   [self setTitle:displayNameWithSize] ;
   mFontButtonBindingEnableState = YES ;
 //  NSLog (@"Font '%@', mInheritedEnableState %d, mFontButtonBindingEnableState %d", displayNameWithSize, mInheritedEnableState, mFontButtonBindingEnableState) ;
   [super setEnabled:mInheritedEnableState && mFontButtonBindingEnableState] ;
-/*  NSFontManager * fontManager = [NSFontManager sharedFontManager] ;
-   if ([fontManager delegate] == self) {
-    [fontManager setSelectedFont:inNewValue isMultiple:NO] ;
-  }
-   */
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) buttonAction {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <buttonAction>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   [[self window] makeFirstResponder:self] ;
   NSFontManager * fontManager = [NSFontManager sharedFontManager] ;
@@ -284,16 +279,16 @@
     f = [NSFont systemFontOfSize:0.0] ;
   }
   [fontManager setSelectedFont:f isMultiple:NO] ;
-  [fontManager setAction:@selector (changeFont:)] ;
+  [fontManager setAction:@selector (changeFontAction:)] ;
   [fontManager setTarget:self] ;
   [fontManager orderFrontFontPanel:self] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-- (void) changeFont: (id) inSender {
+- (void) changeFontAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <changeFont:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   NSData * data = [mBoundObjectFor_fontValue valueForKeyPath:mKeyPathFor_fontValue] ;
   NSFont * newFont = nil ;
@@ -309,7 +304,7 @@
 
 - (BOOL) sendAction:(SEL) theAction to: (id) theTarget {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"PMFontButton <sendAction:>") ;
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   [self buttonAction] ;
   return [super sendAction:theAction to:theTarget] ;

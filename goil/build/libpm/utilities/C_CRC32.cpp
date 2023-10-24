@@ -85,7 +85,7 @@ void C_CRC32::addUnsignedLongToChecksum (const uint32_t valeur, uint32_t & somme
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_CRC32::addStringToChecksum (const char * chaine, uint32_t & somme) {
-  if (chaine == NULL) {
+  if (chaine == nullptr) {
     addLongToChecksum (0, somme) ;
   }else{
     const int32_t longueurChaine = (int32_t) ::strlen (chaine) ;

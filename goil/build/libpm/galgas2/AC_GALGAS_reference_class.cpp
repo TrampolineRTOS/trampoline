@@ -25,6 +25,10 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
+#include <iostream>
+
+//----------------------------------------------------------------------------------------------------------------------
+
 const C_galgas_type_descriptor * AC_GALGAS_reference_class::dynamicTypeDescriptor (void) const {
   const C_galgas_type_descriptor * result = NULL ;
   if (NULL != mObjectPtr) {
@@ -89,5 +93,15 @@ void AC_GALGAS_reference_class::description (C_String & ioString,
   }
   ioString << ">" ;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void AC_GALGAS_reference_class::printNonNullClassInstanceProperties (const char * inPropertyName) const {
+    if (mObjectPtr != nullptr) {
+      std::cout << "    " << inPropertyName << " : 0x" << std::hex << size_t (mObjectPtr) << std::dec << std::endl ;
+    }
+  }
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -27,6 +27,6 @@ LIBPM_DIRECTORY_PATH = dictionary ["LIBPM_DIRECTORY_PATH"]
 sys.path.append (os.path.abspath (LIBPM_DIRECTORY_PATH + "/python-makefiles"))
 from x86linux_on_macosx_gcc_tools_64 import buildForLinux64OnMacOSX
 #----------------------------------------------------------------- Build
-buildForLinux64OnMacOSX (dictionary, jsonFilePath, "goil", goal, maxParallelJobs, maxParallelJobs == 1)
+buildForLinux64OnMacOSX (dictionary, jsonFilePath, "goil", "build", goal, maxParallelJobs, maxParallelJobs == 1)
 
 #-----------------------------------------------------------------------------------------------------------------------

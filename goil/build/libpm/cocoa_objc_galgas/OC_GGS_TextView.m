@@ -53,6 +53,8 @@
     #endif
     noteObjectAllocation (self) ;
 
+//    self.allowedInputSourceLocales = [NSArray new] ;
+
     mDocumentUsedForDisplaying = inDocumentUsedForDisplaying ;
     mDisplayDescriptor = inDisplayDescriptor ;
     NSUserDefaults * df = [NSUserDefaults standardUserDefaults] ;
@@ -416,10 +418,10 @@
 - (void) mouseDown:(NSEvent *) inEvent {
   if ((inEvent.modifierFlags & NSCommandKeyMask) != 0) {
   //--- Select range
-    const NSPoint local_point = [self convertPoint:[inEvent locationInWindow] fromView:nil] ;
-    const NSUInteger characterIndex = [self characterIndexForInsertionAtPoint:local_point] ;
+    const NSPoint local_point = [self convertPoint: [inEvent locationInWindow] fromView: nil] ;
+    const NSUInteger characterIndex = [self characterIndexForInsertionAtPoint: local_point] ;
     const NSRange selectedRange = {characterIndex, 0} ;
-    const NSRange r = [self selectionRangeForProposedRange:selectedRange granularity:NSSelectByWord] ;
+    const NSRange r = [self selectionRangeForProposedRange: selectedRange granularity: NSSelectByWord] ;
     [self setSelectedRange:r] ;
     NSMenu * menu = [[NSMenu alloc] initWithTitle:@""] ;
   //--- Add issues
@@ -430,13 +432,13 @@
     }
   //--- Source indexing
     OC_GGS_TextSyntaxColoring * dsc = mDisplayDescriptor.documentData.textSyntaxColoring ;
-    [dsc appendIndexingToMenu:menu forRange:r textDisplayDescriptor:mDisplayDescriptor] ;
+    [dsc appendIndexingToMenu: menu forRange: r textDisplayDescriptor: mDisplayDescriptor] ;
   //--- Display menu
-    menu.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]] ;
+    menu.font = [NSFont systemFontOfSize: [NSFont smallSystemFontSize]] ;
     menu.allowsContextMenuPlugIns = NO ;
-    [NSMenu popUpContextMenu:menu withEvent:inEvent forView:self] ;
+    [NSMenu popUpContextMenu: menu withEvent: inEvent forView: self] ;
   }else{
-    [super mouseDown:inEvent] ;
+    [super mouseDown: inEvent] ;
   }
 }
 
@@ -498,7 +500,7 @@
     }
   }
 //---
-  return [completionSet.allObjects sortedArrayUsingSelector:@selector (compare:)] ;
+  return [completionSet.allObjects sortedArrayUsingSelector: @selector (compare:)] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

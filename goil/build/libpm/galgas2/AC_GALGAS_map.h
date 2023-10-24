@@ -67,10 +67,10 @@ class AC_GALGAS_map : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedMap != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedMap != NULL ; }
 
 //--- drop
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--- Create a new map
   protected: VIRTUAL_IN_DEBUG void makeNewEmptyMap (LOCATION_ARGS) ;
@@ -157,11 +157,10 @@ class AC_GALGAS_map : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
 //--------------------------------- Introspection
-  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
+  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const override = 0 ;
 
 //--------------------------------- Implementation of reader 'description'
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const override ;
 
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const AC_GALGAS_map & inOperand) const ;

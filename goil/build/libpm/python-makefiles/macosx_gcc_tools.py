@@ -1,15 +1,17 @@
-#! /usr/bin/env python
+#! /usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-#----------------------------------------------------------------------------------------------------------------------*
+#-----------------------------------------------------------------------------------------
 
 import sys, time, os, json
+import platform
 import makefile, default_build_options
 import generic_galgas_makefile
 
-#----------------------------------------------------------------------------------------------------------------------*
+#-----------------------------------------------------------------------------------------
 
 def buildForMacOSX (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs, showCommands) :
+  machine = platform.machine ()
   gmf = generic_galgas_makefile.GenericGalgasMakefile ()
   gmf.mJSONfilePath = jsonFilePath
   gmf.mDictionary = dictionary
@@ -19,9 +21,9 @@ def buildForMacOSX (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs,
   gmf.mDisplayCommands = showCommands
   gmf.mTargetName = "macosx"
 #---
-  gmf.mCompilerTool = ["gcc"]
-  gmf.mLinkerTool   = ["g++"]
-  gmf.mStripTool    = ["strip"] # , "-A", "-r", "-n", "-u"
+  gmf.mCompilerTool = ["gcc", "-arch", machine]
+  gmf.mLinkerTool   = ["g++", "-arch", machine]
+  gmf.mStripTool    = ["strip"]
   gmf.mSudoTool     = ["sudo"]
   gmf.mCompilationMessage = "Native Compiling for OS X"
   gmf.mLinkingMessage = "Native Linking for OS X"
@@ -30,7 +32,7 @@ def buildForMacOSX (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs,
 #--- Options for all compilers
   gmf.mAllCompilerOptions = default_build_options.allCompilerOptions (["-Wconversion"])
 #--- Options for release mode
-  gmf.mCompilerReleaseOptions = default_build_options.compilerReleaseOptions (["-O2"])
+  gmf.mCompilerReleaseOptions = default_build_options.compilerReleaseOptions (["-O1"])
 #--- Options for debug mode
   gmf.mCompilerDebugOptions = default_build_options.compilerDebugOptions ([])
 #--- Options for C compiling (.c extension)
@@ -44,4 +46,4 @@ def buildForMacOSX (dictionary, jsonFilePath, EXECUTABLE, GOAL, maxParallelJobs,
 #--- Run makefile
   gmf.run ()
 
-#----------------------------------------------------------------------------------------------------------------------*
+#-----------------------------------------------------------------------------------------

@@ -17,6 +17,9 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
 //--- 'parse' label
   public: virtual void nt_list_5F_option_5F_value_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_list_5F_option_5F_value_indexing (C_Lexique_options_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_list_5F_option_5F_value_ (GALGAS_gtlData & outArgument0,
                                                     C_Lexique_options_5F_scanner * inCompiler) ;
@@ -25,6 +28,9 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
 //--- 'parse' label
   public: virtual void nt_option_5F_item_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_option_5F_item_indexing (C_Lexique_options_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_option_5F_item_ (GALGAS_gtlData & ioArgument0,
                                            C_Lexique_options_5F_scanner * inCompiler) ;
@@ -32,6 +38,9 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
 //------------------------------------- 'option_parser_start' non terminal
 //--- 'parse' label
   public: virtual void nt_option_5F_parser_5F_start_parse (C_Lexique_options_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_option_5F_parser_5F_start_indexing (C_Lexique_options_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_option_5F_parser_5F_start_ (GALGAS_gtlData & outArgument0,
@@ -65,6 +74,9 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
 //--- 'parse' label
   public: virtual void nt_option_5F_value_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_option_5F_value_indexing (C_Lexique_options_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_option_5F_value_ (GALGAS_gtlData & outArgument0,
                                             C_Lexique_options_5F_scanner * inCompiler) ;
@@ -97,6 +109,8 @@ class cParser_arxml_5F_parser {
 
   protected: virtual void nt_arxml_5F_start_5F_symbol_parse (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_arxml_5F_start_5F_symbol_indexing (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_element_ (class GALGAS_arxmlNodeList & ioArgument0,
                                        const class GALGAS_bool constinArgument1,
                                        const class GALGAS_bool constinArgument2,
@@ -104,12 +118,16 @@ class cParser_arxml_5F_parser {
 
   protected: virtual void nt_element_parse (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_element_indexing (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_element_5F_list_ (class GALGAS_arxmlNodeList & ioArgument0,
                                                const class GALGAS_bool constinArgument1,
                                                const class GALGAS_bool constinArgument2,
                                                class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_element_5F_list_parse (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_element_5F_list_indexing (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -120,12 +138,16 @@ class cParser_arxml_5F_parser {
 
   protected: void rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
 
+  protected: void rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_indexing (C_Lexique_arxml_5F_scanner * inLexique) ;
+
   protected: void rule_arxml_5F_parser_element_5F_list_i1_ (GALGAS_arxmlNodeList & ioArgument0,
                                                             const GALGAS_bool constinArgument1,
                                                             const GALGAS_bool constinArgument2,
                                                             C_Lexique_arxml_5F_scanner * inLexique) ;
 
   protected: void rule_arxml_5F_parser_element_5F_list_i1_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected: void rule_arxml_5F_parser_element_5F_list_i1_indexing (C_Lexique_arxml_5F_scanner * inLexique) ;
 
   protected: void rule_arxml_5F_parser_element_i2_ (GALGAS_arxmlNodeList & ioArgument0,
                                                     const GALGAS_bool constinArgument1,
@@ -134,12 +156,16 @@ class cParser_arxml_5F_parser {
 
   protected: void rule_arxml_5F_parser_element_i2_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
 
+  protected: void rule_arxml_5F_parser_element_i2_indexing (C_Lexique_arxml_5F_scanner * inLexique) ;
+
   protected: void rule_arxml_5F_parser_element_i3_ (GALGAS_arxmlNodeList & ioArgument0,
                                                     const GALGAS_bool constinArgument1,
                                                     const GALGAS_bool constinArgument2,
                                                     C_Lexique_arxml_5F_scanner * inLexique) ;
 
   protected: void rule_arxml_5F_parser_element_i3_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected: void rule_arxml_5F_parser_element_i3_indexing (C_Lexique_arxml_5F_scanner * inLexique) ;
 
 
 
@@ -182,7 +208,7 @@ class GALGAS_arxmlCommentNode : public GALGAS_arxmlNode {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlCommentNode extractObject (const GALGAS_object & inObject,
@@ -209,7 +235,7 @@ class GALGAS_arxmlCommentNode : public GALGAS_arxmlNode {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlCommentNode class
 
@@ -297,9 +323,13 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_arxmlmetaparser_5F_start_5F_symbol_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_arxmlmetaparser_5F_start_5F_symbol_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xml_5F_header_ (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xml_5F_header_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xml_5F_header_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_annotation_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                  class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -308,12 +338,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_annotation_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_annotation_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_appinfo_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                               class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                               class GALGAS_lstring inArgument2,
                                               class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_appinfo_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_appinfo_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_attribute_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                 class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -322,12 +356,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_attribute_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_attribute_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_attributeGroup_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                      class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                      class GALGAS_lstring inArgument2,
                                                      class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_attributeGroup_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_attributeGroup_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_choice_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                              class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -336,12 +374,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_choice_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_choice_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_complexType_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                   class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                   class GALGAS_lstring inArgument2,
                                                   class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_complexType_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_complexType_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_documentation_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                     class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -350,12 +392,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_documentation_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_documentation_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_element_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                               class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                               class GALGAS_lstring inArgument2,
                                               class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_element_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_element_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_enumeration_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                   class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -365,12 +411,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_enumeration_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_enumeration_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_extension_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                 class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                 class GALGAS_lstring inArgument2,
                                                 class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_extension_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_extension_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_group_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                             class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -379,9 +429,13 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_group_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_group_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_ignore_5F_attributes_ (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_ignore_5F_attributes_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_ignore_5F_attributes_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_import_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                              class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -390,6 +444,8 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_import_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_import_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_maxLength_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                 class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                 class GALGAS_lstring inArgument2,
@@ -397,12 +453,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_maxLength_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_maxLength_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_pattern_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                               class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                               class GALGAS_lstring inArgument2,
                                               class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_pattern_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_pattern_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_restriction_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                   class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -412,11 +472,15 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_restriction_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_restriction_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_schema_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                              class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                              class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_schema_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_schema_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_sequence_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -425,12 +489,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_sequence_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_sequence_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_simpleContent_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                     class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                     class GALGAS_lstring inArgument2,
                                                     class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_simpleContent_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_simpleContent_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_simpleType_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                  class GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -439,12 +507,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: virtual void nt_xsd_5F_simpleType_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_xsd_5F_simpleType_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_xsd_5F_whiteSpace_ (class GALGAS_arxmlMetaClassMap & ioArgument0,
                                                  class GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                  class GALGAS_lstring inArgument2,
                                                  class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_xsd_5F_whiteSpace_parse (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_xsd_5F_whiteSpace_indexing (class C_Lexique_arxmlmetaparser_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -454,9 +526,13 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_arxmlmetaparser_5F_start_5F_symbol_i0_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_arxmlmetaparser_5F_start_5F_symbol_i0_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xml_5F_header_i1_ (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xml_5F_header_i1_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xml_5F_header_i1_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_annotation_i2_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                         GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -465,12 +541,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_annotation_i2_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_annotation_i2_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_appinfo_i3_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                      GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                      GALGAS_lstring inArgument2,
                                                                      C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_appinfo_i3_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_appinfo_i3_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_attribute_i4_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                        GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -479,12 +559,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_attribute_i4_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_attribute_i4_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_attributeGroup_i5_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                             GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                             GALGAS_lstring inArgument2,
                                                                             C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_attributeGroup_i5_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_attributeGroup_i5_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_choice_i6_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                     GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -493,12 +577,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_choice_i6_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_choice_i6_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_complexType_i7_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                          GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                          GALGAS_lstring inArgument2,
                                                                          C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_complexType_i7_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_complexType_i7_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_documentation_i8_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                            GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -507,12 +595,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_documentation_i8_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_documentation_i8_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_element_i9_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                      GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                      GALGAS_lstring inArgument2,
                                                                      C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_element_i9_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_element_i9_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_enumeration_i10_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                           GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -522,12 +614,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_enumeration_i10_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_enumeration_i10_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_extension_i11_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                         GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                         GALGAS_lstring inArgument2,
                                                                         C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_extension_i11_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_extension_i11_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_group_i12_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                     GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -536,12 +632,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_group_i12_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_group_i12_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_import_i13_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                      GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                      GALGAS_lstring inArgument2,
                                                                      C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_import_i13_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_import_i13_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_restriction_i14_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                           GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -551,11 +651,15 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_restriction_i14_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_restriction_i14_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_schema_i15_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                      GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                      C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_schema_i15_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_schema_i15_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_sequence_i16_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                        GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -564,12 +668,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_sequence_i16_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_sequence_i16_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleContent_i17_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                             GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                             GALGAS_lstring inArgument2,
                                                                             C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleContent_i17_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleContent_i17_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleType_i18_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                          GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -578,12 +686,16 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleType_i18_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_simpleType_i18_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_maxLength_i19_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                         GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                         GALGAS_lstring inArgument2,
                                                                         C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_maxLength_i19_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_maxLength_i19_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_pattern_i20_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                       GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -592,6 +704,8 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_pattern_i20_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_pattern_i20_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_whiteSpace_i21_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                                          GALGAS_arxmlMetaClassGraph & ioArgument1,
                                                                          GALGAS_lstring inArgument2,
@@ -599,9 +713,13 @@ class cParser_arxmlmetaparser_5F_syntax {
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_whiteSpace_i21_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_whiteSpace_i21_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_ignore_5F_attributes_i22_ (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
   protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_ignore_5F_attributes_i22_parse (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
+
+  protected: void rule_arxmlmetaparser_5F_syntax_xsd_5F_ignore_5F_attributes_i22_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inLexique) ;
 
 
 
@@ -732,6 +850,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_arxmlmetaparser_5F_start_5F_symbol_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_arxmlmetaparser_5F_start_5F_symbol_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_arxmlmetaparser_5F_start_5F_symbol_ (GALGAS_arxmlMetaClassMap & outArgument0,
                                                                GALGAS_bool inArgument1,
@@ -767,12 +888,18 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xml_5F_header_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xml_5F_header_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xml_5F_header_ (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //------------------------------------- 'xsd_annotation' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_annotation_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_annotation_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_annotation_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -784,6 +911,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_appinfo_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_appinfo_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_appinfo_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                            GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -793,6 +923,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_attribute' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_attribute_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_attribute_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_attribute_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -804,6 +937,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_attributeGroup_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_attributeGroup_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_attributeGroup_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                   GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -813,6 +949,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_choice' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_choice_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_choice_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_choice_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -824,6 +963,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_complexType_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_complexType_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_complexType_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -833,6 +975,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_documentation' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_documentation_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_documentation_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_documentation_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -844,6 +989,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_element_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_element_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_element_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                            GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -853,6 +1001,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_enumeration' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_enumeration_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_enumeration_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_enumeration_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -865,6 +1016,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_extension_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_extension_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_extension_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                              GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -874,6 +1028,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_group' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_group_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_group_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_group_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -885,12 +1042,18 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_ignore_5F_attributes_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_ignore_5F_attributes_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_ignore_5F_attributes_ (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //------------------------------------- 'xsd_import' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_import_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_import_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_import_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -902,6 +1065,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_maxLength_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_maxLength_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_maxLength_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                              GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -912,6 +1078,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_pattern_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_pattern_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_pattern_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                            GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -921,6 +1090,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_restriction' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_restriction_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_restriction_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_restriction_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -933,6 +1105,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_schema_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_schema_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_schema_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                           GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -941,6 +1116,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_sequence' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_sequence_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_sequence_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_sequence_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -952,6 +1130,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_simpleContent_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_simpleContent_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_simpleContent_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                                  GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -962,6 +1143,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //--- 'parse' label
   public: virtual void nt_xsd_5F_simpleType_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_xsd_5F_simpleType_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_xsd_5F_simpleType_ (GALGAS_arxmlMetaClassMap & ioArgument0,
                                               GALGAS_arxmlMetaClassGraph & ioArgument1,
@@ -971,6 +1155,9 @@ class cGrammar_arxmlmetaparser_5F_grammar : public cParser_arxmlmetaparser_5F_sy
 //------------------------------------- 'xsd_whiteSpace' non terminal
 //--- 'parse' label
   public: virtual void nt_xsd_5F_whiteSpace_parse (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_xsd_5F_whiteSpace_indexing (C_Lexique_arxmlmetaparser_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_xsd_5F_whiteSpace_ (GALGAS_arxmlMetaClassMap & ioArgument0,
@@ -1171,7 +1358,7 @@ void routine_nodeToClass (class GALGAS_arxmlNode inArgument0,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getSubElements (class cPtr_arxmlElementNode * inObject,
-                                         GALGAS_arxmlElementList & out_nodeList,
+                                         class GALGAS_arxmlElementList & out_nodeList,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
@@ -1182,8 +1369,8 @@ void callExtensionMethod_getSubElements (class cPtr_arxmlElementNode * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getText (class cPtr_arxmlElementNode * inObject,
-                                  GALGAS_lstring & io_value,
-                                  GALGAS_bool & io_found,
+                                  class GALGAS_lstring & io_value,
+                                  class GALGAS_bool & io_found,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -1214,7 +1401,7 @@ class GALGAS_arxmlTextNode : public GALGAS_arxmlNode {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlTextNode extractObject (const GALGAS_object & inObject,
@@ -1241,7 +1428,7 @@ class GALGAS_arxmlTextNode : public GALGAS_arxmlNode {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlTextNode class
 
@@ -1313,7 +1500,7 @@ class cPtr_arxmlTextNode : public cPtr_arxmlNode {
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getText (class cPtr_arxmlTextNode * inObject,
-                                  GALGAS_lstring & out_outText,
+                                  class GALGAS_lstring & out_outText,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -1324,7 +1511,7 @@ void callExtensionMethod_getText (class cPtr_arxmlTextNode * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAttributes (class cPtr_arxmlElementNode * inObject,
-                                        GALGAS_arxmlAttributeMap & io_outAttributes,
+                                        class GALGAS_arxmlAttributeMap & io_outAttributes,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
@@ -1335,8 +1522,8 @@ void callExtensionMethod_getAttributes (class cPtr_arxmlElementNode * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAttribute (class cPtr_arxmlElementNode * inObject,
-                                       GALGAS_string in_attributeName,
-                                       GALGAS_lstring & out_outAttribute,
+                                       class GALGAS_string in_attributeName,
+                                       class GALGAS_lstring & out_outAttribute,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
@@ -1347,7 +1534,7 @@ void callExtensionMethod_getAttribute (class cPtr_arxmlElementNode * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getName (class cPtr_arxmlElementNode * inObject,
-                                  GALGAS_lstring & out_outName,
+                                  class GALGAS_lstring & out_outName,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -1383,8 +1570,8 @@ void callExtensionSetter_insertElement (class cPtr_arxmlElementValue * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElementsByPath (class cPtr_arxmlElementValue * inObject,
-                                            GALGAS_stringlist in_path,
-                                            GALGAS_arxmlElementValueList & io_outElements,
+                                            class GALGAS_stringlist in_path,
+                                            class GALGAS_arxmlElementValueList & io_outElements,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
@@ -1395,8 +1582,8 @@ void callExtensionMethod_getElementsByPath (class cPtr_arxmlElementValue * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElements (class cPtr_arxmlElementValue * inObject,
-                                      GALGAS_string in_elementName,
-                                      GALGAS_arxmlElementValueList & out_outElements,
+                                      class GALGAS_string in_elementName,
+                                      class GALGAS_arxmlElementValueList & out_outElements,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 
@@ -1407,8 +1594,8 @@ void callExtensionMethod_getElements (class cPtr_arxmlElementValue * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElement (class cPtr_arxmlElementValue * inObject,
-                                     GALGAS_string in_elementName,
-                                     GALGAS_arxmlElementValue & out_outElement,
+                                     class GALGAS_string in_elementName,
+                                     class GALGAS_arxmlElementValue & out_outElement,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
@@ -1419,7 +1606,7 @@ void callExtensionMethod_getElement (class cPtr_arxmlElementValue * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue * inObject,
-                                                  GALGAS_string in_elementName,
+                                                  class GALGAS_string in_elementName,
                                                   class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
@@ -1430,7 +1617,7 @@ class GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlElementValue *
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlElementValue * inObject,
-                                                             GALGAS_string in_elementName,
+                                                             class GALGAS_string in_elementName,
                                                              class C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) ;
 
@@ -1441,8 +1628,8 @@ class GALGAS_lstring callExtensionGetter_getTextFromElement (const cPtr_arxmlEle
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getAllTextsInSelf (class cPtr_arxmlElementValue * inObject,
-                                            GALGAS_string in_separator,
-                                            GALGAS_lstring & io_outString,
+                                            class GALGAS_string in_separator,
+                                            class GALGAS_lstring & io_outString,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
@@ -1453,8 +1640,8 @@ void callExtensionMethod_getAllTextsInSelf (class cPtr_arxmlElementValue * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_lstring callExtensionGetter_getAttributeValueFromElement (const cPtr_arxmlElementValue * inObject,
-                                                                       GALGAS_string in_elementName,
-                                                                       GALGAS_string in_attributeName,
+                                                                       class GALGAS_string in_elementName,
+                                                                       class GALGAS_string in_attributeName,
                                                                        class C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) ;
 
@@ -1513,7 +1700,7 @@ void callExtensionSetter_setDescription (class cPtr_arxmlMetaClass * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * inObject,
-                                                  GALGAS_string in_eleName,
+                                                  class GALGAS_string in_eleName,
                                                   class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
@@ -1524,7 +1711,7 @@ class GALGAS_bool callExtensionGetter_hasElement (const cPtr_arxmlMetaClass * in
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasAttribute (const cPtr_arxmlMetaClass * inObject,
-                                                    GALGAS_string in_attrName,
+                                                    class GALGAS_string in_attrName,
                                                     class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
@@ -1558,7 +1745,7 @@ class GALGAS_arxmlMetaSimpletype : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlMetaSimpletype extractObject (const GALGAS_object & inObject,
@@ -1597,7 +1784,7 @@ class GALGAS_arxmlMetaSimpletype : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlMetaSimpletype class
 
@@ -1662,8 +1849,8 @@ class cPtr_arxmlMetaSimpletype : public acPtr_class {
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_display (class cPtr_arxmlMetaSimpletype * inObject,
-                                  GALGAS_arxmlMetaClassMap in_classMap,
-                                  GALGAS_string & io_ioString,
+                                  class GALGAS_arxmlMetaClassMap in_classMap,
+                                  class GALGAS_string & io_ioString,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
@@ -1712,557 +1899,3 @@ void routine_lstringhere (class GALGAS_lstring & outArgument0,
                           class C_Compiler * inCompiler
                           COMMA_LOCATION_ARGS) ;
 
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlContext addModulePath'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlContext_addModulePath) (class cPtr_gtlContext * inObject,
-                                                                   const class GALGAS_string constinArgument0,
-                                                                   const class GALGAS_string constinArgument1,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_addModulePath (const int32_t inClassIndex,
-                                         extensionSetterSignature_gtlContext_addModulePath inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_addModulePath (class cPtr_gtlContext * inObject,
-                                        const GALGAS_string constin_rootPath,
-                                        const GALGAS_string constin_modulePath,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlContext addInputVariable'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlContext_addInputVariable) (class cPtr_gtlContext * inObject,
-                                                                      class GALGAS_gtlData inArgument0,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_addInputVariable (const int32_t inClassIndex,
-                                            extensionSetterSignature_gtlContext_addInputVariable inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_addInputVariable (class cPtr_gtlContext * inObject,
-                                           GALGAS_gtlData in_inputVariable,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension setter '@gtlContext popFirstInputArg'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-typedef void (*extensionSetterSignature_gtlContext_popFirstInputArg) (class cPtr_gtlContext * inObject,
-                                                                      class GALGAS_location inArgument0,
-                                                                      class GALGAS_gtlData & outArgument1,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void enterExtensionSetter_popFirstInputArg (const int32_t inClassIndex,
-                                            extensionSetterSignature_gtlContext_popFirstInputArg inModifier) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-void callExtensionSetter_popFirstInputArg (class cPtr_gtlContext * inObject,
-                                           GALGAS_location in_where,
-                                           GALGAS_gtlData & out_result,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension getter '@gtlContext fullPrefix'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_lstring callExtensionGetter_fullPrefix (const cPtr_gtlContext * inObject,
-                                                     const GALGAS_gtlData constin_vars,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Extension getter '@gtlContext fullTemplateFileName'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_lstring callExtensionGetter_fullTemplateFileName (const cPtr_gtlContext * inObject,
-                                                               GALGAS_gtlContext in_context,
-                                                               GALGAS_gtlData in_vars,
-                                                               GALGAS_lstring in_simpleName,
-                                                               class C_Compiler * inCompiler
-                                                               COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Function 'pathWithExtension'
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_string function_pathWithExtension (class GALGAS_gtlContext inArgument0,
-                                                class GALGAS_string inArgument1,
-                                                class C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//Parser class 'gtl_module_parser' declaration
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class cParser_gtl_5F_module_5F_parser {
-//--- Virtual destructor
-  public: virtual ~ cParser_gtl_5F_module_5F_parser (void) {}
-
-//--- Non terminal declarations
-  protected: virtual void nt_gtl_5F_argument_5F_list_ (class GALGAS_gtlArgumentList & outArgument0,
-                                                       class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_argument_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
-                                                 class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_function_ (class GALGAS_gtlFunction & outArgument0,
-                                               class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_function_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_getter_ (class GALGAS_gtlGetter & outArgument0,
-                                             class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_getter_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_import_ (class GALGAS_gtlContext inArgument0,
-                                             class GALGAS_library & ioArgument1,
-                                             class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_import_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
-                                                  class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_instruction_5F_list_ (class GALGAS_gtlInstructionList & outArgument0,
-                                                          class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_instruction_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_module_5F_start_5F_symbol_ (class GALGAS_gtlContext inArgument0,
-                                                                class GALGAS_library & ioArgument1,
-                                                                class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_module_5F_start_5F_symbol_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_setter_ (class GALGAS_gtlSetter & outArgument0,
-                                             class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_setter_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_simple_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
-                                                            class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-  protected: virtual void nt_gtl_5F_simple_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
-
-
-//--- Rule declarations
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_5F_list_i0_ (GALGAS_gtlInstructionList & outArgument0,
-                                                                               C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_5F_list_i0_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_module_5F_start_5F_symbol_i1_ (GALGAS_gtlContext inArgument0,
-                                                                                     GALGAS_library & ioArgument1,
-                                                                                     C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_module_5F_start_5F_symbol_i1_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_function_i2_ (GALGAS_gtlFunction & outArgument0,
-                                                                    C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_function_i2_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_getter_i3_ (GALGAS_gtlGetter & outArgument0,
-                                                                  C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_getter_i3_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_setter_i4_ (GALGAS_gtlSetter & outArgument0,
-                                                                  C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_setter_i4_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i5_ (GALGAS_gtlInstruction & outArgument0,
-                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i5_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i6_ (GALGAS_gtlInstruction & outArgument0,
-                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i6_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i7_ (GALGAS_gtlInstruction & outArgument0,
-                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i7_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i8_ (GALGAS_gtlInstruction & outArgument0,
-                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i8_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i9_ (GALGAS_gtlInstruction & outArgument0,
-                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
-
-  protected: void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i9_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
-
-
-
-//--- Select methods
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_0 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_1 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_2 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_3 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_4 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_5 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_6 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_7 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_8 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_9 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_10 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_11 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_12 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_13 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_14 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_15 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_16 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-  protected: virtual int32_t select_gtl_5F_module_5F_parser_17 (C_Lexique_gtl_5F_scanner *) = 0 ;
-
-
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//  GRAMMAR gtl_module_grammar
-//----------------------------------------------------------------------------------------------------------------------
-
-class cGrammar_gtl_5F_module_5F_grammar : public cParser_gtl_5F_module_5F_parser,
-                                          public cParser_gtl_5F_instruction_5F_parser,
-                                          public cParser_gtl_5F_expression_5F_parser {
-//------------------------------------- 'gtl_argument_list' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_argument_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_argument_5F_list_ (GALGAS_gtlArgumentList & outArgument0,
-                                                    C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_expression' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_expression_ (GALGAS_gtlExpression & outArgument0,
-                                              C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_factor' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_factor_ (GALGAS_gtlExpression & outArgument0,
-                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_function' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_function_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_function_ (GALGAS_gtlFunction & outArgument0,
-                                            C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_getter' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_getter_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_getter_ (GALGAS_gtlGetter & outArgument0,
-                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_import' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_import_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_import_ (GALGAS_gtlContext inArgument0,
-                                          GALGAS_library & ioArgument1,
-                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_instruction' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
-                                               C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_instruction_list' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_instruction_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_instruction_5F_list_ (GALGAS_gtlInstructionList & outArgument0,
-                                                       C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_module_start_symbol' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_module_5F_start_5F_symbol_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_module_5F_start_5F_symbol_ (GALGAS_gtlContext inArgument0,
-                                                             GALGAS_library & ioArgument1,
-                                                             C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//--- Start symbol
-  public: static void _performSourceFileParsing_ (C_Compiler * inCompiler,
-                                                  GALGAS_lstring inFileName,
-                                                  GALGAS_gtlContext inArgument0,
-                                                  GALGAS_library & ioArgument1
-                                                  COMMA_LOCATION_ARGS) ;
-
-  public: static void _performSourceStringParsing_ (C_Compiler * inCompiler,
-                                                    GALGAS_string inSourceString,
-                                                    GALGAS_string inNameString,
-                                                    GALGAS_gtlContext inArgument0,
-                                                    GALGAS_library & ioArgument1
-                                                    COMMA_LOCATION_ARGS) ;
-
-//--- Indexing
-  public: static void performIndexing (C_Compiler * inCompiler,
-                                       const C_String & inSourceFilePath) ;
-
-//--- Only lexical analysis
-  public: static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
-                                                  const C_String & inSourceFilePath) ;
-
-//--- Only syntax analysis
-  public: static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
-                                                 const C_String & inSourceFilePath) ;
-
-//------------------------------------- 'gtl_relation_factor' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_relation_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_relation_5F_factor_ (GALGAS_gtlExpression & outArgument0,
-                                                      C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_relation_term' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_relation_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_relation_5F_term_ (GALGAS_gtlExpression & outArgument0,
-                                                    C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_setter' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_setter_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_setter_ (GALGAS_gtlSetter & outArgument0,
-                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_simple_expression' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_simple_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_simple_5F_expression_ (GALGAS_gtlExpression & outArgument0,
-                                                        C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_simple_instruction' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_simple_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_simple_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
-                                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_sorting_order' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_sorting_5F_order_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_sorting_5F_order_ (GALGAS_lsint & outArgument0,
-                                                    C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_term' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_term_ (GALGAS_gtlExpression & outArgument0,
-                                        C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_variable' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_variable_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_variable_ (GALGAS_gtlVarPath & outArgument0,
-                                            C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_variable_or_here' non terminal
-//--- 'parse' label
-  public: virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public: virtual void nt_gtl_5F_variable_5F_or_5F_here_ (GALGAS_gtlVarPath & outArgument0,
-                                                          GALGAS_bool & outArgument1,
-                                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_module_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_instruction_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_18 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_19 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_20 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_21 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_22 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_23 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_24 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_25 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_26 (C_Lexique_gtl_5F_scanner *) ;
-
-  public: virtual int32_t select_gtl_5F_expression_5F_parser_27 (C_Lexique_gtl_5F_scanner *) ;
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------

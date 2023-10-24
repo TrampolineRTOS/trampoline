@@ -33,7 +33,7 @@ static NSArray * kTemplateDefinitionArray_arxml_5F_scanner ;
   self = [super init] ;
   if (self) {
     noteObjectAllocation (self) ;
-   mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
   }
   if (nil == kTemplateDefinitionArray_arxml_5F_scanner) {
     kTemplateDefinitionArray_arxml_5F_scanner = [NSArray arrayWithObjects:
@@ -54,16 +54,6 @@ static NSArray * kTemplateDefinitionArray_arxml_5F_scanner ;
 
 - (void) dealloc {
   noteObjectDeallocation (self) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//                 I N D E X I N G    D I R E C T O R Y
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-- (NSString *) indexingDirectory {
-  return @"" ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -105,11 +95,11 @@ static const BOOL kEndOfScriptInTemplateArray_arxml_5F_scanner [10] = {
 //----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) internalParseLexicalTokenForLexicalColoring {
-  BOOL loop = YES ;
   BOOL scanningOk = YES ;
   [mLexicalAttribute_tokenString setString:@""] ;
   mTokenStartLocation = mCurrentLocation ;
   if (scanningOk && ([self testForInputString:@"<!--" advance:YES])) {
+    BOOL loop1308 = YES ;
     do {
       if (scanningOk && ([self testForInputString:@"&amp;" advance:YES])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 38) ;
@@ -126,10 +116,9 @@ static const BOOL kEndOfScriptInTemplateArray_arxml_5F_scanner [10] = {
       }else if (scanningOk && ([self notTestForInputString:@"-->" error:& scanningOk])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 45) ;
       }else{
-        loop = NO ;
+        loop1308 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop1308 && scanningOk) ;
     mTokenCode = arxml_scanner_1_comment ;
   }else if (scanningOk && [self testForInputString:@"\?>" advance:YES]) {
     mTokenCode = arxml_scanner_1__3F__3E_ ;
@@ -146,16 +135,17 @@ static const BOOL kEndOfScriptInTemplateArray_arxml_5F_scanner [10] = {
   }else if (scanningOk && [self testForInputString:@"<" advance:YES]) {
     mTokenCode = arxml_scanner_1__3C_ ;
   }else if (scanningOk && ([self testForCharWithFunction: isUnicodeLetter])) {
+    BOOL loop2329 = YES ;
     do {
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       if (scanningOk && ([self testForCharWithFunction: isUnicodeLetter] || [self testForInputFromChar:48 toChar:57] || [self testForInputChar:45] || [self testForInputChar:58])) {
       }else{
-        loop = NO ;
+        loop2329 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop2329 && scanningOk) ;
     mTokenCode = arxml_scanner_1_name ;
   }else if (scanningOk && ([self testForInputChar:34])) {
+    BOOL loop2735 = YES ;
     do {
       if (scanningOk && ([self testForInputString:@"&amp;" advance:YES])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 38) ;
@@ -170,12 +160,12 @@ static const BOOL kEndOfScriptInTemplateArray_arxml_5F_scanner [10] = {
       }else if (scanningOk && ([self notTestForInputString:@"\"" error:& scanningOk])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop2735 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop2735 && scanningOk) ;
     mTokenCode = arxml_scanner_1_value ;
   }else if (scanningOk && ([self testForInputChar:39])) {
+    BOOL loop3224 = YES ;
     do {
       if (scanningOk && ([self testForInputString:@"&amp;" advance:YES])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 38) ;
@@ -190,10 +180,9 @@ static const BOOL kEndOfScriptInTemplateArray_arxml_5F_scanner [10] = {
       }else if (scanningOk && ([self notTestForInputString:@"'" error:& scanningOk])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop3224 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop3224 && scanningOk) ;
     mTokenCode = arxml_scanner_1_value ;
   }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
   }else   if ([self testForInputChar:'\0']) { // End of source text ?

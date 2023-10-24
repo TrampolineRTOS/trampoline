@@ -97,7 +97,7 @@ GALGAS_uint_36__34_ GALGAS_uint_36__34_::constructor_uint_36__34_BaseValueWithCo
       v <<= 1 ;
       const utf32 c = inBitString.stringValue () (i COMMA_HERE) ;
       if (UNICODE_VALUE (c) == '1') {
-        v ++ ;
+        v += 1 ;
       }else if ((UNICODE_VALUE (c) != '0') && (UNICODE_VALUE (c) != 'X')) {
         ok = false ;
       }
@@ -125,13 +125,13 @@ GALGAS_uint_36__34_ GALGAS_uint_36__34_::constructor_uint_36__34_WithBitString (
       v <<= 1 ;
       const utf32 c = inBitString.stringValue () (i COMMA_HERE) ;
       if (UNICODE_VALUE (c) == '1') {
-        v ++ ;
+        v += 1 ;
       }else if (UNICODE_VALUE (c) != '0') {
         ok = false ;
       }
     }
     if (ok) {
-      result = GALGAS_uint_36__34_ (UINT64_MAX) ;
+      result = GALGAS_uint_36__34_ (v) ;
     }else{
       inCompiler->onTheFlyRunTimeError ("incorrect bit string for 'uint64WithBitString' @uint64_t constructor" COMMA_THERE) ;
     }

@@ -1060,7 +1060,7 @@ getter @implementationObjectMap mergeImplementationObjectAttributesWith
         merged = [type mergeWithType !typeToMerge]
       else
         # conflicting types
-        error lkey : "Redefined type";
+        error lkey : "Redefined type"
       end
     end
     [!?mergedAttributes put !lkey !merged]

@@ -31,9 +31,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::removeObjectAtIndex (capCollectionElement & outAttributes,
-                                              const uint32_t inRemoveIndex,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) {
+                                          const uint32_t inRemoveIndex,
+                                          C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) {
   mSharedArray.removeObjectAtIndex (outAttributes, inRemoveIndex, inCompiler COMMA_THERE) ;
 }
 
@@ -46,8 +46,8 @@ void AC_GALGAS_list::removeObjectAtIndex (capCollectionElement & outAttributes,
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::removeFirstObject (capCollectionElement & outAttributes,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) {
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) {
   mSharedArray.removeFirstObject (outAttributes, inCompiler COMMA_THERE) ;
 }
 
@@ -60,8 +60,8 @@ void AC_GALGAS_list::removeFirstObject (capCollectionElement & outAttributes,
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::removeLastObject (capCollectionElement & outAttributes,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) {
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) {
   mSharedArray.removeLastObject (outAttributes, inCompiler COMMA_THERE) ;
 }
 
@@ -91,7 +91,7 @@ AC_GALGAS_list::~ AC_GALGAS_list (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void AC_GALGAS_list::description (C_String & ioString,
-                                      const int32_t inIndentation) const {
+                                  const int32_t inIndentation) const {
   ioString << "<list @" << staticTypeDescriptor ()->mGalgasTypeName
            << " (" << cStringWithUnsigned (count()) << " object"
            << ((count() > 1) ? "s" : "") << "):" ;
@@ -123,7 +123,7 @@ uint32_t AC_GALGAS_list::count () const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_uint AC_GALGAS_list::getter_length (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_list::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mSharedArray.count ()) ;
@@ -366,8 +366,7 @@ class cSharedListMapRoot : public C_SharedObject {
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const { return mCount ; }
 
 //--- Description
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const  ;
 
   public: static void internalDescription (cListMapNode * inNode,
                                             C_String & ioString,

@@ -23,6 +23,7 @@
 #  $URL$
 #
 #---------------------------------------------------------------------------*
+# 3.1.13   added parseOIL method
 # 3.1.12   added methods to get a file list and the root templates directory 
 # 3.1.11   fix range checking of int and float
 # 3.1.10   Updated to GTL 3.0.13
@@ -62,7 +63,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:12) -> "goil" {
+project (3:1:13) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

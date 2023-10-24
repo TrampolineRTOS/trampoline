@@ -10,6 +10,900 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+//Abstract extension method '@attributeRange enclose'
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_enclose (class cPtr_attributeRange * inObject,
+                                  class GALGAS_bool & out_isWithin,
+                                  const class GALGAS_attributeRange constin_value,
+                                  class C_Compiler * inCompiler
+                                  COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @noRange  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_noRange : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_noRange (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_noRange constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_noRange * ptr (void) const {
+    return (const cPtr_noRange *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_noRange (const cPtr_noRange * inSourcePtr) ;
+
+//--------------------------------- Property read access
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_noRange extractObject (const GALGAS_object & inObject,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_noRange constructor_new (const class GALGAS_location & inOperand0
+                                                       COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_noRange & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_noRange class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_noRange ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @noRange class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_noRange : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+
+//--- Constructor
+  public: cPtr_noRange (const GALGAS_location & in_location
+                        COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_33__32_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_33__32_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_uint_33__32_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_uint_33__32_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_uint_33__32_AttributeSet * ptr (void) const {
+    return (const cPtr_uint_33__32_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_uint_33__32_AttributeSet (const cPtr_uint_33__32_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_uint_33__32_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_uint_33__32_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_uint_33__32_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_uint_33__32_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_uint_33__32_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_uint_33__32_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_uint_33__32_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint32AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_uint_33__32_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_uint_33__32_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_uint_33__32_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_uint_33__32_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_uint_33__32_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_uint_33__32_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_36__34_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_36__34_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_uint_36__34_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_uint_36__34_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_uint_36__34_AttributeSet * ptr (void) const {
+    return (const cPtr_uint_36__34_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_uint_36__34_AttributeSet (const cPtr_uint_36__34_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_uint_36__34_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_uint_36__34_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_uint_36__34_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_uint_36__34_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_uint_36__34_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_uint_36__34_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_uint_36__34_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint64AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_uint_36__34_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_uint_36__34_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_uint_36__34_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_uint_36__34_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_uint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_uint_36__34_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @sint_33__32_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_33__32_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_sint_33__32_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_sint_33__32_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_sint_33__32_AttributeSet * ptr (void) const {
+    return (const cPtr_sint_33__32_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_sint_33__32_AttributeSet (const cPtr_sint_33__32_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_sint_33__32_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_sint_33__32_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_sint_33__32_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_sint_33__32_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_sint_33__32_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_sint_33__32_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_sint_33__32_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint32AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_sint_33__32_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_sint_33__32_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_sint_33__32_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_sint_33__32_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_sint_33__32_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_sint_33__32_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @sint_36__34_AttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_sint_36__34_AttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_sint_36__34_AttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_sint_36__34_AttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_sint_36__34_AttributeSet * ptr (void) const {
+    return (const cPtr_sint_36__34_AttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_sint_36__34_AttributeSet (const cPtr_sint_36__34_AttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_sint_36__34_List readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_sint_36__34_AttributeSet extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_sint_36__34_AttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_sint_36__34_List & inOperand1
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_sint_36__34_AttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_sint_36__34_List inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_sint_36__34_AttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_AttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @sint64AttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_sint_36__34_AttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_sint_36__34_List mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_sint_36__34_AttributeSet (const GALGAS_location & in_location,
+                                         const GALGAS_sint_36__34_List & in_valueList
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_sint_36__34_List getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_sint_36__34_List inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @floatAttributeSet  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_floatAttributeSet : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_floatAttributeSet (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_floatAttributeSet constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_floatAttributeSet * ptr (void) const {
+    return (const cPtr_floatAttributeSet *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_floatAttributeSet (const cPtr_floatAttributeSet * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_floatList readProperty_valueList (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_floatAttributeSet extractObject (const GALGAS_object & inObject,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_floatAttributeSet constructor_new (const class GALGAS_location & inOperand0,
+                                                                 const class GALGAS_floatList & inOperand1
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_floatAttributeSet & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (class GALGAS_floatList inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_floatAttributeSet class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatAttributeSet ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @floatAttributeSet class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_floatAttributeSet : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_floatList mProperty_valueList ;
+
+//--- Constructor
+  public: cPtr_floatAttributeSet (const GALGAS_location & in_location,
+                                  const GALGAS_floatList & in_valueList
+                                  COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_floatList getter_valueList (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setValueList (GALGAS_floatList inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_33__32_AttributeMinMax  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_33__32_AttributeMinMax : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_uint_33__32_AttributeMinMax (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_uint_33__32_AttributeMinMax constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_uint_33__32_AttributeMinMax * ptr (void) const {
+    return (const cPtr_uint_33__32_AttributeMinMax *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_uint_33__32_AttributeMinMax (const cPtr_uint_33__32_AttributeMinMax * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_uint readProperty_min (void) const ;
+
+  public: class GALGAS_uint readProperty_max (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_uint_33__32_AttributeMinMax extractObject (const GALGAS_object & inObject,
+                                                                   C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_uint_33__32_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
+                                                                           const class GALGAS_uint & inOperand1,
+                                                                           const class GALGAS_uint & inOperand2
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_uint_33__32_AttributeMinMax & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setMax (class GALGAS_uint inArgument0
+                                               COMMA_LOCATION_ARGS) ;
+
+  public: VIRTUAL_IN_DEBUG void setter_setMin (class GALGAS_uint inArgument0
+                                               COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_uint_33__32_AttributeMinMax class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_AttributeMinMax ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint32AttributeMinMax class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_uint_33__32_AttributeMinMax : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_uint mProperty_min ;
+  public: GALGAS_uint mProperty_max ;
+
+//--- Constructor
+  public: cPtr_uint_33__32_AttributeMinMax (const GALGAS_location & in_location,
+                                            const GALGAS_uint & in_min,
+                                            const GALGAS_uint & in_max
+                                            COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_min (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setMin (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
+  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_max (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setMax (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 1: @uint_36__34_AttributeMinMax  value class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class GALGAS_uint_36__34_AttributeMinMax : public GALGAS_attributeRange {
+//--------------------------------- Default constructor
+  public: GALGAS_uint_36__34_AttributeMinMax (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public: static GALGAS_uint_36__34_AttributeMinMax constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Embedded object pointer
+  public: inline const class cPtr_uint_36__34_AttributeMinMax * ptr (void) const {
+    return (const cPtr_uint_36__34_AttributeMinMax *) mObjectPtr ;
+  }
+
+//--------------------------------- Constructor from pointer
+  public: GALGAS_uint_36__34_AttributeMinMax (const cPtr_uint_36__34_AttributeMinMax * inSourcePtr) ;
+
+//--------------------------------- Property read access
+  public: class GALGAS_uint_36__34_ readProperty_min (void) const ;
+
+  public: class GALGAS_uint_36__34_ readProperty_max (void) const ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
+
+//--------------------------------- Object extraction
+  public: static GALGAS_uint_36__34_AttributeMinMax extractObject (const GALGAS_object & inObject,
+                                                                   C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public: static class GALGAS_uint_36__34_AttributeMinMax constructor_new (const class GALGAS_location & inOperand0,
+                                                                           const class GALGAS_uint_36__34_ & inOperand1,
+                                                                           const class GALGAS_uint_36__34_ & inOperand2
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public: typeComparisonResult objectCompare (const GALGAS_uint_36__34_AttributeMinMax & inOperand) const ;
+
+//--------------------------------- Setters
+  public: VIRTUAL_IN_DEBUG void setter_setMax (class GALGAS_uint_36__34_ inArgument0
+                                               COMMA_LOCATION_ARGS) ;
+
+  public: VIRTUAL_IN_DEBUG void setter_setMin (class GALGAS_uint_36__34_ inArgument0
+                                               COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Optional Methods
+
+//--------------------------------- Introspection
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
+ 
+} ; // End of GALGAS_uint_36__34_AttributeMinMax class
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_AttributeMinMax ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Phase 2: pointer class for @uint64AttributeMinMax class
+//
+//----------------------------------------------------------------------------------------------------------------------
+
+class cPtr_uint_36__34_AttributeMinMax : public cPtr_attributeRange {
+
+//--- Extension getter contains
+  public: virtual class GALGAS_bool getter_contains (const class GALGAS_object_5F_t obj,
+           C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension getter string
+  public: virtual class GALGAS_string getter_string (C_Compiler * COMMA_LOCATION_ARGS) const override ;
+
+//--- Extension method enclose
+  public: virtual void method_enclose (class GALGAS_bool & isWithin,
+           const class GALGAS_attributeRange value,
+           C_Compiler * COMMA_LOCATION_ARGS) override ;
+
+
+//--- Properties
+  public: GALGAS_uint_36__34_ mProperty_min ;
+  public: GALGAS_uint_36__34_ mProperty_max ;
+
+//--- Constructor
+  public: cPtr_uint_36__34_AttributeMinMax (const GALGAS_location & in_location,
+                                            const GALGAS_uint_36__34_ & in_min,
+                                            const GALGAS_uint_36__34_ & in_max
+                                            COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
+
+//--- Attribute accessors
+  public: VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_min (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setMin (GALGAS_uint_36__34_ inValue COMMA_LOCATION_ARGS) ;
+  public: VIRTUAL_IN_DEBUG GALGAS_uint_36__34_ getter_max (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG void setter_setMax (GALGAS_uint_36__34_ inValue COMMA_LOCATION_ARGS) ;
+//--- Description
+  public: virtual void description (C_String & ioString,
+                                    const int32_t inIndentation) const override ;
+
+  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
+
+  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
+
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Phase 1: @sint_33__32_AttributeMinMax  value class
 //
 //----------------------------------------------------------------------------------------------------------------------
@@ -37,7 +931,7 @@ class GALGAS_sint_33__32_AttributeMinMax : public GALGAS_attributeRange {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_sint_33__32_AttributeMinMax extractObject (const GALGAS_object & inObject,
@@ -69,7 +963,7 @@ class GALGAS_sint_33__32_AttributeMinMax : public GALGAS_attributeRange {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_sint_33__32_AttributeMinMax class
 
@@ -156,7 +1050,7 @@ class GALGAS_sint_36__34_AttributeMinMax : public GALGAS_attributeRange {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_sint_36__34_AttributeMinMax extractObject (const GALGAS_object & inObject,
@@ -188,7 +1082,7 @@ class GALGAS_sint_36__34_AttributeMinMax : public GALGAS_attributeRange {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_sint_36__34_AttributeMinMax class
 
@@ -275,7 +1169,7 @@ class GALGAS_floatAttributeMinMax : public GALGAS_attributeRange {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_floatAttributeMinMax extractObject (const GALGAS_object & inObject,
@@ -307,7 +1201,7 @@ class GALGAS_floatAttributeMinMax : public GALGAS_attributeRange {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_floatAttributeMinMax class
 
@@ -386,7 +1280,7 @@ class GALGAS_locationList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_locationList extractObject (const GALGAS_object & inObject,
@@ -474,7 +1368,7 @@ class GALGAS_locationList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_locationList ;
@@ -513,8 +1407,8 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_locationList_2D_element constructor_default (LOCATION_ARGS) ;
@@ -536,7 +1430,7 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_locationList_2D_element extractObject (const GALGAS_object & inObject,
@@ -549,7 +1443,7 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_locationList_2D_element & inOperand) const ;
 
@@ -563,7 +1457,7 @@ class GALGAS_locationList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_locationList_2D_element class
 
@@ -597,7 +1491,7 @@ class GALGAS_implementationObjectMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_implementationObjectMap extractObject (const GALGAS_object & inObject,
@@ -615,6 +1509,11 @@ class GALGAS_implementationObjectMap : public AC_GALGAS_map {
                                                      const class GALGAS_impType & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_implementationObjectMap add_operation (const GALGAS_implementationObjectMap & inOperand,
+                                                                         C_Compiler * inCompiler
+                                                                         COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -656,7 +1555,7 @@ class GALGAS_implementationObjectMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_implementationObjectMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                                     const GALGAS_string & inKey
                                                                                                     COMMA_LOCATION_ARGS) ;
@@ -718,7 +1617,7 @@ class GALGAS_impType : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impType extractObject (const GALGAS_object & inObject,
@@ -753,7 +1652,7 @@ class GALGAS_impType : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impType class
 
@@ -809,8 +1708,8 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_implementationObjectMap_2D_element (void) ;
@@ -834,7 +1733,7 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_implementationObjectMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -848,7 +1747,7 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_implementationObjectMap_2D_element & inOperand) const ;
 
@@ -862,7 +1761,7 @@ class GALGAS_implementationObjectMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_implementationObjectMap_2D_element class
 
@@ -896,7 +1795,7 @@ class GALGAS_enumValues : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_enumValues extractObject (const GALGAS_object & inObject,
@@ -914,6 +1813,11 @@ class GALGAS_enumValues : public AC_GALGAS_map {
                                                      const class GALGAS_implementationObjectMap & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_enumValues add_operation (const GALGAS_enumValues & inOperand,
+                                                            C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -955,7 +1859,7 @@ class GALGAS_enumValues : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_enumValues * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
                                                                                        COMMA_LOCATION_ARGS) ;
@@ -1032,8 +1936,8 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_enumValues_2D_element constructor_default (LOCATION_ARGS) ;
@@ -1060,7 +1964,7 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_enumValues_2D_element extractObject (const GALGAS_object & inObject,
@@ -1074,7 +1978,7 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_enumValues_2D_element & inOperand) const ;
 
@@ -1088,7 +1992,7 @@ class GALGAS_enumValues_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_enumValues_2D_element class
 
@@ -1144,7 +2048,7 @@ class GALGAS_implementationMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_implementationMap extractObject (const GALGAS_object & inObject,
@@ -1162,6 +2066,11 @@ class GALGAS_implementationMap : public AC_GALGAS_map {
                                                      const class GALGAS_implementationObject & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_implementationMap add_operation (const GALGAS_implementationMap & inOperand,
+                                                                   C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -1203,7 +2112,7 @@ class GALGAS_implementationMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_implementationMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                               const GALGAS_string & inKey
                                                                                               COMMA_LOCATION_ARGS) ;
@@ -1262,7 +2171,7 @@ class GALGAS_implementationObject : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_implementationObject extractObject (const GALGAS_object & inObject,
@@ -1293,7 +2202,7 @@ class GALGAS_implementationObject : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_implementationObject class
 
@@ -1349,8 +2258,8 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_implementationMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -1377,7 +2286,7 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_implementationMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -1391,7 +2300,7 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_implementationMap_2D_element & inOperand) const ;
 
@@ -1405,7 +2314,7 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_implementationMap_2D_element class
 
@@ -1441,7 +2350,7 @@ class GALGAS_implementation : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_implementation extractObject (const GALGAS_object & inObject,
@@ -1468,7 +2377,7 @@ class GALGAS_implementation : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_implementation class
 
@@ -1541,7 +2450,7 @@ class cPtr_implementation : public acPtr_class {
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasKey (const cPtr_implementation * inObject,
-                                              const GALGAS_string constin_key,
+                                              const class GALGAS_string constin_key,
                                               class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
@@ -1552,7 +2461,7 @@ class GALGAS_bool callExtensionGetter_hasKey (const cPtr_implementation * inObje
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
-                                               const GALGAS_lstring constin_key,
+                                               const class GALGAS_lstring constin_key,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -1563,7 +2472,7 @@ class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_implementationObject callExtensionGetter_impObject (const cPtr_implementation * inObject,
-                                                                 const GALGAS_string constin_objKind,
+                                                                 const class GALGAS_string constin_objKind,
                                                                  class C_Compiler * inCompiler
                                                                  COMMA_LOCATION_ARGS) ;
 
@@ -1628,9 +2537,9 @@ class GALGAS_lstring function_lstringWith (class GALGAS_string inArgument0,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_checkTypeForKind (class cPtr_implementation * inObject,
-                                           const GALGAS_string constin_objKind,
-                                           const GALGAS_string constin_attributeName,
-                                           const GALGAS_dataType constin_expectedType,
+                                           const class GALGAS_string constin_objKind,
+                                           const class GALGAS_string constin_attributeName,
+                                           const class GALGAS_dataType constin_expectedType,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
@@ -1734,7 +2643,7 @@ class cPtr_impType : public acPtr_class {
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_checkAttributeReferences (class cPtr_impType * inObject,
-                                                   const GALGAS_implementation constin_imp,
+                                                   const class GALGAS_implementation constin_imp,
                                                    C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) ;
 
@@ -1745,8 +2654,8 @@ void callExtensionMethod_checkAttributeReferences (class cPtr_impType * inObject
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_impType callExtensionGetter_mergeWithType (const class cPtr_impType * inObject,
-                                                        GALGAS_impType in_typeToMerge,
-                                                        C_Compiler * inCompiler
+                                                        class GALGAS_impType in_typeToMerge,
+                                                        class C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1756,8 +2665,8 @@ class GALGAS_impType callExtensionGetter_mergeWithType (const class cPtr_impType
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_contains (const class cPtr_attributeRange * inObject,
-                                                const GALGAS_object_5F_t constin_obj,
-                                                C_Compiler * inCompiler
+                                                const class GALGAS_object_5F_t constin_obj,
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1767,7 +2676,7 @@ class GALGAS_bool callExtensionGetter_contains (const class cPtr_attributeRange 
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string callExtensionGetter_string (const class cPtr_attributeRange * inObject,
-                                                C_Compiler * inCompiler
+                                                class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1861,9 +2770,6 @@ class C_Lexique_options_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
-//--- Indexing directory
-  protected: virtual C_String indexingDirectory (void) const override  ;
-
 //--- Parse lexical token
   protected: void internalParseLexicalToken (cTokenFor_options_5F_scanner & token) ;
   protected: virtual bool parseLexicalToken (void) override ;
@@ -1910,7 +2816,7 @@ class GALGAS_identifierMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_identifierMap extractObject (const GALGAS_object & inObject,
@@ -1928,6 +2834,11 @@ class GALGAS_identifierMap : public AC_GALGAS_map {
                                                      const class GALGAS_object_5F_t & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_identifierMap add_operation (const GALGAS_identifierMap & inOperand,
+                                                               C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -1969,7 +2880,7 @@ class GALGAS_identifierMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_identifierMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                           const GALGAS_string & inKey
                                                                                           COMMA_LOCATION_ARGS) ;
@@ -2046,8 +2957,8 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_identifierMap_2D_element (void) ;
@@ -2071,7 +2982,7 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_identifierMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -2085,7 +2996,7 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_identifierMap_2D_element & inOperand) const ;
 
@@ -2099,7 +3010,7 @@ class GALGAS_identifierMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_identifierMap_2D_element class
 
@@ -2135,7 +3046,7 @@ class GALGAS_objectAttributes : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectAttributes extractObject (const GALGAS_object & inObject,
@@ -2162,7 +3073,7 @@ class GALGAS_objectAttributes : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_objectAttributes class
 
@@ -2278,7 +3189,7 @@ class GALGAS_identifierList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_identifierList extractObject (const GALGAS_object & inObject,
@@ -2366,7 +3277,7 @@ class GALGAS_identifierList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_identifierList ;
@@ -2405,8 +3316,8 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_identifierList_2D_element (void) ;
@@ -2425,7 +3336,7 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_identifierList_2D_element extractObject (const GALGAS_object & inObject,
@@ -2438,7 +3349,7 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_identifierList_2D_element & inOperand) const ;
 
@@ -2452,7 +3363,7 @@ class GALGAS_identifierList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_identifierList_2D_element class
 
@@ -2486,7 +3397,7 @@ class GALGAS_stringMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_stringMap extractObject (const GALGAS_object & inObject,
@@ -2504,6 +3415,11 @@ class GALGAS_stringMap : public AC_GALGAS_map {
                                                      const class GALGAS_string & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_stringMap add_operation (const GALGAS_stringMap & inOperand,
+                                                           C_Compiler * inCompiler
+                                                           COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -2540,7 +3456,7 @@ class GALGAS_stringMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_stringMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                       const GALGAS_string & inKey
                                                                                       COMMA_LOCATION_ARGS) ;
@@ -2617,8 +3533,8 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_stringMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -2645,7 +3561,7 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_stringMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -2659,7 +3575,7 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_stringMap_2D_element & inOperand) const ;
 
@@ -2673,7 +3589,7 @@ class GALGAS_stringMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_stringMap_2D_element class
 
@@ -2707,7 +3623,7 @@ class GALGAS_lstringMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_lstringMap extractObject (const GALGAS_object & inObject,
@@ -2725,6 +3641,11 @@ class GALGAS_lstringMap : public AC_GALGAS_map {
                                                      const class GALGAS_lstring & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_lstringMap add_operation (const GALGAS_lstringMap & inOperand,
+                                                            C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -2761,7 +3682,7 @@ class GALGAS_lstringMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_lstringMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
                                                                                        COMMA_LOCATION_ARGS) ;
@@ -2838,8 +3759,8 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_lstringMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -2866,7 +3787,7 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_lstringMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -2880,7 +3801,7 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_lstringMap_2D_element & inOperand) const ;
 
@@ -2894,7 +3815,7 @@ class GALGAS_lstringMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_lstringMap_2D_element class
 
@@ -2928,7 +3849,7 @@ class GALGAS_prefix_5F_map : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_prefix_5F_map extractObject (const GALGAS_object & inObject,
@@ -2947,6 +3868,11 @@ class GALGAS_prefix_5F_map : public AC_GALGAS_map {
                                                      const class GALGAS_string & inOperand2,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_prefix_5F_map add_operation (const GALGAS_prefix_5F_map & inOperand,
+                                                               C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_add (class GALGAS_lstring constinArgument0,
@@ -3001,7 +3927,7 @@ class GALGAS_prefix_5F_map : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_prefix_5F_map * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                           const GALGAS_string & inKey
                                                                                           COMMA_LOCATION_ARGS) ;
@@ -3086,8 +4012,8 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_prefix_5F_map_2D_element constructor_default (LOCATION_ARGS) ;
@@ -3119,7 +4045,7 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_prefix_5F_map_2D_element extractObject (const GALGAS_object & inObject,
@@ -3134,7 +4060,7 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_prefix_5F_map_2D_element & inOperand) const ;
 
@@ -3148,7 +4074,7 @@ class GALGAS_prefix_5F_map_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_prefix_5F_map_2D_element class
 
@@ -3182,7 +4108,7 @@ class GALGAS_stringset_5F_map : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_stringset_5F_map extractObject (const GALGAS_object & inObject,
@@ -3200,6 +4126,11 @@ class GALGAS_stringset_5F_map : public AC_GALGAS_map {
                                                      const class GALGAS_stringset & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_stringset_5F_map add_operation (const GALGAS_stringset_5F_map & inOperand,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_add (class GALGAS_lstring constinArgument0,
@@ -3241,7 +4172,7 @@ class GALGAS_stringset_5F_map : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_stringset_5F_map * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                              const GALGAS_string & inKey
                                                                                              COMMA_LOCATION_ARGS) ;
@@ -3318,8 +4249,8 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_stringset_5F_map_2D_element constructor_default (LOCATION_ARGS) ;
@@ -3346,7 +4277,7 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_stringset_5F_map_2D_element extractObject (const GALGAS_object & inObject,
@@ -3360,7 +4291,7 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_stringset_5F_map_2D_element & inOperand) const ;
 
@@ -3374,7 +4305,7 @@ class GALGAS_stringset_5F_map_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_stringset_5F_map_2D_element class
 
@@ -3404,7 +4335,7 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_ident_5F_list extractObject (const GALGAS_object & inObject,
@@ -3492,7 +4423,7 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_ident_5F_list ;
@@ -3531,8 +4462,8 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_ident_5F_list_2D_element constructor_default (LOCATION_ARGS) ;
@@ -3554,7 +4485,7 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_ident_5F_list_2D_element extractObject (const GALGAS_object & inObject,
@@ -3567,7 +4498,7 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_ident_5F_list_2D_element & inOperand) const ;
 
@@ -3581,7 +4512,7 @@ class GALGAS_ident_5F_list_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_ident_5F_list_2D_element class
 
@@ -3615,7 +4546,7 @@ class GALGAS_ident_5F_list_5F_map : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_ident_5F_list_5F_map extractObject (const GALGAS_object & inObject,
@@ -3633,6 +4564,11 @@ class GALGAS_ident_5F_list_5F_map : public AC_GALGAS_map {
                                                      const class GALGAS_ident_5F_list & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_ident_5F_list_5F_map add_operation (const GALGAS_ident_5F_list_5F_map & inOperand,
+                                                                      C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_add (class GALGAS_lstring constinArgument0,
@@ -3674,7 +4610,7 @@ class GALGAS_ident_5F_list_5F_map : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_ident_5F_list_5F_map * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                                  const GALGAS_string & inKey
                                                                                                  COMMA_LOCATION_ARGS) ;
@@ -3751,8 +4687,8 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_ident_5F_list_5F_map_2D_element constructor_default (LOCATION_ARGS) ;
@@ -3779,7 +4715,7 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_ident_5F_list_5F_map_2D_element extractObject (const GALGAS_object & inObject,
@@ -3793,7 +4729,7 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_ident_5F_list_5F_map_2D_element & inOperand) const ;
 
@@ -3807,7 +4743,7 @@ class GALGAS_ident_5F_list_5F_map_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_ident_5F_list_5F_map_2D_element class
 
@@ -3840,7 +4776,7 @@ class GALGAS_autostart_5F_obj : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_autostart_5F_obj extractObject (const GALGAS_object & inObject,
@@ -3863,7 +4799,7 @@ class GALGAS_autostart_5F_obj : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_autostart_5F_obj class
 
@@ -3926,7 +4862,7 @@ class GALGAS_autostart_5F_void : public GALGAS_autostart_5F_obj {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_autostart_5F_void extractObject (const GALGAS_object & inObject,
@@ -3950,7 +4886,7 @@ class GALGAS_autostart_5F_void : public GALGAS_autostart_5F_obj {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_autostart_5F_void class
 
@@ -4013,7 +4949,7 @@ class GALGAS_autostart_5F_false : public GALGAS_autostart_5F_obj {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_autostart_5F_false extractObject (const GALGAS_object & inObject,
@@ -4037,7 +4973,7 @@ class GALGAS_autostart_5F_false : public GALGAS_autostart_5F_obj {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_autostart_5F_false class
 
@@ -4092,8 +5028,8 @@ class GALGAS_gtlData callExtensionGetter_fieldMap (const cPtr_objectAttributes *
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_set (class cPtr_object_5F_t * inObject,
-                              const GALGAS_lstring constin_name,
-                              GALGAS_gtlData & io_result,
+                              const class GALGAS_lstring constin_name,
+                              class GALGAS_gtlData & io_result,
                               C_Compiler * inCompiler
                               COMMA_LOCATION_ARGS) ;
 
@@ -4124,7 +5060,7 @@ class GALGAS_string extensionGetter_trimRight (const class GALGAS_string & inObj
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyApplication (class cPtr_implementation * inObject,
-                                            const GALGAS_applicationDefinition constin_appDef,
+                                            const class GALGAS_applicationDefinition constin_appDef,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
@@ -4163,7 +5099,7 @@ class GALGAS_applicationDefinition : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_applicationDefinition extractObject (const GALGAS_object & inObject,
@@ -4206,7 +5142,7 @@ class GALGAS_applicationDefinition : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_applicationDefinition class
 
@@ -4242,7 +5178,7 @@ class GALGAS_objectKind : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectKind extractObject (const GALGAS_object & inObject,
@@ -4269,7 +5205,7 @@ class GALGAS_objectKind : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_objectKind class
 
@@ -4303,7 +5239,7 @@ class GALGAS_objectsMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectsMap extractObject (const GALGAS_object & inObject,
@@ -4321,6 +5257,11 @@ class GALGAS_objectsMap : public AC_GALGAS_map {
                                                      const class GALGAS_objectKind & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_objectsMap add_operation (const GALGAS_objectsMap & inOperand,
+                                                            C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -4362,7 +5303,7 @@ class GALGAS_objectsMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_objectsMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
                                                                                        COMMA_LOCATION_ARGS) ;
@@ -4505,7 +5446,7 @@ class GALGAS_objectKindMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectKindMap extractObject (const GALGAS_object & inObject,
@@ -4523,6 +5464,11 @@ class GALGAS_objectKindMap : public AC_GALGAS_map {
                                                      const class GALGAS_objectAttributes & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_objectKindMap add_operation (const GALGAS_objectKindMap & inOperand,
+                                                               C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -4564,7 +5510,7 @@ class GALGAS_objectKindMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_objectKindMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                           const GALGAS_string & inKey
                                                                                           COMMA_LOCATION_ARGS) ;
@@ -4666,7 +5612,7 @@ class cPtr_objectKind : public acPtr_class {
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyApplication (class cPtr_implementationObject * inObject,
-                                            const GALGAS_objectKind constin_objectsOfKind,
+                                            const class GALGAS_objectKind constin_objectsOfKind,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
@@ -4689,8 +5635,8 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_objectsMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -4717,7 +5663,7 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectsMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -4731,7 +5677,7 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_objectsMap_2D_element & inOperand) const ;
 
@@ -4745,7 +5691,7 @@ class GALGAS_objectsMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_objectsMap_2D_element class
 
@@ -4761,8 +5707,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_objectsMap_2D_eleme
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyCrossReferences (class cPtr_objectAttributes * inObject,
-                                                const GALGAS_objectsMap constin_allObjects,
-                                                const GALGAS_implementationObjectMap constin_attributes,
+                                                const class GALGAS_objectsMap constin_allObjects,
+                                                const class GALGAS_implementationObjectMap constin_attributes,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
@@ -4773,8 +5719,8 @@ void callExtensionMethod_verifyCrossReferences (class cPtr_objectAttributes * in
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_verifyCrossReferences (class cPtr_object_5F_t * inObject,
-                                                const GALGAS_objectsMap constin_allObjects,
-                                                const GALGAS_impType constin_type,
+                                                const class GALGAS_objectsMap constin_allObjects,
+                                                const class GALGAS_impType constin_type,
                                                 C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;
 
@@ -4797,8 +5743,8 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_objectKindMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -4825,7 +5771,7 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectKindMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -4839,7 +5785,7 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_objectKindMap_2D_element & inOperand) const ;
 
@@ -4853,7 +5799,7 @@ class GALGAS_objectKindMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_objectKindMap_2D_element class
 
@@ -4879,6 +5825,8 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_OIL_5F_version_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_OIL_5F_version_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_application_5F_definition_ (const class GALGAS_implementation constinArgument0,
                                                          class GALGAS_applicationDefinition & ioArgument1,
                                                          class GALGAS_string & ioArgument2,
@@ -4887,15 +5835,21 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_application_5F_definition_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_application_5F_definition_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_boolean_ (class GALGAS_lbool & outArgument0,
                                        class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_boolean_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_boolean_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_description_ (class GALGAS_lstring & outArgument0,
                                            class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_description_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_description_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_file_ (class GALGAS_implementation & ioArgument0,
                                     class GALGAS_applicationDefinition & ioArgument1,
@@ -4905,10 +5859,22 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_file_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_file_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_file_5F_without_5F_include_ (class GALGAS_implementation & ioArgument0,
+                                                          class GALGAS_applicationDefinition & ioArgument1,
+                                                          class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_file_5F_without_5F_include_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_file_5F_without_5F_include_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_implementation_5F_definition_ (class GALGAS_implementation & ioArgument0,
                                                             class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_definition_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_implementation_5F_definition_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_include_5F_cpu_5F_level_ (const class GALGAS_implementation constinArgument0,
                                                        class GALGAS_objectsMap & ioArgument1,
@@ -4918,6 +5884,8 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_include_5F_cpu_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_include_5F_cpu_5F_level_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_include_5F_file_5F_level_ (class GALGAS_implementation & ioArgument0,
                                                         class GALGAS_applicationDefinition & ioArgument1,
                                                         class GALGAS_string & ioArgument2,
@@ -4926,11 +5894,15 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_include_5F_file_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_include_5F_file_5F_level_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_include_5F_object_5F_level_ (const class GALGAS_implementationObjectMap constinArgument0,
                                                           class GALGAS_objectAttributes & ioArgument1,
                                                           class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_include_5F_object_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_include_5F_object_5F_level_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_object_5F_definition_5F_list_ (const class GALGAS_implementation constinArgument0,
                                                             class GALGAS_objectsMap & ioArgument1,
@@ -4940,11 +5912,15 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_object_5F_definition_5F_list_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_object_5F_definition_5F_list_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_oil_5F_declaration_ (const class GALGAS_implementationObjectMap constinArgument0,
                                                   class GALGAS_objectAttributes & ioArgument1,
                                                   class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_oil_5F_declaration_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_oil_5F_declaration_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_oil_5F_declaration_5F_list_ (const class GALGAS_implementationObjectMap constinArgument0,
                                                           class GALGAS_objectAttributes & ioArgument1,
@@ -4952,20 +5928,28 @@ class cParser_goil_5F_syntax {
 
   protected: virtual void nt_oil_5F_declaration_5F_list_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_oil_5F_declaration_5F_list_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_sign_ (class GALGAS_bool & outArgument0,
                                     class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_sign_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_sign_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_start_ (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_start_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_start_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
 
 //--- Rule declarations
   protected: void rule_goil_5F_syntax_start_i0_ (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_goil_5F_syntax_start_i0_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_start_i0_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_goil_5F_syntax_file_i1_ (GALGAS_implementation & ioArgument0,
                                                 GALGAS_applicationDefinition & ioArgument1,
@@ -4975,76 +5959,108 @@ class cParser_goil_5F_syntax {
 
   protected: void rule_goil_5F_syntax_file_i1_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_sign_i2_ (GALGAS_bool & outArgument0,
+  protected: void rule_goil_5F_syntax_file_i1_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_file_5F_without_5F_include_i2_ (GALGAS_implementation & ioArgument0,
+                                                                      GALGAS_applicationDefinition & ioArgument1,
+                                                                      C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_file_5F_without_5F_include_i2_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_file_5F_without_5F_include_i2_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_sign_i3_ (GALGAS_bool & outArgument0,
                                                 C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_sign_i2_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_sign_i3_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_description_i3_ (GALGAS_lstring & outArgument0,
+  protected: void rule_goil_5F_syntax_sign_i3_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_description_i4_ (GALGAS_lstring & outArgument0,
                                                        C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_description_i3_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_description_i4_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_OIL_5F_version_i4_ (GALGAS_lstring & outArgument0,
+  protected: void rule_goil_5F_syntax_description_i4_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_OIL_5F_version_i5_ (GALGAS_lstring & outArgument0,
                                                           GALGAS_lstring & outArgument1,
                                                           C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_OIL_5F_version_i4_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_OIL_5F_version_i5_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_application_5F_definition_i5_ (const GALGAS_implementation constinArgument0,
+  protected: void rule_goil_5F_syntax_OIL_5F_version_i5_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_application_5F_definition_i6_ (const GALGAS_implementation constinArgument0,
                                                                      GALGAS_applicationDefinition & ioArgument1,
                                                                      GALGAS_string & ioArgument2,
                                                                      const GALGAS_bool constinArgument3,
                                                                      C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_application_5F_definition_i5_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_application_5F_definition_i6_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_object_5F_definition_5F_list_i6_ (const GALGAS_implementation constinArgument0,
+  protected: void rule_goil_5F_syntax_application_5F_definition_i6_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_object_5F_definition_5F_list_i7_ (const GALGAS_implementation constinArgument0,
                                                                         GALGAS_objectsMap & ioArgument1,
                                                                         GALGAS_string & ioArgument2,
                                                                         const GALGAS_bool constinArgument3,
                                                                         C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_object_5F_definition_5F_list_i6_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_object_5F_definition_5F_list_i7_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_boolean_i7_ (GALGAS_lbool & outArgument0,
+  protected: void rule_goil_5F_syntax_object_5F_definition_5F_list_i7_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_boolean_i8_ (GALGAS_lbool & outArgument0,
                                                    C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_boolean_i7_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_boolean_i8_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_ (const GALGAS_implementationObjectMap constinArgument0,
+  protected: void rule_goil_5F_syntax_boolean_i8_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_oil_5F_declaration_5F_list_i9_ (const GALGAS_implementationObjectMap constinArgument0,
                                                                       GALGAS_objectAttributes & ioArgument1,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_oil_5F_declaration_5F_list_i9_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_oil_5F_declaration_i9_ (const GALGAS_implementationObjectMap constinArgument0,
-                                                              GALGAS_objectAttributes & ioArgument1,
-                                                              C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_oil_5F_declaration_5F_list_i9_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_oil_5F_declaration_i9_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_oil_5F_declaration_i10_ (const GALGAS_implementationObjectMap constinArgument0,
+                                                               GALGAS_objectAttributes & ioArgument1,
+                                                               C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_include_5F_file_5F_level_i10_ (GALGAS_implementation & ioArgument0,
+  protected: void rule_goil_5F_syntax_oil_5F_declaration_i10_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_oil_5F_declaration_i10_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_include_5F_file_5F_level_i11_ (GALGAS_implementation & ioArgument0,
                                                                      GALGAS_applicationDefinition & ioArgument1,
                                                                      GALGAS_string & ioArgument2,
                                                                      const GALGAS_bool constinArgument3,
                                                                      C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_include_5F_file_5F_level_i11_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_ (const GALGAS_implementation constinArgument0,
+  protected: void rule_goil_5F_syntax_include_5F_file_5F_level_i11_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_include_5F_cpu_5F_level_i12_ (const GALGAS_implementation constinArgument0,
                                                                     GALGAS_objectsMap & ioArgument1,
                                                                     GALGAS_string & ioArgument2,
                                                                     const GALGAS_bool constinArgument3,
                                                                     C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_include_5F_cpu_5F_level_i12_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_include_5F_object_5F_level_i12_ (const GALGAS_implementationObjectMap constinArgument0,
+  protected: void rule_goil_5F_syntax_include_5F_cpu_5F_level_i12_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_include_5F_object_5F_level_i13_ (const GALGAS_implementationObjectMap constinArgument0,
                                                                        GALGAS_objectAttributes & ioArgument1,
                                                                        C_Lexique_goil_5F_lexique * inLexique) ;
 
-  protected: void rule_goil_5F_syntax_include_5F_object_5F_level_i12_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+  protected: void rule_goil_5F_syntax_include_5F_object_5F_level_i13_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_goil_5F_syntax_include_5F_object_5F_level_i13_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
 
 
@@ -5085,6 +6101,8 @@ class cParser_goil_5F_syntax {
 
   protected: virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) = 0 ;
 
+  protected: virtual int32_t select_goil_5F_syntax_18 (C_Lexique_goil_5F_lexique *) = 0 ;
+
 
 } ;
 
@@ -5113,7 +6131,7 @@ class GALGAS_auto : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_auto extractObject (const GALGAS_object & inObject,
@@ -5138,7 +6156,7 @@ class GALGAS_auto : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_auto class
 
@@ -5211,7 +6229,7 @@ class GALGAS_boolAttribute : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_boolAttribute extractObject (const GALGAS_object & inObject,
@@ -5244,7 +6262,7 @@ class GALGAS_boolAttribute : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_boolAttribute class
 
@@ -5330,7 +6348,7 @@ class GALGAS_enumAttribute : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_enumAttribute extractObject (const GALGAS_object & inObject,
@@ -5363,7 +6381,7 @@ class GALGAS_enumAttribute : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_enumAttribute class
 
@@ -5446,7 +6464,7 @@ class GALGAS_impAutoDefaultType : public GALGAS_impType {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impAutoDefaultType extractObject (const GALGAS_object & inObject,
@@ -5482,7 +6500,7 @@ class GALGAS_impAutoDefaultType : public GALGAS_impType {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impAutoDefaultType class
 
@@ -5576,7 +6594,7 @@ class GALGAS_impBoolType : public GALGAS_impAutoDefaultType {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impBoolType extractObject (const GALGAS_object & inObject,
@@ -5614,7 +6632,7 @@ class GALGAS_impBoolType : public GALGAS_impAutoDefaultType {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impBoolType class
 
@@ -5706,7 +6724,7 @@ class GALGAS_impEnumType : public GALGAS_impAutoDefaultType {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impEnumType extractObject (const GALGAS_object & inObject,
@@ -5740,7 +6758,7 @@ class GALGAS_impEnumType : public GALGAS_impAutoDefaultType {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impEnumType class
 
@@ -5824,7 +6842,7 @@ class GALGAS_impRangedType : public GALGAS_impAutoDefaultType {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impRangedType extractObject (const GALGAS_object & inObject,
@@ -5858,7 +6876,7 @@ class GALGAS_impRangedType : public GALGAS_impAutoDefaultType {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impRangedType class
 
@@ -5938,7 +6956,7 @@ class GALGAS_impStructType : public GALGAS_impType {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impStructType extractObject (const GALGAS_object & inObject,
@@ -5970,7 +6988,7 @@ class GALGAS_impStructType : public GALGAS_impType {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impStructType class
 
@@ -6046,7 +7064,7 @@ class GALGAS_impVoid : public GALGAS_impType {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_impVoid extractObject (const GALGAS_object & inObject,
@@ -6074,7 +7092,7 @@ class GALGAS_impVoid : public GALGAS_impType {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_impVoid class
 
@@ -6147,7 +7165,7 @@ class GALGAS_multipleAttribute : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_multipleAttribute extractObject (const GALGAS_object & inObject,
@@ -6176,7 +7194,7 @@ class GALGAS_multipleAttribute : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_multipleAttribute class
 
@@ -6256,7 +7274,7 @@ class GALGAS_objectRefAttribute : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_objectRefAttribute extractObject (const GALGAS_object & inObject,
@@ -6285,7 +7303,7 @@ class GALGAS_objectRefAttribute : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_objectRefAttribute class
 
@@ -6365,7 +7383,7 @@ class GALGAS_stringAttribute : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_stringAttribute extractObject (const GALGAS_object & inObject,
@@ -6394,7 +7412,7 @@ class GALGAS_stringAttribute : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_stringAttribute class
 
@@ -6469,7 +7487,7 @@ class GALGAS_string_5F_class : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_string_5F_class extractObject (const GALGAS_object & inObject,
@@ -6498,7 +7516,7 @@ class GALGAS_string_5F_class : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_string_5F_class class
 
@@ -6575,7 +7593,7 @@ class GALGAS_structAttribute : public GALGAS_object_5F_t {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_structAttribute extractObject (const GALGAS_object & inObject,
@@ -6608,7 +7626,7 @@ class GALGAS_structAttribute : public GALGAS_object_5F_t {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_structAttribute class
 
@@ -6756,7 +7774,7 @@ class GALGAS_string function_valueList (const class GALGAS_enumValues & constinA
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_templateData (const cPtr_applicationDefinition * inObject,
-                                                       const GALGAS_implementation constin_imp,
+                                                       const class GALGAS_implementation constin_imp,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
@@ -6789,6 +7807,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_OIL_5F_version_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_OIL_5F_version_ (GALGAS_lstring & outArgument0,
                                            GALGAS_lstring & outArgument1,
@@ -6797,6 +7818,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'application_definition' non terminal
 //--- 'parse' label
   public: virtual void nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_application_5F_definition_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
@@ -6809,6 +7833,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_boolean_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_boolean_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_boolean_ (GALGAS_lbool & outArgument0,
                                     C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -6816,6 +7843,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'description' non terminal
 //--- 'parse' label
   public: virtual void nt_description_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_description_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_description_ (GALGAS_lstring & outArgument0,
@@ -6825,6 +7855,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_file_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_file_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                  GALGAS_applicationDefinition & ioArgument1,
@@ -6832,9 +7865,24 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
                                  const GALGAS_bool inArgument3,
                                  C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//------------------------------------- 'file_without_include' non terminal
+//--- 'parse' label
+  public: virtual void nt_file_5F_without_5F_include_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_file_5F_without_5F_include_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public: virtual void nt_file_5F_without_5F_include_ (GALGAS_implementation & ioArgument0,
+                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //------------------------------------- 'implementation_definition' non terminal
 //--- 'parse' label
   public: virtual void nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_implementation_5F_definition_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_implementation_5F_definition_ (GALGAS_implementation & ioArgument0,
@@ -6843,6 +7891,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'include_cpu_level' non terminal
 //--- 'parse' label
   public: virtual void nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_include_5F_cpu_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
@@ -6855,6 +7906,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_file_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                      GALGAS_applicationDefinition & ioArgument1,
@@ -6866,6 +7920,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_object_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_object_5F_level_ (const GALGAS_implementationObjectMap inArgument0,
                                                        GALGAS_objectAttributes & ioArgument1,
@@ -6874,6 +7931,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'object_definition_list' non terminal
 //--- 'parse' label
   public: virtual void nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_object_5F_definition_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
@@ -6916,6 +7976,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_oil_5F_declaration_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_oil_5F_declaration_ (const GALGAS_implementationObjectMap inArgument0,
                                                GALGAS_objectAttributes & ioArgument1,
@@ -6924,6 +7987,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'oil_declaration_list' non terminal
 //--- 'parse' label
   public: virtual void nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_oil_5F_declaration_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_oil_5F_declaration_5F_list_ (const GALGAS_implementationObjectMap inArgument0,
@@ -6934,6 +8000,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //--- 'parse' label
   public: virtual void nt_sign_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_sign_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_sign_ (GALGAS_bool & outArgument0,
                                  C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -6941,6 +8010,9 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //------------------------------------- 'start' non terminal
 //--- 'parse' label
   public: virtual void nt_start_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_start_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_start_ (C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -6980,6 +8052,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
   public: virtual int32_t select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique *) ;
 
   public: virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) ;
+
+  public: virtual int32_t select_goil_5F_syntax_18 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -6999,21 +8073,29 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_boolean_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_boolean_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_boolean_5F_options_ (class GALGAS_lstring & outArgument0,
                                                   class GALGAS_impType & outArgument1,
                                                   class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_boolean_5F_options_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_boolean_5F_options_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_description_ (class GALGAS_lstring & outArgument0,
                                            class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_description_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_description_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_enum_5F_item_ (class GALGAS_enumValues & ioArgument0,
                                             class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_enum_5F_item_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_enum_5F_item_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_enum_5F_options_ (class GALGAS_lstring & outArgument0,
                                                class GALGAS_impType & outArgument1,
@@ -7021,35 +8103,49 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_enum_5F_options_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_enum_5F_options_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_identifier_5F_or_5F_attribute_ (class GALGAS_lstring & outArgument0,
                                                              class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_identifier_5F_or_5F_attribute_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_identifier_5F_or_5F_attribute_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_identifier_5F_or_5F_enum_5F_value_ (class GALGAS_lstring & outArgument0,
                                                                  class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_identifier_5F_or_5F_enum_5F_value_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_identifier_5F_or_5F_enum_5F_value_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_implementation_5F_definition_ (class GALGAS_implementation & ioArgument0,
                                                             class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_definition_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_implementation_5F_definition_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_list_ (class GALGAS_implementationObjectMap & ioArgument0,
                                                       class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_list_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_implementation_5F_list_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_implementation_5F_object_5F_list_ (class GALGAS_implementation & ioArgument0,
                                                                 class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_object_5F_list_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_implementation_5F_object_5F_list_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_implementation_5F_objects_ (class GALGAS_implementation & ioArgument0,
                                                          class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_objects_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_implementation_5F_objects_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_implementation_5F_type_ (class GALGAS_lstring & outArgument0,
                                                       class GALGAS_impType & outArgument1,
@@ -7057,15 +8153,21 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_implementation_5F_type_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_implementation_5F_type_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_include_5F_implementation_5F_level_ (class GALGAS_implementation & ioArgument0,
                                                                   class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_include_5F_implementation_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_include_5F_implementation_5F_level_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_include_5F_type_5F_level_ (class GALGAS_implementationObjectMap & ioArgument0,
                                                         class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_include_5F_type_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_include_5F_type_5F_level_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_int_5F_or_5F_float_ (class GALGAS_object_5F_t & outArgument0,
                                                   const class GALGAS_dataType constinArgument1,
@@ -7073,10 +8175,14 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_int_5F_or_5F_float_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_int_5F_or_5F_float_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_multiple_ (class GALGAS_bool & outArgument0,
                                         class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_multiple_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_multiple_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_number_5F_options_ (class GALGAS_lstring & outArgument0,
                                                  class GALGAS_impType & outArgument1,
@@ -7085,6 +8191,8 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_number_5F_options_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_number_5F_options_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_objref_5F_option_ (class GALGAS_lstring & outArgument0,
                                                 class GALGAS_impType & outArgument1,
                                                 class GALGAS_lstring inArgument2,
@@ -7092,11 +8200,15 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_objref_5F_option_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_objref_5F_option_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_range_ (class GALGAS_attributeRange & outArgument0,
                                      const class GALGAS_dataType constinArgument1,
                                      class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_range_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_range_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_range_5F_content_ (class GALGAS_attributeRange & outArgument0,
                                                 const class GALGAS_dataType constinArgument1,
@@ -7104,16 +8216,22 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_range_5F_content_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_range_5F_content_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_set_5F_followup_ (class GALGAS_numberList & ioArgument0,
                                                const class GALGAS_dataType constinArgument1,
                                                class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_set_5F_followup_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_set_5F_followup_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_sign_ (class GALGAS_bool & outArgument0,
                                     class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_sign_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_sign_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_string_5F_options_ (class GALGAS_lstring & outArgument0,
                                                  class GALGAS_impType & outArgument1,
@@ -7121,11 +8239,15 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_string_5F_options_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_string_5F_options_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_struct_5F_options_ (class GALGAS_lstring & outArgument0,
                                                  class GALGAS_impType & outArgument1,
                                                  class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_struct_5F_options_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_struct_5F_options_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_type_5F_options_ (class GALGAS_lstring & outArgument0,
                                                class GALGAS_impType & outArgument1,
@@ -7134,10 +8256,14 @@ class cParser_implementation_5F_parser {
 
   protected: virtual void nt_type_5F_options_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
+  protected: virtual void nt_type_5F_options_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
   protected: virtual void nt_with_5F_auto_ (class GALGAS_bool & outArgument0,
                                             class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected: virtual void nt_with_5F_auto_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
+
+  protected: virtual void nt_with_5F_auto_indexing (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -7146,30 +8272,42 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_implementation_5F_definition_i0_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_implementation_5F_definition_i0_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_ (GALGAS_implementation & ioArgument0,
                                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_ (GALGAS_implementation & ioArgument0,
                                                                                         C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_include_5F_type_5F_level_i3_ (GALGAS_implementationObjectMap & ioArgument0,
                                                                               C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_include_5F_type_5F_level_i3_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_include_5F_type_5F_level_i3_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_implementation_5F_objects_i4_ (GALGAS_implementation & ioArgument0,
                                                                                C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_implementation_5F_objects_i4_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_implementation_5F_objects_i4_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_implementation_5F_list_i5_ (GALGAS_implementationObjectMap & ioArgument0,
                                                                             C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_implementation_5F_list_i5_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_implementation_5F_list_i5_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_implementation_5F_type_i6_ (GALGAS_lstring & outArgument0,
                                                                             GALGAS_impType & outArgument1,
@@ -7177,11 +8315,15 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_implementation_5F_type_i6_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_implementation_5F_type_i6_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_struct_5F_options_i7_ (GALGAS_lstring & outArgument0,
                                                                        GALGAS_impType & outArgument1,
                                                                        C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_struct_5F_options_i7_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_struct_5F_options_i7_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_objref_5F_option_i8_ (GALGAS_lstring & outArgument0,
                                                                       GALGAS_impType & outArgument1,
@@ -7190,11 +8332,15 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_objref_5F_option_i8_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_objref_5F_option_i8_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_string_5F_options_i9_ (GALGAS_lstring & outArgument0,
                                                                        GALGAS_impType & outArgument1,
                                                                        C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_string_5F_options_i9_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_string_5F_options_i9_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_boolean_5F_options_i10_ (GALGAS_lstring & outArgument0,
                                                                          GALGAS_impType & outArgument1,
@@ -7202,16 +8348,22 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_boolean_5F_options_i10_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_boolean_5F_options_i10_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_enum_5F_item_i11_ (GALGAS_enumValues & ioArgument0,
                                                                    C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_enum_5F_item_i11_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_enum_5F_item_i11_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_enum_5F_options_i12_ (GALGAS_lstring & outArgument0,
                                                                       GALGAS_impType & outArgument1,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_enum_5F_options_i12_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_enum_5F_options_i12_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_number_5F_options_i13_ (GALGAS_lstring & outArgument0,
                                                                         GALGAS_impType & outArgument1,
@@ -7220,6 +8372,8 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_number_5F_options_i13_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_number_5F_options_i13_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_type_5F_options_i14_ (GALGAS_lstring & outArgument0,
                                                                       GALGAS_impType & outArgument1,
                                                                       const GALGAS_dataType constinArgument2,
@@ -7227,10 +8381,14 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_type_5F_options_i14_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_type_5F_options_i14_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_with_5F_auto_i15_ (GALGAS_bool & outArgument0,
                                                                    C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_with_5F_auto_i15_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_with_5F_auto_i15_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_int_5F_or_5F_float_i16_ (GALGAS_object_5F_t & outArgument0,
                                                                          const GALGAS_dataType constinArgument1,
@@ -7238,11 +8396,15 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_int_5F_or_5F_float_i16_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_int_5F_or_5F_float_i16_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_set_5F_followup_i17_ (GALGAS_numberList & ioArgument0,
                                                                       const GALGAS_dataType constinArgument1,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_set_5F_followup_i17_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_set_5F_followup_i17_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_range_5F_content_i18_ (GALGAS_attributeRange & outArgument0,
                                                                        const GALGAS_dataType constinArgument1,
@@ -7250,26 +8412,36 @@ class cParser_implementation_5F_parser {
 
   protected: void rule_implementation_5F_parser_range_5F_content_i18_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_range_5F_content_i18_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_range_i19_ (GALGAS_attributeRange & outArgument0,
                                                             const GALGAS_dataType constinArgument1,
                                                             C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_range_i19_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_range_i19_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_multiple_i20_ (GALGAS_bool & outArgument0,
                                                                C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_multiple_i20_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_multiple_i20_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_ (GALGAS_lstring & outArgument0,
                                                                                     C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
+  protected: void rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
+
   protected: void rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_ (GALGAS_lstring & outArgument0,
                                                                                         C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected: void rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_parse (C_Lexique_goil_5F_lexique * inLexique) ;
+
+  protected: void rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_indexing (C_Lexique_goil_5F_lexique * inLexique) ;
 
 
 
@@ -7349,6 +8521,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_OIL_5F_version_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_OIL_5F_version_ (GALGAS_lstring & outArgument0,
                                            GALGAS_lstring & outArgument1,
@@ -7357,6 +8532,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'application_definition' non terminal
 //--- 'parse' label
   public: virtual void nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_application_5F_definition_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
@@ -7369,6 +8547,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_boolean_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_boolean_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_boolean_ (GALGAS_lbool & outArgument0,
                                     C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7376,6 +8557,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'boolean_options' non terminal
 //--- 'parse' label
   public: virtual void nt_boolean_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_boolean_5F_options_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_boolean_5F_options_ (GALGAS_lstring & outArgument0,
@@ -7386,6 +8570,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_description_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_description_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_description_ (GALGAS_lstring & outArgument0,
                                         C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7393,6 +8580,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'enum_item' non terminal
 //--- 'parse' label
   public: virtual void nt_enum_5F_item_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_enum_5F_item_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_enum_5F_item_ (GALGAS_enumValues & ioArgument0,
@@ -7402,6 +8592,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_enum_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_enum_5F_options_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_enum_5F_options_ (GALGAS_lstring & outArgument0,
                                             GALGAS_impType & outArgument1,
@@ -7410,6 +8603,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'file' non terminal
 //--- 'parse' label
   public: virtual void nt_file_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_file_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_file_ (GALGAS_implementation & ioArgument0,
@@ -7448,9 +8644,24 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
   public: static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
                                                  const C_String & inSourceFilePath) ;
 
+//------------------------------------- 'file_without_include' non terminal
+//--- 'parse' label
+  public: virtual void nt_file_5F_without_5F_include_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_file_5F_without_5F_include_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public: virtual void nt_file_5F_without_5F_include_ (GALGAS_implementation & ioArgument0,
+                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //------------------------------------- 'identifier_or_attribute' non terminal
 //--- 'parse' label
   public: virtual void nt_identifier_5F_or_5F_attribute_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_identifier_5F_or_5F_attribute_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_identifier_5F_or_5F_attribute_ (GALGAS_lstring & outArgument0,
@@ -7460,6 +8671,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_identifier_5F_or_5F_enum_5F_value_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_identifier_5F_or_5F_enum_5F_value_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_identifier_5F_or_5F_enum_5F_value_ (GALGAS_lstring & outArgument0,
                                                               C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7467,6 +8681,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'implementation_definition' non terminal
 //--- 'parse' label
   public: virtual void nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_implementation_5F_definition_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_implementation_5F_definition_ (GALGAS_implementation & ioArgument0,
@@ -7476,6 +8693,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_implementation_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_implementation_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_implementation_5F_list_ (GALGAS_implementationObjectMap & ioArgument0,
                                                    C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7483,6 +8703,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'implementation_object_list' non terminal
 //--- 'parse' label
   public: virtual void nt_implementation_5F_object_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_implementation_5F_object_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_implementation_5F_object_5F_list_ (GALGAS_implementation & ioArgument0,
@@ -7492,6 +8715,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_implementation_5F_objects_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_implementation_5F_objects_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_implementation_5F_objects_ (GALGAS_implementation & ioArgument0,
                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7499,6 +8725,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'implementation_type' non terminal
 //--- 'parse' label
   public: virtual void nt_implementation_5F_type_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_implementation_5F_type_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_implementation_5F_type_ (GALGAS_lstring & outArgument0,
@@ -7508,6 +8737,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'include_cpu_level' non terminal
 //--- 'parse' label
   public: virtual void nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_include_5F_cpu_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
@@ -7520,6 +8752,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_file_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                      GALGAS_applicationDefinition & ioArgument1,
@@ -7531,6 +8766,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_include_5F_implementation_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_implementation_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_implementation_5F_level_ (GALGAS_implementation & ioArgument0,
                                                                C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7538,6 +8776,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'include_object_level' non terminal
 //--- 'parse' label
   public: virtual void nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_include_5F_object_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_include_5F_object_5F_level_ (const GALGAS_implementationObjectMap inArgument0,
@@ -7548,6 +8789,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_include_5F_type_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_type_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_type_5F_level_ (GALGAS_implementationObjectMap & ioArgument0,
                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7555,6 +8799,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'int_or_float' non terminal
 //--- 'parse' label
   public: virtual void nt_int_5F_or_5F_float_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_int_5F_or_5F_float_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_int_5F_or_5F_float_ (GALGAS_object_5F_t & outArgument0,
@@ -7565,6 +8812,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_multiple_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_multiple_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_multiple_ (GALGAS_bool & outArgument0,
                                      C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7572,6 +8822,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'number_options' non terminal
 //--- 'parse' label
   public: virtual void nt_number_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_number_5F_options_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_number_5F_options_ (GALGAS_lstring & outArgument0,
@@ -7582,6 +8835,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'object_definition_list' non terminal
 //--- 'parse' label
   public: virtual void nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_object_5F_definition_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
@@ -7594,6 +8850,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_objref_5F_option_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_objref_5F_option_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_objref_5F_option_ (GALGAS_lstring & outArgument0,
                                              GALGAS_impType & outArgument1,
@@ -7604,6 +8863,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_oil_5F_declaration_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_oil_5F_declaration_ (const GALGAS_implementationObjectMap inArgument0,
                                                GALGAS_objectAttributes & ioArgument1,
@@ -7612,6 +8874,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'oil_declaration_list' non terminal
 //--- 'parse' label
   public: virtual void nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_oil_5F_declaration_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_oil_5F_declaration_5F_list_ (const GALGAS_implementationObjectMap inArgument0,
@@ -7622,6 +8887,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_range_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_range_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_range_ (GALGAS_attributeRange & outArgument0,
                                   const GALGAS_dataType inArgument1,
@@ -7630,6 +8898,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'range_content' non terminal
 //--- 'parse' label
   public: virtual void nt_range_5F_content_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_range_5F_content_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_range_5F_content_ (GALGAS_attributeRange & outArgument0,
@@ -7640,6 +8911,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_set_5F_followup_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_set_5F_followup_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_set_5F_followup_ (GALGAS_numberList & ioArgument0,
                                             const GALGAS_dataType inArgument1,
@@ -7649,6 +8923,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_sign_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_sign_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_sign_ (GALGAS_bool & outArgument0,
                                  C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7657,12 +8934,18 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_start_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_start_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_start_ (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'string_options' non terminal
 //--- 'parse' label
   public: virtual void nt_string_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_string_5F_options_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_string_5F_options_ (GALGAS_lstring & outArgument0,
@@ -7673,6 +8956,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //--- 'parse' label
   public: virtual void nt_struct_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_struct_5F_options_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_struct_5F_options_ (GALGAS_lstring & outArgument0,
                                               GALGAS_impType & outArgument1,
@@ -7681,6 +8967,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'type_options' non terminal
 //--- 'parse' label
   public: virtual void nt_type_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_type_5F_options_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_type_5F_options_ (GALGAS_lstring & outArgument0,
@@ -7691,6 +8980,9 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //------------------------------------- 'with_auto' non terminal
 //--- 'parse' label
   public: virtual void nt_with_5F_auto_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_with_5F_auto_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_with_5F_auto_ (GALGAS_bool & outArgument0,
@@ -7731,6 +9023,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
   public: virtual int32_t select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique *) ;
 
   public: virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) ;
+
+  public: virtual int32_t select_goil_5F_syntax_18 (C_Lexique_goil_5F_lexique *) ;
 
   public: virtual int32_t select_implementation_5F_parser_0 (C_Lexique_goil_5F_lexique *) ;
 
@@ -7805,6 +9099,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_OIL_5F_version_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_OIL_5F_version_ (GALGAS_lstring & outArgument0,
                                            GALGAS_lstring & outArgument1,
@@ -7813,6 +9110,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //------------------------------------- 'application_definition' non terminal
 //--- 'parse' label
   public: virtual void nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_application_5F_definition_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
@@ -7825,6 +9125,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_boolean_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_boolean_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_boolean_ (GALGAS_lbool & outArgument0,
                                     C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7832,6 +9135,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //------------------------------------- 'description' non terminal
 //--- 'parse' label
   public: virtual void nt_description_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_description_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_description_ (GALGAS_lstring & outArgument0,
@@ -7841,6 +9147,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_file_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_file_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                  GALGAS_applicationDefinition & ioArgument1,
@@ -7848,9 +9157,24 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
                                  const GALGAS_bool inArgument3,
                                  C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//------------------------------------- 'file_without_include' non terminal
+//--- 'parse' label
+  public: virtual void nt_file_5F_without_5F_include_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_file_5F_without_5F_include_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public: virtual void nt_file_5F_without_5F_include_ (GALGAS_implementation & ioArgument0,
+                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //------------------------------------- 'implementation_definition' non terminal
 //--- 'parse' label
   public: virtual void nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_implementation_5F_definition_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_implementation_5F_definition_ (GALGAS_implementation & ioArgument0,
@@ -7859,6 +9183,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //------------------------------------- 'include_cpu_level' non terminal
 //--- 'parse' label
   public: virtual void nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_include_5F_cpu_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
@@ -7871,6 +9198,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_file_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                      GALGAS_applicationDefinition & ioArgument1,
@@ -7882,6 +9212,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_include_5F_object_5F_level_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_include_5F_object_5F_level_ (const GALGAS_implementationObjectMap inArgument0,
                                                        GALGAS_objectAttributes & ioArgument1,
@@ -7890,6 +9223,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //------------------------------------- 'object_definition_list' non terminal
 //--- 'parse' label
   public: virtual void nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_object_5F_definition_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
@@ -7902,6 +9238,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_oil_5F_declaration_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_oil_5F_declaration_ (const GALGAS_implementationObjectMap inArgument0,
                                                GALGAS_objectAttributes & ioArgument1,
@@ -7910,6 +9249,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //------------------------------------- 'oil_declaration_list' non terminal
 //--- 'parse' label
   public: virtual void nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_oil_5F_declaration_5F_list_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_oil_5F_declaration_5F_list_ (const GALGAS_implementationObjectMap inArgument0,
@@ -7946,6 +9288,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //--- 'parse' label
   public: virtual void nt_sign_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_sign_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_sign_ (GALGAS_bool & outArgument0,
                                  C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7953,6 +9298,9 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
 //------------------------------------- 'start' non terminal
 //--- 'parse' label
   public: virtual void nt_start_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_start_indexing (C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_start_ (C_Lexique_goil_5F_lexique * inCompiler) ;
@@ -7992,6 +9340,8 @@ class cGrammar_goil_5F_object_5F_level_5F_include : public cParser_goil_5F_synta
   public: virtual int32_t select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique *) ;
 
   public: virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) ;
+
+  public: virtual int32_t select_goil_5F_syntax_18 (C_Lexique_goil_5F_lexique *) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8100,20 +9450,28 @@ class cParser_options_5F_parser {
 
   protected: virtual void nt_list_5F_option_5F_value_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_list_5F_option_5F_value_indexing (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_option_5F_item_ (class GALGAS_gtlData & ioArgument0,
                                               class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_option_5F_item_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_option_5F_item_indexing (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_option_5F_parser_5F_start_ (class GALGAS_gtlData & outArgument0,
                                                          class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_option_5F_parser_5F_start_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_option_5F_parser_5F_start_indexing (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_option_5F_value_ (class GALGAS_gtlData & outArgument0,
                                                class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_option_5F_value_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_option_5F_value_indexing (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -8122,40 +9480,56 @@ class cParser_options_5F_parser {
 
   protected: void rule_options_5F_parser_option_5F_parser_5F_start_i0_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
+  protected: void rule_options_5F_parser_option_5F_parser_5F_start_i0_indexing (C_Lexique_options_5F_scanner * inLexique) ;
+
   protected: void rule_options_5F_parser_option_5F_item_i1_ (GALGAS_gtlData & ioArgument0,
                                                              C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_item_i1_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected: void rule_options_5F_parser_option_5F_item_i1_indexing (C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i2_ (GALGAS_gtlData & outArgument0,
                                                               C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i2_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
+  protected: void rule_options_5F_parser_option_5F_value_i2_indexing (C_Lexique_options_5F_scanner * inLexique) ;
+
   protected: void rule_options_5F_parser_option_5F_value_i3_ (GALGAS_gtlData & outArgument0,
                                                               C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i3_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected: void rule_options_5F_parser_option_5F_value_i3_indexing (C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i4_ (GALGAS_gtlData & outArgument0,
                                                               C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i4_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
+  protected: void rule_options_5F_parser_option_5F_value_i4_indexing (C_Lexique_options_5F_scanner * inLexique) ;
+
   protected: void rule_options_5F_parser_option_5F_value_i5_ (GALGAS_gtlData & outArgument0,
                                                               C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i5_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected: void rule_options_5F_parser_option_5F_value_i5_indexing (C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i6_ (GALGAS_gtlData & outArgument0,
                                                               C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_option_5F_value_i6_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
+  protected: void rule_options_5F_parser_option_5F_value_i6_indexing (C_Lexique_options_5F_scanner * inLexique) ;
+
   protected: void rule_options_5F_parser_list_5F_option_5F_value_i7_ (GALGAS_gtlData & outArgument0,
                                                                       C_Lexique_options_5F_scanner * inLexique) ;
 
   protected: void rule_options_5F_parser_list_5F_option_5F_value_i7_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected: void rule_options_5F_parser_list_5F_option_5F_value_i7_indexing (C_Lexique_options_5F_scanner * inLexique) ;
 
 
 
@@ -8289,9 +9663,6 @@ class C_Lexique_arxml_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
-//--- Indexing directory
-  protected: virtual C_String indexingDirectory (void) const override  ;
-
 //--- Parse lexical token
   protected: void internalParseLexicalToken (cTokenFor_arxml_5F_scanner & token) ;
   protected: virtual bool parseLexicalToken (void) override ;
@@ -8338,7 +9709,7 @@ class GALGAS_arxmlAttributeMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlAttributeMap extractObject (const GALGAS_object & inObject,
@@ -8356,6 +9727,11 @@ class GALGAS_arxmlAttributeMap : public AC_GALGAS_map {
                                                      const class GALGAS_lstring & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_arxmlAttributeMap add_operation (const GALGAS_arxmlAttributeMap & inOperand,
+                                                                   C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_insertKey (class GALGAS_lstring constinArgument0,
@@ -8392,7 +9768,7 @@ class GALGAS_arxmlAttributeMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_arxmlAttributeMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                               const GALGAS_string & inKey
                                                                                               COMMA_LOCATION_ARGS) ;
@@ -8469,8 +9845,8 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlAttributeMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -8497,7 +9873,7 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlAttributeMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -8511,7 +9887,7 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlAttributeMap_2D_element & inOperand) const ;
 
@@ -8525,7 +9901,7 @@ class GALGAS_arxmlAttributeMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlAttributeMap_2D_element class
 
@@ -8566,7 +9942,7 @@ class GALGAS_arxmlNodeList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlNodeList extractObject (const GALGAS_object & inObject,
@@ -8654,7 +10030,7 @@ class GALGAS_arxmlNodeList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_arxmlNodeList ;
@@ -8701,7 +10077,7 @@ class GALGAS_arxmlNode : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlNode extractObject (const GALGAS_object & inObject,
@@ -8721,7 +10097,7 @@ class GALGAS_arxmlNode : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlNode class
 
@@ -8789,8 +10165,8 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_arxmlNodeList_2D_element (void) ;
@@ -8809,7 +10185,7 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlNodeList_2D_element extractObject (const GALGAS_object & inObject,
@@ -8822,7 +10198,7 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlNodeList_2D_element & inOperand) const ;
 
@@ -8836,7 +10212,7 @@ class GALGAS_arxmlNodeList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlNodeList_2D_element class
 
@@ -8863,8 +10239,8 @@ void extensionMethod_print (const class GALGAS_arxmlNodeList inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_print (class cPtr_arxmlNode * inObject,
-                                const GALGAS_uint constin_indentation,
-                                C_Compiler * inCompiler
+                                const class GALGAS_uint constin_indentation,
+                                class C_Compiler * inCompiler
                                 COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -8900,7 +10276,7 @@ class GALGAS_arxmlElementList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlElementList extractObject (const GALGAS_object & inObject,
@@ -8988,7 +10364,7 @@ class GALGAS_arxmlElementList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_arxmlElementList ;
@@ -9020,9 +10396,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementList ;
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getElementsFromName (class cPtr_arxmlNode * inObject,
-                                              const GALGAS_string constin_nodeName,
-                                              GALGAS_arxmlElementList & io_nodeList,
-                                              C_Compiler * inCompiler
+                                              const class GALGAS_string constin_nodeName,
+                                              class GALGAS_arxmlElementList & io_nodeList,
+                                              class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9044,9 +10420,9 @@ void extensionMethod_getSubElementsFromName (const class GALGAS_arxmlNodeList in
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getSubElementsFromName (class cPtr_arxmlNode * inObject,
-                                                 const GALGAS_string constin_nodeName,
-                                                 GALGAS_arxmlElementList & io_nodeList,
-                                                 C_Compiler * inCompiler
+                                                 const class GALGAS_string constin_nodeName,
+                                                 class GALGAS_arxmlElementList & io_nodeList,
+                                                 class C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9069,10 +10445,10 @@ void extensionMethod_getProperty (const class GALGAS_arxmlNodeList inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_getProperty (class cPtr_arxmlNode * inObject,
-                                      const GALGAS_string constin_nodeName,
-                                      GALGAS_lstring & io_value,
-                                      GALGAS_bool & io_found,
-                                      C_Compiler * inCompiler
+                                      const class GALGAS_string constin_nodeName,
+                                      class GALGAS_lstring & io_value,
+                                      class GALGAS_bool & io_found,
+                                      class C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9106,7 +10482,7 @@ class GALGAS_arxmlElementNode : public GALGAS_arxmlNode {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlElementNode extractObject (const GALGAS_object & inObject,
@@ -9141,7 +10517,7 @@ class GALGAS_arxmlElementNode : public GALGAS_arxmlNode {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlElementNode class
 
@@ -9246,8 +10622,8 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlElementList_2D_element constructor_default (LOCATION_ARGS) ;
@@ -9269,7 +10645,7 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlElementList_2D_element extractObject (const GALGAS_object & inObject,
@@ -9282,7 +10658,7 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlElementList_2D_element & inOperand) const ;
 
@@ -9296,7 +10672,7 @@ class GALGAS_arxmlElementList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlElementList_2D_element class
 
@@ -9367,7 +10743,7 @@ class GALGAS_arxmlDocument : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlDocument extractObject (const GALGAS_object & inObject,
@@ -9390,7 +10766,7 @@ class GALGAS_arxmlDocument : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlDocument class
 
@@ -9452,7 +10828,7 @@ class GALGAS_arxmlElementValueMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlElementValueMap extractObject (const GALGAS_object & inObject,
@@ -9470,6 +10846,11 @@ class GALGAS_arxmlElementValueMap : public AC_GALGAS_map {
                                                      const class GALGAS_arxmlElementValueList & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_arxmlElementValueMap add_operation (const GALGAS_arxmlElementValueMap & inOperand,
+                                                                      C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_insertKey (class GALGAS_lstring constinArgument0,
@@ -9511,7 +10892,7 @@ class GALGAS_arxmlElementValueMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_arxmlElementValueMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                                  const GALGAS_string & inKey
                                                                                                  COMMA_LOCATION_ARGS) ;
@@ -9562,7 +10943,7 @@ class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlElementValueList extractObject (const GALGAS_object & inObject,
@@ -9650,7 +11031,7 @@ class GALGAS_arxmlElementValueList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_arxmlElementValueList ;
@@ -9722,8 +11103,8 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_arxmlElementValueMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -9750,7 +11131,7 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_arxmlElementValueMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -9764,7 +11145,7 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValueMap_2D_element & inOperand) const ;
 
@@ -9778,7 +11159,7 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_arxmlElementValueMap_2D_element class
 
@@ -9786,411 +11167,4 @@ class GALGAS_arxmlElementValueMap_2D_element : public AC_GALGAS_root {
 //----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueMap_2D_element ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 1: @arxmlElementValue  value class
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_arxmlElementValue : public AC_GALGAS_value_class {
-//--------------------------------- Default constructor
-  public: GALGAS_arxmlElementValue (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_arxmlElementValue constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Embedded object pointer
-  public: inline const class cPtr_arxmlElementValue * ptr (void) const {
-    return (const cPtr_arxmlElementValue *) mObjectPtr ;
-  }
-
-//--------------------------------- Constructor from pointer
-  public: GALGAS_arxmlElementValue (const cPtr_arxmlElementValue * inSourcePtr) ;
-
-//--------------------------------- Property read access
-  public: class GALGAS_lstring readProperty_type (void) const ;
-
-  public: class GALGAS_lstring readProperty_text (void) const ;
-
-  public: class GALGAS_arxmlElementValueMap readProperty_elements (void) const ;
-
-  public: class GALGAS_arxmlAttributeMap readProperty_attributes (void) const ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_arxmlElementValue extractObject (const GALGAS_object & inObject,
-                                                         C_Compiler * inCompiler
-                                                         COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_arxmlElementValue constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                 const class GALGAS_lstring & inOperand1,
-                                                                 const class GALGAS_arxmlElementValueMap & inOperand2,
-                                                                 const class GALGAS_arxmlAttributeMap & inOperand3
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValue & inOperand) const ;
-
-//--------------------------------- Setters
-  public: VIRTUAL_IN_DEBUG void setter_setAttributes (class GALGAS_arxmlAttributeMap inArgument0
-                                                      COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setElements (class GALGAS_arxmlElementValueMap inArgument0
-                                                    COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setText (class GALGAS_lstring inArgument0
-                                                COMMA_LOCATION_ARGS) ;
-
-  public: VIRTUAL_IN_DEBUG void setter_setType (class GALGAS_lstring inArgument0
-                                                COMMA_LOCATION_ARGS) ;
-
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_arxmlElementValue class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValue ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 2: pointer class for @arxmlElementValue class
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class cPtr_arxmlElementValue : public acPtr_class {
-
-//--- Extension getter getAttributeValueFromElement
-  public: virtual class GALGAS_lstring getter_getAttributeValueFromElement (const class GALGAS_string elementName,
-           const class GALGAS_string attributeName,
-           C_Compiler * COMMA_LOCATION_ARGS) const ;
-
-//--- Extension getter getTextFromElement
-  public: virtual class GALGAS_lstring getter_getTextFromElement (const class GALGAS_string elementName,
-           C_Compiler * COMMA_LOCATION_ARGS) const ;
-
-//--- Extension getter hasElement
-  public: virtual class GALGAS_bool getter_hasElement (const class GALGAS_string elementName,
-           C_Compiler * COMMA_LOCATION_ARGS) const ;
-
-//--- Extension method getAllTextsInSelf
-  public: virtual void method_getAllTextsInSelf (class GALGAS_string separator,
-           class GALGAS_lstring & outString,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-//--- Extension method getElement
-  public: virtual void method_getElement (class GALGAS_string elementName,
-           class GALGAS_arxmlElementValue & outElement,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-//--- Extension method getElements
-  public: virtual void method_getElements (class GALGAS_string elementName,
-           class GALGAS_arxmlElementValueList & outElements,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-//--- Extension method getElementsByPath
-  public: virtual void method_getElementsByPath (class GALGAS_stringlist path,
-           class GALGAS_arxmlElementValueList & outElements,
-           C_Compiler * COMMA_LOCATION_ARGS) ;
-
-
-//--- Properties
-  public: GALGAS_lstring mProperty_type ;
-  public: GALGAS_lstring mProperty_text ;
-  public: GALGAS_arxmlElementValueMap mProperty_elements ;
-  public: GALGAS_arxmlAttributeMap mProperty_attributes ;
-
-//--- Constructor
-  public: cPtr_arxmlElementValue (const GALGAS_lstring & in_type,
-                                  const GALGAS_lstring & in_text,
-                                  const GALGAS_arxmlElementValueMap & in_elements,
-                                  const GALGAS_arxmlAttributeMap & in_attributes
-                                  COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public: virtual acPtr_class * duplicate (LOCATION_ARGS) const override ;
-
-//--- Attribute accessors
-  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_type (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setType (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_lstring getter_text (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setText (GALGAS_lstring inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_arxmlElementValueMap getter_elements (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setElements (GALGAS_arxmlElementValueMap inValue COMMA_LOCATION_ARGS) ;
-  public: VIRTUAL_IN_DEBUG GALGAS_arxmlAttributeMap getter_attributes (LOCATION_ARGS) const ;
-  public: VIRTUAL_IN_DEBUG void setter_setAttributes (GALGAS_arxmlAttributeMap inValue COMMA_LOCATION_ARGS) ;
-//--- Description
-  public: virtual void description (C_String & ioString,
-                                    const int32_t inIndentation) const override ;
-
-  public: virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const override ;
-
-  public: virtual const C_galgas_type_descriptor * classDescriptor (void) const override ;
-
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 1: @arxmlElementValueList_2D_element struct
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_arxmlElementValueList_2D_element : public AC_GALGAS_root {
-//--------------------------------- Properties
-  public: GALGAS_arxmlElementValue mProperty_value ;
-  public: inline GALGAS_arxmlElementValue readProperty_value (void) const {
-    return mProperty_value ;
-  }
-
-//--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_arxmlElementValueList_2D_element constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Default constructor
-  public: GALGAS_arxmlElementValueList_2D_element (void) ;
-
-//--------------------------------- Property setters
-  public: inline void setter_setValue (const GALGAS_arxmlElementValue & inValue COMMA_UNUSED_LOCATION_ARGS) {
-    mProperty_value = inValue ;
-  }
-
-//--------------------------------- Virtual destructor (in debug mode)
-  public: virtual ~ GALGAS_arxmlElementValueList_2D_element (void) ;
-
-//--------------------------------- Native constructor
-  public: GALGAS_arxmlElementValueList_2D_element (const GALGAS_arxmlElementValue & in_value) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_arxmlElementValueList_2D_element extractObject (const GALGAS_object & inObject,
-                                                                        C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_arxmlElementValueList_2D_element constructor_new (const class GALGAS_arxmlElementValue & inOperand0
-                                                                                COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Implementation of getter 'description'
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_arxmlElementValueList_2D_element & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_arxmlElementValueList_2D_element class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementValueList_2D_element ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//LEXIQUE arxmlmetaparser_5F_scanner
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-#include "galgas2/C_Lexique.h"
-
-//----------------------------------------------------------------------------------------------------------------------
-//                    E X T E R N    R O U T I N E S
-//----------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------
-//                    E X T E R N    F U N C T I O N S
-//----------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------
-//                       T O K E N    C L A S S
-//----------------------------------------------------------------------------------------------------------------------
-
-class cTokenFor_arxmlmetaparser_5F_scanner : public cToken {
-  public: C_String mLexicalAttribute_tokenString ;
-
-  public: cTokenFor_arxmlmetaparser_5F_scanner (void) ;
-} ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//                     S C A N N E R    C L A S S
-//----------------------------------------------------------------------------------------------------------------------
-
-class C_Lexique_arxmlmetaparser_5F_scanner : public C_Lexique {
-//--- Constructors
-  public: C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
-                       const C_String & inSourceFileName
-                       COMMA_LOCATION_ARGS) ;
-
-  public: C_Lexique_arxmlmetaparser_5F_scanner (C_Compiler * inCallerCompiler,
-                       const C_String & inSourceString,
-                       const C_String & inStringForError
-                       COMMA_LOCATION_ARGS) ;
-
-//--- Instrospection
-  public: static GALGAS_stringlist symbols (LOCATION_ARGS) ;
-
-//--- Declaring a protected virtual destructor enables the compiler to raise
-//    an error if a direct delete is performed; only the static method
-//    C_SharedObject::detachPointer may invoke delete.
-  #ifndef DO_NOT_GENERATE_CHECKINGS
-    protected: virtual ~ C_Lexique_arxmlmetaparser_5F_scanner (void) {}
-  #endif
-
-//--- Scanner mode for template scanner
-  private: int32_t mMatchedTemplateDelimiterIndex ;
-
-
-
-//--- Terminal symbols enumeration
-  public: enum {kToken_,
-   kToken_comment,
-   kToken_xmlTag,
-   kToken_xmlTagValue,
-   kToken_identifier,
-   kToken__3C_,
-   kToken__3C_xsd_3A_,
-   kToken__3C__2F_xsd_3A_,
-   kToken__3C__3F_xml,
-   kToken__3E_,
-   kToken__3F__3E_,
-   kToken__2F__3E_,
-   kToken__3C__2F_,
-   kToken__3D_,
-   kToken_group,
-   kToken_annotation,
-   kToken_appinfo,
-   kToken_attribute,
-   kToken_attributeGroup,
-   kToken_choice,
-   kToken_complexType,
-   kToken_documentation,
-   kToken_element,
-   kToken_enumeration,
-   kToken_extension,
-   kToken_import,
-   kToken_maxLength,
-   kToken_pattern,
-   kToken_restriction,
-   kToken_schema,
-   kToken_sequence,
-   kToken_simpleContent,
-   kToken_simpleType,
-   kToken_whiteSpace,
-   kToken_abstract,
-   kToken_attributeFormDefault,
-   kToken_attributeRef,
-   kToken_base,
-   kToken_category,
-   kToken_CATEGORY,
-   kToken_color,
-   kToken_customType,
-   kToken_elementFormDefault,
-   kToken_encoding,
-   kToken_enforceMinMultiplicity,
-   kToken_globalElement,
-   kToken_id,
-   kToken_latestBindingTime,
-   kToken_maxOccurs,
-   kToken_minOccurs,
-   kToken_mixed,
-   kToken_name,
-   kToken_namePlural,
-   kToken_namespace,
-   kToken_noteType,
-   kToken_nsPrefix,
-   kToken_qualifiedName,
-   kToken_recommendedPackage,
-   kToken_ref,
-   kToken_roleElement,
-   kToken_roleWrapperElement,
-   kToken_schemaLocation,
-   kToken_sequenceOffset,
-   kToken_source,
-   kToken_Splitkey,
-   kToken_Status,
-   kToken_StatusRevisionBegin,
-   kToken_targetNamespace,
-   kToken_type,
-   kToken_typeElement,
-   kToken_typeWrapperElement,
-   kToken_use,
-   kToken_value,
-   kToken_version,
-   kToken_xmlns_3A_AR,
-   kToken_xmlns_3A_xsd,
-   kToken_TODO} ;
-
-//--- Key words table 'xmlDelimitorsList'
-  public: static int16_t search_into_xmlDelimitorsList (const C_String & inSearchedString) ;
-
-//--- Key words table 'keyWordList'
-  public: static int16_t search_into_keyWordList (const C_String & inSearchedString) ;
-  
-
-//--- Assign from attribute
-  public: GALGAS_lstring synthetizedAttribute_tokenString (void) const ;
-
-
-//--- Attribute access
-  public: C_String attributeValue_tokenString (void) const ;
-
-
-//--- Indexing keys
-
-//--- Indexing directory
-  protected: virtual C_String indexingDirectory (void) const override  ;
-
-//--- Parse lexical token
-  protected: void internalParseLexicalToken (cTokenFor_arxmlmetaparser_5F_scanner & token) ;
-  protected: virtual bool parseLexicalToken (void) override ;
-
-//--- Get terminal message
-  protected: virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const override ;
-
-//--- Get terminal count
-  public: virtual int16_t terminalVocabularyCount (void) const override { return 76 ; }
-
-//--- Get Token String
-  public: virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const override ;
-
-//--- Enter Token
-  protected: void enterToken (cTokenFor_arxmlmetaparser_5F_scanner & ioToken) ;
-
-//--- Style name for Latex
-  protected: virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const override ;
-  protected: virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const override ;
-} ;
 

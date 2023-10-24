@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 1996, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <iostream>
 #include <sys/types.h>
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -504,7 +505,7 @@ GALGAS_bool GALGAS_string::getter_directoryExists (UNUSED_LOCATION_ARGS) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_uint GALGAS_string::getter_length (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint GALGAS_string::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint ((uint32_t) mString.length ()) ;
@@ -546,11 +547,23 @@ GALGAS_string GALGAS_string::getter_utf_33__32_Representation (UNUSED_LOCATION_A
 
 //----------------------------------------------------------------------------------------------------------------------
 
+GALGAS_string GALGAS_string::getter_utf_38_RepresentationEscapingQuestionMark (UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid ()) {
+    const bool escapeQuestionMark = true ;
+    const C_String s = mString.utf8RepresentationEnclosedWithin ('"', escapeQuestionMark) ;
+    result = GALGAS_string (s) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
 GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
-    C_String s ;
-    s.appendCLiteralStringConstant (mString) ;
+    const bool escapeQuestionMark = false ;
+    const C_String s = mString.utf8RepresentationEnclosedWithin ('"', escapeQuestionMark) ;
     result = GALGAS_string (s) ;
   }
   return result ;
@@ -561,7 +574,8 @@ GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS)
 GALGAS_string GALGAS_string::getter_cStringRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
-    const C_String s = mString.utf8RepresentationEnclosedWithin ('"') ;
+    const bool escapeQuestionMark = true ;
+    const C_String s = mString.utf8RepresentationEnclosedWithin ('"', escapeQuestionMark) ;
     result = GALGAS_string (s) ;
   }
   return result ;
@@ -572,7 +586,8 @@ GALGAS_string GALGAS_string::getter_cStringRepresentation (UNUSED_LOCATION_ARGS)
 GALGAS_string GALGAS_string::getter_utf_38_RepresentationEnclosedWithin (const GALGAS_char & inCharacter COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid () && inCharacter.isValid ()) {
-    const C_String s = mString.utf8RepresentationEnclosedWithin (inCharacter.charValue ()) ;
+    const bool escapeQuestionMark = true ;
+    const C_String s = mString.utf8RepresentationEnclosedWithin (inCharacter.charValue (), escapeQuestionMark) ;
     result = GALGAS_string (s) ;
   }
   return result ;
@@ -2305,5 +2320,30 @@ void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartP
     ) ;
   }
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool GALGAS_string::optional_extractBigInt (GALGAS_bigint & outBigInt) const {
+  bool extracted = false ;
+  outBigInt.drop () ;
+  if (isValid () && (mString.length () > 0)) {
+    extracted = true ;
+    const C_BigInt bigint (mString.cString (HERE), 10, extracted) ;
+    if (extracted) {
+      outBigInt = GALGAS_bigint (bigint) ;
+    }
+  }
+  return extracted ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void GALGAS_string::printNonNullClassInstanceProperties (const char * inPropertyName) const {
+    if (isValid ()) {
+      std::cout << "    " << inPropertyName << " : " << mString.cString (HERE) << std::endl ;
+    }
+  }
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------

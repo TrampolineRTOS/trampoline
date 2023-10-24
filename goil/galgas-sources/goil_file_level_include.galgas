@@ -34,8 +34,20 @@ grammar goil_file_level_include "LL1" {
       ?!@string                fileIncludeList
       ?let @bool               rootFile
 
- unused <start>
- unused <OIL_version>
+  unused <start>
+  unused <OIL_version>
+}
+
+grammar goil_file_level_include_without_include "LL1" {
+    syntax goil_syntax
+    syntax implementation_parser
+
+    <file_without_include>
+      ?!@implementation imp
+      ?!@applicationDefinition application
+    
+    unused <start>
+    unused <OIL_version>
 }
 
 # vim:ft=ggs:ts=4:sw=4
