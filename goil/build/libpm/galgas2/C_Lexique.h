@@ -62,9 +62,6 @@ class C_Lexique : public C_Compiler {
   public: void generateIndexFile (void) ;
   protected: cIndexingDictionary * mIndexingDictionary ;
 
-//--- Indexing directory
-  protected: virtual C_String indexingDirectory (void) const = 0 ;
-
 //--- Template String
   protected: int32_t findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
                                                  const int32_t inTemplateDelimiterArrayLength) ;

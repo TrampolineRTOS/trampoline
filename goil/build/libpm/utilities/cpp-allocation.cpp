@@ -88,10 +88,10 @@
       }
       gAllocProloguePendings -- ;
     #endif
-    void * result = NULL ;
+    void * result = nullptr ;
     if (inSizeInBytes > 0) {
       result = ::myAllocRoutine (inSizeInBytes) ;
-      if (NULL == result) {
+      if (nullptr == result) {
         throw std::bad_alloc () ;
       }
       #ifdef REGISTER_ALLOCATION_STATS
@@ -113,10 +113,10 @@
       }
       gAllocProloguePendings -- ;
     #endif
-    void * result = NULL ;
+    void * result = nullptr ;
     if (inSizeInBytes > 0) {
       result = ::myAllocRoutine (inSizeInBytes) ;
-      if (NULL == result) {
+      if (nullptr == result) {
         throw std::bad_alloc () ;
       }
       #ifdef REGISTER_ALLOCATION_STATS
@@ -132,7 +132,7 @@
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
   void operator delete (void * inPointer) noexcept {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       ::myFreeRoutine (inPointer) ;
       #ifdef REGISTER_ALLOCATION_STATS
         gCurrentObjectCount -- ;
@@ -145,7 +145,7 @@
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
   void operator delete (void * inPointer, std::size_t) noexcept {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       ::myFreeRoutine (inPointer) ;
       #ifdef REGISTER_ALLOCATION_STATS
         gCurrentArrayCount -- ;
@@ -158,7 +158,7 @@
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
   void operator delete [] (void * inPointer) noexcept {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       ::myFreeRoutine (inPointer) ;
       #ifdef REGISTER_ALLOCATION_STATS
         gCurrentArrayCount -- ;
@@ -171,7 +171,7 @@
 
 #ifdef REDEFINE_NEW_DELETE_OPERATORS
   void operator delete [] (void * inPointer, std::size_t) noexcept {
-    if (inPointer != NULL) {
+    if (inPointer != nullptr) {
       ::myFreeRoutine (inPointer) ;
       #ifdef REGISTER_ALLOCATION_STATS
         gCurrentArrayCount -- ;

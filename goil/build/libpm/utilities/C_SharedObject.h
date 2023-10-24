@@ -77,7 +77,7 @@ class C_SharedObject {
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObject(OBJECT,TYPE) { \
     macroValidPointer (OBJECT) ; \
-    if (dynamic_cast <const TYPE *> (OBJECT) == NULL) { \
+    if (dynamic_cast <const TYPE *> (OBJECT) == nullptr) { \
       MF_RunTimeError ("'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     } \
   }
@@ -92,7 +92,7 @@ class C_SharedObject {
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObjectThere(OBJECT,TYPE) { \
     macroValidPointerThere (OBJECT) ; \
-    if (dynamic_cast <const TYPE *> (OBJECT) == NULL) { \
+    if (dynamic_cast <const TYPE *> (OBJECT) == nullptr) { \
       MF_RunTimeErrorThere ("'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     } \
   }
@@ -106,9 +106,9 @@ class C_SharedObject {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroNullOrValidSharedObject(OBJECT,TYPE) \
-    if (NULL != (OBJECT)) { \
+    if (nullptr != (OBJECT)) { \
       macroValidPointer (OBJECT) ; \
-      MF_Assert (dynamic_cast <const TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+      MF_Assert (dynamic_cast <const TYPE *> (OBJECT) != nullptr, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     }
 #else
   #define macroNullOrValidSharedObject(OBJECT,TYPE)
@@ -120,9 +120,9 @@ class C_SharedObject {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroNullOrValidSharedObjectThere(OBJECT,TYPE) \
-    if (NULL != (OBJECT)) { \
+    if (nullptr != (OBJECT)) { \
       macroValidPointerThere (OBJECT) ; \
-      MF_AssertThere (dynamic_cast <const TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+      MF_AssertThere (dynamic_cast <const TYPE *> (OBJECT) != nullptr, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     }
 #else
   #define macroNullOrValidSharedObjectThere(OBJECT,TYPE)
@@ -147,14 +147,14 @@ class C_SharedObject {
 //----------------------------------------------------------------------------------------------------------------------
 
 #define macroDetachSharedObject(PTR) \
-  { C_SharedObject::release (PTR COMMA_HERE) ; PTR = NULL ; }
+  { C_SharedObject::release (PTR COMMA_HERE) ; PTR = nullptr ; }
 
 //----------------------------------------------------------------------------------------------------------------------
 //   macroDetachSharedObjectThere                                                                
 //----------------------------------------------------------------------------------------------------------------------
 
 #define macroDetachSharedObjectThere(PTR) \
-  { C_SharedObject::release (PTR COMMA_THERE) ; PTR = NULL ; }
+  { C_SharedObject::release (PTR COMMA_THERE) ; PTR = nullptr ; }
 
 //----------------------------------------------------------------------------------------------------------------------
 //   macroUniqueSharedObject                                                                     

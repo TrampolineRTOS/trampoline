@@ -2,7 +2,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2011, ..., 2014 Pierre Molinaro.
+//  Copyright (C) 2011, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -18,11 +18,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+//----------------------------------------------------------------------------------------------------------------------
+
 @class OC_GGS_TextDisplayDescriptor ;
 @class OC_Lexique ;
 @class OC_GGS_DocumentData ;
 @class PMUndoManager ;
 
+//----------------------------------------------------------------------------------------------------------------------
 
 @interface OC_GGS_TextSyntaxColoring : NSObject {
   @private NSMutableSet * mTextDisplayDescriptorSet ; // Of OC_GGS_TextDisplayDescriptor

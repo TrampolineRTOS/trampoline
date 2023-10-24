@@ -500,9 +500,9 @@ static void internalWriteCstringConstantWithoutDelimiters (AC_OutputStream & ioS
     case '\"' :
       ioStream << "\\\"" ;
       break ;
-    case '\?' :
-      ioStream << "\\?" ;
-      break ;
+//    case '\?' :
+//      ioStream << "\\?" ;
+//      break ;
     default :
       if ((UNICODE_VALUE (c) >= ' ') && (UNICODE_VALUE (c) < 127)) {
         ioStream.appendUnicodeCharacter (c COMMA_HERE) ;

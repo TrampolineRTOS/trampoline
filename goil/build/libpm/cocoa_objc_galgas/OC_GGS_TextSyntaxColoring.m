@@ -28,6 +28,7 @@
 #import "PMUndoManager.h"
 #import "OC_GGS_Document.h"
 #import "OC_GGS_TextView.h"
+#import "F_CocoaWrapperForGalgas.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +67,10 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSFont * font = [mTemplateTextAttributeDictionary objectForKey:NSFontAttributeName] ;
+  NSFont * font = [mTemplateTextAttributeDictionary objectForKey: NSFontAttributeName] ;
+  if (font == nil) {
+    font = [NSFont fontWithName: @"Helvetica" size: 12.0] ;
+  }
   double maxAscender = [font ascender] + 4.0 ;
   double maxLeadingMinusDescender = [font leading] - [font descender] ;
   for (NSUInteger i=0 ; i<[mFontAttributesDictionaryArray count] ; i++) {
@@ -88,8 +92,8 @@
     [paragraghStyle setMaximumLineHeight:mMaxAscender + mMaxLeadingMinusDescender] ;
     [paragraghStyle setMinimumLineHeight:mMaxAscender + mMaxLeadingMinusDescender] ;
     if ([mFontAttributesDictionaryArray count] > 0) {
-      NSMutableDictionary * d = [mFontAttributesDictionaryArray objectAtIndex:0] ;
-      [d setObject:paragraghStyle forKey:NSParagraphStyleAttributeName] ;
+      NSMutableDictionary * d = [mFontAttributesDictionaryArray objectAtIndex: 0] ;
+      [d setObject:paragraghStyle forKey: NSParagraphStyleAttributeName] ;
     }
   }
   if (NULL != outLineHeightDidChange) {
@@ -115,28 +119,29 @@
     mTokenizer = inTokenizer ;
     documentData = inDocumentData ;
     mSourceTextStorage = [NSTextStorage new] ;
+  //  mSourceTextStorage.font = [NSFont fontWithName: @"Consolas" size:14.0] ;
     mTokenArray = [NSMutableArray new] ;
     mTemplateTextAttributeDictionary = [NSMutableDictionary new] ;
     mUndoManager = [PMUndoManager new] ;
     mTextDisplayDescriptorSet = [NSMutableSet new] ;
   //---
     [[NSNotificationCenter defaultCenter]
-      addObserver:self
+      addObserver: self
       selector:@selector (undoManagerCheckPointNotification:)
-      name:NSUndoManagerCheckpointNotification
-      object:mUndoManager
+      name: NSUndoManagerCheckpointNotification
+      object: mUndoManager
     ] ;
     [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector (undoManagerCheckPointNotification:)
-      name:NSUndoManagerDidUndoChangeNotification
-      object:mUndoManager
+      addObserver: self
+      selector: @selector (undoManagerCheckPointNotification:)
+      name: NSUndoManagerDidUndoChangeNotification
+      object: mUndoManager
     ] ;
     [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector (undoManagerCheckPointNotification:)
-      name:NSUndoManagerDidRedoChangeNotification
-      object:mUndoManager
+      addObserver: self
+      selector: @selector (undoManagerCheckPointNotification:)
+      name: NSUndoManagerDidRedoChangeNotification
+      object: mUndoManager
     ] ;
   //--------------------------------------------------- Add foreground color observers
     NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
@@ -214,28 +219,28 @@
     }
   //--------------------------------------------------- Add font observers
     if ([mTokenizer isTemplateLexique]) {
-      NSString * keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_template_font, [mTokenizer styleIdentifierForStyleIndex:0]] ;
+      NSString * keyPath = [NSString stringWithFormat: @"values.%@_%@", GGS_template_font, [mTokenizer styleIdentifierForStyleIndex:0]] ;
       [udc
-        addObserver:self
-        forKeyPath:keyPath
-        options:NSKeyValueObservingOptionNew
+        addObserver: self
+        forKeyPath: keyPath
+        options: NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_TEMPLATE_FONT_ATTRIBUTE)
       ] ;
     //--- Add font attribute   
-      NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_template_font, [mTokenizer styleIdentifierForStyleIndex:0]] ;
-      NSData * data = [defaults dataForKey:name] ;
+      NSString * name = [NSString stringWithFormat: @"%@_%@", GGS_template_font, [mTokenizer styleIdentifierForStyleIndex:0]] ;
+      NSData * data = [defaults dataForKey: name] ;
       if (data != nil) {
-        NSFont * font = (NSFont *) [NSUnarchiver unarchiveObjectWithData:data] ;
-        [mTemplateTextAttributeDictionary setObject:font forKey:NSFontAttributeName] ;
+        NSFont * font = (NSFont *) [NSUnarchiver unarchiveObjectWithData: data] ;
+        [mTemplateTextAttributeDictionary setObject: font forKey: NSFontAttributeName] ;
       }
     }
     for (NSInteger i=0 ; i<(NSInteger) mTokenizer.styleCount ; i++) {
-      NSString * keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_named_font, [mTokenizer styleIdentifierForStyleIndex:i]] ;
+      NSString * keyPath = [NSString stringWithFormat: @"values.%@_%@", GGS_named_font, [mTokenizer styleIdentifierForStyleIndex:i]] ;
       [udc
-        addObserver:self
-        forKeyPath:keyPath
-        options:NSKeyValueObservingOptionNew
-        context:(void *) (TAG_FOR_FONT_ATTRIBUTE | i)
+        addObserver: self
+        forKeyPath: keyPath
+        options: NSKeyValueObservingOptionNew
+        context: (void *) (TAG_FOR_FONT_ATTRIBUTE | i)
       ] ;
     }
   //---
@@ -244,22 +249,22 @@
     for (NSInteger i=0 ; i<(NSInteger) mTokenizer.styleCount ; i++) {
       NSMutableDictionary * attributeDictionary = [NSMutableDictionary new] ;
     //--- Add foreground color   
-      NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_named_color, [mTokenizer styleIdentifierForStyleIndex:i]] ;
-      NSData * data = [defaults dataForKey:name] ;
+      NSString * name = [NSString stringWithFormat: @"%@_%@", GGS_named_color, [mTokenizer styleIdentifierForStyleIndex:i]] ;
+      NSData * data = [defaults dataForKey: name] ;
       if (data != nil) {
         NSColor * color = [colorTransformer transformedValue: data] ;
         if (color == nil) {
           color = [NSColor blackColor] ;
         }
-        [attributeDictionary setObject:color forKey:NSForegroundColorAttributeName] ;
+        [attributeDictionary setObject: color forKey: NSForegroundColorAttributeName] ;
       }else{
-        [attributeDictionary setObject: [NSColor blackColor] forKey:NSForegroundColorAttributeName] ;
+        [attributeDictionary setObject: [NSColor blackColor] forKey: NSForegroundColorAttributeName] ;
       }
     //--- Add background color   
-      name = [NSString stringWithFormat:@"%@_%@", GGS_named_enable_background, [mTokenizer styleIdentifierForStyleIndex:i]] ;
-      if ([defaults boolForKey:name]) {
-        name = [NSString stringWithFormat:@"%@_%@", GGS_named_background_color, [mTokenizer styleIdentifierForStyleIndex:i]] ;
-        data = [defaults dataForKey:name] ;
+      name = [NSString stringWithFormat: @"%@_%@", GGS_named_enable_background, [mTokenizer styleIdentifierForStyleIndex:i]] ;
+      if ([defaults boolForKey: name]) {
+        name = [NSString stringWithFormat: @"%@_%@", GGS_named_background_color, [mTokenizer styleIdentifierForStyleIndex:i]] ;
+        data = [defaults dataForKey: name] ;
         if (data != nil) {
           NSColor * color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
           if (color == nil) {
@@ -271,17 +276,17 @@
         }
       }
     //--- Add font attribute   
-      name = [NSString stringWithFormat:@"%@_%@", GGS_named_font, [mTokenizer styleIdentifierForStyleIndex:i]] ;
-      data = [defaults dataForKey:name] ;
+      name = [NSString stringWithFormat: @"%@_%@", GGS_named_font, [mTokenizer styleIdentifierForStyleIndex:i]] ;
+      data = [defaults dataForKey: name] ;
       if (data != nil) {
-        NSFont * font = (NSFont *) [NSUnarchiver unarchiveObjectWithData:data] ;
+        NSFont * font = (NSFont *) [NSUnarchiver unarchiveObjectWithData: data] ; // §
         [attributeDictionary setObject: font forKey: NSFontAttributeName] ;
       }
     //--- Add dictionary
       [mFontAttributesDictionaryArray addObject: attributeDictionary] ;
     }
   //--- Max line height
-    [self computeMaxLineHeight:NULL] ;
+    [self computeMaxLineHeight: NULL] ;
   //---
     [[NSNotificationCenter defaultCenter]
       addObserver: self
@@ -408,8 +413,8 @@
   #endif
 //  NSLog (@"-------- replace --------") ;
   [self
-    replaceCharactersInRange:NSRangeFromString([inDictionary objectForKey:@"range"])
-    withString:[inDictionary objectForKey:@"str"]
+    replaceCharactersInRange: NSRangeFromString ([inDictionary objectForKey:@"range"])
+    withString: [inDictionary objectForKey:@"str"]
   ] ;
 }
 
@@ -460,37 +465,33 @@
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   if ((mTokenizer != NULL) && ([mSourceTextStorage length] > 0)) {
-//    [self refreshRulers] ;
-  //--- Remove observer so that textStorageDidProcessEditingNotification will not be called at the end of edition
- /*   [[NSNotificationCenter defaultCenter]
-      removeObserver:self
-      name: NSTextStorageDidProcessEditingNotification
-      object:mSourceTextStorage
-    ]; */
     [mSourceTextStorage beginEditing] ;
   //--- Change default style ?
     if (inChangedColorIndex == 0) {
       const NSRange allTextRange = {0, [mSourceTextStorage length]} ;
       [mSourceTextStorage
-        setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0]
+        addAttributes: [mFontAttributesDictionaryArray objectAtIndex:0]
         range: allTextRange
       ] ;
+      [mSourceTextStorage fixAttributesInRange: allTextRange] ;
       for (NSUInteger i=0 ; i<[mTokenArray count] ; i++) {
         OC_Token * token = [mTokenArray objectAtIndex:i] ;
         const NSInteger colorIndex = [token style] ;
         const NSRange range = [token range] ;
         if (colorIndex == -2) {
           [mSourceTextStorage
-            addAttributes:mTemplateTextAttributeDictionary
-            range:range
+            addAttributes: mTemplateTextAttributeDictionary
+            range: range
           ] ;
+          [mSourceTextStorage fixAttributesInRange: range] ;
         }else if (colorIndex == -1) {
         
         }else if (colorIndex > 0) {
           [mSourceTextStorage
-            addAttributes:[mFontAttributesDictionaryArray objectAtIndex:(NSUInteger) colorIndex]
-            range:range
+            addAttributes: [mFontAttributesDictionaryArray objectAtIndex:(NSUInteger) colorIndex]
+            range: range
           ] ;
+          [mSourceTextStorage fixAttributesInRange: range] ;
         }
       }    
     }else{
@@ -500,9 +501,10 @@
         if (colorIndex == inChangedColorIndex) {
           const NSRange range = [token range] ;
           [mSourceTextStorage
-            setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0]
-            range:range
+            addAttributes: [mFontAttributesDictionaryArray objectAtIndex:0]
+            range: range
           ] ;
+          [mSourceTextStorage fixAttributesInRange: range] ;
           #ifdef DEBUG_MESSAGES
             NSLog (@"change attribute for index %lu [%lu, %lu]>", i, range.location, range.length) ;
           #endif
@@ -511,6 +513,7 @@
               addAttributes:mTemplateTextAttributeDictionary
               range:range
             ] ;
+            [mSourceTextStorage fixAttributesInRange: range] ;
           }else if (colorIndex == -1) {
           
           }else if (colorIndex > 0) {
@@ -518,18 +521,12 @@
               addAttributes:[mFontAttributesDictionaryArray objectAtIndex:(NSUInteger) colorIndex]
               range:range
             ] ;
+            [mSourceTextStorage fixAttributesInRange: range] ;
           }
         }
       }
     }
     [mSourceTextStorage endEditing] ;
-  //--- Resinstall observer
- /*   [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector(textStorageDidProcessEditingNotification:)
-      name: NSTextStorageDidProcessEditingNotification
-      object:mSourceTextStorage
-    ] ; */
     #ifdef DEBUG_MESSAGES
       NSLog (@"%s DONE", __PRETTY_FUNCTION__) ;
     #endif
@@ -611,7 +608,6 @@
 
 - (void) updateSyntaxColoringForEditedRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength {
-  // NSDate * startDate = [NSDate date] ;
   const NSUInteger textLength = mSourceTextStorage.string.length ;
   if (textLength > 0) {
     #ifdef DEBUG_MESSAGES
@@ -622,10 +618,10 @@
     NSInteger eraseRangeStart = 0 ;
     NSInteger eraseRangeEnd = 0 ;
     [mTokenizer
-      tokenizeForSourceString:mSourceTextStorage.string
-      tokenArray:mTokenArray // Array of OC_Token
-      editedRange:inEditedRange
-      changeInLength:inChangeInLength
+      tokenizeForSourceString: mSourceTextStorage.string
+      tokenArray: mTokenArray // Array of OC_Token
+      editedRange: inEditedRange
+      changeInLength: inChangeInLength
       firstIndexToRedraw: & firstIndexToRedraw
       lastIndexToRedraw: & lastIndexToRedraw
       eraseRangeStart: & eraseRangeStart
@@ -638,15 +634,17 @@
     if (eraseRangeEnd >= (NSInteger) textLength) {
       eraseRangeEnd = (NSInteger) (textLength - 1) ;
     }
+    [mSourceTextStorage beginEditing] ;
     if (eraseRangeStart < eraseRangeEnd) {
       const NSRange eraseRange = {(NSUInteger) eraseRangeStart, (NSUInteger) (eraseRangeEnd - eraseRangeStart)} ;
       #ifdef DEBUG_MESSAGES
         NSLog (@"PERFORM REMOVE ATTRIBUTE range [%lu, %lu] text length %lu", eraseRange.location, eraseRange.length, textLength) ;
       #endif
       [mSourceTextStorage
-        setAttributes: [mFontAttributesDictionaryArray objectAtIndex:0]
+        addAttributes: [mFontAttributesDictionaryArray objectAtIndex: 0]
         range: eraseRange
       ] ;
+      [mSourceTextStorage fixAttributesInRange: eraseRange] ;
       #ifdef DEBUG_MESSAGES
         NSLog (@"mSourceTextStorage setAttributes DONE") ;
       #endif
@@ -664,22 +662,25 @@
       const NSInteger style = [token style] ;
       if (style == -1) { // Error
         [mSourceTextStorage
-          addAttribute:NSForegroundColorAttributeName
-          value:[NSColor redColor]
+          addAttribute: NSForegroundColorAttributeName
+          value: [NSColor redColor]
           range:range
         ] ;
       }else if (style == -2) { // Template string
         [mSourceTextStorage
-          addAttributes:mTemplateTextAttributeDictionary
-          range:range
+          addAttributes: mTemplateTextAttributeDictionary
+          range: range
         ] ;
+        [mSourceTextStorage fixAttributesInRange: range] ;
       }else if (style > 0) {
         [mSourceTextStorage
-          addAttributes:[mFontAttributesDictionaryArray objectAtIndex:(NSUInteger) style]
-          range:range
+          addAttributes: [mFontAttributesDictionaryArray objectAtIndex:(NSUInteger) style]
+          range: range
         ] ;
+        [mSourceTextStorage fixAttributesInRange: range] ;
       }
     }
+    [mSourceTextStorage endEditing] ;
   }
 //---
   #ifdef DEBUG_MESSAGES
@@ -697,26 +698,26 @@
   #endif
   const NSRange editedRange = mSourceTextStorage.editedRange ;
   const NSInteger changeInLength = mSourceTextStorage.changeInLength ;
-  [self updateSyntaxColoringForEditedRange:editedRange changeInLength:changeInLength] ;
-  [self updateIssuesForEditedRange:editedRange changeInLength:changeInLength] ;
+  [self updateSyntaxColoringForEditedRange: editedRange changeInLength: changeInLength] ;
+  [self updateIssuesForEditedRange: editedRange changeInLength: changeInLength] ;
 //---
   NSMenu * menu = mTokenizer.menuForEntryPopUpButton ;
   for (OC_GGS_TextDisplayDescriptor * tdd in mTextDisplayDescriptorSet) {
-    [tdd populatePopUpButtonWithMenu:menu] ;
+    [tdd populatePopUpButtonWithMenu: menu] ;
   }
 //--- If there is no enabled timer, create one
   if (nil == mTimerForAutosaving) {
     // NSLog (@"Create timer %@", self.documentData.fileURL) ;
     mTimerForAutosaving = [NSTimer
-      timerWithTimeInterval:5.0
-      target:self
-      selector:@selector (autosaveTimerDidFire:)
-      userInfo:nil
-      repeats:NO
+      timerWithTimeInterval: 5.0
+      target: self
+      selector: @selector (autosaveTimerDidFire:)
+      userInfo: nil
+      repeats: NO
     ] ;
     [[NSRunLoop mainRunLoop]
-      addTimer:mTimerForAutosaving
-      forMode:NSDefaultRunLoopMode
+      addTimer: mTimerForAutosaving
+      forMode: NSDefaultRunLoopMode
     ] ;
   }
 //  NSLog (@"%f", [[NSDate date] timeIntervalSinceDate:startDate]) ;
@@ -775,9 +776,9 @@
   const NSRange newSelectedRange = NSMakeRange (inSelectedRangeValue.location, inSelectedRangeValue.length + (NSUInteger) insertedCharsCount) ;
 //--- Register undo
   [mUndoManager
-    registerUndoWithTarget:self
-    selector:@selector (uncommentRangeForUndo:)
-    object:[NSValue valueWithRange:newSelectedRange]
+    registerUndoWithTarget: self
+    selector: @selector (uncommentRangeForUndo:)
+    object: [NSValue valueWithRange: newSelectedRange]
   ] ;
 //---
   return newSelectedRange ;
@@ -789,7 +790,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  [self commentRange:inRangeValue.rangeValue] ;
+  [self commentRange: inRangeValue.rangeValue] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -797,18 +798,18 @@
 //                       U N C O M M E N T R A N G E                                             
 //
 // Cette méthode a plusieurs rôles :                                                             
-//   - supprimer les marques de commentaires des lignes concernées par la sélection, uniquement quand le               *
+//   - supprimer les marques de commentaires des lignes concernées par la sélection, uniquement quand le
 //     commentaire commence une ligne ;                                                          
-//   - ajuster la sélection en conséquence ; en effet, dès que la méthode replaceCharactersInRange:withString: est     *
-//     appelée, Cocoa ramène la sélection à un point d'insertion. La sélection est ajustée et maintenue dans la        *
+//   - ajuster la sélection en conséquence ; en effet, dès que la méthode replaceCharactersInRange:withString: est
+//     appelée, Cocoa ramène la sélection à un point d'insertion. La sélection est ajustée et maintenue dans la
 //     variable finalSelectedRange.                                                              
 //
 // Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule :                   
-//   - le nombre beforeSelectionCharacterCount de caractères du commentaire supprimé qui sont avant la sélection ; si  *
-//     ce nombre est > 0, on le début de la sélection du min entre ce nombre et le nombre de caractères du             *
+//   - le nombre beforeSelectionCharacterCount de caractères du commentaire supprimé qui sont avant la sélection ; si
+//     ce nombre est > 0, on le début de la sélection du min entre ce nombre et le nombre de caractères du
 //     commentaire ;                                                                             
-//   - le nombre withinSelectionCharacterCount de caractères du commentaire supprimé qui sont à l'intérieur de la      *
-//     sélection ; si ce nombre est > 0, on le retranche de la longueur de la sélection.         
+//   - le nombre withinSelectionCharacterCount de caractères du commentaire supprimé qui sont à l'intérieur de la
+//     sélection ; si ce nombre est > 0, on le retranche de la longueur de la sélection.          
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -984,8 +985,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
         color = (NSColor *) [NSKeyedUnarchiver unarchiveObjectWithData:data] ;
       }
       d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
-      [d setObject:color forKey:NSBackgroundColorAttributeName] ;
-      [self applyTextAttributeForIndex:(NSInteger) idx] ;
+      [d setObject:color forKey: NSBackgroundColorAttributeName] ;
+      [self applyTextAttributeForIndex: (NSInteger) idx] ;
       break;
     case TAG_FOR_ENABLE_TEMPLATE_BACKGROUND :
       if (data != nil)  {
@@ -1015,15 +1016,15 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       [self applyTextAttributeForIndex:-2] ;
       break;
     case TAG_FOR_FONT_ATTRIBUTE:
-      d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
-      [d setObject:[NSUnarchiver unarchiveObjectWithData:data] forKey:NSFontAttributeName] ;
+      d = [mFontAttributesDictionaryArray objectAtIndex: idx] ;
+      [d setObject:[NSUnarchiver unarchiveObjectWithData: data] forKey: NSFontAttributeName] ;
       [self computeMaxLineHeight: & lineHeightDidChange] ;
       [self applyTextAttributeForIndex:lineHeightDidChange ? 0 : (NSInteger) idx] ;
       break;
     case TAG_FOR_TEMPLATE_FONT_ATTRIBUTE:
-      [mTemplateTextAttributeDictionary setObject:[NSUnarchiver unarchiveObjectWithData:data] forKey:NSFontAttributeName] ;
+      [mTemplateTextAttributeDictionary setObject: [NSUnarchiver unarchiveObjectWithData:data] forKey: NSFontAttributeName] ;
       [self computeMaxLineHeight: & lineHeightDidChange] ;
-      [self applyTextAttributeForIndex:lineHeightDidChange ? 0 : -2] ;
+      [self applyTextAttributeForIndex: lineHeightDidChange ? 0 : -2] ;
       break;
     default:
       break;
@@ -1059,17 +1060,20 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #endif
   NSString * sourceFileFullPath = [inArray objectAtIndex: 0] ;
   const NSInteger selectedToolIndex = [[inArray objectAtIndex: 1] integerValue] ;
+  NSString * indexFileFullPath = [inArray objectAtIndex: 2] ;
   NSString * compilerToolPath = [gCocoaApplicationDelegate compilerToolPath: selectedToolIndex] ;
 //--- Command line tool does actually exist ? (First argument is not "?")
-  if (! [compilerToolPath isEqualToString:@"?"]) {
+  if (! [compilerToolPath isEqualToString: @"?"]) {
   //--- Build argument array
     NSMutableArray * arguments = [NSMutableArray new] ;
     [arguments addObject: sourceFileFullPath] ;
-    [arguments addObject: @"--mode=indexing"] ;
+    NSString * indexArgument = [NSString stringWithFormat: @"--mode=indexing:%@", indexFileFullPath] ;
+    [arguments addObject: indexArgument] ;
+//    NSLog (@"ARGS %@ %@ %@", compilerToolPath, sourceFileFullPath, indexArgument) ;
   //--- Create task
     NSTask * task = [NSTask new] ;
-    [task setLaunchPath:compilerToolPath] ;
-    [task setArguments:arguments] ;
+    [task setLaunchPath: compilerToolPath] ;
+    [task setArguments: arguments] ;
     // NSLog (@"'%@' %@", [task launchPath], arguments) ;
   //--- Start task
     [task launch] ;
@@ -1084,28 +1088,40 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
+  NSFileManager * fm = [NSFileManager new] ;
   NSMutableArray * result = nil ;
 //--- Save all sources
   [[NSDocumentController sharedDocumentController] saveAllDocuments:self] ;
 //--- Source directory
   NSString * sourceDirectory = documentData.fileURL.path.stringByDeletingLastPathComponent ;
-//--- index directory
-  NSString * indexingDirectory = [mTokenizer indexingDirectory] ;
-  if (indexingDirectory.length > 0) {
-    if ([indexingDirectory characterAtIndex:0] != '/') {
-      NSMutableString * s = [NSMutableString new] ;
-      [s appendString:sourceDirectory] ;
-      [s appendString:@"/"] ;
-      [s appendString:indexingDirectory] ;
-      indexingDirectory = s ;
-      // NSLog (@"indexingDirectory '%@'", indexingDirectory) ;
+//--- Project file path directory
+  NSDictionary * indexingDescriptors = indexingDescriptorDictionary () ;
+  NSString * projectFilePath = nil ;
+  NSString * indexingSuffix = nil ;
+  NSArray * allDocuments = [OC_GGS_DocumentData allDocuments] ;
+  for (NSDocument * document in allDocuments) {
+    NSString * possibleIndexingSuffix = [indexingDescriptors valueForKey: document.fileURL.path.pathExtension] ;
+    if (possibleIndexingSuffix != nil) {
+      projectFilePath = document.fileURL.path ;
+      indexingSuffix = possibleIndexingSuffix ;
     }
+  }
+//  NSLog (@"PROJECT %@", projectFilePath) ;
+//--- index directory
+  if (projectFilePath.length > 0) {
+    NSString * projectFileDirectory = [projectFilePath stringByDeletingLastPathComponent] ;
+    NSString * projectFileName = [projectFilePath lastPathComponent] ;
+    NSString * projectFileNameModified = [projectFileName stringByReplacingOccurrencesOfString: @"." withString: @"-"] ;
+    NSString * modifiedIndexingSuffix = [indexingSuffix stringByReplacingOccurrencesOfString: @"*" withString: projectFileNameModified] ;
+//    NSString * indexingDirectory = [NSString stringWithFormat: @"%@/%@", projectFileDirectory, indexingPathSuffix (projectFileNameModified)] ;
+    NSString * indexingDirectory = [NSString stringWithFormat: @"%@/%@", projectFileDirectory, modifiedIndexingSuffix] ;
+    [fm createDirectoryAtPath: indexingDirectory withIntermediateDirectories: YES attributes: nil error: nil] ;
+    // NSLog (@"indexingDirectory '%@'", indexingDirectory) ;
   //--- Handled extensions
     NSSet * handledExtensions = gCocoaApplicationDelegate.allExtensionsOfCurrentApplication ;
     // NSLog (@"***** handledExtensions '%@'", handledExtensions) ;
   //--- All files in source directory
-    NSFileManager * fm = [[NSFileManager alloc] init] ;
-    NSArray * files = [fm contentsOfDirectoryAtPath:sourceDirectory error:NULL] ;
+    NSArray * files = [fm contentsOfDirectoryAtPath: sourceDirectory error:NULL] ;
     NSMutableArray * availableDictionaryPathArray = [NSMutableArray new] ;
     NSOperationQueue * opq = [NSOperationQueue new] ;
     for (NSString * filePath in files) {
@@ -1113,23 +1129,24 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       if ([handledExtensions containsObject:[filePath pathExtension]]) {
       //--- Index file path
         NSString * indexFileFullPath = [NSString stringWithFormat:@"%@/%@.plist", indexingDirectory, [filePath lastPathComponent]] ;
+//        NSLog (@"  indexFileFullPath '%@'", indexFileFullPath) ;
       //--- Parse source file ?
-        if (! [fm fileExistsAtPath:indexFileFullPath]) { // Parse source file
+        if (! [fm fileExistsAtPath: indexFileFullPath]) { // Parse source file
           NSNumber * toolIndexNumber = [NSNumber numberWithInteger: gCocoaApplicationDelegate.selectedToolIndex] ;
           NSInvocationOperation * op = [[NSInvocationOperation alloc] 
             initWithTarget:self
-            selector:@selector (parseSourceFileForBuildingIndexFile:)
-            object:[NSArray arrayWithObjects: fullFilePath, toolIndexNumber, nil]
+            selector: @selector (parseSourceFileForBuildingIndexFile:)
+            object: [NSArray arrayWithObjects: fullFilePath, toolIndexNumber, indexFileFullPath, nil]
           ] ;
-          [opq addOperation:op] ;
+          [opq addOperation: op] ;
           [availableDictionaryPathArray addObject:indexFileFullPath] ;
-        }else if ([self sourceFile:fullFilePath newerThanFile:indexFileFullPath]) {
+        }else if ([self sourceFile: fullFilePath newerThanFile: indexFileFullPath]) {
           NSNumber * toolIndexNumber = [NSNumber numberWithInteger: gCocoaApplicationDelegate.selectedToolIndex] ;
-          [fm removeItemAtPath:indexFileFullPath error:NULL] ;
+          [fm removeItemAtPath: indexFileFullPath error:NULL] ;
           NSInvocationOperation * op = [[NSInvocationOperation alloc] 
             initWithTarget:self
             selector:@selector (parseSourceFileForBuildingIndexFile:)
-            object:[NSArray arrayWithObjects: fullFilePath, toolIndexNumber, nil]
+            object:[NSArray arrayWithObjects: fullFilePath, toolIndexNumber, indexFileFullPath, nil]
           ] ;
           [opq addOperation:op] ;
           [availableDictionaryPathArray addObject:indexFileFullPath] ;

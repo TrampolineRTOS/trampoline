@@ -46,10 +46,10 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
-  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedGraph != NULL ; }
+  public: VIRTUAL_IN_DEBUG inline bool isValid (void) const override { return mSharedGraph != NULL ; }
 
 //--- drop
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--- Handle copy
   public: AC_GALGAS_graph (const AC_GALGAS_graph & inSource) ;
@@ -90,11 +90,10 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public: typeComparisonResult objectCompare (const AC_GALGAS_graph & inOperand) const ;
 
 //--- introspection
-  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
+  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const override = 0 ;
 
 //--- Description
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const override ;
 
 //--- Internal methods for handling graph
   protected: VIRTUAL_IN_DEBUG void reversedGraphFromGraph (const AC_GALGAS_graph & inGraph

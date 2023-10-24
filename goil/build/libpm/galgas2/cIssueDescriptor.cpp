@@ -79,7 +79,7 @@ void cIssueDescriptor::appendToJSONstring (C_String & ioJSONstring, const bool i
   s = s.stringByReplacingStringByString("\"", "\\\"") ;
   ioJSONstring << (inIsFirstIssue ? "" : ",\n")
                << "  { \"ERROR\" : " << (mIsError ? "true" : "false") << ",\n"
-               << "    \"SOURCE\" : \"" << mFile << "\",\n"
+               << "    \"SOURCE\" : \"" << mFile.lastPathComponent () << "\",\n"
                << "    \"LINE\"  : " << cStringWithSigned (mLine) << ",\n"
                << "    \"START_COLUMN\"  : " << cStringWithSigned (mStartColumn) << ",\n"
                << "    \"END_COLUMN\"  : " << cStringWithSigned (mEndColumn) << ",\n"

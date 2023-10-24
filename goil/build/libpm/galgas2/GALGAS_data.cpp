@@ -109,7 +109,7 @@ void GALGAS_data::description (C_String & ioString,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_uint GALGAS_data::getter_length (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint GALGAS_data::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint ((uint32_t) mData.length ()) ;

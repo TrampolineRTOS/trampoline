@@ -53,7 +53,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   public: AC_GALGAS_sortedlist & operator = (const AC_GALGAS_sortedlist &) ;
 
 //--------------------------------- Is Valid
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const { return NULL != mSharedRoot ; }
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override { return NULL != mSharedRoot ; }
 
 //--- count
   public: VIRTUAL_IN_DEBUG uint32_t count (void) const ;
@@ -62,11 +62,10 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   protected: VIRTUAL_IN_DEBUG void createNewEmptySortedList (LOCATION_ARGS) ;
 
 //--------------------------------- Drop
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Implementation of reader 'description'
-  public: virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
+  public: virtual void description (C_String & ioString, const int32_t inIndentation) const override ;
 
 //--- Enumeration handling
   protected: void populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const ;
@@ -102,10 +101,10 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   public: typeComparisonResult objectCompare (const AC_GALGAS_sortedlist & inOperand) const ;
 
 //--------------------------------- Readers
-  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_length (LOCATION_ARGS) const ;
+  public: VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
 //--------------------------------- introspection
-  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const  = 0;
+  public: virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const override = 0;
 
 } ;
 

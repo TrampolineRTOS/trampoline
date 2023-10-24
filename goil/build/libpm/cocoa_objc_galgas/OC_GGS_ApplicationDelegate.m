@@ -275,9 +275,9 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [colorWell setToolTip: @"Background Color"] ;
   [colorWell setAutoresizingMask: mask] ;
   [colorWell
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
-    withKeyPath:inBackgroundBindingPath
+    withKeyPath: inBackgroundBindingPath
     options:[NSDictionary dictionaryWithObject:colorTransformer forKey:NSValueTransformerBindingOption]
   ] ;
   [ioView addSubview:colorWell] ;
@@ -290,7 +290,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [cb setButtonType: NSSwitchButton] ;
   [cb setAutoresizingMask: mask] ;
   [cb
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:inBackgroundActivationBindingPath
     options:NULL
@@ -329,7 +329,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [colorWell setToolTip: @"Foreground Color"] ;
   [colorWell setAutoresizingMask: mask] ;
   [colorWell
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:inForegroundBindingPath
     options:[NSDictionary dictionaryWithObject:colorTransformer forKey:NSValueTransformerBindingOption]
@@ -582,14 +582,14 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     }
   }
 //--- Set up font panel
-  [fontManager setAction:@selector (changeFont:)] ;
+  [fontManager setAction:@selector (changeFontAction:)] ;
   [fontManager setTarget:self] ;
   [fontManager orderFrontFontPanel:self] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-- (void) changeFont: (id) inSender {
+- (void) changeFontAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
@@ -747,17 +747,17 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     ] ;
     r.size.width = [title sizeWithAttributes:d].width + 30.0 ;
     r.origin.y -= 25.0 ;
-    [cb setFrame:r] ;
+    [cb setFrame: r] ;
     [cb setTitle: title] ;
     [cb setButtonType: NSSwitchButton] ;
     [cb setAutoresizingMask: mask] ;
     [cb
-      bind:@"value"
-      toObject:udc
-      withKeyPath:[NSString stringWithFormat:@"values.%@_%@", GGS_bool_build_option, [option identifier]]
-      options:nil
+      bind: NSValueBinding
+      toObject: udc
+      withKeyPath: [NSString stringWithFormat: @"values.%@_%@", GGS_bool_build_option, [option identifier]]
+      options: nil
     ] ;
-    [inView addSubview:cb] ;
+    [inView addSubview: cb] ;
     *ioRect = NSUnionRect (*ioRect, r) ;
   }
 }
@@ -777,7 +777,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
   NSDictionary * optionDictionary = [NSDictionary
     dictionaryWithObject:[NSNumber numberWithBool:YES]
-    forKey:NSContinuouslyUpdatesValueBindingOption
+    forKey: NSContinuouslyUpdatesValueBindingOption
   ] ;
   NSRect r;
   r.origin.x = 10.0 ;
@@ -800,10 +800,10 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [tx setFrame: r] ;
     [tx setTag: (NSInteger) i] ;
     [tx
-      bind:@"value"
-      toObject:udc
-      withKeyPath:[NSString stringWithFormat:@"values.%@_%@", GGS_uint_build_option, [option identifier]]
-      options:optionDictionary
+      bind: NSValueBinding
+      toObject: udc
+      withKeyPath: [NSString stringWithFormat: @"values.%@_%@", GGS_uint_build_option, [option identifier]]
+      options: optionDictionary
     ] ;
     [inView addSubview: tx] ;
     *ioRect = NSUnionRect (*ioRect, r) ;
@@ -861,10 +861,10 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     r.size.width = 280.0 ;
     [tx setFrame: r] ;
     [tx
-      bind:@"value"
-      toObject:udc
-      withKeyPath:[NSString stringWithFormat:@"values.%@_%@", GGS_string_build_option, [option identifier]]
-      options:optionDictionary
+      bind: NSValueBinding
+      toObject: udc
+      withKeyPath: [NSString stringWithFormat:@"values.%@_%@", GGS_string_build_option, [option identifier]]
+      options: optionDictionary
     ] ;
     [inView addSubview:tx] ;
     viewFrame = NSUnionRect (viewFrame, r) ;
@@ -951,7 +951,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [ud setBool:YES forKey:GGS_uses_page_guide] ;
   }
   [mPageGuideCheckbox
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values." GGS_uses_page_guide
     options:nil
@@ -966,7 +966,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [ud setInteger:80 forKey:GGS_page_guide_column] ;
   }
   [mPageGuideColumnTextField
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values." GGS_page_guide_column
     options:nil
@@ -985,7 +985,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [ud setValue: archiveData forKey: GGS_editor_background_color] ;
   }
   [mEditorBackgroundColorWell
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values." GGS_editor_background_color
     options:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -995,7 +995,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   ] ;
 //--- Bind « Prefix by time Utility » checkbox
   [mPrefixByTimeUtilityCheckBox
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values." GGS_prefix_by_tool_utility
     options:nil
@@ -1021,7 +1021,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [defaults setInteger:2 forKey:GGS_editor_space_for_tab] ;
   }
   [mTabInsertsSpacesTextField
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values." GGS_editor_space_for_tab
     options:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSContinuouslyUpdatesValueBindingOption]
@@ -1056,7 +1056,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [defaults setBool:YES forKey:GGS_enable_completion] ;
   }
   [mEnableCompletionCheckBox
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values." GGS_enable_completion
     options:nil
@@ -1103,7 +1103,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [ud setObject:[NSNumber numberWithBool:YES] forKey:@"PMConvert_CRLF_And_CR_To_LF_AtStartUp"] ;
   }
   [mConvert_CRLF_And_CR_To_LF_AtStartUpButton
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values.PMConvert_CRLF_And_CR_To_LF_AtStartUp"
     options:NULL
@@ -1113,21 +1113,21 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [ud setObject:[NSNumber numberWithBool:YES] forKey:@"PMConvert_HTAB_To_SPACE_AtStartUp"] ;
   }
   [mConvert_HTAB_To_SPACE_AtStartUpButton
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values.PMConvert_HTAB_To_SPACE_AtStartUp"
     options:NULL
   ] ;
 //--- Show Invisible Characters Checkbox
  [mShowInvisibleCharactersCheckBox
-    bind:@"value"
+    bind: NSValueBinding
     toObject:udc
     withKeyPath:@"values.PMShowInvisibleCharacters"
     options:NULL
   ] ;
 //--- Bind command line option text view
   [mCommandLineOptionTextView setFont:[NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]]] ;
-  [mCommandLineOptionTextView bind:@"value" toObject:self withKeyPath:@"commandLineString" options:nil] ;
+  [mCommandLineOptionTextView bind: NSValueBinding toObject:self withKeyPath:@"commandLineString" options:nil] ;
   [self willChangeValueForKey:@"commandLineString"] ;
   [self  didChangeValueForKey:@"commandLineString"] ;
   [mCommandLineOptionTextView setEditable:NO] ;
@@ -1250,13 +1250,8 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     if (fileExtensions.count > 0) {
       [extensionSet addObjectsFromArray: fileExtensions] ;
     }
-//    for (NSString * extension in fileExtensions) {
-//      NSLog (@"  extension %@", extension) ;
-//    }
-//    [allTypes addObjectsFromArray:a] ;
   }
   return extensionSet ;
-//  return allTypes ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1269,68 +1264,45 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-//--- Get Info.plist file
-  NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary] ;
-  // NSLog (@"infoDictionary '%@'", infoDictionary) ;
-  NSArray * allDocumentTypes = [infoDictionary objectForKey:@"CFBundleDocumentTypes"] ;
-  // NSLog (@"allDocumentTypes '%@'", allDocumentTypes) ;
-  NSDictionary * docTypeDict = [allDocumentTypes objectAtIndex: (NSUInteger) [inSender tag]] ;
-  NSArray * documentTypeExtensions = [docTypeDict objectForKey:@"CFBundleTypeExtensions"] ;
-  NSString * extension = [documentTypeExtensions objectAtIndex:0] ;
-  // NSLog (@"extension '%@'", extension) ;
+  NSString * extension = [inSender title] ;
   NSSavePanel * savePanel = [inSender representedObject] ;
-//  [savePanel setRequiredFileType:extension] ;
-  [savePanel setAllowedFileTypes:[NSArray arrayWithObject:extension]] ;
+  [savePanel setAllowedFileTypes: [NSArray arrayWithObject: extension]] ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-- (void) newDocument: (id) inSender {
+- (IBAction) newDocument: (id) inSender {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   NSSavePanel * savePanel = [NSSavePanel savePanel] ;
   [mNewDocumentTypePopUpButton removeAllItems] ;
-//--- Get Info.plist file
-  NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary] ;
-  // NSLog (@"infoDictionary '%@'", infoDictionary) ;
-  NSArray * allDocumentTypes = [infoDictionary objectForKey:@"CFBundleDocumentTypes"] ;
-  // NSLog (@"allDocumentTypes '%@'", allDocumentTypes) ;
-  for (NSUInteger i=0 ; i<[allDocumentTypes count] ; i++) {
-    NSDictionary * docTypeDict = [allDocumentTypes objectAtIndex:i] ;
-    // NSLog (@"docTypeDict '%@'", docTypeDict) ;
-    NSArray * documentTypeExtensions = [docTypeDict objectForKey:@"CFBundleTypeExtensions"] ;
-    // NSLog (@"documentTypeExtensions '%@'", documentTypeExtensions) ;
-    NSString * documentTypeRole = [docTypeDict objectForKey:@"CFBundleTypeRole"] ;
-    // NSLog (@"documentTypeRole '%@'", documentTypeRole) ;
-    if ([documentTypeRole isEqualToString:@"Editor"] && ([documentTypeExtensions count] > 0)) {
-      NSString * documentTypeName = [docTypeDict objectForKey:@"CFBundleTypeName"] ;
-      // NSLog (@"documentTypeName '%@'", documentTypeName) ;
-      [mNewDocumentTypePopUpButton addItemWithTitle:documentTypeName] ;
-      NSMenuItem * item = [mNewDocumentTypePopUpButton lastItem] ;
-      [item setTarget:self] ;
-      [item setAction:@selector (changeNewDocumentTypeAction:)] ;
-      [item setTag:(NSInteger) i] ;
-      [item setRepresentedObject:savePanel] ;
-    }
+  NSSet * extensionSet = [self allExtensionsOfCurrentApplication] ;
+ // NSLog (@"extensionArray '%@'", extensionArray) ;
+  for (NSString * extension in extensionSet) {
+    // NSLog (@"  extension '%@'", extension) ;
+    [mNewDocumentTypePopUpButton addItemWithTitle: extension] ;
+    NSMenuItem * item = [mNewDocumentTypePopUpButton lastItem] ;
+    [item setTarget: self] ;
+    [item setAction: @selector (changeNewDocumentTypeAction:)] ;
+    [item setRepresentedObject: savePanel] ;
   }
 //--- Present save panel
-  [savePanel setAllowsOtherFileTypes:NO] ;
-  [savePanel setCanSelectHiddenExtension:YES] ;
-  [savePanel setAccessoryView:mNewDocumentAccessoryView] ;
-  [self changeNewDocumentTypeAction:[mNewDocumentTypePopUpButton itemAtIndex:0]] ;
-//  const NSInteger result = [savePanel runModalForDirectory:nil file:nil] ;
+  [savePanel setAllowsOtherFileTypes: NO] ;
+  [savePanel setCanSelectHiddenExtension: YES] ;
+  [savePanel setAccessoryView: mNewDocumentAccessoryView] ;
+  [self changeNewDocumentTypeAction: [mNewDocumentTypePopUpButton itemAtIndex: 0]] ;
   const NSInteger result = [savePanel runModal] ;
   // NSLog (@"result %d", result) ;
   if (result == NSOKButton) {
     NSString * path = savePanel.URL.path ;
     // NSLog (@"path '%@'", path) ;
     NSError * error = nil ;
-    if ([[NSData data] writeToFile:path options:NSAtomicWrite error:& error]) {
+    if ([[NSData data] writeToFile: path options: NSAtomicWrite error: &error]) {
       NSDocumentController * dc = [NSDocumentController sharedDocumentController] ;
-      [dc openDocumentWithContentsOfURL:[NSURL fileURLWithPath:path] display:YES error:nil] ;
+      [dc openDocumentWithContentsOfURL: [NSURL fileURLWithPath: path] display: YES error: nil] ;
     }else{
-      [NSApp presentError:error] ;
+      [NSApp presentError: error] ;
     }
   }
 }

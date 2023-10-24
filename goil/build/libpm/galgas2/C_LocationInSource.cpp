@@ -33,57 +33,27 @@ mSourceText () {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_LocationInSource::C_LocationInSource (const C_SourceTextInString & inSourceText,
-                                        const int32_t inLine,
-                                        const int32_t inColumn) :
-mIndex (inSourceText.sourceString ().indexFromLineAndColumn (inLine, inColumn)),
-mLineNumber (inLine),
-mColumnNumber (inColumn),
-mSourceText (inSourceText) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-C_LocationInSource::C_LocationInSource (const C_SourceTextInString & inSourceText,
-                                        const int32_t inIndex,
-                                        const int32_t inLine,
-                                        const int32_t inColumn) :
-mIndex (inIndex),
-mLineNumber (inLine),
-mColumnNumber (inColumn),
-mSourceText (inSourceText) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-C_LocationInSource::C_LocationInSource (const C_LocationInSource & inObject) :
-mIndex (inObject.mIndex),
-mLineNumber (inObject.mLineNumber),
-mColumnNumber (inObject.mColumnNumber),
-mSourceText (inObject.mSourceText) {
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-C_LocationInSource & C_LocationInSource::operator = (const C_LocationInSource & inObject) {
-  if (this != & inObject) {
-    mIndex = inObject.mIndex ;
-    mLineNumber = inObject.mLineNumber ;
-    mColumnNumber = inObject.mColumnNumber ;
-    mSourceText = inObject.mSourceText ;
+void C_LocationInSource::gotoNextLocation (void) {
+  if (mIndex < mSourceText.sourceString ().length ()) {
+    const utf32 currentChar = mSourceText.sourceString () (mIndex COMMA_HERE) ;
+    const bool previousCharWasEndOfLine = UNICODE_VALUE (currentChar) == '\n' ;
+    if (previousCharWasEndOfLine) {
+      mLineNumber ++ ;
+      mColumnNumber = 1 ;
+    }else{
+      mColumnNumber ++ ;
+    }
+    mIndex ++ ;
   }
-  return *this ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void C_LocationInSource::gotoNextLocation (const bool inPreviousCharWasEndOfLine) {
-  mIndex ++ ;
-  if (inPreviousCharWasEndOfLine) {
-    mLineNumber ++ ;
-    mColumnNumber = 1 ;
-  }else{
-    mColumnNumber ++ ;
+void C_LocationInSource::goForward (const uint32_t inCount) {
+  uint32_t count = inCount ;
+  while (count > 0) {
+    gotoNextLocation () ;
+    count -= 1 ;
   }
 }
 
@@ -112,7 +82,8 @@ C_String C_LocationInSource::sourceFilePath (void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-C_LocationInSource::~C_LocationInSource (void) {
-}
+//LineColumnContents C_LocationInSource::lineColumnNumber (void) const {
+//  return mSourceText.sourceString ().lineAndColumnFromIndex (mIndex) ;
+//}
 
 //----------------------------------------------------------------------------------------------------------------------

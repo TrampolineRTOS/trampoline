@@ -451,7 +451,7 @@ rule <gtl_step_do_command>
   @gtlThenElsifStatementList thenElsifList = .emptyList
   @gtlInstructionList elseList = .emptyList
   
-  $if$ let @location where = .here
+  $if$ ; let @location where = .here
   repeat
     <gtl_expression> ?let @gtlExpression condition
     $then$

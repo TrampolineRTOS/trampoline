@@ -32,7 +32,7 @@ static struct tm gDate ;
 //----------------------------------------------------------------------------------------------------------------------
 
 static struct tm currentDate (void) {
-  const time_t currentTime = ::time (NULL) ;
+  const time_t currentTime = ::time (nullptr) ;
   gDate = * ::localtime (& currentTime) ;
   return gDate ;
 }
@@ -78,7 +78,7 @@ const char * C_DateTime::getMonthName (void) const {
   case 10 : return "november" ;
   case 11 : return "december" ;
   }
-  return (const char *) NULL ;
+  return (const char *) nullptr ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ const char * C_DateTime::getDayName (void) const {
   case  5 : return "friday" ;
   case  6 : return "saturday" ;
   }
-  return (const char *) NULL ;
+  return (const char *) nullptr ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

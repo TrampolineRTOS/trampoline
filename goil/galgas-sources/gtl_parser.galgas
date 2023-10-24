@@ -89,7 +89,7 @@ rule <gtl_template_instruction_list> !@gtlInstructionList instructionList
 #-----------------------------------------------------------------------------*
 rule <gtl_template_instruction> !@gtlInstruction instruction
 {
-  $!$ let @location where = .here
+  $!$ ; let @location where = .here
   <gtl_expression> ?let @gtlExpression expression
   
   instruction = @gtlEmitInstruction.new {
@@ -108,12 +108,12 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
 rule <gtl_template_instruction> !@gtlInstruction instruction
 {
   @bool isExecutable = false
-  $write$ let @location where = .here $to$
-  select $executable$ isExecutable = true or end
+  $write$ ; let @location where = .here ; $to$
+  select $executable$ ; isExecutable = true or end
   <gtl_expression> ?let @gtlExpression fileName
   $:$
   <gtl_template_instruction_list> ?let @gtlInstructionList instructionList
-  $end$ $write$ 
+  $end$ ; $write$ 
   
   instruction = @gtlWriteToInstruction.new {
     !where
@@ -134,7 +134,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   @gtlExpressionList templateArguments = .emptyList
   @bool globalTemplate = true
   
-  $template$ let @location where = .here
+  $template$ ; let @location where = .here
   select
     globalTemplate = false
     $($
@@ -150,21 +150,21 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   or
   end
   select
-    $if$ $exists$
+    $if$ ; $exists$
     ifExists = true
     <gtl_file_name> ?fileName
     select
-      $in$ $identifier$ ?prefix
+      $in$ ; $identifier$ ?prefix
     or prefix = .new { !"" !@location.here } end
     select
       $or$
       <gtl_template_instruction_list> ?instructionList
-      $end$ $template$
+      $end$ ; $template$
     or end
   or
     <gtl_file_name> ?fileName
     select
-      $in$ $identifier$ ?prefix
+      $in$ ; $identifier$ ?prefix
     or prefix = .new { !"" !@location.here } end
   end
   instruction = @gtlTemplateInstruction.new {
@@ -182,7 +182,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
 #-----------------------------------------------------------------------------*
 rule <gtl_template_instruction> !@gtlInstruction instruction
 {
-  $?$ let @location where = .here
+  $?$ ; let @location where = .here
   <gtl_variable> ?let @gtlVarPath columnConstantName
   
   instruction = @gtlGetColumnInstruction.new {
@@ -198,7 +198,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   @gtlThenElsifStatementList thenElsifList = .emptyList
   @gtlInstructionList elseList = .emptyList
   
-  $if$ let @location where = .here
+  $if$ ; let @location where = .here
   repeat
     <gtl_expression> ?let @gtlExpression condition
     $then$
@@ -234,16 +234,16 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   let @lstring indexName
   let @lstring variableName
   
-  $foreach$ let @location where = .here
+  $foreach$ ; let @location where = .here
   $identifier$ ?var @lstring keyName
   select
-    $,$ $identifier$ ?variableName
+    $,$ ; $identifier$ ?variableName
   or
     variableName = keyName
     keyName = .new { !"" !where }
   end
   select
-    $($ $identifier$ ?indexName $)$
+    $($ ; $identifier$ ?indexName ; $)$
   or
     indexName = .new { !"INDEX" !.here }
   end
@@ -292,7 +292,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   @gtlInstructionList betweenList = .emptyList
   @gtlExpressionList  iterable = .emptyList 
 
-  $for$ let @location where = .here
+  $for$ ; let @location where = .here
   if [option gtl_options.warnDeprecated value] then
     warning .here : "for var in expression, ..., expression is deprecated"
       fixit { replace "foreach var in @( expression, ..., expression )" }
@@ -335,7 +335,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   @gtlInstructionList afterList = .emptyList
   @sint64 direction = 1
   
-  $loop$ let @location where = .here
+  $loop$ ; let @location where = .here
 
   @gtlExpression step = @gtlTerminal.new {
     !where !@gtlInt.new { !where !emptylstring() !1 }
@@ -348,7 +348,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   or
     $up$
   or
-    $down$ direction = -1
+    $down$ ; direction = -1
   end
   $to$
   <gtl_expression>  ?let @gtlExpression stop
@@ -398,7 +398,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
 {
   let @gtlExpression limit
   
-  $repeat$ let @location where = .here
+  $repeat$ ; let @location where = .here
   select
     $($
     <gtl_expression> ?limit
@@ -429,7 +429,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
 #-----------------------------------------------------------------------------*
 rule <gtl_template_instruction> !@gtlInstruction instruction
 {
-  $input$ let @location where = .here
+  $input$ ; let @location where = .here
   <gtl_argument_list> ?let @gtlArgumentList arguments
   
   instruction = @gtlInputStatementInstruction.new {

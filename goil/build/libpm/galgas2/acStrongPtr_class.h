@@ -31,6 +31,12 @@ class cPtr_weakReference_proxy ;
 //----------------------------------------------------------------------------------------------------------------------
 
 class acStrongPtr_class : public acPtr_class {
+//--- Properties
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    private: acStrongPtr_class * mPreviousPtr ;
+    private: acStrongPtr_class * mNextPtr ;
+  #endif
+
 //--- Default constructor
   public: acStrongPtr_class (LOCATION_ARGS) ;
 
@@ -49,6 +55,12 @@ class acStrongPtr_class : public acPtr_class {
 
 //--- Friend
   friend class cPtr_weakReference_proxy ;
+
+//--- Print all existing objects
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    public: static void printExistingClassInstances (void) ;
+    public: virtual void printNonNullClassInstanceProperties (void) const ;
+  #endif
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

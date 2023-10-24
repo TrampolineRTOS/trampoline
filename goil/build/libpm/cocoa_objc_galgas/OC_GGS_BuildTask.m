@@ -79,12 +79,12 @@
    //--- Create task
       mTask = [NSTask new] ;
       if ([gCocoaApplicationDelegate prefixByToolUtility]) {
-        [mTask setLaunchPath:[gCocoaApplicationDelegate toolUtilityPrefix]] ;
-        NSArray * allArguments = [NSArray arrayWithObject:[commandLineArray objectAtIndex:0]] ;
-        allArguments = [allArguments arrayByAddingObjectsFromArray:arguments] ;
+        [mTask setLaunchPath: [gCocoaApplicationDelegate toolUtilityPrefix]] ;
+        NSArray * allArguments = [NSArray arrayWithObject: [commandLineArray objectAtIndex:0]] ;
+        allArguments = [allArguments arrayByAddingObjectsFromArray: arguments] ;
         [mTask setArguments:allArguments] ;
       }else{
-        [mTask setLaunchPath:[commandLineArray objectAtIndex:0]] ;
+        [mTask setLaunchPath:[commandLineArray objectAtIndex: 0]] ;
         [mTask setArguments:arguments] ;
       }
     //--- Set standard output notification
@@ -141,10 +141,11 @@
       object: mTask
     ] ;
     [mTaskOutputPipe.fileHandleForReading closeFile] ;
+    const int terminationStatus = [mTask terminationStatus] ;
     mOutputBufferedDataHasBeenTransmitted = YES ;
     mTask = nil ;
     mTaskOutputPipe = nil ;
-    [mDocument buildCompleted] ;
+    [mDocument buildCompletedWithStatus: terminationStatus] ;
   }
 }
 

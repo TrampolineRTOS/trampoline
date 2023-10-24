@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -27,6 +27,6 @@ LIBPM_DIRECTORY_PATH = dictionary ["LIBPM_DIRECTORY_PATH"]
 sys.path.append (os.path.abspath (LIBPM_DIRECTORY_PATH + "/python-makefiles"))
 from mingw32_on_macosx_gcc_tools import buildForWin32OnMacOSX
 #----------------------------------------------------------------- Build
-buildForWin32OnMacOSX (dictionary, jsonFilePath, "goil", goal, maxParallelJobs, maxParallelJobs == 1)
+buildForWin32OnMacOSX (dictionary, jsonFilePath, "goil", "build", goal, maxParallelJobs, maxParallelJobs == 1)
 
 #-----------------------------------------------------------------------------------------------------------------------

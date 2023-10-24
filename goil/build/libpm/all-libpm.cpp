@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------*
-//    Files from LIBPM                                   
+//    Files from LIBPM
 //-----------------------------------------------------------------------------*
 
 //--- Command Line Option
@@ -41,6 +41,7 @@
 #include "strings/unicode_string_routines.cpp"
 #include "strings/C_String.cpp"
 #include "strings/C_HTMLString.cpp"
+#include "strings/print.cpp"
 
 //--- Time
 #include "time/C_Timer.cpp"

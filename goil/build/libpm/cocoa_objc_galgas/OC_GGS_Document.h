@@ -2,7 +2,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2003, ..., 2016 Pierre Molinaro.
+//  Copyright (C) 2003, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -56,7 +56,7 @@
 //---  
   @private NSArrayController * mSourceDisplayArrayControllerHigh ;
   @private IBOutlet NSTableView * mDisplayDescriptorTableViewHigh ;
-  @private NSMutableArray * mDisplayDescriptorArrayHigh ;
+  @private NSMutableArray * mDisplayDescriptorArray ;
 //---  
   @private OC_GGS_DocumentData * mDocumentData ;
   @private IBOutlet NSPathControl * mSourceFilePathControl ;
@@ -82,27 +82,13 @@
   @private IBOutlet NSSearchField * mGlobalSearchTextField ;
   @private IBOutlet NSTextField * mGlobalReplaceTextField ;
   @private IBOutlet NSTextField * mOccurenceFoundCountTextField ;
-  @private IBOutlet NSMatrix * mSearchMatrix ;
   @private IBOutlet NSOutlineView * mResultOutlineView ;
   @private NSMutableArray * mResultArray ;
   @private NSUInteger mResultCount ;
   @private NSTreeController * mFoundEntryTreeController ;
-//--- Search in opened directories
-  @private IBOutlet NSTableView * mExcludedDirectoryTableView ;
-  @private NSArrayController * mExcludedDirectoryArrayController ;
-  @private IBOutlet NSButton * mAddExcludedDirectoryButton ;
-  @private IBOutlet NSButton * mRemoveExcludedDirectoryButton ;
-  @private IBOutlet NSView * mExcludedDirectoryView ;
-//--- Search in an explicit directory list
-  @private IBOutlet NSView * mExplicitSearchDirectoryView ;
-  @private IBOutlet NSTableView * mExplicitSearchDirectoryTableView ;
-  @private NSArrayController *mExplicitSearchDirectoryArrayController ;
-  @private IBOutlet NSButton * mAddExplicitSearchDirectoryButton ;
-  @private IBOutlet NSButton * mRemoveExplicitSearchDirectoryButton ;
+  @private NSMutableDictionary * mBuildStringAttributeDictionary ;
 
   @private NSString * mBaseFilePreferenceKey ;
-  
-//  @private BOOL mHasSpoken ;
 }
 
 @property (assign, atomic) BOOL mBuildTaskIsRunning ;
@@ -154,7 +140,7 @@
          atLine: (NSUInteger) inLine ;
 
 - (void) appendBuildOutputData: (NSData *) inData ;
-- (void) buildCompleted ;
+- (void) buildCompletedWithStatus: (int) inTerminationStatus ;
 @end
 
 //----------------------------------------------------------------------------------------------------------------------

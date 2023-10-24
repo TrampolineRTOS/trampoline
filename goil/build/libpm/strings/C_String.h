@@ -165,7 +165,7 @@ class C_String : public AC_OutputStream {
 //--- Get a representation enclosing by a given character
 //      - escaped by a back slash
 //      - back slash is also escaped by back slash
-  public: C_String utf8RepresentationEnclosedWithin (const utf32 inCharacter) const ;
+  public: C_String utf8RepresentationEnclosedWithin (const utf32 inCharacter, const bool inEscapeQuestionMark) const ;
 
 //--- Get an HTML representation (&, <, > and " are escaped using HTML escape sequence)
   public: C_String HTMLRepresentation (void) const ;
@@ -193,10 +193,7 @@ class C_String : public AC_OutputStream {
   public: void linesArray (TC_UniqueArray <C_String> & outStringArray) const ;
 
 //--- Get line from index
-  public: void lineAndColumnFromIndex (const int32_t inIndex,
-                                        int32_t & outLineNumber,
-                                        int32_t & outColumnNumber,
-                                        C_String & outLineContents) const ;
+  public: class LineColumnContents lineAndColumnFromIndex (const int32_t inIndex) const ;
 
 //--- Get index from line number and column number
   public: int32_t indexFromLineAndColumn (const int32_t inLineNumber,
@@ -352,6 +349,33 @@ class C_TextReadException : public::std::exception {
   private: char mErrorMessage [kTextReadExceptionStringMaxLength + 1] ;
 
   public: virtual const char * what (void) const throw () ;
+} ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+class LineColumnContents final {
+  private: int32_t mLineNumber ;
+  private: int32_t mColumnNumber ;
+  private: C_String mLineContents ;
+
+  public: LineColumnContents (void) :
+  mLineNumber (0),
+  mColumnNumber (0),
+  mLineContents () {
+  }
+
+  public: LineColumnContents (const int32_t inLineNumber,
+                              const int32_t inColumnNumber,
+                              const C_String inLineContents) :
+  mLineNumber (inLineNumber),
+  mColumnNumber (inColumnNumber),
+  mLineContents (inLineContents) {
+  }
+
+  public: int32_t lineNumber (void) const { return mLineNumber ; }
+  public: int32_t columnNumber (void) const { return mColumnNumber ; }
+  public: C_String lineContents (void) const { return mLineContents ; }
+
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

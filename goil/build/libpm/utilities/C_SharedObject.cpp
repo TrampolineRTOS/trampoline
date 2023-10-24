@@ -46,8 +46,8 @@ C_SharedObject::C_SharedObject (LOCATION_ARGS) :
 #ifndef DO_NOT_GENERATE_CHECKINGS
   mCreationFile (IN_SOURCE_FILE),
   mCreationLine (IN_SOURCE_LINE),
-  mPtrToPreviousObject (NULL),
-  mPtrToNextObject (NULL),
+  mPtrToPreviousObject (nullptr),
+  mPtrToNextObject (nullptr),
 #endif
 mObjectIndex (gCreationIndex),
 mRetainCount (1) {
@@ -55,10 +55,10 @@ mRetainCount (1) {
   gObjectCurrentCount ++ ;
 //--- Enter current object in instance list
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    mPtrToNextObject = NULL ;
-    if (gLastObject == NULL) {
+    mPtrToNextObject = nullptr ;
+    if (gLastObject == nullptr) {
       gFirstObject = this ;
-      mPtrToPreviousObject = NULL ;
+      mPtrToPreviousObject = nullptr ;
     }else{
       gLastObject->mPtrToNextObject = this ;
       mPtrToPreviousObject = gLastObject ;
@@ -74,12 +74,12 @@ C_SharedObject::~ C_SharedObject (void) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     C_SharedObject * previousObject = mPtrToPreviousObject ;
     C_SharedObject * nextObject = mPtrToNextObject ;
-    if (previousObject == NULL) {
+    if (previousObject == nullptr) {
       gFirstObject = nextObject ;
     }else{
       previousObject->mPtrToNextObject = nextObject ;
     }
-    if (nextObject == NULL) {
+    if (nextObject == nullptr) {
       gLastObject = previousObject ;
     }else{
       nextObject->mPtrToPreviousObject = previousObject ;
@@ -92,7 +92,7 @@ C_SharedObject::~ C_SharedObject (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_SharedObject::retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) {
-  if (inObject != NULL) {
+  if (inObject != nullptr) {
     macroValidSharedObjectThere (inObject, C_SharedObject) ;
     inObject->mRetainCount ++ ;
   }
@@ -101,7 +101,7 @@ void C_SharedObject::retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_SharedObject::release (const C_SharedObject * inObject COMMA_LOCATION_ARGS) {
-  if (inObject != NULL) {
+  if (inObject != nullptr) {
     macroValidSharedObjectThere (inObject, C_SharedObject) ;
     MF_AssertThere (inObject->mRetainCount > 0, "mRetainCount should be > 0)", 0, 0) ;
     inObject->mRetainCount -- ;
@@ -137,7 +137,7 @@ void C_SharedObject::retainRelease (const C_SharedObject * inObjectToRetain,
          << ((gObjectCurrentCount > 1) ? "s have" : " has")
          << " not been released:\n";
       C_SharedObject * p = gFirstObject ;
-      while (p != NULL) {
+      while (p != nullptr) {
         co << "- object declared in '"
            << p->mCreationFile
            << "', line "

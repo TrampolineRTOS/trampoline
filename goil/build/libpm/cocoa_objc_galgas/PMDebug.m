@@ -121,19 +121,19 @@ void showAllocationStatsWindow (void) {
   }
 //--- Bindings
   [mAllocationStatsWindowVisibleAtLaunchCheckbox
-    bind:@"value"
+    bind: NSValueBinding
     toObject:self
     withKeyPath:@"mAllocationStatsWindowVisibleAtLaunch"
     options:nil
   ] ;
   [mCurrentlyAllocatedObjectCountTextField
-    bind:@"value"
+    bind: NSValueBinding
     toObject:self
     withKeyPath:@"mAllocatedObjectCount"
     options:nil
   ] ;
   [mTotalAllocatedObjectCountTextField
-    bind:@"value"
+    bind: NSValueBinding
     toObject:self
     withKeyPath:@"mTotalAllocatedObjectCount"
     options:nil

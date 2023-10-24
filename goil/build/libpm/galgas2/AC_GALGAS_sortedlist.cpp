@@ -809,7 +809,7 @@ void AC_GALGAS_sortedlist::description (C_String & ioString,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-GALGAS_uint AC_GALGAS_sortedlist::getter_length (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_sortedlist::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mSharedRoot->count ()) ;

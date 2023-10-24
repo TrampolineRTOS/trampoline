@@ -40,7 +40,7 @@ rule <gtl_variable_or_here>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $let$ let @location where = .here
+  $let$ ; let @location where = .here
   <gtl_variable> ?let @gtlVarPath variable
   select
     $:=$
@@ -154,7 +154,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $unlet$ let @location where = .here
+  $unlet$ ; let @location where = .here
   <gtl_variable> ?let @gtlVarPath variable
   instruction = @gtlUnletInstruction.new {
     !where
@@ -167,7 +167,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $error$ let @location where = .here
+  $error$ ; let @location where = .here
   <gtl_variable_or_here> ?let @gtlVarPath variable ?let @bool hereInstead
   $:$
   <gtl_expression> ?let @gtlExpression expression
@@ -185,7 +185,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $warning$ let @location where = .here
+  $warning$ ; let @location where = .here
   <gtl_variable_or_here> ?let @gtlVarPath variable ?let @bool hereInstead
   $:$
   <gtl_expression> ?let @gtlExpression expression
@@ -203,7 +203,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $print$ let @location where = .here
+  $print$ ; let @location where = .here
   <gtl_expression> ?let @gtlExpression expression
 
   instruction = @gtlPrintStatementInstruction.new {
@@ -218,7 +218,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $println$ let @location where = .here
+  $println$ ; let @location where = .here
   select
     <gtl_expression> ?let @gtlExpression expression
     instruction = @gtlPrintStatementInstruction.new {
@@ -241,7 +241,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $display$ let @location where = .here
+  $display$ ; let @location where = .here
   
   <gtl_variable> ?let @gtlVarPath variable
 
@@ -256,7 +256,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $sort$ let @location where = .here
+  $sort$ ; let @location where = .here
   <gtl_variable> ?let @gtlVarPath variable
   select
     @sortingKeyList sortList = .emptyList
@@ -289,7 +289,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $tab$ let @location where = .here
+  $tab$ ; let @location where = .here
   <gtl_expression> ?let @gtlExpression expression
   
   instruction = @gtlTabStatementInstruction.new {
@@ -303,7 +303,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $variables$ let @location where = .here
+  $variables$ ; let @location where = .here
   instruction = @gtlVariablesInstruction.new {
     !where
     !signature(!where)
@@ -315,7 +315,7 @@ rule <gtl_simple_instruction>
 rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
-  $libraries$ let @location where = .here
+  $libraries$ ; let @location where = .here
   instruction = @gtlLibrariesInstruction.new {
     !where 
     !signature(!where)
@@ -369,7 +369,7 @@ rule <gtl_import>
   ?@gtlContext context
   ?!@library   lib 
 {
-  $import$ $string$ ?let @lstring fileName
+  $import$ ; $string$ ?let @lstring fileName
   @string fullName = [fileName string]
   if [fullName pathExtension] != "gtm" then
     fullName = [fileName string] + ".gtm"

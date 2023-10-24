@@ -81,4 +81,9 @@ GALGAS_object AC_GALGAS_root::getter_object (LOCATION_ARGS) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void AC_GALGAS_root::printNonNullClassInstanceProperties (const char * /* inPropertyName */) const {
+  }
+#endif
 
+//----------------------------------------------------------------------------------------------------------------------

@@ -31,14 +31,14 @@
   self = [super init] ;
   if (self) {
     noteObjectAllocation (self) ;
-   mLexicalAttribute_a_string = [[NSMutableString alloc] init] ;
-   mLexicalAttribute_charValue = 0 ;
-   mLexicalAttribute_floatValue = 0.0 ;
-   mLexicalAttribute_functionContent = [[NSMutableString alloc] init] ;
-   mLexicalAttribute_identifierString = [[NSMutableString alloc] init] ;
-   mLexicalAttribute_intValue = [[NSMutableString alloc] init] ;
-   mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
-   mLexicalAttribute_uint32value = 0 ;
+    mLexicalAttribute_a_string = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_charValue = 0 ;
+    mLexicalAttribute_floatValue = 0.0 ;
+    mLexicalAttribute_functionContent = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_identifierString = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_intValue = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_uint32value = 0 ;
   }
   return self ;
 }
@@ -47,16 +47,6 @@
 
 - (void) dealloc {
   noteObjectDeallocation (self) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//                 I N D E X I N G    D I R E C T O R Y
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-- (NSString *) indexingDirectory {
-  return @"" ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -138,7 +128,6 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 //----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) internalParseLexicalTokenForLexicalColoring {
-  BOOL loop = YES ;
   BOOL scanningOk = YES ;
   [mLexicalAttribute_a_string setString:@""] ;
   mLexicalAttribute_charValue = 0 ;
@@ -150,15 +139,15 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
   mLexicalAttribute_uint32value = 0 ;
   mTokenStartLocation = mCurrentLocation ;
   if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
+    BOOL loop1798 = YES ;
     do {
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
       }else{
-        loop = NO ;
+        loop1798 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop1798 && scanningOk) ;
     if (mTokenCode == 0) {
       mTokenCode = search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList (mLexicalAttribute_identifierString) ;
     }
@@ -166,14 +155,14 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
       mTokenCode = gtl_debugger_scanner_1_identifier ;
     }
   }else if (scanningOk && ([self testForInputChar:36])) {
+    BOOL loop2203 = YES ;
     do {
       if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95] || [self testForInputFromChar:48 toChar:57])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop2203 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop2203 && scanningOk) ;
     mTokenCode = gtl_debugger_scanner_1_literal_5F_enum ;
   }else if (scanningOk && [self testForInputString:@"mod=" advance:YES]) {
     mTokenCode = gtl_debugger_scanner_1_mod_3D_ ;
@@ -269,26 +258,26 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
     if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 45) ;
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+      BOOL loop3530 = YES ;
       do {
         if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
         }else if (scanningOk && ([self testForInputChar:95])) {
         }else{
-          loop = NO ;
+          loop3530 = NO ;
         }
-      }while (loop && scanningOk) ;
-      loop = YES ;
+      }while (loop3530 && scanningOk) ;
       if (scanningOk && ([self testForInputChar:46])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
+        BOOL loop3714 = YES ;
         do {
           if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
             scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
           }else if (scanningOk && ([self testForInputChar:95])) {
           }else{
-            loop = NO ;
+            loop3714 = NO ;
           }
-        }while (loop && scanningOk) ;
-        loop = YES ;
+        }while (loop3714 && scanningOk) ;
         scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
         mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
       }else{
@@ -299,38 +288,38 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
       mTokenCode = gtl_debugger_scanner_1__2D_ ;
     }
   }else if (scanningOk && ([self testForInputString:@"0x" advance:YES] || [self testForInputString:@"0X" advance:YES])) {
+    BOOL loop4137 = YES ;
     do {
       if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop4137 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop4137 && scanningOk) ;
     scanner_cocoa_routine_convertHexStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
     mTokenCode = gtl_debugger_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
   }else if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
     scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+    BOOL loop4417 = YES ;
     do {
       if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else if (scanningOk && ([self testForInputChar:95])) {
       }else{
-        loop = NO ;
+        loop4417 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop4417 && scanningOk) ;
     if (scanningOk && ([self testForInputChar:46])) {
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
+      BOOL loop4585 = YES ;
       do {
         if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
         }else if (scanningOk && ([self testForInputChar:95])) {
         }else{
-          loop = NO ;
+          loop4585 = NO ;
         }
-      }while (loop && scanningOk) ;
-      loop = YES ;
+      }while (loop4585 && scanningOk) ;
       scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
       mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
     }else{
@@ -342,15 +331,15 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 48) ;
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 46) ;
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
+      BOOL loop5440 = YES ;
       do {
         if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
         }else if (scanningOk && ([self testForInputChar:95])) {
         }else{
-          loop = NO ;
+          loop5440 = NO ;
         }
-      }while (loop && scanningOk) ;
-      loop = YES ;
+      }while (loop5440 && scanningOk) ;
       scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
       mTokenCode = gtl_debugger_scanner_1_literal_5F_double ;
     }else{
@@ -445,14 +434,14 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
           scanningOk = NO ;
         }
       }else if (scanningOk && ([self testForInputChar:38])) {
+        BOOL loop10421 = YES ;
         do {
           if (scanningOk && ([self notTestForInputString:@";" error:& scanningOk])) {
             scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
           }else{
-            loop = NO ;
+            loop10421 = NO ;
           }
-        }while (loop && scanningOk) ;
-        loop = YES ;
+        }while (loop10421 && scanningOk) ;
         scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_charValue) ;
       }else{
         scanningOk = NO ;
@@ -468,6 +457,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
       scanningOk = NO ;
     }
   }else if (scanningOk && ([self testForInputChar:34])) {
+    BOOL loop11009 = YES ;
     do {
       if (scanningOk && ([self testForInputChar:92])) {
         if (scanningOk && ([self testForInputChar:102])) {
@@ -489,14 +479,14 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
         }else if (scanningOk && ([self testForInputChar:63])) {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 63) ;
         }else if (scanningOk && ([self testForInputChar:38])) {
+          BOOL loop11657 = YES ;
           do {
             if (scanningOk && ([self notTestForInputString:@";" error:& scanningOk])) {
               scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
             }else{
-              loop = NO ;
+              loop11657 = NO ;
             }
-          }while (loop && scanningOk) ;
-          loop = YES ;
+          }while (loop11657 && scanningOk) ;
           scanner_cocoa_routine_convertHTMLSequenceToUnicodeCharacter (& scanningOk, mLexicalAttribute_identifierString, & mLexicalAttribute_charValue) ;
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mLexicalAttribute_charValue) ;
         }else if (scanningOk && ([self testForInputChar:117])) {
@@ -571,23 +561,22 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
       }else if (scanningOk && ([self testForInputChar:32] || [self testForInputChar:33] || [self testForInputFromChar:35 toChar:65533])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop11009 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop11009 && scanningOk) ;
     if (scanningOk && ([self testForInputChar:34])) {
       mTokenCode = gtl_debugger_scanner_1_string ;
     }else{
       scanningOk = NO ;
     }
   }else if (scanningOk && ([self testForInputChar:35])) {
+    BOOL loop15719 = YES ;
     do {
       if (scanningOk && ([self testForInputFromChar:1 toChar:9] || [self testForInputChar:11] || [self testForInputChar:12] || [self testForInputFromChar:14 toChar:65533])) {
       }else{
-        loop = NO ;
+        loop15719 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop15719 && scanningOk) ;
     mTokenCode = gtl_debugger_scanner_1_comment ;
   }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
   }else   if ([self testForInputChar:'\0']) { // End of source text ?

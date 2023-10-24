@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library                                                           
 //
-//  Copyright (C) 2008, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 2008, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -64,18 +64,18 @@ class cSharedMapRoot : public C_SharedObject {
 
 //--------------------------------- Attribute read access
   private: VIRTUAL_IN_DEBUG const cMapNode * findNodeForKeyInMapOrInOverridenMaps (const GALGAS_string & inKey,
-                                                                                    C_Compiler * inCompiler
-                                                                                    COMMA_LOCATION_ARGS) const ;
+                                                                                   C_Compiler * inCompiler
+                                                                                   COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Insert or Replace
   protected: VIRTUAL_IN_DEBUG void performInsertOrReplace (const capCollectionElement & inAttributes) ;
 
 //--------------------------------- Insert
   protected: VIRTUAL_IN_DEBUG cMapNode * performInsert (const capCollectionElement & inAttributes,
-                                                         C_Compiler * inCompiler,
-                                                         const char * inInsertErrorMessage,
-                                                         const char * inShadowErrorMessage
-                                                         COMMA_LOCATION_ARGS) ;
+                                                        C_Compiler * inCompiler,
+                                                        const char * inInsertErrorMessage,
+                                                        const char * inShadowErrorMessage
+                                                        COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Search
   private: VIRTUAL_IN_DEBUG cMapNode * findEntryInMap (const C_String & inKey,
@@ -841,14 +841,10 @@ void AC_GALGAS_map::performInsert (const capCollectionElement & inAttributes,
                                    const char * inShadowErrorMessage
                                    COMMA_LOCATION_ARGS) {
 //--- If all attributes are built, perform insertion
-  if (isValid ()) {
-    if (inAttributes.isValid ()) {
-      insulate (HERE) ;
-      if (NULL != mSharedMap) {
-        mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
-      }
-    }else{
-      drop () ;
+  if (isValid () && inAttributes.isValid ()) {
+    insulate (HERE) ;
+    if (NULL != mSharedMap) {
+      mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
     }
   }
 }

@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 2021, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -61,6 +61,10 @@ class AC_GALGAS_reference_class : public AC_GALGAS_root { // AC_GALGAS_reference
 
   public: virtual void description (C_String & ioString,
                                     const int32_t inIndentation) const ;
+
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    public: virtual void printNonNullClassInstanceProperties (const char * inPropertyName) const ;
+  #endif
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

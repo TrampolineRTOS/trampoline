@@ -234,7 +234,7 @@ C_BigInt & C_BigInt::operator -- (void) {
 
 C_String C_BigInt::decimalString (void) const {
   const size_t neededSize = mpz_sizeinbase (mGMPint, 10) + 2 ;
-  char * s = NULL ;
+  char * s = nullptr ;
   macroMyNewPODArray (s, char, neededSize) ;
   mpz_get_str (s, 10, mGMPint) ;
   C_String result ;
@@ -272,7 +272,7 @@ C_String C_BigInt::hexString (void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 C_String C_BigInt::xString (void) const {
-  char * s = NULL ;
+  char * s = nullptr ;
   const size_t neededSize = mpz_sizeinbase (mGMPint, 16) + 2 ;
   macroMyNewPODArray (s, char, neededSize) ;
   mpz_get_str (s, -16, mGMPint) ; // -16 for getting 'A' to 'F' (16 provides 'a' to 'f')
@@ -776,7 +776,7 @@ bool C_BigInt::fitsInSInt64 (void) const {
   bool ok = requiredBitCount <= 63 ;
   if ((requiredBitCount == 64) && (mpz_sgn (mGMPint) < 0)) { // INT64_MIN is a particular case
     int64_t r ;
-    mpz_export (& r, NULL, 1, sizeof (int64_t), 0, 0, mGMPint) ;
+    mpz_export (& r, nullptr, 1, sizeof (int64_t), 0, 0, mGMPint) ;
     ok = r == INT64_MIN ;
   }
   return ok ;
@@ -817,7 +817,7 @@ uint64_t C_BigInt::uint64 (void) const {
   if (! isZero ()) {
     result = UINT64_MAX ;
     if (fitsInUInt64 ()) {
-      mpz_export (& result, NULL, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
+      mpz_export (& result, nullptr, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
     }
   }
   return result ;
@@ -839,7 +839,7 @@ int64_t C_BigInt::int64 (void) const {
   if (! isZero ()) {
     uint64_t r = UINT64_MAX ;
     if (fitsInSInt64 ()) {
-      mpz_export (& r, NULL, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
+      mpz_export (& r, nullptr, 1, sizeof (uint64_t), 0, 0, mGMPint) ;
     }
     result = int64_t (r) ;
     if (mpz_sgn (mGMPint) < 0) {
@@ -853,7 +853,7 @@ int64_t C_BigInt::int64 (void) const {
 
 void C_BigInt::extractBytesForUnsignedRepresentation (TC_UniqueArray <uint8_t> & outValue) const {
   size_t count = 0 ;
-  const uint8_t * ptr = (const uint8_t *) mpz_export (NULL, & count, -1, sizeof (uint8_t), 0, 0, mGMPint) ;
+  const uint8_t * ptr = (const uint8_t *) mpz_export (nullptr, & count, -1, sizeof (uint8_t), 0, 0, mGMPint) ;
   outValue.setCountToZero () ;
   for (size_t i=0 ; i<count ; i++) {
     outValue.appendObject (ptr [i]) ;

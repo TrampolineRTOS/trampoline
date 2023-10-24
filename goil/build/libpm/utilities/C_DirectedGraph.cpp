@@ -144,16 +144,16 @@ C_String C_DirectedGraph::graphvizString (const TC_UniqueArray <C_String> & inNo
   for (int32_t i=0 ; i<mEdges.count () ; i++) {
     if (isNodeDefined (uint32_t (i))) {
       s << "  "
-        << inNodeNameArray (i COMMA_HERE).utf8RepresentationEnclosedWithin ('"')
+        << inNodeNameArray (i COMMA_HERE).utf8RepresentationEnclosedWithin ('"', false)
         << " [shape=rectangle] ;\n" ;
       const C_UIntSet targetSet = mEdges (i COMMA_HERE) ;
       TC_UniqueArray <uint32_t> targetList ; targetSet.getValueArray (targetList) ;
       for (int32_t j=0 ; j<targetList.count () ; j++) {
         const uint32_t targetIndex = targetList (j COMMA_HERE) ;
         s << "  "
-          << inNodeNameArray (i COMMA_HERE).utf8RepresentationEnclosedWithin ('"')
+          << inNodeNameArray (i COMMA_HERE).utf8RepresentationEnclosedWithin ('"', false)
           << " -> "
-          << inNodeNameArray (int32_t (targetIndex) COMMA_HERE).utf8RepresentationEnclosedWithin ('"')
+          << inNodeNameArray (int32_t (targetIndex) COMMA_HERE).utf8RepresentationEnclosedWithin ('"', false)
           << " ;\n" ;
       }
     }

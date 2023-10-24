@@ -92,6 +92,9 @@ class C_Compiler : public C_SharedObject {
   protected: C_LocationInSource mEndLocationForHere ; // Set by lexique
   public: GALGAS_location here (void) const ;
 
+//--- Handle 'separator' in GALGAS
+  public: GALGAS_location separator (void) const ;
+
 //--- Handle 'next' in GALGAS
   protected: C_LocationInSource mStartLocationForNext ; // Set by lexique
   protected: C_LocationInSource mEndLocationForNext ; // Set by lexique
@@ -116,9 +119,9 @@ class C_Compiler : public C_SharedObject {
     return mCurrentLocation.lineNumber () ;
   }
 
-  public: inline int32_t columnNumber (void) const {
-    return mCurrentLocation.columnNumber () ;
-  }
+//  public: inline int32_t columnNumber (void) const {
+//    return mCurrentLocation.columnNumber () ;
+//  }
 
 //--- Get separator string
   public: virtual C_String separatorString (void) const { return "" ; }

@@ -122,8 +122,6 @@ typedef struct {
          eraseRangeStart: (NSInteger *) outEraseRangeStart
          eraseRangeEnd: (NSInteger *) outEraseRangeEnd ;
 
-- (NSString *) indexingDirectory ;
-
 - (NSArray *) indexingTitles ; // Array of NSString
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex ;

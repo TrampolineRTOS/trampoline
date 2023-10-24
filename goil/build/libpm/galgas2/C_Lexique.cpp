@@ -5,7 +5,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 1996, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 1996, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -70,8 +70,7 @@ mDiscardStartString (inDiscardStartString) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-cTemplateDelimiter::
-cTemplateDelimiter (const cTemplateDelimiter & inOperand) :
+cTemplateDelimiter::cTemplateDelimiter (const cTemplateDelimiter & inOperand) :
 mStartString (inOperand.mStartString),
 mStartStringLength (inOperand.mStartStringLength),
 mEndString (inOperand.mEndString),
@@ -86,10 +85,10 @@ C_Lexique::C_Lexique (C_Compiler * inCallerCompiler,
                       const C_String & inSourceFileName
                       COMMA_LOCATION_ARGS) :
 C_Compiler (inCallerCompiler COMMA_THERE),
-mIndexingDictionary (NULL),
-mFirstToken (NULL),
-mLastToken (NULL),
-mCurrentTokenPtr (NULL),
+mIndexingDictionary (nullptr),
+mFirstToken (nullptr),
+mLastToken (nullptr),
+mCurrentTokenPtr (nullptr),
 mLastSeparatorIndex (0),
 mCurrentChar (TO_UNICODE ('\0')),
 mPreviousChar (TO_UNICODE ('\0')),
@@ -115,7 +114,7 @@ mLatexNextCharacterToEnterIndex (0) {
       resetAndLoadSourceFromText (source) ;
       mTokenStartLocation.resetWithSourceText (source) ;
       mTokenEndLocation.resetWithSourceText (source) ;
-    }else if (inCallerCompiler != NULL) {
+    }else if (inCallerCompiler != nullptr) {
       C_String errorMessage ; 
       errorMessage << "cannot read '" << inSourceFileName << "': this file does not exist or is not encoded in UTF8" ;
       inCallerCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE)  ;
@@ -131,10 +130,10 @@ C_Lexique::C_Lexique (C_Compiler * inCallerCompiler,
                       const C_String & inStringForError
                       COMMA_LOCATION_ARGS) :
 C_Compiler (inCallerCompiler COMMA_THERE),
-mIndexingDictionary (NULL),
-mFirstToken (NULL),
-mLastToken (NULL),
-mCurrentTokenPtr (NULL),
+mIndexingDictionary (nullptr),
+mFirstToken (nullptr),
+mLastToken (nullptr),
+mCurrentTokenPtr (nullptr),
 mLastSeparatorIndex (0),
 mCurrentChar (TO_UNICODE ('\0')),
 mPreviousChar (TO_UNICODE ('\0')),
@@ -158,9 +157,9 @@ mLatexNextCharacterToEnterIndex (0) {
 
 C_Lexique::~C_Lexique (void) {
   macroMyDelete (mIndexingDictionary) ;
-  mLastToken = NULL ;
-  mCurrentTokenPtr = NULL ;
-  while (mFirstToken != NULL) {
+  mLastToken = nullptr ;
+  mCurrentTokenPtr = nullptr ;
+  while (mFirstToken != nullptr) {
     cToken * p = mFirstToken->mNextToken ;
     macroMyDelete (mFirstToken) ;
     mFirstToken = p ;
@@ -176,7 +175,7 @@ C_Lexique::~C_Lexique (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_Lexique::appendLastSeparatorTo (C_String & ioString) const {
-  if (NULL != mLastToken) {
+  if (nullptr != mLastToken) {
     const int32_t lastSeparatorStart = mLastToken->mEndLocation.index () + 1 ;
     const C_String lastSeparatorString = sourceText ().sourceString ().subStringFromIndex (lastSeparatorStart) ;
     ioString << lastSeparatorString ;
@@ -195,7 +194,7 @@ void C_Lexique::enterTokenFromPointer (cToken * inToken) {
   }
   mLastSeparatorIndex = mTokenEndLocation.index () + 1 ;
 //--- Enter token in token list
-  if (mLastToken == NULL) {
+  if (mLastToken == nullptr) {
     mFirstToken = inToken ;
   }else{
     mLastToken->mNextToken = inToken ;
@@ -252,7 +251,7 @@ void C_Lexique::resetForSecondPass (void) {
   mCurrentChar = sourceText ().readCharOrNul (0 COMMA_HERE) ;
   mPreviousChar = TO_UNICODE ('\0') ;
   mCurrentTokenPtr = mFirstToken ;
-  if (mCurrentTokenPtr != NULL) {
+  if (mCurrentTokenPtr != nullptr) {
     mStartLocationForHere = mCurrentTokenPtr->mStartLocation ;
     mEndLocationForHere = mCurrentTokenPtr->mEndLocation ;
     mStartLocationForNext = mCurrentTokenPtr->mStartLocation ;
@@ -326,7 +325,7 @@ void C_Lexique::advance (void) {
   mTokenEndLocation = mCurrentLocation ;
   mPreviousChar = mCurrentChar ;
   if (UNICODE_VALUE (mCurrentChar) != '\0') {
-    mCurrentLocation.gotoNextLocation (UNICODE_VALUE (mPreviousChar) == '\n') ;
+    mCurrentLocation.gotoNextLocation () ;
     mCurrentChar = sourceText ().readCharOrNul (mCurrentLocation.index () COMMA_HERE) ;
   }
   // printf ("END ADVANCE\n") ;
@@ -520,7 +519,7 @@ void C_Lexique::parsingError (const TC_UniqueArray <int16_t> & inExpectedTermina
 //--- Signal error
   signalParsingError (this,
                       sourceText (),
-                      (inPreviousTokenPtr == NULL) ? C_LocationInSource () : inPreviousTokenPtr->mEndLocation,
+                      (inPreviousTokenPtr == nullptr) ? C_LocationInSource () : inPreviousTokenPtr->mEndLocation,
                       C_IssueWithFixIt (inCurrentTokenPtr->mStartLocation, inCurrentTokenPtr->mEndLocation, TC_Array <C_FixItDescription> ()),
                       foundTokenMessage,
                       expectedTokenNames COMMA_THERE) ;
@@ -821,7 +820,7 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
     }
   //---
     int32_t indentationForParseOnly = 0 ;
-    cToken * previousTokenPtr = NULL ;
+    cToken * previousTokenPtr = nullptr ;
     cToken * tokenPtr = mFirstToken ;
     if (executionModeIsSyntaxAnalysisOnly ()) {
       co << "*** PERFORM TOP-DOWN PARSING ONLY (--mode=syntax-only option) ***\n" ;
@@ -830,12 +829,12 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
     TC_Array <int16_t> stack (10000 COMMA_HERE) ;
     TC_Array <int16_t> errorStack ;
     int32_t errorStackCount = 0 ;
-    bool loop = tokenPtr != NULL ;
+    bool loop = tokenPtr != nullptr ;
     result = true ;
     int16_t programCounter = inProgramCounterInitialValue ;
     int16_t errorProgramCounter = inProgramCounterInitialValue ;
-    int16_t currentToken = (tokenPtr != NULL) ? tokenPtr->mTokenCode : int16_t (-1) ;
-    if (tokenPtr == NULL) {
+    int16_t currentToken = (tokenPtr != nullptr) ? tokenPtr->mTokenCode : int16_t (-1) ;
+    if (tokenPtr == nullptr) {
       mCurrentLocation.resetLocation () ;
     }else{
       mCurrentLocation = tokenPtr->mEndLocation ;
@@ -843,13 +842,13 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
     while (loop) {
     //--- If no current token, get one
       if (currentToken < 0) {
-        if (tokenPtr == NULL) {
+        if (tokenPtr == nullptr) {
           currentToken = 0 ; // 0 means end of source file
         }else{
           previousTokenPtr = tokenPtr ;
           tokenPtr = tokenPtr->mNextToken ;
-          currentToken = (tokenPtr != NULL) ? tokenPtr->mTokenCode : ((int16_t) 0) ;
-          if (tokenPtr != NULL) {
+          currentToken = (tokenPtr != nullptr) ? tokenPtr->mTokenCode : ((int16_t) 0) ;
+          if (tokenPtr != nullptr) {
             mCurrentLocation = tokenPtr->mEndLocation ;
           }
         }
@@ -1176,11 +1175,11 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
     stack.appendObject (0) ; // Enter initial state
     int32_t errorSignalingUselessEntryOnTopOfStack = 0 ;
     TC_Array <int16_t> poppedErrors (1000 COMMA_HERE)  ;
-    cToken * previousTokenPtr = NULL ;
+    cToken * previousTokenPtr = nullptr ;
     cToken * tokenPtr = mFirstToken ;
 
     int16_t currentToken = int16_t (-1) ;
-    if (tokenPtr == NULL) {
+    if (tokenPtr == nullptr) {
       mCurrentLocation.resetLocation () ;
     }else{
       currentToken = tokenPtr->mTokenCode ;
@@ -1190,13 +1189,13 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
     result = true ;
     while (loop) {
       if (currentToken < 0) {
-        if (tokenPtr == NULL) {
+        if (tokenPtr == nullptr) {
           currentToken = 0 ; // 0 means end of source file
         }else{
           previousTokenPtr = tokenPtr ;
           tokenPtr = tokenPtr->mNextToken ;
           currentToken = 0 ;
-          if (tokenPtr != NULL) {
+          if (tokenPtr != nullptr) {
             mCurrentLocation = tokenPtr->mEndLocation ;
             currentToken = tokenPtr->mTokenCode ;
           }
@@ -1331,9 +1330,9 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
         actionTable = & (inActionTable [inActionTableIndex [currentErrorState]]) ;
         while ((* actionTable) >= 0) {
           const int16_t expectedTerminal = * actionTable ;
-          actionTable ++ ;
+          actionTable += 1 ;
           const int16_t expectedAction = * actionTable ;
-          actionTable ++ ;
+          actionTable += 1 ;
           const bool terminalAccepted = acceptExpectedTerminalForBottomUpParsingError (
             expectedTerminal,
             expectedAction,
@@ -1386,7 +1385,7 @@ int16_t C_Lexique::nextProductionIndex (void) {
   int16_t result = 0 ;
   if (mIndexForSecondPassParsing < mArrayForSecondPassParsing.count ()) {
     result = mArrayForSecondPassParsing (mIndexForSecondPassParsing COMMA_HERE) ;
-    mIndexForSecondPassParsing ++ ;
+    mIndexForSecondPassParsing += 1 ;
   }
   return result ;
 }
@@ -1395,7 +1394,7 @@ int16_t C_Lexique::nextProductionIndex (void) {
 
 C_String C_Lexique::separatorString (void) const {
   C_String result ;
-  if (mCurrentTokenPtr != NULL) {
+  if (mCurrentTokenPtr != nullptr) {
     result = mCurrentTokenPtr->mSeparatorStringBeforeToken ;
   }
   return result ;
@@ -1405,7 +1404,7 @@ C_String C_Lexique::separatorString (void) const {
 
 C_String C_Lexique::tokenString (void) const {
   C_String result ;
-  if (mCurrentTokenPtr != NULL) {
+  if (mCurrentTokenPtr != nullptr) {
     const int32_t tokenStart = mCurrentTokenPtr->mStartLocation.index () ;
     const int32_t tokenLength = mCurrentTokenPtr->mEndLocation.index () - tokenStart + 1 ;
     result = sourceText ().sourceString ().subString (tokenStart, tokenLength) ;
@@ -1431,14 +1430,14 @@ void C_Lexique::acceptTerminal (const int16_t IN_EXPECTED_TERMINAL COMMA_LOCATIO
   #ifndef DO_NOT_GENERATE_CHECKINGS
     int16_t currentTokenCode = 0 ;
   #endif
-  if (mCurrentTokenPtr != NULL) {
+  if (mCurrentTokenPtr != nullptr) {
     #ifndef DO_NOT_GENERATE_CHECKINGS
       currentTokenCode = mCurrentTokenPtr->mTokenCode ;
     #endif
     mStartLocationForHere = mCurrentTokenPtr->mStartLocation ;
     mEndLocationForHere = mCurrentTokenPtr->mEndLocation ;
     mCurrentTokenPtr = mCurrentTokenPtr->mNextToken ;
-    if (mCurrentTokenPtr != NULL) {
+    if (mCurrentTokenPtr != nullptr) {
       macroValidPointer (mCurrentTokenPtr) ;
       mStartLocationForNext = mCurrentTokenPtr->mStartLocation ;
       mEndLocationForNext = mCurrentTokenPtr->mEndLocation ;
@@ -1463,7 +1462,7 @@ void C_Lexique::acceptTerminal (const int16_t IN_EXPECTED_TERMINAL COMMA_LOCATIO
 
 void C_Lexique::enterIndexing (const uint32_t inIndexingKind,
                                const char * inIndexedKeyPosfix) {
-  if ((NULL != mIndexingDictionary) && (sourceText ().sourceFilePath ().length () > 0)) {
+  if ((nullptr != mIndexingDictionary) && (sourceText ().sourceFilePath ().length () > 0)) {
     const uint32_t tokenStartLocation = (uint32_t) mCurrentTokenPtr->mStartLocation.index () ;
     const uint32_t tokenLine = (uint32_t) mCurrentTokenPtr->mStartLocation.lineNumber () ;
     const uint32_t tokenLength  = ((uint32_t) mCurrentTokenPtr->mEndLocation.index ()) - tokenStartLocation + 1 ;
@@ -1486,11 +1485,12 @@ void C_Lexique::enableIndexing (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void C_Lexique::generateIndexFile (void) {
-  if (NULL != mIndexingDictionary) {
-    const C_String source_file_path = sourceText ().sourceFilePath () ;
-    C_String indexFilePath = C_FileManager::absolutePathFromPath (indexingDirectory (), source_file_path.stringByDeletingLastPathComponent ()) ;
-    indexFilePath << "/" << source_file_path.lastPathComponent () << ".plist" ;
-    mIndexingDictionary->generateIndexFile (indexFilePath) ;
+  if (nullptr != mIndexingDictionary) {
+//    const C_String source_file_path = sourceText ().sourceFilePath () ;
+//    C_String indexFilePath = C_FileManager::absolutePathFromPath (indexingDirectory (), source_file_path.stringByDeletingLastPathComponent ()) ;
+//    indexFilePath << "/" << source_file_path.lastPathComponent () << ".plist" ;
+//    mIndexingDictionary->generateIndexFile (indexFilePath) ;
+    mIndexingDictionary->generateIndexFile (indexingModeOutputFilePath ()) ;
   }
 }
 
@@ -1555,10 +1555,10 @@ void C_Lexique::enterProduction (const char * inProductionName,
       message << "|  " ;
     }
     message << ((mDebugDepthCounter > 0) ? "|- " : "") << inProductionName ;
-    if (inLabel != NULL) {
+    if (inLabel != nullptr) {
       message << " label '" << inLabel << "'" ;
     }
-    if ((inTag != NULL) && (inTag [0] != '\0')) {
+    if ((inTag != nullptr) && (inTag [0] != '\0')) {
       message << " tag '" << inTag << "'" ;
     }
     message << "\n" ;
@@ -1607,7 +1607,7 @@ void C_Lexique::enterDroppedTerminal (const int32_t inTerminalIndex) {
     while (mLatexNextCharacterToEnterIndex < mTokenStartLocation.index ()) {
       const utf32 c = sourceText ().readCharOrNul (mLatexNextCharacterToEnterIndex COMMA_HERE) ;
       appendCharacterToLatexFile (c) ;
-      mLatexNextCharacterToEnterIndex ++ ;
+      mLatexNextCharacterToEnterIndex += 1 ;
     }
     const C_String styleName = styleNameForIndex (styleIndexForTerminal (inTerminalIndex)) ;
     if (styleName.length () > 0) {

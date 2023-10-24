@@ -682,6 +682,6 @@ proc verifyAll
   [imp verifyApplication !application]
 
   # Verify objects references from an object exist
-  [application verifyCrossReferences !imp];
+  [application verifyCrossReferences !imp]
 }
 

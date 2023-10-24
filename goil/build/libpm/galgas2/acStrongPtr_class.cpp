@@ -4,7 +4,7 @@
 //
 //  This file is part of libpm library
 //
-//  Copyright (C) 2021, ..., 2021 Pierre Molinaro.
+//  Copyright (C) 2021, ..., 2023 Pierre Molinaro.
 //
 //  e-mail : pierre@pcmolinaro.name
 //
@@ -24,16 +24,52 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
+#include <iostream>
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  static acStrongPtr_class * gFirstPtr = nullptr ;
+  static acStrongPtr_class * gLastPtr = nullptr ;
+#endif
+
+//----------------------------------------------------------------------------------------------------------------------
+
 acStrongPtr_class::acStrongPtr_class (LOCATION_ARGS) :
 acPtr_class (THERE),
-mProxyPtr (NULL) {
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  mPreviousPtr (nullptr),
+  mNextPtr (nullptr),
+#endif
+mProxyPtr (nullptr) {
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    mPreviousPtr = gLastPtr ;
+    if (nullptr == gLastPtr) {
+      gFirstPtr = this ;
+    }else{
+      gLastPtr->mNextPtr = this ;
+    }
+    gLastPtr = this ;
+  #endif
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 acStrongPtr_class::~ acStrongPtr_class (void) {
-  if (mProxyPtr != NULL) {
-    mProxyPtr->mStrongObjectPtr = NULL ;
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    if (nullptr == mNextPtr) { // Last descriptor ?
+      gLastPtr = mPreviousPtr ;
+    }else{
+      mNextPtr->mPreviousPtr = mPreviousPtr ;
+    }
+    if (nullptr == mPreviousPtr) { // First descriptor ?
+      gFirstPtr = mNextPtr ;
+    }else{
+      mPreviousPtr->mNextPtr = mNextPtr ;
+    }
+  #endif
+  if (mProxyPtr != nullptr) {
+    mProxyPtr->mStrongObjectPtr = nullptr ;
     macroDetachSharedObject (mProxyPtr) ;
   }
 }
@@ -41,11 +77,34 @@ acStrongPtr_class::~ acStrongPtr_class (void) {
 //----------------------------------------------------------------------------------------------------------------------
 
 cPtr_weakReference_proxy * acStrongPtr_class::getProxy (void) {
-  if (mProxyPtr == NULL) {
+  if (mProxyPtr == nullptr) {
     macroMyNew (mProxyPtr, cPtr_weakReference_proxy (HERE)) ;
     mProxyPtr->mStrongObjectPtr = this ;
   }
   return mProxyPtr ;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void acStrongPtr_class::printNonNullClassInstanceProperties (void) const {
+  }
+#endif
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void acStrongPtr_class::printExistingClassInstances (void) {
+    if (gFirstPtr != nullptr) {
+      std::cout << "*** Unreleased class instances" << std::endl ;
+    }
+    acStrongPtr_class * ptr = gFirstPtr ;
+    while (ptr != nullptr) {
+      std::cout << "  Instance 0x" << std::hex << size_t (ptr) << std::dec << std::endl ;
+      ptr->printNonNullClassInstanceProperties () ;
+      ptr = ptr->mNextPtr ;
+    }
+  }
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------

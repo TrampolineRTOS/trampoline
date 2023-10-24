@@ -57,8 +57,7 @@ class AC_GALGAS_enumAssociatedValues {
   public: virtual ~ AC_GALGAS_enumAssociatedValues (void) ;
 
 //---
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+  public: VIRTUAL_IN_DEBUG void description (C_String & ioString, const int32_t inIndentation) const ;
 
 
   public: VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_enumAssociatedValues & inOperand) const ;

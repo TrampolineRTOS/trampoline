@@ -37,6 +37,7 @@
 @property (copy, readonly, atomic) NSURL * fileURL ;
 
 + (void) saveAllDocuments ;
++ (NSArray *) allDocuments ;
 
 + (void) cocoaDocumentWillClose: (OC_GGS_DocumentData *) inDocumentData ;
 

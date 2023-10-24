@@ -33,7 +33,7 @@ static NSArray * kTemplateDefinitionArray_arxmlmetaparser_5F_scanner ;
   self = [super init] ;
   if (self) {
     noteObjectAllocation (self) ;
-   mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
+    mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
   }
   if (nil == kTemplateDefinitionArray_arxmlmetaparser_5F_scanner) {
     kTemplateDefinitionArray_arxmlmetaparser_5F_scanner = [NSArray arrayWithObjects:
@@ -54,16 +54,6 @@ static NSArray * kTemplateDefinitionArray_arxmlmetaparser_5F_scanner ;
 
 - (void) dealloc {
   noteObjectDeallocation (self) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-//                 I N D E X I N G    D I R E C T O R Y
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-- (NSString *) indexingDirectory {
-  return @"" ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -247,11 +237,11 @@ static NSInteger search_into_arxmlmetaparser_5F_scanner_keyWordList (NSString * 
 //----------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) internalParseLexicalTokenForLexicalColoring {
-  BOOL loop = YES ;
   BOOL scanningOk = YES ;
   [mLexicalAttribute_tokenString setString:@""] ;
   mTokenStartLocation = mCurrentLocation ;
   if (scanningOk && ([self testForInputString:@"<!--" advance:YES])) {
+    BOOL loop1350 = YES ;
     do {
       if (scanningOk && ([self testForInputString:@"&amp;" advance:YES])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 38) ;
@@ -268,10 +258,9 @@ static NSInteger search_into_arxmlmetaparser_5F_scanner_keyWordList (NSString * 
       }else if (scanningOk && ([self notTestForInputString:@"-->" error:& scanningOk])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 45) ;
       }else{
-        loop = NO ;
+        loop1350 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop1350 && scanningOk) ;
     mTokenCode = arxmlmetaparser_scanner_1_comment ;
   }else if (scanningOk && [self testForInputString:@"</xsd:" advance:YES]) {
     mTokenCode = arxmlmetaparser_scanner_1__3C__2F_xsd_3A_ ;
@@ -292,14 +281,14 @@ static NSInteger search_into_arxmlmetaparser_5F_scanner_keyWordList (NSString * 
   }else if (scanningOk && [self testForInputString:@"<" advance:YES]) {
     mTokenCode = arxmlmetaparser_scanner_1__3C_ ;
   }else if (scanningOk && ([self testForCharWithFunction: isUnicodeLetter])) {
+    BOOL loop2417 = YES ;
     do {
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       if (scanningOk && ([self testForCharWithFunction: isUnicodeLetter] || [self testForInputFromChar:48 toChar:57] || [self testForInputChar:45] || [self testForInputChar:58])) {
       }else{
-        loop = NO ;
+        loop2417 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop2417 && scanningOk) ;
     if (mTokenCode == 0) {
       mTokenCode = search_into_arxmlmetaparser_5F_scanner_keyWordList (mLexicalAttribute_tokenString) ;
     }
@@ -307,6 +296,7 @@ static NSInteger search_into_arxmlmetaparser_5F_scanner_keyWordList (NSString * 
       mTokenCode = arxmlmetaparser_scanner_1_xmlTag ;
     }
   }else if (scanningOk && ([self testForInputChar:34])) {
+    BOOL loop2873 = YES ;
     do {
       if (scanningOk && ([self testForInputString:@"&amp;" advance:YES])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 38) ;
@@ -321,12 +311,12 @@ static NSInteger search_into_arxmlmetaparser_5F_scanner_keyWordList (NSString * 
       }else if (scanningOk && ([self notTestForInputString:@"\"" error:& scanningOk])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop2873 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop2873 && scanningOk) ;
     mTokenCode = arxmlmetaparser_scanner_1_xmlTagValue ;
   }else if (scanningOk && ([self testForInputChar:39])) {
+    BOOL loop3368 = YES ;
     do {
       if (scanningOk && ([self testForInputString:@"&amp;" advance:YES])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, 38) ;
@@ -341,21 +331,20 @@ static NSInteger search_into_arxmlmetaparser_5F_scanner_keyWordList (NSString * 
       }else if (scanningOk && ([self notTestForInputString:@"'" error:& scanningOk])) {
         scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       }else{
-        loop = NO ;
+        loop3368 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop3368 && scanningOk) ;
     mTokenCode = arxmlmetaparser_scanner_1_xmlTagValue ;
   }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
   }else if (scanningOk && ([self testForInputFromChar:1 toChar:59] || [self testForInputFromChar:61 toChar:1114111])) {
+    BOOL loop5362 = YES ;
     do {
       scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
       if (scanningOk && ([self testForInputFromChar:1 toChar:59] || [self testForInputFromChar:61 toChar:1114111])) {
       }else{
-        loop = NO ;
+        loop5362 = NO ;
       }
-    }while (loop && scanningOk) ;
-    loop = YES ;
+    }while (loop5362 && scanningOk) ;
     if (mTokenCode == 0) {
       mTokenCode = search_into_arxmlmetaparser_5F_scanner_keyWordList (mLexicalAttribute_tokenString) ;
     }

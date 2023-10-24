@@ -112,9 +112,9 @@ static NSMutableDictionary * gDocumentDataDictionary ;
       needsConversionForCR = [source rangeOfString:@"\r"].location != NSNotFound ;
     }
     BOOL needsConversionForHTAB = NO ;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PMConvert_HTAB_To_SPACE_AtStartUp"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey: @"PMConvert_HTAB_To_SPACE_AtStartUp"]) {
       // NSLog (@"Convert HTAB to SPACE") ;
-      needsConversionForHTAB = [source rangeOfString:@"\x09"].location != NSNotFound ;
+      needsConversionForHTAB = [source rangeOfString: @"\x09"].location != NSNotFound ;
     }
     if (needsConversionForCR || needsConversionForHTAB) {
       NSMutableString * s = [NSMutableString new] ;
@@ -197,7 +197,7 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   if (source == nil) {
     NSLog (@"Try lossy encoding") ;
     mFileEncoding = NSUTF8StringEncoding ;
-    NSData * data = [NSData dataWithContentsOfURL:fileURL options:NSDataReadingMapped error:nil] ;
+    NSData * data = [NSData dataWithContentsOfURL: fileURL options: NSDataReadingMapped error: nil] ;
     if (nil != data) {
       const NSUInteger dataLength = [data length] ;
       const unsigned char * bytes = [data bytes] ;
@@ -396,6 +396,11 @@ static NSMutableDictionary * gDocumentDataDictionary ;
     }
   }
 
+  //····················································································································
+
+  + (NSArray *) allDocuments {
+    return gDocumentDataDictionary.allValues ;
+  }
   //····················································································································
 
 @end

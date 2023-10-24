@@ -94,7 +94,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     documentData = inDocumentData ;
     mDocumentUsedForDisplaying = inDocumentUsedForDisplaying ;
     mTextView = [[OC_GGS_TextView alloc]
-      initWithFrame:NSMakeRect (0.0, 0.0, 10.0, 10.0)
+      initWithFrame: NSMakeRect (0.0, 0.0, 10.0, 10.0)
       documentUsedForDisplaying: inDocumentUsedForDisplaying
       displayDescriptor: self
     ] ;
@@ -109,14 +109,15 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     mTextView.automaticQuoteSubstitutionEnabled = NO ;
     mTextView.smartInsertDeleteEnabled = NO ;
     mTextView.automaticDashSubstitutionEnabled = NO ;
-    mTextView.layoutManager.allowsNonContiguousLayout = YES ;
+    mTextView.layoutManager.allowsNonContiguousLayout = NO ;
     mTextView.layoutManager.usesFontLeading = YES ;
     mTextView.layoutManager.backgroundLayoutEnabled = NO ;
-    mTextView.richText = YES ;
-    mTextView.importsGraphics = YES ;
-    mTextView.allowsImageEditing = YES ;
-    mTextView.layoutManager.usesScreenFonts = NO ;
+    mTextView.richText = NO ;
+    mTextView.importsGraphics = NO ;
+    mTextView.allowsImageEditing = NO ;
+    mTextView.layoutManager.usesScreenFonts = YES ;
     mTextView.layoutManager.showsControlCharacters = YES ;
+//    mTextView.layoutManager.showsInvisibleCharacters = YES ;
     mTextView.automaticTextReplacementEnabled = NO ;
     mTextView.usesFindBar = YES ;
   //---
@@ -148,7 +149,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     [mEnclosingView addSubview: mScrollView] ;
     [mEnclosingView addSubview: mEntryListPopUpButton] ;
   //--- Add "Show Invisible Character" preference observer
-    [[NSUserDefaultsController sharedUserDefaultsController]
+    NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
+    [udc
       addObserver:self
       forKeyPath:@"values.PMShowInvisibleCharacters"
       options:NSKeyValueObservingOptionNew
@@ -199,7 +201,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
 //----------------------------------------------------------------------------------------------------------------------
 
 - (void) detachTextDisplayDescriptor {
-  [[NSUserDefaultsController sharedUserDefaultsController]
+  NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
+  [udc
     removeObserver:self
     forKeyPath:@"values.PMShowInvisibleCharacters"
   ] ;

@@ -28,7 +28,7 @@ class GALGAS_gtlDataList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlDataList extractObject (const GALGAS_object & inObject,
@@ -116,7 +116,7 @@ class GALGAS_gtlDataList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlDataList ;
@@ -167,7 +167,7 @@ class GALGAS_gtlData : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlData extractObject (const GALGAS_object & inObject,
@@ -193,7 +193,7 @@ class GALGAS_gtlData : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlData class
 
@@ -399,8 +399,8 @@ class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlDataList_2D_element (void) ;
@@ -419,7 +419,7 @@ class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlDataList_2D_element extractObject (const GALGAS_object & inObject,
@@ -432,7 +432,7 @@ class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlDataList_2D_element & inOperand) const ;
 
@@ -446,7 +446,7 @@ class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlDataList_2D_element class
 
@@ -495,7 +495,7 @@ class GALGAS_gtlVarMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarMap extractObject (const GALGAS_object & inObject,
@@ -513,6 +513,11 @@ class GALGAS_gtlVarMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlData & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlVarMap add_operation (const GALGAS_gtlVarMap & inOperand,
+                                                           C_Compiler * inCompiler
+                                                           COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -559,7 +564,7 @@ class GALGAS_gtlVarMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlVarMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                       const GALGAS_string & inKey
                                                                                       COMMA_LOCATION_ARGS) ;
@@ -636,8 +641,8 @@ class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlVarMap_2D_element (void) ;
@@ -661,7 +666,7 @@ class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -675,7 +680,7 @@ class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlVarMap_2D_element & inOperand) const ;
 
@@ -689,7 +694,7 @@ class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarMap_2D_element class
 
@@ -748,7 +753,7 @@ class GALGAS_gtlExpressionMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExpressionMap extractObject (const GALGAS_object & inObject,
@@ -766,6 +771,11 @@ class GALGAS_gtlExpressionMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlExpression & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlExpressionMap add_operation (const GALGAS_gtlExpressionMap & inOperand,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -807,7 +817,7 @@ class GALGAS_gtlExpressionMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlExpressionMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                              const GALGAS_string & inKey
                                                                                              COMMA_LOCATION_ARGS) ;
@@ -861,7 +871,7 @@ class GALGAS_gtlExpression : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExpression extractObject (const GALGAS_object & inObject,
@@ -884,7 +894,7 @@ class GALGAS_gtlExpression : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExpression class
 
@@ -940,8 +950,8 @@ class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlExpressionMap_2D_element (void) ;
@@ -965,7 +975,7 @@ class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExpressionMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -979,7 +989,7 @@ class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlExpressionMap_2D_element & inOperand) const ;
 
@@ -993,7 +1003,7 @@ class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExpressionMap_2D_element class
 
@@ -1023,7 +1033,7 @@ class GALGAS_gtlInstructionList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlInstructionList extractObject (const GALGAS_object & inObject,
@@ -1111,7 +1121,7 @@ class GALGAS_gtlInstructionList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlInstructionList ;
@@ -1162,7 +1172,7 @@ class GALGAS_gtlInstruction : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlInstruction extractObject (const GALGAS_object & inObject,
@@ -1188,7 +1198,7 @@ class GALGAS_gtlInstruction : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlInstruction class
 
@@ -1270,8 +1280,8 @@ class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlInstructionList_2D_element (void) ;
@@ -1290,7 +1300,7 @@ class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlInstructionList_2D_element extractObject (const GALGAS_object & inObject,
@@ -1303,7 +1313,7 @@ class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlInstructionList_2D_element & inOperand) const ;
 
@@ -1317,7 +1327,7 @@ class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlInstructionList_2D_element class
 
@@ -1351,7 +1361,7 @@ class GALGAS_gtlTemplateMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTemplateMap extractObject (const GALGAS_object & inObject,
@@ -1369,6 +1379,11 @@ class GALGAS_gtlTemplateMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlTemplate & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlTemplateMap add_operation (const GALGAS_gtlTemplateMap & inOperand,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -1405,7 +1420,7 @@ class GALGAS_gtlTemplateMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlTemplateMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                            const GALGAS_string & inKey
                                                                                            COMMA_LOCATION_ARGS) ;
@@ -1464,7 +1479,7 @@ class GALGAS_gtlTemplate : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTemplate extractObject (const GALGAS_object & inObject,
@@ -1495,7 +1510,7 @@ class GALGAS_gtlTemplate : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlTemplate class
 
@@ -1551,8 +1566,8 @@ class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_gtlTemplateMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -1579,7 +1594,7 @@ class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTemplateMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -1593,7 +1608,7 @@ class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlTemplateMap_2D_element & inOperand) const ;
 
@@ -1607,7 +1622,7 @@ class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlTemplateMap_2D_element class
 
@@ -1659,7 +1674,7 @@ class GALGAS_debugCommandInput : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_debugCommandInput extractObject (const GALGAS_object & inObject,
@@ -1686,7 +1701,7 @@ class GALGAS_debugCommandInput : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_debugCommandInput class
 
@@ -1793,7 +1808,7 @@ class GALGAS_debuggerContext : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_debuggerContext extractObject (const GALGAS_object & inObject,
@@ -1892,7 +1907,7 @@ class GALGAS_debuggerContext : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_debuggerContext class
 
@@ -1922,7 +1937,7 @@ class GALGAS_gtlBreakpointList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlBreakpointList extractObject (const GALGAS_object & inObject,
@@ -2010,7 +2025,7 @@ class GALGAS_gtlBreakpointList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlBreakpointList ;
@@ -2056,7 +2071,7 @@ class GALGAS_gtlExpressionList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExpressionList extractObject (const GALGAS_object & inObject,
@@ -2144,7 +2159,7 @@ class GALGAS_gtlExpressionList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlExpressionList ;
@@ -2191,7 +2206,7 @@ class GALGAS_gtlInstructionListContextStack : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlInstructionListContextStack extractObject (const GALGAS_object & inObject,
@@ -2296,7 +2311,7 @@ class GALGAS_gtlInstructionListContextStack : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlInstructionListContextStack ;
@@ -2492,7 +2507,7 @@ class GALGAS_gtlContext : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlContext extractObject (const GALGAS_object & inObject,
@@ -2551,7 +2566,7 @@ class GALGAS_gtlContext : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlContext class
 
@@ -2750,7 +2765,7 @@ class GALGAS_library : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_library extractObject (const GALGAS_object & inObject,
@@ -2793,7 +2808,7 @@ class GALGAS_library : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_library class
 
@@ -2835,7 +2850,7 @@ class GALGAS_gtlExecutableEntity : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExecutableEntity extractObject (const GALGAS_object & inObject,
@@ -2874,7 +2889,7 @@ class GALGAS_gtlExecutableEntity : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExecutableEntity class
 
@@ -2906,7 +2921,7 @@ class GALGAS_gtlArgumentList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlArgumentList extractObject (const GALGAS_object & inObject,
@@ -3028,7 +3043,7 @@ class GALGAS_gtlArgumentList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlArgumentList ;
@@ -3133,7 +3148,7 @@ class GALGAS_gtlFunction : public GALGAS_gtlExecutableEntity {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlFunction extractObject (const GALGAS_object & inObject,
@@ -3164,7 +3179,7 @@ class GALGAS_gtlFunction : public GALGAS_gtlExecutableEntity {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlFunction class
 
@@ -3198,7 +3213,7 @@ class GALGAS_gtlFuncMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlFuncMap extractObject (const GALGAS_object & inObject,
@@ -3216,6 +3231,11 @@ class GALGAS_gtlFuncMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlFunction & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlFuncMap add_operation (const GALGAS_gtlFuncMap & inOperand,
+                                                            C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -3252,7 +3272,7 @@ class GALGAS_gtlFuncMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlFuncMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
                                                                                        COMMA_LOCATION_ARGS) ;
@@ -3377,7 +3397,7 @@ class GALGAS_gtlGetter : public GALGAS_gtlFunction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGetter extractObject (const GALGAS_object & inObject,
@@ -3409,7 +3429,7 @@ class GALGAS_gtlGetter : public GALGAS_gtlFunction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlGetter class
 
@@ -3443,7 +3463,7 @@ class GALGAS_gtlGetterMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGetterMap extractObject (const GALGAS_object & inObject,
@@ -3461,6 +3481,11 @@ class GALGAS_gtlGetterMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlGetter & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlGetterMap add_operation (const GALGAS_gtlGetterMap & inOperand,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -3497,7 +3522,7 @@ class GALGAS_gtlGetterMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlGetterMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                          const GALGAS_string & inKey
                                                                                          COMMA_LOCATION_ARGS) ;
@@ -3579,7 +3604,7 @@ class GALGAS_gtlSetter : public GALGAS_gtlExecutableEntity {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlSetter extractObject (const GALGAS_object & inObject,
@@ -3610,7 +3635,7 @@ class GALGAS_gtlSetter : public GALGAS_gtlExecutableEntity {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlSetter class
 
@@ -3644,7 +3669,7 @@ class GALGAS_gtlSetterMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlSetterMap extractObject (const GALGAS_object & inObject,
@@ -3662,6 +3687,11 @@ class GALGAS_gtlSetterMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlSetter & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlSetterMap add_operation (const GALGAS_gtlSetterMap & inOperand,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -3698,7 +3728,7 @@ class GALGAS_gtlSetterMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlSetterMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                          const GALGAS_string & inKey
                                                                                          COMMA_LOCATION_ARGS) ;
@@ -4047,9 +4077,6 @@ class C_Lexique_gtl_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
-//--- Indexing directory
-  protected: virtual C_String indexingDirectory (void) const override  ;
-
 //--- Parse lexical token
   protected: void internalParseLexicalToken (cTokenFor_gtl_5F_scanner & token) ;
   protected: virtual bool parseLexicalToken (void) override ;
@@ -4087,46 +4114,64 @@ class cParser_gtl_5F_expression_5F_parser {
 
   protected: virtual void nt_gtl_5F_argument_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_argument_5F_list_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
                                                  class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_expression_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_factor_ (class GALGAS_gtlExpression & outArgument0,
                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_factor_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_factor_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_relation_5F_factor_ (class GALGAS_gtlExpression & outArgument0,
                                                          class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_relation_5F_factor_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_relation_5F_factor_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_relation_5F_term_ (class GALGAS_gtlExpression & outArgument0,
                                                        class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_relation_5F_term_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_relation_5F_term_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_simple_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
                                                            class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_simple_5F_expression_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_simple_5F_expression_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_term_ (class GALGAS_gtlExpression & outArgument0,
                                            class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_term_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_term_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_variable_ (class GALGAS_gtlVarPath & outArgument0,
                                                class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_ (class GALGAS_gtlVarPath & outArgument0,
                                                              class GALGAS_bool & outArgument1,
                                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -4135,175 +4180,245 @@ class cParser_gtl_5F_expression_5F_parser {
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_expression_i0_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_expression_i0_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_relation_5F_term_i1_ (GALGAS_gtlExpression & outArgument0,
                                                                                 C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_relation_5F_term_i1_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_relation_5F_term_i1_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_relation_5F_factor_i2_ (GALGAS_gtlExpression & outArgument0,
                                                                                   C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_relation_5F_factor_i2_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_relation_5F_factor_i2_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_simple_5F_expression_i3_ (GALGAS_gtlExpression & outArgument0,
                                                                                     C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_simple_5F_expression_i3_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_simple_5F_expression_i3_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_term_i4_ (GALGAS_gtlExpression & outArgument0,
                                                                     C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_term_i4_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_term_i4_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i5_ (GALGAS_gtlExpression & outArgument0,
                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i5_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i5_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i6_ (GALGAS_gtlExpression & outArgument0,
                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i6_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i6_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i7_ (GALGAS_gtlExpression & outArgument0,
                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i7_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i7_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i8_ (GALGAS_gtlExpression & outArgument0,
                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i8_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i8_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i9_ (GALGAS_gtlExpression & outArgument0,
                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i9_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i9_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i10_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i10_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i10_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i11_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i11_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i11_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i12_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i12_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i12_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i13_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i13_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i13_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i14_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i14_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i14_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i15_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i15_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i15_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i16_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i16_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i16_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i17_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i17_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i17_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i18_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i18_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i18_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i19_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i19_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i19_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i20_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i20_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i20_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i21_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i21_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i21_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i22_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i22_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i22_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i23_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i23_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i23_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i24_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i24_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i24_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i25_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i25_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i25_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i26_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i26_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i26_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i27_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i27_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i27_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i28_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i28_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i28_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i29_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i29_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i29_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i30_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i30_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i30_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i31_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i31_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i31_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_ (GALGAS_gtlExpression & outArgument0,
                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i34_ (GALGAS_gtlVarPath & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i34_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i34_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i35_ (GALGAS_gtlVarPath & outArgument0,
                                                                                        GALGAS_bool & outArgument1,
@@ -4311,10 +4426,14 @@ class cParser_gtl_5F_expression_5F_parser {
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i35_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i35_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i36_ (GALGAS_gtlArgumentList & outArgument0,
                                                                                  C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i36_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i36_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
 
 
@@ -4394,32 +4513,44 @@ class cParser_gtl_5F_instruction_5F_parser {
 
   protected: virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_expression_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_import_ (class GALGAS_gtlContext inArgument0,
                                              class GALGAS_library & ioArgument1,
                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_import_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_import_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_simple_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
                                                             class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_simple_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_simple_5F_instruction_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_sorting_5F_order_ (class GALGAS_lsint & outArgument0,
                                                        class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_sorting_5F_order_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_sorting_5F_order_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_variable_ (class GALGAS_gtlVarPath & outArgument0,
                                                class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_ (class GALGAS_gtlVarPath & outArgument0,
                                                              class GALGAS_bool & outArgument1,
                                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -4428,71 +4559,99 @@ class cParser_gtl_5F_instruction_5F_parser {
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i0_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i0_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i1_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i1_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i1_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i2_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i2_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i2_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i3_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i3_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i3_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i4_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i4_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i4_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i5_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i5_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i5_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i6_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i6_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i6_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i7_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i7_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i7_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i8_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i8_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i8_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i9_ (GALGAS_gtlInstruction & outArgument0,
                                                                                       C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i9_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i9_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i10_ (GALGAS_gtlInstruction & outArgument0,
                                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i10_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i10_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i11_ (GALGAS_gtlInstruction & outArgument0,
                                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i11_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_simple_5F_instruction_i11_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_sorting_5F_order_i12_ (GALGAS_lsint & outArgument0,
                                                                                   C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_sorting_5F_order_i12_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_sorting_5F_order_i12_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_import_i13_ (GALGAS_gtlContext inArgument0,
                                                                         GALGAS_library & ioArgument1,
                                                                         C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_import_i13_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_instruction_5F_parser_gtl_5F_import_i13_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
 
 
@@ -4530,15 +4689,21 @@ class cParser_gtl_5F_parser {
 
   protected: virtual void nt_gtl_5F_argument_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_argument_5F_list_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
                                                  class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_expression_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_file_5F_name_ (class GALGAS_gtlExpression & outArgument0,
                                                    class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_file_5F_name_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_file_5F_name_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_import_ (class GALGAS_gtlContext inArgument0,
                                              class GALGAS_library & ioArgument1,
@@ -4546,10 +4711,14 @@ class cParser_gtl_5F_parser {
 
   protected: virtual void nt_gtl_5F_import_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_import_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_simple_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
                                                             class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_simple_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_simple_5F_instruction_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_start_5F_symbol_ (class GALGAS_gtlContext inArgument0,
                                                       class GALGAS_library & ioArgument1,
@@ -4558,26 +4727,36 @@ class cParser_gtl_5F_parser {
 
   protected: virtual void nt_gtl_5F_start_5F_symbol_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_start_5F_symbol_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_template_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
                                                               class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_template_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_template_5F_instruction_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_template_5F_instruction_5F_list_ (class GALGAS_gtlInstructionList & outArgument0,
                                                                       class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_template_5F_instruction_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_template_5F_instruction_5F_list_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_variable_ (class GALGAS_gtlVarPath & outArgument0,
                                                class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_ (class GALGAS_gtlVarPath & outArgument0,
                                                              class GALGAS_bool & outArgument1,
                                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_5F_or_5F_here_indexing (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -4588,65 +4767,91 @@ class cParser_gtl_5F_parser {
 
   protected: void rule_gtl_5F_parser_gtl_5F_start_5F_symbol_i0_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_start_5F_symbol_i0_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_5F_list_i1_ (GALGAS_gtlInstructionList & outArgument0,
                                                                                  C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_5F_list_i1_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_5F_list_i1_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i2_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i2_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i2_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i3_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i3_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i3_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i4_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i4_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i4_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i5_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i5_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i5_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i6_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i6_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i6_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i7_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i7_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i7_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i8_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i8_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i8_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i9_ (GALGAS_gtlInstruction & outArgument0,
                                                                          C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i9_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i9_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i10_ (GALGAS_gtlInstruction & outArgument0,
                                                                           C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i10_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i10_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i11_ (GALGAS_gtlInstruction & outArgument0,
                                                                           C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i11_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_parser_gtl_5F_template_5F_instruction_i11_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_parser_gtl_5F_file_5F_name_i12_ (GALGAS_gtlExpression & outArgument0,
                                                                C_Lexique_gtl_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_parser_gtl_5F_file_5F_name_i12_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_parser_gtl_5F_file_5F_name_i12_indexing (C_Lexique_gtl_5F_scanner * inLexique) ;
 
 
 
@@ -4717,6 +4922,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_argument_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_argument_5F_list_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_argument_5F_list_ (GALGAS_gtlArgumentList & outArgument0,
                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4724,6 +4932,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_expression' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_expression_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_expression_ (GALGAS_gtlExpression & outArgument0,
@@ -4733,6 +4944,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_factor_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_factor_ (GALGAS_gtlExpression & outArgument0,
                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4741,6 +4955,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_file_5F_name_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_file_5F_name_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_file_5F_name_ (GALGAS_gtlExpression & outArgument0,
                                                 C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4748,6 +4965,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_import' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_import_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_import_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_import_ (GALGAS_gtlContext inArgument0,
@@ -4758,6 +4978,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_relation_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_relation_5F_factor_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_relation_5F_factor_ (GALGAS_gtlExpression & outArgument0,
                                                       C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4765,6 +4988,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_relation_term' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_relation_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_relation_5F_term_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_relation_5F_term_ (GALGAS_gtlExpression & outArgument0,
@@ -4774,6 +5000,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_simple_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_simple_5F_expression_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_simple_5F_expression_ (GALGAS_gtlExpression & outArgument0,
                                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4781,6 +5010,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_simple_instruction' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_simple_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_simple_5F_instruction_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_simple_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
@@ -4790,6 +5022,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_sorting_5F_order_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_sorting_5F_order_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_sorting_5F_order_ (GALGAS_lsint & outArgument0,
                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4797,6 +5032,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_start_symbol' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_start_5F_symbol_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_start_5F_symbol_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_start_5F_symbol_ (GALGAS_gtlContext inArgument0,
@@ -4836,6 +5074,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_template_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_template_5F_instruction_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_template_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
                                                            C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4843,6 +5084,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_template_instruction_list' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_template_5F_instruction_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_template_5F_instruction_5F_list_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_template_5F_instruction_5F_list_ (GALGAS_gtlInstructionList & outArgument0,
@@ -4852,6 +5096,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_term_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_term_ (GALGAS_gtlExpression & outArgument0,
                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4860,6 +5107,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //--- 'parse' label
   public: virtual void nt_gtl_5F_variable_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_variable_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_variable_ (GALGAS_gtlVarPath & outArgument0,
                                             C_Lexique_gtl_5F_scanner * inCompiler) ;
@@ -4867,6 +5117,9 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 //------------------------------------- 'gtl_variable_or_here' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_variable_5F_or_5F_here_indexing (C_Lexique_gtl_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_variable_5F_or_5F_here_ (GALGAS_gtlVarPath & outArgument0,
@@ -5016,8 +5269,8 @@ class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_gtlFuncMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -5044,7 +5297,7 @@ class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlFuncMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -5058,7 +5311,7 @@ class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlFuncMap_2D_element & inOperand) const ;
 
@@ -5072,7 +5325,7 @@ class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlFuncMap_2D_element class
 
@@ -5100,8 +5353,8 @@ class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlGetterMap_2D_element (void) ;
@@ -5125,7 +5378,7 @@ class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGetterMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -5139,7 +5392,7 @@ class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlGetterMap_2D_element & inOperand) const ;
 
@@ -5153,7 +5406,7 @@ class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlGetterMap_2D_element class
 
@@ -5181,8 +5434,8 @@ class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlSetterMap_2D_element (void) ;
@@ -5206,7 +5459,7 @@ class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlSetterMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -5220,7 +5473,7 @@ class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlSetterMap_2D_element & inOperand) const ;
 
@@ -5234,7 +5487,7 @@ class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlSetterMap_2D_element class
 
@@ -5265,7 +5518,7 @@ class GALGAS_gtlVarItem : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarItem extractObject (const GALGAS_object & inObject,
@@ -5285,7 +5538,7 @@ class GALGAS_gtlVarItem : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarItem class
 
@@ -5372,10 +5625,10 @@ class cPtr_gtlVarItem : public acPtr_class {
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string callExtensionGetter_stringPath (const class cPtr_gtlVarItem * inObject,
-                                                    const GALGAS_gtlContext constin_exeContext,
-                                                    const GALGAS_gtlData constin_vars,
-                                                    const GALGAS_library constin_lib,
-                                                    C_Compiler * inCompiler
+                                                    const class GALGAS_gtlContext constin_exeContext,
+                                                    const class GALGAS_gtlData constin_vars,
+                                                    const class GALGAS_library constin_lib,
+                                                    class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5385,7 +5638,7 @@ class GALGAS_string callExtensionGetter_stringPath (const class cPtr_gtlVarItem 
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_location callExtensionGetter_location (const class cPtr_gtlVarItem * inObject,
-                                                    C_Compiler * inCompiler
+                                                    class C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5395,13 +5648,13 @@ class GALGAS_location callExtensionGetter_location (const class cPtr_gtlVarItem 
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_setInContext (class cPtr_gtlVarItem * inObject,
-                                       const GALGAS_gtlContext constin_exeContext,
-                                       GALGAS_gtlData & io_context,
-                                       const GALGAS_gtlData constin_vars,
-                                       const GALGAS_library constin_lib,
-                                       const GALGAS_gtlVarPath constin_path,
-                                       const GALGAS_gtlData constin_newData,
-                                       C_Compiler * inCompiler
+                                       const class GALGAS_gtlContext constin_exeContext,
+                                       class GALGAS_gtlData & io_context,
+                                       const class GALGAS_gtlData constin_vars,
+                                       const class GALGAS_library constin_lib,
+                                       const class GALGAS_gtlVarPath constin_path,
+                                       const class GALGAS_gtlData constin_newData,
+                                       class C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5425,7 +5678,7 @@ class GALGAS_gtlVarPath : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarPath extractObject (const GALGAS_object & inObject,
@@ -5513,7 +5766,7 @@ class GALGAS_gtlVarPath : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlVarPath ;
@@ -5545,12 +5798,12 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVarPath ;
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_getInContext (const class cPtr_gtlVarItem * inObject,
-                                                       const GALGAS_gtlContext constin_exeContext,
-                                                       const GALGAS_gtlData constin_context,
-                                                       const GALGAS_gtlData constin_vars,
-                                                       const GALGAS_library constin_lib,
-                                                       const GALGAS_gtlVarPath constin_path,
-                                                       C_Compiler * inCompiler
+                                                       const class GALGAS_gtlContext constin_exeContext,
+                                                       const class GALGAS_gtlData constin_context,
+                                                       const class GALGAS_gtlData constin_vars,
+                                                       const class GALGAS_library constin_lib,
+                                                       const class GALGAS_gtlVarPath constin_path,
+                                                       class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5560,12 +5813,12 @@ class GALGAS_gtlData callExtensionGetter_getInContext (const class cPtr_gtlVarIt
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_existsInContext (const class cPtr_gtlVarItem * inObject,
-                                                       const GALGAS_gtlContext constin_exeContext,
-                                                       const GALGAS_gtlData constin_context,
-                                                       const GALGAS_gtlData constin_vars,
-                                                       const GALGAS_library constin_lib,
-                                                       const GALGAS_gtlVarPath constin_path,
-                                                       C_Compiler * inCompiler
+                                                       const class GALGAS_gtlContext constin_exeContext,
+                                                       const class GALGAS_gtlData constin_context,
+                                                       const class GALGAS_gtlData constin_vars,
+                                                       const class GALGAS_library constin_lib,
+                                                       const class GALGAS_gtlVarPath constin_path,
+                                                       class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5575,12 +5828,12 @@ class GALGAS_bool callExtensionGetter_existsInContext (const class cPtr_gtlVarIt
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_deleteInContext (class cPtr_gtlVarItem * inObject,
-                                          const GALGAS_gtlContext constin_exeContext,
-                                          GALGAS_gtlData & io_context,
-                                          const GALGAS_gtlData constin_vars,
-                                          const GALGAS_library constin_lib,
-                                          const GALGAS_gtlVarPath constin_path,
-                                          C_Compiler * inCompiler
+                                          const class GALGAS_gtlContext constin_exeContext,
+                                          class GALGAS_gtlData & io_context,
+                                          const class GALGAS_gtlData constin_vars,
+                                          const class GALGAS_library constin_lib,
+                                          const class GALGAS_gtlVarPath constin_path,
+                                          class C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -5597,8 +5850,8 @@ class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlVarPath_2D_element (void) ;
@@ -5617,7 +5870,7 @@ class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarPath_2D_element extractObject (const GALGAS_object & inObject,
@@ -5630,7 +5883,7 @@ class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlVarPath_2D_element & inOperand) const ;
 
@@ -5644,7 +5897,7 @@ class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarPath_2D_element class
 
@@ -5690,7 +5943,7 @@ class GALGAS_gtlVarItemField : public GALGAS_gtlVarItem {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarItemField extractObject (const GALGAS_object & inObject,
@@ -5717,7 +5970,7 @@ class GALGAS_gtlVarItemField : public GALGAS_gtlVarItem {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarItemField class
 
@@ -5938,8 +6191,8 @@ class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlExpressionList_2D_element (void) ;
@@ -5958,7 +6211,7 @@ class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExpressionList_2D_element extractObject (const GALGAS_object & inObject,
@@ -5971,7 +6224,7 @@ class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlExpressionList_2D_element & inOperand) const ;
 
@@ -5985,7 +6238,7 @@ class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExpressionList_2D_element class
 
@@ -6032,7 +6285,7 @@ class GALGAS_gtlBool : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlBool extractObject (const GALGAS_object & inObject,
@@ -6061,7 +6314,7 @@ class GALGAS_gtlBool : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlBool class
 
@@ -6240,7 +6493,7 @@ class GALGAS_gtlChar : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlChar extractObject (const GALGAS_object & inObject,
@@ -6269,7 +6522,7 @@ class GALGAS_gtlChar : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlChar class
 
@@ -6448,7 +6701,7 @@ class GALGAS_gtlEnum : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlEnum extractObject (const GALGAS_object & inObject,
@@ -6477,7 +6730,7 @@ class GALGAS_gtlEnum : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlEnum class
 
@@ -6656,7 +6909,7 @@ class GALGAS_gtlFloat : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlFloat extractObject (const GALGAS_object & inObject,
@@ -6685,7 +6938,7 @@ class GALGAS_gtlFloat : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlFloat class
 
@@ -6864,7 +7117,7 @@ class GALGAS_gtlInt : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlInt extractObject (const GALGAS_object & inObject,
@@ -6893,7 +7146,7 @@ class GALGAS_gtlInt : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlInt class
 
@@ -7072,7 +7325,7 @@ class GALGAS_gtlList : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlList extractObject (const GALGAS_object & inObject,
@@ -7101,7 +7354,7 @@ class GALGAS_gtlList : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlList class
 
@@ -7131,7 +7384,7 @@ class GALGAS_list : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_list extractObject (const GALGAS_object & inObject,
@@ -7219,7 +7472,7 @@ class GALGAS_list : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_list ;
@@ -7423,7 +7676,7 @@ class GALGAS_gtlMap : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlMap extractObject (const GALGAS_object & inObject,
@@ -7452,7 +7705,7 @@ class GALGAS_gtlMap : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlMap class
 
@@ -7640,7 +7893,7 @@ class GALGAS_gtlSet : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlSet extractObject (const GALGAS_object & inObject,
@@ -7669,7 +7922,7 @@ class GALGAS_gtlSet : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlSet class
 
@@ -7703,7 +7956,7 @@ class GALGAS_lstringset : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_lstringset extractObject (const GALGAS_object & inObject,
@@ -7720,6 +7973,11 @@ class GALGAS_lstringset : public AC_GALGAS_map {
   public: VIRTUAL_IN_DEBUG void addAssign_operation (const class GALGAS_lstring & inOperand0,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_lstringset add_operation (const GALGAS_lstringset & inOperand,
+                                                            C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
@@ -7748,7 +8006,7 @@ class GALGAS_lstringset : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_lstringset * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
                                                                                        COMMA_LOCATION_ARGS) ;
@@ -7973,7 +8231,7 @@ class GALGAS_gtlString : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlString extractObject (const GALGAS_object & inObject,
@@ -8002,7 +8260,7 @@ class GALGAS_gtlString : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlString class
 
@@ -8181,7 +8439,7 @@ class GALGAS_gtlStruct : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlStruct extractObject (const GALGAS_object & inObject,
@@ -8210,7 +8468,7 @@ class GALGAS_gtlStruct : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlStruct class
 
@@ -8406,7 +8664,7 @@ class GALGAS_gtlType : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlType extractObject (const GALGAS_object & inObject,
@@ -8435,7 +8693,7 @@ class GALGAS_gtlType : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlType class
 
@@ -8612,7 +8870,7 @@ class GALGAS_gtlUnconstructed : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlUnconstructed extractObject (const GALGAS_object & inObject,
@@ -8637,7 +8895,7 @@ class GALGAS_gtlUnconstructed : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlUnconstructed class
 
@@ -8806,7 +9064,7 @@ class GALGAS_gtlTypedArgumentList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTypedArgumentList extractObject (const GALGAS_object & inObject,
@@ -8894,7 +9152,7 @@ class GALGAS_gtlTypedArgumentList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlTypedArgumentList ;
@@ -8933,8 +9191,8 @@ class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlTypedArgumentList_2D_element (void) ;
@@ -8953,7 +9211,7 @@ class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTypedArgumentList_2D_element extractObject (const GALGAS_object & inObject,
@@ -8966,7 +9224,7 @@ class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlTypedArgumentList_2D_element & inOperand) const ;
 
@@ -8980,7 +9238,7 @@ class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlTypedArgumentList_2D_element class
 
@@ -9003,8 +9261,8 @@ class GALGAS_list_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_list_2D_element (void) ;
@@ -9023,7 +9281,7 @@ class GALGAS_list_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_list_2D_element extractObject (const GALGAS_object & inObject,
@@ -9036,7 +9294,7 @@ class GALGAS_list_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_list_2D_element & inOperand) const ;
 
@@ -9050,7 +9308,7 @@ class GALGAS_list_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_list_2D_element class
 
@@ -9073,8 +9331,8 @@ class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_lstringset_2D_element constructor_default (LOCATION_ARGS) ;
@@ -9096,7 +9354,7 @@ class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_lstringset_2D_element extractObject (const GALGAS_object & inObject,
@@ -9109,7 +9367,7 @@ class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_lstringset_2D_element & inOperand) const ;
 
@@ -9123,7 +9381,7 @@ class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_lstringset_2D_element class
 
@@ -9156,8 +9414,8 @@ class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlArgumentList_2D_element (void) ;
@@ -9186,7 +9444,7 @@ class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlArgumentList_2D_element extractObject (const GALGAS_object & inObject,
@@ -9201,7 +9459,7 @@ class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlArgumentList_2D_element & inOperand) const ;
 
@@ -9215,7 +9473,7 @@ class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlArgumentList_2D_element class
 
@@ -9249,7 +9507,7 @@ class GALGAS_gtlProcMap : public AC_GALGAS_map {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlProcMap extractObject (const GALGAS_object & inObject,
@@ -9267,6 +9525,11 @@ class GALGAS_gtlProcMap : public AC_GALGAS_map {
                                                      const class GALGAS_gtlProcedure & inOperand1,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
+//--------------------------------- + operator
+  public: VIRTUAL_IN_DEBUG GALGAS_gtlProcMap add_operation (const GALGAS_gtlProcMap & inOperand,
+                                                            C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) const ;
+
 
 //--------------------------------- Setters
   public: VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
@@ -9303,7 +9566,7 @@ class GALGAS_gtlProcMap : public AC_GALGAS_map {
 
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
   public: VIRTUAL_IN_DEBUG cMapElement_gtlProcMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
                                                                                        const GALGAS_string & inKey
                                                                                        COMMA_LOCATION_ARGS) ;
@@ -9358,7 +9621,7 @@ class GALGAS_gtlProcedure : public GALGAS_gtlExecutableEntity {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlProcedure extractObject (const GALGAS_object & inObject,
@@ -9385,7 +9648,7 @@ class GALGAS_gtlProcedure : public GALGAS_gtlExecutableEntity {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlProcedure class
 
@@ -9441,8 +9704,8 @@ class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_gtlProcMap_2D_element constructor_default (LOCATION_ARGS) ;
@@ -9469,7 +9732,7 @@ class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlProcMap_2D_element extractObject (const GALGAS_object & inObject,
@@ -9483,7 +9746,7 @@ class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlProcMap_2D_element & inOperand) const ;
 
@@ -9497,7 +9760,7 @@ class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlProcMap_2D_element class
 
@@ -9532,7 +9795,7 @@ class GALGAS_gtlBinaryExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlBinaryExpression extractObject (const GALGAS_object & inObject,
@@ -9558,7 +9821,7 @@ class GALGAS_gtlBinaryExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlBinaryExpression class
 
@@ -9623,7 +9886,7 @@ class GALGAS_gtlAddExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlAddExpression extractObject (const GALGAS_object & inObject,
@@ -9649,7 +9912,7 @@ class GALGAS_gtlAddExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlAddExpression class
 
@@ -9723,7 +9986,7 @@ class GALGAS_gtlAllVarsRef : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlAllVarsRef extractObject (const GALGAS_object & inObject,
@@ -9747,7 +10010,7 @@ class GALGAS_gtlAllVarsRef : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlAllVarsRef class
 
@@ -9816,7 +10079,7 @@ class GALGAS_gtlAndExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlAndExpression extractObject (const GALGAS_object & inObject,
@@ -9842,7 +10105,7 @@ class GALGAS_gtlAndExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlAndExpression class
 
@@ -9913,7 +10176,7 @@ class GALGAS_gtlDivideExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlDivideExpression extractObject (const GALGAS_object & inObject,
@@ -9939,7 +10202,7 @@ class GALGAS_gtlDivideExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlDivideExpression class
 
@@ -10010,7 +10273,7 @@ class GALGAS_gtlEqualExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlEqualExpression extractObject (const GALGAS_object & inObject,
@@ -10036,7 +10299,7 @@ class GALGAS_gtlEqualExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlEqualExpression class
 
@@ -10112,7 +10375,7 @@ class GALGAS_gtlExistsExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExistsExpression extractObject (const GALGAS_object & inObject,
@@ -10140,7 +10403,7 @@ class GALGAS_gtlExistsExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExistsExpression class
 
@@ -10215,7 +10478,7 @@ class GALGAS_gtlExistsDefaultExpression : public GALGAS_gtlExistsExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExistsDefaultExpression extractObject (const GALGAS_object & inObject,
@@ -10244,7 +10507,7 @@ class GALGAS_gtlExistsDefaultExpression : public GALGAS_gtlExistsExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExistsDefaultExpression class
 
@@ -10320,7 +10583,7 @@ class GALGAS_gtlExpr : public GALGAS_gtlData {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlExpr extractObject (const GALGAS_object & inObject,
@@ -10349,7 +10612,7 @@ class GALGAS_gtlExpr : public GALGAS_gtlData {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlExpr class
 
@@ -10530,7 +10793,7 @@ class GALGAS_gtlFunctionCallExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlFunctionCallExpression extractObject (const GALGAS_object & inObject,
@@ -10562,7 +10825,7 @@ class GALGAS_gtlFunctionCallExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlFunctionCallExpression class
 
@@ -10645,7 +10908,7 @@ class GALGAS_gtlGetterCallExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGetterCallExpression extractObject (const GALGAS_object & inObject,
@@ -10681,7 +10944,7 @@ class GALGAS_gtlGetterCallExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlGetterCallExpression class
 
@@ -10762,7 +11025,7 @@ class GALGAS_gtlGreaterOrEqualExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGreaterOrEqualExpression extractObject (const GALGAS_object & inObject,
@@ -10788,7 +11051,7 @@ class GALGAS_gtlGreaterOrEqualExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlGreaterOrEqualExpression class
 
@@ -10859,7 +11122,7 @@ class GALGAS_gtlGreaterThanExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGreaterThanExpression extractObject (const GALGAS_object & inObject,
@@ -10885,7 +11148,7 @@ class GALGAS_gtlGreaterThanExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlGreaterThanExpression class
 
@@ -10958,7 +11221,7 @@ class GALGAS_gtlListOfExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlListOfExpression extractObject (const GALGAS_object & inObject,
@@ -10986,7 +11249,7 @@ class GALGAS_gtlListOfExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlListOfExpression class
 
@@ -11064,7 +11327,7 @@ class GALGAS_gtlLiteralListExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLiteralListExpression extractObject (const GALGAS_object & inObject,
@@ -11092,7 +11355,7 @@ class GALGAS_gtlLiteralListExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLiteralListExpression class
 
@@ -11170,7 +11433,7 @@ class GALGAS_gtlLiteralMapExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLiteralMapExpression extractObject (const GALGAS_object & inObject,
@@ -11198,7 +11461,7 @@ class GALGAS_gtlLiteralMapExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLiteralMapExpression class
 
@@ -11276,7 +11539,7 @@ class GALGAS_gtlLiteralSetExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLiteralSetExpression extractObject (const GALGAS_object & inObject,
@@ -11304,7 +11567,7 @@ class GALGAS_gtlLiteralSetExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLiteralSetExpression class
 
@@ -11382,7 +11645,7 @@ class GALGAS_gtlLiteralStructExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLiteralStructExpression extractObject (const GALGAS_object & inObject,
@@ -11410,7 +11673,7 @@ class GALGAS_gtlLiteralStructExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLiteralStructExpression class
 
@@ -11483,7 +11746,7 @@ class GALGAS_gtlLowerOrEqualExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLowerOrEqualExpression extractObject (const GALGAS_object & inObject,
@@ -11509,7 +11772,7 @@ class GALGAS_gtlLowerOrEqualExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLowerOrEqualExpression class
 
@@ -11580,7 +11843,7 @@ class GALGAS_gtlLowerThanExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLowerThanExpression extractObject (const GALGAS_object & inObject,
@@ -11606,7 +11869,7 @@ class GALGAS_gtlLowerThanExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLowerThanExpression class
 
@@ -11679,7 +11942,7 @@ class GALGAS_gtlMapOfStructExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlMapOfStructExpression extractObject (const GALGAS_object & inObject,
@@ -11707,7 +11970,7 @@ class GALGAS_gtlMapOfStructExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlMapOfStructExpression class
 
@@ -11782,7 +12045,7 @@ class GALGAS_gtlMapOfListExpression : public GALGAS_gtlMapOfStructExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlMapOfListExpression extractObject (const GALGAS_object & inObject,
@@ -11811,7 +12074,7 @@ class GALGAS_gtlMapOfListExpression : public GALGAS_gtlMapOfStructExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlMapOfListExpression class
 
@@ -11884,7 +12147,7 @@ class GALGAS_gtlUnaryExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlUnaryExpression extractObject (const GALGAS_object & inObject,
@@ -11907,7 +12170,7 @@ class GALGAS_gtlUnaryExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlUnaryExpression class
 
@@ -11968,7 +12231,7 @@ class GALGAS_gtlMinusExpression : public GALGAS_gtlUnaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlMinusExpression extractObject (const GALGAS_object & inObject,
@@ -11993,7 +12256,7 @@ class GALGAS_gtlMinusExpression : public GALGAS_gtlUnaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlMinusExpression class
 
@@ -12063,7 +12326,7 @@ class GALGAS_gtlModulusExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlModulusExpression extractObject (const GALGAS_object & inObject,
@@ -12089,7 +12352,7 @@ class GALGAS_gtlModulusExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlModulusExpression class
 
@@ -12160,7 +12423,7 @@ class GALGAS_gtlMultiplyExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlMultiplyExpression extractObject (const GALGAS_object & inObject,
@@ -12186,7 +12449,7 @@ class GALGAS_gtlMultiplyExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlMultiplyExpression class
 
@@ -12257,7 +12520,7 @@ class GALGAS_gtlNotEqualExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlNotEqualExpression extractObject (const GALGAS_object & inObject,
@@ -12283,7 +12546,7 @@ class GALGAS_gtlNotEqualExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlNotEqualExpression class
 
@@ -12354,7 +12617,7 @@ class GALGAS_gtlNotExpression : public GALGAS_gtlUnaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlNotExpression extractObject (const GALGAS_object & inObject,
@@ -12379,7 +12642,7 @@ class GALGAS_gtlNotExpression : public GALGAS_gtlUnaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlNotExpression class
 
@@ -12449,7 +12712,7 @@ class GALGAS_gtlOrExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlOrExpression extractObject (const GALGAS_object & inObject,
@@ -12475,7 +12738,7 @@ class GALGAS_gtlOrExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlOrExpression class
 
@@ -12546,7 +12809,7 @@ class GALGAS_gtlParenthesizedExpression : public GALGAS_gtlUnaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlParenthesizedExpression extractObject (const GALGAS_object & inObject,
@@ -12571,7 +12834,7 @@ class GALGAS_gtlParenthesizedExpression : public GALGAS_gtlUnaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlParenthesizedExpression class
 
@@ -12641,7 +12904,7 @@ class GALGAS_gtlPlusExpression : public GALGAS_gtlUnaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlPlusExpression extractObject (const GALGAS_object & inObject,
@@ -12666,7 +12929,7 @@ class GALGAS_gtlPlusExpression : public GALGAS_gtlUnaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlPlusExpression class
 
@@ -12736,7 +12999,7 @@ class GALGAS_gtlShiftLeftExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlShiftLeftExpression extractObject (const GALGAS_object & inObject,
@@ -12762,7 +13025,7 @@ class GALGAS_gtlShiftLeftExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlShiftLeftExpression class
 
@@ -12833,7 +13096,7 @@ class GALGAS_gtlShiftRightExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlShiftRightExpression extractObject (const GALGAS_object & inObject,
@@ -12859,7 +13122,7 @@ class GALGAS_gtlShiftRightExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlShiftRightExpression class
 
@@ -12930,7 +13193,7 @@ class GALGAS_gtlSubstractExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlSubstractExpression extractObject (const GALGAS_object & inObject,
@@ -12956,7 +13219,7 @@ class GALGAS_gtlSubstractExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlSubstractExpression class
 
@@ -13029,7 +13292,7 @@ class GALGAS_gtlTerminal : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTerminal extractObject (const GALGAS_object & inObject,
@@ -13057,7 +13320,7 @@ class GALGAS_gtlTerminal : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlTerminal class
 
@@ -13135,7 +13398,7 @@ class GALGAS_gtlTypeOfExpression : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTypeOfExpression extractObject (const GALGAS_object & inObject,
@@ -13163,7 +13426,7 @@ class GALGAS_gtlTypeOfExpression : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlTypeOfExpression class
 
@@ -13238,7 +13501,7 @@ class GALGAS_gtlVarItemCollection : public GALGAS_gtlVarItemField {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarItemCollection extractObject (const GALGAS_object & inObject,
@@ -13266,7 +13529,7 @@ class GALGAS_gtlVarItemCollection : public GALGAS_gtlVarItemField {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarItemCollection class
 
@@ -13377,7 +13640,7 @@ class GALGAS_gtlVarItemSubCollection : public GALGAS_gtlVarItem {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarItemSubCollection extractObject (const GALGAS_object & inObject,
@@ -13408,7 +13671,7 @@ class GALGAS_gtlVarItemSubCollection : public GALGAS_gtlVarItem {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarItemSubCollection class
 
@@ -13526,7 +13789,7 @@ class GALGAS_gtlVarRef : public GALGAS_gtlExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVarRef extractObject (const GALGAS_object & inObject,
@@ -13554,7 +13817,7 @@ class GALGAS_gtlVarRef : public GALGAS_gtlExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVarRef class
 
@@ -13627,7 +13890,7 @@ class GALGAS_gtlXorExpression : public GALGAS_gtlBinaryExpression {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlXorExpression extractObject (const GALGAS_object & inObject,
@@ -13653,7 +13916,7 @@ class GALGAS_gtlXorExpression : public GALGAS_gtlBinaryExpression {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlXorExpression class
 
@@ -13769,11 +14032,11 @@ class GALGAS_location callExtensionGetter_location (const cPtr_gtlInstruction * 
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_execute (class cPtr_gtlInstruction * inObject,
-                                  GALGAS_gtlContext & io_context,
-                                  GALGAS_gtlData & io_vars,
-                                  GALGAS_library & io_lib,
-                                  GALGAS_string & io_outputString,
-                                  C_Compiler * inCompiler
+                                  class GALGAS_gtlContext & io_context,
+                                  class GALGAS_gtlData & io_vars,
+                                  class GALGAS_library & io_lib,
+                                  class GALGAS_string & io_outputString,
+                                  class C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13815,7 +14078,7 @@ class GALGAS_gtlStepInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlStepInstruction extractObject (const GALGAS_object & inObject,
@@ -13840,7 +14103,7 @@ class GALGAS_gtlStepInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlStepInstruction class
 
@@ -13905,7 +14168,7 @@ class GALGAS_string function_endc (class C_Compiler * inCompiler
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_breakOn (const cPtr_gtlContext * inObject,
-                                               GALGAS_gtlInstruction in_instruction,
+                                               class GALGAS_gtlInstruction in_instruction,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -13966,9 +14229,9 @@ class GALGAS_string callExtensionGetter_promptStyle (const cPtr_gtlContext * inO
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_watchOn (const cPtr_gtlContext * inObject,
-                                               const GALGAS_gtlContext constin_context,
-                                               const GALGAS_gtlData constin_vars,
-                                               const GALGAS_library constin_lib,
+                                               const class GALGAS_gtlContext constin_context,
+                                               const class GALGAS_gtlData constin_vars,
+                                               const class GALGAS_library constin_lib,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
@@ -13979,9 +14242,9 @@ class GALGAS_bool callExtensionGetter_watchOn (const cPtr_gtlContext * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_mayExecuteWithoutError (const cPtr_gtlInstruction * inObject,
-                                                              const GALGAS_gtlContext constin_exeContext,
-                                                              const GALGAS_gtlData constin_context,
-                                                              const GALGAS_library constin_lib,
+                                                              const class GALGAS_gtlContext constin_exeContext,
+                                                              const class GALGAS_gtlData constin_context,
+                                                              const class GALGAS_library constin_lib,
                                                               class C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) ;
 
@@ -14174,9 +14437,6 @@ class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
 
 //--- Indexing keys
 
-//--- Indexing directory
-  protected: virtual C_String indexingDirectory (void) const override  ;
-
 //--- Parse lexical token
   protected: void internalParseLexicalToken (cTokenFor_gtl_5F_debugger_5F_scanner & token) ;
   protected: virtual bool parseLexicalToken (void) override ;
@@ -14214,35 +14474,49 @@ class cParser_gtl_5F_debugger_5F_expression_5F_parser {
 
   protected: virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_expression_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_factor_ (class GALGAS_gtlExpression & outArgument0,
                                              class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_factor_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_factor_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_relation_5F_factor_ (class GALGAS_gtlExpression & outArgument0,
                                                          class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_relation_5F_factor_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_relation_5F_factor_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_relation_5F_term_ (class GALGAS_gtlExpression & outArgument0,
                                                        class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_relation_5F_term_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_relation_5F_term_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_simple_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
                                                            class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_simple_5F_expression_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_simple_5F_expression_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_term_ (class GALGAS_gtlExpression & outArgument0,
                                            class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_term_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_term_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_variable_ (class GALGAS_gtlVarPath & outArgument0,
                                                class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -14251,165 +14525,231 @@ class cParser_gtl_5F_debugger_5F_expression_5F_parser {
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_expression_i0_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_expression_i0_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_relation_5F_term_i1_ (GALGAS_gtlExpression & outArgument0,
                                                                                             C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_relation_5F_term_i1_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_relation_5F_term_i1_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_relation_5F_factor_i2_ (GALGAS_gtlExpression & outArgument0,
                                                                                               C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_relation_5F_factor_i2_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_relation_5F_factor_i2_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_simple_5F_expression_i3_ (GALGAS_gtlExpression & outArgument0,
                                                                                                 C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_simple_5F_expression_i3_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_simple_5F_expression_i3_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_term_i4_ (GALGAS_gtlExpression & outArgument0,
                                                                                 C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_term_i4_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_term_i4_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i5_ (GALGAS_gtlExpression & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i5_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i5_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i6_ (GALGAS_gtlExpression & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i6_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i6_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i7_ (GALGAS_gtlExpression & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i7_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i7_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i8_ (GALGAS_gtlExpression & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i8_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i8_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i9_ (GALGAS_gtlExpression & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i9_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i9_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i10_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i10_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i10_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i11_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i11_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i11_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i12_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i12_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i12_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i13_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i13_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i13_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i14_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i14_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i14_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i15_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i15_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i15_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i16_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i16_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i16_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i17_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i17_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i17_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i18_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i18_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i18_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i19_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i19_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i19_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i20_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i20_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i20_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i21_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i21_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i21_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i22_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i22_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i22_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i23_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i23_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i23_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i24_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i24_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i24_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i25_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i25_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i25_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i26_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i26_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i26_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i27_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i27_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i27_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i28_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i28_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i28_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i29_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i29_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i29_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i30_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i30_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i30_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i31_ (GALGAS_gtlExpression & outArgument0,
                                                                                    C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i31_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_factor_i31_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_variable_i32_ (GALGAS_gtlVarPath & outArgument0,
                                                                                      C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_variable_i32_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_expression_5F_parser_gtl_5F_variable_i32_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
 
 
@@ -14481,25 +14821,35 @@ class cParser_gtl_5F_debugger_5F_parser {
 
   protected: virtual void nt_gtl_5F_debugger_5F_command_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_debugger_5F_command_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
                                                  class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_expression_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_step_5F_do_5F_command_ (class GALGAS_gtlInstruction & outArgument0,
                                                             class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_step_5F_do_5F_command_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_step_5F_do_5F_command_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_step_5F_do_5F_command_5F_list_ (class GALGAS_gtlInstructionList & outArgument0,
                                                                     class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_step_5F_do_5F_command_5F_list_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
+  protected: virtual void nt_gtl_5F_step_5F_do_5F_command_5F_list_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
   protected: virtual void nt_gtl_5F_variable_ (class GALGAS_gtlVarPath & outArgument0,
                                                class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
   protected: virtual void nt_gtl_5F_variable_parse (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
+
+  protected: virtual void nt_gtl_5F_variable_indexing (class C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) = 0 ;
 
 
 //--- Rule declarations
@@ -14508,90 +14858,126 @@ class cParser_gtl_5F_debugger_5F_parser {
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i0_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i0_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i1_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i1_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i1_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i2_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i2_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i2_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i7_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i7_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i7_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i8_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i8_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i8_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i9_ (GALGAS_gtlInstruction & outArgument0,
                                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i9_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i9_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i10_ (GALGAS_gtlInstruction & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i10_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i10_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_ (GALGAS_gtlInstruction & outArgument0,
                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i12_ (GALGAS_gtlInstruction & outArgument0,
                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i12_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i12_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i13_ (GALGAS_gtlInstruction & outArgument0,
                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i13_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i13_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i14_ (GALGAS_gtlInstruction & outArgument0,
                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i14_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i14_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i15_ (GALGAS_gtlInstruction & outArgument0,
                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i15_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i15_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_ (GALGAS_gtlInstruction & outArgument0,
                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_ (GALGAS_gtlInstructionList & outArgument0,
                                                                                             C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected: void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
 
 
@@ -14637,6 +15023,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //--- 'parse' label
   public: virtual void nt_gtl_5F_debugger_5F_command_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_debugger_5F_command_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_debugger_5F_command_ (GALGAS_gtlInstruction & outArgument0,
                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
@@ -14669,6 +15058,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //--- 'parse' label
   public: virtual void nt_gtl_5F_expression_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_expression_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_expression_ (GALGAS_gtlExpression & outArgument0,
                                               C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
@@ -14676,6 +15068,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //------------------------------------- 'gtl_factor' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_factor_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_factor_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_factor_ (GALGAS_gtlExpression & outArgument0,
@@ -14685,6 +15080,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //--- 'parse' label
   public: virtual void nt_gtl_5F_relation_5F_factor_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_relation_5F_factor_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_relation_5F_factor_ (GALGAS_gtlExpression & outArgument0,
                                                       C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
@@ -14692,6 +15090,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //------------------------------------- 'gtl_relation_term' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_relation_5F_term_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_relation_5F_term_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_relation_5F_term_ (GALGAS_gtlExpression & outArgument0,
@@ -14701,6 +15102,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //--- 'parse' label
   public: virtual void nt_gtl_5F_simple_5F_expression_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_simple_5F_expression_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_simple_5F_expression_ (GALGAS_gtlExpression & outArgument0,
                                                         C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
@@ -14708,6 +15112,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //------------------------------------- 'gtl_step_do_command' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_step_5F_do_5F_command_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_step_5F_do_5F_command_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_step_5F_do_5F_command_ (GALGAS_gtlInstruction & outArgument0,
@@ -14717,6 +15124,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //--- 'parse' label
   public: virtual void nt_gtl_5F_step_5F_do_5F_command_5F_list_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_step_5F_do_5F_command_5F_list_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_step_5F_do_5F_command_5F_list_ (GALGAS_gtlInstructionList & outArgument0,
                                                                  C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
@@ -14725,6 +15135,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //--- 'parse' label
   public: virtual void nt_gtl_5F_term_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
+//--- indexing
+  public: virtual void nt_gtl_5F_term_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
 //----------- '' label
   public: virtual void nt_gtl_5F_term_ (GALGAS_gtlExpression & outArgument0,
                                         C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
@@ -14732,6 +15145,9 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
 //------------------------------------- 'gtl_variable' non terminal
 //--- 'parse' label
   public: virtual void nt_gtl_5F_variable_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
+
+//--- indexing
+  public: virtual void nt_gtl_5F_variable_indexing (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) ;
 
 //----------- '' label
   public: virtual void nt_gtl_5F_variable_ (GALGAS_gtlVarPath & outArgument0,
@@ -15030,7 +15446,7 @@ class GALGAS_gtlLetUnconstructedInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLetUnconstructedInstruction extractObject (const GALGAS_object & inObject,
@@ -15059,7 +15475,7 @@ class GALGAS_gtlLetUnconstructedInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLetUnconstructedInstruction class
 
@@ -15137,7 +15553,7 @@ class GALGAS_gtlUnletInstruction : public GALGAS_gtlLetUnconstructedInstruction 
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlUnletInstruction extractObject (const GALGAS_object & inObject,
@@ -15163,7 +15579,7 @@ class GALGAS_gtlUnletInstruction : public GALGAS_gtlLetUnconstructedInstruction 
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlUnletInstruction class
 
@@ -15237,7 +15653,7 @@ class GALGAS_gtlTemplateStringInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlTemplateStringInstruction extractObject (const GALGAS_object & inObject,
@@ -15266,7 +15682,7 @@ class GALGAS_gtlTemplateStringInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlTemplateStringInstruction class
 
@@ -15346,7 +15762,7 @@ class GALGAS_gtlGetColumnInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlGetColumnInstruction extractObject (const GALGAS_object & inObject,
@@ -15375,7 +15791,7 @@ class GALGAS_gtlGetColumnInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlGetColumnInstruction class
 
@@ -15450,7 +15866,7 @@ class GALGAS_gtlThenElsifStatementList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlThenElsifStatementList extractObject (const GALGAS_object & inObject,
@@ -15555,7 +15971,7 @@ class GALGAS_gtlThenElsifStatementList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_gtlThenElsifStatementList ;
@@ -15600,8 +16016,8 @@ class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default constructor
   public: GALGAS_gtlThenElsifStatementList_2D_element (void) ;
@@ -15625,7 +16041,7 @@ class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlThenElsifStatementList_2D_element extractObject (const GALGAS_object & inObject,
@@ -15639,7 +16055,7 @@ class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlThenElsifStatementList_2D_element & inOperand) const ;
 
@@ -15653,7 +16069,7 @@ class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlThenElsifStatementList_2D_element class
 
@@ -15691,7 +16107,7 @@ class GALGAS_gtlIfStatementInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlIfStatementInstruction extractObject (const GALGAS_object & inObject,
@@ -15724,7 +16140,7 @@ class GALGAS_gtlIfStatementInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlIfStatementInstruction class
 
@@ -15808,7 +16224,7 @@ class GALGAS_gtlDisplayStatementInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlDisplayStatementInstruction extractObject (const GALGAS_object & inObject,
@@ -15837,7 +16253,7 @@ class GALGAS_gtlDisplayStatementInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlDisplayStatementInstruction class
 
@@ -15918,7 +16334,7 @@ class GALGAS_sortingKeyList : public AC_GALGAS_list {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_sortingKeyList extractObject (const GALGAS_object & inObject,
@@ -16023,7 +16439,7 @@ class GALGAS_sortingKeyList : public AC_GALGAS_list {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
 //--------------------------------- Friend
 
   friend class cEnumerator_sortingKeyList ;
@@ -16068,8 +16484,8 @@ class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_sortingKeyList_2D_element constructor_default (LOCATION_ARGS) ;
@@ -16096,7 +16512,7 @@ class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_sortingKeyList_2D_element extractObject (const GALGAS_object & inObject,
@@ -16110,7 +16526,7 @@ class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_sortingKeyList_2D_element & inOperand) const ;
 
@@ -16124,7 +16540,7 @@ class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_sortingKeyList_2D_element class
 
@@ -16157,7 +16573,7 @@ class GALGAS_gtlAbstractSortInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlAbstractSortInstruction extractObject (const GALGAS_object & inObject,
@@ -16180,7 +16596,7 @@ class GALGAS_gtlAbstractSortInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlAbstractSortInstruction class
 
@@ -16258,9 +16674,9 @@ class cPtr_gtlAbstractSortInstruction : public cPtr_gtlInstruction {
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_sint callExtensionGetter_compare (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                               const GALGAS_gtlData constin_s_31_,
-                                               const GALGAS_gtlData constin_s_32_,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_s_31_,
+                                               const class GALGAS_gtlData constin_s_32_,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16270,9 +16686,9 @@ class GALGAS_sint callExtensionGetter_compare (const class cPtr_gtlAbstractSortI
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_swap (class cPtr_gtlAbstractSortInstruction * inObject,
-                               GALGAS_list & io_aList,
-                               const GALGAS_uint constin_index_31_,
-                               const GALGAS_uint constin_index_32_,
+                               class GALGAS_list & io_aList,
+                               const class GALGAS_uint constin_index_31_,
+                               const class GALGAS_uint constin_index_32_,
                                C_Compiler * inCompiler
                                COMMA_LOCATION_ARGS) ;
 
@@ -16283,10 +16699,10 @@ void callExtensionMethod_swap (class cPtr_gtlAbstractSortInstruction * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_partition (class cPtr_gtlAbstractSortInstruction * inObject,
-                                    GALGAS_list & io_aList,
-                                    const GALGAS_uint constin_min,
-                                    const GALGAS_uint constin_max,
-                                    GALGAS_uint & io_pivotIndex,
+                                    class GALGAS_list & io_aList,
+                                    const class GALGAS_uint constin_min,
+                                    const class GALGAS_uint constin_max,
+                                    class GALGAS_uint & io_pivotIndex,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) ;
 
@@ -16297,9 +16713,9 @@ void callExtensionMethod_partition (class cPtr_gtlAbstractSortInstruction * inOb
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_sort (class cPtr_gtlAbstractSortInstruction * inObject,
-                               GALGAS_list & io_aList,
-                               const GALGAS_uint constin_min,
-                               const GALGAS_uint constin_max,
+                               class GALGAS_list & io_aList,
+                               const class GALGAS_uint constin_min,
+                               const class GALGAS_uint constin_max,
                                C_Compiler * inCompiler
                                COMMA_LOCATION_ARGS) ;
 
@@ -16330,7 +16746,7 @@ class GALGAS_gtlSortStatementStructInstruction : public GALGAS_gtlAbstractSortIn
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlSortStatementStructInstruction extractObject (const GALGAS_object & inObject,
@@ -16360,7 +16776,7 @@ class GALGAS_gtlSortStatementStructInstruction : public GALGAS_gtlAbstractSortIn
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlSortStatementStructInstruction class
 
@@ -16425,9 +16841,9 @@ class cPtr_gtlSortStatementStructInstruction : public cPtr_gtlAbstractSortInstru
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_sint callExtensionGetter_compareElements (const cPtr_gtlSortStatementStructInstruction * inObject,
-                                                       const GALGAS_gtlData constin_s_31_,
-                                                       const GALGAS_gtlData constin_s_32_,
-                                                       GALGAS_sortingKeyList in_keyList,
+                                                       const class GALGAS_gtlData constin_s_31_,
+                                                       const class GALGAS_gtlData constin_s_32_,
+                                                       class GALGAS_sortingKeyList in_keyList,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
@@ -16438,7 +16854,7 @@ class GALGAS_sint callExtensionGetter_compareElements (const cPtr_gtlSortStateme
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_bool callExtensionGetter_bool (const class cPtr_gtlData * inObject,
-                                            C_Compiler * inCompiler
+                                            class C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16448,8 +16864,8 @@ class GALGAS_bool callExtensionGetter_bool (const class cPtr_gtlData * inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_gtOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16469,8 +16885,8 @@ class GALGAS_location callExtensionGetter_location (const cPtr_gtlData * inObjec
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_gtlData callExtensionGetter_ltOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData constin_right,
-                                               C_Compiler * inCompiler
+                                               const class GALGAS_gtlData constin_right,
+                                               class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16500,7 +16916,7 @@ class GALGAS_gtlVariablesInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlVariablesInstruction extractObject (const GALGAS_object & inObject,
@@ -16529,7 +16945,7 @@ class GALGAS_gtlVariablesInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlVariablesInstruction class
 
@@ -16597,7 +17013,7 @@ class cPtr_gtlVariablesInstruction : public cPtr_gtlInstruction {
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_displayShort (class cPtr_gtlVariablesInstruction * inObject,
-                                       const GALGAS_gtlData constin_vars,
+                                       const class GALGAS_gtlData constin_vars,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) ;
 
@@ -16608,8 +17024,8 @@ void callExtensionMethod_displayShort (class cPtr_gtlVariablesInstruction * inOb
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string callExtensionGetter_desc (const class cPtr_gtlData * inObject,
-                                              const GALGAS_uint constin_tab,
-                                              C_Compiler * inCompiler
+                                              const class GALGAS_uint constin_tab,
+                                              class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16619,7 +17035,7 @@ class GALGAS_string callExtensionGetter_desc (const class cPtr_gtlData * inObjec
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_displayLong (class cPtr_gtlVariablesInstruction * inObject,
-                                      const GALGAS_gtlData constin_vars,
+                                      const class GALGAS_gtlData constin_vars,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 
@@ -16648,7 +17064,7 @@ class GALGAS_gtlLibrariesInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlLibrariesInstruction extractObject (const GALGAS_object & inObject,
@@ -16673,7 +17089,7 @@ class GALGAS_gtlLibrariesInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlLibrariesInstruction class
 
@@ -16749,7 +17165,7 @@ class GALGAS_gtlInputStatementInstruction : public GALGAS_gtlInstruction {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlInputStatementInstruction extractObject (const GALGAS_object & inObject,
@@ -16778,7 +17194,7 @@ class GALGAS_gtlInputStatementInstruction : public GALGAS_gtlInstruction {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlInputStatementInstruction class
 
@@ -16851,7 +17267,7 @@ void extensionMethod_loadCommandFile (const class GALGAS_string inObject,
 //----------------------------------------------------------------------------------------------------------------------
 
 void callExtensionMethod_display (class cPtr_gtlInstruction * inObject,
-                                  C_Compiler * inCompiler
+                                  class C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16885,7 +17301,7 @@ class GALGAS_gtlBreakpoint : public AC_GALGAS_value_class {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlBreakpoint extractObject (const GALGAS_object & inObject,
@@ -16920,7 +17336,7 @@ class GALGAS_gtlBreakpoint : public AC_GALGAS_value_class {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlBreakpoint class
 
@@ -16983,8 +17399,8 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
   }
 
 //--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
+  public: VIRTUAL_IN_DEBUG bool isValid (void) const override ;
+  public: VIRTUAL_IN_DEBUG void drop (void) override ;
 
 //--------------------------------- Default GALGAS constructor
   public: static GALGAS_gtlBreakpointList_2D_element constructor_default (LOCATION_ARGS) ;
@@ -17006,7 +17422,7 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 //-- Start of generic part --*
 
 //--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
+  protected: virtual AC_GALGAS_root * clonedObject (void) const override ;
 
 //--------------------------------- Object extraction
   public: static GALGAS_gtlBreakpointList_2D_element extractObject (const GALGAS_object & inObject,
@@ -17019,7 +17435,7 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of getter 'description'
   public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
+                                              const int32_t inIndentation) const override ;
 //--------------------------------- Comparison
   public: typeComparisonResult objectCompare (const GALGAS_gtlBreakpointList_2D_element & inOperand) const ;
 
@@ -17033,7 +17449,7 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Optional Methods
 
 //--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const override ;
  
 } ; // End of GALGAS_gtlBreakpointList_2D_element class
 
@@ -17041,88 +17457,4 @@ class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 //----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointList_2D_element ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Phase 1: @gtlInstructionListContextStack_2D_element struct
-//
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_gtlInstructionListContextStack_2D_element : public AC_GALGAS_root {
-//--------------------------------- Properties
-  public: GALGAS_uint mProperty_nextInstructionIndex ;
-  public: inline GALGAS_uint readProperty_nextInstructionIndex (void) const {
-    return mProperty_nextInstructionIndex ;
-  }
-
-  public: GALGAS_gtlInstructionList mProperty_instructionList ;
-  public: inline GALGAS_gtlInstructionList readProperty_instructionList (void) const {
-    return mProperty_instructionList ;
-  }
-
-//--------------------------------- Accessors
-  public: VIRTUAL_IN_DEBUG bool isValid (void) const ;
-  public: VIRTUAL_IN_DEBUG void drop (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public: static GALGAS_gtlInstructionListContextStack_2D_element constructor_default (LOCATION_ARGS) ;
-
-//--------------------------------- Default constructor
-  public: GALGAS_gtlInstructionListContextStack_2D_element (void) ;
-
-//--------------------------------- Property setters
-  public: inline void setter_setNextInstructionIndex (const GALGAS_uint & inValue COMMA_UNUSED_LOCATION_ARGS) {
-    mProperty_nextInstructionIndex = inValue ;
-  }
-
-  public: inline void setter_setInstructionList (const GALGAS_gtlInstructionList & inValue COMMA_UNUSED_LOCATION_ARGS) {
-    mProperty_instructionList = inValue ;
-  }
-
-//--------------------------------- Virtual destructor (in debug mode)
-  public: virtual ~ GALGAS_gtlInstructionListContextStack_2D_element (void) ;
-
-//--------------------------------- Native constructor
-  public: GALGAS_gtlInstructionListContextStack_2D_element (const GALGAS_uint & in_nextInstructionIndex,
-                                                            const GALGAS_gtlInstructionList & in_instructionList) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected: virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public: static GALGAS_gtlInstructionListContextStack_2D_element extractObject (const GALGAS_object & inObject,
-                                                                                 C_Compiler * inCompiler
-                                                                                 COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public: static class GALGAS_gtlInstructionListContextStack_2D_element constructor_new (const class GALGAS_uint & inOperand0,
-                                                                                         const class GALGAS_gtlInstructionList & inOperand1
-                                                                                         COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Implementation of getter 'description'
-  public: VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const int32_t inIndentation) const ;
-//--------------------------------- Comparison
-  public: typeComparisonResult objectCompare (const GALGAS_gtlInstructionListContextStack_2D_element & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Optional Methods
-
-//--------------------------------- Introspection
-  public: VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlInstructionListContextStack_2D_element class
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInstructionListContextStack_2D_element ;
 
