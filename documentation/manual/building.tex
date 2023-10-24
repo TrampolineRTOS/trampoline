@@ -207,12 +207,12 @@ It runs for some Cortex-M based target at this date (STM32).
 
 \section{Goil related features}
 
-Many parts of the build system are generated for \goil\ templates. This section introduces these features.
+Many parts of the build system are generated from \goil\ templates. This section introduces these features.
 
 \subsection{Compilation flags}
 
-Some flags may be defined globally for a specific target. It can be retrieved in the \goil\ templates, in the \file{config/} subfolders. The file is named \file{buildOptions.oil}. For instance, on ARM Cortex-M4 (armv7em ISA), the path is \file{goil/templates/config/cortex/armv7em/buildOptions.oil}.
-begin
+Some flags may be defined globally for a specific target. It can be retrieved in the \goil\ templates, in the \file{config/} subdirectories. The file is named \file{buildOptions.oil}. For instance, on ARM Cortex-M4 (armv7em ISA), the path is \file{goil/templates/config/cortex/armv7em/buildOptions.oil}.
+
 Some other flags can be added directly in the main \file{config.oil} file in the templates.
 
 \subsection{Additionnal files}
@@ -263,7 +263,78 @@ PLATFORM_FILES posix_port_trace {
 
 
 \subsection{Libraries}
+\label{sec:libraries}
 
+Libraries are software modules that can potentially be used on several targets. These include device drivers common to several targets from the same manufacturer, as well as software functionalities that are independent of all targets.
+Libraries are grouped together in a directory hierarchy whose root is the \file{libraries} directory which is located at the root directory of Trampoline.
+
+\subsubsection{How to package a library}
+
+Assuming that the directory where Trampoline is installed is named \file{trampoline}, the library source code is located in the \file{libraries} subdirectory. The directory hierarchy reflects the type of library. For example, the CAN library is located in \file{libraries/net/can} and the dummy CAN controller library is located in \file{libraries/net/can/demo_driver}.
+
+In the template directory, configuration files describe where the source code of a library is located relative to the \file{libraries} directory. Thus, the description of the CAN library is as follows:
+
+\begin{lstlisting}[language=OIL]
+CPU net_can_files {
+  LIBRARY can {
+    PATH = "net/can";
+    CFILE = "tpl_can_core.c";
+  };
+};
+\end{lstlisting} 
+
+And the description of the demo_driver is as follow:
+
+\begin{lstlisting}[language=OIL]
+CPU net_can_demo_driver_files {
+  LIBRARY net_can_demo_driver {
+    PATH = "net/can/demo_driver";
+    CHEADER = "tpl_can_demo_driver.h";
+    CFILE = "tpl_can_demo_driver.c";
+  };
+};
+\end{lstlisting} 
+
+Not all libraries are usable on all platforms and it is necessary to specify which libraries are available for a given platform. This is done in the target's \file{config.oil} file. So, for the posix target, the \file{config/posix/config.oil} file describes the available libraries as follows:
+
+\begin{lstlisting}[language=OIL]
+LIBRARY net_can_demo_driver {
+  GLOBAL = TRUE;
+  PATH = "net/can/demo_driver";
+};
+
+LIBRARY can {
+  GLOBAL = TRUE;
+  NEEDS = net_can_demo_driver;
+  PATH = "net/can";
+};
+\end{lstlisting} 
+
+For both, \oilattr{GLOBAL = TRUE;} indicates a library in the \file{libraries} hierarchy\footnote{Specific libraries may also reside in the target hierarchy. In this case, \oilattr{GLOBAL} is set to false, which is the default value.}. \oilattr{PATH} specifies the subdirectory where the \file{config.oil} file describing the library is located (see above). \oilattr{NEEDS} indicates a dependency relationship between libraries. Here, the \oilobj{can} library requires the \oilobj{net_can_demo_driver} library to function.
+
+Finally, a \oilattr{LIBRARY} attribute of type \ctype{ENUM} is added to the OS object to list the libraries that the user can reference. As it makes no sense to reference the \oilobj{net_can_demo_driver} library directly, only the \oilobj{can} library is listed in the \ctype{ENUM}. The possible ENUM values must match the object names \oilattr{LIBRARY}:
+
+\begin{lstlisting}[language=OIL]
+ENUM [
+  can
+] LIBRARY[];
+\end{lstlisting} 
+
+\subsubsection{Other attributes of the \oilattr{LIBRARY} object}
+
+These attributes can appear as many times as required.
+
+\begin{description}
+  \item[\oilattren{CHEADER}] gives the name of a header file in C language;
+  \item[\oilattren{CPPHEADER}] allows you to name a header file in C++ language;
+  \item[\oilattren{CFILE}] to give the name of a source file in C language;
+  \item[\oilattren{CPPFILE}] to name a source file in C++ language;
+  \item[\oilattren{ASFILE}]  to name a source file in assembly language.
+ \end{description}
+
+\subsubsection{How to use a library}
+
+Libraries are selected via a series of \oilattr{LIBRARY = <name>;} in the OS object. During build script generation, \goil, resolves library dependencies, inserts the necessary source files into the files to be compiled and inserts the paths into the include path list.
 
 
 \subsection{Additionnal build target}

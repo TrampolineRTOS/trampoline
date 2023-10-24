@@ -15,7 +15,7 @@ OSEK/VDX and \textsc{Autosar os} are static operating systems. That means the ob
 \label{fig:files}
 \end{figure}
 
-In addition to the generation of static data structures, \goil\ is able to generate other files, including those for the definition of memory mampping (link script), tools for debugging (see \ref{chap:trace}), or tools to build the application.
+In addition to the generation of static data structures, \goil\ is able to generate other files, including those for the definition of memory mapping (link script), tools for debugging (see \ref{chap:trace}), or tools to build the application.
 
 \section{Setting up the environment}
 
@@ -23,11 +23,11 @@ Before compiling and running the first application, a few tools are required. Th
 
 \subsection{Compiling goil}
 
-\goil\ is located in the \file{goil} subdirectory. Binaries are available on GitHub\footnote{\url{https://github.com/TrampolineRTOS/trampoline}}. To compile \goil\ from sources, go in the directory corresponding to your operating system, \file{goil/makefile-macosx} for Mac OS X or \file{goil/makefile-unix} for Linux. Then type \com{./build.py release}. If everything went well, a \goil\ executable is generated. You can test it by typing \com{./goil --version}. At the time of writing, the command should output:
+\goil\ is located in the \file{goil} subdirectory. Binaries are available on GitHub\footnote{\url{https://github.com/TrampolineRTOS/trampoline}}. To compile \goil\ from sources, go in the directory corresponding to your operating system, \file{goil/makefile-unix} for Mac OS X or Linux. Then type \com{./build.py release}. If everything went well, a \goil\ executable is generated. You can test it by typing \com{./goil --version}. At the time of writing, the command should output:
 
 \begin{verbatim}
 % goil --version
-goil : 3.1.12, build with GALGAS 3.4.2
+goil : 3.1.13, build with GALGAS 3.6.0
 No warning, no error.
 \end{verbatim}
 
