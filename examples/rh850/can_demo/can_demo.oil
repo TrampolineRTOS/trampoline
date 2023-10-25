@@ -1,0 +1,40 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+	/* This fix the default STACKSIZE of tasks */
+	TASK {
+		UINT32 STACKSIZE = 1000 ;
+	};
+
+	/* This fix the default STACKSIZE of ISRs */
+	ISR {
+		UINT32 STACKSIZE = 1000 ;
+	};
+};
+
+CPU can_task {
+	OS config {
+		STATUS = EXTENDED;
+		BUILD = TRUE {
+			TRAMPOLINE_BASE_PATH = "../../../";
+			APP_SRC = "can_demo.c";
+			APP_NAME = "can_demo_exe";
+			LDFLAGS="-debug -nocompress -NOOPtimize -memory=high -nologo -SHow=ALL";
+			CFLAGS="-Xcpu=g4mh -g -g_line -Xfxu=off -Xasm_path=.";
+			LINKER = "rlink";
+			SYSTEM = CMAKE;
+			LIBRARY = can;
+		};
+	};
+
+	APPMODE stdAppmode {};
+
+	TASK can_task {
+		PRIORITY = 1;
+		AUTOSTART = TRUE {
+			APPMODE = stdAppmode;
+		};
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+};
