@@ -1,0 +1,25 @@
+%let basePath := OS::BUILD_S::TRAMPOLINE_BASE_PATH
+if [basePath charAtIndex: 0] != '/' then
+	let basePath := "${workspaceFolder}/"+basePath
+end if%
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    {
+        "cwd": "${workspaceFolder}",
+        "executable": "./build/% !OS::BUILD_S::APP_NAME %",
+        "name": "Debug on STM32 target",
+        "request": "launch", //"launch" => reload firmware, "attach" => just start debug session
+        "type": "cortex-debug",
+        "showDevDebugOutput": "none",
+        "servertype": "stutil",
+        "runToEntryPoint": "main",
+        "device": "STM32L432KC",
+        "v1": false,
+        "svdFile": "% !basePath %/machines/cortex-m/armv7em/stm32l432/CMSIS-ST/STM32L4x2.svd",
+    }
+    ]
+}

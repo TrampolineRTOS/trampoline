@@ -1,0 +1,7 @@
+CPU XPlainedPro {
+  PLATFORM_FILES XPlainedPro {
+    PATH = "cortex-m/armv6m/samd21/ArduinoM0";
+    CFILE = "system_samd21_ArduinoM0_48MHz.c";
+  };
+};
+    

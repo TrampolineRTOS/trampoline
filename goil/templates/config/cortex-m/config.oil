@@ -1,0 +1,205 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+IMPLEMENTATION thumb2_ressource {
+
+  TASK {
+    BOOLEAN USEFLOAT = FALSE;
+  };
+
+  ISR [] {
+    #include <interruptSources.oil>
+  };
+
+  COUNTER [] {
+    #include <interruptSources.oil>
+  };
+  
+  INTERRUPT [] { 
+    UINT32 VECT;
+    BOOLEAN EXCEPTION = FALSE;
+    ENUM [
+      HANDLER {
+        STRING NAME;
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      REFERENCE {
+        STRING NAME;
+      }
+    ] VECTOR_TYPE;
+    BOOLEAN [
+      TRUE { 
+        ENUM [
+          BIT {STRING NAME;},
+          TEMPLATE {STRING NAME;},
+          /* special case for external interrupts, as ACK field can be deduced. */
+          EXTERNAL
+        ] ACKTYPE;
+      },
+      FALSE
+    ] ACK = FALSE;
+    BOOLEAN [
+      TRUE  { INT32 NUMBER; },
+      FALSE
+    ] SETPRIO = FALSE;
+  };
+  
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+  
+  CORTEX {
+    UINT32 PRIO_BITS; /* Number of bits in interrupt priority */
+    UINT32 CLOCK;     /* Clock frequency in Hz                */
+  };
+};
+
+CPU thumb2_ressource {
+
+  COUNTER SystemCounter {
+    SOURCE = SysTick;
+  };  
+
+  PLATFORM_FILES cortex {
+    PATH = "cortex-m";
+    CFILE = "tpl_machine_cortex.c";
+    CFILE = "tpl_sc_handler.S";
+    CFILE = "tpl_startup.S";
+  };
+  
+  GENERATED_FILES cortex_m4 {
+    CFILE = "tpl_primary_irq.S";
+    CFILE = "tpl_vectors.c";
+    CFILE = "tpl_external_interrupts.c";
+    CFILE = "tpl_app_interrupts.c";
+  };
+
+  PLATFORM_FILES cortex_cmsis {
+    PATH = "cortex-m/CMSIS/Include";
+  };
+
+  INTERRUPT InitialSPValue {
+    VECT = 0;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "&_estack";
+    };
+    ACK = FALSE;
+  };
+
+  INTERRUPT Reset {
+    VECT = 1;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "tpl_reset_handler";
+    };
+  };
+  
+  INTERRUPT NMI {
+    VECT = 2;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NMI_Handler";
+    };
+  };
+  
+  INTERRUPT HardFault {
+    VECT = 3;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "HardFault_Handler";
+    };
+  };
+  
+  INTERRUPT MemManage {
+    VECT = 4;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "MemManage_Handler";
+    };
+  };
+  
+  INTERRUPT BusFault {
+    VECT = 5;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "BusFault_Handler";
+    };
+  };
+  
+  INTERRUPT UsageFault {
+    VECT = 6;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "UsageFault_Handler";
+    };
+  };
+  
+  INTERRUPT Reserved1 {
+    VECT = 7;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+
+  INTERRUPT Reserved2 {
+    VECT = 8;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+  
+  INTERRUPT Reserved3 {
+    VECT = 9;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+  
+  INTERRUPT Reserved4 {
+    VECT = 10;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+
+  INTERRUPT SVCall {
+    VECT = 11;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "tpl_sc_handler";
+    };
+  };
+
+  INTERRUPT DebugMonitor {
+    VECT = 12;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "DebugMonitor_Handler";
+    };
+  };
+
+  INTERRUPT Reserved5 {
+    VECT = 13;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+
+  INTERRUPT PendSV {
+    VECT = 14;
+    VECTOR_TYPE = HANDLER {
+      NAME = "PendSV_Handler";
+    };
+  };
+};
+

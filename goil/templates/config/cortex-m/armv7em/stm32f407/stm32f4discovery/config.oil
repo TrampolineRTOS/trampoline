@@ -1,0 +1,8 @@
+CPU stm32_discovery {
+  PLATFORM_FILES stm32f4discovery {
+    PATH = "cortex-m/armv7em/stm32f407/stm32f4discovery";
+    CFILE = "stm32f4_discovery.c";
+    CFILE = "tp.c";
+  };
+};
+    

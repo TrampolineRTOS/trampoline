@@ -1,0 +1,390 @@
+IMPLEMENTATION atsam3x8e {
+
+  DEVICE_KIND [] {
+    STRUCT {
+      UINT32 OFFSET;
+      ENUM [ BYTE, HALFWORD, WORD, DOUBLEWORD ] SIZE;
+      STRUCT {
+        UINT32 LOC;
+      } BIT [];
+      STRUCT {
+        UINT32 START;
+        UINT32 STOP;
+      } FIELD [];
+    } REGISTER [];
+    STRUCT {
+      IDENTIFIER ENABLE [];
+      BOOLEAN ACK = FALSE;
+    } EVENT [];
+  };
+
+  DEVICE [] {
+    DEVICE_KIND_TYPE KIND;
+    UINT32 ADDRESS;
+    INTERRUPT_TYPE VECTOR;
+  };
+};
+
+CPU atsam3x8e {
+
+  CORTEX atsam3x8e {
+    PRIO_BITS = 4;
+    CLOCK = 84000000;
+  };
+
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 57;
+  };
+
+  /******  Cortex-M3 Processor Exceptions ******************************/
+  INTERRUPT NMI {
+		SETPRIO = TRUE { NUMBER = -14; };
+	};
+  INTERRUPT HardFault {
+		SETPRIO = TRUE { NUMBER = -13; };
+	};
+  INTERRUPT MemManage {
+		SETPRIO = TRUE { NUMBER = -12; };
+	};
+  INTERRUPT BusFault {
+		SETPRIO = TRUE { NUMBER = -11; };
+	};
+  INTERRUPT UsageFault {
+		SETPRIO = TRUE { NUMBER = -10; };
+	};
+  INTERRUPT SVCall {
+		SETPRIO = TRUE { NUMBER = -5; };
+	};
+  INTERRUPT DebugMonitor {
+		SETPRIO = TRUE { NUMBER = -4; };
+	};
+  INTERRUPT PendSV {
+		SETPRIO = TRUE { NUMBER = -2; };
+	};
+  INTERRUPT SysTick {
+		SETPRIO = TRUE { NUMBER = -1; };
+	};
+  /******  SAM3X8E specific Interrupt *********************************/
+
+  INTERRUPT SUPC_IRQ {
+		VECT = 16;
+		SETPRIO = TRUE { NUMBER = 0; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "SUPC_IRQ_Handler";
+		};
+	} : "SAM3X8E Supply Controller ";
+  INTERRUPT RSTC_IRQ {
+		VECT = 17;
+		SETPRIO = TRUE { NUMBER = 1; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "RSTC_IRQ_Handler";
+		};
+	} : "SAM3X8E Reset Controller ";
+  INTERRUPT RTC_IRQ {
+		VECT = 18;
+		SETPRIO = TRUE { NUMBER = 2; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "RTC_IRQ_Handler";
+		};
+	} : "SAM3X8E Real Time Clock ";
+  INTERRUPT RTT_IRQ {
+		VECT = 19;
+		SETPRIO = TRUE { NUMBER = 3; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "RTT_IRQ_Handler";
+		};
+	} : "SAM3X8E Real Time Timer ";
+  INTERRUPT WDT_IRQ {
+		VECT = 20;
+		SETPRIO = TRUE { NUMBER = 4; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "WDT_IRQ_Handler";
+		};
+	} : "SAM3X8E Watchdog Timer ";
+  INTERRUPT PMC_IRQ {
+		VECT = 21;
+		SETPRIO = TRUE { NUMBER = 5; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "PMC_IRQ_Handler";
+		};
+	} : "SAM3X8E Power Management Controller ";
+  INTERRUPT EFC0_IRQ {
+		VECT = 22;
+		SETPRIO = TRUE { NUMBER = 6; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "EFC0_IRQ_Handler";
+		};
+	} : "SAM3X8E Enhanced Flash Controller 0 ";
+  INTERRUPT EFC1_IRQ {
+		VECT = 23;
+		SETPRIO = TRUE { NUMBER = 7; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "EFC1_IRQ_Handler";
+		};
+	} : "SAM3X8E Enhanced Flash Controller 1 ";
+  INTERRUPT UART0_IRQ {
+		VECT = 24;
+		SETPRIO = TRUE { NUMBER = 8; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "UART0_IRQ_Handler";
+		};
+	} : "SAM3X8E Universal Asynchronous Receiver Transceiver ";
+  INTERRUPT SMC_IRQ {
+		VECT = 25;
+		SETPRIO = TRUE { NUMBER = 9; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "SMC_IRQ_Handler";
+		};
+	} : "SAM3X8E Static Memory Controller ";
+  INTERRUPT PIOA_IRQ {
+		VECT = 26;
+		SETPRIO = TRUE { NUMBER = 11; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "PIOA_IRQ_Handler";
+		};
+	} : "SAM3X8E Parallel I/O Controller A, ";
+  INTERRUPT PIOB_IRQ {
+		VECT = 27;
+		SETPRIO = TRUE { NUMBER = 12; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "PIOB_IRQ_Handler";
+		};
+	} : "SAM3X8E Parallel I/O Controller B ";
+  INTERRUPT PIOC_IRQ {
+		VECT = 28;
+		SETPRIO = TRUE { NUMBER = 13; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "PIOC_IRQ_Handler";
+		};
+	} : "SAM3X8E Parallel I/O Controller C ";
+  INTERRUPT PIOD_IRQ {
+		VECT = 29;
+		SETPRIO = TRUE { NUMBER = 14; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "PIOD_IRQ_Handler";
+		};
+	} : "SAM3X8E Parallel I/O Controller D ";
+  INTERRUPT USART0_IRQ {
+		VECT = 30;
+		SETPRIO = TRUE { NUMBER = 17; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "USART0_IRQ_Handler";
+		};
+	} : "SAM3X8E USART 0 ";
+  INTERRUPT USART1_IRQ {
+		VECT = 31;
+		SETPRIO = TRUE { NUMBER = 18; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "USART1_IRQ_Handler";
+		};
+	} : "SAM3X8E USART 1 ";
+  INTERRUPT USART2_IRQ {
+		VECT = 32;
+		SETPRIO = TRUE { NUMBER = 19; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "USART2_IRQ_Handler";
+		};
+	} : "SAM3X8E USART 2 ";
+  INTERRUPT USART3_IRQ {
+		VECT = 33;
+		SETPRIO = TRUE { NUMBER = 20; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "USART3_IRQ_Handler";
+		};
+	} : "SAM3X8E USART 3 ";
+  INTERRUPT HSMCI_IRQ {
+		VECT = 34;
+		SETPRIO = TRUE { NUMBER = 21; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "HSMCI_IRQ_Handler";
+		};
+	} : "SAM3X8E Multimedia Card Interface ";
+  INTERRUPT TWI0_IRQ {
+		VECT = 35;
+		SETPRIO = TRUE { NUMBER = 22; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TWI0_IRQ_Handler";
+		};
+	} : "SAM3X8E Two-Wire Interface 0 ";
+  INTERRUPT TWI1_IRQ {
+		VECT = 36;
+		SETPRIO = TRUE { NUMBER = 23; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TWI1_IRQ_Handler";
+		};
+	} : "SAM3X8E Two-Wire Interface 1 ";
+  INTERRUPT SPI0_IRQ {
+		VECT = 37;
+		SETPRIO = TRUE { NUMBER = 24; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "SPI0_IRQ_Handler";
+		};
+	} : "SAM3X8E Serial Peripheral Interface ";
+  INTERRUPT SSC_IRQ {
+		VECT = 38;
+		SETPRIO = TRUE { NUMBER = 26; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "SSC_IRQ_Handler";
+		};
+	} : "SAM3X8E Synchronous Serial Controller ";
+  INTERRUPT TC0_IRQ {
+		VECT = 39;
+		SETPRIO = TRUE { NUMBER = 27; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC0_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 0 ";
+  INTERRUPT TC1_IRQ {
+		VECT = 40;
+		SETPRIO = TRUE { NUMBER = 28; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC1_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 1 ";
+  INTERRUPT TC2_IRQ {
+		VECT = 41;
+		SETPRIO = TRUE { NUMBER = 29; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC2_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 2 ";
+  INTERRUPT TC3_IRQ {
+		VECT = 42;
+		SETPRIO = TRUE { NUMBER = 30; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC3_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 3 ";
+  INTERRUPT TC4_IRQ {
+		VECT = 43;
+		SETPRIO = TRUE { NUMBER = 31; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC4_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 4 ";
+  INTERRUPT TC5_IRQ {
+		VECT = 44;
+		SETPRIO = TRUE { NUMBER = 32; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC5_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 5 ";
+  INTERRUPT TC6_IRQ {
+		VECT = 45;
+		SETPRIO = TRUE { NUMBER = 33; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC6_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 6 ";
+  INTERRUPT TC7_IRQ {
+		VECT = 46;
+		SETPRIO = TRUE { NUMBER = 34; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC7_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 7 ";
+  INTERRUPT TC8_IRQ {
+		VECT = 47;
+		SETPRIO = TRUE { NUMBER = 35; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TC8_IRQ_Handler";
+		};
+	} : "SAM3X8E Timer Counter 8 ";
+  INTERRUPT PWM_IRQ {
+		VECT = 48;
+		SETPRIO = TRUE { NUMBER = 36; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "PWM_IRQ_Handler";
+		};
+	} : "SAM3X8E Pulse Width Modulation Controller ";
+  INTERRUPT ADC_IRQ {
+		VECT = 49;
+		SETPRIO = TRUE { NUMBER = 37; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "ADC_IRQ_Handler";
+		};
+	} : "SAM3X8E ADC Controller ";
+  INTERRUPT DACC_IRQ {
+		VECT = 50;
+		SETPRIO = TRUE { NUMBER = 38; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "DACC_IRQ_Handler";
+		};
+	} : "SAM3X8E DAC Controller ";
+  INTERRUPT DMAC_IRQ {
+		VECT = 51;
+		SETPRIO = TRUE { NUMBER = 39; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "DMAC_IRQ_Handler";
+		};
+	} : "SAM3X8E DMA Controller ";
+  INTERRUPT UOTGHS_IRQ {
+		VECT = 52;
+		SETPRIO = TRUE { NUMBER = 40; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "UOTGHS_IRQ_Handler";
+		};
+	} : "SAM3X8E USB OTG High Speed ";
+  INTERRUPT TRNG_IRQ {
+		VECT = 53;
+		SETPRIO = TRUE { NUMBER = 41; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "TRNG_IRQ_Handler";
+		};
+	} : "SAM3X8E True Random Number Generator ";
+  INTERRUPT EMAC_IRQ {
+		VECT = 54;
+		SETPRIO = TRUE { NUMBER = 42; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "EMAC_IRQ_Handler";
+		};
+	} : "SAM3X8E Ethernet MAC ";
+  INTERRUPT CAN0_IRQ {
+		VECT = 55;
+		SETPRIO = TRUE { NUMBER = 43; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "CAN0_IRQ_Handler";
+		};
+	} : "SAM3X8E CAN Controller 0 ";
+  INTERRUPT CAN1_IRQ {
+		VECT = 56;
+		SETPRIO = TRUE { NUMBER = 44; };
+		VECTOR_TYPE = HANDLER {
+			NAME = "CAN1_IRQ_Handler";
+		};
+	} : "SAM3X8E CAN Controller 1 ";
+
+
+
+  PLATFORM_FILES atsam3x8e {
+    PATH = "cortex-m/armv7m/atsam3x8e";
+    CFILE = "tpl_machine_atsam3x8e.c";
+    CFILE = "startup_sam3x.c";
+    CFILE = "system_sam3xa.c";
+    CFILE = "handlers_atsam3x8e.c";
+  };
+
+  PLATFORM_FILES atsam3x8e_cmsis {
+    PATH = "cortex-m/armv7m/atsam3x8e/CMSIS";
+  };
+
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
+  };
+
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "echo";
+      INPUT = TARGET { EXT = ".bin"; };
+      PREOPTION = "-e 'r\\nh\\nloadbin";
+      POSTOPTION = ", 0x00080000' > flash_script.jlink && JLinkExe -device ATSAM3X8E -if JTAG -speed 4000 -jtagconf -1,-1 -autoconnect 1 -CommanderScript flash_script.jlink";
+    };
+  };
+
+};
