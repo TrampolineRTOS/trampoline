@@ -29,10 +29,18 @@
 #include <Can.h>
 #include <tpl_os.h>
 
-/** CAN module 0 */
-#define RSCFD0_BASE_ADDR 0xDFF50000
-/** CAN module 1 */
-#define RSCFD1_BASE_ADDR 0xDFD00000
+// A bus bridge is used on the CR52 core to access the CAN bus located in the G4MH control domain, that's why the base address high bits are different
+#ifdef __arm__
+	/** CAN module 0 */
+	#define RSCFD0_BASE_ADDR 0xDFF50000
+	/** CAN module 1 */
+	#define RSCFD1_BASE_ADDR 0xDFD00000
+#else
+	/** CAN module 0 */
+	#define RSCFD0_BASE_ADDR 0xFFF50000
+	/** CAN module 1 */
+	#define RSCFD1_BASE_ADDR 0xFFD00000
+#endif
 
 /**
  * All available CAN controllers.
