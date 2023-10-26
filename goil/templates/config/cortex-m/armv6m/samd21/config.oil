@@ -1,0 +1,267 @@
+CPU samd21 {
+
+  CORTEX samd21 {
+    PRIO_BITS = 2;
+    CLOCK = 48000000;
+  };
+   
+  BUILDOPTIONS buildOptionsForSamD21 {
+     COMMONFLAGS = "-D__SAMD21J18A__"; //processor def.
+  };
+  
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 44;
+  };
+  
+  /*
+    * systick is an option on Cortex-M0+,
+    * it is defined at the processor specific level.
+    */
+  INTERRUPT SysTick {
+    VECT = 15;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SysTick_Handler";
+    };
+    ACK = FALSE;
+    SETPRIO = TRUE { NUMBER = -1; };
+  };
+  
+  INTERRUPT SVCall {
+    SETPRIO = TRUE { NUMBER = -5; };
+  };
+
+  INTERRUPT PendSV {
+    SETPRIO = TRUE { NUMBER = -2; };
+  };
+  
+  INTERRUPT PM_IRQ {
+    VECT = 16;
+    VECTOR_TYPE = HANDLER {
+      NAME = "PM_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 0; };
+  };
+  INTERRUPT SYSCTRL_IRQ {
+    VECT = 17;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SYSCTRL_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 1; };
+  };
+  INTERRUPT WDT_IRQ {
+    VECT = 18;
+    VECTOR_TYPE = HANDLER {
+      NAME = "WDT_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 2; };
+  };
+  INTERRUPT RTC_IRQ {
+    VECT = 19;
+    VECTOR_TYPE = HANDLER {
+      NAME = "RTC_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 3; };
+  };
+  INTERRUPT EIC_IRQ {
+    VECT = 20;
+    VECTOR_TYPE = HANDLER {
+      NAME = "EIC_Handler";
+    };
+    ACK = FALSE;
+    SETPRIO = TRUE { NUMBER = 4; };
+  };
+  INTERRUPT NVMCTRL_IRQ {
+    VECT = 21;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NVMCTRL_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 5; };
+  };
+  INTERRUPT DMAC_IRQ {
+    VECT = 22;
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMAC_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 6; };
+  };
+  INTERRUPT USB_IRQ {
+    VECT = 23;
+    VECTOR_TYPE = HANDLER {
+      NAME = "USB_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 7; };
+  };
+  INTERRUPT EVSYS_IRQ {
+    VECT = 24;
+    VECTOR_TYPE = HANDLER {
+      NAME = "EVSYS_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 8; };
+  };
+  INTERRUPT SERCOM0_IRQ {
+    VECT = 25;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SERCOM0_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 9; };
+  };
+  INTERRUPT SERCOM1_IRQ {
+    VECT = 26;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SERCOM1_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 10; };
+  };
+  INTERRUPT SERCOM2_IRQ {
+    VECT = 27;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SERCOM2_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 11; };
+  };
+  INTERRUPT SERCOM3_IRQ {
+    VECT = 28;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SERCOM3_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 12; };
+  };
+  INTERRUPT SERCOM4_IRQ {
+    VECT = 29;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SERCOM4_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 13; };
+  };
+  INTERRUPT SERCOM5_IRQ {
+    VECT = 30;
+    VECTOR_TYPE = HANDLER {
+      NAME = "SERCOM5_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 14; };
+  };
+  INTERRUPT TCC0_IRQ {
+    VECT = 31;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TCC0_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 15; };
+  };
+  INTERRUPT TCC1_IRQ {
+    VECT = 32;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TCC1_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 16; };
+  };
+  INTERRUPT TCC2_IRQ {
+    VECT = 33;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TCC2_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 17; };
+  };
+  INTERRUPT TC3_IRQ {
+    VECT = 34;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TC3_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 18; };
+  };
+  INTERRUPT TC4_IRQ {
+    VECT = 35;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TC4_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 19; };
+  };
+  INTERRUPT TC5_IRQ {
+    VECT = 36;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TC5_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 20; };
+  };
+  INTERRUPT TC6_IRQ {
+    VECT = 37;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TC6_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 21; };
+  };
+  INTERRUPT TC7_IRQ {
+    VECT = 38;
+    VECTOR_TYPE = HANDLER {
+      NAME = "TC7_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 22; };
+  };
+  INTERRUPT ADC_IRQ {
+    VECT = 39;
+    VECTOR_TYPE = HANDLER {
+      NAME = "ADC_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 23; };
+  };
+  INTERRUPT AC_IRQ {
+    VECT = 40;
+    VECTOR_TYPE = HANDLER {
+      NAME = "AC_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 24; };
+  };
+  INTERRUPT DAC_IRQ {
+    VECT = 41;
+    VECTOR_TYPE = HANDLER {
+      NAME = "DAC_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 25; };
+  };
+  INTERRUPT PTC_IRQ {
+    VECT = 42;
+    VECTOR_TYPE = HANDLER {
+      NAME = "PTC_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 26; };
+  };
+  INTERRUPT I2S_IRQ {
+    VECT = 43;
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2S_Handler";
+    };
+    SETPRIO = TRUE { NUMBER = 27; };
+  };
+  INTERRUPT AC1_IRQ {
+    VECT = 44;
+    VECTOR_TYPE = HANDLER {
+      NAME = "AC1_Handler";
+    };
+  };
+  
+  PLATFORM_FILES samd21 {
+    PATH = "cortex-m/armv6m/samd21";
+    CFILE = "tpl_machine_samd.c";
+    CFILE = "startup_samd.c";
+  };
+
+  PLATFORM_FILES sam_cmsis {
+    PATH = "cortex-m/armv6m/samd21/CMSIS-Atmel/Device/ATMEL";
+  };
+
+  PLATFORM_FILES utils {
+    PATH = "cortex-m/armv6m/samd21/utils";
+    CFILE = "pinAccess.c";
+    CFILE = "pinMux.c";
+    CFILE = "eic.c";
+};
+    
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "openocd";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "-f board/atmel_samd21_xplained_pro.cfg -c \\\"program";
+      POSTOPTION = " verify reset exit\\\"";
+    };
+  };
+};

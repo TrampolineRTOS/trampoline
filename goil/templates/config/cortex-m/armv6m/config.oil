@@ -1,0 +1,20 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+#includeifexists <buildOptions.oil>
+
+/*
+ * Interrupt sources of the board
+ */
+CPU armv6m {
+  PLATFORM_FILES cortex_armv6m {
+    PATH = "cortex-m/armv6m";
+    CFILE = "sys_handlers.c";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_ctx_switch_under_it.S";
+    CFILE = "tpl_interrupts.S";
+  };
+};
+
+

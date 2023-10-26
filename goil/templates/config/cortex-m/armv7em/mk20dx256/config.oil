@@ -1,0 +1,276 @@
+/*
+ * This configuration file defines the interrupt sources and libraries
+ * of the Freescale mk20dx256 micro-controller
+ */
+IMPLEMENTATION mk20dx256 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          pit,ftm,port
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+
+CPU mk20dx256 {
+  CORTEX mk20dx256 {
+    PRIO_BITS = 4; //16 priority levels
+    CLOCK = 72000000;
+  };
+
+  PLATFORM_FILES cortex_armv7em_mk20dx256 {
+    PATH = "cortex-m/armv7em/mk20dx256";
+    CFILE = "tpl_machine_mk20dx256.c";
+    CFILE = "handlers_mk20dx256.c";
+    CFILE = "startup_mk20dx256.c";
+    CFILE = "syscalls.c";
+  };
+
+  LIBRARY pit {
+    PATH = "cortex-m/armv7em/mk20dx256/libraries/pit";
+    CHEADER = "pit_mk20dx256.h";
+    CFILE = "pit_mk20dx256.c";
+  };
+  
+  LIBRARY ftm {
+    PATH = "cortex-m/armv7em/mk20dx256/libraries/ftm";
+    CHEADER = "ftm_mk20dx256.h";
+    CFILE = "ftm_mk20dx256.c";
+  };
+  
+  LIBRARY port {
+    PATH = "cortex-m/armv7em/mk20dx256/libraries/port";
+    CHEADER = "port_mk20dx256.h";
+  };
+    
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 110; /* Size of the interrupt vector table */
+  };
+  
+  INTERRUPT DMA_CH0_IRQ            { VECT = 16; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH0_IRQ_Handler"; }; }
+    : "DMA channel 0 transfer complete";
+  INTERRUPT DMA_CH1_IRQ            { VECT = 17; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH1_IRQ_Handler"; }; }
+    : "DMA channel 1 transfer complete";
+  INTERRUPT DMA_CH2_IRQ            { VECT = 18; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH2_IRQ_Handler"; }; }
+    : "DMA channel 2 transfer complete";
+  INTERRUPT DMA_CH3_IRQ            { VECT = 19; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH3_IRQ_Handler"; }; }
+    : "DMA channel 3 transfer complete";
+  INTERRUPT DMA_CH4_IRQ            { VECT = 20; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH4_IRQ_Handler"; }; }
+    : "DMA channel 4 transfer complete";
+  INTERRUPT DMA_CH5_IRQ            { VECT = 21; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH5_IRQ_Handler"; }; }
+    : "DMA channel 5 transfer complete";
+  INTERRUPT DMA_CH6_IRQ            { VECT = 22; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH6_IRQ_Handler"; }; }
+    : "DMA channel 6 transfer complete";
+  INTERRUPT DMA_CH7_IRQ            { VECT = 23; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH7_IRQ_Handler"; }; }
+    : "DMA channel 7 transfer complete";
+  INTERRUPT DMA_CH8_IRQ            { VECT = 24; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH8_IRQ_Handler"; }; }
+    : "DMA channel 8 transfer complete";
+  INTERRUPT DMA_CH9_IRQ            { VECT = 25; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH9_IRQ_Handler"; }; }
+    : "DMA channel 9 transfer complete";
+  INTERRUPT DMA_CH10_IRQ           { VECT = 26; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH10_IRQ_Handler"; }; }
+    : "DMA channel 10 transfer complete";
+  INTERRUPT DMA_CH11_IRQ           { VECT = 27; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH11_IRQ_Handler"; }; }
+    : "DMA channel 11 transfer complete";
+  INTERRUPT DMA_CH12_IRQ           { VECT = 28; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH12_IRQ_Handler"; }; }
+    : "DMA channel 12 transfer complete";
+  INTERRUPT DMA_CH13_IRQ           { VECT = 29; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH13_IRQ_Handler"; }; }
+    : "DMA channel 13 transfer complete";
+  INTERRUPT DMA_CH14_IRQ           { VECT = 30; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH15_IRQ_Handler"; }; }
+    : "DMA channel 14 transfer complete";
+  INTERRUPT DMA_CH15_IRQ           { VECT = 31; VECTOR_TYPE = HANDLER { NAME =  "DMA_CH16_IRQ_Handler"; }; }
+    : "DMA channel 15 transfer complete";
+  INTERRUPT DMA_ERROR_IRQ          { VECT = 32; VECTOR_TYPE = HANDLER { NAME =  "DMA_ERROR_IRQ_Handler"; }; }
+    : "DMA error interrupt channel";
+    
+  INTERRUPT Unused33               { VECT = 33; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT FLASH_CMD_IRQ          { VECT = 34; VECTOR_TYPE = HANDLER { NAME =  "FLASH_CMD_IRQ_Handler"; }; }
+    : "Flash Memory Command complete";
+  INTERRUPT FLASH_ERROR_IRQ        { VECT = 35; VECTOR_TYPE = HANDLER { NAME =  "FLASH_ERROR_IRQ_Handler"; }; }
+    : "Flash Read collision";
+    
+  INTERRUPT LOW_VOLTAGE_IRQ        { VECT = 36; VECTOR_TYPE = HANDLER { NAME =  "LOW_VOLTAGE_IRQ_Handler"; }; }
+    : "Low-voltage detect/warning";
+  INTERRUPT WAKEUP_IRQ             { VECT = 37; VECTOR_TYPE = HANDLER { NAME =  "WAKEUP_IRQ_Handler"; }; }
+    : "Low Leakage Wakeup";
+    
+  INTERRUPT WATCHDOG_IRQ           { VECT = 38; VECTOR_TYPE = HANDLER { NAME =  "WATCHDOG_IRQ_Handler"; }; }
+    : "Both EWM and WDOG interrupt";
+    
+  INTERRUPT Unused39               { VECT = 39; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT I2C0_IRQ               { VECT = 40; VECTOR_TYPE = HANDLER { NAME =  "I2C0_IRQ_Handler"; }; }
+    : "I2C0 interrupt";
+  INTERRUPT I2C1_IRQ               { VECT = 41; VECTOR_TYPE = HANDLER { NAME =  "I2C1_IRQ_Handler"; }; }
+    : "I2C1 interrupt";
+    
+  INTERRUPT SPI0_IRQ               { VECT = 42; VECTOR_TYPE = HANDLER { NAME =  "SPI0_IRQ_Handler"; }; }
+    : "SPI0 interrupt";
+  INTERRUPT SPI1_IRQ               { VECT = 43; VECTOR_TYPE = HANDLER { NAME =  "SPI1_IRQ_Handler"; }; }
+    : "SPI1 interrupt";
+    
+  INTERRUPT Unused44               { VECT = 44; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT CAN0_MESSAGE_IRQ       { VECT = 45; VECTOR_TYPE = HANDLER { NAME =  "CAN0_MESSAGE_IRQ_Handler"; }; }
+    : "CAN OR'ed Message buffer (0-15)";
+  INTERRUPT CAN0_BUS_OFF_IRQ       { VECT = 46; VECTOR_TYPE = HANDLER { NAME =  "CAN0_BUS_OFF_IRQ_Handler"; }; }
+    : "CAN Bus Off";
+  INTERRUPT CAN0_ERROR_IRQ         { VECT = 47; VECTOR_TYPE = HANDLER { NAME =  "CAN0_ERROR_IRQ_Handler"; }; }
+    : "CAN Error";
+  INTERRUPT CAN0_TX_WARN_IRQ       { VECT = 48; VECTOR_TYPE = HANDLER { NAME =  "CAN0_TX_WARN_IRQ_Handler"; }; }
+    : "CAN Transmit Warning";
+  INTERRUPT CAN0_RX_WARN_IRQ       { VECT = 49; VECTOR_TYPE = HANDLER { NAME =  "CAN0_RX_WARN_IRQ_Handler"; }; }
+    : "CAN Receive Warning";
+  INTERRUPT CAN0_WAKEUP_IRQ        { VECT = 50; VECTOR_TYPE = HANDLER { NAME =  "CAN0_WAKEUP_IRQ_Handler"; }; }
+    : "CAN Wake Up"; 
+
+
+  INTERRUPT I2S0_TX_IRQ            { VECT = 51; VECTOR_TYPE = HANDLER { NAME =  "I2S0_TX_IRQ_Handler"; }; }
+    : "I2S0 Transmit"; 
+  INTERRUPT I2S0_RX_IRQ            { VECT = 52; VECTOR_TYPE = HANDLER { NAME =  "I2S0_RX_IRQ_Handler"; }; }
+    : "I2S0 Receive"; 
+
+
+  INTERRUPT Unused53               { VECT = 53; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused54               { VECT = 54; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused55               { VECT = 55; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused56               { VECT = 56; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused57               { VECT = 57; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused58               { VECT = 58; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused59               { VECT = 59; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT UART0_LON_IRQ          { VECT = 60; VECTOR_TYPE = HANDLER { NAME =  "UART0_LON_IRQ_Handler"; }; }
+    : "UART0 CEA709.1-B (LON) status"; 
+  INTERRUPT UART0_STATUS_IRQ       { VECT = 61; VECTOR_TYPE = HANDLER { NAME =  "UART0_STATUS_IRQ_Handler"; }; }
+    : "UART0 status"; 
+  INTERRUPT UART0_ERROR_IRQ        { VECT = 62; VECTOR_TYPE = HANDLER { NAME =  "UART0_ERROR_IRQ_Handler"; }; }
+    : "UART0 error"; 
+  INTERRUPT UART1_STATUS_IRQ       { VECT = 63; VECTOR_TYPE = HANDLER { NAME =  "UART1_STATUS_IRQ_Handler"; }; }
+    : "UART1 status"; 
+  INTERRUPT UART1_ERROR_IRQ        { VECT = 64; VECTOR_TYPE = HANDLER { NAME =  "UART1_ERROR_IRQ_Handler"; }; }
+    : "UART1 error"; 
+  INTERRUPT UART2_STATUS_IRQ       { VECT = 65; VECTOR_TYPE = HANDLER { NAME =  "UART2_STATUS_IRQ_Handler"; }; }
+    : "UART2 status"; 
+  INTERRUPT UART2_ERROR_IRQ        { VECT = 66; VECTOR_TYPE = HANDLER { NAME =  "UART2_ERROR_IRQ_Handler"; }; }
+    : "UART2 error"; 
+
+
+  INTERRUPT Unused67               { VECT = 67; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused68               { VECT = 68; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused69               { VECT = 69; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused70               { VECT = 70; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused71               { VECT = 71; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused72               { VECT = 72; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT ADC0_IRQ               { VECT = 73; VECTOR_TYPE = HANDLER { NAME =  "ADC0_IRQ_Handler"; }; }
+    : "ADC0";
+  INTERRUPT ADC1_IRQ               { VECT = 74; VECTOR_TYPE = HANDLER { NAME =  "ADC1_IRQ_Handler"; }; }
+    : "ADC1";
+
+
+  INTERRUPT CMP0_IRQ               { VECT = 75; VECTOR_TYPE = HANDLER { NAME =  "CMP0_IRQ_Handler"; }; }
+    : "CMP0";
+  INTERRUPT CMP1_IRQ               { VECT = 76; VECTOR_TYPE = HANDLER { NAME =  "CMP1_IRQ_Handler"; }; }
+    : "CMP1";
+  INTERRUPT CMP2_IRQ               { VECT = 77; VECTOR_TYPE = HANDLER { NAME =  "CMP2_IRQ_Handler"; }; }
+    : "CMP2";
+
+
+  INTERRUPT FTM0_IRQ               { VECT = 78; VECTOR_TYPE = HANDLER { NAME =  "FTM0_IRQ_Handler"; }; }
+    : "FTM0";
+  INTERRUPT FTM1_IRQ               { VECT = 79; VECTOR_TYPE = HANDLER { NAME =  "FTM1_IRQ_Handler"; }; }
+    : "FTM1";
+  INTERRUPT FTM2_IRQ               { VECT = 80; VECTOR_TYPE = HANDLER { NAME =  "FTM2_IRQ_Handler"; }; }
+    : "FTM2";
+
+
+  INTERRUPT CMT_IRQ                { VECT = 81; VECTOR_TYPE = HANDLER { NAME =  "CMT_IRQ_Handler"; }; }
+    : "CMT";
+
+
+  INTERRUPT RTC_ALARM_IRQ          { VECT = 82; VECTOR_TYPE = HANDLER { NAME =  "RTC_ALARM_IRQ_Handler"; }; }
+    : "RTC Alarm interrupt";
+  INTERRUPT RTC_SECONDS_IRQ        { VECT = 83; VECTOR_TYPE = HANDLER { NAME =  "RTC_SECONDS_IRQ_Handler"; }; }
+    : "RTC Seconds interrupt";
+    
+  INTERRUPT PIT0_IRQ               { VECT = 84; VECTOR_TYPE = HANDLER { NAME =  "PIT0_IRQ_Handler"; }; }
+    : "PIT Channel 0";
+  INTERRUPT PIT1_IRQ               { VECT = 85; VECTOR_TYPE = HANDLER { NAME =  "PIT1_IRQ_Handler"; }; }
+    : "PIT Channel 1";
+  INTERRUPT PIT2_IRQ               { VECT = 86; VECTOR_TYPE = HANDLER { NAME =  "PIT2_IRQ_Handler"; }; }
+    : "PIT Channel 2";
+  INTERRUPT PIT3_IRQ               { VECT = 87; VECTOR_TYPE = HANDLER { NAME =  "PIT3_IRQ_Handler"; }; }
+    : "PIT Channel 3";
+    
+  INTERRUPT PDB_IRQ                { VECT = 88; VECTOR_TYPE = HANDLER { NAME =  "PDB_IRQ_Handler"; }; }
+    : "PDB Programmable Delay Block";
+    
+  INTERRUPT USB_IRQ                { VECT = 89; VECTOR_TYPE = HANDLER { NAME =  "USB_IRQ_Handler"; }; }
+    : "USB OTG";
+  INTERRUPT USB_CHARGE_IRQ         { VECT = 90; VECTOR_TYPE = HANDLER { NAME =  "USB_CHARGE_IRQ_Handler"; }; }
+    : "USB Charger Detect";
+    
+  INTERRUPT Unused91               { VECT = 91; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused92               { VECT = 92; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused93               { VECT = 93; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused94               { VECT = 94; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused95               { VECT = 95; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused96               { VECT = 96; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT DAC0_IRQ               { VECT = 97; VECTOR_TYPE = HANDLER { NAME =  "DAC0_IRQ_Handler"; }; }
+    : "Digital Analog Converter 0";
+    
+  INTERRUPT Unused98               { VECT = 98; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT TSI0_IRQ               { VECT = 99; VECTOR_TYPE = HANDLER { NAME =  "TSI0_IRQ_Handler"; }; }
+    : "Touch Sense Input 0";
+    
+  INTERRUPT MCG_IRQ                { VECT = 100; VECTOR_TYPE = HANDLER { NAME =  "MCG_IRQ_Handler"; }; }
+    : "Multipurpose Clock Generator";
+    
+  INTERRUPT LPTMR_IRQ              { VECT = 101; VECTOR_TYPE = HANDLER { NAME =  "LPTMR_IRQ_Handler"; }; }
+    : "Low Power Timer";
+    
+  INTERRUPT Unused102              { VECT = 102; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT PORTA_IRQ              { VECT = 103; VECTOR_TYPE = HANDLER { NAME =  "PORTA_IRQ_Handler"; }; }
+    : "Pin detect (Port A)";
+  INTERRUPT PORTB_IRQ              { VECT = 104; VECTOR_TYPE = HANDLER { NAME =  "PORTB_IRQ_Handler"; }; }
+    : "Pin detect (Port B)";
+  INTERRUPT PORTC_IRQ              { VECT = 105; VECTOR_TYPE = HANDLER { NAME =  "PORTC_IRQ_Handler"; }; }
+    : "Pin detect (Port C)";
+  INTERRUPT PORTD_IRQ              { VECT = 106; VECTOR_TYPE = HANDLER { NAME =  "PORTD_IRQ_Handler"; }; }
+    : "Pin detect (Port D)";
+  INTERRUPT PORTE_IRQ              { VECT = 107; VECTOR_TYPE = HANDLER { NAME =  "PORTE_IRQ_Handler"; }; }
+    : "Pin detect (Port E)";
+    
+  INTERRUPT Unused108              { VECT = 108; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+  INTERRUPT Unused109              { VECT = 109; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
+
+
+  INTERRUPT SOFTWARE_IRQ           { VECT = 110; VECTOR_TYPE = HANDLER { NAME =  "SOFTWARE_IRQ_Handler"; }; }
+    : "Software interrupt";
+
+
+  POSTBUILD all {
+    COMMAND buildhex {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+  };
+
+};

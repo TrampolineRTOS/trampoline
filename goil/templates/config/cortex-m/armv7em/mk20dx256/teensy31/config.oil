@@ -1,0 +1,58 @@
+IMPLEMENTATION teensy31 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          WString,Print,LiquidCrystalFast
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+
+CPU teensy31 {
+  PLATFORM_FILES teensy31 {
+    PATH = "cortex-m/armv7em/mk20dx256/teensy31";
+//    CFILE = "tp.c";
+    CFILE = "gpio.c";
+    CFILE = "itoa.c";
+  };
+
+  PLATFORM_FILES teensy31CompAVR {
+    PATH = "cortex-m/armv7em/mk20dx256/teensy31/avr";
+    CFILE = "dtostrf.c";
+  };
+
+  LIBRARY WString {
+    PATH = "cortex-m/armv7em/mk20dx256/teensy31/libraries/WString";
+    CPPHEADER = "WString.h";
+    CPPFILE = "WString.cpp";
+  };
+
+  LIBRARY Print {
+    NEEDS = WString;
+    PATH = "cortex-m/armv7em/mk20dx256/teensy31/libraries/Print";
+    CPPHEADER = "Print.h";
+    CPPFILE = "Print.cpp";
+  };
+
+  LIBRARY LiquidCrystalFast {
+    NEEDS = Print;
+    PATH = "cortex-m/armv7em/mk20dx256/teensy31/libraries/LiquidCrystalFast";
+    CPPHEADER = "LiquidCrystalFast.h";
+    CPPFILE = "LiquidCrystalFast.cpp";
+  };
+
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "teensy-loader-cli";
+      INPUT = TARGET { EXT = ".hex"; };
+      PREOPTION = "-w -v -mmcu=mk20dx256";
+    };
+  };
+
+};
+    

@@ -1,0 +1,75 @@
+IMPLEMENTATION arduinoDue {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          sam_arduino
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+CPU atsam3x8e_arduino {
+
+  PLATFORM_FILES atsam3x8e_arduino {
+    PATH = "cortex-m/armv7m/atsam3x8e/arduino";
+    CFILE = "variant.cpp";
+  };
+
+  BUILDOPTIONS buildOptionsForArduino {
+    PRELDFLAGS = "-lm"; //math lib requied
+    PREASFLAGS = "-x assembler-with-cpp";
+    COMMONFLAGS = "-Wno-unused-but-set-variable";
+  };
+
+  PLATFORM_FILES arch_arm{
+    PATH = "cortex-m/armv7m/atsam3x8e/arduino/arch_arm";
+    CPPFILE = "core_abi.cpp";
+    CFILE = "core_cortex_vectors.c";
+    CFILE = "core_hooks.c";
+    CFILE = "core_itoa.c";
+    // CFILE = "core_main.cpp";
+    CPPFILE = "core_math.cpp";
+    // CFILE = "core_shift.c";
+    CPPFILE = "CorePrint.cpp";
+    CPPFILE = "CoreRingBuffer.cpp";
+    CPPFILE = "CoreStream.cpp";
+    CPPFILE = "CoreString.cpp";
+    CPPFILE = "IPAddress.cpp";
+  };
+
+  PLATFORM_FILES arch_common{
+    PATH = "cortex-m/armv7m/atsam3x8e/arduino/arch_common";
+    CPPFILE = "core_new.cpp";
+  };
+
+  PLATFORM_FILES avr_compat{
+    PATH = "cortex-m/armv7m/atsam3x8e/arduino/avr_compat";
+    CFILE = "core_dtostrf.c";
+  };
+
+  PLATFORM_FILES port_sam{
+    PATH = "cortex-m/armv7m/atsam3x8e/arduino/port_sam";
+    CFILE = "core_analog.c";
+    CFILE = "core_delay.c";
+    CFILE = "core_digital.c";
+    CFILE = "core_init.c";
+    CFILE = "core_interrupts.c";
+    CFILE = "core_private.c";
+    CFILE = "core_pulse.cpp";
+    CFILE = "core_reset.c";
+    CPPFILE = "core_tone.cpp";
+    CFILE = "core_watchdog.c";
+    CPPFILE = "CoreSerial.cpp";
+    CPPFILE = "CoreSPI.cpp";
+    CPPFILE = "CoreWire.cpp";
+  };
+
+  LIBRARY sam_arduino{
+    PATH = "cortex-m/armv7m/atsam3x8e/arduino/port_sam";
+    CHEADER = "Arduino.h";
+  };
+
+};

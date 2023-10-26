@@ -1,0 +1,22 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+#includeifexists <buildOptions.oil>
+
+/*
+ * Interrupt sources of the board
+ */
+CPU armv7m {
+
+  INTERRUPT SysTick        { VECT = 15; VECTOR_TYPE = HANDLER { NAME =  "SysTick_Handler"; }; ACK = FALSE; };
+
+  PLATFORM_FILES cortex_m3 {
+    PATH = "cortex-m/armv7m";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_ctx_switch_under_it.S";
+    CFILE = "tpl_interrupts.S";
+  };
+};
+
+

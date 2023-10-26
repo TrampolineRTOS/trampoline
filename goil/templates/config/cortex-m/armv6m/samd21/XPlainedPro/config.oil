@@ -1,0 +1,7 @@
+CPU XPlainedPro {
+  PLATFORM_FILES XPlainedPro {
+    PATH = "cortex-m/armv6m/samd21/XPlainedPro";
+    CFILE = "system_samd21_XPlainedPro_48MHz.c";
+  };
+};
+    
