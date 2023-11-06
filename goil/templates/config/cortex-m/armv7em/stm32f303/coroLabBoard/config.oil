@@ -13,60 +13,60 @@ IMPLEMENTATION stm32f303Coro {
 
 CPU coroLabBoard{
   LIBRARY spi {
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard";
-	CHEADER = "spi.h";
-	CFILE   = "spi.c";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+    CHEADER = "spi.h";
+    CFILE   = "spi.c";
   };
 
   LIBRARY tftDriver { // low level driver - no text
     NEEDS = spi;
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft/Adafruit-ST7735-Library";
-	CPPHEADER = "Adafruit_ST7735.h";
-	CPPHEADER = "Adafruit_ST77xx.h";
-	CPPFILE   = "Adafruit_ST7735.cpp";
-	CPPFILE   = "Adafruit_ST77xx.cpp";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/Adafruit-ST7735-Library";
+    CPPHEADER = "Adafruit_ST7735.h";
+    CPPHEADER = "Adafruit_ST77xx.h";
+    CPPFILE   = "Adafruit_ST7735.cpp";
+    CPPFILE   = "Adafruit_ST77xx.cpp";
   };
 
   LIBRARY coroPrint { //get high level 'print' functions from Arduino
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft/arduinoCore";
-	CPPHEADER = "Print.h";
-	CPPHEADER = "Printable.h";
-	CPPFILE   = "Print.cpp";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/arduinoCore";
+    CPPHEADER = "Print.h";
+    CPPHEADER = "Printable.h";
+    CPPFILE   = "Print.cpp";
   };
 
   LIBRARY tftFontDriver {	//font driver.
     NEEDS = tftDriver;
     NEEDS = coroPrint;
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft/Adafruit-GFX-Library";
-	CPPHEADER = "Adafruit_GFX.h";
-	CPPHEADER = "Adafruit_SPITFT.h";
-	CPPHEADER = "Adafruit_SPITFT_Macros.h";
-	CPPHEADER = "gfxfont.h";
-	CPPFILE   = "Adafruit_GFX.cpp";
-	CPPFILE   = "Adafruit_SPITFT.cpp";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/Adafruit-GFX-Library";
+    CPPHEADER = "Adafruit_GFX.h";
+    CPPHEADER = "Adafruit_SPITFT.h";
+    CPPHEADER = "Adafruit_SPITFT_Macros.h";
+    CPPHEADER = "gfxfont.h";
+    CPPFILE   = "Adafruit_GFX.cpp";
+    CPPFILE   = "Adafruit_SPITFT.cpp";
   };
 
   LIBRARY tft { //all the tft stuff (low level, font, print and Tft object)
     NEEDS = tftFontDriver;
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft";
-	CPPFILE   = "tft.cpp";
-	CPPHEADER = "tft.h";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft";
+    CPPFILE   = "tft.cpp";
+    CPPHEADER = "tft.h";
   };
 
   LIBRARY IOExpander {
     NEEDS = spi;
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard";
-	CPPHEADER = "mcp23s17.h";
-	CPPFILE   = "mcp23s17.cpp";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+    CPPHEADER = "mcp23s17.h";
+    CPPFILE   = "mcp23s17.cpp";
   };
 
   // all the stuff for the coro lab board.
   LIBRARY coroBoard {
     NEEDS = tft;
     NEEDS = IOExpander;
-    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard";
-	CPPHEADER = "coroBoard.h";
-	CPPFILE   = "coroBoard.cpp";
+    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+    CPPHEADER = "coroBoard.h";
+    CPPFILE   = "coroBoard.cpp";
   };
 };
 
