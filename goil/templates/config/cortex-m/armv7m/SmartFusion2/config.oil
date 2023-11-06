@@ -1,0 +1,161 @@
+IMPLEMENTATION SmartFusion2 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          gpio,nvm,uart
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+CPU SmartFusion2 {
+    LIBRARY gpio {
+      PATH = "cortex-m/armv7m/SmartFusion2/drivers/mss_gpio";
+      CHEADER = "mss_gpio.h";
+      CFILE = "mss_gpio.c";
+    };
+
+    LIBRARY nvm {
+      PATH = "cortex-m/armv7m/SmartFusion2/drivers/mss_nvm";
+      CHEADER = "mss_nvm.h";
+      CFILE = "mss_nvm.c";
+    };
+
+    LIBRARY uart {
+      PATH = "cortex-m/armv7m/SmartFusion2/drivers/mss_uart";
+      CHEADER = "mss_uart.h";
+      CFILE = "mss_uart.c";
+    };
+
+    CORTEX SmartFusion2 {
+      PRIO_BITS = 4;
+      CLOCK = 142000000;
+    };
+  
+    INTERRUPT_COUNT nb_it {
+      IT_TABLE_SIZE = 98;
+    };
+    INTERRUPT WdogWakeup_IRQ        { VECT = 16; SETPRIO = TRUE { NUMBER = 0;}; VECTOR_TYPE = HANDLER { NAME = "WdogWakeup_IRQ_Handler"; }; };
+    INTERRUPT RTC_Wakeup_IRQ        { VECT = 17; SETPRIO = TRUE { NUMBER = 1;}; VECTOR_TYPE = HANDLER { NAME = "RTC_Wakeup_IRQ_Handler"; }; };
+    INTERRUPT SPI0_IRQ              { VECT = 18; SETPRIO = TRUE { NUMBER = 2;}; VECTOR_TYPE = HANDLER { NAME = "SPI0_IRQ_Handler"; }; };
+    INTERRUPT SPI1_IRQ              { VECT = 19; SETPRIO = TRUE { NUMBER = 3;}; VECTOR_TYPE = HANDLER { NAME = "SPI1_IRQ_Handler"; }; };
+    INTERRUPT I2C0_IRQ              { VECT = 20; SETPRIO = TRUE { NUMBER = 4;}; VECTOR_TYPE = HANDLER { NAME = "I2C0_IRQ_Handler"; }; };
+    INTERRUPT I2C0_SMBAlert_IRQ     { VECT = 21; SETPRIO = TRUE { NUMBER = 5;}; VECTOR_TYPE = HANDLER { NAME = "I2C0_SMBAlert_IRQ_Handler"; }; };
+    INTERRUPT I2C0_SMBus_IRQ        { VECT = 22; SETPRIO = TRUE { NUMBER = 6;}; VECTOR_TYPE = HANDLER { NAME = "I2C0_SMBus_IRQ_Handler"; }; };
+    INTERRUPT I2C1_IRQ              { VECT = 23; SETPRIO = TRUE { NUMBER = 7;}; VECTOR_TYPE = HANDLER { NAME = "I2C1_IRQ_Handler"; }; };
+    INTERRUPT I2C1_SMBAlert_IRQ     { VECT = 24; SETPRIO = TRUE { NUMBER = 8;}; VECTOR_TYPE = HANDLER { NAME = "I2C1_SMBAlert_IRQ_Handler"; }; };
+    INTERRUPT I2C1_SMBus_IRQ        { VECT = 25; SETPRIO = TRUE { NUMBER = 9;}; VECTOR_TYPE = HANDLER { NAME = "I2C1_SMBus_IRQ_Handler"; }; };
+    INTERRUPT UART0_IRQ             { VECT = 26; SETPRIO = TRUE { NUMBER = 10;}; VECTOR_TYPE = HANDLER { NAME = "UART0_IRQ_Handler"; }; };
+    INTERRUPT UART1_IRQ             { VECT = 27; SETPRIO = TRUE { NUMBER = 11;}; VECTOR_TYPE = HANDLER { NAME = "UART1_IRQ_Handler"; }; };
+    INTERRUPT EthernetMAC_IRQ       { VECT = 28; SETPRIO = TRUE { NUMBER = 12;}; VECTOR_TYPE = HANDLER { NAME = "EthernetMAC_IRQ_Handler"; }; };
+    INTERRUPT DMA_IRQ               { VECT = 29; SETPRIO = TRUE { NUMBER = 13;}; VECTOR_TYPE = HANDLER { NAME = "DMA_IRQ_Handler"; }; };
+    INTERRUPT Timer1_IRQ            { VECT = 30; SETPRIO = TRUE { NUMBER = 14;}; VECTOR_TYPE = HANDLER { NAME = "Timer1_IRQ_Handler"; }; };
+    INTERRUPT Timer2_IRQ            { VECT = 31; SETPRIO = TRUE { NUMBER = 15;}; VECTOR_TYPE = HANDLER { NAME = "Timer2_IRQ_Handler"; }; };
+    INTERRUPT CAN_IRQ               { VECT = 32; SETPRIO = TRUE { NUMBER = 16;}; VECTOR_TYPE = HANDLER { NAME = "CAN_IRQ_Handler"; }; };
+    INTERRUPT ENVM0_IRQ             { VECT = 33; SETPRIO = TRUE { NUMBER = 17;}; VECTOR_TYPE = HANDLER { NAME = "ENVM0_IRQ_Handler"; }; };
+    INTERRUPT ENVM1_IRQ             { VECT = 34; SETPRIO = TRUE { NUMBER = 18;}; VECTOR_TYPE = HANDLER { NAME = "ENVM1_IRQ_Handler"; }; };
+    INTERRUPT ComBlk_IRQ            { VECT = 35; SETPRIO = TRUE { NUMBER = 19;}; VECTOR_TYPE = HANDLER { NAME = "ComBlk_IRQ_Handler"; }; };
+    INTERRUPT USB_IRQ               { VECT = 36; SETPRIO = TRUE { NUMBER = 20;}; VECTOR_TYPE = HANDLER { NAME = "USB_IRQ_Handler"; }; };
+    INTERRUPT USB_DMA_IRQ           { VECT = 37; SETPRIO = TRUE { NUMBER = 21;}; VECTOR_TYPE = HANDLER { NAME = "USB_DMA_IRQ_Handler"; }; };
+    INTERRUPT PLL_Lock_IRQ          { VECT = 38; SETPRIO = TRUE { NUMBER = 22;}; VECTOR_TYPE = HANDLER { NAME = "PLL_Lock_IRQ_Handler"; }; };
+    INTERRUPT PLL_LockLost_IRQ      { VECT = 39; SETPRIO = TRUE { NUMBER = 23;}; VECTOR_TYPE = HANDLER { NAME = "PLL_LockLost_IRQ_Handler"; }; };
+    INTERRUPT CommSwitchError_IRQ   { VECT = 40; SETPRIO = TRUE { NUMBER = 24;}; VECTOR_TYPE = HANDLER { NAME = "CommSwitchError_IRQ_Handler"; }; };
+    INTERRUPT CacheError_IRQ        { VECT = 41; SETPRIO = TRUE { NUMBER = 25;}; VECTOR_TYPE = HANDLER { NAME = "CacheError_IRQ_Handler"; }; };
+    INTERRUPT DDR_IRQ               { VECT = 42; SETPRIO = TRUE { NUMBER = 26;}; VECTOR_TYPE = HANDLER { NAME = "DDR_IRQ_Handler"; }; };
+    INTERRUPT HPDMA_Complete_IRQ    { VECT = 43; SETPRIO = TRUE { NUMBER = 27;}; VECTOR_TYPE = HANDLER { NAME = "HPDMA_Complete_IRQ_Handler"; }; };
+    INTERRUPT HPDMA_Error_IRQ       { VECT = 44; SETPRIO = TRUE { NUMBER = 28;}; VECTOR_TYPE = HANDLER { NAME = "HPDMA_Error_IRQ_Handler"; }; };
+    INTERRUPT ECC_Error_IRQ         { VECT = 45; SETPRIO = TRUE { NUMBER = 29;}; VECTOR_TYPE = HANDLER { NAME = "ECC_Error_IRQ_Handler"; }; };
+    INTERRUPT MDDR_IOCalib_IRQ      { VECT = 46; SETPRIO = TRUE { NUMBER = 30;}; VECTOR_TYPE = HANDLER { NAME = "MDDR_IOCalib_IRQ_Handler"; }; };
+    INTERRUPT FAB_PLL_Lock_IRQ      { VECT = 47; SETPRIO = TRUE { NUMBER = 31;}; VECTOR_TYPE = HANDLER { NAME = "FAB_PLL_Lock_IRQ_Handler"; }; };
+    INTERRUPT FAB_PLL_LockLost_IRQ  { VECT = 48; SETPRIO = TRUE { NUMBER = 32;}; VECTOR_TYPE = HANDLER { NAME = "FAB_PLL_LockLost_IRQ_Handler"; }; };
+    INTERRUPT FIC64_IRQ             { VECT = 49; SETPRIO = TRUE { NUMBER = 33;}; VECTOR_TYPE = HANDLER { NAME = "FIC64_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq0_IRQ        { VECT = 50; SETPRIO = TRUE { NUMBER = 34;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq0_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq1_IRQ        { VECT = 51; SETPRIO = TRUE { NUMBER = 35;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq1_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq2_IRQ        { VECT = 52; SETPRIO = TRUE { NUMBER = 36;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq2_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq3_IRQ        { VECT = 53; SETPRIO = TRUE { NUMBER = 37;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq3_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq4_IRQ        { VECT = 54; SETPRIO = TRUE { NUMBER = 38;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq4_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq5_IRQ        { VECT = 55; SETPRIO = TRUE { NUMBER = 39;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq5_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq6_IRQ        { VECT = 56; SETPRIO = TRUE { NUMBER = 40;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq6_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq7_IRQ        { VECT = 57; SETPRIO = TRUE { NUMBER = 41;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq7_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq8_IRQ        { VECT = 58; SETPRIO = TRUE { NUMBER = 42;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq8_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq9_IRQ        { VECT = 59; SETPRIO = TRUE { NUMBER = 43;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq9_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq10_IRQ       { VECT = 60; SETPRIO = TRUE { NUMBER = 44;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq10_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq11_IRQ       { VECT = 61; SETPRIO = TRUE { NUMBER = 45;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq11_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq12_IRQ       { VECT = 62; SETPRIO = TRUE { NUMBER = 46;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq12_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq13_IRQ       { VECT = 63; SETPRIO = TRUE { NUMBER = 47;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq13_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq14_IRQ       { VECT = 64; SETPRIO = TRUE { NUMBER = 48;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq14_IRQ_Handler"; }; };
+    INTERRUPT FabricIrq15_IRQ       { VECT = 65; SETPRIO = TRUE { NUMBER = 49;}; VECTOR_TYPE = HANDLER { NAME = "FabricIrq15_IRQ_Handler"; }; };
+    INTERRUPT GPIO0_IRQ             { VECT = 66; SETPRIO = TRUE { NUMBER = 50;}; VECTOR_TYPE = HANDLER { NAME = "GPIO0_IRQ_Handler"; }; };
+    INTERRUPT GPIO1_IRQ             { VECT = 67; SETPRIO = TRUE { NUMBER = 51;}; VECTOR_TYPE = HANDLER { NAME = "GPIO1_IRQ_Handler"; }; };
+    INTERRUPT GPIO2_IRQ             { VECT = 68; SETPRIO = TRUE { NUMBER = 52;}; VECTOR_TYPE = HANDLER { NAME = "GPIO2_IRQ_Handler"; }; };
+    INTERRUPT GPIO3_IRQ             { VECT = 69; SETPRIO = TRUE { NUMBER = 53;}; VECTOR_TYPE = HANDLER { NAME = "GPIO3_IRQ_Handler"; }; };
+    INTERRUPT GPIO4_IRQ             { VECT = 70; SETPRIO = TRUE { NUMBER = 54;}; VECTOR_TYPE = HANDLER { NAME = "GPIO4_IRQ_Handler"; }; };
+    INTERRUPT GPIO5_IRQ             { VECT = 71; SETPRIO = TRUE { NUMBER = 55;}; VECTOR_TYPE = HANDLER { NAME = "GPIO5_IRQ_Handler"; }; };
+    INTERRUPT GPIO6_IRQ             { VECT = 72; SETPRIO = TRUE { NUMBER = 56;}; VECTOR_TYPE = HANDLER { NAME = "GPIO6_IRQ_Handler"; }; };
+    INTERRUPT GPIO7_IRQ             { VECT = 73; SETPRIO = TRUE { NUMBER = 57;}; VECTOR_TYPE = HANDLER { NAME = "GPIO7_IRQ_Handler"; }; };
+    INTERRUPT GPIO8_IRQ             { VECT = 74; SETPRIO = TRUE { NUMBER = 58;}; VECTOR_TYPE = HANDLER { NAME = "GPIO8_IRQ_Handler"; }; };
+    INTERRUPT GPIO9_IRQ             { VECT = 75; SETPRIO = TRUE { NUMBER = 59;}; VECTOR_TYPE = HANDLER { NAME = "GPIO9_IRQ_Handler"; }; };
+    INTERRUPT GPIO10_IRQ            { VECT = 76; SETPRIO = TRUE { NUMBER = 60;}; VECTOR_TYPE = HANDLER { NAME = "GPIO10_IRQ_Handler"; }; };
+    INTERRUPT GPIO11_IRQ            { VECT = 77; SETPRIO = TRUE { NUMBER = 61;}; VECTOR_TYPE = HANDLER { NAME = "GPIO11_IRQ_Handler"; }; };
+    INTERRUPT GPIO12_IRQ            { VECT = 78; SETPRIO = TRUE { NUMBER = 62;}; VECTOR_TYPE = HANDLER { NAME = "GPIO12_IRQ_Handler"; }; };
+    INTERRUPT GPIO13_IRQ            { VECT = 79; SETPRIO = TRUE { NUMBER = 63;}; VECTOR_TYPE = HANDLER { NAME = "GPIO13_IRQ_Handler"; }; };
+    INTERRUPT GPIO14_IRQ            { VECT = 80; SETPRIO = TRUE { NUMBER = 64;}; VECTOR_TYPE = HANDLER { NAME = "GPIO14_IRQ_Handler"; }; };
+    INTERRUPT GPIO15_IRQ            { VECT = 81; SETPRIO = TRUE { NUMBER = 65;}; VECTOR_TYPE = HANDLER { NAME = "GPIO15_IRQ_Handler"; }; };
+    INTERRUPT GPIO16_IRQ            { VECT = 82; SETPRIO = TRUE { NUMBER = 66;}; VECTOR_TYPE = HANDLER { NAME = "GPIO16_IRQ_Handler"; }; };
+    INTERRUPT GPIO17_IRQ            { VECT = 83; SETPRIO = TRUE { NUMBER = 67;}; VECTOR_TYPE = HANDLER { NAME = "GPIO17_IRQ_Handler"; }; };
+    INTERRUPT GPIO18_IRQ            { VECT = 84; SETPRIO = TRUE { NUMBER = 68;}; VECTOR_TYPE = HANDLER { NAME = "GPIO18_IRQ_Handler"; }; };
+    INTERRUPT GPIO19_IRQ            { VECT = 85; SETPRIO = TRUE { NUMBER = 69;}; VECTOR_TYPE = HANDLER { NAME = "GPIO19_IRQ_Handler"; }; };
+    INTERRUPT GPIO20_IRQ            { VECT = 86; SETPRIO = TRUE { NUMBER = 70;}; VECTOR_TYPE = HANDLER { NAME = "GPIO20_IRQ_Handler"; }; };
+    INTERRUPT GPIO21_IRQ            { VECT = 87; SETPRIO = TRUE { NUMBER = 71;}; VECTOR_TYPE = HANDLER { NAME = "GPIO21_IRQ_Handler"; }; };
+    INTERRUPT GPIO22_IRQ            { VECT = 88; SETPRIO = TRUE { NUMBER = 72;}; VECTOR_TYPE = HANDLER { NAME = "GPIO22_IRQ_Handler"; }; };
+    INTERRUPT GPIO23_IRQ            { VECT = 89; SETPRIO = TRUE { NUMBER = 73;}; VECTOR_TYPE = HANDLER { NAME = "GPIO23_IRQ_Handler"; }; };
+    INTERRUPT GPIO24_IRQ            { VECT = 90; SETPRIO = TRUE { NUMBER = 74;}; VECTOR_TYPE = HANDLER { NAME = "GPIO24_IRQ_Handler"; }; };
+    INTERRUPT GPIO25_IRQ            { VECT = 91; SETPRIO = TRUE { NUMBER = 75;}; VECTOR_TYPE = HANDLER { NAME = "GPIO25_IRQ_Handler"; }; };
+    INTERRUPT GPIO26_IRQ            { VECT = 92; SETPRIO = TRUE { NUMBER = 76;}; VECTOR_TYPE = HANDLER { NAME = "GPIO26_IRQ_Handler"; }; };
+    INTERRUPT GPIO27_IRQ            { VECT = 93; SETPRIO = TRUE { NUMBER = 77;}; VECTOR_TYPE = HANDLER { NAME = "GPIO27_IRQ_Handler"; }; };
+    INTERRUPT GPIO28_IRQ            { VECT = 94; SETPRIO = TRUE { NUMBER = 78;}; VECTOR_TYPE = HANDLER { NAME = "GPIO28_IRQ_Handler"; }; };
+    INTERRUPT GPIO29_IRQ            { VECT = 95; SETPRIO = TRUE { NUMBER = 79;}; VECTOR_TYPE = HANDLER { NAME = "GPIO29_IRQ_Handler"; }; };
+    INTERRUPT GPIO30_IRQ            { VECT = 96; SETPRIO = TRUE { NUMBER = 80;}; VECTOR_TYPE = HANDLER { NAME = "GPIO30_IRQ_Handler"; }; };
+    INTERRUPT GPIO31_IRQ            { VECT = 97; SETPRIO = TRUE { NUMBER = 81;}; VECTOR_TYPE = HANDLER { NAME = "GPIO31_IRQ_Handler"; }; };
+    
+  PLATFORM_FILES sf2_specific {
+    PATH = "cortex-m/armv7m/SmartFusion2";
+    CFILE = "handlers_m2sxxx.c";
+    CFILE = "tpl_machine_m2sxxx.c";
+    CFILE = "startup_m2sxxx.c";
+  };
+
+  PLATFORM_FILES sf2_hal {
+    PATH = "cortex-m/armv7m/SmartFusion2/hal";    
+  };
+
+  PLATFORM_FILES sf2_hal_CortexM3 {
+    PATH = "cortex-m/armv7m/SmartFusion2/hal/CortexM3";  
+    CFILE = "cortex_nvic.c";
+  };
+
+  PLATFORM_FILES sf2_hal_CortexM3_GNU {
+    PATH = "cortex-m/armv7m/SmartFusion2/hal/CortexM3/GNU";  
+    CFILE = "hw_reg_access.S";
+    CFILE = "hal.S";
+  };
+
+  PLATFORM_FILES sf2_cmsis {
+    PATH = "cortex-m/armv7m/SmartFusion2/CMSIS";
+    CFILE = "system_m2sxxx.c";
+  };
+
+  PLATFORM_FILES sf2_cmsis_gcc {
+    PATH = "cortex-m/armv7m/SmartFusion2/CMSIS/startup_gcc";
+//    CFILE = "startup_m2sxxx.S";
+  };
+
+
+  PLATFORM_FILES CMSIS_startup_gcc_newlib_stub {
+    PATH = "cortex-m/armv7m/SmartFusion2/CMSIS/startup_gcc";
+    CFILE = "newlib_stubs.c";
+  };
+};

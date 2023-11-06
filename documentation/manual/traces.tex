@@ -114,7 +114,7 @@ For the MSP430 format, different methods can be implemented to retrieve the trac
 In all cases, a trace event should take as low room as possible, and is stored in binary format (see section \ref{sec:traceBinFormat}).
 
 \subsubsection{STM32 target}
-On STM32 (Nucleo STM32F303 and STM32L432), the Serial target is implemented. There is a full example in \texttt{examples/cortex/armv7em/stm32f303/Nucleo-32/trace}
+On STM32 (Nucleo STM32F303 and STM32L432), the Serial target is implemented. There is a full example in \texttt{examples/cortex-m/armv7em/stm32f303/Nucleo-32/trace}
 
 \begin{lstlisting}[language=OIL]
     TRACE = TRUE {
@@ -263,7 +263,7 @@ The message event type bits is used to indicate the specific type of event assoc
 
 \subsection{How to port \texttt{trace} to another target}
 
-The \texttt{tpl\_trace.c} is target specific. It should be defined in the \lstinline{machine} hierarchy. A good starting point is the stm32's version\footnote{file \file{machines/cortex/armv7em/stm32f303/tpl_trace.c}}, with a SERIAL implementation. In the \texttt{avr/arduino} version, a C++ example is provided.
+The \texttt{tpl\_trace.c} is target specific. It should be defined in the \lstinline{machine} hierarchy. A good starting point is the stm32's version\footnote{file \file{machines/cortex-m/armv7em/stm32f303/tpl_trace.c}}, with a SERIAL implementation. In the \texttt{avr/arduino} version, a C++ example is provided.
 
 Then, the goil templates should be updated. This is done in 2 steps:
 

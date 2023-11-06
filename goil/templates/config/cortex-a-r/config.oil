@@ -1,0 +1,44 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+IMPLEMENTATION arm_interrupt {
+  INTERRUPT_VECTOR [] {
+    UINT32 VECTOR_NUM;
+    BOOLEAN EXCEPTION = FALSE;
+    ENUM [
+      HANDLER { STRING NAME; },
+      REFERENCE { STRING NAME; }
+    ] VECTOR_KIND;
+  };
+  INTERRUPT_SOURCE [] {
+    UINT32 SOURCE_NUM;
+    INTERRUPT_VECTOR_TYPE VECTOR;
+    BOOLEAN ACK = TRUE;
+  };
+  ISR [] {
+    #include <interruptSources.oil>
+  };
+  COUNTER [] {
+    #include <interruptSources.oil>
+  };
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};
+
+CPU arm_interrupt {
+  COUNTER SystemCounter {
+    SOURCE = ARM_TIMER;
+  };
+
+  PLATFORM_FILES cortex_a {
+    PATH = "cortex-a-r";
+    CFILE = "tpl_irq.S";
+    CFILE = "tpl_system_call.S";
+    CFILE = "tpl_stacks.S";
+    CFILE = "tpl_trusted_fct.S";
+    CFILE = "tpl_vector_table.s";
+    CFILE = "tpl_machine_arm.c";
+  };
+};

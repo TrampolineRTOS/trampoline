@@ -98,7 +98,7 @@ void tpl_viper_init(void)
 #else
     viper_path = "../viper";
 #endif
-    strncpy(viper_exe, viper_path, 255);
+    strncpy(viper_exe, viper_path, 256 - 1 - strlen("/viper"));
     strcat(viper_exe, "/viper");
 
     if (access(viper_exe, X_OK) != 0)

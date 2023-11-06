@@ -40,32 +40,32 @@ Trampoline runs on the following platforms :
 
 Some examples are available (check examples):
 
-* Cortex M4 with µC stm32f407: `cortex/armv7em/stm32f407/stf32f4discovery`
+* Cortex M4 with µC stm32f407: `cortex-m/armv7em/stm32f407/stf32f4discovery`
   * **blink**. Blinks a LED using an alarm and a task.
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
   * **readButton_isr**. Same but the button triggers an ISR.
   * **alarms**. It is the same example than readButton_isr but we test the return value of SetRelAlarm for return parameters when in kernel (system call) mode.
   * **timer**. ISR2 trigered by timer TIM2.
-* Cortex M4 with MCU stm32f303K8: `cortex/armv7em/stm32f303/Nucleo-32`. There are few differences from the `stm32f407` target, and examples should be easily imported.
+* Cortex M4 with MCU stm32f303K8: `cortex-m/armv7em/stm32f303/Nucleo-32`. There are few differences from the `stm32f407` target, and examples should be easily imported.
   * **blink**. Blinks a LED using an alarm and a task.
-* Cortex M4 with MCU stm32L432KC: `cortex/armv7em/stm32l432/Nucleo-32`.
+* Cortex M4 with MCU stm32L432KC: `cortex-m/armv7em/stm32l432/Nucleo-32`.
   * **blink**. Blinks a LED using an alarm and a task.
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
   * **readButton_isr**. Same but the button triggers an ISR.
-* Cortex M4 with µC mk20dx256 : `cortex/armv7em/mk20dx256/teensy31`
+* Cortex M4 with µC mk20dx256 : `cortex-m/armv7em/mk20dx256/teensy31`
   * **blink**. Blinks the Teensy 3.1 LED using an alarm and a task.
   * **startStopBlink**. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED.
   * **liquidCrystal**. startStopBlink extended. In addition the periodic task prints a value on a LCD.
   * **isr2onPIT**. Use the PIT channel 0 to trigger an ISR2.
   * **isr1onFTM**. Use the FTM0 to trigger an ISR1 and generate a variable width pulse.
-* Cortex M3 with µC SmartFusion2: `cortex/armv7m/SmartFusion2`.
+* Cortex M3 with µC SmartFusion2: `cortex-m/armv7m/SmartFusion2`.
   * **blink**. a simple periodic example which toggles the two green leds (DS3, DS4) of the board
   * **fpgaInterrupt** an interrupt from the FPGA fabriq toggles the green led DS4 of the board (and a periodic task blinks another Led).
-* Cortex M0+ with µC samd21: `cortex/armv6m/samd21/XPlainedPro`.
+* Cortex M0+ with µC samd21: `cortex-m/armv6m/samd21/XPlainedPro`.
   * **blink**. Blinks a LED using an alarm and a task.
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
   * **readButton_isr**. Same but the button triggers an ISR.
-* Cortex A7 with bcm2836 - Raspberry Pi 2 : `cortex-a/armv7/bcm2836/rpi2`.
+* Cortex A7 with bcm2836 - Raspberry Pi 2 : `cortex-a-r/armv7/bcm2836/rpi2`.
   * **blink**. A first runable blink example is available. We need a bootloader and and a console. This stuff will be soon available as well. Single core for the moment.
 * avr: 3 examples for Arduino Uno (ATMega328p chip) and Arduino Mega (ATMega2560 chip)
   * **blink**. Blinks a LED using an alarm and a task.

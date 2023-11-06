@@ -1,0 +1,87 @@
+#includeifexists <buildOptions.oil>
+
+/*
+ * Interrupt sources of the board
+ */
+CPU bcm2836 {
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 32;
+  };
+
+  INTERRUPT_VECTOR Reset                 { VECTOR_NUM = 0; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Undefined_Instruction { VECTOR_NUM = 1; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Supervisor_Call       { VECTOR_NUM = 2; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Prefetch_Abort        { VECTOR_NUM = 3; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Data_Abort            { VECTOR_NUM = 4; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Hyp_Trap              { VECTOR_NUM = 5; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR IRQ_Interrupt         { VECTOR_NUM = 6; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR FIQ_Interrupt         { VECTOR_NUM = 7; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+
+  INTERRUPT_SOURCE ARM_TIMER             { SOURCE_NUM = 0; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ARM_MAILBOX           { SOURCE_NUM = 1; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ARM_DOORBELL_0        { SOURCE_NUM = 2; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ARM_DOORBELL_1        { SOURCE_NUM = 3; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU0_HALTED           { SOURCE_NUM = 4; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU1_HALTED           { SOURCE_NUM = 5; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ILLEGAL_ACCESS_TYPE_1 { SOURCE_NUM = 6; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ILLEGAL_ACCESS_TYPE_0 { SOURCE_NUM = 7; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE AUX_INT               { SOURCE_NUM = 8; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE I2C_SPI_SLV_INT       { SOURCE_NUM = 9; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE PWA0                  { SOURCE_NUM = 10; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE PWA1                  { SOURCE_NUM = 11; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE SMI                   { SOURCE_NUM = 12; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPIO_INT_0            { SOURCE_NUM = 13; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPIO_INT_1            { SOURCE_NUM = 14; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPIO_INT_2            { SOURCE_NUM = 15; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPIO_INT_3            { SOURCE_NUM = 16; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE I2C_INT               { SOURCE_NUM = 17; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE SPI_INT               { SOURCE_NUM = 18; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE PCM_INT               { SOURCE_NUM = 19; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE UART_INT              { SOURCE_NUM = 20; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_7             { SOURCE_NUM = 21; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_9             { SOURCE_NUM = 22; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_10            { SOURCE_NUM = 23; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_18            { SOURCE_NUM = 24; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_19            { SOURCE_NUM = 25; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_53            { SOURCE_NUM = 26; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_54            { SOURCE_NUM = 27; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_55            { SOURCE_NUM = 28; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_56            { SOURCE_NUM = 29; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_57            { SOURCE_NUM = 30; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE GPU_IRQ_62            { SOURCE_NUM = 31; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+
+/*  INTERRUPT it_timer1 {
+    ID = 0;
+  };
+*/
+  PLATFORM_FILES bcm2836 {
+    PATH = "cortex-a-r/armv7/bcm2836";
+    CFILE = "bcm2836_misc.c";
+    CFILE = "handlers_bcm2836.c";
+    CFILE = "tpl_machine_bcm2836.c";
+  };
+
+  POSTBUILD all {
+    COMMAND buildhex {
+      TYPE = COPIER;
+      INPUT = ORIGINAL_TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = ORIGINAL_TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
+  };
+  POSTCOMMAND img {
+    COMMAND makekernel {
+      MESSAGE = "make kernel";
+      COMMAND = "cp";
+      INPUT = TARGET { EXT = ".bin"; };
+      PREOPTION = "";
+      POSTOPTION = "kernel7.img";
+    };
+  };
+};

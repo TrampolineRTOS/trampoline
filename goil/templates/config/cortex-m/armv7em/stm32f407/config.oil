@@ -1,0 +1,1036 @@
+IMPLEMENTATION stm32f407 {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          gpt
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+
+  DEVICE_KIND [] {
+    STRUCT {
+      UINT32 OFFSET;
+      ENUM [ BYTE, HALFWORD, WORD, DOUBLEWORD ] SIZE;
+      STRUCT {
+        UINT32 LOC;
+      } BIT [];
+      STRUCT {
+        UINT32 START;
+        UINT32 STOP;
+      } FIELD [];
+    } REGISTER [];
+    STRUCT {
+      IDENTIFIER ENABLE [];
+      BOOLEAN ACK = FALSE;
+    } EVENT [];
+  };
+  
+  DEVICE [] {
+    DEVICE_KIND_TYPE KIND;
+    UINT32 ADDRESS;
+    INTERRUPT_TYPE VECTOR;
+  };
+};
+
+CPU stm32f407 {
+  OS features {
+    ISR2_PRIORITY_MASKING = TRUE;
+  };
+
+  LIBRARY gpt {
+    PATH = "cortex-m/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver";
+    CHEADER = "stm32f4xx_tim.h";
+    CFILE = "stm32f4xx_tim.c";
+  };
+        
+  CORTEX stm32f407 {
+    PRIO_BITS = 4;
+    CLOCK = 168000000;
+  };
+        
+  /*
+   * STM USART device
+   */
+  DEVICE_KIND USART {
+    REGISTER SR {
+      OFFSET = 0x00;
+      SIZE = HALFWORD;
+      BIT CTS  { LOC = 9; } : "Clear To Send flag";
+      BIT LBD  { LOC = 8; } : "Line Break Detected flag";
+      BIT TXE  { LOC = 7; };
+      BIT TC   { LOC = 6; };
+      BIT RXNE { LOC = 5; };
+      BIT IDLE { LOC = 4; };
+      BIT ORE  { LOC = 3; };
+      BIT NF   { LOC = 2; };
+      BIT FE   { LOC = 1; };
+      BIT PE   { LOC = 0; };
+    } : "Status Register";
+    REGISTER DR {
+      OFFSET = 0x04;
+      SIZE = HALFWORD;
+    } : "Data Register";
+    REGISTER BRR {
+      OFFSET = 0x08;
+      SIZE = HALFWORD;
+      FIELD DIV_Mantissa { START = 15; STOP = 4; };
+      FIELD DIV_Fraction { START = 3; STOP = 0; };
+    } : "Baud Rate Register";
+    REGISTER CR1 {
+      OFFSET = 0x0C;
+      SIZE = HALFWORD;
+      BIT OVER8  { LOC = 15; };
+      BIT UE     { LOC = 13; };
+      BIT M      { LOC = 12; };
+      BIT WAKE   { LOC = 11; };
+      BIT PCE    { LOC = 10; };
+      BIT PS     { LOC = 9;  };
+      BIT PEIE   { LOC = 8;  };
+      BIT TXEIE  { LOC = 7;  };
+      BIT TCIE   { LOC = 6;  };
+      BIT RXNEIE { LOC = 5;  };
+      BIT IDLEIE { LOC = 4;  };
+      BIT TE     { LOC = 3;  };
+      BIT RE     { LOC = 2;  };
+      BIT RWU    { LOC = 1;  };
+      BIT SBK    { LOC = 0;  };
+    } : "Control Register 1";
+    REGISTER CR2 {
+      OFFSET = 0x10;
+      SIZE = HALFWORD;
+      BIT LINEN  { LOC = 14; };
+      FIELD STOP { START = 13; STOP = 12; };
+      BIT CLKEN  { LOC = 11; };
+      BIT CPOL   { LOC = 10; };
+      BIT CPHA   { LOC = 9;  };
+      BIT LBCL   { LOC = 8;  };
+      BIT LBDIE  { LOC = 6;  };
+      BIT LBDL   { LOC = 5;  };
+      FIELD ADD  { START = 3; STOP = 0; };
+    } : "Control Register 2";
+    REGISTER CR3 {
+      OFFSET = 0x14;
+      SIZE = HALFWORD;
+      BIT ONEBIT { LOC = 11; };
+      BIT CTSIE  { LOC = 10; };
+      BIT CTSE   { LOC = 9;  };
+      BIT RTSE   { LOC = 8;  };
+      BIT DMAT   { LOC = 7;  };
+      BIT DMAR   { LOC = 6;  };
+      BIT SCEN   { LOC = 5;  };
+      BIT NACK   { LOC = 4;  };
+      BIT HDSEL  { LOC = 3;  };
+      BIT IRLP   { LOC = 2;  };
+      BIT IREN   { LOC = 1;  };
+      BIT EIE    { LOC = 0;  };
+    } : "Control Register 3";
+    REGISTER GTPR {
+      OFFSET = 0x18;
+      SIZE = HALFWORD;
+      FIELD GT  { START = 15; STOP = 8; };
+      FIELD PSC { START = 7; STOP = 0;  };
+    } : "Guard Time and Prescaler Register";
+    EVENT TXE  { ENABLE = TXEIE;                };
+    EVENT CTS  { ENABLE = CTSIE; ACK = TRUE;    };
+    EVENT TC   { ENABLE = TCIE;                 };
+    EVENT RXNE { ENABLE = RXNEIE;               };
+    EVENT ORE  { ENABLE = RXNEIE; ENABLE = EIE; };
+    EVENT IDLE { ENABLE = IDLEIE;               };
+    EVENT PE   { ENABLE = PEIE;                 };
+    EVENT LBD  { ENABLE = LBDIE; ACK = TRUE;    };
+    EVENT NF   { ENABLE = EIE;                  };
+    EVENT FE   { ENABLE = EIE;                  };
+  };
+        
+  /*
+   * STM UART device (no hardware control flow)
+   */
+  DEVICE_KIND UART {
+    REGISTER SR {
+      OFFSET = 0x00;
+      SIZE = HALFWORD;
+      BIT LBD  { LOC = 8; } : "Line Break Detected flag";
+      BIT TXE  { LOC = 7; };
+      BIT TC   { LOC = 6; };
+      BIT RXNE { LOC = 5; };
+      BIT IDLE { LOC = 4; };
+      BIT ORE  { LOC = 3; };
+      BIT NF   { LOC = 2; };
+      BIT FE   { LOC = 1; };
+      BIT PE   { LOC = 0; };
+    };
+    REGISTER DR {
+      OFFSET = 0x04;
+      SIZE = HALFWORD;
+    };
+    REGISTER BRR {
+      OFFSET = 0x08;
+      SIZE = HALFWORD;
+      FIELD DIV_Mantissa { START = 15; STOP = 4; };
+      FIELD DIV_Fraction { START = 3; STOP = 0; };
+    };
+    REGISTER CR1 {
+      OFFSET = 0x0C;
+      SIZE = HALFWORD;
+      BIT OVER8  { LOC = 15; };
+      BIT UE     { LOC = 13; };
+      BIT M      { LOC = 12; };
+      BIT WAKE   { LOC = 11; };
+      BIT PCE    { LOC = 10; };
+      BIT PS     { LOC = 9;  };
+      BIT PEIE   { LOC = 8;  };
+      BIT TXEIE  { LOC = 7;  };
+      BIT TCIE   { LOC = 6;  };
+      BIT RXNEIE { LOC = 5;  };
+      BIT IDLEIE { LOC = 4;  };
+      BIT TE     { LOC = 3;  };
+      BIT RE     { LOC = 2;  };
+      BIT RWU    { LOC = 1;  };
+      BIT SBK    { LOC = 0;  };
+    };
+    REGISTER CR2 {
+      OFFSET = 0x10;
+      SIZE = HALFWORD;
+      BIT LINEN  { LOC = 14; };
+      BIT STOP   { LOC = 13; };
+      BIT LBDIE  { LOC = 6;  };
+      BIT LBDL   { LOC = 5;  };
+      FIELD ADD  { START = 3; STOP = 0; };
+    };
+    REGISTER CR3 {
+      OFFSET = 0x14;
+      SIZE = HALFWORD;
+      BIT ONEBIT { LOC = 11; };
+      BIT DMAT   { LOC = 7;  };
+      BIT DMAR   { LOC = 6;  };
+      BIT HDSEL  { LOC = 3;  };
+      BIT IRLP   { LOC = 2;  };
+      BIT IREN   { LOC = 1;  };
+      BIT EIE    { LOC = 0;  };
+    } : "Control Register 3";
+    EVENT TXE  { ENABLE = TXEIE;                };
+    EVENT TC   { ENABLE = TCIE;                 };
+    EVENT RXNE { ENABLE = RXNEIE;               };
+    EVENT ORE  { ENABLE = RXNEIE; ENABLE = EIE; };
+    EVENT IDLE { ENABLE = IDLEIE;               };
+    EVENT PE   { ENABLE = PEIE;                 };
+    EVENT LBD  { ENABLE = LBDIE; ACK = TRUE;    };
+    EVENT NF   { ENABLE = EIE;                  };
+    EVENT FE   { ENABLE = EIE;                  };
+  };
+        
+  DEVICE USART1 {
+    KIND = USART;
+    ADDRESS = 0x40011000;
+    VECTOR = USART1_IRQ;
+  };
+  
+  DEVICE USART2 {
+    KIND = USART;
+    ADDRESS = 0x40004400; 
+    VECTOR = USART2_IRQ;
+  };
+  
+  DEVICE USART3 {
+    KIND = USART;
+    ADDRESS = 0x40004800; 
+    VECTOR = USART3_IRQ;
+  };
+  
+  DEVICE UART4 {
+    KIND = UART;
+    ADDRESS = 0x40004C00; 
+    VECTOR = UART4_IRQ;
+  };
+  
+  DEVICE UART5 {
+    KIND = UART;
+    ADDRESS = 0x40005000; 
+    VECTOR = UART5_IRQ;
+  };
+  
+  DEVICE USART6 {
+    KIND = USART;
+    ADDRESS = 0x40011400; 
+    VECTOR = USART6_IRQ;
+  };
+  
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 98;
+  };
+  
+  INTERRUPT NMI {
+    SETPRIO = TRUE { NUMBER = -14; };
+  };
+  
+  INTERRUPT MemManage {
+    SETPRIO = TRUE { NUMBER = -12; };
+  };
+  
+  INTERRUPT BusFault {
+    SETPRIO = TRUE { NUMBER = -11; };
+  };
+  
+  INTERRUPT UsageFault {
+    SETPRIO = TRUE { NUMBER = -10; };
+  };
+  
+  INTERRUPT SVCall {
+    SETPRIO = TRUE { NUMBER = -5; };
+  };
+  
+  INTERRUPT DebugMonitor {
+    SETPRIO = TRUE { NUMBER = -4; };
+  };
+  
+  INTERRUPT PendSV {
+    SETPRIO = TRUE { NUMBER = -2; };
+  };
+  
+  INTERRUPT SysTick {
+    SETPRIO = TRUE { NUMBER = -1; };
+  };
+  
+  INTERRUPT WWDG_IRQ {
+    VECT = 16;
+    SETPRIO = TRUE { NUMBER = 0; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "WWDG_IRQ_Handler";
+    };
+  } : "Window WatchDog Interrupt";
+  
+  INTERRUPT PVD_IRQ {
+    VECT = 17;
+    SETPRIO = TRUE { NUMBER = 1; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "PVD_IRQ_Handler";
+    };
+  } : "PVD through EXTI Line detection Interrupt";
+  
+  INTERRUPT TAMP_STAMP_IRQ {
+    VECT = 18;
+    SETPRIO = TRUE { NUMBER = 2; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TAMP_STAMP_IRQ_Handler";
+    };
+  } : "Tamper and TimeStamp interrupts through the EXTI line";
+  
+  INTERRUPT RTC_WKUP_IRQ {
+    VECT = 19;
+    SETPRIO = TRUE { NUMBER = 3; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "RTC_WKUP_IRQ_Handler";
+    };
+  } : "RTC Wakeup interrupt through the EXTI line";
+  
+  INTERRUPT FLASH_IRQ {
+    VECT = 20;
+    SETPRIO = TRUE { NUMBER = 4; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "FLASH_IRQ_Handler";
+    };
+  } : "FLASH global Interrupt ";
+  
+  INTERRUPT RCC_IRQ {
+    VECT = 21;
+    SETPRIO = TRUE { NUMBER = 5; };
+    VECTOR_TYPE = HANDLER { 
+      NAME = "RCC_IRQ_Handler"; 
+    };
+  } : "RCC global Interrupt";
+  
+  INTERRUPT EXTI0_IRQ {
+    VECT = 22;
+    SETPRIO = TRUE { NUMBER = 6; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "EXTI0_IRQ_Handler";
+    };
+  } : "EXTI Line0 Interrupt";
+  
+  INTERRUPT EXTI1_IRQ {
+    VECT = 23;
+    SETPRIO = TRUE { NUMBER = 7; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EXTI1_IRQ_Handler";
+    };
+  } : "EXTI Line1 Interrupt";
+  
+  INTERRUPT EXTI2_IRQ {
+    VECT = 24;
+    SETPRIO = TRUE { NUMBER = 8; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EXTI2_IRQ_Handler";
+    };
+  } : "EXTI Line2 Interrupt";
+  
+  INTERRUPT EXTI3_IRQ {
+    VECT = 25;
+    SETPRIO = TRUE { NUMBER = 9; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EXTI3_IRQ_Handler";
+    };
+  } : "EXTI Line3 Interrupt";
+  
+  INTERRUPT EXTI4_IRQ {
+    VECT = 26;
+    SETPRIO = TRUE { NUMBER = 10; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EXTI4_IRQ_Handler";
+    };
+  } : "EXTI Line4 Interrupt";
+  
+  INTERRUPT DMA1_Stream0_IRQ {
+    VECT = 27;
+    SETPRIO = TRUE { NUMBER = 11; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA1_Stream0_IRQ_Handler";
+    };
+  } : "DMA1 Stream 0 global Interrupt";
+  
+  INTERRUPT DMA1_Stream1_IRQ {
+    VECT = 28;
+    SETPRIO = TRUE { NUMBER = 12; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA1_Stream1_IRQ_Handler";
+    };
+  } : "DMA1 Stream 1 global Interrupt";
+  
+  INTERRUPT DMA1_Stream2_IRQ {
+    VECT = 29;
+    SETPRIO = TRUE { NUMBER = 13; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA1_Stream2_IRQ_Handler";
+    };
+  } : "DMA1 Stream 2 global Interrupt";
+  
+  INTERRUPT DMA1_Stream3_IRQ {
+    VECT = 30;
+    SETPRIO = TRUE { NUMBER = 14; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "DMA1_Stream3_IRQ_Handler";
+    };
+  } : "DMA1 Stream 3 global Interrupt";
+  
+  INTERRUPT DMA1_Stream4_IRQ {
+    VECT = 31;
+    SETPRIO = TRUE { NUMBER = 15; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA1_Stream4_IRQ_Handler";
+    };
+  } : "DMA1 Stream 4 global Interrupt";
+  
+  INTERRUPT DMA1_Stream5_IRQ {
+    VECT = 32;
+    SETPRIO = TRUE { NUMBER = 16; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA1_Stream5_IRQ_Handler";
+    };
+  } : "DMA1 Stream 5 global Interrupt";
+  
+  INTERRUPT DMA1_Stream6_IRQ {
+    VECT = 33;
+    SETPRIO = TRUE { NUMBER = 17; };
+    VECTOR_TYPE = HANDLER { 
+      NAME = "DMA1_Stream6_IRQ_Handler";
+    };
+  } : "DMA1 Stream 6 global Interrupt";
+  
+  INTERRUPT ADC_IRQ {
+    VECT = 34;
+    SETPRIO = TRUE { NUMBER = 18; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "ADC_IRQ_Handler";
+    };
+  } : "ADC1, ADC2 and ADC3 global Interrupts";
+  
+  INTERRUPT CAN1_TX_IRQ {
+    VECT = 35;
+    SETPRIO = TRUE { NUMBER = 19; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "CAN1_TX_Handler";
+    };
+  } : "CAN1 TX Interrupt";
+  
+  INTERRUPT CAN1_RX0_IRQ {
+    VECT = 36;
+    SETPRIO = TRUE { NUMBER = 20; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN1_RX0_Handler";
+    };
+  } : "CAN1 RX0 Interrupt";
+  
+  INTERRUPT CAN1_RX1_IRQ {
+    VECT = 37;
+    SETPRIO = TRUE { NUMBER = 21; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN1_RX1_Handler";
+    };
+  } : "CAN1 RX1 Interrupt";
+  
+  INTERRUPT CAN1_SCE_IRQ {
+    VECT = 38;
+    SETPRIO = TRUE { NUMBER = 22; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN1_SCE_Handler";
+    };
+  } : "CAN1 SCE Interrupt";
+  
+  INTERRUPT EXTI9_5_IRQ {
+    VECT = 39;
+    SETPRIO = TRUE { NUMBER = 23; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EXTI9_5_Handler";
+    };
+  } : "External Line[9:5] Interrupts";
+  
+  INTERRUPT TIM1_BRK_TIM9_IRQ {
+    VECT = 40;
+    SETPRIO = TRUE { NUMBER = 24; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM1_BRK_TIM9_Handler";
+    };
+  } : "TIM1 Break interrupt and TIM9 global interrupt";
+  
+  INTERRUPT TIM1_UP_TIM10_IRQ {
+    VECT = 41;
+    SETPRIO = TRUE { NUMBER = 25; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM1_UP_TIM10_Handler";
+    };
+  } : "TIM1 Update Interrupt and TIM10 global interrupt";
+  
+  INTERRUPT TIM1_TRG_COM_TIM11_IRQ {
+    VECT = 42;
+    SETPRIO = TRUE { NUMBER = 26; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "TIM1_TRG_COM_TIM11_Handler";
+    };
+  } : "TIM1 Trigger and Commutation Interrupt and TIM11 global interrupt";
+  
+  INTERRUPT TIM1_CC_IRQ {
+    VECT = 43;
+    SETPRIO = TRUE { NUMBER = 27; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM1_CC_Handler";
+    };
+  } : "TIM1 Capture Compare Interrupt";
+  
+  INTERRUPT TIM2_IRQ {
+    VECT = 44;
+    SETPRIO = TRUE { NUMBER = 28; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM2_Handler";
+    };
+  } :"TIM2 global Interrupt";
+  
+  INTERRUPT TIM3_IRQ {
+    VECT = 45;
+    SETPRIO = TRUE { NUMBER = 29; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM3_Handler";
+    };
+  } : "TIM3 global Interrupt";
+  
+  INTERRUPT TIM4_IRQ {
+    VECT = 46;
+    SETPRIO = TRUE { NUMBER = 30; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM4_Handler";
+    };
+  } : "TIM4 global Interrupt";
+  
+  INTERRUPT I2C1_EV_IRQ {
+    VECT = 47;
+    SETPRIO = TRUE { NUMBER = 31; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C1_EV_Handler";
+    };
+  } : "I2C1 Event Interrupt";
+  
+  INTERRUPT I2C1_ER_IRQ {
+    VECT = 48;
+    SETPRIO = TRUE { NUMBER = 32; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C1_ER_Handler";
+    };
+  } : "I2C1 Error Interrupt";
+  
+  INTERRUPT I2C2_EV_IRQ {
+    VECT = 49;
+    SETPRIO = TRUE { NUMBER = 33; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C2_EV_Handler";
+    };
+  } : "I2C2 Event Interrupt";
+  
+  INTERRUPT I2C2_ER_IRQ {
+    VECT = 50;
+    SETPRIO = TRUE { NUMBER = 34; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C2_ER_Handler";
+    };
+  } : "I2C2 Error Interrupt";
+  
+  INTERRUPT SPI1_IRQ {
+    VECT = 51;
+    SETPRIO = TRUE { NUMBER = 35; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI1_Handler";
+    };
+  } : "SPI1 global Interrupt";
+  
+  INTERRUPT SPI2_IRQ {
+    VECT = 52;
+    SETPRIO = TRUE { NUMBER = 36; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI2_Handler";
+    };
+  } : "SPI2 global Interrupt";
+  
+  INTERRUPT USART1_IRQ {
+    VECT = 53;
+    SETPRIO = TRUE { NUMBER = 37; };
+
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART1_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "USART1 global Interrupt";
+  
+  INTERRUPT USART2_IRQ {
+    VECT = 54;
+    SETPRIO = TRUE { NUMBER = 38; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART2_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "USART2 global Interrupt";
+  
+  INTERRUPT USART3_IRQ {
+    VECT = 55;
+    SETPRIO = TRUE { NUMBER = 39; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART3_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "USART3 global Interrupt";
+  
+  INTERRUPT EXTI15_10_IRQ {
+    VECT = 56;
+    SETPRIO = TRUE { NUMBER = 40; };
+    ACK = TRUE { ACKTYPE = EXTERNAL; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "EXTI15_10__Handler";
+    };
+  } : "External Line[15:10] Interrupts";
+  
+  INTERRUPT RTC_Alarm_IRQ {
+    VECT = 57;
+    SETPRIO = TRUE { NUMBER = 41; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "RTC_Alarm_Handler";
+    };
+  } : "RTC Alarm (A and B) through EXTI Line Interrupt";
+  
+  INTERRUPT OTG_FS_WKUP_IRQ {
+    VECT = 58;
+    SETPRIO = TRUE { NUMBER = 42; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "OTG_FS_WKUP_Handler";
+    };
+  } : "USB OTG FS Wakeup through EXTI line interrupt";
+  
+  INTERRUPT TIM8_BRK_TIM12_IRQ {
+    VECT = 59;
+    SETPRIO = TRUE { NUMBER = 43; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM8_BRK_TIM12_Handler";
+    };
+  } : "TIM8 Break Interrupt and TIM12 global interrupt";
+  
+  INTERRUPT TIM8_UP_TIM13_IRQ {
+    VECT = 60;
+    SETPRIO = TRUE { NUMBER = 44; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "TIM8_UP_TIM13_Handler";
+    };
+  } : "TIM8 Update Interrupt and TIM13 global interrupt";
+  
+  INTERRUPT TIM8_TRG_COM_TIM14_IRQ {
+    VECT = 61; 
+    SETPRIO = TRUE { NUMBER = 45; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM8_TRG_COM_TIM14_Handler";
+    };
+  } : "TIM8 Trigger and Commutation Interrupt and TIM14 global interrupt";
+  
+  INTERRUPT TIM8_CC_IRQ {
+    VECT = 62;
+    SETPRIO = TRUE { NUMBER = 46; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM8_CC_Handler";
+    };
+  } : "TIM8 Capture Compare Interrupt";
+  
+  INTERRUPT DMA1_Stream7_IRQ {
+    VECT = 63;
+    SETPRIO = TRUE { NUMBER = 47; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA1_Stream7_Handler";
+    };
+  } : "DMA1 Stream7 Interrupt";
+  
+  INTERRUPT FSMC_IRQ {
+    VECT = 64;
+    SETPRIO = TRUE { NUMBER = 48; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "FSMC_Handler";
+    };
+  } : "FSMC global Interrupt";
+  
+  INTERRUPT SDIO_IRQ {
+    VECT = 65;
+    SETPRIO = TRUE { NUMBER = 49; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SDIO_Handler";
+    };
+  } : "SDIO global Interrupt";
+  
+  INTERRUPT TIM5_IRQ {
+    VECT = 66;
+    SETPRIO = TRUE { NUMBER = 50; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM5_Handler";
+    };
+  } : "TIM5 global Interrupt";
+  
+  INTERRUPT SPI3_IRQ {
+    VECT = 67;
+    SETPRIO = TRUE { NUMBER = 51; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "SPI3_Handler";
+    };
+  } : "SPI3 global Interrupt";
+  
+  INTERRUPT UART4_IRQ {
+    VECT = 68;
+    SETPRIO = TRUE { NUMBER = 52; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE {
+    //  TEMPLATE = TRUE {
+    //    NAME = "uart_ack";
+    //  };
+    //};
+    VECTOR_TYPE = HANDLER {
+      NAME = "UART4_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "UART4 global Interrupt";
+  
+  INTERRUPT UART5_IRQ {
+    VECT = 69;
+    SETPRIO = TRUE { NUMBER = 53; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE {
+    //  TEMPLATE = TRUE {
+    //    NAME = "uart_ack";
+    //  };
+    //};
+    VECTOR_TYPE = HANDLER {
+      NAME =  "UART5_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "UART5 global Interrupt";
+  
+  INTERRUPT TIM6_DAC_IRQ {
+    VECT = 70;
+    SETPRIO = TRUE { NUMBER = 54; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM6_DAC_Handler";
+    };
+  } : "TIM6 global and DAC1&2 underrun error interrupts";
+  
+  INTERRUPT TIM7_IRQ {
+    VECT = 71;
+    SETPRIO = TRUE { NUMBER = 55; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "TIM7_Handler";
+    };
+  } : "TIM7 global interrupt";
+  
+  INTERRUPT DMA2_Stream0_IRQ {
+    VECT = 72;
+    SETPRIO = TRUE { NUMBER = 56; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream0_Handler";
+    };
+  } : "DMA2 Stream 0 global Interrupt";
+  
+  INTERRUPT DMA2_Stream1_IRQ {
+    VECT = 73;
+    SETPRIO = TRUE { NUMBER = 57; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream1_Handler";
+    };
+  } : "DMA2 Stream 1 global Interrupt";
+  
+  INTERRUPT DMA2_Stream2_IRQ {
+    VECT = 74;
+    SETPRIO = TRUE { NUMBER = 58; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream2_Handler";
+    };
+  } : "DMA2 Stream 2 global Interrupt";
+  
+  INTERRUPT DMA2_Stream3_IRQ {
+    VECT = 75;
+    SETPRIO = TRUE { NUMBER = 59; };
+    VECTOR_TYPE = HANDLER {
+      NAME =  "DMA2_Stream3_Handler";
+    };
+  } : "DMA2 Stream 3 global Interrupt";
+  
+  INTERRUPT DMA2_Stream4_IRQ {
+    VECT = 76;
+    SETPRIO = TRUE { NUMBER = 60; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream4_Handler";
+    };
+  } : "DMA2 Stream 4 global Interrupt";
+  
+  INTERRUPT ETH_IRQ {
+    VECT = 77;
+    SETPRIO = TRUE { NUMBER = 61; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "ETH_Handler";
+    };
+  } : "Ethernet global Interrupt";
+  
+  INTERRUPT ETH_WKUP_IRQ {
+    VECT = 78;
+    SETPRIO = TRUE { NUMBER = 62; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "ETH_WKUP_Handler";
+    };
+  } : "Ethernet Wakeup through EXTI line Interrupt";
+  
+  INTERRUPT CAN2_TX_IRQ {
+    VECT = 79;
+    SETPRIO = TRUE { NUMBER = 63; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN2_TX_Handler";
+    };
+  } : "CAN2 TX Interrupt";
+  
+  INTERRUPT CAN2_RX0_IRQ {
+    VECT = 80;
+    SETPRIO = TRUE { NUMBER = 64; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN2_RX0_Handler";
+    };
+  } : "CAN2 RX0 Interrupt";
+  
+  INTERRUPT CAN2_RX1_IRQ {
+    VECT = 81;
+    SETPRIO = TRUE { NUMBER = 65; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN2_RX1_Handler";
+    };
+  } : "CAN2 RX1 Interrupt";
+  
+  INTERRUPT CAN2_SCE_IRQ {
+    VECT = 82;
+    SETPRIO = TRUE { NUMBER = 66; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CAN2_SCE_Handler";
+    };
+  } : "CAN2 SCE Interrupt";
+  
+  INTERRUPT OTG_FS_IRQ {
+    VECT = 83;
+    SETPRIO = TRUE { NUMBER = 67; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "OTG_FS_Handler";
+    };
+  } : "USB OTG FS global Interrupt";
+  
+  INTERRUPT DMA2_Stream5_IRQ {
+    VECT = 84;
+    SETPRIO = TRUE { NUMBER = 68; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream5_Handler";
+    };
+  } : "DMA2 Stream 5 global interrupt";
+  
+  INTERRUPT DMA2_Stream6_IRQ {
+    VECT = 85;
+    SETPRIO = TRUE { NUMBER = 69; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream6_Handler";
+    };
+  } : "DMA2 Stream 6 global interrupt";
+  
+  INTERRUPT DMA2_Stream7_IRQ {
+    VECT = 86;
+    SETPRIO = TRUE { NUMBER = 70; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DMA2_Stream7_Handler";
+    };
+  } : "DMA2 Stream 7 global interrupt";
+  
+  INTERRUPT USART6_IRQ {
+    VECT = 87;
+    SETPRIO = TRUE { NUMBER = 71; };
+    ACK = TRUE { ACKTYPE = TEMPLATE {NAME = "uart_ack"; }; }; 
+    //ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "USART6_Handler";
+      TEMPLATE = TRUE { NAME = "uart_dispatch"; };
+    };
+  } : "USART6 global interrupt";
+      
+  INTERRUPT I2C3_EV_IRQ {
+    VECT = 88;
+    SETPRIO = TRUE { NUMBER = 72; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C3_EV_Handler";
+    };
+  } : "I2C3 event interrupt";
+    
+  INTERRUPT I2C3_ER_IRQ {
+    VECT = 89;
+    SETPRIO = TRUE { NUMBER = 73; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "I2C3_ER_Handler";
+    };
+  } : "I2C3 error interrupt";
+  
+  INTERRUPT OTG_HS_EP1_OUT_IRQ {
+    VECT = 90;
+    SETPRIO = TRUE { NUMBER = 74; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "OTG_HS_EP1_OUT_Handler";
+    };
+  } : "USB OTG HS End Point 1 Out global interrupt";
+  
+  INTERRUPT OTG_HS_EP1_IN_IRQ {
+    VECT = 91;
+    SETPRIO = TRUE { NUMBER = 75; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "OTG_HS_EP1_IN_Handler";
+    };
+  } : "USB OTG HS End Point 1 In global interrupt";
+  
+  INTERRUPT OTG_HS_WKUP_IRQ {
+    VECT = 92;
+    SETPRIO = TRUE { NUMBER = 76; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "OTG_HS_WKUP_Handler";
+    };
+  } : "USB OTG HS Wakeup through EXTI interrupt";
+  
+  INTERRUPT OTG_HS_IRQ {
+    VECT = 93;
+    SETPRIO = TRUE { NUMBER = 77; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "OTG_HS_Handler";
+    };
+  } : "USB OTG HS global interrupt";
+  
+  INTERRUPT DCMI_IRQ {
+    VECT = 94;
+    SETPRIO = TRUE { NUMBER = 78; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "DCMI_Handler";
+    };
+  } : "DCMI global interrupt";
+  
+  INTERRUPT CRYP_IRQ {
+    VECT = 95;
+    SETPRIO = TRUE { NUMBER = 79; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "CRYP_Handler";
+    };
+  } : "CRYP crypto global interrupt";
+  
+  INTERRUPT HASH_RNG_IRQ {
+    VECT = 96;
+    SETPRIO = TRUE { NUMBER = 80; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "HASH_RNG_Handler";
+    };
+  } : "Hash and Rng global interrupt";
+  
+  INTERRUPT FPU_IRQ {
+    VECT = 97;
+    SETPRIO = TRUE { NUMBER = 81; };
+    VECTOR_TYPE = HANDLER {
+      NAME = "FPU_Handler";
+    };
+  } : "FPU global interrupt";
+
+  PLATFORM_FILES stm32f407 {
+    PATH = "cortex-m/armv7em/stm32f407";
+    CFILE = "tpl_memory_protection.c";
+    CFILE = "tpl_machine_stm32f407.c";
+    CFILE = "startup_stm32f4xx.c";
+    CFILE = "system_stm32f4xx.c";
+    CFILE = "handlers_stm32f4xx.c";
+  };
+
+  PLATFORM_FILES stm32f407_std_libs_includes {
+    PATH = "cortex-m/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver";
+  };
+
+  PLATFORM_FILES stm32f407_cmsis {
+    PATH = "cortex-m/armv7em/stm32f407/CMSIS-ST/Device/ST/STM32F4xx/Include";
+  };
+
+  PLATFORM_FILES stm32f407_std_libs_src {
+    PATH = "cortex-m/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver";
+    CFILE = "stm32f4xx_gpio.c";
+    CFILE = "stm32f4xx_rcc.c";
+    CFILE = "stm32f4xx_exti.c";
+    CFILE = "stm32f4xx_syscfg.c";
+    CFILE = "misc.c";
+  };
+
+  PLATFORM_FILES stm32f407IO {
+    PATH = "cortex-m/armv7em/stm32f407/lib";
+    CFILE = "pinAccess.c";
+  };
+
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
+  };
+
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "st-flash";
+      INPUT = TARGET { EXT = ".bin"; };
+      PREOPTION = "write";
+      POSTOPTION = "0x8000000";
+    };
+  };
+};

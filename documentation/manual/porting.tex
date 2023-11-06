@@ -124,7 +124,7 @@ goil provides a dispatch table for interrupts. This table is filled according to
 
 So at step   \ref{item:caltheservice}, the interrupt handler uses the interrupt source number as an index in the \var{tpl_it_table}, get the corresponding interrupt handling function pointer and calls the function.
 
-If interrupts are fully vectorized, i.e. each interrupt source has its own interrupt vector, goil should generate the code for each vector. See how it is done in \file{cortex/armv7em} port.
+If interrupts are fully vectorized, i.e. each interrupt source has its own interrupt vector, goil should generate the code for each vector. See how it is done in \file{cortex-m/armv7em} port.
 
 \section{Target specific structures}
 

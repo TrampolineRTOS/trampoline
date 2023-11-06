@@ -43,11 +43,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex-a/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-a-r/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
+        working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
 
   avr-arduino-uno-examples:
     name: Build AVR Arduino Uno examples
@@ -136,11 +136,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv6m/samd21/ArduinoM0 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv6m/samd21/ArduinoM0 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv6m/samd21/ArduinoM0/${{ matrix.example_name }}
 
   cortex-m-xplained-pro-examples:
     name: Build Cortex-M Xplained Pro examples
@@ -160,11 +160,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv6m/samd21/XPlainedPro --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv6m/samd21/XPlainedPro --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv6m/samd21/XPlainedPro/${{ matrix.example_name }}
 
   cortex-m-arduino-due-examples:
     name: Build Cortex-M Arduino Due examples
@@ -184,11 +184,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv7m/atsam3x8e/arduino_due --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv7m/atsam3x8e/arduino_due/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv7m/atsam3x8e/arduino_due --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv7m/atsam3x8e/arduino_due/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv7m/atsam3x8e/arduino_due/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv7m/atsam3x8e/arduino_due/${{ matrix.example_name }}
 
   cortex-m-smart-fusion-2-examples:
     name: Build Cortex-M SmartFusion2 examples
@@ -209,11 +209,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv7m/SmartFusion2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv7m/SmartFusion2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv7m/SmartFusion2/starterKit/${{ matrix.example_name }}
 
   cortex-m-smart-nucleo-f303-examples:
     name: Build Cortex-M Nucleo-F303 examples
@@ -234,11 +234,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32f303 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv7em/stm32f303/Nucleo-32/${{ matrix.example_name }}
 
   cortex-m-smart-nucleo-l432-examples:
     name: Build Cortex-M Nucleo-F432 examples
@@ -259,11 +259,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv7em/stm32l432 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv7em/stm32l432/Nucleo-32/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32l432 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv7em/stm32l432/Nucleo-32/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv7em/stm32l432/Nucleo-32/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv7em/stm32l432/Nucleo-32/${{ matrix.example_name }}
 
   cortex-m-smart-stm32f4discovery-examples:
     name: Build Cortex-M STM32F4DISCOVERY examples
@@ -284,8 +284,8 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-m/armv7em/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-m/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}
+        working-directory: examples/cortex-m/armv7em/stm32f407/stm32f4discovery/${{ matrix.example_name }}

@@ -1,0 +1,25 @@
+#includeifexists <buildOptions.oil>
+
+/*
+ * Interrupt sources of the board
+ */
+CPU rpi2 {
+
+  PLATFORM_FILES rpi2 {
+    PATH = "cortex-a-r/armv7/bcm2836/rpi2";
+    CFILE = "rpi2_tpl_sleep.S";
+    CFILE = "rpi2_bootstrap_stage1.S";
+    CFILE = "rpi2_bootstrap_stage2.c";
+    CFILE = "rpi2_tpl_stubs.c";
+    CFILE = "rpi2_irq.c";
+    CFILE = "rpi2_exception_catch.S";
+    CFILE = "rpi2_trace.c";
+  };
+
+  PLATFORM_FILES rpi2_drivers {
+    PATH = "cortex-a-r/armv7/bcm2836/rpi2/drivers";
+    CFILE = "rpi2_uart.c";
+    CFILE = "rpi2_timer.c";
+  };
+
+};

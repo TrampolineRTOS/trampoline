@@ -1,7 +1,0 @@
-#includeifexists <buildOptions.oil>
-
-CPU armv7 {
-  PLATFORM_FILES armv7 {
-    PATH = "cortex-a/armv7";
-  };
-};

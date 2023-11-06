@@ -75,9 +75,9 @@ is equivalent to:
 
 \subsection{Python build}
 The python system generates 2 files \file{build.py} and \file{make.py}. The script will take into account all the dependancies. For example, modifying an object in the oil file will result in calling goil (and generating again the \file{build.py} file again), before doing the rest of the build step. As a result, \goil\ should be called only once (bootstrap), and then \com{./make.py} will do all the stuff.
-A basic run is (from \file{examples/cortex/armv7em/stm32f303/Nucleo-32/blink})
+A basic run is (from \file{examples/cortex-m/armv7em/stm32f303/Nucleo-32/blink})
 \begin{verbatim}
-% goil --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
+% goil --target=cortex-m/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
 Created 'blink/tpl_dispatch_table.c'.
 Created 'blink/tpl_invoque.S'.
 Created 'blink/tpl_os.h'.
@@ -102,7 +102,7 @@ Created 'blink/tpl_app_interrupts.c'.
 Created 'blink/tpl_cortex_definitions.h'.
 Created 'blink/stm_structure.c'.
 executing plugin gdb_commands.goilTemplate
-Created '/home/mik/prog/trampoline/examples/cortex/armv7em/stm32f303/Nucleo-32/blink/build/blink.oil.dep'.
+Created '/home/mik/prog/trampoline/examples/cortex-m/armv7em/stm32f303/Nucleo-32/blink/build/blink.oil.dep'.
 No warning, no error.
 \end{verbatim}
 Then, we call the python script \com{./make.py}:
@@ -113,7 +113,7 @@ Making "build/os" directory
 [  3%] Compiling ../../../../../../os/tpl_os_kernel.c
 [  6%] Compiling ../../../../../../os/tpl_os_timeobj_kernel.c
 …
-[ 96%] Compiling ../../../../../../machines/cortex/armv7em/stm32f303/tpl_trace.c
+[ 96%] Compiling ../../../../../../machines/cortex-m/armv7em/stm32f303/tpl_trace.c
 [100%] Linking blink_exe
 		   Generating binary blink_exe.bin from blink_exe	
 \end{verbatim}
@@ -130,7 +130,7 @@ The CMake build system generates 2 text based files:
 
 The bootstrap using \goil\ is the same as in PYTHON:
 \begin{verbatim}
-% goil --target=cortex/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
+% goil --target=cortex-m/armv7em/stm32f303 --templates=../../../../../../goil/templates/ blink.oil
 Created 'blink/tpl_dispatch_table.c'.
 Created 'blink/tpl_invoque.S'.
 Created 'blink/tpl_os.h'.
@@ -155,7 +155,7 @@ Created 'blink/tpl_app_interrupts.c'.
 Created 'blink/tpl_cortex_definitions.h'.
 Created 'blink/stm_structure.c'.
 executing plugin gdb_commands.goilTemplate
-Created '/home/mik/prog/trampoline/examples/cortex/armv7em/stm32f303/Nucleo-32/blink/build/blink.oil.dep'.
+Created '/home/mik/prog/trampoline/examples/cortex-m/armv7em/stm32f303/Nucleo-32/blink/build/blink.oil.dep'.
 No warning, no error.
 \end{verbatim}
 
@@ -182,7 +182,7 @@ Then, the command to generate the binary are the standard way, except a special 
 -- Found assembler: /opt/gcc-arm/bin/arm-none-eabi-gcc
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/mik/prog/trampoline/examples/cortex/armv7em/stm32f303/Nucleo-32/blink/build
+-- Build files have been written to: /home/mik/prog/trampoline/examples/cortex-m/armv7em/stm32f303/Nucleo-32/blink/build
 -> % make
 Scanning dependencies of target blink_exe
 [  3%] Building C object CMakeFiles/blink_exe.dir/blink.c.obj
