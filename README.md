@@ -22,21 +22,21 @@ And we welcome external contributors to extend this list.
 
 Trampoline runs on the following platforms :
 
-| MCU                          | Architecture       | Cores | Evaluation Board                  |
-|------------------------------|--------------------|:-----:|-----------------------------------|
-| Atmel ATMega328p             | 8-bit AVR          | 1     | Arduino Uno                       |
-| Atmel ATMega2560             | 8-bit AVR          | 1     | Arduino Mega                      |
-| Atmel SAM D21                | Cortex-M0+         | 1     | XPlainedPro                       |
-| Broadcom BCM2836             | Cortex-A7          | 4     | Raspberry Pi 2 Model B            |
-| NXP LPC2294                  | ARM7               | 1     | Olimex LPC-L2294-1MB              |
-| NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
-| NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
-| PULPino                      | RISC-V             | 1     | ZedBoard                          |
-| STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
-| STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303K8             |
-| STMicroelectronics STM32L432 | Cortex-M4          | 1     | Nucleo-32 STM32L432KC             |
-| MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
-| MSP430FR5969, MSP430FR5994   | CPUX               | 1     | Launchpad MSP-EXP430FR5969, Launchpad MSP-EXP430FR5994                       |
+| MCU                          | Architecture       | Cores | Evaluation Board                                       |
+|------------------------------|--------------------|:-----:|--------------------------------------------------------|
+| Atmel ATMega328p             | 8-bit AVR          | 1     | Arduino Uno                                            |
+| Atmel ATMega2560             | 8-bit AVR          | 1     | Arduino Mega                                           |
+| Atmel SAM D21                | Cortex-M0+         | 1     | XPlainedPro                                            |
+| Broadcom BCM2836             | Cortex-A7          | 4     | Raspberry Pi 2 Model B                                 |
+| NXP LPC2294                  | ARM7               | 1     | Olimex LPC-L2294-1MB                                   |
+| NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                                               |
+| NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE                      |
+| PULPino                      | RISC-V             | 1     | ZedBoard                                               |
+| STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG                      |
+| STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303K8                                  |
+| STMicroelectronics STM32L432 | Cortex-M4          | 1     | Nucleo-32 STM32L432KC                                  |
+| MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                                             |
+| MSP430FR5969, MSP430FR5994   | CPUX               | 1     | Launchpad MSP-EXP430FR5969, Launchpad MSP-EXP430FR5994 |
 
 Some examples are available (check examples):
 
