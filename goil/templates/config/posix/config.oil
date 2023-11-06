@@ -72,7 +72,7 @@ CPU posix {
 
   LIBRARY net_can_demo_driver {
     GLOBAL = TRUE;
-    PATH = "net/can/demo_driver";
+    PATH = "drivers/can/posix";
   };
 
   LIBRARY can {
