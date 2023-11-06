@@ -33,7 +33,7 @@ CPU arm_interrupt {
   };
 
   PLATFORM_FILES cortex_a {
-    PATH = "cortex-a";
+    PATH = "cortex-a-r";
     CFILE = "tpl_irq.S";
     CFILE = "tpl_system_call.S";
     CFILE = "tpl_stacks.S";
@@ -41,5 +41,4 @@ CPU arm_interrupt {
     CFILE = "tpl_vector_table.s";
     CFILE = "tpl_machine_arm.c";
   };
-
 };

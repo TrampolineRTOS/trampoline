@@ -65,7 +65,7 @@ Some examples are available (check examples):
   * **blink**. Blinks a LED using an alarm and a task.
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
   * **readButton_isr**. Same but the button triggers an ISR.
-* Cortex A7 with bcm2836 - Raspberry Pi 2 : `cortex-a/armv7/bcm2836/rpi2`.
+* Cortex A7 with bcm2836 - Raspberry Pi 2 : `cortex-a-r/armv7/bcm2836/rpi2`.
   * **blink**. A first runable blink example is available. We need a bootloader and and a console. This stuff will be soon available as well. Single core for the moment.
 * avr: 3 examples for Arduino Uno (ATMega328p chip) and Arduino Mega (ATMega2560 chip)
   * **blink**. Blinks a LED using an alarm and a task.

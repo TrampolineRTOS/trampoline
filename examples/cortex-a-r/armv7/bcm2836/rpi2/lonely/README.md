@@ -20,7 +20,7 @@ communicate with the JTAG
 2 - Configure the application with
 
 ```
-goil --target=cortex-a/armv7/bcm2836/rpi2 -v --templates=../../../../goil/templates/ lonely.oil
+goil --target=cortex-a-r/armv7/bcm2836/rpi2 -v --templates=../../../../goil/templates/ lonely.oil
 ```
 
 3 - Upload your program into the board :

@@ -2,6 +2,6 @@
 
 CPU armv7 {
   PLATFORM_FILES armv7 {
-    PATH = "cortex-a/armv7";
+    PATH = "cortex-a-r/armv7";
   };
 };

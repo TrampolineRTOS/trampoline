@@ -55,7 +55,7 @@ CPU bcm2836 {
   };
 */
   PLATFORM_FILES bcm2836 {
-    PATH = "cortex-a/armv7/bcm2836";
+    PATH = "cortex-a-r/armv7/bcm2836";
     CFILE = "bcm2836_misc.c";
     CFILE = "handlers_bcm2836.c";
     CFILE = "tpl_machine_bcm2836.c";
