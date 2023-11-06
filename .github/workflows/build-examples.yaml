@@ -43,11 +43,11 @@ jobs:
           path: ${{ github.workspace }}
           key: ${{ env.CACHE_KEY }}
       - name: Generate the code
-        run: ${{ env.GOIL }} --target=cortex-a/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
-        working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
+        run: ${{ env.GOIL }} --target=cortex-a-r/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
       - name: Build the code
         run: ./make.py
-        working-directory: examples/cortex-a/armv7/bcm2836/rpi2/${{ matrix.example_name }}
+        working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
 
   avr-arduino-uno-examples:
     name: Build AVR Arduino Uno examples

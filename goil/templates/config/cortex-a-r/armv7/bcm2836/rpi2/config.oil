@@ -6,7 +6,7 @@
 CPU rpi2 {
 
   PLATFORM_FILES rpi2 {
-    PATH = "cortex-a/armv7/bcm2836/rpi2";
+    PATH = "cortex-a-r/armv7/bcm2836/rpi2";
     CFILE = "rpi2_tpl_sleep.S";
     CFILE = "rpi2_bootstrap_stage1.S";
     CFILE = "rpi2_bootstrap_stage2.c";
@@ -17,7 +17,7 @@ CPU rpi2 {
   };
 
   PLATFORM_FILES rpi2_drivers {
-    PATH = "cortex-a/armv7/bcm2836/rpi2/drivers";
+    PATH = "cortex-a-r/armv7/bcm2836/rpi2/drivers";
     CFILE = "rpi2_uart.c";
     CFILE = "rpi2_timer.c";
   };

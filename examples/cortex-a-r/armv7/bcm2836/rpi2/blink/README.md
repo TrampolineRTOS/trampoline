@@ -9,7 +9,7 @@ It can be launched
 How to build the example:
 Generates the code:
 ```
-goil --target=cortex-a/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ blink.oil
+goil --target=cortex-a-r/armv7/bcm2836/rpi2 --templates=../../../../../../goil/templates/ blink.oil
 ```
 
 Build:
