@@ -34,7 +34,7 @@
  * $URL$
  */
 
-#include "../common/arch.oil"
+#include "../../../common/arch.oil"
 
 IMPLEMENTATION archPosix
 {
