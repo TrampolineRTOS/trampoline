@@ -13,14 +13,14 @@ IMPLEMENTATION stm32f303Coro {
 
 CPU coroLabBoard{
   LIBRARY spi {
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard";
     CHEADER = "spi.h";
     CFILE   = "spi.c";
   };
 
   LIBRARY tftDriver { // low level driver - no text
     NEEDS = spi;
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/Adafruit-ST7735-Library";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft/Adafruit-ST7735-Library";
     CPPHEADER = "Adafruit_ST7735.h";
     CPPHEADER = "Adafruit_ST77xx.h";
     CPPFILE   = "Adafruit_ST7735.cpp";
@@ -28,7 +28,7 @@ CPU coroLabBoard{
   };
 
   LIBRARY coroPrint { //get high level 'print' functions from Arduino
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/arduinoCore";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft/arduinoCore";
     CPPHEADER = "Print.h";
     CPPHEADER = "Printable.h";
     CPPFILE   = "Print.cpp";
@@ -37,7 +37,7 @@ CPU coroLabBoard{
   LIBRARY tftFontDriver {	//font driver.
     NEEDS = tftDriver;
     NEEDS = coroPrint;
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft/Adafruit-GFX-Library";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft/Adafruit-GFX-Library";
     CPPHEADER = "Adafruit_GFX.h";
     CPPHEADER = "Adafruit_SPITFT.h";
     CPPHEADER = "Adafruit_SPITFT_Macros.h";
@@ -48,14 +48,14 @@ CPU coroLabBoard{
 
   LIBRARY tft { //all the tft stuff (low level, font, print and Tft object)
     NEEDS = tftFontDriver;
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard/tft";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard/tft";
     CPPFILE   = "tft.cpp";
     CPPHEADER = "tft.h";
   };
 
   LIBRARY IOExpander {
     NEEDS = spi;
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard";
     CPPHEADER = "mcp23s17.h";
     CPPFILE   = "mcp23s17.cpp";
   };
@@ -64,7 +64,7 @@ CPU coroLabBoard{
   LIBRARY coroBoard {
     NEEDS = tft;
     NEEDS = IOExpander;
-    PATH = "cortex/armv7em/stm32f303/coroLabBoard";
+    PATH = "cortex-m/armv7em/stm32f303/coroLabBoard";
     CPPHEADER = "coroBoard.h";
     CPPFILE   = "coroBoard.cpp";
   };
