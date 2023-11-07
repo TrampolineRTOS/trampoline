@@ -1,0 +1,9 @@
+CPU darwin_apple_silicon {
+    OS darwin_apple_silicon {
+        BUILD = TRUE {
+            CFLAGS = "-arch arm64";
+            LDFLAGS = "-arch arm64";
+        };
+    };
+};
+
