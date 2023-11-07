@@ -30,13 +30,13 @@
 #include <tpl_os.h>
 
 /** CAN module 0 */
-#define RSCFD0_BASE_ADDR 0xDFD6F000
+#define RSCFD0_BASE_ADDR 0xDFF50000
 /** CAN module 1 */
 #define RSCFD1_BASE_ADDR 0xDFD00000
 
 /**
  * All available CAN controllers.
  */
-extern tpl_can_controller_t spider_can_controller_0;
+extern tpl_can_controller_t spider_can_controller_0, spider_can_controller_1;
 
 #endif

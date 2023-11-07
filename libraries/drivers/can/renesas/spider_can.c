@@ -33,7 +33,7 @@
 // TODO make this value accessible globally
 #define PROTECTION_ENABLE_KEY 0xA5A5A500
 
-#define SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl) (!(((volatile struct __tag5586 *) ctrl->base_address)->CFDFESTS.UINT32 & 0x00000001))
+#define SPIDER_CAN_RECEIVED_DATA_FLAG(ctrl) (!(((volatile struct __tag5579 *) ctrl->base_address)->CFDFESTS.UINT32 & 0x00000001))
 
 /**
  * The CAN clock that feeds the prescalers (in Hertz).
@@ -53,7 +53,7 @@ struct spider_can_priv
 	int is_can_fd_bit_rate_switch_enabled;
 };
 
-static struct spider_can_priv spider_can_controller_0_priv;
+static struct spider_can_priv spider_can_controller_0_priv, spider_can_controller_1_priv;
 
 tpl_can_controller_t spider_can_controller_0 =
 {
@@ -64,6 +64,17 @@ tpl_can_controller_t spider_can_controller_0 =
 	spider_receive,
 	spider_is_data_available,
 	&spider_can_controller_0_priv
+};
+
+tpl_can_controller_t spider_can_controller_1 =
+{
+	RSCFD1_BASE_ADDR,
+	spider_can_init,
+	spider_set_baudrate,
+	spider_transmit,
+	spider_receive,
+	spider_is_data_available,
+	&spider_can_controller_1_priv
 };
 
 /**
@@ -80,7 +91,7 @@ static int spider_can_configure_baud_rate_registers(struct tpl_can_controller_t 
 	struct __tag743 nominal_bitrate_conf_reg = { 0 };
 	struct __tag900 data_bitrate_config_reg = { 0 };
 	struct __tag901 can_fd_config_reg = { 0 };
-	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	volatile struct __tag5579 *ctrl_base_address = (volatile struct __tag5579 *) ctrl->base_address;
 	struct spider_can_priv *priv = ctrl->priv;
 
 	// Make sure the CAN baud rates are in the allowed range
@@ -148,11 +159,63 @@ static int spider_can_configure_baud_rate_registers(struct tpl_can_controller_t 
 	return 0;
 }
 
+/**
+ * TODO improve, this is quick and dirty for now
+ */
+static void spider_can_configure_gpios(struct tpl_can_controller_t *ctrl)
+{
+	uint32 val;
+
+	// Assign the CAN pins to the correct CAN module (the PMMR register value needs to be written before writing another register with the inverse of the register value)
+	if (ctrl->base_address == RSCFD0_BASE_ADDR)
+	{
+		// Enable multiplexing register usage
+		PFC1.PMMER7_B0A0 = 0x00000001;
+
+		// Select the peripheral function for the CAN pins
+		val = PFC1.GPSR7_B0A0 | 0x00000003;
+		PFC1.PMMR7_B0A0 = ~val;
+		PFC1.GPSR7_B0A0 = val;
+
+		// Select the CAN function for the CAN GPIOs
+		val = PFC1.IP0SR7_B0A0 & ~0x00000003;
+		PFC1.PMMR7_B0A0 = ~val;
+		PFC1.IP0SR7_B0A0 = val;
+
+		// Set the drive strength of the CAN TX pin to 7/8
+		val = PFC1.DRV0CTRL7_B0A0 & ~0x0000000F;
+		val |= 0x00000003;
+		PFC1.PMMR7_B0A0 = ~val;
+		PFC1.DRV0CTRL7_B0A0 = val;
+	}
+	else
+	{
+		// Enable multiplexing register usage
+		PFC1.PMMER7_B0A0 = 0x00000001;
+
+		// Select the peripheral function for the CAN pins
+		val = PFC1.GPSR7_B0A0 | 0x00030000;
+		PFC1.PMMR7_B0A0 = ~val;
+		PFC1.GPSR7_B0A0 = val;
+
+		// Select the CAN function for the CAN GPIOs
+		val = PFC1.IP2SR7_B0A0 & ~0x00000003;
+		PFC1.PMMR7_B0A0 = ~val;
+		PFC1.IP2SR7_B0A0 = val;
+
+		// Set the drive strength of the CAN TX pin to 7/8
+		val = PFC1.DRV2CTRL7_B0A0 & ~0x0000000F;
+		val |= 0x00000003;
+		PFC1.PMMR7_B0A0 = ~val;
+		PFC1.DRV2CTRL7_B0A0 = val;
+	}
+}
+
 static int spider_can_init(struct tpl_can_controller_config_t *config)
 {
 	uint32 val;
 	struct tpl_can_controller_t *ctrl = config->controller;
-	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	volatile struct __tag5579 *ctrl_base_address = (volatile struct __tag5579 *) ctrl->base_address;
 
 	// Clock the CAN module with a 80MHz clock to be able to reach 8Mbit/s bus speed in CAN-FD mode (see datasheet table 13.6)
 	SYSCTRL.CLKKCPROT1.UINT32 = PROTECTION_DISABLE_KEY; // Allow access to the clock controller registers
@@ -230,22 +293,7 @@ static int spider_can_init(struct tpl_can_controller_config_t *config)
 	ctrl_base_address->CFDC0CTR.UINT32 = 0;
 	while (ctrl_base_address->CFDC0STS.BIT.CRSTSTS);
 
-	// Assign the CAN pins to the CAN module (the PMMR register value needs to be written before writing another register with the inverse of the register value)
-	// Enable multiplexing register usage
-	PFC1.PMMER7_B0A0 = 0x00000001;
-	// Select the peripheral function for the CAN pins
-	val = PFC1.GPSR7_B0A0 | 0x00000003;
-	PFC1.PMMR7_B0A0 = ~val;
-	PFC1.GPSR7_B0A0 = val;
-	// Select the CAN function for the CAN GPIOs
-	val = PFC1.IP0SR7_B0A0 & ~0x00000003;
-	PFC1.PMMR7_B0A0 = ~val;
-	PFC1.IP0SR7_B0A0 = val;
-	// Set the drive strength of the CAN TX pin to 7/8
-	val = PFC1.DRV0CTRL7_B0A0 & ~0x0000000F;
-	val |= 0x00000003;
-	PFC1.PMMR7_B0A0 = ~val;
-	PFC1.DRV0CTRL7_B0A0 = val;
+	spider_can_configure_gpios(ctrl);
 
 	// Enable reception FIFO (the write must be done separately, after all other bits of the register have been configured, and when the module is in global operation mode)
 	val = ctrl_base_address->CFDRFCC0.UINT32;
@@ -271,7 +319,7 @@ static int spider_set_baudrate(struct tpl_can_controller_t *ctrl, CanControllerB
 
 static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const Can_PduType *pdu_info)
 {
-	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	volatile struct __tag5579 *ctrl_base_address = (volatile struct __tag5579 *) ctrl->base_address;
 	int is_can_fd;
 	volatile uint8 *src, *dest;
 	uint32 i, val, adjusted_payload_length;
@@ -340,7 +388,7 @@ static Std_ReturnType spider_transmit(struct tpl_can_controller_t *ctrl, const C
 
 static Std_ReturnType spider_receive(struct tpl_can_controller_t *ctrl, Can_PduType *pdu_info)
 {
-	volatile struct __tag5586 *ctrl_base_address = (volatile struct __tag5586 *) ctrl->base_address;
+	volatile struct __tag5579 *ctrl_base_address = (volatile struct __tag5579 *) ctrl->base_address;
 	int i, is_extended_id;
 	volatile uint8 *src, *dest;
 	Std_ReturnType ret = E_NOT_OK;
