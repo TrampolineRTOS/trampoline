@@ -1,5 +1,5 @@
 /**
- * @file arch.oil
+ * @file softwareIT.oil
  *
  * @section desc File description
  *
@@ -34,45 +34,32 @@
  * $URL$
  */
 
-#include "../common/arch.oil"
-
-IMPLEMENTATION archPosix
+IMPLEMENTATION softITPosix
 {
-  TASK {
-    UINT32 STACKSIZE = 32768;
+  /* Can be modified in the test's oil file */
+  ISR
+  {
+    UINT32 [1, 2] CATEGORY = 1;
     UINT32 PRIORITY = 1;
   };
 
 };
 
-CPU archPosixDefault
+CPU softITPosix
 {
-  OS defaultOS
+  ISR softwareInterruptHandler0
   {
-    /* Build paths are from the test directory */
-    BUILD = TRUE
-    {
-      COMPILER = "gcc";
-      ASSEMBLER = "gcc";
-      LINKER = "gcc";
-      CFLAGS = "-Werror -Wall -pedantic";
-      CFLAGS = "-Wmissing-field-initializers";
-      CFLAGS = "-Wno-unused-but-set-variable";
-      LDFLAGS = "-L../../lib -lembUnit";
-      SYSTEM = PYTHON;
-      LIBRARY = archConfig;
-    };
+    SOURCE = SIGTERM;
   };
-
-  /* Lib paths are from the "TRAMPOLINE/machines" directory */
-  LIBRARY archConfig
+  ISR softwareInterruptHandler1
   {
-    PATH = "../tests/machines/posix/";
-    CHEADER = "archTestConfig.h";
-    CFILE = "archTestConfig.c";
+    SOURCE = SIGUSR2;
+  };
+  ISR softwareInterruptHandler2
+  {
+    SOURCE = SIGPIPE;
   };
 };
-
 
 
 

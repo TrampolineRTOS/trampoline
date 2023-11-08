@@ -24,10 +24,15 @@ The first time, goil should be called directly. It will generate the appropriate
     $ cd examples/posix/periodic
     $ goil --target=posix/linux  --templates=../../../goil/templates/ periodic.oil
 
-Or if you run the example on OSX instead of Linux, 
+Or if you run the example on OSX Intel instead of Linux, 
 
     $ cd examples/posix/periodic
     $ goil --target=posix/darwin  --templates=../../../goil/templates/ periodic.oil
+
+Or if you run the example on OSX Apple Silicon
+
+    $ cd examples/posix/periodic
+    $ goil --target=posix/darwin/arm64  --templates=../../../goil/templates/ periodic.oil
 
 Then, the makefile is generated, and it will call goil again when the .oil file is updated
 

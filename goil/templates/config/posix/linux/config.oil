@@ -1,8 +1,7 @@
 CPU linux {
-
     OS linux {
         BUILD = TRUE {
-            LDFLAGS="-lrt -lpthread";
+            LDFLAGS = "-lrt -lpthread";
         };
     };
 };
