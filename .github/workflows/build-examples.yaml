@@ -49,6 +49,37 @@ jobs:
         run: ./make.py
         working-directory: examples/cortex-a-r/armv7/bcm2836/rpi2/${{ matrix.example_name }}
 
+  cortex-a-r-spider-examples:
+    name: Build Renesas Spider Cortex-R52 examples
+    runs-on: ubuntu-22.04
+    needs: goil
+    env:
+      ARM_TOOLCHAIN_NAME: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
+    strategy:
+      matrix:
+        example_name: [blink, can_demo, iccom, one_task]
+    steps:
+      # A toolchain newer than the one included in Ubuntu 22.04 is needed
+      - name: Install ARM toolchain
+        run: |
+          wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/${{ env.ARM_TOOLCHAIN_NAME }}.tar.xz
+          sudo tar -xf ${{ env.ARM_TOOLCHAIN_NAME }}.tar.xz -C /opt
+      - name: Retrieve sources and Goil binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ env.CACHE_KEY }}
+      - name: Generate the code
+        run: |
+            echo "$(realpath /opt/${{ env.ARM_TOOLCHAIN_NAME }}/bin)" >> $GITHUB_PATH
+            ${{ env.GOIL }} --target=cortex-a-r/armv8/spider --templates=../../../../../goil/templates/ ${{ matrix.example_name }}.oil
+        working-directory: examples/cortex-a-r/armv8/spider/${{ matrix.example_name }}
+      - name: Build the code
+        run: |
+            echo "$(realpath /opt/${{ env.ARM_TOOLCHAIN_NAME }}/bin)" >> $GITHUB_PATH
+            ./make.py
+        working-directory: examples/cortex-a-r/armv8/spider/${{ matrix.example_name }}
+
   avr-arduino-uno-examples:
     name: Build AVR Arduino Uno examples
     runs-on: ubuntu-22.04
