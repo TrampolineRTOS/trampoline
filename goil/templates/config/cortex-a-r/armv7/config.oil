@@ -3,5 +3,6 @@
 CPU armv7 {
   PLATFORM_FILES armv7 {
     PATH = "cortex-a-r/armv7";
+    CFILE = "tpl_vector_table.s";
   };
 };

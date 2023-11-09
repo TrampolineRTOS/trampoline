@@ -1,0 +1,180 @@
+#include "tpl_machine.h"
+
+%
+%
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let INTERRUPT_SOURCE_MAP := mapof INTERRUPT_SOURCE by NAME
+
+let objForSRC := emptymap
+
+# Map ISR into objForSRC
+foreach isr in ISR do
+  let key := isr::SOURCE
+  display key
+  if not exists objForSRC[key] then
+    let objForSRC[key] := emptylist
+  end if
+  let isr::KIND := "ISR"
+#  let isr::ACK := INTERRUPT_SOURCE_MAP[key]::ACK
+  let objForSRC[key] += isr
+end foreach
+
+# Map COUNTER into objForSRC
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForSRC[key] then
+    let objForSRC[key] := emptylist
+  end if
+  let cnt::KIND := "COUNTER"
+#  display INTERRUPTMAP[key]
+#  let cnt::ACK := INTERRUPT_SOURCE_MAP[key]::ACK
+  let objForSRC[key] += cnt
+# display objForSRC[key]
+end foreach
+
+# Build the list of counters to call
+let counterForIRQ := emptymap
+
+# Build a list of virtual objects (counters) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
+foreach objList in objForSRC do
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let counterForIRQ[KEY] := emptylist
+    end if
+  end foreach
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let  counterForIRQ[KEY] += obj::NAME
+    end if
+  end foreach
+end foreach
+
+#------------------------------------------------------------------------------*
+let INTERRUPTMAP := mapof INTERRUPT_SOURCE by NAME
+
+foreach objList in objForSRC do
+  let handlerAck := false
+  let objList_KEY := KEY
+  let indexISR2 := 0
+  foreach obj in objList do
+    if INTERRUPTMAP[KEY]::ACK then
+      let handlerAck := true
+    end if
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 then
+%  extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
+%
+      end if
+    end if
+
+    if handlerAck then
+%  extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
+%
+    end if
+  end foreach
+end foreach
+
+foreach objList in objForSRC do
+  let objList_KEY := KEY
+%
+FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
+{
+%
+  let indexISR2 := 0
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+# ISR 1
+      if obj::CATEGORY == 1 then
+%
+  % !obj::NAME %_function();
+%
+      else
+        if obj::CATEGORY == 2 then
+# ISR2
+%
+  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+%
+          let indexISR2 := indexISR2 + 1
+        else
+          error obj::CATEGORY : "This interrupt category ".obj::CATEGORY." does not exist"
+        end if
+      end if
+    end if
+  end foreach
+  foreach objCounter in counterForIRQ do
+    let objCounter_KEY := KEY
+    if objCounter_KEY == objList_KEY then
+      %  tpl_tick_% !objCounter_KEY %();
+%
+    end if
+  end foreach
+  let ackDone := false
+  foreach obj in objList do
+    if not ackDone then
+#      if obj::ACK then
+#        let ackDone := true
+%  %!objList_KEY%_ClearFlag();
+%
+#      end if
+    end if
+  end foreach
+%
+}
+%
+end foreach
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+%
+
+/* Interrupt table vector */
+%
+%
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+ before
+%
+CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+ do
+   let src_found := false
+   foreach src in INTERRUPT_SOURCE do
+     if not src_found then
+       if src::SOURCE_NUM == ENTRY then
+         if exists objForSRC[src::NAME] then
+          let src_found := true
+%  { (tpl_it_handler)% !src::NAME %_Handler, (void *)NULL }%
+         end if
+       end if
+     end if
+     # Il ne doit rien y avoir ici
+   end foreach
+   if not src_found then
+%  { (tpl_it_handler)tpl_null_it, (void *)NULL }%   
+   end if
+ between
+%,
+%
+ after
+%
+};
+% 
+end loop
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+# vim:ft=goil_templates

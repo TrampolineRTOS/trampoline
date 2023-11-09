@@ -1,0 +1,5 @@
+build/
+one_task/
+*.map
+*.py
+one_task_exe*

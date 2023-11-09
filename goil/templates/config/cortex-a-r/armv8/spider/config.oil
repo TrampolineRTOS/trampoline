@@ -1,0 +1,73 @@
+#includeifexists <buildOptions.oil>
+
+IMPLEMENTATION spider {
+  OS {
+    BOOLEAN [
+      TRUE {
+        ENUM [
+          can
+        ] LIBRARY[];
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+};
+
+/*
+ * Interrupt sources of the board
+ */
+CPU spider {
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 1024;
+  };
+
+  INTERRUPT_VECTOR Reset                 { VECTOR_NUM = 0; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Undefined_Instruction { VECTOR_NUM = 1; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Supervisor_Call       { VECTOR_NUM = 2; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Prefetch_Abort        { VECTOR_NUM = 3; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Data_Abort            { VECTOR_NUM = 4; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR Hyp_Trap              { VECTOR_NUM = 5; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR IRQ_Interrupt         { VECTOR_NUM = 6; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+  INTERRUPT_VECTOR FIQ_Interrupt         { VECTOR_NUM = 7; VECTOR_KIND = HANDLER { NAME =  ""; }; };
+
+  // TO BE UPDATED
+  INTERRUPT_SOURCE ARM_TIMER             { SOURCE_NUM = 27; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+  INTERRUPT_SOURCE ICCOM_INT             { SOURCE_NUM = 353; VECTOR = IRQ_Interrupt; ACK = TRUE; };
+
+  PLATFORM_FILES spider {
+    PATH = "cortex-a-r/armv8/spider";
+    CFILE = "handlers_spider.c";
+    CFILE = "tpl_machine_spider.c";
+    ASFILE = "bootstrap_stage1.S";
+    CFILE = "bootstrap_stage2.c";
+    CFILE = "tpl_stubs.c";
+    CFILE = "tpl_irq.c";
+    CFILE = "tpl_vector_table_ns.s";
+  };
+
+  LIBRARY net_can_renesas_spider_driver {
+    GLOBAL = TRUE;
+    PATH = "drivers/can/renesas";
+  };
+
+  LIBRARY can {
+    GLOBAL = TRUE;
+    NEEDS = net_can_renesas_spider_driver;
+    PATH = "net/can";
+  };
+
+  POSTBUILD all {
+    COMMAND buildhex {
+      TYPE = COPIER;
+      INPUT = ORIGINAL_TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = ORIGINAL_TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
+  };
+};

@@ -110,13 +110,13 @@ typedef struct TPL_ISR_STATIC tpl_isr_static;
 
 #if ISR_COUNT > 0
 
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 extern CONSTP2CONST(tpl_isr_static, AUTOMATIC,
                     OS_APPL_DATA) tpl_isr_stat_table[ISR_COUNT];
 
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #endif /* ISR_COUNT */
