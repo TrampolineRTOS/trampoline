@@ -8,6 +8,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 * cortex
   * Cortex-M (M0+, M3 and M4 for now) instruction set
   * Cortex-A (A7) instruction set. This port is under heavy development.
+  * Cortex-R (R52) instruction set.
 * riscv
   * PULPino microprocessor with 32bits RISC-V instruction set.
 * ppc: PowerPC 32bits instruction set
@@ -32,6 +33,7 @@ Trampoline runs on the following platforms :
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                                               |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE                      |
 | PULPino                      | RISC-V             | 1     | ZedBoard                                               |
+| Renesas Spider CR52          | Cortex-R52         | 1     | Renesas R-Car S4 Spider                                |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG                      |
 | STMicroelectronics STM32F30x | Cortex-M4          | 1     | Nucleo-32 STM32F303K8                                  |
 | STMicroelectronics STM32L432 | Cortex-M4          | 1     | Nucleo-32 STM32L432KC                                  |
