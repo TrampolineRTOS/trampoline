@@ -117,7 +117,7 @@ __tpl_sc_handler:
 	; Save working registers on the calling task stack
 	pushsp r2, r2
 	pushsp r4, r10
-	add 40, sp ; skip caller saved registers: r11-r20
+	sub 40, sp ; skip caller saved registers: r11-r20
 
 	stsr 1, r20 ; retrieve eipsw: calling status
 	pushsp r20, r20
