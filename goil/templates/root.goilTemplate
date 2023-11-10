@@ -53,7 +53,7 @@ end if
 #------------------------------------------------------------------------------*
 # Compute the AUTOSAR flag
 #
-# AUTOSAR is true if OIL_VERSION is 3.1
+# AUTOSAR is true if OIL_VERSION is 3.1 or 4.0
 # 
 let AUTOSAR := (OILVERSION == "3.1"  | OILVERSION == "4.0")
 
@@ -63,22 +63,90 @@ let AUTOSAR := (OILVERSION == "3.1"  | OILVERSION == "4.0")
 let OS::NUMBER_OF_CORES := exists OS::NUMBER_OF_CORES default (1)
 
 #------------------------------------------------------------------------------*
+# build the library tree dependencies and get the OIL objects from
+# the libraries OIL files
+#
+let AVAILABLELIB := @[]
+let LIBTASK := @()
+let LIBISR := @()
+let LIBCOUNTER := @()
+let LIBALARM := @()
+let LIBEVENT := @()
+let LIBRESOURCE := @()
+let LIBMESSAGE := @()
+
+#
+# Libraries defined in the target tree structure
+#
+foreach lib in exists LIBRARY default ( @() ) do
+  if lib::GLOBAL == false then
+    let AVAILABLELIB[lib::NAME] := lib
+  else
+    # get the global lib path and parse the oil
+    let glib := [lib::PATH + "/config.oil" parseOIL]
+    foreach gl in exists glib::LIBRARY default ( @() ) do
+      let gl::GLOBAL := true
+      if exists lib::NEEDS then
+        let gl::NEEDS := lib::NEEDS
+      end if
+      let AVAILABLELIB[lib::NAME] := gl
+    end foreach
+    let LIBTASK := LIBTASK | exists gl::TASK default ( @() )
+    let LIBISR := LIBISR | exists gl::ISR default ( @() )
+    let LIBCOUNTER := LIBCOUNTER | exists gl::COUNTER default ( @() )
+    let LIBALARM := LIBALARM | exists gl::ALARM default ( @() )
+    let LIBEVENT := LIBEVENT | exists gl::EVENT default ( @() )
+    let LIBRESOURCE := LIBRESOURCE | exists gl::RESOURCE default ( @() )
+    let LIBMESSAGE := LIBMESSAGE | exists gl::MESSAGE default ( @() )
+  end if
+end foreach
+
+let USEDLIB := @[]
+foreach lib in exists OS::BUILD_S::LIBRARY default (@()) do
+  let key := lib::VALUE
+  if not exists USEDLIB[key] then
+    if exists AVAILABLELIB[key] then
+      let USEDLIB[key] := AVAILABLELIB[key]
+    else
+      error lib : "referenced library does not exist"
+    end if
+  end if
+end foreach
+
+let PRIMARYUSEDLIB := USEDLIB
+
+repeat
+  let added := false
+  let NEWLYADDEDLIB := @[]
+  foreach lib in USEDLIB do
+    foreach needs in exists lib::NEEDS default (@()) do
+      if not exists USEDLIB[needs::VALUE] & not exists USEDLIB[needs::VALUE] then
+        let added := true
+        let NEWLYADDEDLIB[needs::VALUE] := AVAILABLELIB[needs::VALUE]
+      end if
+    end foreach
+  end foreach
+  foreach lib in NEWLYADDEDLIB do
+    let USEDLIB[lib::NAME] := lib
+  end foreach
+while added do
+end repeat
+
+#------------------------------------------------------------------------------*
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 #
 let APPMODE := exists APPMODE default (@())
-let TASK := exists TASK default (@())
-let ISR := exists ISR default (@())
-let EVENT := exists EVENT default (@())
-let COUNTER := exists COUNTER default (@())
-let ALARM := exists ALARM default (@())
-let RESOURCE := exists RESOURCE default (@())
-let MESSAGE := exists MESSAGE default (@())
+let TASK := exists TASK default (@()) | LIBTASK
+let ISR := exists ISR default (@()) | LIBISR
+let EVENT := exists EVENT default (@()) | LIBEVENT
+let COUNTER := exists COUNTER default (@()) | LIBCOUNTER
+let ALARM := exists ALARM default (@()) | LIBALARM
+let RESOURCE := exists RESOURCE default (@()) | LIBRESOURCE
+let MESSAGE := exists MESSAGE default (@()) | LIBMESSAGE
 let APPLICATION := exists APPLICATION default (@())
 let SCHEDULETABLE := exists SCHEDULETABLE default (@())
 let IOC := exists IOC default (@())
-let TRANSACTION := exists TRANSACTION default (@())
-let OBJECT := exists OBJECT default (@())
 let SPINLOCK := exists SPINLOCK default (@())
 
 template if exists configCheck
@@ -1388,61 +1456,6 @@ foreach api_sec in APICONFIG do
     let USEDAPI += api_sec
   end if
 end foreach
-
-#------------------------------------------------------------------------------*
-# build the library tree dependencies
-#
-let AVAILABLELIB := @[]
-
-#
-# Libraries defined in the target tree structure
-#
-foreach lib in exists LIBRARY default ( @() ) do
-  if lib::GLOBAL == false then
-    let AVAILABLELIB[lib::NAME] := lib
-  else
-    # get the global lib path and parse the oil
-    let glib := [lib::PATH + "/config.oil" parseOIL]
-    foreach gl in exists glib::LIBRARY default ( @() ) do
-      let gl::GLOBAL := true
-      if exists lib::NEEDS then
-        let gl::NEEDS := lib::NEEDS
-      end if
-      let AVAILABLELIB[lib::NAME] := gl
-    end foreach
-  end if
-end foreach
-
-let USEDLIB := @[]
-foreach lib in exists OS::BUILD_S::LIBRARY default (@()) do
-  let key := lib::VALUE
-  if not exists USEDLIB[key] then
-    if exists AVAILABLELIB[key] then
-      let USEDLIB[key] := AVAILABLELIB[key]
-    else
-      error lib : "referenced library does not exist"
-    end if
-  end if
-end foreach
-
-let PRIMARYUSEDLIB := USEDLIB
-
-repeat
-  let added := false
-  let NEWLYADDEDLIB := @[]
-  foreach lib in USEDLIB do
-    foreach needs in exists lib::NEEDS default (@()) do
-      if not exists USEDLIB[needs::VALUE] & not exists USEDLIB[needs::VALUE] then
-        let added := true
-        let NEWLYADDEDLIB[needs::VALUE] := AVAILABLELIB[needs::VALUE]
-      end if
-    end foreach
-  end foreach
-  foreach lib in NEWLYADDEDLIB do
-    let USEDLIB[lib::NAME] := lib
-  end foreach
-while added do
-end repeat
 
 #------------------------------------------------------------------------------*
 # Check the user oil configuration before generating files

@@ -1,5 +1,5 @@
 IMPLEMENTATION libraries {
-    LIBRARY [] {
+  LIBRARY [] {
     LIBRARY_TYPE NEEDS [];
     STRING CHEADER[];
     STRING CPPHEADER[];
@@ -8,4 +8,6 @@ IMPLEMENTATION libraries {
     STRING CPPFILE[];
     STRING ASFILE[];
   };
+
+  #include <base.oil>
 };
