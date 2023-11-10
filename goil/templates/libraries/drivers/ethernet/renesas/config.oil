@@ -1,0 +1,10 @@
+CPU drivers_ethernet_renesas_spider_files {
+  LIBRARY ethernet {
+    PATH = "drivers/ethernet/renesas";
+
+    CFILE = "utils.c";
+    CFILE = "rswitch.c";
+    CFILE = "eth_serdes.c";
+    CFILE = "eth_gptp.c";
+  };
+};

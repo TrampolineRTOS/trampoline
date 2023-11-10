@@ -6,6 +6,8 @@ IMPLEMENTATION spider {
       TRUE {
         ENUM [
           serial,
+          ethernet,
+          lwip,
           can
         ] LIBRARY[];
       },
@@ -59,6 +61,24 @@ CPU spider {
   LIBRARY serial {
     GLOBAL = TRUE;
     PATH = "drivers/serial/renesas";
+  };
+
+  LIBRARY ethernet {
+    GLOBAL = TRUE;
+    PATH = "drivers/ethernet/renesas";
+    NEEDS = serial;
+  };
+
+  LIBRARY lwip_port_renesas_spider {
+    GLOBAL = TRUE;
+    NEEDS = ethernet;
+    PATH = "drivers/lwip_port/renesas";
+  };
+
+  LIBRARY lwip {
+    GLOBAL = TRUE;
+    NEEDS = lwip_port_renesas_spider;
+    PATH = "net/ethernet/lwip";
   };
 
   LIBRARY net_can_renesas_spider_driver {
