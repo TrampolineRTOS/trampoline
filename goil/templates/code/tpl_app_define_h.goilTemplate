@@ -289,12 +289,6 @@ if OS::STATUS == "EXTENDED" then%
 #endif
 
 /*-----------------------------------------------------------------------------
- * Configuration STM Flags
- */
-#define NUMBER_OF_OBJECTS                 % ![OBJECT length] %
-#define NUMBER_OF_TRANSACTIONS            % ![TRANSACTION length] %
-
-/*-----------------------------------------------------------------------------
  *  Tick optimization
  */
 #define TPL_OPTIMIZE_TICKS % !yesNo(exists OS::OPTIMIZETICKS default (false)) %
