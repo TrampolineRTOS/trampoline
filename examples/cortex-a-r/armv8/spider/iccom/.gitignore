@@ -1,0 +1,5 @@
+build/
+iccom/
+*.map
+*.py
+iccom_exe*

@@ -1,0 +1,8 @@
+/*
+ * Interrupt sources TO BE UPDATED
+ */
+ENUM [
+  /* ARM IRQs */
+  ARM_TIMER,              /* 0 */
+  ICCOM_INT               /* 1 */
+] SOURCE;

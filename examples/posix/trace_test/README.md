@@ -11,12 +11,12 @@ goil --target=posix/linux  --templates=../../../goil/templates/ trace_test.oil
 
 On Mac OS X Intel:
 ```
-goil --target=posix/darwin  --templates=../../../goil/templates/ can_demo.oil
+goil --target=posix/darwin  --templates=../../../goil/templates/ trace_test.oil
 ```
 
 On Mac OS X Apple Silicon:
 ```
-goil --target=posix/darwin/arm64  --templates=../../../goil/templates/ can_demo.oil
+goil --target=posix/darwin/arm64  --templates=../../../goil/templates/ trace_test.oil
 ```
 
 Then, the makefile is generated, and it will call goil again when the .oil file is updated

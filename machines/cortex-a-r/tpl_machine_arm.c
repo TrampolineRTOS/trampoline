@@ -32,8 +32,6 @@
 #endif
 #include "tpl_os_interrupt.h"
 
-#include "rpi2_trace.h"
-
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 /**
@@ -57,10 +55,21 @@ volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 #include "tpl_memmap.h"
 
 #if TASK_COUNT > 0
+/**
+ * Call Terminate Task function when no TerminateTask hasn't been called
+ * or when TerminateTask didn't success because of resource hold or
+ * interrupts disabled.
+ *
+ */
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
 #endif
 
 #if ISR_COUNT > 0
+/**
+ * Call Terminate ISR2 function when TerminateISR didn't success doing it
+ * because of resource hold or interrupts disabled.
+ *
+ */
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 #endif
 
@@ -90,22 +99,6 @@ void idle_function(void)
   };
 }
 
-/**
- * Call Terminate Task function when no TerminateTask hasn't been called
- * or when TerminateTask didn't success because of resource hold or
- * interrupts disabled.
- *
- */
-extern FUNC(void, OS_CODE) CallTerminateTask(void);
-
-
-/**
- * Call Terminate ISR2 function when TerminateISR didn't success doing it
- * because of resource hold or interrupts disabled.
- *
- */
-extern FUNC(void, OS_CODE) CallTerminateISR2(void);
-
 /*
  * As kernel mode is non-interruptible, these function does nothing
  */
@@ -122,14 +115,15 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
  */
 void tpl_enable_interrupts(void)
 {
-  /* unlock is scheduled to next switch back to task */
-  __asm__
-  (
-  "mrs r0, spsr ;"
-  "bic r0, r0, #0b11000000 ;"
-  "msr spsr, r0 ;"
-  : : : "r0" // clobbered register
-  );
+  __asm__ volatile ("CPSIE IF"); /* Enable interrupts */
+  // /* unlock is scheduled to next switch back to task */
+  // __asm__
+  // (
+  // "mrs r0, spsr ;"
+  // "bic r0, r0, #0b11000000 ;"
+  // "msr spsr, r0 ;"
+  // : : : "r0" // clobbered register
+  // );
 
 }
 
@@ -139,16 +133,17 @@ void tpl_enable_interrupts(void)
 void tpl_disable_interrupts(void)
 {
 
-  __asm__
-  (
-  "mrs r0, cpsr ;"
-  "orr r0, r0, #0b11000000 ;"
-  "msr cpsr, r0 ;"
-  "mrs r0, spsr ;" // interrupts remain locked in user space
-  "orr r0, r0, #0b11000000 ;"
-  "msr spsr, r0"
-  : : : "r0" // clobbered register
-  );
+  __asm__ volatile ("CPSID IF"); /* Disable interrupts */
+  // __asm__
+  // (
+  // "mrs r0, cpsr ;"
+  // "orr r0, r0, #0b11000000 ;"
+  // "msr cpsr, r0 ;"
+  // "mrs r0, spsr ;" // interrupts remain locked in user space
+  // "orr r0, r0, #0b11000000 ;"
+  // "msr spsr, r0"
+  // : : : "r0" // clobbered register
+  // );
 
 }
 
@@ -195,8 +190,17 @@ FUNC(void, OS_CODE) tpl_init_context(
    * the behaviour is controled
    */
   core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
+#if ISR_COUNT > 0
                                 (uint32)(CallTerminateISR2) :
+#else
+                                (uint32)(NULL) :
+#endif
+
+#if TASK_COUNT > 0
                                 (uint32)(CallTerminateTask); /*  lr  */
+#else
+                                (uint32)(NULL); /*  lr  */
+#endif
 
   // trace_var((const unsigned char*)"core_context->r[armreg_sp]", core_context->r[armreg_sp]);
   /* TODO: initialize stack footprint */

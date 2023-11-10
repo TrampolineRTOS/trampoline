@@ -1,0 +1,54 @@
+OIL_VERSION = "4.2";
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 STACKSIZE = 2048 ;
+  } ;
+
+  ISR {
+    UINT32 STACKSIZE = 2048 ;
+  } ;
+};
+
+CPU iccom {
+  OS config {
+    STATUS = EXTENDED;
+
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../..";
+      APP_SRC = "iccom.c";
+      APP_SRC = "iccom_ll.c";
+      APP_NAME = "iccom_exe.elf";
+      CFLAGS  = "-O0";
+      LDFLAGS = "-Map=iccom.map";
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+
+  APPMODE std {};
+
+  TASK iccom {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  ISR iccomInt {
+    CATEGORY = 2;
+    PRIORITY = 1;
+    SOURCE = ICCOM_INT;
+  };
+};

@@ -1,0 +1,67 @@
+ OUTPUT_FORMAT("elf32-littlearm")
+_region_min_align = 4;
+
+ENTRY (_start)
+
+MEMORY
+{
+    FLASH (rx) : ORIGIN = 0x0, LENGTH = (0*1K - 0x0)
+    RAM (wx) : ORIGIN = 0x40040000, LENGTH = 0x1fc0000
+   
+    IDT_LIST (wx) : ORIGIN = 0xFFFFF7FF, LENGTH = 2K
+}
+
+SECTIONS
+{
+  __rom_region_start = 0x0;
+  rom_start :
+  {
+    *(.vectbl)
+  } > RAM
+
+  .startup_code :
+  {
+    *(.startup_code)
+  } > RAM
+  .text :
+  {
+    *(.text*)
+  } > RAM
+
+  __bss_start = .;
+  .bss :
+  {
+    . = ALIGN(0x8);
+    __bss_start__ = .;
+    bss = .;
+    *(.bss)
+    __bss_end__ = .;
+  } > RAM
+
+  .stacks :
+  {
+    . = ALIGN(0x8);
+    __stacks_start = .;
+    . = . + 512; /* Size of FIQ stack */
+    __SP_fiq_ = .;
+    __SP_irq_bot_ = .;
+    . = . +1024; /* Size of IRQ stack */
+    __SP_irq_top_ = .;
+    . = . + 512; /* Size of MON stack */
+    __SP_mon_ = .;
+    . = . + 512; /* Size of UND stack */
+    __SP_und_ = .;
+    . = . + 512; /* Size of ABT stack */
+    __SP_abt_ = .;
+    __SP_svc_bot_ = .;
+    . = . + 512; /* Size of SVC stack */
+    __SP_svc_top_ = .;
+    . = . + 512; /* Size of HYP stack */
+    __SP_hyp_ = .;
+    __SP_usr_bot_ = .;
+    . = . + 1024; /* Size of USR and SYS stack */
+    __SP_usr_top_ = .;
+    __stacks_end = .;
+  } > RAM
+
+}

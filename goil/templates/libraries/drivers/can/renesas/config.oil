@@ -1,0 +1,7 @@
+CPU net_can_renesas_spider_driver_files {
+  LIBRARY net_can_renesas_spider_driver {
+    PATH = "drivers/can/renesas";
+    CHEADER = "spider_can.h";
+    CFILE = "spider_can.c";
+  };
+};
